@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29911.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMD.Meditoc.Pagos.Web", "IMD.Meditoc.Pagos.Web\IMD.Meditoc.Pagos.Web.csproj", "{900E7B10-D735-404A-A49F-70E91FC8E90A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMD.Meditoc.Pagos.Tests", "IMD.Meditoc.Pagos.Tests\IMD.Meditoc.Pagos.Tests.csproj", "{CC25E9A6-C96B-465F-B2E2-D4000FE2AE74}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMD.Meditoc.Pagos.Data", "IMD.Meditoc.Pagos.Data\IMD.Meditoc.Pagos.Data.csproj", "{334CB8CA-2EBD-430D-BEA7-435B3AA48A72}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMD.Meditoc.Pagos.Business", "IMD.Meditoc.Pagos.Business\IMD.Meditoc.Pagos.Business.csproj", "{829EA7C8-E709-4354-895A-E672E92489BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMD.Meditoc.Pagos.Entities", "IMD.Meditoc.Pagos.Entities\IMD.Meditoc.Pagos.Entities.csproj", "{F520049E-1914-4B9C-9276-AC7BCBB206C8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{900E7B10-D735-404A-A49F-70E91FC8E90A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{900E7B10-D735-404A-A49F-70E91FC8E90A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{900E7B10-D735-404A-A49F-70E91FC8E90A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{900E7B10-D735-404A-A49F-70E91FC8E90A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC25E9A6-C96B-465F-B2E2-D4000FE2AE74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC25E9A6-C96B-465F-B2E2-D4000FE2AE74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC25E9A6-C96B-465F-B2E2-D4000FE2AE74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC25E9A6-C96B-465F-B2E2-D4000FE2AE74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{334CB8CA-2EBD-430D-BEA7-435B3AA48A72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{334CB8CA-2EBD-430D-BEA7-435B3AA48A72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{334CB8CA-2EBD-430D-BEA7-435B3AA48A72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{334CB8CA-2EBD-430D-BEA7-435B3AA48A72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{829EA7C8-E709-4354-895A-E672E92489BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{829EA7C8-E709-4354-895A-E672E92489BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{829EA7C8-E709-4354-895A-E672E92489BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{829EA7C8-E709-4354-895A-E672E92489BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F520049E-1914-4B9C-9276-AC7BCBB206C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F520049E-1914-4B9C-9276-AC7BCBB206C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F520049E-1914-4B9C-9276-AC7BCBB206C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F520049E-1914-4B9C-9276-AC7BCBB206C8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F9AD8A21-8809-4193-A066-E5143D88C311}
+	EndGlobalSection
+EndGlobal
