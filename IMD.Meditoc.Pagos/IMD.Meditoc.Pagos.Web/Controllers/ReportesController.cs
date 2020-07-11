@@ -33,11 +33,22 @@ namespace IMD.Meditoc.Pagos.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458165645;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al consultar las órdenes en la base de datos";
 
                 logger.Error(IMDSerialize.Serialize(67823458165645, $"Error en {metodo}([FromUri]string psStatus = null, [FromUri]string psType = null, [FromUri]DateTime? pdtFechaInicio = null, [FromUri]DateTime? pdtFechaFinal = null): {ex.Message}", psStatus, psType, pdtFechaInicio, pdtFechaFinal, ex, response));
             }
             return response;
+        }
+        [HttpGet]
+        [Route("Api/Meditoc/Check/Server/Status")]
+        public IMDResponse<bool> CCheckServer()
+        {
+            return new IMDResponse<bool>
+            {
+                Code = 0,
+                Message = "SERVER OK",
+                Result = true
+            };
         }
     }
 }

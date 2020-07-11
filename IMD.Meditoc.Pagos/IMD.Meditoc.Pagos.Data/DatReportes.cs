@@ -19,8 +19,8 @@ namespace IMD.Meditoc.Pagos.Data
         private static readonly ILog logger = LogManager.GetLogger(typeof(DatReportes));
 
 #if DEBUG
-        private Database database;
-        IMDCommonData imdCommonData;
+        private readonly Database database;
+        readonly IMDCommonData imdCommonData;
 #else
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Database database;
@@ -58,7 +58,7 @@ namespace IMD.Meditoc.Pagos.Data
             catch (Exception ex)
             {
                 response.Code = 67823458162537;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al consultar las órdenes en la base de datos";
 
                 logger.Error(IMDSerialize.Serialize(67823458162537, $"Error en {metodo}(string psStatus = null, string psType = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null): {ex.Message}", psStatus, psType, pdtFechaInicio, pdtFechaFinal, ex, response));
             }

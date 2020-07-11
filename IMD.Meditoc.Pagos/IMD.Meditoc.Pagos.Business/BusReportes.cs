@@ -19,7 +19,7 @@ namespace IMD.Meditoc.Pagos.Business
         private static readonly ILog logger = LogManager.GetLogger(typeof(BusReportes));
 
 #if DEBUG
-        private DatReportes datReportes;
+        private readonly DatReportes datReportes;
 #else
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private DatReportes datReportes;
@@ -42,30 +42,32 @@ namespace IMD.Meditoc.Pagos.Business
                 IMDResponse<DataTable> respuestaObtenerOrdenes = datReportes.DObtenerReporteOrdenes(psStatus, psType, pdtFechaInicio, pdtFechaFinal);
                 if(respuestaObtenerOrdenes.Code != 0)
                 {
-                    response = respuestaObtenerOrdenes.GetResponse<List<EntOrderReporte>>();
+                     return respuestaObtenerOrdenes.GetResponse<List<EntOrderReporte>>();
                 }
 
                 List<EntReporteGeneric> lstReporte = new List<EntReporteGeneric>();
                 foreach (DataRow filaItem in respuestaObtenerOrdenes.Result.Rows)
                 {
                     IMDDataRow dr = new IMDDataRow(filaItem);
-                    EntReporteGeneric entReporteGeneric = new EntReporteGeneric();
-                    entReporteGeneric.iConsecutive = dr.ConvertTo<int>("iConsecutive");
-                    entReporteGeneric.iQuantity = dr.ConvertTo<int>("iQuantity");
-                    entReporteGeneric.nUnitPrice = dr.ConvertTo<double>("nUnitPrice");
-                    entReporteGeneric.sItemId = dr.ConvertTo<string>("sItemId");
-                    entReporteGeneric.sItemName = dr.ConvertTo<string>("sItemName");
-                    entReporteGeneric.uId = dr.ConvertTo<Guid>("uId");
-                    entReporteGeneric.dtRegisterDate = dr.ConvertTo<DateTime>("dtRegisterDate");
-                    entReporteGeneric.nAmount = dr.ConvertTo<double>("nAmount");
-                    entReporteGeneric.sAuthCode = dr.ConvertTo<string>("sAuthCode");
-                    entReporteGeneric.sChargeId = dr.ConvertTo<string>("sChargeId");
-                    entReporteGeneric.sEmail = dr.ConvertTo<string>("sEmail");
-                    entReporteGeneric.sName = dr.ConvertTo<string>("sName");
-                    entReporteGeneric.sOrderId = dr.ConvertTo<string>("sOrderId");
-                    entReporteGeneric.sPaymentStatus = dr.ConvertTo<string>("sPaymentStatus");
-                    entReporteGeneric.sPhone = dr.ConvertTo<string>("sPhone");
-                    entReporteGeneric.sType = dr.ConvertTo<string>("sType");
+                    EntReporteGeneric entReporteGeneric = new EntReporteGeneric
+                    {
+                        iConsecutive = dr.ConvertTo<int>("iConsecutive"),
+                        iQuantity = dr.ConvertTo<int>("iQuantity"),
+                        nUnitPrice = dr.ConvertTo<double>("nUnitPrice"),
+                        sItemId = dr.ConvertTo<string>("sItemId"),
+                        sItemName = dr.ConvertTo<string>("sItemName"),
+                        uId = dr.ConvertTo<Guid>("uId"),
+                        dtRegisterDate = dr.ConvertTo<DateTime>("dtRegisterDate"),
+                        nAmount = dr.ConvertTo<double>("nAmount"),
+                        sAuthCode = dr.ConvertTo<string>("sAuthCode"),
+                        sChargeId = dr.ConvertTo<string>("sChargeId"),
+                        sEmail = dr.ConvertTo<string>("sEmail"),
+                        sName = dr.ConvertTo<string>("sName"),
+                        sOrderId = dr.ConvertTo<string>("sOrderId"),
+                        sPaymentStatus = dr.ConvertTo<string>("sPaymentStatus"),
+                        sPhone = dr.ConvertTo<string>("sPhone"),
+                        sType = dr.ConvertTo<string>("sType")
+                    };
                     lstReporte.Add(entReporteGeneric);
                 }
                 List<EntOrderReporte> lstOrder = lstReporte.GroupBy(x => x.uId).Select(x => new EntOrderReporte
@@ -99,7 +101,7 @@ namespace IMD.Meditoc.Pagos.Business
             catch (Exception ex)
             {
                 response.Code = 67823458164091;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al consultar las órdenes en la base de datos";
 
                 logger.Error(IMDSerialize.Serialize(67823458164091, $"Error en {metodo}(string psStatus = null, string psType = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null): {ex.Message}", psStatus, psType, pdtFechaInicio, pdtFechaFinal, ex, response));
             }
