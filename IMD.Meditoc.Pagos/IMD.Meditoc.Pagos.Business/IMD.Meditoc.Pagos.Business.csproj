@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EPPlus">
+      <HintPath>..\..\Items\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="IMD.Admin.Utilities.Business">
       <HintPath>..\..\Items\IMD.Admin.Utilities.Business.dll</HintPath>
     </Reference>
@@ -42,6 +45,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
