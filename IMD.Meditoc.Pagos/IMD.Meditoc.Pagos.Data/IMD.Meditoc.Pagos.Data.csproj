@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{334CB8CA-2EBD-430D-BEA7-435B3AA48A72}</ProjectGuid>
+    <ProjectGuid>{2F3FD623-9829-4EAC-BFEB-FF32B141858C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>IMD.Meditoc.Pagos.Data</RootNamespace>
     <AssemblyName>IMD.Meditoc.Pagos.Data</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
@@ -31,14 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IMD.Admin.Utilities.Business">
-      <HintPath>..\..\Items\IMD.Admin.Utilities.Business.dll</HintPath>
-    </Reference>
-    <Reference Include="IMD.Admin.Utilities.Data">
-      <HintPath>..\..\Items\IMD.Admin.Utilities.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="IMD.Admin.Utilities.Entities">
-      <HintPath>..\..\Items\IMD.Admin.Utilities.Entities.dll</HintPath>
+    <Reference Include="IMD.Admin.Utilities.Web">
+      <HintPath>..\..\Items\IMD.Admin.Utilities.Web.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\Items\log4net.dll</HintPath>
@@ -64,12 +58,6 @@
   <ItemGroup>
     <Compile Include="DatReportes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\IMD.Meditoc.Pagos.Entities\IMD.Meditoc.Pagos.Entities.csproj">
-      <Project>{f520049e-1914-4b9c-9276-ac7bcbb206c8}</Project>
-      <Name>IMD.Meditoc.Pagos.Entities</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

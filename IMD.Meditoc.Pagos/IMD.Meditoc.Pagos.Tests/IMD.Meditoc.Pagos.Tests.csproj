@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CC25E9A6-C96B-465F-B2E2-D4000FE2AE74}</ProjectGuid>
+    <ProjectGuid>{99425ED9-3C3C-4F90-A74D-E5FA836C5926}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>IMD.Meditoc.Pagos.Tests</RootNamespace>
     <AssemblyName>IMD.Meditoc.Pagos.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <IsCodedUITest>False</IsCodedUITest>
@@ -35,17 +35,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IMD.Admin.Utilities.Entities">
-      <HintPath>..\..\Items\IMD.Admin.Utilities.Entities.dll</HintPath>
+    <Reference Include="IMD.Admin.Utilities.Web">
+      <HintPath>..\..\Items\IMD.Admin.Utilities.Web.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\Items\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework">
       <HintPath>..\packages\MSTest.TestFramework.1.2.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions">
       <HintPath>..\packages\MSTest.TestFramework.1.2.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -66,8 +66,8 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TestReportes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestReportes.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -75,19 +75,19 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IMD.Meditoc.Pagos.Business\IMD.Meditoc.Pagos.Business.csproj">
-      <Project>{829ea7c8-e709-4354-895a-e672e92489bb}</Project>
+      <Project>{a5f70e34-c858-4203-bc87-a022a9ac98be}</Project>
       <Name>IMD.Meditoc.Pagos.Business</Name>
     </ProjectReference>
     <ProjectReference Include="..\IMD.Meditoc.Pagos.Data\IMD.Meditoc.Pagos.Data.csproj">
-      <Project>{334cb8ca-2ebd-430d-bea7-435b3aa48a72}</Project>
+      <Project>{2f3fd623-9829-4eac-bfeb-ff32b141858c}</Project>
       <Name>IMD.Meditoc.Pagos.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\IMD.Meditoc.Pagos.Entities\IMD.Meditoc.Pagos.Entities.csproj">
-      <Project>{f520049e-1914-4b9c-9276-ac7bcbb206c8}</Project>
+      <Project>{d7ab3f64-f139-498b-9ba5-cd2251a404bc}</Project>
       <Name>IMD.Meditoc.Pagos.Entities</Name>
     </ProjectReference>
     <ProjectReference Include="..\IMD.Meditoc.Pagos.Web\IMD.Meditoc.Pagos.Web.csproj">
-      <Project>{900E7B10-D735-404A-A49F-70E91FC8E90A}</Project>
+      <Project>{9D4B2F2A-9905-4C90-B774-A7E1F8AFD076}</Project>
       <Name>IMD.Meditoc.Pagos.Web</Name>
     </ProjectReference>
   </ItemGroup>

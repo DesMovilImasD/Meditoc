@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{829EA7C8-E709-4354-895A-E672E92489BB}</ProjectGuid>
+    <ProjectGuid>{A5F70E34-C858-4203-BC87-A022A9AC98BE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>IMD.Meditoc.Pagos.Business</RootNamespace>
     <AssemblyName>IMD.Meditoc.Pagos.Business</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
@@ -31,21 +31,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EPPlus">
+    <Reference Include="EPPlus, Version=5.2.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Items\EPPlus.dll</HintPath>
     </Reference>
-    <Reference Include="IMD.Admin.Utilities.Business">
-      <HintPath>..\..\Items\IMD.Admin.Utilities.Business.dll</HintPath>
-    </Reference>
-    <Reference Include="IMD.Admin.Utilities.Entities">
-      <HintPath>..\..\Items\IMD.Admin.Utilities.Entities.dll</HintPath>
+    <Reference Include="IMD.Admin.Utilities.Web">
+      <HintPath>..\..\Items\IMD.Admin.Utilities.Web.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\Items\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Threading.Tasks" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -59,11 +61,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IMD.Meditoc.Pagos.Data\IMD.Meditoc.Pagos.Data.csproj">
-      <Project>{334cb8ca-2ebd-430d-bea7-435b3aa48a72}</Project>
+      <Project>{2f3fd623-9829-4eac-bfeb-ff32b141858c}</Project>
       <Name>IMD.Meditoc.Pagos.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\IMD.Meditoc.Pagos.Entities\IMD.Meditoc.Pagos.Entities.csproj">
-      <Project>{f520049e-1914-4b9c-9276-ac7bcbb206c8}</Project>
+      <Project>{d7ab3f64-f139-498b-9ba5-cd2251a404bc}</Project>
       <Name>IMD.Meditoc.Pagos.Entities</Name>
     </ProjectReference>
   </ItemGroup>

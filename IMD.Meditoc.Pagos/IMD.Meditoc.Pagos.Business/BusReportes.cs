@@ -1,11 +1,9 @@
-﻿using IMD.Admin.Utilities.Business.Converter;
-using IMD.Admin.Utilities.Business.Serialize;
+﻿using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
 using IMD.Meditoc.Pagos.Data;
 using IMD.Meditoc.Pagos.Entities.Reporte;
 using log4net;
 using OfficeOpenXml;
-using OfficeOpenXml.Drawing;
 using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
