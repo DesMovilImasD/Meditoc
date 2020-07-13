@@ -11,13 +11,15 @@ using System.Web.Http;
 using IMD.Meditoc.Pagos.Business;
 using System.IO;
 using System.Net.Http.Headers;
+using System.Web.Http.Cors;
 
 namespace IMD.Meditoc.Pagos.Web.Controllers
 {
+    [EnableCors("*", "*", "*")]
     public class ReportesController : ApiController
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(ReportesController));
-
+        [DisableCors]
         [HttpGet]
         [Route("Api/Meditoc/Pagos/Reporte/Ordenes")]
         public IMDResponse<List<EntOrderReporte>> CObtenerReporteOrdenes([FromUri]string psStatus = null, [FromUri]string psType = null, [FromUri]DateTime? pdtFechaInicio = null, [FromUri]DateTime? pdtFechaFinal = null)
