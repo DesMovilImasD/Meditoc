@@ -4,5 +4,9 @@
   "local": "Server=DES10\\SQLEXPRESS; Database=IMDCONEKTA; User id=sa; Password=gerardo098;",
   "mysql": {
     "cnx": "Server=172.16.0.76;Database=conekta;Uid=root;Pwd=ImasD2018#;"
+  },
+  "QA": {
+    "apiKeyTokenizador": "key_GyCqFsGWvYaFP3a7C9Lyfjg",
+    "apiKeyTransaccion": "key_ZPszbLWfqcm8w5ogwrgXUA"
   }
 }
