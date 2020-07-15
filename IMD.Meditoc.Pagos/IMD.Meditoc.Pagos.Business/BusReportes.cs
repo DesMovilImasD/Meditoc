@@ -133,7 +133,7 @@ namespace IMD.Meditoc.Pagos.Business
                     {
                         worksheet.Cells[++row, 1].Value = x.uId;
                         worksheet.Cells[row, 2].Value = x.sOrderId;
-                        worksheet.Cells[row, 3].Value = x.nAmount;
+                        worksheet.Cells[row, 3].Value = x.nAmount / 100;
                         worksheet.Cells[row, 4].Value = x.sPaymentStatus;
                         worksheet.Cells[row, 5].Value = x.sType;
                         worksheet.Cells[row, 6].Value = x.iConsecutive;
