@@ -1,0 +1,277 @@
+:root {
+    --color-primary-blue: #12b6cb;
+    --color-secondary-blue: #115c8a;
+    --color-default-blue: #bae9ef;
+
+    --color-primary-gray: #575e66;
+    --color-secondary-gray: #878787;
+    --color-default-gray: #272e31;
+
+    --color-background-gray: #f8f8f8;
+
+    --font-primary: "Roboto";
+    --font-secondary: "Open Sans";
+    --font-default: "Roboto Condensed";
+
+    --transition-menu: 400ms;
+}
+body {
+    margin: 0;
+    font-family: "Roboto", "Open Sans", -apple-system, BlinkMacSystemFont,
+        "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+        "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--color-background-gray);
+}
+
+.primary-blue {
+    color: var(--color-primary-blue);
+}
+
+.primary-gray {
+    color: var(--color-primary-gray);
+}
+
+/* Tamaño del scroll */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+/* Estilos barra (thumb) de scroll */
+::-webkit-scrollbar-thumb {
+    background: #bbb;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:active {
+    background-color: #999999;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #b3b3b3;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos track de scroll */
+::-webkit-scrollbar-track {
+    background: #e1e1e1;
+}
+
+::-webkit-scrollbar-track:hover,
+::-webkit-scrollbar-track:active {
+    background: #d4d4d4;
+}
+
+.centrar {
+    text-align: center;
+}
+
+.precios-menu-contenedor {
+    display: flex;
+}
+.precios-menu-logo-contenedor {
+    margin-left: 93px;
+    flex-grow: 1;
+}
+.precios-menu-logo {
+    height: 76px;
+}
+
+.precios-menu-ul {
+    display: inline-flex;
+    height: 100%;
+    margin: 0;
+}
+.precios-menu-li {
+    list-style: none;
+    font-size: 22px;
+    font-family: var(--font-default);
+    cursor: pointer;
+    padding: 20px 20px;
+    border-top: 3px solid var(--color-background-gray);
+    transition: var(--transition-menu);
+}
+
+.precios-menu-li > a {
+    color: var(--color-primary-gray);
+    text-decoration: none;
+    transition: var(--transition-menu);
+}
+
+.precios-menu-li:hover {
+    /* background-color: var(--color-background-gray); */
+    border-top: 3px solid var(--color-primary-blue);
+    transition: var(--transition-menu);
+}
+
+.precios-menu-li:hover > a {
+    color: var(--color-primary-blue);
+    transition: var(--transition-menu);
+}
+.precios-menu-active {
+    border-top: 3px solid var(--color-primary-blue);
+}
+.precios-menu-active > a {
+    color: var(--color-primary-blue);
+}
+
+.precios-portada-contenedor {
+    background: linear-gradient(180deg, #6dd5ed 0%, #2193b0 100%);
+}
+.precios-portada-img {
+    height: 650px;
+    margin-left: 100px;
+}
+
+.precio-portada-leyenda-contenedor {
+    align-self: center;
+}
+
+.precios-portada-leyenda {
+    color: white;
+    font-family: var(--font-default);
+    font-size: 40px;
+    line-height: 49px;
+    font-weight: 300;
+}
+.precios-cotenido-contenedor {
+    width: 80%;
+    margin: auto;
+    margin-bottom: 80px;
+}
+.precios-contenido-titulo {
+    font-family: var(--font-default);
+    font-style: normal;
+    font-weight: normal;
+    font-size: 60px;
+    line-height: 70px;
+    margin-top: 30px;
+}
+.precios-contenido-descripcion {
+    font-family: var(--font-secondary);
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 33px;
+    color: var(--color-secondary-gray);
+}
+.precios-contenido-descripcion-nr {
+    font-family: var(--font-secondary);
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 33px;
+    color: var(--color-secondary-gray);
+}
+
+.precios-articulo-contenedor {
+    max-width: 330px;
+    margin: auto;
+    background-color: #fff;
+    height: 480px;
+    box-shadow: 0px 0px 26px -13px rgba(0, 0, 0, 0.75);
+    border-radius: 40px;
+    position: relative;
+    padding: 40px;
+    padding-top: 160px;
+}
+.precios-articulo-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 150px;
+    background-color: var(--color-primary-blue);
+    border-radius: 40px;
+    text-align: center;
+    color: white;
+}
+
+.precios-articulo-header-icon {
+    font-size: 40px;
+    margin-top: 30px;
+}
+
+.precios-articulo-header-title {
+    font-family: var(--font-default);
+    font-size: 28px;
+}
+.precios-ariculo-monto {
+    font-family: var(--font-default);
+    font-style: normal;
+    font-weight: normal;
+    font-size: 30px;
+    line-height: 57px;
+    color: var(--color-primary-gray);
+}
+.precios-articulo-monto-descripcion {
+    font-family: var(--font-default);
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 36px;
+    color: var(--color-secondary-gray);
+}
+.precios-articulo-separador {
+    border-right: 2px solid var(--color-secondary-gray);
+}
+.precios-articulo-descripcion-contenedor {
+    text-align: left;
+    flex-grow: 1;
+    padding-top: 40px;
+}
+.precios-articulo-descripcion {
+    font-family: var(--font-secondary);
+    font-style: normal;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 30px;
+    color: var(--color-secondary-gray);
+}
+.precios-articulo-icon-orientacion {
+    font-size: 30px;
+    color: var(--color-secondary-blue);
+}
+.precios-ariculo-space {
+    margin-bottom: 30px;
+}
+.precios-articulo-contratar {
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+    right: 0;
+}
+.precios-footer-contenedor {
+    background-color: var(--color-default-gray);
+    height: 300px;
+    color: #fff;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+.precios-footer-sub {
+    width: 80%;
+    margin: auto;
+}
+.precios-footer-contacto {
+    font-family: var(--font-default);
+    font-style: normal;
+    font-weight: normal;
+    font-size: 22px;
+    line-height: 26px;
+    color: #fff;
+}
+.precios-footer-direccion {
+    font-family: var(--font-secondary);
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 25px;
+    color: var(--color-secondary-gray);
+}
+.precios-footer-map {
+    background-color: #fff;
+    height: 310px;
+    width: 500px;
+}
