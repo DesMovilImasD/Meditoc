@@ -26,10 +26,10 @@ const Contenido = () => {
                         Podrá adquirir membresías para los siguientes servicios.
                     </span>
                 </Grid>
-                <Grid item sm={6} xs={12}>
+                <Grid item md={6} xs={12}>
                     <Membresias />
                 </Grid>
-                <Grid item sm={6} xs={12}>
+                <Grid item md={6} xs={12}>
                     <Orientaciones />
                 </Grid>
             </Grid>

@@ -14,7 +14,7 @@ const Portada = () => {
                 </Grid>
                 <Grid
                     item
-                    sm={7}
+                    md={7}
                     xs={12}
                     className="precio-portada-leyenda-contenedor"
                 >

@@ -1,12 +1,12 @@
 import React from "react";
-import { Grid } from "@material-ui/core";
+import { Grid, Hidden } from "@material-ui/core";
 
 const Footer = () => {
     return (
         <div className="precios-footer-contenedor">
             <div className="precios-footer-sub">
                 <Grid container>
-                    <Grid item sm={6} xs={12}>
+                    <Grid item md={6} xs={12}>
                         <div>
                             <span className="precios-footer-contacto">
                                 Contáctanos
@@ -34,9 +34,11 @@ const Footer = () => {
                             </span>
                         </div>
                     </Grid>
-                    <Grid item sm={6} xs={12}>
-                        <div className="precios-footer-map"></div>
-                    </Grid>
+                    <Hidden only={["xs", "sm"]}>
+                        <Grid item sm={6} xs={12}>
+                            <div className="precios-footer-map"></div>
+                        </Grid>
+                    </Hidden>
                 </Grid>
             </div>
         </div>

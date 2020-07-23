@@ -8,6 +8,7 @@
     --color-default-gray: #272e31;
 
     --color-background-gray: #f8f8f8;
+    --color-unset: #ffffff;
 
     --font-primary: "Roboto";
     --font-secondary: "Open Sans";
@@ -33,6 +34,12 @@ body {
     color: var(--color-primary-gray);
 }
 
+.secondary-blue {
+    color: var(--color-secondary-blue);
+}
+.secondary-gray {
+    color: var(--color-secondary-gray);
+}
 /* Tamaño del scroll */
 ::-webkit-scrollbar {
     width: 8px;
@@ -66,6 +73,13 @@ body {
 
 .centrar {
     text-align: center;
+}
+
+.izquierda {
+    text-align: left;
+}
+.derecha {
+    text-align: right;
 }
 
 .precios-menu-contenedor {
@@ -116,6 +130,17 @@ body {
 .precios-menu-active > a {
     color: var(--color-primary-blue);
 }
+.precios-menu-ul-contenedor {
+    overflow-x: hidden;
+}
+@media only screen and (max-width: 1050px) {
+    .precios-menu-contenedor {
+        display: block;
+    }
+    .precios-menu-ul-contenedor {
+        overflow-x: auto;
+    }
+}
 
 .precios-portada-contenedor {
     background: linear-gradient(180deg, #6dd5ed 0%, #2193b0 100%);
@@ -124,13 +149,25 @@ body {
     height: 650px;
     margin-left: 100px;
 }
+@media only screen and (max-width: 450px) {
+    .precios-portada-img {
+        margin-left: 10px;
+    }
+}
 
 .precio-portada-leyenda-contenedor {
     align-self: center;
 }
 
+@media only screen and (max-width: 960px) {
+    .precio-portada-leyenda-contenedor {
+        align-self: initial;
+        padding: 25px;
+    }
+}
+
 .precios-portada-leyenda {
-    color: white;
+    color: var(--color-unset);
     font-family: var(--font-default);
     font-size: 40px;
     line-height: 49px;
@@ -169,7 +206,7 @@ body {
 .precios-articulo-contenedor {
     max-width: 330px;
     margin: auto;
-    background-color: #fff;
+    background-color: var(--color-unset);
     height: 480px;
     box-shadow: 0px 0px 26px -13px rgba(0, 0, 0, 0.75);
     border-radius: 40px;
@@ -186,7 +223,7 @@ body {
     background-color: var(--color-primary-blue);
     border-radius: 40px;
     text-align: center;
-    color: white;
+    color: var(--color-unset);
 }
 
 .precios-articulo-header-icon {
@@ -246,7 +283,7 @@ body {
 .precios-footer-contenedor {
     background-color: var(--color-default-gray);
     height: 300px;
-    color: #fff;
+    color: var(--color-unset);
     padding-top: 40px;
     padding-bottom: 40px;
 }
@@ -260,7 +297,7 @@ body {
     font-weight: normal;
     font-size: 22px;
     line-height: 26px;
-    color: #fff;
+    color: var(--color-unset);
 }
 .precios-footer-direccion {
     font-family: var(--font-secondary);
@@ -271,7 +308,185 @@ body {
     color: var(--color-secondary-gray);
 }
 .precios-footer-map {
-    background-color: #fff;
+    background-color: var(--color-unset);
     height: 310px;
     width: 500px;
+}
+
+.pagos-header {
+    background-color: var(--color-primary-blue);
+    padding: 20px;
+    text-align: center;
+}
+.pagos-header-logo {
+    height: 160px;
+}
+
+.pagos-contenido {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+    margin-top: 40px;
+}
+
+.pagos-contenido-subtitulo {
+    font-family: var(--font-default);
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 47px;
+    color: var(--color-primary-gray);
+}
+.pagos-detalle-compra-contenedor {
+    margin-top: 30px;
+    height: 500px;
+    width: 100%;
+    background-color: var(--color-primary-blue);
+    box-shadow: 0px 0px 26px -13px rgba(0, 0, 0, 0.75);
+    border-radius: 30px;
+    margin-left: 25px;
+    margin-bottom: 60px;
+    color: var(--color-unset);
+    display: flex;
+    flex-direction: column;
+}
+
+.pagos-info-pago-contenedor {
+    margin-top: 30px;
+    height: 500px;
+    width: 100%;
+    background-color: var(--color-unset);
+    box-shadow: 0px 0px 26px -13px rgba(0, 0, 0, 0.75);
+    border-radius: 30px;
+    margin-left: -25px;
+    margin-bottom: 60px;
+}
+
+.pagos-detalle-compra-articulos {
+    padding: 20px;
+    padding-right: 70px;
+    flex-grow: 1;
+}
+
+.pagos-detalle-compra-articulo {
+    display: flex;
+    margin-bottom: 40px;
+}
+
+.pagos-detalle-compra-articulo-icono {
+    background-color: var(--color-unset);
+    padding: 5px 10px 2px;
+    border-radius: 10px;
+    font-size: 40px;
+    color: var(--color-secondary-blue);
+    align-self: center;
+}
+
+.pagos-detalle-compra-articulo-detalles {
+    margin-left: 10px;
+    text-align: left;
+    flex-grow: 1;
+}
+
+.pagos-detalle-compra-articulo-nombre {
+    font-family: var(--font-primary);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 20px;
+}
+
+.pagos-detalle-compra-articulo-precio {
+    font-family: var(--font-primary);
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 25px;
+}
+.pagos-detalle-compra-articulo-cantidad {
+    margin-top: -15px;
+    margin-bottom: -15px;
+}
+.pagos-detalle-compra-articulo-cantidad-btn {
+    color: var(--color-unset);
+}
+.pagos-detalle-compra-articulo-eliminar {
+    align-self: center;
+}
+.pagos-detalle-compra-total {
+    padding: 20px;
+    padding-right: 70px;
+}
+
+.pagos-detalle-compra-total-contenedor {
+    border-top: 1px solid var(--color-unset);
+}
+
+.pagos-detalle-compra-subtotal-txt {
+    font-family: var(--font-default);
+    font-style: normal;
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 30px;
+}
+
+.pagos-detalle-compra-total-txt {
+    font-family: var(--font-default);
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 30px;
+}
+.pagos-info-pago-formulario {
+    padding: 20px;
+}
+@media only screen and (max-width: 960px) {
+    .pagos-contenido {
+        width: 95%;
+        margin: auto;
+        text-align: center;
+        margin-top: 40px;
+    }
+    .pagos-detalle-compra-contenedor {
+        margin-top: 30px;
+        height: 500px;
+        width: 100%;
+        background-color: var(--color-primary-blue);
+        box-shadow: 0px 0px 26px -13px rgba(0, 0, 0, 0.75);
+        border-radius: 30px;
+        margin-left: 0px;
+        margin-bottom: 60px;
+        color: var(--color-unset);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .pagos-info-pago-contenedor {
+        margin-top: 30px;
+        height: 500px;
+        width: 100%;
+        background-color: var(--color-unset);
+        box-shadow: 0px 0px 26px -13px rgba(0, 0, 0, 0.75);
+        border-radius: 30px;
+        margin-left: 0px;
+        margin-bottom: 60px;
+    }
+    .pagos-detalle-compra-articulos {
+        padding: 20px;
+        padding-right: 20px;
+        flex-grow: 1;
+    }
+    .pagos-detalle-compra-total {
+        padding: 20px;
+        padding-right: 20px;
+    }
+}
+
+.pagos-ingresar-cupon-titulo {
+    font-family: var(--font-default);
+    font-style: normal;
+    font-weight: normal;
+    font-size: 25px;
+    line-height: 37px;
+    color: var(--color-primary-blue);
 }

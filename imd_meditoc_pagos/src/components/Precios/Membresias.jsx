@@ -1,12 +1,43 @@
 import React, { useState } from "react";
 import { Grid, Radio, Button } from "@material-ui/core";
 import { FaUser } from "react-icons/fa";
+import { useHistory } from "react-router-dom";
 
 const Membresias = () => {
-    const [rdMiembro, setRdMiembro] = useState("sixmonths");
+    const nombre6Meses = "sixmonths";
+    const nombre12Meses = "oneyear";
+
+    const history = useHistory();
+
+    const [rdMiembro, setRdMiembro] = useState(nombre6Meses);
 
     const handleChangeRdMiembro = (e) => {
         setRdMiembro(e.target.value);
+    };
+
+    const handleClickContratar = () => {
+        let lstItems = [];
+        if (rdMiembro === nombre6Meses) {
+            lstItems.push({
+                nombre: "Membresía 6 meses",
+                precio: 800,
+                cantidad: 1,
+                id: 289,
+                tipo: 1,
+            });
+        } else if (rdMiembro === nombre12Meses) {
+            lstItems.push({
+                nombre: "Membresía 12 meses",
+                precio: 1450,
+                cantidad: 1,
+                id: 290,
+                tipo: 1,
+            });
+        } else {
+            return;
+        }
+        sessionStorage.setItem("lstItems", JSON.stringify(lstItems));
+        history.push("/pagos");
     };
 
     return (
@@ -26,9 +57,9 @@ const Membresias = () => {
                     <div>
                         <Radio
                             name="rd-miembro"
-                            value="sixmonths"
+                            value={nombre6Meses}
                             color="primary"
-                            checked={rdMiembro === "sixmonths"}
+                            checked={rdMiembro === nombre6Meses}
                             onChange={handleChangeRdMiembro}
                         />
                     </div>
@@ -41,9 +72,9 @@ const Membresias = () => {
                     <div>
                         <Radio
                             name="rd-miembro"
-                            value="oneyear"
+                            value={nombre12Meses}
                             color="primary"
-                            checked={rdMiembro === "oneyear"}
+                            checked={rdMiembro === nombre12Meses}
                             onChange={handleChangeRdMiembro}
                         />
                     </div>
@@ -64,7 +95,11 @@ const Membresias = () => {
                 </Grid>
             </Grid>
             <div className="precios-articulo-contratar">
-                <Button variant="contained" color="primary">
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleClickContratar}
+                >
                     CONTRATAR
                 </Button>
             </div>

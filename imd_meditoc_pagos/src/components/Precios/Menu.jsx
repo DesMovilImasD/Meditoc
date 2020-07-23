@@ -10,7 +10,7 @@ const Menu = () => {
                     src="/img/logo-meditoc-main.png"
                 />
             </div>
-            <div>
+            <div className="precios-menu-ul-contenedor">
                 <ul className="precios-menu-ul">
                     <li className="precios-menu-li">
                         <a href="https://meditoc.com/">Inicio</a>

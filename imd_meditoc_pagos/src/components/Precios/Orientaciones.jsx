@@ -6,13 +6,51 @@ import {
     FaCommentMedical,
     FaNotesMedical,
 } from "react-icons/fa";
+import { useHistory } from "react-router-dom";
 
 const Orientaciones = () => {
+    const history = useHistory();
     const [rdOrientacion, setRdOrientacion] = useState({
-        medica: false,
+        medica: true,
         psicologica: false,
         nutricional: false,
     });
+
+    const handleClickComprar = () => {
+        let lstItems = [];
+        if (rdOrientacion.medica) {
+            lstItems.push({
+                nombre: "Orientación Médica",
+                precio: 55,
+                cantidad: 1,
+                id: 294,
+                tipo: 2,
+            });
+        }
+        if (rdOrientacion.psicologica) {
+            lstItems.push({
+                nombre: "Orientación Psicológica",
+                precio: 55,
+                cantidad: 1,
+                id: 295,
+                tipo: 2,
+            });
+        }
+        if (rdOrientacion.nutricional) {
+            lstItems.push({
+                nombre: "Orientación Nutricional",
+                precio: 55,
+                cantidad: 1,
+                id: 296,
+                tipo: 2,
+            });
+        }
+        if (lstItems.length === 0) {
+            return;
+        }
+        sessionStorage.setItem("lstItems", JSON.stringify(lstItems));
+        history.push("/pagos");
+    };
 
     return (
         <div className="precios-articulo-contenedor">
@@ -112,7 +150,11 @@ const Orientaciones = () => {
                 <Grid item xs={12}></Grid>
             </Grid>
             <div className="precios-articulo-contratar">
-                <Button variant="contained" color="primary">
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleClickComprar}
+                >
                     COMPRAR
                 </Button>
             </div>
