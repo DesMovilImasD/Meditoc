@@ -32,7 +32,13 @@ import InputNumeroTarjeta from "./InputNumeroTarjeta";
 import InputCodigoVerificacion from "./InputCodigoVerificacion";
 
 const InformacionPago = (props) => {
-    const { listaProductos, setEntCupon, funcLoader } = props;
+    const {
+        listaProductos,
+        entCupon,
+        setEntCupon,
+        setOrdenGenerada,
+        funcLoader,
+    } = props;
 
     const iconSize = 25;
 
@@ -44,6 +50,8 @@ const InformacionPago = (props) => {
         txtCorreo: "",
         txtModalidad: "",
     });
+
+    const [errorServiceMsg, setErrorServiceMsg] = useState("");
 
     const [agregarCuponOpen, setAgregarCuponOpen] = useState(false);
 
@@ -192,15 +200,19 @@ const InformacionPago = (props) => {
     const yearNow = new Date().getFullYear();
     const yearMil = yearNow.toString().substring(0, 2);
 
+    const [monthForm, setMonthForm] = useState(0);
+    const [yearForm, setYearForm] = useState(0);
+
     const funcValidarFechaVencimiento = (fechaVencimientoValue) => {
         let month = 0;
         let year = 0;
 
         if (fechaVencimientoValue.length > 0) {
             month = parseInt(fechaVencimientoValue.substring(0, 2));
-
+            setMonthForm(month);
             if (fechaVencimientoValue.length > 3) {
                 year = parseInt(yearMil + fechaVencimientoValue.substring(3));
+                setYearForm(year);
             }
         } else {
             setFechaVencimientoInvalido(true);
@@ -229,6 +241,126 @@ const InformacionPago = (props) => {
             ...formularioPago,
             txtCorreo: correoValue,
         });
+    };
+
+    const handleClickSubmitPago = (e) => {
+        e.preventDefault();
+
+        window.Conekta.setPublicKey("key_GyCqFsGWvYaFP3a7C9Lyfjg");
+        window.Conekta.setLanguage("es");
+
+        if (numeroTarjetaInvalido) {
+            return;
+        }
+        if (fechaVencimientoInvalido) {
+            return;
+        }
+        if (formularioPago.txtCVV.length < 3) {
+            return;
+        }
+        if (formularioPago.txtNombre === "") {
+            return;
+        }
+        if (correoInvalido) {
+            return;
+        }
+        if (formularioPago.txtModalidad === "") {
+            return;
+        }
+        const tokenParams = {
+            card: {
+                number: formularioPago.txtTarjeta, //4263982640269299
+                name: formularioPago.txtNombre, //JUANITO PEREZ
+                exp_year: yearForm, //2023
+                exp_month: monthForm, //02  --------   0223
+                cvc: formularioPago.txtCVV, //837
+            },
+        };
+        funcLoader(true, "Validando datos de compra...");
+        window.Conekta.Token.create(
+            tokenParams,
+            successResponseHandler,
+            errorResponseHandler
+        );
+        funcLoader();
+    };
+
+    const successResponseHandler = (token) => {
+        const entCreateOrder = {
+            currency: "MXN",
+            coupon: entCupon === null ? null : entCupon.fiIdCupon,
+            pacienteUnico: {
+                bBaja: false,
+                bTerminosyCondiciones: true,
+                iIdUsuario: 0,
+                sApeMaterno: null,
+                sApePaterno: null,
+                sEmail: formularioPago.txtCorreo,
+                sFolio: null,
+                sMensajeRespuesta: null,
+                sNombre: formularioPago.txtNombre,
+                sPassword: null,
+                sTelefono: null,
+                sTipoServicio: null,
+            },
+            lstLineItems: listaProductos.map((producto) => ({
+                name: producto.nombre,
+                product_id: producto.id,
+                quantity: producto.cantidad,
+                unit_price: producto.precio * 100,
+                monthsExpiration:
+                    producto.id === 289 ? 6 : producto.id === 290 ? 12 : 0,
+            })),
+            lstCharges: [
+                {
+                    payment_: {
+                        monthly_installments: parseInt(
+                            formularioPago.txtModalidad
+                        ),
+                        type: "card",
+                        token_id: token.id,
+                        expires_at: 0,
+                    },
+                },
+            ],
+        };
+        console.log(entCreateOrder);
+
+        funcBuy(entCreateOrder);
+    };
+
+    const errorResponseHandler = (error) => {
+        console.log(error);
+        funcLoader();
+    };
+
+    const funcBuy = async (entCreateOrder) => {
+        funcLoader(true, "Realizando compra...");
+        try {
+            const apiResponse = await fetch(
+                "/ClientesService.svc/NewUniqueQuery",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(entCreateOrder),
+                }
+            );
+            const response = await apiResponse.json();
+            console.log(response);
+            if (response.bRespuesta === true) {
+                setOrdenGenerada(response.sParameter1);
+                sessionStorage.removeItem("lstItems");
+            } else {
+                setErrorServiceMsg(response.sMensaje);
+            }
+        } catch (error) {
+            setErrorServiceMsg(
+                "Ocurrió un error al procesar la compra. Intente más tarde."
+            );
+        }
+        funcLoader();
     };
 
     return (
@@ -427,9 +559,15 @@ const InformacionPago = (props) => {
                                 size="large"
                                 fullWidth
                                 disabled={listaProductos.length === 0}
+                                onClick={handleClickSubmitPago}
                             >
                                 <Typography variant="caption">PAGAR</Typography>
                             </Button>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Typography className="error">
+                                {errorServiceMsg}
+                            </Typography>
                         </Grid>
                     </Grid>
                 </div>

@@ -12,6 +12,8 @@ const Contenido = (props) => {
 
     const [totalPagar, setTotalPagar] = useState(0);
 
+    const [ordenGenerada, setOrdenGenerada] = useState(null);
+
     return (
         <div className="pagos-contenido">
             <Grid container>
@@ -54,7 +56,9 @@ const Contenido = (props) => {
                     <InformacionPago
                         listaProductos={listaProductos}
                         funcLoader={funcLoader}
+                        entCupon={entCupon}
                         setEntCupon={setEntCupon}
+                        setOrdenGenerada={setOrdenGenerada}
                     />
                 </Grid>
             </Grid>
