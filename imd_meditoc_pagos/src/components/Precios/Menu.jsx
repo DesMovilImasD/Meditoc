@@ -1,5 +1,13 @@
 import React from "react";
+import { logoMeditocMain } from "../../configuration/imgConfig";
+import preciosPage from "../../configuration/baseConfig";
 
+/*****************************************************
+ * Descripción: Menu de la pagina de precios
+ * Autor: Cristopher Noh
+ * Fecha: 22/07/2020
+ * Modificaciones:
+ *****************************************************/
 const Menu = () => {
     return (
         <div className="precios-menu-contenedor">
@@ -7,7 +15,7 @@ const Menu = () => {
                 <img
                     className="precios-menu-logo"
                     alt="MEDITOCLOGO"
-                    src="/img/logo-meditoc-main.png"
+                    src={logoMeditocMain}
                 />
             </div>
             <div className="precios-menu-ul-contenedor">
@@ -26,7 +34,7 @@ const Menu = () => {
                         </a>
                     </li>
                     <li className="precios-menu-li precios-menu-active">
-                        <a href="/">Precios</a>
+                        <a href={preciosPage}>Precios</a>
                     </li>
                     <li className="precios-menu-li">
                         <a href="https://meditoc.com/#contacto">Contacto</a>

@@ -8,6 +8,13 @@ import {
 } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
 
+/*****************************************************
+ * Descripción: Contiene la estructura para mostrar
+ * los precios de las orientaciones
+ * Autor: Cristopher Noh
+ * Fecha: 23/07/2020
+ * Modificaciones:
+ *****************************************************/
 const Orientaciones = () => {
     const history = useHistory();
     const [rdOrientacion, setRdOrientacion] = useState({

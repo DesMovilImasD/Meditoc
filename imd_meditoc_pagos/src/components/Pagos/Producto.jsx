@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 import {
     FaBookMedical,
@@ -6,9 +7,16 @@ import {
     FaNotesMedical,
     FaTrash,
 } from "react-icons/fa";
-import { IconButton, Grid, Hidden } from "@material-ui/core";
+import { IconButton, Hidden } from "@material-ui/core";
 import { MdAdd, MdRemove } from "react-icons/md";
 
+/*****************************************************
+ * Descripción: Contiene la estructura de visualización de un artículo
+ * en el detalle de la compra
+ * Autor: Cristopher Noh
+ * Fecha: 23/07/2020
+ * Modificaciones:
+ *****************************************************/
 const Producto = (props) => {
     const { producto, index, listaProductos, setListaProductos } = props;
 
@@ -93,6 +101,18 @@ const Producto = (props) => {
             </div>
         </div>
     );
+};
+
+Producto.propTypes = {
+    index: PropTypes.number,
+    listaProductos: PropTypes.array,
+    producto: PropTypes.shape({
+        cantidad: PropTypes.number,
+        id: PropTypes.number,
+        nombre: PropTypes.string,
+        precio: PropTypes.number,
+    }),
+    setListaProductos: PropTypes.func,
 };
 
 export default Producto;

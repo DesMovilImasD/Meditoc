@@ -3,6 +3,13 @@ import { Grid } from "@material-ui/core";
 import Membresias from "./Membresias";
 import Orientaciones from "./Orientaciones";
 
+/*****************************************************
+ * Descripción: Contiene la estructura para mostrar
+ * los precios de servicios Meditoc
+ * Autor: Cristopher Noh
+ * Fecha: 22/07/2020
+ * Modificaciones:
+ *****************************************************/
 const Contenido = () => {
     return (
         <div className="precios-cotenido-contenedor">

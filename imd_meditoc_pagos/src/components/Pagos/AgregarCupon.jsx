@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React, { useState } from "react";
 import {
     Dialog,
@@ -7,8 +8,15 @@ import {
     Button,
     Typography,
 } from "@material-ui/core";
-import serverMain from "../../configuration/serverConfig";
+import { serverWa } from "../../configuration/serverConfig";
+import { apiValidarCupon } from "../../configuration/apiConfig";
 
+/*****************************************************
+ * Descripción: Despliega el dialogo para ingresar y validar un cupón
+ * Autor: Cristopher Noh
+ * Fecha: 23/07/2020
+ * Modificaciones:
+ *****************************************************/
 const AgregarCupon = (props) => {
     const {
         agregarCuponOpen,
@@ -16,8 +24,6 @@ const AgregarCupon = (props) => {
         setEntCupon,
         funcLoader,
     } = props;
-
-    const apiValidarCupon = "api/promociones/validar/cupon";
 
     const [txtCodigo, setTxtCodigo] = useState("");
 
@@ -38,7 +44,7 @@ const AgregarCupon = (props) => {
         funcLoader(true, "Validando cupón...");
         try {
             const apiResponse = await fetch(
-                `${serverMain}${apiValidarCupon}?psCodigo=${txtCodigo}`
+                `${serverWa}${apiValidarCupon}?psCodigo=${txtCodigo}`
             );
             const response = await apiResponse.json();
             if (response.Code === 0) {
@@ -103,6 +109,13 @@ const AgregarCupon = (props) => {
             </DialogContent>
         </Dialog>
     );
+};
+
+AgregarCupon.propTypes = {
+    agregarCuponOpen: PropTypes.bool,
+    funcLoader: PropTypes.func,
+    setAgregarCuponOpen: PropTypes.func,
+    setEntCupon: PropTypes.func,
 };
 
 export default AgregarCupon;

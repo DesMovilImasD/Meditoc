@@ -498,3 +498,15 @@ body {
     line-height: 37px;
     color: var(--color-primary-blue);
 }
+
+.pagos-orden-ok-icono {
+    color: var(--color-primary-blue);
+    font-size: 100px;
+}
+.pagos-orden-error-icono {
+    color: red;
+    font-size: 100px;
+}
+.pagos-orden-ok-margin {
+    margin-bottom: 50px;
+}

@@ -13,6 +13,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+/*****************************************************
+ * Descripción: Loader del sitio
+ * Autor: Cristopher Noh
+ * Fecha: 22/07/2020
+ * Modificaciones:
+ *****************************************************/
 const Loader = (props) => {
     const { entLoader } = props;
 

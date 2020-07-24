@@ -1,7 +1,15 @@
+import PropTypes from "prop-types";
 import React, { Fragment, useEffect, useState } from "react";
-import { Grid, Typography, Button } from "@material-ui/core";
+import { Grid, Button } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 
+/*****************************************************
+ * Descripción: Contiene la estructura para visualizar los montos
+ * del detalle de la compra
+ * Autor: Cristopher Noh
+ * Fecha: 23/07/2020
+ * Modificaciones:
+ *****************************************************/
 const ResumenCompra = (props) => {
     const history = useHistory();
 
@@ -30,6 +38,7 @@ const ResumenCompra = (props) => {
 
     useEffect(() => {
         funcRecalcularMontos();
+        // eslint-disable-next-line
     }, [listaProductos, entCupon]);
 
     return (
@@ -90,6 +99,16 @@ const ResumenCompra = (props) => {
             )}
         </div>
     );
+};
+
+ResumenCompra.propTypes = {
+    entCupon: PropTypes.shape({
+        fnMontoDescuento: PropTypes.number,
+        fsCodigo: PropTypes.string,
+    }),
+    listaProductos: PropTypes.array,
+    setTotalPagar: PropTypes.func,
+    totalPagar: PropTypes.number,
 };
 
 export default ResumenCompra;

@@ -1,6 +1,7 @@
+//CONFIGURACIONES DEL TEMA PARA MEDITOC
+
 import { createMuiTheme } from '@material-ui/core/styles'
 
-//Configurar solores del tema
 const theme = createMuiTheme({
   palette: {
     primary: {

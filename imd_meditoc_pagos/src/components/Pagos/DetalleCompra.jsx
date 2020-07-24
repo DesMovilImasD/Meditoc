@@ -1,16 +1,16 @@
+import PropTypes from "prop-types";
 import React, { useEffect } from "react";
-import {
-    FaClinicMedical,
-    FaBriefcaseMedical,
-    FaCommentMedical,
-    FaNotesMedical,
-    FaTrash,
-} from "react-icons/fa";
-import { IconButton, Grid, Hidden, Typography } from "@material-ui/core";
-import { MdAdd, MdRemove } from "react-icons/md";
+import { Typography } from "@material-ui/core";
 import Producto from "./Producto";
 import ResumenCompra from "./ResumenCompra";
 
+/*****************************************************
+ * Descripción: Contiene la estructura para mostrar el detalle de
+ * los artículos y el resumen de compra
+ * Autor: Cristopher Noh
+ * Fecha: 23/07/2020
+ * Modificaciones:
+ *****************************************************/
 const DetalleCompra = (props) => {
     const {
         listaProductos,
@@ -33,6 +33,7 @@ const DetalleCompra = (props) => {
 
     useEffect(() => {
         funcGetArticulos();
+        // eslint-disable-next-line
     }, []);
     return (
         <div className="pagos-detalle-compra-contenedor">
@@ -59,6 +60,14 @@ const DetalleCompra = (props) => {
             />
         </div>
     );
+};
+
+DetalleCompra.propTypes = {
+    entCupon: PropTypes.object,
+    listaProductos: PropTypes.array,
+    setListaProductos: PropTypes.func,
+    setTotalPagar: PropTypes.func,
+    totalPagar: PropTypes.number,
 };
 
 export default DetalleCompra;

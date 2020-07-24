@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React, { Fragment, useState } from "react";
 import {
     Grid,
@@ -30,17 +31,35 @@ import AgregarCupon from "./AgregarCupon";
 import InputFechaVencimiento from "./InputFechaVencimiento";
 import InputNumeroTarjeta from "./InputNumeroTarjeta";
 import InputCodigoVerificacion from "./InputCodigoVerificacion";
+import { serverWs } from "../../configuration/serverConfig";
+import { apiRealizarCompra } from "../../configuration/apiConfig";
 
+/*****************************************************
+ * Descripción: Formulario de pago
+ * Autor: Cristopher Noh
+ * Fecha: 23/07/2020
+ * Modificaciones:
+ *****************************************************/
 const InformacionPago = (props) => {
     const {
         listaProductos,
+        listaDiferimientoPagos,
         entCupon,
         setEntCupon,
         setOrdenGenerada,
+        setOrgenGeneradaError,
         funcLoader,
     } = props;
 
     const iconSize = 25;
+
+    const yearNow = new Date().getFullYear();
+
+    const yearMil = yearNow.toString().substring(0, 2);
+
+    const [monthForm, setMonthForm] = useState(0);
+
+    const [yearForm, setYearForm] = useState(0);
 
     const [formularioPago, setFormularioPago] = useState({
         txtTarjeta: "",
@@ -48,7 +67,7 @@ const InformacionPago = (props) => {
         txtCVV: "",
         txtNombre: "",
         txtCorreo: "",
-        txtModalidad: "",
+        txtModalidad: "1",
     });
 
     const [errorServiceMsg, setErrorServiceMsg] = useState("");
@@ -60,6 +79,7 @@ const InformacionPago = (props) => {
 
     //Validar tarjeta
     const [numeroTarjetaInvalido, setNumeroTarjetaInvalido] = useState(true);
+
     const [tarjetaIcono, setTarjetaIcono] = useState(
         <FaCreditCard size={iconSize} />
     );
@@ -108,7 +128,6 @@ const InformacionPago = (props) => {
 
         setNumeroTarjetaInvalido(!funcValidarTipoTarjeta(valueCompare));
         validarIconoTarjeta(valueCompare);
-        //setNumeroTarjeta(inputValue);
         setFormularioPago({
             ...formularioPago,
             txtTarjeta: inputValue,
@@ -196,12 +215,6 @@ const InformacionPago = (props) => {
         }
         setTarjetaIcono(<FaCreditCard size={iconSize} />);
     };
-
-    const yearNow = new Date().getFullYear();
-    const yearMil = yearNow.toString().substring(0, 2);
-
-    const [monthForm, setMonthForm] = useState(0);
-    const [yearForm, setYearForm] = useState(0);
 
     const funcValidarFechaVencimiento = (fechaVencimientoValue) => {
         let month = 0;
@@ -326,39 +339,47 @@ const InformacionPago = (props) => {
         };
         console.log(entCreateOrder);
 
+        //Generar compra
         funcBuy(entCreateOrder);
     };
 
     const errorResponseHandler = (error) => {
         console.log(error);
+        setErrorServiceMsg(
+            "Ocurrió un error al procesar la compra. Intente más tarde."
+        );
+        setOrgenGeneradaError(true);
+        setOrdenGenerada({ error: true });
         funcLoader();
     };
 
     const funcBuy = async (entCreateOrder) => {
         funcLoader(true, "Realizando compra...");
         try {
-            const apiResponse = await fetch(
-                "/ClientesService.svc/NewUniqueQuery",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(entCreateOrder),
-                }
-            );
+            const apiResponse = await fetch(`${serverWs}${apiRealizarCompra}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(entCreateOrder),
+            });
             const response = await apiResponse.json();
             console.log(response);
             if (response.bRespuesta === true) {
                 setOrdenGenerada(response.sParameter1);
+                setOrgenGeneradaError(false);
                 sessionStorage.removeItem("lstItems");
             } else {
+                setOrdenGenerada({ error: true });
                 setErrorServiceMsg(response.sMensaje);
+                setOrgenGeneradaError(true);
             }
         } catch (error) {
             setErrorServiceMsg(
                 "Ocurrió un error al procesar la compra. Intente más tarde."
             );
+            setOrdenGenerada({ error: true });
+            setOrgenGeneradaError(true);
         }
         funcLoader();
     };
@@ -388,6 +409,7 @@ const InformacionPago = (props) => {
                                 value={formularioPago.txtTarjeta}
                                 onChange={handleChangeFormularioPago}
                                 error={numeroTarjetaInvalido}
+                                autoComplete="off"
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -413,6 +435,7 @@ const InformacionPago = (props) => {
                                 value={formularioPago.txtFechaVencimiento}
                                 onChange={handleChangeFormularioPago}
                                 error={fechaVencimientoInvalido}
+                                autoComplete="off"
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -491,7 +514,10 @@ const InformacionPago = (props) => {
                             <FormControl
                                 variant="outlined"
                                 fullWidth
-                                disabled={listaProductos.length === 0}
+                                disabled={
+                                    listaProductos.length === 0 ||
+                                    listaDiferimientoPagos.length === 0
+                                }
                             >
                                 <InputLabel id="lblModalidad">
                                     Modalidad de pago:
@@ -514,43 +540,51 @@ const InformacionPago = (props) => {
                                     }
                                     error={formularioPago.txtModalidad === ""}
                                 >
-                                    <MenuItem value="">
-                                        --Seleccionar modalidad--
-                                    </MenuItem>
-                                    <MenuItem value={1}>
+                                    <MenuItem value="1">
                                         Una sola exhibición
                                     </MenuItem>
-                                    <MenuItem value={3}>
-                                        3 meses sin intereses
-                                    </MenuItem>
-                                    <MenuItem value={6}>
-                                        6 meses sin intereses
-                                    </MenuItem>
-                                    <MenuItem value={9}>
-                                        9 meses sin intereses
-                                    </MenuItem>
-                                    <MenuItem value={12}>
-                                        12 meses sin intereses
-                                    </MenuItem>
-                                    <MenuItem value={18}>
-                                        18 meses sin intereses
-                                    </MenuItem>
+                                    {listaDiferimientoPagos.map(
+                                        (diferimiento) => (
+                                            <MenuItem
+                                                key={diferimiento.value}
+                                                value={diferimiento.value}
+                                            >
+                                                {diferimiento.label}
+                                            </MenuItem>
+                                        )
+                                    )}
                                 </Select>
                             </FormControl>
                         </Grid>
                         <Grid item xs={6}>
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                size="large"
-                                fullWidth
-                                disabled={listaProductos.length === 0}
-                                onClick={() => setAgregarCuponOpen(true)}
-                            >
-                                <Typography variant="caption">
-                                    AGREGAR CUPÓN <br /> DE DESCUENTO
-                                </Typography>
-                            </Button>
+                            {entCupon === null ? (
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    size="large"
+                                    fullWidth
+                                    disabled={listaProductos.length === 0}
+                                    onClick={() => setAgregarCuponOpen(true)}
+                                >
+                                    <Typography variant="caption">
+                                        AGREGAR CUPÓN <br /> DE DESCUENTO
+                                    </Typography>
+                                </Button>
+                            ) : (
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    size="large"
+                                    fullWidth
+                                    disabled={listaProductos.length === 0}
+                                    onClick={() => setEntCupon(null)}
+                                >
+                                    <Typography variant="caption">
+                                        ELIMINAR
+                                        <br /> CUPÓN
+                                    </Typography>
+                                </Button>
+                            )}
                         </Grid>
                         <Grid item xs={12}>
                             <Button
@@ -580,6 +614,18 @@ const InformacionPago = (props) => {
             />
         </Fragment>
     );
+};
+
+InformacionPago.propTypes = {
+    entCupon: PropTypes.shape({
+        fiIdCupon: PropTypes.number,
+    }),
+    funcLoader: PropTypes.func,
+    listaDiferimientoPagos: PropTypes.array,
+    listaProductos: PropTypes.array,
+    setEntCupon: PropTypes.func,
+    setOrdenGenerada: PropTypes.func,
+    setOrgenGeneradaError: PropTypes.func,
 };
 
 export default InformacionPago;

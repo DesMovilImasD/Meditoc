@@ -1,6 +1,11 @@
-//Configurar server del core de servicios
+//CONFIGURACIONES DEL CORE DE SERVICIOS
 
-//const serverMain = 'https://localhost:44344/'
-//const serverMain = '/'
-const serverMain = 'http://localhost:8081/'
-export default serverMain
+//local
+//const serverWa = 'https://localhost:44344/'
+//const serverWs = 'http://localhost:8081/'
+
+//locutorios
+const serverWa = 'http://148.240.238.149/wa/'
+const serverWs = 'http://148.240.238.149/ws/'
+
+export { serverWa, serverWs }

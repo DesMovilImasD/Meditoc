@@ -1,6 +1,13 @@
+import PropTypes from "prop-types";
 import React from "react";
 import MaskedInput from "react-text-mask";
 
+/*****************************************************
+ * Descripción: Mascara de validación para fecha de vencimiento
+ * Autor: Cristopher Noh
+ * Fecha: 23/07/2020
+ * Modificaciones:
+ *****************************************************/
 const InputFechaVencimiento = (props) => {
     const { inputRef, ...other } = props;
 
@@ -25,6 +32,10 @@ const InputFechaVencimiento = (props) => {
             guide={false}
         />
     );
+};
+
+InputFechaVencimiento.propTypes = {
+    inputRef: PropTypes.func,
 };
 
 export default InputFechaVencimiento;

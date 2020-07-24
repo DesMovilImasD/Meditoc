@@ -1,6 +1,13 @@
 import React from "react";
 import { Grid, Hidden } from "@material-ui/core";
+import { logoMeditocWhite } from "../../configuration/imgConfig";
 
+/*****************************************************
+ * Descripción: Footer del sitio
+ * Autor: Cristopher Noh
+ * Fecha: 22/07/2020
+ * Modificaciones:
+ *****************************************************/
 const Footer = () => {
     return (
         <div className="precios-footer-contenedor">
@@ -15,7 +22,7 @@ const Footer = () => {
                         <div>
                             <img
                                 alt="LOGOMEDITOCWHITE"
-                                src="/img/logo-meditoc-white.png"
+                                src={logoMeditocWhite}
                             />
                         </div>
                         <div>

@@ -3,6 +3,13 @@ import { Grid, Radio, Button } from "@material-ui/core";
 import { FaUser } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
 
+/*****************************************************
+ * Descripción: Contiene la estructura para mostrar
+ * los precios de las membresías
+ * Autor: Cristopher Noh
+ * Fecha: 22/07/2020
+ * Modificaciones:
+ *****************************************************/
 const Membresias = () => {
     const nombre6Meses = "sixmonths";
     const nombre12Meses = "oneyear";

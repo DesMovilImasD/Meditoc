@@ -1,6 +1,13 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
+import { portadaMeditoc } from "../../configuration/imgConfig";
 
+/*****************************************************
+ * Descripción: Portada de la pagina
+ * Autor: Cristopher Noh
+ * Fecha: 22/07/2020
+ * Modificaciones:
+ *****************************************************/
 const Portada = () => {
     return (
         <div className="precios-portada-contenedor">
@@ -9,7 +16,7 @@ const Portada = () => {
                     <img
                         className="precios-portada-img"
                         alt="MEDITOCPORTADALOGO"
-                        src="/img/portada-meditoc.png"
+                        src={portadaMeditoc}
                     />
                 </Grid>
                 <Grid
