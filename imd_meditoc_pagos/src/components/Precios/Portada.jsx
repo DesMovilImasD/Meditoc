@@ -26,10 +26,12 @@ const Portada = () => {
                     className="precio-portada-leyenda-contenedor"
                 >
                     <div>
-                        <span className="precios-portada-leyenda">
-                            Adquiere tu membresía,&nbsp;
-                            <strong>siempre, en donde sea</strong>
-                        </span>
+                        <p>
+                            <span className="precios-portada-leyenda">
+                                Adquiere tu membresía,&nbsp;
+                                <strong>siempre, en donde sea</strong>
+                            </span>
+                        </p>
                     </div>
                 </Grid>
             </Grid>
