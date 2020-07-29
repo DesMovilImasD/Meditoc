@@ -9,42 +9,42 @@ import { IoIosCheckmarkCircle } from "react-icons/io";
  * Fecha: 23/07/2020
  * Modificaciones:
  *****************************************************/
-const PagoOk = (props) => {
-    const { ordenGenerada } = props;
+const PaymentOk = (props) => {
+    const { entOrder } = props;
+
     window.scrollTo(0, 0);
+
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
-                <IoIosCheckmarkCircle className="pagos-orden-ok-icono" />
+                <IoIosCheckmarkCircle className="pay-ord-ok-icon" />
             </Grid>
             <Grid item xs={12}>
-                <span className="pagos-contenido-subtitulo">
-                    GRACIAS POR TU COMPRA. <br /> TU PAGO HA SIDO PROCESADO
-                    CORRECTAMENTE.
+                <span className="pay-content-subtitle">
+                    GRACIAS POR TU COMPRA. <br /> TU PAGO HA SIDO PROCESADO CORRECTAMENTE.
                 </span>
             </Grid>
             <Grid item xs={12}>
-                <span className="precios-contenido-descripcion">
+                <span className="price-content-description">
                     Tu número de orden es:&nbsp;
-                    <strong>{ordenGenerada.sOrden}</strong>.
+                    <strong>{entOrder.sOrden}</strong>.
                 </span>
             </Grid>
             <Grid item xs={12}>
-                <span className="precios-contenido-descripcion">
-                    Recibirás un correo electrónico con los detalles de tu
-                    pedido y las credenciales de acceso, si no lo recibes favor
-                    de comunicarte con nosotros enviando un correo electrónico a
-                    prueba@correo para brindarte soporte.
+                <span className="price-content-description">
+                    Recibirás un correo electrónico con los detalles de tu pedido y las credenciales de acceso, si no lo
+                    recibes favor de comunicarte con nosotros enviando un correo electrónico a prueba@correo para
+                    brindarte soporte.
                 </span>
             </Grid>
         </Grid>
     );
 };
 
-PagoOk.propTypes = {
-    ordenGenerada: PropTypes.shape({
+PaymentOk.propTypes = {
+    entOrder: PropTypes.shape({
         sOrden: PropTypes.string,
     }),
 };
 
-export default PagoOk;
+export default PaymentOk;

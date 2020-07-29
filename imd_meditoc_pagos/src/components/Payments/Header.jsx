@@ -1,5 +1,5 @@
 import React from "react";
-import { logoSoluciones } from "../../configuration/imgConfig";
+import { logoMeditocSolutions } from "../../configuration/imgConfig";
 
 /*****************************************************
  * Descripción: Header con el logo de Meditoc en la sección de pagos
@@ -9,12 +9,8 @@ import { logoSoluciones } from "../../configuration/imgConfig";
  *****************************************************/
 const Header = () => {
     return (
-        <div className="pagos-header">
-            <img
-                className="pagos-header-logo"
-                alt="LOGOSOLUCIONES"
-                src={logoSoluciones}
-            />
+        <div className="pay-header">
+            <img className="pay-header-logo" alt="logo-solutions" src={logoMeditocSolutions} />
         </div>
     );
 };

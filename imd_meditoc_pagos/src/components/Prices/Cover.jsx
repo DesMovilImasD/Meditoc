@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
-import { portadaMeditoc } from "../../configuration/imgConfig";
+import { logoMeditocCover } from "../../configuration/imgConfig";
 
 /*****************************************************
  * Descripción: Portada de la pagina
@@ -8,26 +8,17 @@ import { portadaMeditoc } from "../../configuration/imgConfig";
  * Fecha: 22/07/2020
  * Modificaciones:
  *****************************************************/
-const Portada = () => {
+const Cover = () => {
     return (
-        <div className="precios-portada-contenedor">
+        <div className="price-cover-container">
             <Grid container>
                 <Grid item sm={5} xs={12}>
-                    <img
-                        className="precios-portada-img"
-                        alt="MEDITOCPORTADALOGO"
-                        src={portadaMeditoc}
-                    />
+                    <img className="price-cover-img" alt="logoMeditocCover" src={logoMeditocCover} />
                 </Grid>
-                <Grid
-                    item
-                    md={7}
-                    xs={12}
-                    className="precio-portada-leyenda-contenedor"
-                >
+                <Grid item md={7} xs={12} className="price-conver-caption-container">
                     <div>
                         <p>
-                            <span className="precios-portada-leyenda">
+                            <span className="price-conver-caption">
                                 Adquiere tu membresía,&nbsp;
                                 <strong>siempre, en donde sea</strong>
                             </span>
@@ -39,4 +30,4 @@ const Portada = () => {
     );
 };
 
-export default Portada;
+export default Cover;

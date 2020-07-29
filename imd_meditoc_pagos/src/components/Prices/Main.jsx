@@ -1,8 +1,8 @@
 import React, { Fragment } from "react";
 import Menu from "./Menu";
-import Portada from "./Portada";
-import Contenido from "./Contenido";
-import Footer from "./Footer";
+import Cover from "./Cover";
+import Content from "./Content";
+import Footer from "../Footer";
 
 /*****************************************************
  * Descripción: Estructura principal de la pagina de precios
@@ -10,16 +10,16 @@ import Footer from "./Footer";
  * Fecha: 22/07/2020
  * Modificaciones:
  *****************************************************/
-const Principal = () => {
+const Main = () => {
     window.scrollTo(0, 0);
     return (
         <Fragment>
             <Menu />
-            <Portada />
-            <Contenido />
+            <Cover />
+            <Content />
             <Footer />
         </Fragment>
     );
 };
 
-export default Principal;
+export default Main;

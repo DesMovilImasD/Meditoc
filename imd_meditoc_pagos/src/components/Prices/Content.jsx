@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
-import Membresias from "./Membresias";
-import Orientaciones from "./Orientaciones";
+import Memberships from "./Memberships";
+import Orientations from "./Orientations";
 
 /*****************************************************
  * Descripción: Contiene la estructura para mostrar
@@ -10,38 +10,38 @@ import Orientaciones from "./Orientaciones";
  * Fecha: 22/07/2020
  * Modificaciones:
  *****************************************************/
-const Contenido = () => {
+const Content = () => {
     return (
-        <div className="precios-cotenido-contenedor">
-            <Grid container className="centrar" spacing={4}>
+        <div className="price-content-container">
+            <Grid container className="center" spacing={4}>
                 <Grid item xs={12}>
-                    <div className="precios-contenido-titulo">
+                    <div className="price-content-title">
                         <span className="primary-blue">Meditoc</span>
                         &nbsp;
                         <span className="primary-gray">360</span>
                     </div>
                 </Grid>
                 <Grid item xs={12}>
-                    <span className="precios-contenido-descripcion">
-                        Meditoc 360 ofrece orientación médica, nutricional y
-                        psicológica a distancia los 365 días del año,
+                    <span className="price-content-description">
+                        Meditoc 360 ofrece orientación médica, nutricional y psicológica a distancia los 365 días del
+                        año,
                         <br /> brindando acceso a servicio de salud de calidad.
                     </span>
                 </Grid>
                 <Grid item xs={12}>
-                    <span className="precios-contenido-descripcion-nr">
+                    <span className="price-content-description-normal">
                         Podrá adquirir membresías para los siguientes servicios.
                     </span>
                 </Grid>
                 <Grid item md={6} xs={12}>
-                    <Membresias />
+                    <Memberships />
                 </Grid>
                 <Grid item md={6} xs={12}>
-                    <Orientaciones />
+                    <Orientations />
                 </Grid>
             </Grid>
         </div>
     );
 };
 
-export default Contenido;
+export default Content;

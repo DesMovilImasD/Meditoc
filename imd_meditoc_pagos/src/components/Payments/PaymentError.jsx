@@ -8,26 +8,25 @@ import { IoIosCloseCircle } from "react-icons/io";
  * Fecha: 23/07/2020
  * Modificaciones:
  *****************************************************/
-const PagoError = () => {
+const PaymentError = () => {
     window.scrollTo(0, 0);
+
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
-                <IoIosCloseCircle className="pagos-orden-error-icono" />
+                <IoIosCloseCircle className="pay-ord-error-icon" />
             </Grid>
             <Grid item xs={12}>
-                <span className="pagos-contenido-subtitulo">
-                    ERROR EN EL PAGO.
-                </span>
+                <span className="pay-content-subtitle">ERROR EN EL PAGO.</span>
             </Grid>
             <Grid item xs={12}>
-                <span className="precios-contenido-descripcion">
-                    No pudimos procesar el pago de tu pedido, revisa nuevamente
-                    los datos ingresados o intenta con otra tarjeta.
+                <span className="price-content-description">
+                    No pudimos procesar el pago de tu pedido, revisa nuevamente los datos ingresados o intenta con otra
+                    tarjeta.
                 </span>
             </Grid>
         </Grid>
     );
 };
 
-export default PagoError;
+export default PaymentError;

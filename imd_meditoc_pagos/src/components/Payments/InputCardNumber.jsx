@@ -8,7 +8,7 @@ import MaskedInput from "react-text-mask";
  * Fecha: 23/07/2020
  * Modificaciones:
  *****************************************************/
-const InputNumeroTarjeta = (props) => {
+const InputCardNumber = (props) => {
     const { inputRef, ...other } = props;
 
     return (
@@ -43,8 +43,8 @@ const InputNumeroTarjeta = (props) => {
     );
 };
 
-InputNumeroTarjeta.propTypes = {
+InputCardNumber.propTypes = {
     inputRef: PropTypes.func,
 };
 
-export default InputNumeroTarjeta;
+export default InputCardNumber;

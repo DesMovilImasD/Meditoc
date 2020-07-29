@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
-import PrincipalPrecios from './components/Precios/Principal'
-import PrincipalPagos from './components/Pagos/Principal'
+import Prices from './components/Prices/Main'
+import Pays from './components/Payments/Main'
 import theme from './configuration/themeConfig'
 import { ThemeProvider } from '@material-ui/core'
 import Loader from './components/Loader'
-import base from './configuration/baseConfig'
+import { urlProducts, urlPayments, urlBase } from './configuration/urlConfig'
 
 /*****************************************************
  * Descripción: App principal web
@@ -14,11 +14,6 @@ import base from './configuration/baseConfig'
  * Modificaciones:
  *****************************************************/
 function App() {
-  const directorio = {
-    precios: '/precios',
-    pagos: '/pagos',
-  }
-
   //Guardar valores de estado del loader
   const [entLoader, setEntLoader] = useState({
     open: false,
@@ -36,18 +31,14 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Loader entLoader={entLoader} />
-      <BrowserRouter basename={base}>
+      <BrowserRouter basename={urlBase}>
         <Switch>
-          <Route
-            exact
-            path="/"
-            render={() => <Redirect to={directorio.precios} />}
-          />
-          <Route exact path={directorio.precios}>
-            <PrincipalPrecios />
+          <Route exact path="/" render={() => <Redirect to={urlProducts} />} />
+          <Route exact path={urlProducts}>
+            <Prices />
           </Route>
-          <Route exact path={directorio.pagos}>
-            <PrincipalPagos funcLoader={funcLoader} />
+          <Route exact path={urlPayments}>
+            <Pays funcLoader={funcLoader} />
           </Route>
         </Switch>
       </BrowserRouter>

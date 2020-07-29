@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import React, { Fragment } from "react";
 import Header from "./Header";
-import Contenido from "./Contenido";
-import Footer from "../Precios/Footer";
+import Content from "./Content";
+import Footer from "../Footer";
 
 /*****************************************************
  * Descripción: Contenido principal para pagina de pagos
@@ -10,20 +10,22 @@ import Footer from "../Precios/Footer";
  * Fecha: 23/07/2020
  * Modificaciones:
  *****************************************************/
-const Principal = (props) => {
+const Main = (props) => {
     const { funcLoader } = props;
+
     window.scrollTo(0, 0);
+
     return (
         <Fragment>
             <Header />
-            <Contenido funcLoader={funcLoader} />
+            <Content funcLoader={funcLoader} />
             <Footer />
         </Fragment>
     );
 };
 
-Principal.propTypes = {
+Main.propTypes = {
     funcLoader: PropTypes.func,
 };
 
-export default Principal;
+export default Main;
