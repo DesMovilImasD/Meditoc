@@ -107,27 +107,26 @@ const PaymentForm = (props) => {
 
     //Evento change para los valores del formulario
     const handleChangePaymentForm = (e) => {
-        const inputName = e.target.name;
+        switch (e.target.name) {
+            case "txtCardNumber":
+                funcValidateCardNumber(e.target.value);
+                break;
 
-        if (inputName === "txtCardNumber") {
-            funcValidateCardNumber(e.target.value);
-            return;
+            case "txtExpirationDate":
+                funcValidateExpirationDate(e.target.value);
+                break;
+
+            case "txtEmail":
+                funcValidateEmail(e.target.value);
+                break;
+
+            default:
+                setPaymentForm({
+                    ...paymentForm,
+                    [e.target.name]: e.target.value,
+                });
+                break;
         }
-
-        if (inputName === "txtExpirationDate") {
-            funcValidateExpirationDate(e.target.value);
-            return;
-        }
-
-        if (inputName === "txtEmail") {
-            funcValidateEmail(e.target.value);
-            return;
-        }
-
-        setPaymentForm({
-            ...paymentForm,
-            [inputName]: e.target.value,
-        });
     };
 
     //Validar número de tarjeta ingresado
@@ -170,17 +169,17 @@ const PaymentForm = (props) => {
             return true;
         }
 
-        if (rxDinersCard.test(cardNumber)) {
-            return true;
-        }
+        // if (rxDinersCard.test(cardNumber)) {
+        //     return true;
+        // }
 
-        if (rxDiscoverCard.test(cardNumber)) {
-            return true;
-        }
+        // if (rxDiscoverCard.test(cardNumber)) {
+        //     return true;
+        // }
 
-        if (rxJcbCard.test(cardNumber)) {
-            return true;
-        }
+        // if (rxJcbCard.test(cardNumber)) {
+        //     return true;
+        // }
 
         return false;
     };
@@ -199,17 +198,17 @@ const PaymentForm = (props) => {
             return <FaCcAmex size={iconSize} className={iconClass} />;
         }
 
-        if (rxDinersIcon.test(numero)) {
-            return <FaCcDinersClub size={iconSize} className={iconClass} />;
-        }
+        // if (rxDinersIcon.test(numero)) {
+        //     return <FaCcDinersClub size={iconSize} className={iconClass} />;
+        // }
 
-        if (rxDiscoverIcon.test(numero)) {
-            return <FaCcDiscover size={iconSize} className={iconClass} />;
-        }
+        // if (rxDiscoverIcon.test(numero)) {
+        //     return <FaCcDiscover size={iconSize} className={iconClass} />;
+        // }
 
-        if (rxJcbIcon.test(numero)) {
-            return <FaCcJcb size={iconSize} className={iconClass} />;
-        }
+        // if (rxJcbIcon.test(numero)) {
+        //     return <FaCcJcb size={iconSize} className={iconClass} />;
+        // }
 
         return <FaCreditCard size={iconSize} />;
     };
@@ -550,7 +549,7 @@ const PaymentForm = (props) => {
                                     onClick={() => setCouponDialogOpen(true)}
                                 >
                                     <Typography variant="caption">
-                                        AGREGAR CUPÓN <br /> DE DESCUENTO
+                                        AGREGAR CÓDIGO <br /> DE DESCUENTO
                                     </Typography>
                                 </Button>
                             ) : (
@@ -563,8 +562,8 @@ const PaymentForm = (props) => {
                                     onClick={() => setEntCoupon(null)}
                                 >
                                     <Typography variant="caption">
-                                        ELIMINAR
-                                        <br /> CUPÓN
+                                        ELIMINAR CÓDIGO
+                                        <br /> DE DESCUENTO
                                     </Typography>
                                 </Button>
                             )}

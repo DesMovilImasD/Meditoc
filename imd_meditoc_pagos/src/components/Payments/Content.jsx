@@ -34,7 +34,7 @@ const Content = (props) => {
     //Lista de diferimientos de pagos aplicables al monto de compra
     const [monthlyPayments, setMonthlyPayments] = useState([]);
 
-    //Actualizar totales y subtotales
+    //Actualizar lista de diferimiento de pagos cuando se modifica el total
     const funcCalcMonthlyPayments = () => {
         let monthlyPaymentsPreview = [];
 
@@ -71,6 +71,7 @@ const Content = (props) => {
 
     useEffect(() => {
         funcCalcMonthlyPayments();
+
         // eslint-disable-next-line
     }, [totalPayment]);
 
