@@ -2,6 +2,12 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Radio } from "@material-ui/core";
 
+/*****************************************************
+ * Descripción: Representa un producto tipo membresía
+ * Autor: Cristopher Noh
+ * Fecha: 29/07/2020
+ * Modificaciones:
+ *****************************************************/
 const MembershipProduct = (props) => {
     const { product, last, rdMembership, setRdMembership, setMembershipDescription } = props;
 

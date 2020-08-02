@@ -371,7 +371,7 @@ const PaymentForm = (props) => {
                 if (response.Result === true) {
                     responseMethod = true;
                 } else {
-                    setFormErrorMessage("Ya has aplicado este cupón anteriormente");
+                    setFormErrorMessage("Tu pago no se puede procesar porque ya has aplicado este cupón");
                 }
             } else {
                 setFormErrorMessage(errorRevalidateCoupon);
@@ -381,6 +381,17 @@ const PaymentForm = (props) => {
         }
         funcLoader();
         return responseMethod;
+    };
+
+    //Evento Click agregar cupón
+    const handleClickRemoveCoupon = () => {
+        setEntCoupon(null);
+        setFormErrorMessage("");
+    };
+
+    //Evento Click eliminar cupón
+    const handleClickAddCoupon = () => {
+        setCouponDialogOpen(true);
     };
 
     return (
@@ -536,7 +547,7 @@ const PaymentForm = (props) => {
                                     size="large"
                                     fullWidth
                                     disabled={productList.length === 0}
-                                    onClick={() => setCouponDialogOpen(true)}
+                                    onClick={handleClickAddCoupon}
                                 >
                                     <Typography variant="caption">
                                         AGREGAR CÓDIGO <br /> DE DESCUENTO
@@ -549,7 +560,7 @@ const PaymentForm = (props) => {
                                     size="large"
                                     fullWidth
                                     disabled={productList.length === 0}
-                                    onClick={() => setEntCoupon(null)}
+                                    onClick={handleClickRemoveCoupon}
                                 >
                                     <Typography variant="caption">
                                         ELIMINAR CÓDIGO

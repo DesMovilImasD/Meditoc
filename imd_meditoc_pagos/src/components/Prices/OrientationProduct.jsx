@@ -2,6 +2,12 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Radio } from "@material-ui/core";
 
+/*****************************************************
+ * Descripción: Representa un producto tipo servicio/orientación
+ * Autor: Cristopher Noh
+ * Fecha: 29/07/2020
+ * Modificaciones:
+ *****************************************************/
 const OrientationProduct = (props) => {
     const { product, index, lstOrientationProducts, setLstOrientationProducts, setOrientationDescription } = props;
 
