@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { Grid, Radio, Button } from "@material-ui/core";
+import PropTypes from "prop-types";
+import React, { useState, useEffect } from "react";
+import { Grid, Button } from "@material-ui/core";
 import { FaUser } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
-import { productSixMonthMembership, productOneYearMembership } from "../../configuration/productConfig";
 import { urlPayments } from "../../configuration/urlConfig";
+import MembershipProduct from "./MembershipProduct";
 
 /*****************************************************
  * Descripción: Contiene la estructura para mostrar
@@ -12,31 +13,30 @@ import { urlPayments } from "../../configuration/urlConfig";
  * Fecha: 22/07/2020
  * Modificaciones:
  *****************************************************/
-const Memberships = () => {
+const Memberships = (props) => {
+    const { lstMembershipProducts } = props;
+
     const history = useHistory();
 
     //Guardar membresia seleccionada
-    const [rdMembership, setRdMembership] = useState(productSixMonthMembership.id);
+    const [rdMembership, setRdMembership] = useState(0);
 
-    //Evento change para cambio de membresía entre 6 y 12 meses
-    const handleChangeMembership = (e) => {
-        setRdMembership(parseInt(e.target.value));
-    };
+    //Guardar información de la membresía seleccionada
+    const [membershipDescription, setMembershipDescription] = useState("");
 
     //Contratar/comprar la membresía seleccionada (pasar al formulario de pago)
     const handleClickContract = () => {
-        let lstItems = [];
+        let lstItems = lstMembershipProducts.filter((product) => product.id === rdMembership);
 
-        if (rdMembership === productSixMonthMembership.id) {
-            lstItems.push(productSixMonthMembership);
-        } else if (rdMembership === productOneYearMembership.id) {
-            lstItems.push(productOneYearMembership);
-        } else {
-            return;
-        }
         sessionStorage.setItem("lstItems", JSON.stringify(lstItems));
         history.push(urlPayments);
     };
+
+    useEffect(() => {
+        setRdMembership(lstMembershipProducts[0].id);
+        setMembershipDescription(lstMembershipProducts[0].info);
+        // eslint-disable-next-line
+    }, []);
 
     return (
         <div className="price-product-container">
@@ -47,43 +47,22 @@ const Memberships = () => {
                 <div className="price-product-header-title">Miembro</div>
             </div>
             <Grid container>
-                <Grid item xs={6} className="price-product-divider">
-                    <div className="price-product-amount">
-                        ${productSixMonthMembership.price.toLocaleString("en-US")}
-                    </div>
-                    <div className="price-product-amount-description">{productSixMonthMembership.shortName}</div>
-                    <div>
-                        <Radio
-                            name="rd-membership"
-                            value={productSixMonthMembership.id}
-                            color="primary"
-                            checked={rdMembership === productSixMonthMembership.id}
-                            onChange={handleChangeMembership}
-                        />
-                    </div>
-                </Grid>
-                <Grid item xs={6}>
-                    <div className="price-product-amount">
-                        ${productOneYearMembership.price.toLocaleString("en-US")}
-                    </div>
-                    <div className="price-product-amount-description">{productOneYearMembership.shortName}</div>
-                    <div>
-                        <Radio
-                            name="rd-membership"
-                            value={productOneYearMembership.id}
-                            color="primary"
-                            checked={rdMembership === productOneYearMembership.id}
-                            onChange={handleChangeMembership}
-                        />
+                <Grid item xs={12}>
+                    <div className="price-products-display">
+                        {lstMembershipProducts.map((product, index) => (
+                            <MembershipProduct
+                                key={product.id}
+                                product={product}
+                                last={lstMembershipProducts.length === index + 1}
+                                rdMembership={rdMembership}
+                                setRdMembership={setRdMembership}
+                                setMembershipDescription={setMembershipDescription}
+                            />
+                        ))}
                     </div>
                 </Grid>
                 <Grid item xs={12} className="price-product-description-container">
-                    <span className="price-product-description">
-                        Desde el primer día contará con servicio de orientación médica, nutricional y psicológica los
-                        365 días del año para todos los miembros de su familia, empleados de empresas u hogar y sus
-                        familias, el cual es simple de usar, tendrá respuesta inmediata y llamadas ilimitadas de
-                        orientación médica.
-                    </span>
+                    <span className="price-product-description">{membershipDescription}</span>
                 </Grid>
             </Grid>
             <div className="price-product-btn">
@@ -93,6 +72,10 @@ const Memberships = () => {
             </div>
         </div>
     );
+};
+
+Memberships.propTypes = {
+    lstMembershipProducts: PropTypes.array,
 };
 
 export default Memberships;

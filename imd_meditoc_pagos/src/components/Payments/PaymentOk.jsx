@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useEffect } from "react";
 import { Grid } from "@material-ui/core";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 
@@ -12,7 +12,9 @@ import { IoIosCheckmarkCircle } from "react-icons/io";
 const PaymentOk = (props) => {
     const { entOrder } = props;
 
-    window.scrollTo(0, 0);
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <Grid container spacing={2}>

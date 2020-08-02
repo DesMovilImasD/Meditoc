@@ -12,35 +12,21 @@ import {
     Typography,
 } from "@material-ui/core";
 import { MdEmail, MdPerson, MdDateRange, MdVerifiedUser, MdAttachMoney } from "react-icons/md";
-import {
-    FaCreditCard,
-    FaCcVisa,
-    FaCcMastercard,
-    FaCcAmex,
-    FaCcDinersClub,
-    FaCcDiscover,
-    FaCcJcb,
-} from "react-icons/fa";
+import { FaCreditCard, FaCcVisa, FaCcMastercard, FaCcAmex } from "react-icons/fa";
 import AddCoupon from "./AddCoupon";
 import InputExpirationDate from "./InputExpirationDate";
 import InputCardNumber from "./InputCardNumber";
 import InputCVV from "./InputCVV";
-import { serverWs } from "../../configuration/serverConfig";
-import { apiBuy } from "../../configuration/apiConfig";
+import { serverWs, serverWa } from "../../configuration/serverConfig";
+import { apiBuy, apiRevalidateCoupon } from "../../configuration/apiConfig";
 import apiKeyToken, { apiKeyLanguage } from "../../configuration/tokenConfig";
 import {
     rxVisaCard,
     rxMasterCard,
     rxAmexCard,
-    rxDinersCard,
-    rxDiscoverCard,
-    rxJcbCard,
     rxVisaIcon,
     rxMasterIcon,
     rxAmexIcon,
-    rxDinersIcon,
-    rxDiscoverIcon,
-    rxJcbIcon,
     rxEmail,
 } from "../../configuration/regexConfig";
 
@@ -169,18 +155,6 @@ const PaymentForm = (props) => {
             return true;
         }
 
-        // if (rxDinersCard.test(cardNumber)) {
-        //     return true;
-        // }
-
-        // if (rxDiscoverCard.test(cardNumber)) {
-        //     return true;
-        // }
-
-        // if (rxJcbCard.test(cardNumber)) {
-        //     return true;
-        // }
-
         return false;
     };
 
@@ -197,18 +171,6 @@ const PaymentForm = (props) => {
         if (rxAmexIcon.test(numero)) {
             return <FaCcAmex size={iconSize} className={iconClass} />;
         }
-
-        // if (rxDinersIcon.test(numero)) {
-        //     return <FaCcDinersClub size={iconSize} className={iconClass} />;
-        // }
-
-        // if (rxDiscoverIcon.test(numero)) {
-        //     return <FaCcDiscover size={iconSize} className={iconClass} />;
-        // }
-
-        // if (rxJcbIcon.test(numero)) {
-        //     return <FaCcJcb size={iconSize} className={iconClass} />;
-        // }
 
         return <FaCreditCard size={iconSize} />;
     };
@@ -318,25 +280,13 @@ const PaymentForm = (props) => {
             currency: "MXN",
             coupon: entCoupon === null ? null : entCoupon.fiIdCupon,
             pacienteUnico: {
-                bBaja: false,
-                bTerminosyCondiciones: true,
-                iIdUsuario: 0,
-                sApeMaterno: null,
-                sApePaterno: null,
                 sEmail: paymentForm.txtEmail,
-                sFolio: null,
-                sMensajeRespuesta: null,
                 sNombre: paymentForm.txtName,
-                sPassword: null,
                 sTelefono: null,
-                sTipoServicio: null,
             },
             lstLineItems: productList.map((product) => ({
-                name: product.name,
                 product_id: product.id,
                 quantity: product.qty,
-                unit_price: product.price * 100,
-                monthsExpiration: product.monthsExpiration,
             })),
             lstCharges: [
                 {
@@ -344,7 +294,6 @@ const PaymentForm = (props) => {
                         monthly_installments: parseInt(paymentForm.txtModality),
                         type: "card",
                         token_id: token.id,
-                        expires_at: 0,
                     },
                 },
             ],
@@ -363,9 +312,20 @@ const PaymentForm = (props) => {
 
     //Consumir servicio para realizar la compra de las membresias/orientaciones
     const funcApiBuy = async (entCreateOrder) => {
-        funcLoader(true, "Realizando compra...");
-
         try {
+            if (entCreateOrder.coupon !== null) {
+                const responseRevalidate = await funcApiRevalidateCoupon(
+                    entCreateOrder.coupon,
+                    entCreateOrder.pacienteUnico.sEmail
+                );
+
+                if (!responseRevalidate) {
+                    return;
+                }
+            }
+
+            funcLoader(true, "Realizando compra...");
+
             const apiResponse = await fetch(`${serverWs}${apiBuy}`, {
                 method: "POST",
                 headers: {
@@ -391,6 +351,36 @@ const PaymentForm = (props) => {
         }
 
         funcLoader();
+    };
+
+    //Cosumir servicio para revalidar el cupón con el correo de compra
+    const funcApiRevalidateCoupon = async (piIdCupon, psEmail) => {
+        const errorRevalidateCoupon = "Ocurrió un error al procesar la compra. Intente más tarde";
+        funcLoader(true, "Aplicando cupón...");
+
+        let responseMethod = false;
+
+        try {
+            const apiResponse = await fetch(
+                `${serverWa}${apiRevalidateCoupon}?piIdCupon=${piIdCupon}&psEmail=${psEmail}`
+            );
+
+            const response = await apiResponse.json();
+
+            if (response.Code === 0) {
+                if (response.Result === true) {
+                    responseMethod = true;
+                } else {
+                    setFormErrorMessage("Ya has aplicado este cupón anteriormente");
+                }
+            } else {
+                setFormErrorMessage(errorRevalidateCoupon);
+            }
+        } catch (error) {
+            setFormErrorMessage(errorRevalidateCoupon);
+        }
+        funcLoader();
+        return responseMethod;
     };
 
     return (

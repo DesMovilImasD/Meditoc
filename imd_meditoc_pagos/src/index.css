@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "FontAwesome";
+    src: url("fa-solid-900.woff2");
+}
+
 :root {
     /* Definiciones de colores del tema */
 
@@ -23,6 +28,7 @@
     --detalle-info-height: 590px;
     --detalle-info-height-port: 610px;
 }
+
 body {
     margin: 0;
     font-family: var(--font-primary), var(--font-secondary), var(--font-default), -apple-system, BlinkMacSystemFont,
@@ -30,6 +36,15 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: var(--color-background-gray);
+}
+
+.icon {
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    font-family: "FontAwesome";
 }
 
 .primary-blue {
@@ -67,16 +82,16 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #b3b3b3;
-    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+    /* box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2); */
 }
 
 ::-webkit-scrollbar-track {
-    background: #e1e1e1;
+    background: #fff;
 }
 
 ::-webkit-scrollbar-track:hover,
 ::-webkit-scrollbar-track:active {
-    background: #d4d4d4;
+    background: #fff;
 }
 
 .center {
@@ -228,6 +243,22 @@ body {
     color: var(--color-secondary-gray);
 }
 
+.price-products-display {
+    max-width: 100%;
+    margin: auto;
+    overflow-x: auto;
+    display: -webkit-inline-box;
+}
+.price-product-display {
+    width: 100px;
+    margin-bottom: 20px;
+}
+
+.price-product-large-display {
+    width: 120px;
+    margin-bottom: 20px;
+}
+
 .price-product-container {
     max-width: 330px;
     margin: auto;
@@ -282,7 +313,7 @@ body {
 .price-product-description-container {
     text-align: left;
     flex-grow: 1;
-    padding-top: 40px;
+    padding-top: 20px;
     text-align: justify;
 }
 .price-product-description {
@@ -411,7 +442,7 @@ body {
 
 .pay-purchase-detail-item-icon {
     background-color: var(--color-unset);
-    padding: 5px 10px 2px;
+    padding: 5px 10px;
     border-radius: 10px;
     font-size: 40px;
     color: var(--color-secondary-blue);

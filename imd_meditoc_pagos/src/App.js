@@ -35,7 +35,7 @@ function App() {
         <Switch>
           <Route exact path="/" render={() => <Redirect to={urlProducts} />} />
           <Route exact path={urlProducts}>
-            <Prices />
+            <Prices funcLoader={funcLoader} />
           </Route>
           <Route exact path={urlPayments}>
             <Pays funcLoader={funcLoader} />

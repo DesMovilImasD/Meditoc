@@ -1,15 +1,8 @@
 import PropTypes from "prop-types";
-import React, { useState, useEffect } from "react";
-import { FaBriefcaseMedical, FaTrash } from "react-icons/fa";
+import React from "react";
+import { FaTrash } from "react-icons/fa";
 import { IconButton, Hidden } from "@material-ui/core";
 import { MdAdd, MdRemove } from "react-icons/md";
-import {
-    productSixMonthMembership,
-    productOneYearMembership,
-    productMedicalOrientation,
-    productPsychologicalOrientation,
-    productNutritionalOrientation,
-} from "../../configuration/productConfig";
 
 /*****************************************************
  * Descripción: Contiene la estructura de visualización de un artículo
@@ -20,38 +13,6 @@ import {
  *****************************************************/
 const Product = (props) => {
     const { product, index, productList, setProductList } = props;
-
-    //Icono del producto a comprar
-    const [productIcon, setProductIcon] = useState(<FaBriefcaseMedical />);
-
-    //Mostrar icono del producto (***mejorar esta sección)
-    const funcProductIcon = () => {
-        switch (product.id) {
-            case productSixMonthMembership.id:
-                setProductIcon(productSixMonthMembership.icon);
-                break;
-
-            case productOneYearMembership.id:
-                setProductIcon(productOneYearMembership.icon);
-                break;
-
-            case productMedicalOrientation.id:
-                setProductIcon(productMedicalOrientation.icon);
-                break;
-
-            case productPsychologicalOrientation.id:
-                setProductIcon(productPsychologicalOrientation.icon);
-                break;
-
-            case productNutritionalOrientation.id:
-                setProductIcon(productNutritionalOrientation.icon);
-                break;
-
-            default:
-                setProductIcon(<FaBriefcaseMedical />);
-                break;
-        }
-    };
 
     //Reducir cantidad a comprar
     const handleClickLess = () => {
@@ -74,16 +35,12 @@ const Product = (props) => {
         setProductList(products);
     };
 
-    useEffect(() => {
-        funcProductIcon();
-
-        // eslint-disable-next-line
-    }, []);
-
     return (
         <div className="pay-purchase-detail-item">
             <Hidden only="xs">
-                <div className="pay-purchase-detail-item-icon">{productIcon}</div>
+                <div className="pay-purchase-detail-item-icon">
+                    <i className="icon" dangerouslySetInnerHTML={{ __html: product.icon }} />
+                </div>
             </Hidden>
             <div className="pay-purchase-detail-item-info">
                 <div className="pay-purchase-detail-item-name">{product.name}</div>

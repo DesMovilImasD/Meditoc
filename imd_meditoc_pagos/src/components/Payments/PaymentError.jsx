@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Grid } from "@material-ui/core";
 import { IoIosCloseCircle } from "react-icons/io";
 
@@ -9,7 +9,9 @@ import { IoIosCloseCircle } from "react-icons/io";
  * Modificaciones:
  *****************************************************/
 const PaymentError = () => {
-    window.scrollTo(0, 0);
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <Grid container spacing={2}>

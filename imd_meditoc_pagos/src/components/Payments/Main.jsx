@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import Header from "./Header";
 import Content from "./Content";
 import Footer from "../Footer";
@@ -13,7 +13,9 @@ import Footer from "../Footer";
 const Main = (props) => {
     const { funcLoader } = props;
 
-    window.scrollTo(0, 0);
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <Fragment>
