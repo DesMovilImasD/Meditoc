@@ -37,7 +37,16 @@ import {
  * Modificaciones:
  *****************************************************/
 const PaymentForm = (props) => {
-    const { productList, monthlyPayments, entCoupon, setEntCoupon, setEntOrder, setErrorOrder, funcLoader } = props;
+    const {
+        productList,
+        monthlyPayments,
+        totalPayment,
+        entCoupon,
+        setEntCoupon,
+        setEntOrder,
+        setErrorOrder,
+        funcLoader,
+    } = props;
 
     //Tamaño del icono para los inputs del formulario
     const iconSize = 25;
@@ -394,6 +403,35 @@ const PaymentForm = (props) => {
         setCouponDialogOpen(true);
     };
 
+    //Revalidar los meses sin interes al modificar el monto total a pagar
+    const funcValidateAmounthMonthlyPayments = () => {
+        if (paymentForm.txtModality === "12" && totalPayment < 1200) {
+            setPaymentForm({ ...paymentForm, txtModality: "1" });
+            return;
+        }
+
+        if (paymentForm.txtModality === "9" && totalPayment < 900) {
+            setPaymentForm({ ...paymentForm, txtModality: "1" });
+            return;
+        }
+
+        if (paymentForm.txtModality === "6" && totalPayment < 600) {
+            setPaymentForm({ ...paymentForm, txtModality: "1" });
+            return;
+        }
+
+        if (paymentForm.txtModality === "3" && totalPayment < 300) {
+            setPaymentForm({ ...paymentForm, txtModality: "1" });
+            return;
+        }
+    };
+
+    useEffect(() => {
+        funcValidateAmounthMonthlyPayments();
+
+        // eslint-disable-next-line
+    }, [monthlyPayments]);
+
     return (
         <Fragment>
             <div className="pay-info-payment-container">
@@ -414,7 +452,7 @@ const PaymentForm = (props) => {
                                 disabled={productList.length === 0}
                                 value={paymentForm.txtCardNumber}
                                 onChange={handleChangePaymentForm}
-                                error={invalidCardNumber}
+                                error={invalidCardNumber && productList.length > 0}
                                 autoComplete="off"
                             />
                         </Grid>
@@ -437,7 +475,7 @@ const PaymentForm = (props) => {
                                 disabled={productList.length === 0}
                                 value={paymentForm.txtExpirationDate}
                                 onChange={handleChangePaymentForm}
-                                error={invalidExpirationDate}
+                                error={invalidExpirationDate && productList.length > 0}
                                 autoComplete="off"
                             />
                         </Grid>
@@ -461,7 +499,7 @@ const PaymentForm = (props) => {
                                 autoComplete="new-password"
                                 value={paymentForm.txtCVV}
                                 onChange={handleChangePaymentForm}
-                                error={paymentForm.txtCVV.length < 3}
+                                error={paymentForm.txtCVV.length < 3 && productList.length > 0}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -482,7 +520,7 @@ const PaymentForm = (props) => {
                                 autoComplete="off"
                                 value={paymentForm.txtName}
                                 onChange={handleChangePaymentForm}
-                                error={paymentForm.txtName === ""}
+                                error={paymentForm.txtName === "" && productList.length > 0}
                                 helperText="Como aparece en la tarjeta"
                             />
                         </Grid>
@@ -504,7 +542,7 @@ const PaymentForm = (props) => {
                                 autoComplete="off"
                                 value={paymentForm.txtEmail}
                                 onChange={handleChangePaymentForm}
-                                error={invalidEmail}
+                                error={invalidEmail && productList.length > 0}
                                 helperText="Las credenciales de acceso serán enviados al correo proporcionado"
                             />
                         </Grid>
@@ -528,7 +566,7 @@ const PaymentForm = (props) => {
                                             <MdAttachMoney size={iconSize} className={iconClass} />
                                         </InputAdornment>
                                     }
-                                    error={paymentForm.txtModality === ""}
+                                    error={paymentForm.txtModality === "" && productList.length > 0}
                                 >
                                     <MenuItem value="1">Una sola exhibición</MenuItem>
                                     {monthlyPayments.map((diferimiento) => (

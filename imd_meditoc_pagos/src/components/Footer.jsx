@@ -1,6 +1,7 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
 import { logoMeditocWhite } from "../configuration/imgConfig";
+import { contactEmail } from "../configuration/emailConfig";
 
 /*****************************************************
  * Descripción: Footer del sitio
@@ -29,7 +30,7 @@ const Footer = () => {
                             <span className="price-footer-address">Tel: 5551-003021</span>
                         </div>
                         <div>
-                            <span className="price-footer-address">Mail: contacto@meditoc.com</span>
+                            <span className="price-footer-address">Mail: {contactEmail}</span>
                         </div>
                     </Grid>
                     <Grid item md={6} xs={12}>

@@ -112,6 +112,7 @@ const Content = (props) => {
                             <PaymentForm
                                 productList={productList}
                                 monthlyPayments={monthlyPayments}
+                                totalPayment={totalPayment}
                                 funcLoader={funcLoader}
                                 entCoupon={entCoupon}
                                 setEntCoupon={setEntCoupon}
