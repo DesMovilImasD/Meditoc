@@ -193,9 +193,7 @@ const Content = (props) => {
             <Grid container className="center" spacing={4}>
                 <Grid item xs={12}>
                     <div className="price-content-title">
-                        <span className="primary-blue">Meditoc</span>
-                        &nbsp;
-                        <span className="primary-gray">360</span>
+                        <span className="primary-blue">Meditoc</span> <span className="primary-gray">360</span>
                     </div>
                 </Grid>
                 <Grid item xs={12}>

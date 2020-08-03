@@ -19,8 +19,7 @@ const Cover = () => {
                     <div>
                         <p>
                             <span className="price-conver-caption">
-                                Adquiere tu membresía,&nbsp;
-                                <strong>siempre, en donde sea</strong>
+                                Adquiere tu membresía, <strong>siempre, en donde sea</strong>
                             </span>
                         </p>
                     </div>

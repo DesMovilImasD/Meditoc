@@ -48,11 +48,11 @@ const Product = (props) => {
                     ${product.price.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                 </div>
                 <div className="pay-purchase-detail-item-qty">
-                    Cantidad:&nbsp;
+                    Cantidad:{" "}
                     <IconButton size="medium" disabled={product.qty <= 1} onClick={handleClickLess}>
                         <MdRemove className="pay-purchase-detail-item-btn" />
-                    </IconButton>
-                    &nbsp; {product.qty} &nbsp;
+                    </IconButton>{" "}
+                    {product.qty}{" "}
                     <IconButton size="medium" disabled={product.qty >= 10} onClick={handleClickMore}>
                         <MdAdd className="pay-purchase-detail-item-btn" />
                     </IconButton>

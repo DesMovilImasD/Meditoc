@@ -157,6 +157,11 @@ const PaymentForm = (props) => {
         window.Conekta.setPublicKey(apiKeyToken);
         window.Conekta.setLanguage(apiKeyLanguage);
 
+        if (!acceptedPolicies) {
+            setFormErrorMessage("Es necesario aceptar los términos y condiciones para continuar");
+            return;
+        }
+
         if (invalidCardNumber) {
             setFormErrorMessage("Número de tarjeta no válido");
             return;

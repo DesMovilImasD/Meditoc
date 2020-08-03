@@ -32,8 +32,7 @@ const PaymentOk = (props) => {
             </Grid>
             <Grid item xs={12}>
                 <span className="price-content-description">
-                    Tu número de orden es:&nbsp;
-                    <strong>{entOrder.sOrden}</strong>.
+                    Tu número de orden es: <strong>{entOrder.sOrden}</strong>.
                 </span>
             </Grid>
             <Grid item xs={12}>
