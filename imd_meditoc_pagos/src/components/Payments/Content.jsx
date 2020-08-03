@@ -69,6 +69,7 @@ const Content = (props) => {
         setMonthlyPayments(monthlyPaymentsPreview);
     };
 
+    //Ejecutar funcCalcMonthlyPayments cada vex que se actualice el monto a pagar
     useEffect(() => {
         funcCalcMonthlyPayments();
 
@@ -132,7 +133,7 @@ const Content = (props) => {
 };
 
 Content.propTypes = {
-    funcLoader: PropTypes.func,
+    funcLoader: PropTypes.func.isRequired,
 };
 
 export default Content;

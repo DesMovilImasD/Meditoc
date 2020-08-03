@@ -1,4 +1,5 @@
-import React, { Fragment, useEffect } from "react";
+import PropTypes from "prop-types";
+import React, { Fragment } from "react";
 import Menu from "./Menu";
 import Cover from "./Cover";
 import Content from "./Content";
@@ -13,8 +14,6 @@ import Footer from "../Footer";
 const Main = (props) => {
     const { funcLoader } = props;
 
-    window.scrollTo(0, 0);
-
     return (
         <Fragment>
             <Menu />
@@ -23,6 +22,10 @@ const Main = (props) => {
             <Footer />
         </Fragment>
     );
+};
+
+Main.propTypes = {
+    funcLoader: PropTypes.func.isRequired,
 };
 
 export default Main;

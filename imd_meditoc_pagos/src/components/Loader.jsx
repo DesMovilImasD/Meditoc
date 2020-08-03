@@ -26,8 +26,8 @@ const Loader = (props) => {
 
 Loader.propTypes = {
     entLoader: PropTypes.shape({
-        message: PropTypes.string,
-        open: PropTypes.bool,
+        message: PropTypes.string.isRequired,
+        open: PropTypes.bool.isRequired,
     }),
 };
 

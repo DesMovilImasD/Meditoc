@@ -68,15 +68,15 @@ const Product = (props) => {
 };
 
 Product.propTypes = {
-    index: PropTypes.number,
-    productList: PropTypes.array,
+    index: PropTypes.number.isRequired,
     product: PropTypes.shape({
-        qty: PropTypes.number,
-        id: PropTypes.number,
-        name: PropTypes.string,
-        price: PropTypes.number,
+        icon: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        qty: PropTypes.number.isRequired,
     }),
-    setProductList: PropTypes.func,
+    productList: PropTypes.array.isRequired,
+    setProductList: PropTypes.func.isRequired,
 };
 
 export default Product;

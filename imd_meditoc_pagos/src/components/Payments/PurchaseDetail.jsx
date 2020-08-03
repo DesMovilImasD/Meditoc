@@ -26,6 +26,7 @@ const PurchaseDetail = (props) => {
         setProductList(lstItems);
     };
 
+    //Ejecutar funcGetSavedProducts al cargar el componente
     useEffect(() => {
         funcGetSavedProducts();
 
@@ -61,10 +62,10 @@ const PurchaseDetail = (props) => {
 
 PurchaseDetail.propTypes = {
     entCoupon: PropTypes.object,
-    productList: PropTypes.array,
-    setProductList: PropTypes.func,
-    setTotalPayment: PropTypes.func,
-    totalPayment: PropTypes.number,
+    productList: PropTypes.array.isRequired,
+    setProductList: PropTypes.func.isRequired,
+    setTotalPayment: PropTypes.func.isRequired,
+    totalPayment: PropTypes.number.isRequired,
 };
 
 export default PurchaseDetail;

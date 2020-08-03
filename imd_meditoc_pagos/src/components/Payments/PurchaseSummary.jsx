@@ -36,6 +36,7 @@ const PurchaseSummary = (props) => {
         history.push(urlProducts);
     };
 
+    //Actualizar el monto a pagar cuando se agrega, aumenta o reduce un producto o se agrega/elimina un cupón
     useEffect(() => {
         funcUpdateAmounts();
 
@@ -92,9 +93,9 @@ PurchaseSummary.propTypes = {
         fnMontoDescuento: PropTypes.number,
         fsCodigo: PropTypes.string,
     }),
-    productList: PropTypes.array,
-    setTotalPayment: PropTypes.func,
-    totalPayment: PropTypes.number,
+    productList: PropTypes.array.isRequired,
+    setTotalPayment: PropTypes.func.isRequired,
+    totalPayment: PropTypes.number.isRequired,
 };
 
 export default PurchaseSummary;

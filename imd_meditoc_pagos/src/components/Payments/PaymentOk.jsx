@@ -13,8 +13,11 @@ import { supportEmail } from "../../configuration/emailConfig";
 const PaymentOk = (props) => {
     const { entOrder } = props;
 
+    //Scrollear al inicio cuando se cargue el componente
     useEffect(() => {
         window.scrollTo(0, 0);
+
+        // eslint-disable-next-line
     }, []);
 
     return (
@@ -45,9 +48,7 @@ const PaymentOk = (props) => {
 };
 
 PaymentOk.propTypes = {
-    entOrder: PropTypes.shape({
-        sOrden: PropTypes.string,
-    }),
+    entOrder: PropTypes.object.isRequired,
 };
 
 export default PaymentOk;

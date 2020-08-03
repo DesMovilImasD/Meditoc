@@ -34,11 +34,14 @@ const Orientations = (props) => {
         history.push(urlPayments);
     };
 
+    //Marcar como seleccionado la primera orientación al cargar el componente
     useEffect(() => {
         const orientationProducts = [...lstOrientationProducts];
         orientationProducts[0].selected = true;
+
         setOrientationDescription(orientationProducts[0].info);
         setLstOrientationProducts(orientationProducts);
+
         // eslint-disable-next-line
     }, []);
 
@@ -80,8 +83,8 @@ const Orientations = (props) => {
 };
 
 Orientations.propTypes = {
-    lstOrientationProducts: PropTypes.array,
-    setLstOrientationProducts: PropTypes.func,
+    lstOrientationProducts: PropTypes.array.isRequired,
+    setLstOrientationProducts: PropTypes.func.isRequired,
 };
 
 export default Orientations;

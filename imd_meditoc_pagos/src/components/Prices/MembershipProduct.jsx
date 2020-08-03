@@ -38,16 +38,16 @@ const MembershipProduct = (props) => {
 };
 
 MembershipProduct.propTypes = {
-    last: PropTypes.bool,
+    last: PropTypes.bool.isRequired,
     product: PropTypes.shape({
-        id: PropTypes.number,
-        info: PropTypes.string,
-        price: PropTypes.number,
-        shortName: PropTypes.string,
+        id: PropTypes.number.isRequired,
+        info: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        shortName: PropTypes.string.isRequired,
     }),
-    rdMembership: PropTypes.number,
-    setMembershipDescription: PropTypes.func,
-    setRdMembership: PropTypes.func,
+    rdMembership: PropTypes.number.isRequired,
+    setMembershipDescription: PropTypes.func.isRequired,
+    setRdMembership: PropTypes.func.isRequired,
 };
 
 export default MembershipProduct;

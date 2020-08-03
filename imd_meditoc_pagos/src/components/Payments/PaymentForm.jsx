@@ -10,6 +10,8 @@ import {
     FormControl,
     Button,
     Typography,
+    Checkbox,
+    FormControlLabel,
 } from "@material-ui/core";
 import { MdEmail, MdPerson, MdDateRange, MdVerifiedUser, MdAttachMoney } from "react-icons/md";
 import { FaCreditCard, FaCcVisa, FaCcMastercard, FaCcAmex } from "react-icons/fa";
@@ -18,7 +20,7 @@ import InputExpirationDate from "./InputExpirationDate";
 import InputCardNumber from "./InputCardNumber";
 import InputCVV from "./InputCVV";
 import { serverWs, serverWa } from "../../configuration/serverConfig";
-import { apiBuy, apiRevalidateCoupon } from "../../configuration/apiConfig";
+import { apiBuy, apiRevalidateCoupon, apiGetPolicies } from "../../configuration/apiConfig";
 import apiKeyToken, { apiKeyLanguage } from "../../configuration/tokenConfig";
 import {
     rxVisaCard,
@@ -51,6 +53,16 @@ const PaymentForm = (props) => {
     //Tamaño del icono para los inputs del formulario
     const iconSize = 25;
 
+    //Datos del formulario de pagos
+    const [paymentForm, setPaymentForm] = useState({
+        txtCardNumber: "",
+        txtExpirationDate: "",
+        txtCVV: "",
+        txtName: "",
+        txtEmail: "",
+        txtModality: "1",
+    });
+
     //Color de los iconos del formulario (blue - habilitado / gray - deshabilitado)
     const [iconClass, setIconClass] = useState("secondary-gray");
 
@@ -62,16 +74,6 @@ const PaymentForm = (props) => {
 
     //Máximo de años permitidos para la fecha de expiración a partir del año actual
     const maxYearExpirationDate = 15;
-
-    //Datos del formulario de pagos
-    const [paymentForm, setPaymentForm] = useState({
-        txtCardNumber: "",
-        txtExpirationDate: "",
-        txtCVV: "",
-        txtName: "",
-        txtEmail: "",
-        txtModality: "1",
-    });
 
     //Mes de expiración ingresado
     const [monthExpirationDate, setMonthExpirationDate] = useState(0);
@@ -94,11 +96,33 @@ const PaymentForm = (props) => {
     //Ícono de tarjeta ingresada
     const [iconCardNumber, setIconCardNumber] = useState(<FaCreditCard size={iconSize} />);
 
+    //Informar al cliente sobre un error en los datos del formulario
     const [formErrorMessage, setFormErrorMessage] = useState("");
 
-    useEffect(() => {
-        setIconClass(productList.length === 0 ? "secondary-gray" : "secondary-blue");
-    }, [productList]);
+    //Guardar consentimiento del cliente de aceptar las políticas de Meditoc
+    const [acceptedPolicies, setAcceptedPolicies] = useState(false);
+
+    //Guardar los links de Aviso de Privacidad y Términos y condiciones
+    const [policiesLinks, setPoliciesLinks] = useState({
+        sAvisoDePrivacidad: "#",
+        sTerminosYCondiciones: "#",
+    });
+
+    //Evento Change para el check de aceptar Términos y Condiciones
+    const handleChangeAcceptPolicies = () => {
+        setAcceptedPolicies(!acceptedPolicies);
+    };
+
+    //Evento Click agregar cupón
+    const handleClickRemoveCoupon = () => {
+        setEntCoupon(null);
+        setFormErrorMessage("");
+    };
+
+    //Evento Click eliminar cupón
+    const handleClickAddCoupon = () => {
+        setCouponDialogOpen(true);
+    };
 
     //Evento change para los valores del formulario
     const handleChangePaymentForm = (e) => {
@@ -122,6 +146,60 @@ const PaymentForm = (props) => {
                 });
                 break;
         }
+    };
+
+    //Evento submit del formulario de pagos
+    const handleClickSubmitPaymentForm = (e) => {
+        e.preventDefault();
+
+        setFormErrorMessage("");
+
+        window.Conekta.setPublicKey(apiKeyToken);
+        window.Conekta.setLanguage(apiKeyLanguage);
+
+        if (invalidCardNumber) {
+            setFormErrorMessage("Número de tarjeta no válido");
+            return;
+        }
+
+        if (invalidExpirationDate) {
+            setFormErrorMessage("Fecha de vencimiento no válido");
+            return;
+        }
+
+        if (paymentForm.txtCVV.length < 3) {
+            setFormErrorMessage("Código de verificación no válido");
+            return;
+        }
+
+        if (paymentForm.txtName === "") {
+            setFormErrorMessage("Ingrese el nombre de tarjetahabiente");
+            return;
+        }
+
+        if (invalidEmail) {
+            setFormErrorMessage("Correo electrónico no válido");
+            return;
+        }
+
+        if (paymentForm.txtModality === "") {
+            setFormErrorMessage("Seleccione modalidad de pago");
+            return;
+        }
+
+        funcLoader(true, "Validando datos de compra...");
+
+        const tokenParams = {
+            card: {
+                number: paymentForm.txtCardNumber, //4263982640269299
+                name: paymentForm.txtName, //JUANITO PEREZ
+                exp_year: yearExpirationDate, //2023
+                exp_month: monthExpirationDate, //02  --------   0223
+                cvc: paymentForm.txtCVV, //837
+            },
+        };
+
+        window.Conekta.Token.create(tokenParams, successResponseHandler, errorResponseHandler);
     };
 
     //Validar número de tarjeta ingresado
@@ -229,61 +307,30 @@ const PaymentForm = (props) => {
         });
     };
 
-    //Evento submit del formulario de pagos
-    const handleClickSubmitPaymentForm = (e) => {
-        e.preventDefault();
-
-        setFormErrorMessage("");
-
-        window.Conekta.setPublicKey(apiKeyToken);
-        window.Conekta.setLanguage(apiKeyLanguage);
-
-        if (invalidCardNumber) {
-            setFormErrorMessage("Número de tarjeta no válido");
+    //Revalidar los meses sin interes al modificar el monto total a pagar
+    const funcValidateAmounthMonthlyPayments = () => {
+        if (paymentForm.txtModality === "12" && totalPayment < 1200) {
+            setPaymentForm({ ...paymentForm, txtModality: "1" });
             return;
         }
 
-        if (invalidExpirationDate) {
-            setFormErrorMessage("Fecha de vencimiento no válido");
+        if (paymentForm.txtModality === "9" && totalPayment < 900) {
+            setPaymentForm({ ...paymentForm, txtModality: "1" });
             return;
         }
 
-        if (paymentForm.txtCVV.length < 3) {
-            setFormErrorMessage("Código de verificación no válido");
+        if (paymentForm.txtModality === "6" && totalPayment < 600) {
+            setPaymentForm({ ...paymentForm, txtModality: "1" });
             return;
         }
 
-        if (paymentForm.txtName === "") {
-            setFormErrorMessage("Ingrese el nombre de tarjetahabiente");
+        if (paymentForm.txtModality === "3" && totalPayment < 300) {
+            setPaymentForm({ ...paymentForm, txtModality: "1" });
             return;
         }
-
-        if (invalidEmail) {
-            setFormErrorMessage("Correo electrónico no válido");
-            return;
-        }
-
-        if (paymentForm.txtModality === "") {
-            setFormErrorMessage("Seleccione modalidad de pago");
-            return;
-        }
-
-        funcLoader(true, "Validando datos de compra...");
-
-        const tokenParams = {
-            card: {
-                number: paymentForm.txtCardNumber, //4263982640269299
-                name: paymentForm.txtName, //JUANITO PEREZ
-                exp_year: yearExpirationDate, //2023
-                exp_month: monthExpirationDate, //02  --------   0223
-                cvc: paymentForm.txtCVV, //837
-            },
-        };
-
-        window.Conekta.Token.create(tokenParams, successResponseHandler, errorResponseHandler);
     };
 
-    //Evento para tokenización correcta de la tarjeta ingresada
+    //Evento para tokenización exitosa de la tarjeta ingresada
     const successResponseHandler = (token) => {
         const entCreateOrder = {
             currency: "MXN",
@@ -392,40 +439,32 @@ const PaymentForm = (props) => {
         return responseMethod;
     };
 
-    //Evento Click agregar cupón
-    const handleClickRemoveCoupon = () => {
-        setEntCoupon(null);
-        setFormErrorMessage("");
+    //Consumir servicio para obtener los links de las políticas Meditoc
+    const funcGetPolicies = async () => {
+        try {
+            const apiResponse = await fetch(`${serverWs}${apiGetPolicies}`);
+
+            const response = await apiResponse.json();
+
+            if (response.bRespuesta === true) {
+                setPoliciesLinks(response.sParameter1);
+            }
+        } catch (error) {}
     };
 
-    //Evento Click eliminar cupón
-    const handleClickAddCoupon = () => {
-        setCouponDialogOpen(true);
-    };
+    //Ejecutar funcGetPolicies al cargar el componente
+    useEffect(() => {
+        funcGetPolicies();
 
-    //Revalidar los meses sin interes al modificar el monto total a pagar
-    const funcValidateAmounthMonthlyPayments = () => {
-        if (paymentForm.txtModality === "12" && totalPayment < 1200) {
-            setPaymentForm({ ...paymentForm, txtModality: "1" });
-            return;
-        }
+        // eslint-disable-next-line
+    }, []);
 
-        if (paymentForm.txtModality === "9" && totalPayment < 900) {
-            setPaymentForm({ ...paymentForm, txtModality: "1" });
-            return;
-        }
+    //Cambiar los iconos del fomulario a deshabilitados cuando no se tengan productos en el resumen de compra
+    useEffect(() => {
+        setIconClass(productList.length === 0 ? "secondary-gray" : "secondary-blue");
+    }, [productList]);
 
-        if (paymentForm.txtModality === "6" && totalPayment < 600) {
-            setPaymentForm({ ...paymentForm, txtModality: "1" });
-            return;
-        }
-
-        if (paymentForm.txtModality === "3" && totalPayment < 300) {
-            setPaymentForm({ ...paymentForm, txtModality: "1" });
-            return;
-        }
-    };
-
+    //Ejecutar funcValidateAmounthMonthlyPayments cada vez que cambien los valores de monthlyPayments
     useEffect(() => {
         funcValidateAmounthMonthlyPayments();
 
@@ -436,7 +475,7 @@ const PaymentForm = (props) => {
         <Fragment>
             <div className="pay-info-payment-container">
                 <div className="pay-info-payment-form">
-                    <Grid container spacing={3}>
+                    <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <TextField
                                 id="txtCardNumber"
@@ -608,12 +647,46 @@ const PaymentForm = (props) => {
                             )}
                         </Grid>
                         <Grid item xs={12}>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        checked={acceptedPolicies}
+                                        onChange={handleChangeAcceptPolicies}
+                                        name="chkPolicies"
+                                    />
+                                }
+                                label={
+                                    <span className="price-product-description">
+                                        Acepto los{" "}
+                                        <a
+                                            href={policiesLinks.sTerminosYCondiciones}
+                                            target="_blank"
+                                            className="pay-form-policies-link"
+                                            rel="noopener noreferrer"
+                                        >
+                                            términos y condiciones
+                                        </a>{" "}
+                                        y el{" "}
+                                        <a
+                                            href={policiesLinks.sAvisoDePrivacidad}
+                                            target="_blank"
+                                            className="pay-form-policies-link"
+                                            rel="noopener noreferrer"
+                                        >
+                                            aviso de privacidad
+                                        </a>
+                                        .
+                                    </span>
+                                }
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
                             <Button
                                 variant="contained"
                                 color="primary"
                                 size="large"
                                 fullWidth
-                                disabled={productList.length === 0}
+                                disabled={productList.length === 0 || !acceptedPolicies}
                                 onClick={handleClickSubmitPaymentForm}
                             >
                                 <Typography variant="caption">PAGAR</Typography>
@@ -637,12 +710,13 @@ const PaymentForm = (props) => {
 
 PaymentForm.propTypes = {
     entCoupon: PropTypes.object,
-    funcLoader: PropTypes.func,
-    monthlyPayments: PropTypes.array,
-    productList: PropTypes.array,
-    setEntCoupon: PropTypes.func,
-    setEntOrder: PropTypes.func,
-    setErrorOrder: PropTypes.func,
+    funcLoader: PropTypes.func.isRequired,
+    monthlyPayments: PropTypes.array.isRequired,
+    productList: PropTypes.array.isRequired,
+    setEntCoupon: PropTypes.func.isRequired,
+    setEntOrder: PropTypes.func.isRequired,
+    setErrorOrder: PropTypes.func.isRequired,
+    totalPayment: PropTypes.number.isRequired,
 };
 
 export default PaymentForm;

@@ -13,8 +13,11 @@ import Footer from "../Footer";
 const Main = (props) => {
     const { funcLoader } = props;
 
+    //Scrollear al inicio cuando se cargue el componente
     useEffect(() => {
         window.scrollTo(0, 0);
+
+        // eslint-disable-next-line
     }, []);
 
     return (
@@ -27,7 +30,7 @@ const Main = (props) => {
 };
 
 Main.propTypes = {
-    funcLoader: PropTypes.func,
+    funcLoader: PropTypes.func.isRequired,
 };
 
 export default Main;

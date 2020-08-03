@@ -32,9 +32,11 @@ const Memberships = (props) => {
         history.push(urlPayments);
     };
 
+    //Marcar como seleccionado el primer producto de membresía al cargar el componente
     useEffect(() => {
         setRdMembership(lstMembershipProducts[0].id);
         setMembershipDescription(lstMembershipProducts[0].info);
+
         // eslint-disable-next-line
     }, []);
 
@@ -75,7 +77,7 @@ const Memberships = (props) => {
 };
 
 Memberships.propTypes = {
-    lstMembershipProducts: PropTypes.array,
+    lstMembershipProducts: PropTypes.array.isRequired,
 };
 
 export default Memberships;

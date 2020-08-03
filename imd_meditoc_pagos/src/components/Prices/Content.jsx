@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React, { useState, useEffect } from "react";
 import { Grid } from "@material-ui/core";
 import Memberships from "./Memberships";
@@ -179,9 +180,11 @@ const Content = (props) => {
         // setLstMembershipProducts(lstGetProductMapped);
     };
 
+    //Obtener las orientaciones/membresías disponibles de la base al cargar el componente
     useEffect(() => {
         funcGetOrientations();
         funcGetMemberships();
+
         // eslint-disable-next-line
     }, []);
 
@@ -223,6 +226,10 @@ const Content = (props) => {
             </Grid>
         </div>
     );
+};
+
+Content.propTypes = {
+    funcLoader: PropTypes.func.isRequired,
 };
 
 export default Content;

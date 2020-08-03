@@ -508,6 +508,15 @@ body {
     padding: 20px;
     padding-top: 50px;
 }
+@media only screen and (max-width: 1285px) {
+    .pay-purchase-detail-container {
+        height: 650px;
+    }
+
+    .pay-info-payment-container {
+        height: 650px;
+    }
+}
 @media only screen and (max-width: 960px) {
     .pay-content {
         width: 95%;
@@ -517,7 +526,7 @@ body {
     }
     .pay-purchase-detail-container {
         margin-top: 30px;
-        height: var(--detalle-info-height-port);
+        height: 530px;
         width: 100%;
         background-color: var(--color-primary-blue);
         box-shadow: 0px 0px 26px -13px rgba(0, 0, 0, 0.75);
@@ -550,6 +559,17 @@ body {
     }
 }
 
+@media only screen and (max-width: 480px) {
+    .pay-info-payment-container {
+        height: 660px;
+    }
+}
+@media only screen and (max-width: 350px) {
+    .pay-info-payment-container {
+        height: 700px;
+    }
+}
+
 .pay-add-coupon-title {
     font-family: var(--font-default);
     font-style: normal;
@@ -578,4 +598,15 @@ body {
     font-size: 14px;
     line-height: 33px;
     color: var(--color-error);
+}
+
+.pay-form-policies-link {
+    text-decoration: none;
+    color: var(--color-secondary-blue);
+    transition: var(--transition-menu);
+}
+
+.pay-form-policies-link:hover {
+    text-decoration: underline;
+    transition: var(--transition-menu);
 }

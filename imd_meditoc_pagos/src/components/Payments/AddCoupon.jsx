@@ -95,10 +95,10 @@ const AddCoupon = (props) => {
 };
 
 AddCoupon.propTypes = {
-    couponDialogOpen: PropTypes.bool,
-    funcLoader: PropTypes.func,
-    setCouponDialogOpen: PropTypes.func,
-    setEntCoupon: PropTypes.func,
+    couponDialogOpen: PropTypes.bool.isRequired,
+    funcLoader: PropTypes.func.isRequired,
+    setCouponDialogOpen: PropTypes.func.isRequired,
+    setEntCoupon: PropTypes.func.isRequired,
 };
 
 export default AddCoupon;

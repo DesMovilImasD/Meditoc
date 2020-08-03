@@ -9,8 +9,11 @@ import { IoIosCloseCircle } from "react-icons/io";
  * Modificaciones:
  *****************************************************/
 const PaymentError = () => {
+    //Scrollear al inicio cuando se cargue el componente
     useEffect(() => {
         window.scrollTo(0, 0);
+
+        // eslint-disable-next-line
     }, []);
 
     return (

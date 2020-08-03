@@ -48,17 +48,17 @@ const OrientationProduct = (props) => {
 };
 
 OrientationProduct.propTypes = {
-    index: PropTypes.number,
-    lstOrientationProducts: PropTypes.array,
+    index: PropTypes.number.isRequired,
+    lstOrientationProducts: PropTypes.array.isRequired,
     product: PropTypes.shape({
-        icon: PropTypes.string,
-        info: PropTypes.string,
-        price: PropTypes.number,
-        selected: PropTypes.bool,
-        shortName: PropTypes.string,
+        icon: PropTypes.string.isRequired,
+        info: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        selected: PropTypes.bool.isRequired,
+        shortName: PropTypes.string.isRequired,
     }),
-    setLstOrientationProducts: PropTypes.func,
-    setOrientationDescription: PropTypes.func,
+    setLstOrientationProducts: PropTypes.func.isRequired,
+    setOrientationDescription: PropTypes.func.isRequired,
 };
 
 export default OrientationProduct;
