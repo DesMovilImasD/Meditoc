@@ -1,8 +1,30 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useState } from "react";
 import { FaTrash } from "react-icons/fa";
-import { IconButton, Hidden } from "@material-ui/core";
+import { IconButton, Hidden, TextField, withStyles } from "@material-ui/core";
 import { MdAdd, MdRemove } from "react-icons/md";
+
+const CssTextField = withStyles({
+    root: {
+        "& label.Mui-focused": {
+            borderColor: "white",
+            color: "white",
+        },
+        "& .MuiInput-underline:before": {
+            borderColor: "white",
+        },
+        "& .MuiInput-underline:after": {
+            borderColor: "white",
+        },
+        "& .MuiInput-underline:hover:not(.Mui-disabled):before": {
+            borderColor: "white",
+        },
+        "& .MuiInputBase-input": {
+            color: "white",
+            borderColor: "white",
+        },
+    },
+})(TextField);
 
 /*****************************************************
  * Descripción: Contiene la estructura de visualización de un artículo
@@ -14,10 +36,13 @@ import { MdAdd, MdRemove } from "react-icons/md";
 const Product = (props) => {
     const { product, index, productList, setProductList } = props;
 
+    const [qtyCapture, setQtyCapture] = useState(product.qty.toString());
+
     //Reducir cantidad a comprar
     const handleClickLess = () => {
         let products = [...productList];
         products[index].qty--;
+        setQtyCapture(products[index].qty.toString());
         setProductList(products);
     };
 
@@ -25,6 +50,7 @@ const Product = (props) => {
     const handleClickMore = () => {
         let products = [...productList];
         products[index].qty++;
+        setQtyCapture(products[index].qty.toString());
         setProductList(products);
     };
 
@@ -32,6 +58,33 @@ const Product = (props) => {
     const handleClickRemove = () => {
         let products = [...productList];
         products.splice(index, 1);
+        setProductList(products);
+    };
+
+    //Evento Change para capturar la cantidad
+    const handleChangeQtyCapture = (e) => {
+        if (isNaN(e.target.value)) {
+            if (e.target.value !== "") {
+                return;
+            }
+        }
+        setQtyCapture(e.target.value);
+    };
+
+    //Evento blur para validar la cantidad ingresada
+    const handleBlurQtyCapture = () => {
+        let products = [...productList];
+
+        if (qtyCapture === "" || isNaN(qtyCapture)) {
+            products[index].qty = 1;
+        } else {
+            products[index].qty = parseInt(qtyCapture);
+
+            if (products[index].qty < 1) {
+                products[index].qty = 1;
+            }
+        }
+        setQtyCapture(products[index].qty.toString());
         setProductList(products);
     };
 
@@ -52,8 +105,17 @@ const Product = (props) => {
                     <IconButton size="medium" disabled={product.qty <= 1} onClick={handleClickLess}>
                         <MdRemove className="pay-purchase-detail-item-btn" />
                     </IconButton>{" "}
-                    {product.qty}{" "}
-                    <IconButton size="medium" disabled={product.qty >= 10} onClick={handleClickMore}>
+                    <CssTextField
+                        id="custom-css-standard-input"
+                        margin="dense"
+                        style={{ width: 50, textAlign: "center" }}
+                        inputProps={{ style: { textAlign: "center" } }}
+                        value={qtyCapture}
+                        onBlur={handleBlurQtyCapture}
+                        onChange={handleChangeQtyCapture}
+                        autoComplete="off"
+                    />
+                    <IconButton size="medium" onClick={handleClickMore}>
                         <MdAdd className="pay-purchase-detail-item-btn" />
                     </IconButton>
                 </div>

@@ -658,6 +658,7 @@ const PaymentForm = (props) => {
                                         checked={acceptedPolicies}
                                         onChange={handleChangeAcceptPolicies}
                                         name="chkPolicies"
+                                        disabled={productList.length === 0}
                                     />
                                 }
                                 label={

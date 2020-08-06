@@ -23,8 +23,20 @@ const PurchaseSummary = (props) => {
     const funcUpdateAmounts = () => {
         const subtotalAmount = productList.reduce((total, product) => total + product.qty * product.price, 0);
 
-        const couponAmount = entCoupon === null ? 0 : entCoupon.fnMontoDescuento / 100;
-
+        let couponAmount = 0;
+        if (entCoupon !== null) {
+            switch (entCoupon.fiIdCuponCategoria) {
+                case 1:
+                    couponAmount = entCoupon.fnMontoDescuento / 100;
+                    break;
+                case 2:
+                    couponAmount = subtotalAmount * entCoupon.fnPorcentajeDescuento;
+                    break;
+                default:
+                    couponAmount = 0;
+                    break;
+            }
+        }
         let total = subtotalAmount - couponAmount;
 
         setSubtotal(subtotalAmount);
@@ -67,7 +79,7 @@ const PurchaseSummary = (props) => {
                             <Grid item xs={6} className="right">
                                 <span className="pay-purchase-detail-subtotal-text">
                                     -$
-                                    {(entCoupon.fnMontoDescuento / 100).toLocaleString("en-US", {
+                                    {Math.abs(totalPayment - subtotal).toLocaleString("en-US", {
                                         minimumFractionDigits: 2,
                                     })}
                                 </span>
