@@ -14,7 +14,7 @@ import PaymentError from "./PaymentError";
  * Modificaciones:
  *****************************************************/
 const Content = (props) => {
-    const { funcLoader } = props;
+    const { appInfo, funcLoader } = props;
 
     //Lista de productos a comprar/contratar
     const [productList, setProductList] = useState([]);
@@ -97,6 +97,7 @@ const Content = (props) => {
                         </Hidden>
                         <Grid item md={6} xs={12}>
                             <PurchaseDetail
+                                appInfo={appInfo}
                                 productList={productList}
                                 setProductList={setProductList}
                                 entCoupon={entCoupon}
@@ -111,6 +112,7 @@ const Content = (props) => {
                         </Hidden>
                         <Grid item md={6} xs={12}>
                             <PaymentForm
+                                appInfo={appInfo}
                                 productList={productList}
                                 monthlyPayments={monthlyPayments}
                                 totalPayment={totalPayment}
@@ -123,7 +125,7 @@ const Content = (props) => {
                         </Grid>
                     </Grid>
                 ) : errorOrder === false ? (
-                    <PaymentOk entOrder={entOrder} />
+                    <PaymentOk appInfo={appInfo} entOrder={entOrder} />
                 ) : (
                     <PaymentError />
                 )}

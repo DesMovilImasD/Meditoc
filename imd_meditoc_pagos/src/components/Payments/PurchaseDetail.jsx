@@ -12,7 +12,7 @@ import PurchaseSummary from "./PurchaseSummary";
  * Modificaciones:
  *****************************************************/
 const PurchaseDetail = (props) => {
-    const { productList, setProductList, entCoupon, totalPayment, setTotalPayment } = props;
+    const { appInfo, productList, setProductList, entCoupon, totalPayment, setTotalPayment } = props;
 
     //Obtener los productos seleccionados a comprar
     const funcGetSavedProducts = () => {
@@ -51,6 +51,7 @@ const PurchaseDetail = (props) => {
                 )}
             </div>
             <PurchaseSummary
+                appInfo={appInfo}
                 productList={productList}
                 entCoupon={entCoupon}
                 totalPayment={totalPayment}

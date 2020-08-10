@@ -40,6 +40,7 @@ import {
  *****************************************************/
 const PaymentForm = (props) => {
     const {
+        appInfo,
         productList,
         monthlyPayments,
         totalPayment,
@@ -101,12 +102,6 @@ const PaymentForm = (props) => {
 
     //Guardar consentimiento del cliente de aceptar las políticas de Meditoc
     const [acceptedPolicies, setAcceptedPolicies] = useState(false);
-
-    //Guardar los links de Aviso de Privacidad y Términos y condiciones
-    const [policiesLinks, setPoliciesLinks] = useState({
-        sAvisoDePrivacidad: "#",
-        sTerminosYCondiciones: "#",
-    });
 
     //Evento Change para el check de aceptar Términos y Condiciones
     const handleChangeAcceptPolicies = () => {
@@ -444,26 +439,6 @@ const PaymentForm = (props) => {
         return responseMethod;
     };
 
-    //Consumir servicio para obtener los links de las políticas Meditoc
-    const funcGetPolicies = async () => {
-        try {
-            const apiResponse = await fetch(`${serverWs}${apiGetPolicies}`);
-
-            const response = await apiResponse.json();
-
-            if (response.bRespuesta === true) {
-                setPoliciesLinks(response.sParameter1);
-            }
-        } catch (error) {}
-    };
-
-    //Ejecutar funcGetPolicies al cargar el componente
-    useEffect(() => {
-        funcGetPolicies();
-
-        // eslint-disable-next-line
-    }, []);
-
     //Cambiar los iconos del fomulario a deshabilitados cuando no se tengan productos en el resumen de compra
     useEffect(() => {
         setIconClass(productList.length === 0 ? "secondary-gray" : "secondary-blue");
@@ -487,7 +462,7 @@ const PaymentForm = (props) => {
                                 name="txtCardNumber"
                                 variant="outlined"
                                 label="Número de tarjeta:"
-                                placeholder="0000 0000 0000 0000"
+                                placeholder="1111 2222 3333 4444"
                                 fullWidth
                                 InputProps={{
                                     startAdornment: <InputAdornment position="start">{iconCardNumber}</InputAdornment>,
@@ -665,7 +640,7 @@ const PaymentForm = (props) => {
                                     <span className="price-product-description">
                                         Acepto los{" "}
                                         <a
-                                            href={policiesLinks.sTerminosYCondiciones}
+                                            href={appInfo.sTerminosYCondiciones}
                                             target="_blank"
                                             className="pay-form-policies-link"
                                             rel="noopener noreferrer"
@@ -674,7 +649,7 @@ const PaymentForm = (props) => {
                                         </a>{" "}
                                         y el{" "}
                                         <a
-                                            href={policiesLinks.sAvisoDePrivacidad}
+                                            href={appInfo.sAvisoDePrivacidad}
                                             target="_blank"
                                             className="pay-form-policies-link"
                                             rel="noopener noreferrer"

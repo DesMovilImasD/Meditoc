@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Fragment, useEffect, useState } from "react";
-import { Grid, Button } from "@material-ui/core";
+import { Grid, Button, Typography } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { urlProducts } from "../../configuration/urlConfig";
 
@@ -12,7 +12,7 @@ import { urlProducts } from "../../configuration/urlConfig";
  * Modificaciones:
  *****************************************************/
 const PurchaseSummary = (props) => {
-    const { productList, entCoupon, totalPayment, setTotalPayment } = props;
+    const { appInfo, productList, entCoupon, totalPayment, setTotalPayment } = props;
 
     const history = useHistory();
 
@@ -27,10 +27,20 @@ const PurchaseSummary = (props) => {
         if (entCoupon !== null) {
             switch (entCoupon.fiIdCuponCategoria) {
                 case 1:
-                    couponAmount = entCoupon.fnMontoDescuento / 100;
+                    let discount = entCoupon.fnMontoDescuento / 100;
+                    const maxDiscount = subtotalAmount * appInfo.nMaximoDescuento;
+
+                    if (discount > maxDiscount) {
+                        discount = maxDiscount;
+                    }
+                    couponAmount = discount;
                     break;
                 case 2:
-                    couponAmount = subtotalAmount * entCoupon.fnPorcentajeDescuento;
+                    if (entCoupon.fnPorcentajeDescuento > appInfo.nMaximoDescuento) {
+                        couponAmount = subtotalAmount * appInfo.nMaximoDescuento;
+                    } else {
+                        couponAmount = subtotalAmount * entCoupon.fnPorcentajeDescuento;
+                    }
                     break;
                 default:
                     couponAmount = 0;
@@ -59,7 +69,7 @@ const PurchaseSummary = (props) => {
         <div className="pay-purchase-detail-total">
             {productList.length === 0 ? (
                 <Button variant="contained" color="secondary" size="large" fullWidth onClick={handleClickBackProducts}>
-                    IR A PRODUCTOS Y SERVICIOS MEDITOC
+                    <Typography variant="caption">IR A PRODUCTOS Y SERVICIOS MEDITOC</Typography>
                 </Button>
             ) : (
                 <Grid container className="pay-purchase-detail-total-container">

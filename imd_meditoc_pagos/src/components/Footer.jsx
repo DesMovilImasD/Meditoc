@@ -1,7 +1,6 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
 import { logoMeditocWhite } from "../configuration/imgConfig";
-import { contactEmail } from "../configuration/emailConfig";
 
 /*****************************************************
  * Descripción: Footer del sitio
@@ -9,7 +8,9 @@ import { contactEmail } from "../configuration/emailConfig";
  * Fecha: 22/07/2020
  * Modificaciones:
  *****************************************************/
-const Footer = () => {
+const Footer = (props) => {
+    const { appInfo } = props;
+
     return (
         <div className="price-footer-container">
             <div className="price-footer">
@@ -22,15 +23,13 @@ const Footer = () => {
                             <img alt="LOGOMEDITOCWHITE" src={logoMeditocWhite} />
                         </div>
                         <div>
-                            <span className="price-footer-address">
-                                Calle 17 #113, Col. Itzimná, 97100, Mérida, Yuc.
-                            </span>
+                            <span className="price-footer-address">{appInfo.sDireccionEmpresa}</span>
                         </div>
                         <div>
-                            <span className="price-footer-address">Tel: 5551-003021</span>
+                            <span className="price-footer-address">Tel: {appInfo.sTelefonoEmpresa}</span>
                         </div>
                         <div>
-                            <span className="price-footer-address">Mail: {contactEmail}</span>
+                            <span className="price-footer-address">Mail: {appInfo.sCorreoContacto}</span>
                         </div>
                     </Grid>
                     <Grid item md={6} xs={12}>

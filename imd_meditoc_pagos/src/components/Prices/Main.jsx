@@ -12,14 +12,14 @@ import Footer from "../Footer";
  * Modificaciones:
  *****************************************************/
 const Main = (props) => {
-    const { funcLoader } = props;
+    const { funcLoader, appInfo } = props;
 
     return (
         <Fragment>
             <Menu />
             <Cover />
             <Content funcLoader={funcLoader} />
-            <Footer />
+            <Footer appInfo={appInfo} />
         </Fragment>
     );
 };

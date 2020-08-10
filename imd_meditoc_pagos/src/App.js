@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 import Prices from './components/Prices/Main'
 import Pays from './components/Payments/Main'
@@ -6,6 +6,8 @@ import theme from './configuration/themeConfig'
 import { ThemeProvider } from '@material-ui/core'
 import Loader from './components/Loader'
 import { urlProducts, urlPayments, urlBase } from './configuration/urlConfig'
+import { serverWs } from './configuration/serverConfig'
+import { apiGetPolicies } from './configuration/apiConfig'
 
 /*****************************************************
  * Descripción: App principal web
@@ -20,6 +22,17 @@ function App() {
     message: 'Cargando...',
   })
 
+  //Guardar los links de Aviso de Privacidad y Términos y condiciones
+  const [appInfo, setAppInfo] = useState({
+    nMaximoDescuento: 0.9,
+    sAvisoDePrivacidad: '#',
+    sCorreoContacto: 'contacto@meditoc.com',
+    sCorreoSoporte: 'contacto@meditoc.com',
+    sDireccionEmpresa: 'Calle 17 #113, Col. Itzimná, 97100, Mérida, Yuc.',
+    sTelefonoEmpresa: '5551-003021',
+    sTerminosYCondiciones: '#',
+  })
+
   //Mostrar/Ocultar loader y configurar mensaje
   const funcLoader = (pOpen = false, pMessage = 'Cargando...') => {
     setEntLoader({
@@ -28,6 +41,26 @@ function App() {
     })
   }
 
+  //Consumir servicio para obtener los links de las políticas Meditoc
+  const funcGetAppInfo = async () => {
+    try {
+      const apiResponse = await fetch(`${serverWs}${apiGetPolicies}`)
+
+      const response = await apiResponse.json()
+
+      if (response.bRespuesta === true) {
+        setAppInfo(response.sParameter1)
+      }
+    } catch (error) {}
+  }
+
+  //Ejecutar funcGetPolicies al cargar el componente
+  useEffect(() => {
+    funcGetAppInfo()
+
+    // eslint-disable-next-line
+  }, [])
+
   return (
     <ThemeProvider theme={theme}>
       <Loader entLoader={entLoader} />
@@ -35,10 +68,10 @@ function App() {
         <Switch>
           <Route exact path="/" render={() => <Redirect to={urlProducts} />} />
           <Route exact path={urlProducts}>
-            <Prices funcLoader={funcLoader} />
+            <Prices appInfo={appInfo} funcLoader={funcLoader} />
           </Route>
           <Route exact path={urlPayments}>
-            <Pays funcLoader={funcLoader} />
+            <Pays appInfo={appInfo} funcLoader={funcLoader} />
           </Route>
         </Switch>
       </BrowserRouter>

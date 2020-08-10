@@ -3,7 +3,9 @@ import React, { useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { IconButton, Hidden, TextField, withStyles } from "@material-ui/core";
 import { MdAdd, MdRemove } from "react-icons/md";
+import { useEffect } from "react";
 
+//Estilos para el input de cantidad
 const CssTextField = withStyles({
     root: {
         "& label.Mui-focused": {
@@ -87,6 +89,11 @@ const Product = (props) => {
         setQtyCapture(products[index].qty.toString());
         setProductList(products);
     };
+
+    //Actualizar la cantidad de los productos del carrito al editar/eliminar otro producto
+    useEffect(() => {
+        setQtyCapture(productList[index].qty.toString());
+    }, [productList]);
 
     return (
         <div className="pay-purchase-detail-item">

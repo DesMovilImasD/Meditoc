@@ -11,7 +11,7 @@ import Footer from "../Footer";
  * Modificaciones:
  *****************************************************/
 const Main = (props) => {
-    const { funcLoader } = props;
+    const { appInfo, funcLoader } = props;
 
     //Scrollear al inicio cuando se cargue el componente
     useEffect(() => {
@@ -23,8 +23,8 @@ const Main = (props) => {
     return (
         <Fragment>
             <Header />
-            <Content funcLoader={funcLoader} />
-            <Footer />
+            <Content appInfo={appInfo} funcLoader={funcLoader} />
+            <Footer appInfo={appInfo} />
         </Fragment>
     );
 };

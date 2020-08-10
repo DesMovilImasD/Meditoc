@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { Grid } from "@material-ui/core";
 import { IoIosCheckmarkCircle } from "react-icons/io";
-import { supportEmail } from "../../configuration/emailConfig";
 
 /*****************************************************
  * Descripción: Contenido de mensaje para pagos procesados y órdenes generadas
@@ -11,7 +10,7 @@ import { supportEmail } from "../../configuration/emailConfig";
  * Modificaciones:
  *****************************************************/
 const PaymentOk = (props) => {
-    const { entOrder } = props;
+    const { appInfo, entOrder } = props;
 
     //Scrollear al inicio cuando se cargue el componente
     useEffect(() => {
@@ -38,8 +37,8 @@ const PaymentOk = (props) => {
             <Grid item xs={12}>
                 <span className="price-content-description">
                     Recibirás un correo electrónico con los detalles de tu pedido y las credenciales de acceso, si no lo
-                    recibes favor de comunicarte con nosotros enviando un correo electrónico a {supportEmail} para
-                    brindarte soporte.
+                    recibes favor de comunicarte con nosotros enviando un correo electrónico a {appInfo.sCorreoSoporte}{" "}
+                    para brindarte soporte.
                 </span>
             </Grid>
         </Grid>
