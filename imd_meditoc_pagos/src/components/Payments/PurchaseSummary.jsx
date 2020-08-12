@@ -111,6 +111,7 @@ const PurchaseSummary = (props) => {
 };
 
 PurchaseSummary.propTypes = {
+    appInfo: PropTypes.object.isRequired,
     entCoupon: PropTypes.shape({
         fnMontoDescuento: PropTypes.number,
         fsCodigo: PropTypes.string,

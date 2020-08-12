@@ -51,7 +51,7 @@ const Orientations = (props) => {
                 <div className="price-product-header-icon">
                     <FaClinicMedical />
                 </div>
-                <div className="price-product-header-title">Orientaciones</div>
+                <div className="price-product-header-title">Orientaciones pago único</div>
             </div>
             <Grid container>
                 <Grid item xs={12}>

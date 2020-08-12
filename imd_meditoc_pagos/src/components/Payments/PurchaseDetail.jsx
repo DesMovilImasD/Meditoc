@@ -62,6 +62,7 @@ const PurchaseDetail = (props) => {
 };
 
 PurchaseDetail.propTypes = {
+    appInfo: PropTypes.object.isRequired,
     entCoupon: PropTypes.object,
     productList: PropTypes.array.isRequired,
     setProductList: PropTypes.func.isRequired,

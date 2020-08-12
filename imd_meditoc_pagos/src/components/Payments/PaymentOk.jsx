@@ -46,6 +46,7 @@ const PaymentOk = (props) => {
 };
 
 PaymentOk.propTypes = {
+    appInfo: PropTypes.object.isRequired,
     entOrder: PropTypes.object.isRequired,
 };
 

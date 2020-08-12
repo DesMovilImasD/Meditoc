@@ -30,6 +30,7 @@ const Main = (props) => {
 };
 
 Main.propTypes = {
+    appInfo: PropTypes.object.isRequired,
     funcLoader: PropTypes.func.isRequired,
 };
 

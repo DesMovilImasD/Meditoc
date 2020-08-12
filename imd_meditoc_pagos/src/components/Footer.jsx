@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 import { Grid } from "@material-ui/core";
 import { logoMeditocWhite } from "../configuration/imgConfig";
@@ -47,6 +48,10 @@ const Footer = (props) => {
             </div>
         </div>
     );
+};
+
+Footer.propTypes = {
+    appInfo: PropTypes.object.isRequired,
 };
 
 export default Footer;

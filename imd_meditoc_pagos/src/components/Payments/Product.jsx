@@ -93,6 +93,7 @@ const Product = (props) => {
     //Actualizar la cantidad de los productos del carrito al editar/eliminar otro producto
     useEffect(() => {
         setQtyCapture(productList[index].qty.toString());
+        // eslint-disable-next-line
     }, [productList]);
 
     return (

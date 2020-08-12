@@ -81,7 +81,7 @@ const Content = (props) => {
             <div className="pay-order-ok-margin">
                 {entOrder === null ? (
                     <Grid container>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} style={{ marginBottom: 50 }}>
                             <span className="price-content-description">
                                 Para generar sus credenciales de acceso a Meditoc haga el pago del servicio por medio de
                                 una tarjeta de crédito o débito.
@@ -135,6 +135,7 @@ const Content = (props) => {
 };
 
 Content.propTypes = {
+    appInfo: PropTypes.object.isRequired,
     funcLoader: PropTypes.func.isRequired,
 };
 

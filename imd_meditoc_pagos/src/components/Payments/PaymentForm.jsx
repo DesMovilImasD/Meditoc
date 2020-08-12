@@ -12,15 +12,17 @@ import {
     Typography,
     Checkbox,
     FormControlLabel,
+    Tooltip,
+    makeStyles,
 } from "@material-ui/core";
-import { MdEmail, MdPerson, MdDateRange, MdVerifiedUser, MdAttachMoney } from "react-icons/md";
+import { MdEmail, MdPerson, MdDateRange, MdVerifiedUser, MdAttachMoney, MdPhone, MdInfo } from "react-icons/md";
 import { FaCreditCard, FaCcVisa, FaCcMastercard, FaCcAmex } from "react-icons/fa";
 import AddCoupon from "./AddCoupon";
 import InputExpirationDate from "./InputExpirationDate";
 import InputCardNumber from "./InputCardNumber";
 import InputCVV from "./InputCVV";
 import { serverWs, serverWa } from "../../configuration/serverConfig";
-import { apiBuy, apiRevalidateCoupon, apiGetPolicies } from "../../configuration/apiConfig";
+import { apiBuy, apiRevalidateCoupon } from "../../configuration/apiConfig";
 import apiKeyToken, { apiKeyLanguage } from "../../configuration/tokenConfig";
 import {
     rxVisaCard,
@@ -31,6 +33,16 @@ import {
     rxAmexIcon,
     rxEmail,
 } from "../../configuration/regexConfig";
+import InputPhone from "./InputPhone";
+
+const useStyles = makeStyles((theme) => ({
+    paylabel: {
+        fontSize: 18,
+        backgroundColor: "#fff",
+        paddingRight: 12,
+        paddingLeft: 6,
+    },
+}));
 
 /*****************************************************
  * Descripción: Formulario de pago
@@ -54,6 +66,8 @@ const PaymentForm = (props) => {
     //Tamaño del icono para los inputs del formulario
     const iconSize = 25;
 
+    const classes = useStyles();
+
     //Datos del formulario de pagos
     const [paymentForm, setPaymentForm] = useState({
         txtCardNumber: "",
@@ -61,11 +75,23 @@ const PaymentForm = (props) => {
         txtCVV: "",
         txtName: "",
         txtEmail: "",
+        txtPhone: "",
         txtModality: "1",
     });
 
+    //Guardar validaciones al dar clic en pagar
+    const [paymentFormInvalidInputs, setPaymentFormInvalidInputs] = useState({
+        txtCardNumber: false,
+        txtExpirationDate: false,
+        txtCVV: false,
+        txtName: false,
+        txtEmail: false,
+        txtPhone: false,
+        txtModality: false,
+    });
+
     //Color de los iconos del formulario (blue - habilitado / gray - deshabilitado)
-    const [iconClass, setIconClass] = useState("secondary-gray");
+    const [iconClass, setIconClass] = useState("secondary-blue");
 
     //Año actual (formato completo)
     const fullYearNow = new Date().getFullYear();
@@ -94,8 +120,8 @@ const PaymentForm = (props) => {
     //Email proporcionado inválido
     const [invalidEmail, setInvalidEmail] = useState(true);
 
-    //Ícono de tarjeta ingresada
-    const [iconCardNumber, setIconCardNumber] = useState(<FaCreditCard size={iconSize} />);
+    //Telefono proporcionado debe ser completo
+    const [invalidPhone, setInvalidPhone] = useState(false);
 
     //Informar al cliente sobre un error en los datos del formulario
     const [formErrorMessage, setFormErrorMessage] = useState("");
@@ -134,6 +160,10 @@ const PaymentForm = (props) => {
                 funcValidateEmail(e.target.value);
                 break;
 
+            case "txtPhone":
+                funcValidatePhone(e.target.value);
+                break;
+
             default:
                 setPaymentForm({
                     ...paymentForm,
@@ -152,38 +182,64 @@ const PaymentForm = (props) => {
         window.Conekta.setPublicKey(apiKeyToken);
         window.Conekta.setLanguage(apiKeyLanguage);
 
-        if (!acceptedPolicies) {
-            setFormErrorMessage("Es necesario aceptar los términos y condiciones para continuar");
-            return;
-        }
+        let formErrorMessage = "";
+        let errorForm = false;
 
-        if (invalidCardNumber) {
-            setFormErrorMessage("Número de tarjeta no válido");
-            return;
-        }
+        let paymentFormInvalidInputsTemp = {
+            txtCardNumber: false,
+            txtExpirationDate: false,
+            txtCVV: false,
+            txtName: false,
+            txtEmail: false,
+            txtPhone: false,
+            txtModality: false,
+        };
 
-        if (invalidExpirationDate) {
-            setFormErrorMessage("Fecha de vencimiento no válido");
-            return;
-        }
-
-        if (paymentForm.txtCVV.length < 3) {
-            setFormErrorMessage("Código de verificación no válido");
-            return;
-        }
-
-        if (paymentForm.txtName === "") {
-            setFormErrorMessage("Ingrese el nombre de tarjetahabiente");
-            return;
+        if (invalidPhone) {
+            formErrorMessage = "Proporcione un número de teléfono válido";
+            errorForm = true;
+            paymentFormInvalidInputsTemp.txtPhone = true;
         }
 
         if (invalidEmail) {
-            setFormErrorMessage("Correo electrónico no válido");
-            return;
+            formErrorMessage = "Correo electrónico no válido";
+            errorForm = true;
+            paymentFormInvalidInputsTemp.txtEmail = true;
+        }
+        if (paymentForm.txtName === "") {
+            formErrorMessage = "Ingrese el nombre de tarjetahabiente";
+            errorForm = true;
+            paymentFormInvalidInputsTemp.txtName = true;
+        }
+        if (paymentForm.txtCVV.length < 3) {
+            formErrorMessage = "Código de verificación no válido";
+            errorForm = true;
+            paymentFormInvalidInputsTemp.txtCVV = true;
+        }
+        if (invalidExpirationDate) {
+            formErrorMessage = "Fecha de vencimiento no válido";
+            errorForm = true;
+            paymentFormInvalidInputsTemp.txtExpirationDate = true;
+        }
+        if (paymentForm.txtModality === "") {
+            formErrorMessage = "Seleccione modalidad de pago";
+            errorForm = true;
+            paymentFormInvalidInputsTemp.txtModality = true;
+        }
+        if (invalidCardNumber) {
+            formErrorMessage = "Número de tarjeta no válido";
+            errorForm = true;
+            paymentFormInvalidInputsTemp.txtCardNumber = true;
+        }
+        if (!acceptedPolicies) {
+            formErrorMessage = "Es necesario aceptar los términos y condiciones para continuar";
+            errorForm = true;
         }
 
-        if (paymentForm.txtModality === "") {
-            setFormErrorMessage("Seleccione modalidad de pago");
+        setPaymentFormInvalidInputs(paymentFormInvalidInputsTemp);
+
+        if (errorForm) {
+            setFormErrorMessage(formErrorMessage);
             return;
         }
 
@@ -217,10 +273,8 @@ const PaymentForm = (props) => {
         }
 
         const validateCardNetWork = funcValidateCardNetwork(cardNumberCompare);
-        const validateCardNetworkIcon = funcValidateCardNetworkIcon(cardNumberCompare);
 
         setInvalidCardNumber(!validateCardNetWork);
-        setIconCardNumber(validateCardNetworkIcon);
 
         setPaymentForm({
             ...paymentForm,
@@ -246,20 +300,21 @@ const PaymentForm = (props) => {
     };
 
     //Validar icono de proveedor de servicio financiero de la tarjeta ingresada
-    const funcValidateCardNetworkIcon = (numero = "") => {
-        if (rxVisaIcon.test(numero)) {
+    const funcValidateCardNetworkIcon = (cardNumber = "") => {
+        cardNumber = cardNumber.replace(/ /g, "");
+        if (rxVisaIcon.test(cardNumber)) {
             return <FaCcVisa size={iconSize} className={iconClass} />;
         }
 
-        if (rxMasterIcon.test(numero)) {
+        if (rxMasterIcon.test(cardNumber)) {
             return <FaCcMastercard size={iconSize} className={iconClass} />;
         }
 
-        if (rxAmexIcon.test(numero)) {
+        if (rxAmexIcon.test(cardNumber)) {
             return <FaCcAmex size={iconSize} className={iconClass} />;
         }
 
-        return <FaCreditCard size={iconSize} />;
+        return <FaCreditCard size={iconSize} className={iconClass} />;
     };
 
     //Validar fecha de expiración ingresado
@@ -307,6 +362,24 @@ const PaymentForm = (props) => {
         });
     };
 
+    //Validar formato de telefono
+    const funcValidatePhone = (phone) => {
+        const phoneCompare = phone.replace(/ /g, "");
+        if (phoneCompare !== "") {
+            if (phoneCompare.length !== 10) {
+                setInvalidPhone(true);
+            } else {
+                setInvalidPhone(false);
+            }
+        } else {
+            setInvalidPhone(false);
+        }
+        setPaymentForm({
+            ...paymentForm,
+            txtPhone: phone,
+        });
+    };
+
     //Revalidar los meses sin interes al modificar el monto total a pagar
     const funcValidateAmounthMonthlyPayments = () => {
         if (paymentForm.txtModality === "12" && totalPayment < 1200) {
@@ -338,7 +411,7 @@ const PaymentForm = (props) => {
             pacienteUnico: {
                 sEmail: paymentForm.txtEmail,
                 sNombre: paymentForm.txtName,
-                sTelefono: null,
+                sTelefono: paymentForm.txtPhone,
             },
             lstLineItems: productList.map((product) => ({
                 product_id: product.id,
@@ -455,7 +528,7 @@ const PaymentForm = (props) => {
         <Fragment>
             <div className="pay-info-payment-container">
                 <div className="pay-info-payment-form">
-                    <Grid container spacing={2}>
+                    <Grid container spacing={3}>
                         <Grid item xs={12}>
                             <TextField
                                 id="txtCardNumber"
@@ -465,17 +538,28 @@ const PaymentForm = (props) => {
                                 placeholder="1111 2222 3333 4444"
                                 fullWidth
                                 InputProps={{
-                                    startAdornment: <InputAdornment position="start">{iconCardNumber}</InputAdornment>,
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            {funcValidateCardNetworkIcon(paymentForm.txtCardNumber)}
+                                        </InputAdornment>
+                                    ),
                                     inputComponent: InputCardNumber,
+                                }}
+                                InputLabelProps={{
+                                    className: classes.paylabel,
                                 }}
                                 disabled={productList.length === 0}
                                 value={paymentForm.txtCardNumber}
                                 onChange={handleChangePaymentForm}
-                                error={invalidCardNumber && productList.length > 0}
+                                error={
+                                    invalidCardNumber &&
+                                    productList.length > 0 &&
+                                    paymentFormInvalidInputs.txtCardNumber
+                                }
                                 autoComplete="off"
                             />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item sm={6} xs={12}>
                             <TextField
                                 id="txtExpirationDate"
                                 name="txtExpirationDate"
@@ -491,19 +575,26 @@ const PaymentForm = (props) => {
                                     ),
                                     inputComponent: InputExpirationDate,
                                 }}
+                                InputLabelProps={{
+                                    className: classes.paylabel,
+                                }}
                                 disabled={productList.length === 0}
                                 value={paymentForm.txtExpirationDate}
                                 onChange={handleChangePaymentForm}
-                                error={invalidExpirationDate && productList.length > 0}
+                                error={
+                                    invalidExpirationDate &&
+                                    productList.length > 0 &&
+                                    paymentFormInvalidInputs.txtExpirationDate
+                                }
                                 autoComplete="off"
                             />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item sm={6} xs={12}>
                             <TextField
                                 id="txtCVV"
                                 name="txtCVV"
                                 variant="outlined"
-                                label="CVV:"
+                                label="Código de verificación:"
                                 fullWidth
                                 InputProps={{
                                     startAdornment: (
@@ -513,12 +604,19 @@ const PaymentForm = (props) => {
                                     ),
                                     inputComponent: InputCVV,
                                 }}
+                                InputLabelProps={{
+                                    className: classes.paylabel,
+                                }}
                                 disabled={productList.length === 0}
                                 type="password"
                                 autoComplete="new-password"
                                 value={paymentForm.txtCVV}
                                 onChange={handleChangePaymentForm}
-                                error={paymentForm.txtCVV.length < 3 && productList.length > 0}
+                                error={
+                                    paymentForm.txtCVV.length < 3 &&
+                                    productList.length > 0 &&
+                                    paymentFormInvalidInputs.txtCVV
+                                }
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -526,7 +624,7 @@ const PaymentForm = (props) => {
                                 id="txtName"
                                 name="txtName"
                                 variant="outlined"
-                                label="Nombre completo:"
+                                label="Nombre tarjetahabiente:"
                                 fullWidth
                                 InputProps={{
                                     startAdornment: (
@@ -534,13 +632,26 @@ const PaymentForm = (props) => {
                                             <MdPerson size={iconSize} className={iconClass} />
                                         </InputAdornment>
                                     ),
+                                    endAdornment: (
+                                        <Tooltip title="Como aparece en la tarjeta" placement="top-end" arrow>
+                                            <InputAdornment position="end" style={{ cursor: "pointer", left: 30 }}>
+                                                <MdInfo size={iconSize} className="secondary-gray" />
+                                            </InputAdornment>
+                                        </Tooltip>
+                                    ),
+                                }}
+                                InputLabelProps={{
+                                    className: classes.paylabel,
                                 }}
                                 disabled={productList.length === 0}
                                 autoComplete="off"
                                 value={paymentForm.txtName}
                                 onChange={handleChangePaymentForm}
-                                error={paymentForm.txtName === "" && productList.length > 0}
-                                helperText="Como aparece en la tarjeta"
+                                error={
+                                    paymentForm.txtName === "" &&
+                                    productList.length > 0 &&
+                                    paymentFormInvalidInputs.txtName
+                                }
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -548,7 +659,7 @@ const PaymentForm = (props) => {
                                 id="txtEmail"
                                 name="txtEmail"
                                 variant="outlined"
-                                label="Correo electrónico"
+                                label="Correo electrónico:"
                                 fullWidth
                                 InputProps={{
                                     startAdornment: (
@@ -556,22 +667,63 @@ const PaymentForm = (props) => {
                                             <MdEmail size={iconSize} className={iconClass} />
                                         </InputAdornment>
                                     ),
+                                    endAdornment: (
+                                        <Tooltip
+                                            title="Las credenciales de acceso serán enviados al correo proporcionado"
+                                            placement="top-end"
+                                            arrow
+                                        >
+                                            <InputAdornment position="end" style={{ cursor: "pointer" }}>
+                                                <MdInfo size={iconSize} className="secondary-gray" />
+                                            </InputAdornment>
+                                        </Tooltip>
+                                    ),
+                                }}
+                                InputLabelProps={{
+                                    className: classes.paylabel,
                                 }}
                                 disabled={productList.length === 0}
                                 autoComplete="off"
                                 value={paymentForm.txtEmail}
                                 onChange={handleChangePaymentForm}
-                                error={invalidEmail && productList.length > 0}
-                                helperText="Las credenciales de acceso serán enviados al correo proporcionado"
+                                error={invalidEmail && productList.length > 0 && paymentFormInvalidInputs.txtEmail}
                             />
                         </Grid>
-                        <Grid item xs={6} className="left">
+                        <Grid item sm={6} xs={12}>
+                            <TextField
+                                id="txtPhone"
+                                name="txtPhone"
+                                variant="outlined"
+                                label="Teléfono:"
+                                placeholder="000 000 0000"
+                                fullWidth
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <MdPhone size={iconSize} className={iconClass} />
+                                        </InputAdornment>
+                                    ),
+                                    inputComponent: InputPhone,
+                                }}
+                                InputLabelProps={{
+                                    className: classes.paylabel,
+                                }}
+                                disabled={productList.length === 0}
+                                autoComplete="off"
+                                value={paymentForm.txtPhone}
+                                onChange={handleChangePaymentForm}
+                                error={invalidPhone && productList.length > 0 && paymentFormInvalidInputs.txtPhone}
+                            />
+                        </Grid>
+                        <Grid item sm={6} xs={12} className="left">
                             <FormControl
                                 variant="outlined"
                                 fullWidth
                                 disabled={productList.length === 0 || monthlyPayments.length === 0}
                             >
-                                <InputLabel id="lblModality">Modalidad de pago:</InputLabel>
+                                <InputLabel id="lblModality" className={classes.paylabel}>
+                                    Modalidad de pago:
+                                </InputLabel>
                                 <Select
                                     id="txtModality"
                                     name="txtModality"
@@ -585,7 +737,11 @@ const PaymentForm = (props) => {
                                             <MdAttachMoney size={iconSize} className={iconClass} />
                                         </InputAdornment>
                                     }
-                                    error={paymentForm.txtModality === "" && productList.length > 0}
+                                    error={
+                                        paymentForm.txtModality === "" &&
+                                        productList.length > 0 &&
+                                        paymentFormInvalidInputs.txtModality
+                                    }
                                 >
                                     <MenuItem value="1">Una sola exhibición</MenuItem>
                                     {monthlyPayments.map((diferimiento) => (
@@ -595,36 +751,6 @@ const PaymentForm = (props) => {
                                     ))}
                                 </Select>
                             </FormControl>
-                        </Grid>
-                        <Grid item xs={6}>
-                            {entCoupon === null ? (
-                                <Button
-                                    variant="contained"
-                                    color="secondary"
-                                    size="large"
-                                    fullWidth
-                                    disabled={productList.length === 0}
-                                    onClick={handleClickAddCoupon}
-                                >
-                                    <Typography variant="caption">
-                                        AGREGAR CÓDIGO <br /> DE DESCUENTO
-                                    </Typography>
-                                </Button>
-                            ) : (
-                                <Button
-                                    variant="contained"
-                                    color="secondary"
-                                    size="large"
-                                    fullWidth
-                                    disabled={productList.length === 0}
-                                    onClick={handleClickRemoveCoupon}
-                                >
-                                    <Typography variant="caption">
-                                        ELIMINAR CÓDIGO
-                                        <br /> DE DESCUENTO
-                                    </Typography>
-                                </Button>
-                            )}
                         </Grid>
                         <Grid item xs={12}>
                             <FormControlLabel
@@ -637,7 +763,7 @@ const PaymentForm = (props) => {
                                     />
                                 }
                                 label={
-                                    <span className="price-product-description">
+                                    <Typography variant="body2">
                                         Acepto los{" "}
                                         <a
                                             href={appInfo.sTerminosYCondiciones}
@@ -657,24 +783,50 @@ const PaymentForm = (props) => {
                                             aviso de privacidad
                                         </a>
                                         .
-                                    </span>
+                                    </Typography>
                                 }
                             />
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item sm={6} xs={12}>
+                            {entCoupon === null ? (
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    size="large"
+                                    fullWidth
+                                    disabled={productList.length === 0}
+                                    onClick={handleClickAddCoupon}
+                                >
+                                    <Typography variant="body2">AGREGAR CÓDIGO DE DESCUENTO</Typography>
+                                </Button>
+                            ) : (
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    size="large"
+                                    fullWidth
+                                    disabled={productList.length === 0}
+                                    onClick={handleClickRemoveCoupon}
+                                >
+                                    <Typography variant="body2">QUITAR CÓDIGO DE DESCUENTO</Typography>
+                                </Button>
+                            )}
+                        </Grid>
+
+                        <Grid item sm={6} xs={12}>
                             <Button
                                 variant="contained"
-                                color="primary"
+                                color="secondary"
                                 size="large"
                                 fullWidth
                                 disabled={productList.length === 0 || !acceptedPolicies}
                                 onClick={handleClickSubmitPaymentForm}
                             >
-                                <Typography variant="caption">PAGAR</Typography>
+                                <Typography variant="body2">PAGAR</Typography>
                             </Button>
                         </Grid>
                         <Grid item xs={12}>
-                            <span className="pay-error-description">{formErrorMessage}</span>
+                            <Typography className="pay-error-description">{formErrorMessage}</Typography>
                         </Grid>
                     </Grid>
                 </div>
@@ -690,6 +842,7 @@ const PaymentForm = (props) => {
 };
 
 PaymentForm.propTypes = {
+    appInfo: PropTypes.object.isRequired,
     entCoupon: PropTypes.object,
     funcLoader: PropTypes.func.isRequired,
     monthlyPayments: PropTypes.array.isRequired,
