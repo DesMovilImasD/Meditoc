@@ -12,7 +12,7 @@ const Cover = () => {
     return (
         <div className="price-cover-container">
             <Grid container>
-                <Grid item sm={5} xs={12}>
+                <Grid item md={5} xs={12} className="center">
                     <img className="price-cover-img" alt="logoMeditocCover" src={logoMeditocCover} />
                 </Grid>
                 <Grid item md={7} xs={12} className="price-conver-caption-container">

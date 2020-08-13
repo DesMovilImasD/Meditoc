@@ -17,7 +17,6 @@ import {
 } from "@material-ui/core";
 import { MdEmail, MdPerson, MdDateRange, MdVerifiedUser, MdAttachMoney, MdPhone, MdInfo } from "react-icons/md";
 import { FaCreditCard, FaCcVisa, FaCcMastercard, FaCcAmex } from "react-icons/fa";
-import AddCoupon from "./AddCoupon";
 import InputExpirationDate from "./InputExpirationDate";
 import InputCardNumber from "./InputCardNumber";
 import InputCVV from "./InputCVV";
@@ -57,7 +56,8 @@ const PaymentForm = (props) => {
         monthlyPayments,
         totalPayment,
         entCoupon,
-        setEntCoupon,
+        formErrorMessage,
+        setFormErrorMessage,
         setEntOrder,
         setErrorOrder,
         funcLoader,
@@ -108,9 +108,6 @@ const PaymentForm = (props) => {
     //Año de expiración ingresado
     const [yearExpirationDate, setYearExpirationDate] = useState(0);
 
-    //Mostrar diálogo para ingresar cupón
-    const [couponDialogOpen, setCouponDialogOpen] = useState(false);
-
     //Número de tarjeta inválido
     const [invalidCardNumber, setInvalidCardNumber] = useState(true);
 
@@ -123,26 +120,12 @@ const PaymentForm = (props) => {
     //Telefono proporcionado debe ser completo
     const [invalidPhone, setInvalidPhone] = useState(false);
 
-    //Informar al cliente sobre un error en los datos del formulario
-    const [formErrorMessage, setFormErrorMessage] = useState("");
-
     //Guardar consentimiento del cliente de aceptar las políticas de Meditoc
     const [acceptedPolicies, setAcceptedPolicies] = useState(false);
 
     //Evento Change para el check de aceptar Términos y Condiciones
     const handleChangeAcceptPolicies = () => {
         setAcceptedPolicies(!acceptedPolicies);
-    };
-
-    //Evento Click agregar cupón
-    const handleClickRemoveCoupon = () => {
-        setEntCoupon(null);
-        setFormErrorMessage("");
-    };
-
-    //Evento Click eliminar cupón
-    const handleClickAddCoupon = () => {
-        setCouponDialogOpen(true);
     };
 
     //Evento change para los valores del formulario
@@ -196,28 +179,28 @@ const PaymentForm = (props) => {
         };
 
         if (invalidPhone) {
-            formErrorMessage = "Proporcione un número de teléfono válido";
+            //formErrorMessage = "Proporcione un número de teléfono válido";
             errorForm = true;
             paymentFormInvalidInputsTemp.txtPhone = true;
         }
 
         if (invalidEmail) {
-            formErrorMessage = "Correo electrónico no válido";
+            //formErrorMessage = "Correo electrónico no válido";
             errorForm = true;
             paymentFormInvalidInputsTemp.txtEmail = true;
         }
         if (paymentForm.txtName === "") {
-            formErrorMessage = "Ingrese el nombre de tarjetahabiente";
+            //formErrorMessage = "Ingrese el nombre de tarjetahabiente";
             errorForm = true;
             paymentFormInvalidInputsTemp.txtName = true;
         }
         if (paymentForm.txtCVV.length < 3) {
-            formErrorMessage = "Código de verificación no válido";
+            //formErrorMessage = "Código de verificación no válido";
             errorForm = true;
             paymentFormInvalidInputsTemp.txtCVV = true;
         }
         if (invalidExpirationDate) {
-            formErrorMessage = "Fecha de vencimiento no válido";
+            //formErrorMessage = "Fecha de vencimiento no válido";
             errorForm = true;
             paymentFormInvalidInputsTemp.txtExpirationDate = true;
         }
@@ -227,7 +210,7 @@ const PaymentForm = (props) => {
             paymentFormInvalidInputsTemp.txtModality = true;
         }
         if (invalidCardNumber) {
-            formErrorMessage = "Número de tarjeta no válido";
+            //formErrorMessage = "Número de tarjeta no válido";
             errorForm = true;
             paymentFormInvalidInputsTemp.txtCardNumber = true;
         }
@@ -557,6 +540,13 @@ const PaymentForm = (props) => {
                                     paymentFormInvalidInputs.txtCardNumber
                                 }
                                 autoComplete="off"
+                                helperText={
+                                    invalidCardNumber &&
+                                    productList.length > 0 &&
+                                    paymentFormInvalidInputs.txtCardNumber
+                                        ? "Número de tarjeta no válido"
+                                        : ""
+                                }
                             />
                         </Grid>
                         <Grid item sm={6} xs={12}>
@@ -587,6 +577,13 @@ const PaymentForm = (props) => {
                                     paymentFormInvalidInputs.txtExpirationDate
                                 }
                                 autoComplete="off"
+                                helperText={
+                                    invalidExpirationDate &&
+                                    productList.length > 0 &&
+                                    paymentFormInvalidInputs.txtExpirationDate
+                                        ? "Fecha de vencimiento no válido"
+                                        : ""
+                                }
                             />
                         </Grid>
                         <Grid item sm={6} xs={12}>
@@ -616,6 +613,13 @@ const PaymentForm = (props) => {
                                     paymentForm.txtCVV.length < 3 &&
                                     productList.length > 0 &&
                                     paymentFormInvalidInputs.txtCVV
+                                }
+                                helperText={
+                                    paymentForm.txtCVV.length < 3 &&
+                                    productList.length > 0 &&
+                                    paymentFormInvalidInputs.txtCVV
+                                        ? "Código de verificación no válido"
+                                        : ""
                                 }
                             />
                         </Grid>
@@ -652,6 +656,13 @@ const PaymentForm = (props) => {
                                     productList.length > 0 &&
                                     paymentFormInvalidInputs.txtName
                                 }
+                                helperText={
+                                    paymentForm.txtName === "" &&
+                                    productList.length > 0 &&
+                                    paymentFormInvalidInputs.txtName
+                                        ? "Nombre de tarjetahabiente es requerido"
+                                        : ""
+                                }
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -687,6 +698,11 @@ const PaymentForm = (props) => {
                                 value={paymentForm.txtEmail}
                                 onChange={handleChangePaymentForm}
                                 error={invalidEmail && productList.length > 0 && paymentFormInvalidInputs.txtEmail}
+                                helperText={
+                                    invalidEmail && productList.length > 0 && paymentFormInvalidInputs.txtEmail
+                                        ? "Correo electrónico no válido"
+                                        : ""
+                                }
                             />
                         </Grid>
                         <Grid item sm={6} xs={12}>
@@ -713,6 +729,11 @@ const PaymentForm = (props) => {
                                 value={paymentForm.txtPhone}
                                 onChange={handleChangePaymentForm}
                                 error={invalidPhone && productList.length > 0 && paymentFormInvalidInputs.txtPhone}
+                                helperText={
+                                    invalidPhone && productList.length > 0 && paymentFormInvalidInputs.txtPhone
+                                        ? "Teléfono no válido"
+                                        : ""
+                                }
                             />
                         </Grid>
                         <Grid item sm={6} xs={12} className="left">
@@ -787,33 +808,7 @@ const PaymentForm = (props) => {
                                 }
                             />
                         </Grid>
-                        <Grid item sm={6} xs={12}>
-                            {entCoupon === null ? (
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    size="large"
-                                    fullWidth
-                                    disabled={productList.length === 0}
-                                    onClick={handleClickAddCoupon}
-                                >
-                                    <Typography variant="body2">AGREGAR CÓDIGO DE DESCUENTO</Typography>
-                                </Button>
-                            ) : (
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    size="large"
-                                    fullWidth
-                                    disabled={productList.length === 0}
-                                    onClick={handleClickRemoveCoupon}
-                                >
-                                    <Typography variant="body2">QUITAR CÓDIGO DE DESCUENTO</Typography>
-                                </Button>
-                            )}
-                        </Grid>
-
-                        <Grid item sm={6} xs={12}>
+                        <Grid xs={12}>
                             <Button
                                 variant="contained"
                                 color="secondary"
@@ -822,7 +817,7 @@ const PaymentForm = (props) => {
                                 disabled={productList.length === 0 || !acceptedPolicies}
                                 onClick={handleClickSubmitPaymentForm}
                             >
-                                <Typography variant="body2">PAGAR</Typography>
+                                PAGAR
                             </Button>
                         </Grid>
                         <Grid item xs={12}>
@@ -831,12 +826,6 @@ const PaymentForm = (props) => {
                     </Grid>
                 </div>
             </div>
-            <AddCoupon
-                couponDialogOpen={couponDialogOpen}
-                setCouponDialogOpen={setCouponDialogOpen}
-                setEntCoupon={setEntCoupon}
-                funcLoader={funcLoader}
-            />
         </Fragment>
     );
 };
@@ -847,7 +836,6 @@ PaymentForm.propTypes = {
     funcLoader: PropTypes.func.isRequired,
     monthlyPayments: PropTypes.array.isRequired,
     productList: PropTypes.array.isRequired,
-    setEntCoupon: PropTypes.func.isRequired,
     setEntOrder: PropTypes.func.isRequired,
     setErrorOrder: PropTypes.func.isRequired,
     totalPayment: PropTypes.number.isRequired,

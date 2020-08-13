@@ -34,6 +34,9 @@ const Content = (props) => {
     //Lista de diferimientos de pagos aplicables al monto de compra
     const [monthlyPayments, setMonthlyPayments] = useState([]);
 
+    //Informar al cliente sobre un error en los datos del formulario
+    const [formErrorMessage, setFormErrorMessage] = useState("");
+
     //Actualizar lista de diferimiento de pagos cuando se modifica el total
     const funcCalcMonthlyPayments = () => {
         let monthlyPaymentsPreview = [];
@@ -101,8 +104,11 @@ const Content = (props) => {
                                 productList={productList}
                                 setProductList={setProductList}
                                 entCoupon={entCoupon}
+                                setEntCoupon={setEntCoupon}
                                 totalPayment={totalPayment}
                                 setTotalPayment={setTotalPayment}
+                                setFormErrorMessage={setFormErrorMessage}
+                                funcLoader={funcLoader}
                             />
                         </Grid>
                         <Hidden only={["md", "lg", "xl"]}>
@@ -119,6 +125,8 @@ const Content = (props) => {
                                 funcLoader={funcLoader}
                                 entCoupon={entCoupon}
                                 setEntCoupon={setEntCoupon}
+                                formErrorMessage={formErrorMessage}
+                                setFormErrorMessage={setFormErrorMessage}
                                 setEntOrder={setEntOrder}
                                 setErrorOrder={setErrorOrder}
                             />

@@ -163,11 +163,20 @@ body {
     overflow-x: hidden;
 }
 @media only screen and (max-width: 1050px) {
+    .price-menu-logo-container {
+        margin: auto;
+        text-align: center;
+    }
     .price-menu-container {
         display: block;
     }
     .price-menu-ul-container {
         overflow-x: auto;
+        text-align: center;
+        padding-inline-start: 0px;
+    }
+    .price-menu-ul {
+        padding-inline-start: 0px;
     }
 }
 
@@ -176,7 +185,6 @@ body {
 }
 .price-cover-img {
     height: 650px;
-    margin-left: 100px;
 }
 @media only screen and (max-width: 450px) {
     .price-cover-img {
@@ -281,6 +289,7 @@ body {
     border-radius: 40px;
     text-align: center;
     color: var(--color-unset);
+    padding: 0px 10px;
 }
 
 .price-product-header-icon {
@@ -333,6 +342,10 @@ body {
     .price-product-description {
         line-height: 20px;
         font-size: 14px;
+    }
+    .price-product-container {
+        padding: 20px;
+        padding-top: 160px;
     }
 }
 .price-product-icon {
@@ -454,6 +467,13 @@ body {
     margin-left: 10px;
     text-align: left;
     flex-grow: 1;
+}
+
+.pay-purchase-detail-coupon-btn {
+    background-color: var(--color-unset);
+    color: var(--color-primary-blue);
+    margin-left: 20px;
+    margin-right: 70px;
 }
 
 .pay-purchase-detail-item-name {
