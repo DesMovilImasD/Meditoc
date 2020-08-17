@@ -19,6 +19,12 @@ const PurchaseSummary = (props) => {
     //Guardar subtotal de la compra
     const [subtotal, setSubtotal] = useState(0);
 
+    //Guardar IVA
+    const [taxAmount, setTaxAmount] = useState(0);
+
+    //Gurdaar descuento
+    const [discountAmount, setDiscountAmount] = useState(0);
+
     //Actualizar montos cuando hay un cambio en el total a pagar
     const funcUpdateAmounts = () => {
         const subtotalAmount = productList.reduce((total, product) => total + product.qty * product.price, 0);
@@ -47,9 +53,15 @@ const PurchaseSummary = (props) => {
                     break;
             }
         }
-        let total = subtotalAmount - couponAmount;
+
+        const subTotalWithDiscount = subtotalAmount - couponAmount;
+
+        const tax = subTotalWithDiscount * appInfo.nIVA;
+        const total = subTotalWithDiscount + tax;
 
         setSubtotal(subtotalAmount);
+        setTaxAmount(tax);
+        setDiscountAmount(couponAmount);
         setTotalPayment(total);
     };
 
@@ -89,13 +101,21 @@ const PurchaseSummary = (props) => {
                             <Grid item xs={6} className="right">
                                 <span className="pay-purchase-detail-subtotal-text">
                                     -$
-                                    {Math.abs(totalPayment - subtotal).toLocaleString("en-US", {
+                                    {discountAmount.toLocaleString("en-US", {
                                         minimumFractionDigits: 2,
                                     })}
                                 </span>
                             </Grid>
                         </Fragment>
                     )}
+                    <Grid item xs={6} className="left">
+                        <span className="pay-purchase-detail-subtotal-text">IVA ({appInfo.nIVA * 100}%)</span>
+                    </Grid>
+                    <Grid item xs={6} className="right">
+                        <span className="pay-purchase-detail-subtotal-text">
+                            +${taxAmount.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                        </span>
+                    </Grid>
                     <Grid item xs={6} className="left">
                         <span className="pay-purchase-detail-total-text">Total</span>
                     </Grid>

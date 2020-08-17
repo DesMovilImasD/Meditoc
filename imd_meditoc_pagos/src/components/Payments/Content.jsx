@@ -41,31 +41,14 @@ const Content = (props) => {
     const funcCalcMonthlyPayments = () => {
         let monthlyPaymentsPreview = [];
 
-        if (totalPayment >= 300) {
-            monthlyPaymentsPreview.push({
-                value: "3",
-                label: "3 meses sin intereses",
-            });
-        }
-
-        if (totalPayment >= 600) {
-            monthlyPaymentsPreview.push({
-                value: "6",
-                label: "6 meses sin intereses",
-            });
-        }
-
-        if (totalPayment >= 900) {
-            monthlyPaymentsPreview.push({
-                value: "9",
-                label: "9 meses sin intereses",
-            });
-        }
-
-        if (totalPayment >= 1200) {
-            monthlyPaymentsPreview.push({
-                value: "12",
-                label: "12 meses sin intereses",
+        if (appInfo.bTieneMesesSinIntereses === true) {
+            appInfo.lstMensualidades.forEach((monthly) => {
+                if (totalPayment >= monthly.compra_minima) {
+                    monthlyPaymentsPreview.push({
+                        value: monthly.meses.toString(),
+                        label: monthly.descripcion,
+                    });
+                }
             });
         }
 

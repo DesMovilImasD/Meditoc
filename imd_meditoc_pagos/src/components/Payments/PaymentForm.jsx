@@ -17,9 +17,9 @@ import {
 } from "@material-ui/core";
 import { MdEmail, MdPerson, MdDateRange, MdVerifiedUser, MdAttachMoney, MdPhone, MdInfo } from "react-icons/md";
 import { FaCreditCard, FaCcVisa, FaCcMastercard, FaCcAmex } from "react-icons/fa";
-import InputExpirationDate from "./InputExpirationDate";
-import InputCardNumber from "./InputCardNumber";
-import InputCVV from "./InputCVV";
+import InputExpirationDate from "../Inputs/InputExpirationDate";
+import InputCardNumber from "../Inputs/InputCardNumber";
+import InputCVV from "../Inputs/InputCVV";
 import { serverWs, serverWa } from "../../configuration/serverConfig";
 import { apiBuy, apiRevalidateCoupon } from "../../configuration/apiConfig";
 import apiKeyToken, { apiKeyLanguage } from "../../configuration/tokenConfig";
@@ -32,7 +32,8 @@ import {
     rxAmexIcon,
     rxEmail,
 } from "../../configuration/regexConfig";
-import InputPhone from "./InputPhone";
+import InputPhone from "../Inputs/InputPhone";
+import { useTax } from "../../configuration/taxConfig";
 
 const useStyles = makeStyles((theme) => ({
     paylabel: {
@@ -391,6 +392,7 @@ const PaymentForm = (props) => {
         const entCreateOrder = {
             currency: "MXN",
             coupon: entCoupon === null ? null : entCoupon.fiIdCupon,
+            tax: useTax,
             pacienteUnico: {
                 sEmail: paymentForm.txtEmail,
                 sNombre: paymentForm.txtName,
@@ -705,7 +707,7 @@ const PaymentForm = (props) => {
                                 }
                             />
                         </Grid>
-                        <Grid item sm={6} xs={12}>
+                        <Grid item sm={appInfo.bTieneMesesSinIntereses === true ? 6 : 12} xs={12}>
                             <TextField
                                 id="txtPhone"
                                 name="txtPhone"
@@ -736,43 +738,45 @@ const PaymentForm = (props) => {
                                 }
                             />
                         </Grid>
-                        <Grid item sm={6} xs={12} className="left">
-                            <FormControl
-                                variant="outlined"
-                                fullWidth
-                                disabled={productList.length === 0 || monthlyPayments.length === 0}
-                            >
-                                <InputLabel id="lblModality" className={classes.paylabel}>
-                                    Modalidad de pago:
-                                </InputLabel>
-                                <Select
-                                    id="txtModality"
-                                    name="txtModality"
-                                    labelId="lblModality"
-                                    label="Modalidad de pago:"
-                                    displayEmpty
-                                    value={paymentForm.txtModality}
-                                    onChange={handleChangePaymentForm}
-                                    startAdornment={
-                                        <InputAdornment position="start">
-                                            <MdAttachMoney size={iconSize} className={iconClass} />
-                                        </InputAdornment>
-                                    }
-                                    error={
-                                        paymentForm.txtModality === "" &&
-                                        productList.length > 0 &&
-                                        paymentFormInvalidInputs.txtModality
-                                    }
+                        {appInfo.bTieneMesesSinIntereses === true ? (
+                            <Grid item sm={6} xs={12} className="left">
+                                <FormControl
+                                    variant="outlined"
+                                    fullWidth
+                                    disabled={productList.length === 0 || monthlyPayments.length === 0}
                                 >
-                                    <MenuItem value="1">Una sola exhibición</MenuItem>
-                                    {monthlyPayments.map((diferimiento) => (
-                                        <MenuItem key={diferimiento.value} value={diferimiento.value}>
-                                            {diferimiento.label}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </Grid>
+                                    <InputLabel id="lblModality" className={classes.paylabel}>
+                                        Modalidad de pago:
+                                    </InputLabel>
+                                    <Select
+                                        id="txtModality"
+                                        name="txtModality"
+                                        labelId="lblModality"
+                                        label="Modalidad de pago:"
+                                        displayEmpty
+                                        value={paymentForm.txtModality}
+                                        onChange={handleChangePaymentForm}
+                                        startAdornment={
+                                            <InputAdornment position="start">
+                                                <MdAttachMoney size={iconSize} className={iconClass} />
+                                            </InputAdornment>
+                                        }
+                                        error={
+                                            paymentForm.txtModality === "" &&
+                                            productList.length > 0 &&
+                                            paymentFormInvalidInputs.txtModality
+                                        }
+                                    >
+                                        <MenuItem value="1">Una sola exhibición</MenuItem>
+                                        {monthlyPayments.map((diferimiento) => (
+                                            <MenuItem key={diferimiento.value} value={diferimiento.value}>
+                                                {diferimiento.label}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                        ) : null}
                         <Grid item xs={12}>
                             <FormControlLabel
                                 control={

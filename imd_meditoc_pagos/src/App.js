@@ -31,6 +31,30 @@ function App() {
     sDireccionEmpresa: 'Calle 17 #113, Col. Itzimná, 97100, Mérida, Yuc.',
     sTelefonoEmpresa: '5551-003021',
     sTerminosYCondiciones: '#',
+    nIVA: 0.16,
+    bTieneMesesSinIntereses: false,
+    lstMensualidades: [
+      {
+        compra_minima: 300,
+        descripcion: '3 meses sin intereses',
+        meses: 3,
+      },
+      {
+        compra_minima: 600,
+        descripcion: '6 meses sin intereses',
+        meses: 6,
+      },
+      {
+        compra_minima: 900,
+        descripcion: '9 meses sin intereses',
+        meses: 9,
+      },
+      {
+        compra_minima: 1200,
+        descripcion: '12 meses sin intereses',
+        meses: 12,
+      },
+    ],
   })
 
   //Mostrar/Ocultar loader y configurar mensaje
