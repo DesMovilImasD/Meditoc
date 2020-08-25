@@ -26,7 +26,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.BSaveModulo);
-            logger.Info(IMDSerialize.Serialize(67823458189732, $"Inicia {metodo}(EntModulo entCreateModulo)", entModulo));
+            logger.Info(IMDSerialize.Serialize(67823458189732, $"Inicia {metodo}(EntModulo entModulo)", entModulo));
 
             try
             {
@@ -60,7 +60,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 response.Code = 67823458190509;
                 response.Message = "Ocurrió un error al intentar guardar el módulo.";
 
-                logger.Error(IMDSerialize.Serialize(67823458190509, $"Error en {metodo}(EntCreateCupon entCreateCupon): {ex.Message}", entModulo, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458190509, $"Error en {metodo}(EntModulo entModulo): {ex.Message}", entModulo, ex, response));
             }
             return response;
         }

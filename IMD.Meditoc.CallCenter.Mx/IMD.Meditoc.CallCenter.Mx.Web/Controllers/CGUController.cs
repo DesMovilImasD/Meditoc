@@ -45,7 +45,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.CCreateModulo);
-            logger.Info(IMDSerialize.Serialize(67823458338139, $"Inicia {metodo}([FromBody]EntSubModulo entCreateModulo)", entCreateSubModulo));
+            logger.Info(IMDSerialize.Serialize(67823458338139, $"Inicia {metodo}([FromBody]EntSubModulo entCreateSubModulo)", entCreateSubModulo));
 
             try
             {
@@ -57,7 +57,33 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
                 response.Code = 67823458122133;
                 response.Message = "Ocurrió un error inesperado";
 
-                logger.Error(IMDSerialize.Serialize(67823458338139, $"Error en {metodo}([FromBody]EntSubModulo entCreateModulo): {ex.Message}", entCreateSubModulo, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458338139, $"Error en {metodo}([FromBody]EntSubModulo entCreateSubModulo): {ex.Message}", entCreateSubModulo, ex, response));
+            }
+
+            return response;
+        }
+
+
+        [HttpPost]
+        [Route("Api/CGU/Create/Boton")]
+        public IMDResponse<bool> CCreateBoton([FromBody] EntBoton entBoton)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.CCreateModulo);
+            logger.Info(IMDSerialize.Serialize(67823458338139, $"Inicia {metodo}([FromBody]EntBoton entBoton)", entBoton));
+
+            try
+            {
+                BusBoton busBoton = new BusBoton();
+                response = busBoton.BSaveBoton(entBoton);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458122133;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458338139, $"Error en {metodo}([FromBody]EntBoton entBoton): {ex.Message}", entBoton, ex, response));
             }
 
             return response;

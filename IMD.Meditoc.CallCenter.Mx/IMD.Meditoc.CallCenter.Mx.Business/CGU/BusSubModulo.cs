@@ -4,16 +4,12 @@ using IMD.Meditoc.CallCenter.Mx.Data.CGU;
 using IMD.Meditoc.CallCenter.Mx.Entities.CGU;
 using log4net;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 {
     public class BusSubModulo
     {
-        private static readonly ILog logger = LogManager.GetLogger(typeof(BusModulo));
+        private static readonly ILog logger = LogManager.GetLogger(typeof(BusSubModulo));
         DatSubModulo datSubModulo;
 
         public BusSubModulo()
@@ -76,18 +72,20 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             logger.Info(IMDSerialize.Serialize(67823458189732, $"Inicia {metodo}(EntSubModulo entCreateModulo)", entSubModulo));
             try
             {
-                if (entSubModulo.sNombre == "")
-                {
-                    response.Code = 8768767234634;
-                    response.Message = "El nombre del submodulo no puede ser vacio";
-                    response.Result = false;
-                }
-
                 if (entSubModulo.iIdModulo == 0)
                 {
                     response.Code = 8768767234634;
                     response.Message = "Debe asignarle un módulo.";
                     response.Result = false;
+                    return response;
+                }
+
+                if (entSubModulo.sNombre == "")
+                {
+                    response.Code = 8768767234634;
+                    response.Message = "El nombre del submodulo no puede ser vacio";
+                    response.Result = false;
+
                     return response;
                 }
 
