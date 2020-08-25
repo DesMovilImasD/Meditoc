@@ -1,9 +1,17 @@
 //CONFIGURACIONES DE LAS URLS PARA LAS API'S
 
-const apiBuy = 'ClientesService.svc/NewUniqueQuery'
-const apiGetMemberships = 'ClientesService.svc/getMembership'
-const apiGetServices = 'ClientesService.svc/getServices'
-const apiGetPolicies = 'ClientesService.svc/getPolicies'
+// const apiBuy = 'ClientesService.svc/NewUniqueQuery'
+// const apiGetMemberships = 'ClientesService.svc/getMembership'
+// const apiGetServices = 'ClientesService.svc/getServices'
+// const apiGetPolicies = 'ClientesService.svc/getPolicies'
+// const apiRevalidateCoupon = 'api/promociones/validar/cupon/email'
+// const apiValidateCoupon = 'api/promociones/validar/cupon'
+
+//Unificado
+const apiBuy = 'api/clientes/service/ws/newuniquequery'
+const apiGetMemberships = 'api/clientes/service/ws/getmembership'
+const apiGetServices = 'api/clientes/service/ws/getservices'
+const apiGetPolicies = 'api/clientes/service/ws/getpolicies'
 const apiRevalidateCoupon = 'api/promociones/validar/cupon/email'
 const apiValidateCoupon = 'api/promociones/validar/cupon'
 

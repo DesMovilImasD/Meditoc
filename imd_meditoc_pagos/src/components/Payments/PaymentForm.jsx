@@ -34,6 +34,7 @@ import {
 } from "../../configuration/regexConfig";
 import InputPhone from "../Inputs/InputPhone";
 import { useTax } from "../../configuration/taxConfig";
+import { cardEnviromentProd, lstCardTest } from "../../configuration/cardConfig";
 
 const useStyles = makeStyles((theme) => ({
     paylabel: {
@@ -210,11 +211,13 @@ const PaymentForm = (props) => {
             errorForm = true;
             paymentFormInvalidInputsTemp.txtModality = true;
         }
+
         if (invalidCardNumber) {
             //formErrorMessage = "Número de tarjeta no válido";
             errorForm = true;
             paymentFormInvalidInputsTemp.txtCardNumber = true;
         }
+
         if (!acceptedPolicies) {
             formErrorMessage = "Es necesario aceptar los términos y condiciones para continuar";
             errorForm = true;
@@ -256,7 +259,13 @@ const PaymentForm = (props) => {
             return;
         }
 
-        const validateCardNetWork = funcValidateCardNetwork(cardNumberCompare);
+        let validateCardNetWork = funcValidateCardNetwork(cardNumberCompare);
+
+        if (cardEnviromentProd) {
+            if (lstCardTest.includes(cardNumberCompare)) {
+                validateCardNetWork = false;
+            }
+        }
 
         setInvalidCardNumber(!validateCardNetWork);
 
@@ -812,7 +821,7 @@ const PaymentForm = (props) => {
                                 }
                             />
                         </Grid>
-                        <Grid xs={12}>
+                        <Grid item xs={12}>
                             <Button
                                 variant="contained"
                                 color="secondary"
