@@ -7,6 +7,12 @@
 // const logoMeditocCover = '/img/portada-meditoc.png'
 
 //locutorios
+// const logoMeditocMain = '/store/img/logo-meditoc-main.png'
+// const logoMeditocWhite = '/store/img/logo-meditoc-white.png'
+// const logoMeditocSolutions = '/store/img/logo-soluciones.png'
+// const logoMeditocCover = '/store/img/portada-meditoc.png'
+
+//produccion
 const logoMeditocMain = '/store/img/logo-meditoc-main.png'
 const logoMeditocWhite = '/store/img/logo-meditoc-white.png'
 const logoMeditocSolutions = '/store/img/logo-soluciones.png'

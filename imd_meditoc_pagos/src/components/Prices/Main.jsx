@@ -4,6 +4,7 @@ import Menu from "./Menu";
 import Cover from "./Cover";
 import Content from "./Content";
 import Footer from "../Footer";
+import Header from "../Payments/Header";
 
 /*****************************************************
  * Descripción: Estructura principal de la pagina de precios
@@ -17,7 +18,8 @@ const Main = (props) => {
     return (
         <Fragment>
             <Menu />
-            <Cover />
+            {/* <Cover /> */}
+            <Header />
             <Content funcLoader={funcLoader} />
             <Footer appInfo={appInfo} />
         </Fragment>
