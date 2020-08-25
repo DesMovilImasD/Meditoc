@@ -37,7 +37,7 @@ const Footer = (props) => {
                         <iframe
                             className="price-footer-map"
                             title="Meditoc Location"
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.315693635686!2d-89.58824038507066!3d21.02005069345141!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f56777d3feca8a9%3A0x966957e4a035a499!2sMEDITOC%20%26%20HS!5e0!3m2!1ses-419!2smx!4v1595687909106!5m2!1ses-419!2smx"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.958440195036!2d-89.61451628507096!3d20.994302994329722!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f56714c5cf1af03%3A0x3d073af1dacc236a!2sCalle%2017%20113%2C%20Itzimn%C3%A1%2C%2097100%20M%C3%A9rida%2C%20Yuc.!5e0!3m2!1ses-419!2smx!4v1598395529016!5m2!1ses-419!2smx"
                             frameBorder="0"
                             allowFullScreen=""
                             aria-hidden="false"

@@ -206,8 +206,7 @@ const Content = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                     <span className="price-content-description">
-                        Meditoc 360 ofrece orientación médica, nutricional y psicológica a distancia los 365 días del
-                        año,
+                        Meditoc 360 ofrece orientación médica, nutricional y psicológica a distancia,
                         <br /> brindando acceso a servicio de salud de calidad.
                     </span>
                 </Grid>

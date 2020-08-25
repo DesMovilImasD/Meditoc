@@ -60,15 +60,33 @@ code {
     font-family: var(--font-default);
 }
 
+.rob-nor {
+    font-family: var(--font-primary);
+}
+
+.ops-nor {
+    font-family: var(--font-secondary);
+}
+
 .color-0 {
     color: var(--color-unset);
 }
 .color-1 {
     color: var(--color-primary-blue);
 }
+.color-2 {
+    color: var(--color-secondary-blue);
+}
+.color-3 {
+    color: var(--color-primary-gray);
+}
 
 .bg-color-1 {
     background-color: var(--color-primary-blue);
+}
+
+.bg-color-2 {
+    background-color: var(--color-secondary-blue);
 }
 
 .bold {
@@ -124,4 +142,34 @@ code {
 
 .pad-right-10 {
     padding-right: 50px;
+}
+
+.bar-main {
+    width: 100%;
+    height: auto;
+    background-color: var(--color-primary-blue);
+    color: white;
+    display: flex;
+    box-sizing: border-box;
+    padding-left: 20px;
+    padding-right: 40px;
+    margin-bottom: 20px;
+}
+
+.bar-content {
+    width: 90%;
+    margin: auto;
+}
+
+.acc-content {
+    width: 90%;
+    margin: auto;
+}
+
+.align-self-center {
+    align-self: center;
+}
+
+.vertical-align-middle {
+    vertical-align: middle;
 }

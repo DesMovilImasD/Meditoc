@@ -15,6 +15,12 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import LoyaltyIcon from "@material-ui/icons/Loyalty";
 import GradeIcon from "@material-ui/icons/Grade";
 import CardMembershipIcon from "@material-ui/icons/CardMembership";
+import CallIcon from "@material-ui/icons/Call";
+import ContactPhoneIcon from "@material-ui/icons/ContactPhone";
+import AddIcCallIcon from "@material-ui/icons/AddIcCall";
+import PrintIcon from "@material-ui/icons/Print";
+import LocalMallIcon from "@material-ui/icons/LocalMall";
+import LocalHospitalIcon from "@material-ui/icons/LocalHospital";
 
 const useStyles = makeStyles({
     nested: {
@@ -34,6 +40,8 @@ const MenuList = (props) => {
     const [openConfiguracion, setOpenConfiguracion] = useState(false);
     const [openAdministracion, setOpenAdministracion] = useState(false);
     const [openFolios, setOpenFolios] = useState(false);
+    const [openCallCenter, setOpenCallCenter] = useState(false);
+    const [openReportes, setOpenReportes] = useState(false);
 
     return (
         <List component="div">
@@ -130,6 +138,60 @@ const MenuList = (props) => {
                                 <CardMembershipIcon className="color-0" />
                             </ListItemIcon>
                             <ListItemText primary="Folios" />
+                        </ListItem>
+                    </Link>
+                </List>
+            </Collapse>
+            <ListItem button onClick={() => setOpenCallCenter(!openCallCenter)}>
+                <ListItemIcon>
+                    <CallIcon className="color-0" />
+                </ListItemIcon>
+                <ListItemText primary="CallCenter" />
+                {openCallCenter ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={openCallCenter} unmountOnExit>
+                <List component="div">
+                    <Link to={urlSystem.callcenter.consultas} className={classes.link}>
+                        <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
+                            <ListItemIcon>
+                                <ContactPhoneIcon className="color-0" />
+                            </ListItemIcon>
+                            <ListItemText primary="Consultas" />
+                        </ListItem>
+                    </Link>
+                    <Link to={urlSystem.callcenter.administrarConsultas} className={classes.link}>
+                        <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
+                            <ListItemIcon>
+                                <AddIcCallIcon className="color-0" />
+                            </ListItemIcon>
+                            <ListItemText primary="Administrar consultas" />
+                        </ListItem>
+                    </Link>
+                </List>
+            </Collapse>
+            <ListItem button onClick={() => setOpenReportes(!openReportes)}>
+                <ListItemIcon>
+                    <PrintIcon className="color-0" />
+                </ListItemIcon>
+                <ListItemText primary="Reportes" />
+                {openReportes ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={openReportes} unmountOnExit>
+                <List component="div">
+                    <Link to={urlSystem.reportes.ordenes} className={classes.link}>
+                        <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
+                            <ListItemIcon>
+                                <LocalMallIcon className="color-0" />
+                            </ListItemIcon>
+                            <ListItemText primary="Conekta" />
+                        </ListItem>
+                    </Link>
+                    <Link to={urlSystem.reportes.doctores} className={classes.link}>
+                        <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
+                            <ListItemIcon>
+                                <LocalHospitalIcon className="color-0" />
+                            </ListItemIcon>
+                            <ListItemText primary="Doctores" />
                         </ListItem>
                     </Link>
                 </List>
