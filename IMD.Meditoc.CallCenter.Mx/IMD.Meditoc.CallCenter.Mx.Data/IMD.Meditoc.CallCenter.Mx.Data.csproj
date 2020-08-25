@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="CGU\DatBoton.cs" />
     <Compile Include="CGU\DatModulo.cs" />
+    <Compile Include="CGU\DatPerfil.cs" />
     <Compile Include="CGU\DatSubModulo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

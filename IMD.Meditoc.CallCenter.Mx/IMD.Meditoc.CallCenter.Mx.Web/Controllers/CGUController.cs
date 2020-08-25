@@ -17,7 +17,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         [Route("Api/CGU/Create/Modulo")]
         public IMDResponse<bool> CCreateModulo([FromBody] EntModulo entCreateModulo)
         {
-            IMDResponse<bool> response = new IMDResponse<bool>();            
+            IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.CCreateModulo);
             logger.Info(IMDSerialize.Serialize(67823458338139, $"Inicia {metodo}([FromBody]EntCreateModulo entCreateModulo)", entCreateModulo));
@@ -84,6 +84,31 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458338139, $"Error en {metodo}([FromBody]EntBoton entBoton): {ex.Message}", entBoton, ex, response));
+            }
+
+            return response;
+        }
+
+        [HttpPost]
+        [Route("Api/CGU/Create/Perfil")]
+        public IMDResponse<bool> CCreatePerfil([FromBody] EntPerfil entPerfil)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.CCreateModulo);
+            logger.Info(IMDSerialize.Serialize(67823458338139, $"Inicia {metodo}([FromBody]EntPerfil entPerfil)", entPerfil));
+
+            try
+            {
+                BusPerfil busPerfil = new BusPerfil();
+                response = busPerfil.BSavePerfil(entPerfil);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458122133;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458338139, $"Error en {metodo}([FromBody]EntPerfil entPerfil): {ex.Message}", entPerfil, ex, response));
             }
 
             return response;
