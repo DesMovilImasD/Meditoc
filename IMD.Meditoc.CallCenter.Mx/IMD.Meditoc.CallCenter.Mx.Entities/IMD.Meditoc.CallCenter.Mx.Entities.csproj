@@ -57,6 +57,7 @@
     <Compile Include="CGU\EntModulo.cs" />
     <Compile Include="CGU\EntPerfil.cs" />
     <Compile Include="CGU\EntSubModulo.cs" />
+    <Compile Include="CGU\EntUsuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
