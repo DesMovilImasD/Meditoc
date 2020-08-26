@@ -4,6 +4,7 @@ using IMD.Meditoc.CallCenter.Mx.Business.CGU;
 using IMD.Meditoc.CallCenter.Mx.Entities.CGU;
 using log4net;
 using System;
+using System.Collections.Generic;
 using System.Web.Http;
 
 namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
@@ -134,6 +135,31 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458338139, $"Error en {metodo}([FromBody]EntUsuario entUsuario): {ex.Message}", entUsuario, ex, response));
+            }
+
+            return response;
+        }
+
+        [HttpPost]
+        [Route("Api/CGU/GET/PermisoXPerfil")]
+        public IMDResponse<List<EntPermisoSistema>> CObtenerPermisoxPerfil([FromBody] int? iIdPerfil)
+        {
+            IMDResponse<List<EntPermisoSistema>> response = new IMDResponse<List<EntPermisoSistema>>();
+
+            string metodo = nameof(this.CCreateModulo);
+            logger.Info(IMDSerialize.Serialize(67823458352902, $"Inicia {metodo}([FromBody] int? iIdPerfil)", iIdPerfil));
+
+            try
+            {
+                BusPermiso busPermiso = new BusPermiso();
+                response = busPermiso.BObtenerPermisoxPerfil(iIdPerfil);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458122133;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458352902, $"Error en {metodo}([FromBody] int? iIdPerfil): {ex.Message}", iIdPerfil, ex, response));
             }
 
             return response;

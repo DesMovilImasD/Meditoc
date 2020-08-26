@@ -20,6 +20,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
         private Database database;
         IMDCommonData imdCommonData;
         private string savePermiso;
+        private string ObterPermisosxPerfil;
 
         public DatPermiso()
         {
@@ -28,6 +29,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             database = imdCommonData.DGetDatabase(FsConnectionString, "MeditocComercial", "Meditoc1");
 
             savePermiso = "sva_cgu_save_permiso";
+            ObterPermisosxPerfil = "svc_cgu_system";
         }
         public IMDResponse<bool> DSavePermiso(EntPermiso entPermiso)
         {
@@ -58,6 +60,33 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458346686, $"Error en {metodo}(EntPermiso entPermiso): {ex.Message}", entPermiso, ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<DataTable> DObtenerPermisosPorPerfil(int? iIdPerfil)
+        {
+            IMDResponse<DataTable> response = new IMDResponse<DataTable>();
+
+            string metodo = nameof(this.DObtenerPermisosPorPerfil);
+            logger.Info(IMDSerialize.Serialize(67823458351348, $"Inicia {metodo}(int iIdPerfil)", iIdPerfil));
+
+            try
+            {
+
+                using (DbCommand dbCommand = database.GetStoredProcCommand(ObterPermisosxPerfil))
+                {
+                    database.AddInParameter(dbCommand, "piIdPerfil", DbType.Int32, iIdPerfil);
+
+                    response = imdCommonData.DExecuteDT(database, dbCommand);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458352125;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458352125, $"Error en {metodo}: {ex.Message}(int iIdPerfil)", ex, iIdPerfil, response));
             }
             return response;
         }
