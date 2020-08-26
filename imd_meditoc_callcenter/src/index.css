@@ -135,6 +135,9 @@ code {
     height: 40px;
     margin: 20px 0px;
 }
+.flex {
+    display: flex;
+}
 
 .flx-grw-1 {
     flex-grow: 1;
@@ -142,6 +145,10 @@ code {
 
 .pad-right-10 {
     padding-right: 50px;
+}
+
+.pad-left-20 {
+    padding-left: 20px;
 }
 
 .bar-main {
@@ -162,7 +169,7 @@ code {
 }
 
 .acc-content {
-    width: 90%;
+    width: 95%;
     margin: auto;
 }
 
@@ -172,4 +179,40 @@ code {
 
 .vertical-align-middle {
     vertical-align: middle;
+}
+
+.modal-form {
+    background-color: var(--color-unset);
+    outline: none;
+    margin: auto;
+    margin-top: 40px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14),
+        0px 9px 46px 8px rgba(0, 0, 0, 0.12);
+}
+
+.modal-small {
+    max-width: 550px;
+}
+.modal-normal {
+    max-width: 800px;
+}
+.modal-large {
+    max-width: 1200px;
+}
+
+.modal-form-header {
+    display: flex;
+    background-color: var(--color-primary-blue);
+    border-radius: 10px 10px 0px 0px;
+}
+
+.modal-from-content {
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+.MuiTableSortLabel-icon {
+    opacity: 1 !important;
 }

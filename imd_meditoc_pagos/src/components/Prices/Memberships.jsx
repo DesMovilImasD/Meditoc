@@ -46,7 +46,7 @@ const Memberships = (props) => {
                 <div className="price-product-header-icon">
                     <FaUser />
                 </div>
-                <div className="price-product-header-title">Miembro</div>
+                <div className="price-product-header-title">Membresía particular</div>
             </div>
             <Grid container>
                 <Grid item xs={12}>

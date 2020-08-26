@@ -223,7 +223,7 @@ body {
     }
 }
 .price-content-container {
-    width: 80%;
+    width: 85%;
     margin: auto;
     margin-bottom: 80px;
 }
@@ -279,7 +279,33 @@ body {
     padding: 40px;
     padding-top: 160px;
 }
+
+.price-product-container-small {
+    max-width: 330px;
+    margin: auto;
+    background-color: var(--color-unset);
+    height: 160px;
+    box-shadow: 0px 0px 26px -13px rgba(0, 0, 0, 0.75);
+    border-radius: 40px;
+    position: relative;
+    padding: 40px;
+    padding-top: 160px;
+}
+
 .price-product-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 150px;
+    background-color: var(--color-primary-blue);
+    border-radius: 40px;
+    text-align: center;
+    color: var(--color-unset);
+    padding: 0px 10px;
+}
+
+.price-product-header-small {
     position: absolute;
     top: 0;
     left: 0;
