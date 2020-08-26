@@ -79,6 +79,15 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     return response;
                 }
 
+                if (entUsuario.iIdPerfil == 0)
+                {
+                    response.Code = 67823458345132;
+                    response.Message = "Debe tener asignado un perfil.";
+                    response.Result = false;
+
+                    return response;
+                }
+
 
                 if (entUsuario.sUsuario == "")
                 {

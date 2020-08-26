@@ -53,7 +53,9 @@
     <Compile Include="CGU\BusBoton.cs" />
     <Compile Include="CGU\BusModulo.cs" />
     <Compile Include="CGU\BusPerfil.cs" />
+    <Compile Include="CGU\BusPermiso.cs" />
     <Compile Include="CGU\BusSubModulo.cs" />
+    <Compile Include="CGU\BusUsuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

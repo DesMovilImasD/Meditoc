@@ -113,5 +113,55 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 
             return response;
         }
+
+        [HttpPost]
+        [Route("Api/CGU/Create/Usuario")]
+        public IMDResponse<bool> CCreateUsuario([FromBody] EntUsuario entUsuario)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.CCreateModulo);
+            logger.Info(IMDSerialize.Serialize(67823458338139, $"Inicia {metodo}([FromBody]EntUsuario entUsuario)", entUsuario));
+
+            try
+            {
+                BusUsuario busUsuario = new BusUsuario();
+                response = busUsuario.DSaveUsuario(entUsuario);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458122133;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458338139, $"Error en {metodo}([FromBody]EntUsuario entUsuario): {ex.Message}", entUsuario, ex, response));
+            }
+
+            return response;
+        }
+
+        [HttpPost]
+        [Route("Api/CGU/Create/Permiso")]
+        public IMDResponse<bool> CCreatePermiso([FromBody] EntPermiso entPermiso)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.CCreateModulo);
+            logger.Info(IMDSerialize.Serialize(67823458338139, $"Inicia {metodo}([FromBody]EntPermiso entPermiso)", entPermiso));
+
+            try
+            {
+                BusPermiso busPermiso = new BusPermiso();
+                response = busPermiso.DSavePermiso(entPermiso);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458122133;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458338139, $"Error en {metodo}([FromBody]EntPermiso entPermiso): {ex.Message}", entPermiso, ex, response));
+            }
+
+            return response;
+        }
     }
 }
