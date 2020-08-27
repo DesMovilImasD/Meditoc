@@ -167,24 +167,24 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 
         [HttpPost]
         [Route("Api/CGU/Create/Permiso")]
-        public IMDResponse<bool> CCreatePermiso([FromBody] EntPermiso entPermiso)
+        public IMDResponse<bool> CCreatePermiso([FromBody] List<EntPermiso> entPermisos)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.CCreateModulo);
-            logger.Info(IMDSerialize.Serialize(67823458338139, $"Inicia {metodo}([FromBody]EntPermiso entPermiso)", entPermiso));
+            logger.Info(IMDSerialize.Serialize(67823458338139, $"Inicia {metodo}([FromBody]EntPermiso entPermiso)", entPermisos));
 
             try
             {
                 BusPermiso busPermiso = new BusPermiso();
-                response = busPermiso.DSavePermiso(entPermiso);
+                response = busPermiso.DSavePermiso(entPermisos);
             }
             catch (Exception ex)
             {
                 response.Code = 67823458122133;
                 response.Message = "Ocurrió un error inesperado";
 
-                logger.Error(IMDSerialize.Serialize(67823458338139, $"Error en {metodo}([FromBody]EntPermiso entPermiso): {ex.Message}", entPermiso, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458338139, $"Error en {metodo}([FromBody]EntPermiso entPermiso): {ex.Message}", entPermisos, ex, response));
             }
 
             return response;

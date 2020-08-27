@@ -20,30 +20,41 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
         {
             datPermiso = new DatPermiso();
         }
-        public IMDResponse<bool> DSavePermiso(EntPermiso entPermiso)
+        public IMDResponse<bool> DSavePermiso(List<EntPermiso> entPermisos)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.DSavePermiso);
-            logger.Info(IMDSerialize.Serialize(67823458347463, $"Inicia {metodo}(EntPermiso entPermiso)", entPermiso));
+            logger.Info(IMDSerialize.Serialize(67823458347463, $"Inicia {metodo}(EntPermiso entPermiso)", entPermisos));
 
             try
             {
-                if (entPermiso == null)
+                if (entPermisos == null)
                 {
                     response.Code = 67823458339693;
                     response.Message = "No se ingresó ningun permiso.";
                     return response;
                 }
 
-                response = bValidaDatos(entPermiso);
-
-                if (!response.Result) //Se valida que los datos que contiene el objeto de perfil no esten vacios.
+                foreach (EntPermiso entPermiso in entPermisos)
                 {
-                    return response;
-                }
 
-                response = datPermiso.DSavePermiso(entPermiso);
+
+                    response = bValidaDatos(entPermiso);
+
+                    if (!response.Result) //Se valida que los datos que contiene el objeto de perfil no esten vacios.
+                    {
+                        return response;
+                    }
+
+                    response = datPermiso.DSavePermiso(entPermiso);
+                    if(response.Code != 0)
+                    {
+                        response.Code = 67823458339693;
+                        response.Message = "No se pudieron guardar todos los permisos. Actualice la página antes de intentar de nuevo";
+                        return response;
+                    }
+                }
 
                 response.Code = 0;
                 //response.Message = entPermiso.iid == 0 ? "El perfil se guardó correctamente" : "El perfil se actualizo correctamente";
@@ -55,7 +66,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 response.Code = 67823458348240;
                 response.Message = "Ocurrió un error inesperado";
 
-                logger.Error(IMDSerialize.Serialize(67823458348240, $"Error en {metodo}(EntPermiso entPermiso): {ex.Message}", entPermiso, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458348240, $"Error en {metodo}(EntPermiso entPermiso): {ex.Message}", entPermisos, ex, response));
             }
             return response;
         }
