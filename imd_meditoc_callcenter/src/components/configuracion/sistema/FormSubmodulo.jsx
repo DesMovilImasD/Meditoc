@@ -1,15 +1,49 @@
 import React, { useState } from "react";
 import ModalForm from "../../ModalForm";
 import { Grid, TextField, Button } from "@material-ui/core";
+import CGUController from "../../../controllers/CGUController";
 
+/*************************************************************
+ * Descripcion: Modal del formulario para Agregar/Modificar un submódulo
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ * Invocado desde: SistemaSubmodulo (Modificar), SistemaModulo (Agregar)
+ *************************************************************/
 const FormSubmodulo = (props) => {
-    const { entSubmodulo, open, setOpen } = props;
+    const { entSubmodulo, open, setOpen, usuarioSesion, funcGetPermisosXPerfil, funcLoader, funcAlert } = props;
+
+    const cguController = new CGUController();
 
     const [formSubmodulo, setFormSubmodulo] = useState({
         txtIdModulo: entSubmodulo.iIdModulo,
-        txtIdSubmodulo: entSubmodulo.iIdSubmodulo,
+        txtIdSubmodulo: entSubmodulo.iIdSubModulo,
         txtNombre: entSubmodulo.sNombre,
     });
+
+    const funcSaveSubmodulo = async () => {
+        funcLoader(true, "Guardando submódulo...");
+
+        const entSaveSubmodulo = {
+            iIdModulo: entSubmodulo.iIdModulo,
+            iIdSubModulo: entSubmodulo.iIdSubModulo,
+            iIdUsuarioMod: usuarioSesion.iIdUsuario,
+            sNombre: formSubmodulo.txtNombre,
+            bActivo: true,
+            bBaja: false,
+        };
+
+        const response = await cguController.funcSaveSubmodulo(entSaveSubmodulo);
+        if (response.Code !== 0) {
+            funcAlert(response.Message);
+        } else {
+            setOpen(false);
+            funcAlert(response.Message, "success");
+            //setFormSubmodulo({ ...formSubmodulo, txtNombre: "" });
+            funcGetPermisosXPerfil();
+        }
+
+        funcLoader();
+    };
 
     const handleClose = () => {
         setOpen(false);
@@ -24,7 +58,7 @@ const FormSubmodulo = (props) => {
 
     return (
         <ModalForm
-            title={entSubmodulo.iIdSubmodulo == 0 ? "Nuevo submódulo" : "Editar submódulo"}
+            title={entSubmodulo.iIdSubModulo == 0 ? "Nuevo submódulo" : "Editar submódulo"}
             size="small"
             open={open}
             setOpen={setOpen}
@@ -44,7 +78,7 @@ const FormSubmodulo = (props) => {
                     </Grid>
                 ) : null}
 
-                {entSubmodulo.iIdSubmodulo > 0 ? (
+                {entSubmodulo.iIdSubModulo > 0 ? (
                     <Grid item xs={12}>
                         <TextField
                             name="txtIdSubmodulo"
@@ -71,7 +105,7 @@ const FormSubmodulo = (props) => {
                     />
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="primary" fullWidth>
+                    <Button variant="contained" color="primary" fullWidth onClick={funcSaveSubmodulo}>
                         Guardar
                     </Button>
                 </Grid>

@@ -39,7 +39,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
                 using (DbCommand dbCommand = database.GetStoredProcCommand(saveModulo))
                 {
                     database.AddInParameter(dbCommand, "piIdModulo", DbType.Int32, entSubModulo.iIdModulo);
-                    database.AddInParameter(dbCommand, "piIdSubmodulo", DbType.Int32, entSubModulo.iIdModulo);
+                    database.AddInParameter(dbCommand, "piIdSubmodulo", DbType.Int32, entSubModulo.iIdSubModulo);
                     database.AddInParameter(dbCommand, "piIdUsuarioMod", DbType.Int32, entSubModulo.iIdUsuarioMod);
                     database.AddInParameter(dbCommand, "psNombre", DbType.String, entSubModulo.sNombre);
                     database.AddInParameter(dbCommand, "pbActivo", DbType.Boolean, entSubModulo.bActivo);
@@ -51,7 +51,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             catch (Exception ex)
             {
                 response.Code = 67823458184293;
-                response.Message = "Ocurrió un error al intentar guardar el módulo.";
+                response.Message = "Ocurrió un error al intentar guardar el submódulo.";
 
                 logger.Error(IMDSerialize.Serialize(67823458332700, $"Error en {metodo}(EntSubModulo entSubModulo): {ex.Message}", entSubModulo, ex, response));
             }

@@ -4,6 +4,7 @@ using IMD.Admin.Utilities.Entities;
 using IMD.Meditoc.CallCenter.Mx.Entities.CGU;
 using log4net;
 using Microsoft.Practices.EnterpriseLibrary.Data;
+using Newtonsoft.Json;
 using System;
 using System.Data;
 using System.Data.Common;
@@ -16,7 +17,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
         private Database database;
         IMDCommonData imdCommonData;
         private string saveBoton;
-
         public DatBoton()
         {
             imdCommonData = new IMDCommonData();
@@ -38,9 +38,10 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
                 using (DbCommand dbCommand = database.GetStoredProcCommand(saveBoton))
                 {
                     database.AddInParameter(dbCommand, "piIdModulo", DbType.Int32, entBoton.iIdModulo);
-                    database.AddInParameter(dbCommand, "piIdUsuarioMod", DbType.Int32, entBoton.iIdUsuarioMod);
+                    database.AddInParameter(dbCommand, "piIdSubmodulo", DbType.Int32, entBoton.iIdSubModulo);
                     database.AddInParameter(dbCommand, "piIdButon", DbType.Int32, entBoton.iIdBoton);
                     database.AddInParameter(dbCommand, "psNombre", DbType.String, entBoton.sNombre);
+                    database.AddInParameter(dbCommand, "piIdUsuarioMod", DbType.Int32, entBoton.iIdUsuarioMod);
                     database.AddInParameter(dbCommand, "pbActivo", DbType.Boolean, entBoton.bActivo);
                     database.AddInParameter(dbCommand, "pbBaja", DbType.Boolean, entBoton.bBaja);
 

@@ -16,6 +16,12 @@ const useStyles = makeStyles({
     },
 });
 
+/*************************************************************
+ * Descripcion: Representa el conteneder desplegable del Menú lateral izquierdo
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ * Invocado desde: ContentMain
+ *************************************************************/
 const DrawerMenu = (props) => {
     const { drawerOpen, toggleDrawer } = props;
 

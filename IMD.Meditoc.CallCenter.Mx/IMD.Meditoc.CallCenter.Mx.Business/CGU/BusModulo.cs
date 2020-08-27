@@ -3,6 +3,7 @@ using IMD.Admin.Utilities.Entities;
 using IMD.Meditoc.CallCenter.Mx.Data.CGU;
 using IMD.Meditoc.CallCenter.Mx.Entities.CGU;
 using log4net;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +49,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 
                 if (response.Code != 0)
                 {
-                    response.Message = "Hubo un error al guardar el módulo.";
+                    return response;
                 }
 
                 response.Code = 0;

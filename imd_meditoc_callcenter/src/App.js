@@ -6,8 +6,12 @@ import { SnackbarProvider } from 'notistack'
 import Alert from './components/Alert'
 import ContentMain from './components/ContentMain'
 import { HashRouter } from 'react-router-dom'
-import { urlBase } from './configurations/urlConfig'
-
+/*************************************************************
+ * Descripcion: App del proyecto
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ * Invocado desde:  ---------Elemento Raíz----------
+ *************************************************************/
 function App() {
   //Guardar valores de estado del loader
   const [entLoader, setEntLoader] = useState({
@@ -62,7 +66,7 @@ function App() {
         <HashRouter>
           <Loader entLoader={entLoader} />
           <Alert entAlert={entAlert} />
-          <ContentMain />
+          <ContentMain funcLoader={funcLoader} funcAlert={funcAlert} />
         </HashRouter>
       </SnackbarProvider>
     </ThemeProvider>

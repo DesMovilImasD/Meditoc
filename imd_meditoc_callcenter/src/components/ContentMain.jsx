@@ -3,16 +3,21 @@ import NavBar from "./NavBar";
 import DrawerMenu from "./DrawerMenu";
 import { Switch, Route } from "react-router-dom";
 import { urlSystem } from "../configurations/urlConfig";
-import { Button } from "@material-ui/core";
 import Sistema from "./configuracion/sistema/Sistema";
-import ModalForm from "./ModalForm";
-import { lstSistemaTemp } from "../configurations/systemConfigTemp";
 import Perfiles from "./configuracion/perfiles/Perfiles";
 
-const ContentMain = () => {
+/*************************************************************
+ * Descripcion: Contiene las secciones y vistas de todo el portal de Meditoc
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ * Invocado desde: App
+ *************************************************************/
+const ContentMain = (props) => {
+    const { funcLoader, funcAlert } = props;
     const [drawerOpen, setDrawerOpen] = useState(false);
-
-    const [listaSistema, setListaSistema] = useState([]);
+    const [usuarioSesion, setUsuarioSesion] = useState({
+        iIdUsuario: 1,
+    });
 
     const toggleDrawer = (open) => (event) => {
         if (event.type === "keydown" && (event.key === "Tab" || event.key === "Shift")) {
@@ -29,10 +34,10 @@ const ContentMain = () => {
             <div>
                 <Switch>
                     <Route exact path={urlSystem.configuracion.sistema}>
-                        <Sistema listaSistema={listaSistema} setListaSistema={setListaSistema} />
+                        <Sistema usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
                     </Route>
                     <Route exact path={urlSystem.configuracion.perfiles}>
-                        <Perfiles listaSistema={listaSistema} setListaSistema={setListaSistema} />
+                        <Perfiles />
                     </Route>
                 </Switch>
             </div>

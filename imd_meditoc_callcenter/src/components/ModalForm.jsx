@@ -1,7 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Modal, IconButton, Fade, Backdrop } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 
+/*************************************************************
+ * Descripcion: Contiene la estructura y diseño para los modales del portal Meditoc
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ * Invocado desde: EliminarBoton, EliminarModulo, EliminarSubmodulo, FormBoton, FormModulo, FormSubmodulo
+ *************************************************************/
 const ModalForm = (props) => {
     const { size, title, children, open, setOpen } = props;
 

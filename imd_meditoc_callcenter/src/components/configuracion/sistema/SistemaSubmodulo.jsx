@@ -34,15 +34,21 @@ const useStyles = makeStyles({
     },
 });
 
+/*************************************************************
+ * Descripcion: Representa una fila de Submódulo con sus botones de "Agregar botón", "Editar submódulo" y "Eliminar submódulo"
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ * Invocado desde: SistemaModulo
+ *************************************************************/
 const SistemaSubmodulo = (props) => {
-    const { submodulo } = props;
+    const { submodulo, usuarioSesion, funcGetPermisosXPerfil, funcLoader, funcAlert } = props;
 
     const classes = useStyles();
     const colorClass = "color-2";
 
     const entBotonNuevo = {
         iIdModulo: submodulo.iIdModulo,
-        iIdSubmodulo: submodulo.iIdSubmodulo,
+        iIdSubModulo: submodulo.iIdSubModulo,
         iIdBoton: 0,
         sNombre: "",
     };
@@ -80,7 +86,7 @@ const SistemaSubmodulo = (props) => {
                     <div className="align-self-center flx-grw-1">
                         <WebIcon className={colorClass + " vertical-align-middle"} />
                         <span className={colorClass + " size-15"}>
-                            {submodulo.sNombre} ({submodulo.iIdSubmodulo})
+                            {submodulo.sNombre} ({submodulo.iIdSubModulo})
                         </span>
                     </div>
                     <Tooltip title={`Agregar un botón a ${submodulo.sNombre}`} placement="top" arrow>
@@ -105,7 +111,14 @@ const SistemaSubmodulo = (props) => {
                             <Table size="small">
                                 <TableBody>
                                     {submodulo.lstBotones.map((boton) => (
-                                        <SistemaBoton key={boton.iIdBoton} boton={boton} />
+                                        <SistemaBoton
+                                            key={boton.iIdBoton}
+                                            boton={boton}
+                                            usuarioSesion={usuarioSesion}
+                                            funcGetPermisosXPerfil={funcGetPermisosXPerfil}
+                                            funcLoader={funcLoader}
+                                            funcAlert={funcAlert}
+                                        />
                                     ))}
                                 </TableBody>
                             </Table>
@@ -117,13 +130,29 @@ const SistemaSubmodulo = (props) => {
                 entSubmodulo={submodulo}
                 open={modalEditarSubmoduloOpen}
                 setOpen={setModalEditarSubmoduloOpen}
+                usuarioSesion={usuarioSesion}
+                funcGetPermisosXPerfil={funcGetPermisosXPerfil}
+                funcLoader={funcLoader}
+                funcAlert={funcAlert}
             />
             <EliminarSubmodulo
                 entSubmodulo={submodulo}
                 open={modalEliminarSubmoduloOpen}
                 setOpen={setModalEliminarSubmoduloOpen}
+                usuarioSesion={usuarioSesion}
+                funcGetPermisosXPerfil={funcGetPermisosXPerfil}
+                funcLoader={funcLoader}
+                funcAlert={funcAlert}
             />
-            <FormBoton entBoton={entBotonNuevo} open={modalNuevoBotonOpen} setOpen={setModalNuevoBotonOpen} />
+            <FormBoton
+                entBoton={entBotonNuevo}
+                open={modalNuevoBotonOpen}
+                setOpen={setModalNuevoBotonOpen}
+                usuarioSesion={usuarioSesion}
+                funcGetPermisosXPerfil={funcGetPermisosXPerfil}
+                funcLoader={funcLoader}
+                funcAlert={funcAlert}
+            />
         </Fragment>
     );
 };

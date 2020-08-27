@@ -3,12 +3,14 @@ import SubmoduloBarra from "../../SubmoduloBarra";
 import { Tooltip, IconButton, Paper } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import SubmoduloContenido from "../../SubmoduloContenido";
-import DataTable from "react-data-table-component";
-import MaterialTable from "material-table";
-import tableIcons from "../../../configurations/dataTableIconsConfig";
-import theme from "../../../configurations/themeConfig";
 import MeditocTable from "../../MeditocTable";
 
+/*************************************************************
+ * Descripcion: Submódulo para la vista principal "PERFILES" del portal Meditoc
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ * Invocado desde: ContentMain
+ *************************************************************/
 const Perfiles = () => {
     const columns = [
         { title: "ID Perfil", field: "iIdPerfil", align: "center" },

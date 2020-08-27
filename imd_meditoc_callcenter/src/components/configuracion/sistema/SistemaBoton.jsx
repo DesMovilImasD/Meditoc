@@ -13,8 +13,14 @@ const useStyles = makeStyles({
     },
 });
 
+/*************************************************************
+ * Descripcion: Representa una fila de Boton con sus botones de "Editar botón" y "Eliminar botón"
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ * Invocado desde: SistemaSubmodulo
+ *************************************************************/
 const SistemaBoton = (props) => {
-    const { boton } = props;
+    const { boton, usuarioSesion, funcGetPermisosXPerfil, funcLoader, funcAlert } = props;
 
     const classes = useStyles();
     const colorClass = "color-3";
@@ -54,8 +60,24 @@ const SistemaBoton = (props) => {
                     </Tooltip>
                 </TableCell>
             </TableRow>
-            <FormBoton entBoton={boton} open={modalEditarBotonOpen} setOpen={setModalEditarBotonOpen} />
-            <EliminarBoton entBoton={boton} open={modalEliminarBotonOpen} setOpen={setModalEliminarBotonOpen} />
+            <FormBoton
+                entBoton={boton}
+                open={modalEditarBotonOpen}
+                setOpen={setModalEditarBotonOpen}
+                usuarioSesion={usuarioSesion}
+                funcGetPermisosXPerfil={funcGetPermisosXPerfil}
+                funcLoader={funcLoader}
+                funcAlert={funcAlert}
+            />
+            <EliminarBoton
+                entBoton={boton}
+                open={modalEliminarBotonOpen}
+                setOpen={setModalEliminarBotonOpen}
+                usuarioSesion={usuarioSesion}
+                funcGetPermisosXPerfil={funcGetPermisosXPerfil}
+                funcLoader={funcLoader}
+                funcAlert={funcAlert}
+            />
         </Fragment>
     );
 };

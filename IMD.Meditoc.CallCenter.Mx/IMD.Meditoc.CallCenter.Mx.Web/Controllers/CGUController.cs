@@ -142,7 +142,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 
         [HttpPost]
         [Route("Api/CGU/GET/PermisoXPerfil")]
-        public IMDResponse<List<EntPermisoSistema>> CObtenerPermisoxPerfil([FromBody] int? iIdPerfil)
+        public IMDResponse<List<EntPermisoSistema>> CObtenerPermisoxPerfil([FromUri] int? iIdPerfil = null)
         {
             IMDResponse<List<EntPermisoSistema>> response = new IMDResponse<List<EntPermisoSistema>>();
 

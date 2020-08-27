@@ -1,9 +1,9 @@
 /*************************************************************
- * Descripcion: Contiene las rutas de las imagenes del portal de Meditoc
+ * Descripcion: Contiene los servers para el core de servicios del portal
  * Creado: Cristopher Noh
  * Fecha: 26/08/2020
  *************************************************************/
 
-const imgLogoMeditoc = 'call_center/img/LogoMeditoc.svg'
+const serverMain = 'https://localhost:44366/'
 
-export { imgLogoMeditoc }
+export { serverMain }

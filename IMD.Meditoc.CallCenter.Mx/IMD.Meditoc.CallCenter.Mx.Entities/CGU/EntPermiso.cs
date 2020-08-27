@@ -12,7 +12,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.CGU
         public int iIdModulo { get; set; }
         public int iIdSubModulo { get; set; }
         public int iIdBoton { get; set; }
-        public string sNombre { get; set; }
         public int iIdUsuarioMod { get; set; }
         public bool bActivo { get; set; }
         public bool bBaja { get; set; }

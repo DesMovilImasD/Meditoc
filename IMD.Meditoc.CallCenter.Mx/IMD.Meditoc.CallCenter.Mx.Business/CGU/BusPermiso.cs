@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using System.Linq;
 
 namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 {
@@ -68,45 +69,50 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 
             try
             {
-                IMDResponse<DataTable> dtPermisos = datPermiso.DObtenerPermisosPorPerfil(iIdPermiso);
+                IMDResponse<DataSet> dtPermisos = datPermiso.DObtenerPermisosPorPerfil(iIdPermiso);
+
+                var drBotones = dtPermisos.Result.Tables[2].Rows;
+                var drSubmodulos = dtPermisos.Result.Tables[1].Rows;
+                var drModulos = dtPermisos.Result.Tables[0].Rows;
+
                 List<EntPermisoSistema> lstPermisoSistema = new List<EntPermisoSistema>();
                 List<EntSubModuloPermiso> lstPermisoSubModulo = new List<EntSubModuloPermiso>();
                 List<EntBotonPermiso> lstPermisoBotones = new List<EntBotonPermiso>();
 
-                foreach (DataRow item in dtPermisos.Result.DataSet.Tables[0].Rows)
+                foreach (DataRow item in drBotones)
+                {
+                    IMDDataRow dr = new IMDDataRow(item);
+                    EntBotonPermiso entBoton = new EntBotonPermiso();
+
+                    entBoton.iIdBoton = dr.ConvertTo<int>("iIdBoton");
+                    entBoton.iIdModulo = dr.ConvertTo<int>("iIdModulo");
+                    entBoton.iIdSubModulo = dr.ConvertTo<int>("iIdSubModulo");
+                    entBoton.sNombre = dr.ConvertTo<string>("sNombre");
+
+                    lstPermisoBotones.Add(entBoton);
+                }
+
+                foreach (DataRow item in drSubmodulos)
+                {
+                    IMDDataRow dr = new IMDDataRow(item);
+                    EntSubModuloPermiso entSubModulo = new EntSubModuloPermiso();
+
+                    entSubModulo.iIdModulo = dr.ConvertTo<int>("iIdModulo");
+                    entSubModulo.iIdSubModulo = dr.ConvertTo<int>("iIdSubModulo");
+                    entSubModulo.sNombre = dr.ConvertTo<string>("sNombre");
+                    entSubModulo.lstBotones = lstPermisoBotones.Where(x => x.iIdModulo == entSubModulo.iIdModulo && x.iIdSubModulo == entSubModulo.iIdSubModulo).ToList();
+
+                    lstPermisoSubModulo.Add(entSubModulo);
+                }
+
+                foreach (DataRow item in drModulos)
                 {
                     IMDDataRow dr = new IMDDataRow(item);
                     EntPermisoSistema permiso = new EntPermisoSistema();
 
                     permiso.iIdModulo = dr.ConvertTo<int>("iIdModulo");
                     permiso.sNombre = dr.ConvertTo<string>("sNombre");
-                    permiso.lstSubModulo = new List<EntSubModuloPermiso>();
-
-                    foreach (DataRow item2 in dtPermisos.Result.DataSet.Tables[1].Rows)
-                    {
-                        IMDDataRow dr2 = new IMDDataRow(item2);
-                        EntSubModuloPermiso entSubModulo = new EntSubModuloPermiso();
-
-                        entSubModulo.iIdModulo = dr2.ConvertTo<int>("iIdModulo");
-                        entSubModulo.iIdSubModulo = dr2.ConvertTo<int>("iIdSubModulo");
-                        entSubModulo.sNombre = dr2.ConvertTo<string>("sNombre");
-                        entSubModulo.lstBotones = new List<EntBotonPermiso>();
-
-                        foreach (DataRow item3 in dtPermisos.Result.DataSet.Tables[1].Rows)
-                        {
-                            IMDDataRow dr3 = new IMDDataRow(item3);
-                            EntBotonPermiso entBoton = new EntBotonPermiso();
-
-                            entBoton.iIdBoton = dr3.ConvertTo<int>("iIdBoton");
-                            entBoton.iIdModulo = dr3.ConvertTo<int>("iIdModulo");
-                            entBoton.iIdSubModulo = dr3.ConvertTo<int>("iIdSubModulo");
-                            entBoton.sNombre = dr3.ConvertTo<string>("sNombre");
-
-                            entSubModulo.lstBotones.Add(entBoton);
-                        }
-
-                        permiso.lstSubModulo.Add(entSubModulo);
-                    }
+                    permiso.lstSubModulo = lstPermisoSubModulo.Where(x => x.iIdModulo == permiso.iIdModulo).ToList();
 
                     lstPermisoSistema.Add(permiso);
                 }
@@ -134,10 +140,19 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 
             try
             {
-                if (entPermiso.sNombre == "")
+                if (entPermiso.iIdPerfil == 0)
                 {
                     response.Code = 67823458342024;
-                    response.Message = "El nombre del permiso no puede ser vacio.";
+                    response.Message = "El id de perfil no puede ser 0";
+                    response.Result = false;
+
+                    return response;
+                }
+
+                if (entPermiso.iIdModulo == 0)
+                {
+                    response.Code = 67823458342024;
+                    response.Message = "El id de módulo no puede ser 0";
                     response.Result = false;
 
                     return response;

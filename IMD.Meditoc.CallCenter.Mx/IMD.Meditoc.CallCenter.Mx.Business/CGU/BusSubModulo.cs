@@ -36,7 +36,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 
                 response = bValidaDatos(entSubModulo);
 
-                if (!response.Result)
+                if (response.Code != 0)
                 {
                     return response;
                 }

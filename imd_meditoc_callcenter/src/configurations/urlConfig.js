@@ -1,3 +1,9 @@
+/*************************************************************
+ * Descripcion: Contiene las urls para el router del portal Meditoc
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ *************************************************************/
+
 const urlBase = '/call_center'
 
 const urlSystem = {

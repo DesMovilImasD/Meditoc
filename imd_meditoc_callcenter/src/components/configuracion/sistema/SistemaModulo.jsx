@@ -25,8 +25,14 @@ const useStyles = makeStyles({
     },
 });
 
+/*************************************************************
+ * Descripcion: Representa una fila de Módulo con sus botones de "Agregar submódulo", "Editar módulo" y "Eliminar módulo"
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ * Invocado desde: Sistema
+ *************************************************************/
 const SistemaModulo = (props) => {
-    const { modulo } = props;
+    const { modulo, usuarioSesion, funcGetPermisosXPerfil, funcLoader, funcAlert } = props;
 
     const classes = useStyles();
     const colorClass = "color-1";
@@ -37,7 +43,7 @@ const SistemaModulo = (props) => {
 
     const entSubmoduloNuevo = {
         iIdModulo: modulo.iIdModulo,
-        iIdSubmodulo: 0,
+        iIdSubModulo: 0,
         sNombre: "",
     };
 
@@ -91,18 +97,45 @@ const SistemaModulo = (props) => {
                 </AccordionSummary>
                 <AccordionDetails>
                     <div className="acc-content">
-                        {modulo.lstSubmodulos.map((submodulo) => (
-                            <SistemaSubmodulo key={submodulo.iIdSubmodulo} submodulo={submodulo} />
+                        {modulo.lstSubModulo.map((submodulo) => (
+                            <SistemaSubmodulo
+                                key={submodulo.iIdSubModulo}
+                                submodulo={submodulo}
+                                usuarioSesion={usuarioSesion}
+                                funcGetPermisosXPerfil={funcGetPermisosXPerfil}
+                                funcLoader={funcLoader}
+                                funcAlert={funcAlert}
+                            />
                         ))}
                     </div>
                 </AccordionDetails>
             </Accordion>
-            <FormModulo entModulo={modulo} open={modalEditarModuloOpen} setOpen={setModalEditarModuloOpen} />
-            <EliminarModulo entModulo={modulo} open={modalEliminarModuloOpen} setOpen={setModalEliminarModuloOpen} />
+            <FormModulo
+                entModulo={modulo}
+                open={modalEditarModuloOpen}
+                setOpen={setModalEditarModuloOpen}
+                usuarioSesion={usuarioSesion}
+                funcGetPermisosXPerfil={funcGetPermisosXPerfil}
+                funcLoader={funcLoader}
+                funcAlert={funcAlert}
+            />
+            <EliminarModulo
+                entModulo={modulo}
+                open={modalEliminarModuloOpen}
+                setOpen={setModalEliminarModuloOpen}
+                usuarioSesion={usuarioSesion}
+                funcGetPermisosXPerfil={funcGetPermisosXPerfil}
+                funcLoader={funcLoader}
+                funcAlert={funcAlert}
+            />
             <FormSubmodulo
                 entSubmodulo={entSubmoduloNuevo}
                 open={modalNuevoSubmoduloOpen}
                 setOpen={setModalNuevoSubmoduloOpen}
+                usuarioSesion={usuarioSesion}
+                funcGetPermisosXPerfil={funcGetPermisosXPerfil}
+                funcLoader={funcLoader}
+                funcAlert={funcAlert}
             />
         </Fragment>
     );

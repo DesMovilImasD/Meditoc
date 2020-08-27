@@ -3,6 +3,12 @@ import MaterialTable from "material-table";
 import tableIcons from "../configurations/dataTableIconsConfig";
 import theme from "../configurations/themeConfig";
 
+/*************************************************************
+ * Descripcion: Contiene la estructura de una tabla para desplegar datos en las secciones del portal que lo requiera
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ * Invocado desde: Perfiles
+ *************************************************************/
 const MeditocTable = (props) => {
     const { columns, data, rowSelected, setRowSelected, mainField, isLoading } = props;
     return (

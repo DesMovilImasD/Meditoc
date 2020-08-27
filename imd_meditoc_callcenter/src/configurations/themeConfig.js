@@ -1,4 +1,8 @@
-//CONFIGURACIONES DEL TEMA PARA MEDITOC
+/*************************************************************
+ * Descripcion: Contiene los colores del tema principal del portal
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ *************************************************************/
 
 import { createMuiTheme } from '@material-ui/core/styles'
 

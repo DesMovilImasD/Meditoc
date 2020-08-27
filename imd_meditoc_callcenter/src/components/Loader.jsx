@@ -6,17 +6,17 @@ import theme from "../configurations/themeConfig";
 
 const useStyles = makeStyles(() => ({
     backdrop: {
-        zIndex: theme.zIndex.drawer + 1,
+        zIndex: theme.zIndex.drawer + 1000,
         color: "#fff",
     },
 }));
 
-/*****************************************************
- * Descripción: Loader del sitio
- * Autor: Cristopher Noh
- * Fecha: 22/07/2020
- * Modificaciones:
- *****************************************************/
+/*************************************************************
+ * Descripcion: Representa el loader para todos los eventos de "loading..." del portal de Meditoc
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ * Invocado desde: App
+ *************************************************************/
 const Loader = (props) => {
     const { entLoader } = props;
 
@@ -26,7 +26,7 @@ const Loader = (props) => {
         <Backdrop
             className={classes.backdrop}
             open={entLoader.open}
-            style={{ backgroundColor: "rgb(255 255 255 / 0.6)" }}
+            style={{ backgroundColor: "rgb(255 255 255 / 0.5)" }}
         >
             <div className="center">
                 <CircularProgress color="primary" />

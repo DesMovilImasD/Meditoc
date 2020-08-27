@@ -32,6 +32,12 @@ const useStyles = makeStyles({
     },
 });
 
+/*************************************************************
+ * Descripcion: Contiene todo el menú del drawer con todos los módulos y submódulos activos del portal de Meditoc
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ * Invocado desde: DrawerMenu
+ *************************************************************/
 const MenuList = (props) => {
     const { toggleDrawer } = props;
 

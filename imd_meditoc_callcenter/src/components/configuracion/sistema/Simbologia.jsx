@@ -24,6 +24,13 @@ const useStyles = makeStyles({
     },
 });
 
+/*************************************************************
+ * Descripcion: Boton de ayuda para mostrar la simbología de los
+ * componentes (Módulo, Submódulo y Botón) para el adminsitrador de CGU
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ * Invocado desde: Sistema
+ *************************************************************/
 const Simbologia = () => {
     const classes = useStyles();
 
@@ -42,7 +49,7 @@ const Simbologia = () => {
             <Zoom in={fabOpen}>
                 <Paper className={classes.absoluteDiv} elevation={10}>
                     <div>
-                        <span className="rob-nor bold size-20 color-3">Simbología:</span>
+                        <span className="rob-nor bold size-15 color-3">Simbología:</span>
                     </div>
                     <div>
                         <AccountTreeIcon className={"color-1 vertical-align-middle"} />

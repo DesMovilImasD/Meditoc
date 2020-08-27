@@ -14,6 +14,12 @@ const useStyles = makeStyles({
     },
 });
 
+/*************************************************************
+ * Descripcion: Contiene la estructura y diseño de la Barra principal de Meditoc en la parte superior del portal
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ * Invocado desde: ContentMain
+ *************************************************************/
 const NavBar = (props) => {
     const { toggleDrawer } = props;
     const classes = useStyles();
