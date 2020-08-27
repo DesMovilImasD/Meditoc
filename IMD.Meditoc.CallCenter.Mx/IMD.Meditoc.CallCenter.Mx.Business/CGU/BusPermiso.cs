@@ -48,7 +48,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     }
 
                     response = datPermiso.DSavePermiso(entPermiso);
-                    if(response.Code != 0)
+                    if (response.Code != 0)
                     {
                         response.Code = 67823458339693;
                         response.Message = "No se pudieron guardar todos los permisos. Actualice la página antes de intentar de nuevo";
@@ -111,7 +111,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     entSubModulo.iIdModulo = dr.ConvertTo<int>("iIdModulo");
                     entSubModulo.iIdSubModulo = dr.ConvertTo<int>("iIdSubModulo");
                     entSubModulo.sNombre = dr.ConvertTo<string>("sNombre");
-                    entSubModulo.lstBotones = lstPermisoBotones.Where(x => x.iIdModulo == entSubModulo.iIdModulo && x.iIdSubModulo == entSubModulo.iIdSubModulo).ToList();
 
                     lstPermisoSubModulo.Add(entSubModulo);
                 }
@@ -123,10 +122,41 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 
                     permiso.iIdModulo = dr.ConvertTo<int>("iIdModulo");
                     permiso.sNombre = dr.ConvertTo<string>("sNombre");
-                    permiso.lstSubModulo = lstPermisoSubModulo.Where(x => x.iIdModulo == permiso.iIdModulo).ToList();
 
                     lstPermisoSistema.Add(permiso);
                 }
+
+                lstPermisoBotones = lstPermisoBotones.GroupBy(x => new
+                {
+                    x.iIdModulo,
+                    x.iIdSubModulo,
+                    x.iIdBoton
+                }).Select(x => new EntBotonPermiso
+                {
+                    iIdModulo = x.Key.iIdModulo,
+                    iIdSubModulo = x.Key.iIdSubModulo,
+                    iIdBoton = x.Key.iIdBoton,
+                    sNombre = x.Select(y => y.sNombre).First()
+                }).ToList();
+
+                lstPermisoSubModulo = lstPermisoSubModulo.GroupBy(x => new
+                {
+                    x.iIdModulo,
+                    x.iIdSubModulo
+                }).Select(x => new EntSubModuloPermiso
+                {
+                    iIdModulo = x.Key.iIdModulo,
+                    iIdSubModulo = x.Key.iIdSubModulo,
+                    sNombre = x.Select(y => y.sNombre).First(),
+                    lstBotones = lstPermisoBotones.Where(y => y.iIdModulo == x.Key.iIdModulo && y.iIdSubModulo == x.Key.iIdSubModulo).ToList()
+                }).ToList();
+
+                lstPermisoSistema = lstPermisoSistema.GroupBy(x => x.iIdModulo).Select(x => new EntPermisoSistema
+                {
+                    iIdModulo = x.Key,
+                    sNombre = x.Select(y => y.sNombre).First(),
+                    lstSubModulo = lstPermisoSubModulo.Where(y => y.iIdModulo == x.Key).ToList()
+                }).ToList();
 
                 response.Message = "Lista de permisos";
                 response.Result = lstPermisoSistema;

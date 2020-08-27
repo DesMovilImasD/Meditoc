@@ -36,7 +36,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 
                 response = bValidaDatos(entPerfil); 
 
-                if (!response.Result) //Se valida que los datos que contiene el objeto de perfil no esten vacios.
+                if (response.Code != 0) //Se valida que los datos que contiene el objeto de perfil no esten vacios.
                 {
                     return response;
                 }

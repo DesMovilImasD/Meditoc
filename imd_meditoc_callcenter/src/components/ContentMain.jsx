@@ -37,7 +37,7 @@ const ContentMain = (props) => {
                         <Sistema usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
                     </Route>
                     <Route exact path={urlSystem.configuracion.perfiles}>
-                        <Perfiles />
+                        <Perfiles usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
                     </Route>
                 </Switch>
             </div>

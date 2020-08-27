@@ -58,7 +58,7 @@ const FormSubmodulo = (props) => {
 
     return (
         <ModalForm
-            title={entSubmodulo.iIdSubModulo == 0 ? "Nuevo submódulo" : "Editar submódulo"}
+            title={entSubmodulo.iIdSubModulo === 0 ? "Nuevo submódulo" : "Editar submódulo"}
             size="small"
             open={open}
             setOpen={setOpen}

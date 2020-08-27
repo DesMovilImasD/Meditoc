@@ -1,43 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ModalForm from "../../ModalForm";
 import { Grid, TextField, Button } from "@material-ui/core";
 import CGUController from "../../../controllers/CGUController";
 
 /*************************************************************
- * Descripcion: Modal del formulario para Agregar/Modificar un módulo
+ * Descripcion: Formulario para Agregar/Modificar un perfil
  * Creado: Cristopher Noh
- * Fecha: 26/08/2020
- * Invocado desde: SistemaModulo (Modificar), Sistema (Agregar)
+ * Fecha: 27/08/2020
+ * Invocado desde: Perfiles
  *************************************************************/
-const FormModulo = (props) => {
-    const { entModulo, open, setOpen, usuarioSesion, funcGetPermisosXPerfil, funcLoader, funcAlert } = props;
+const FormPerfil = (props) => {
+    const { entPerfil, open, setOpen, usuarioSesion, funcLoader, funcAlert } = props;
 
     const cguController = new CGUController();
 
-    const [formModulo, setFormModulo] = useState({
-        txtIdModulo: entModulo.iIdModulo,
-        txtNombre: entModulo.sNombre,
+    const [formPerfil, setFormPerfil] = useState({
+        txtIdPerfil: entPerfil.iIdPerfil,
+        txtNombre: entPerfil.sNombre,
     });
 
-    const funcSaveModulo = async () => {
-        funcLoader(true, "Guardando módulo...");
+    const funcSavePerfil = async () => {
+        funcLoader(true, "Guardando perfil...");
 
-        const entSaveModulo = {
-            iIdModulo: entModulo.iIdModulo,
+        const entSavePerfil = {
+            iIdPerfil: entPerfil.iIdPerfil,
             iIdUsuarioMod: usuarioSesion.iIdUsuario,
-            sNombre: formModulo.txtNombre,
+            sNombre: formPerfil.txtNombre,
             bActivo: true,
             bBaja: false,
         };
 
-        const response = await cguController.funcSaveModulo(entSaveModulo);
+        const response = await cguController.funcSavePerfil(entSavePerfil);
         if (response.Code !== 0) {
             funcAlert(response.Message);
         } else {
             setOpen(false);
             funcAlert(response.Message, "success");
-            //setFormModulo({ ...formModulo, txtNombre: "" });
-            funcGetPermisosXPerfil();
         }
 
         funcLoader();
@@ -48,29 +46,36 @@ const FormModulo = (props) => {
     };
 
     const handleChangeForm = (e) => {
-        setFormModulo({
-            ...formModulo,
+        setFormPerfil({
+            ...formPerfil,
             [e.target.name]: e.target.value,
         });
     };
 
+    useEffect(() => {
+        setFormPerfil({
+            txtIdPerfil: entPerfil.iIdPerfil,
+            txtNombre: entPerfil.sNombre,
+        });
+    }, [entPerfil]);
+
     return (
         <ModalForm
-            title={entModulo.iIdModulo === 0 ? "Nuevo módulo" : "Editar módulo"}
+            title={entPerfil.iIdPerfil === 0 ? "Nuevo perfil" : "Editar perfil"}
             size="small"
             open={open}
             setOpen={setOpen}
         >
             <Grid container spacing={3}>
-                {entModulo.iIdModulo > 0 ? (
+                {entPerfil.iIdPerfil > 0 ? (
                     <Grid item xs={12}>
                         <TextField
-                            name="txtIdModulo"
-                            label="ID de módulo:"
+                            name="txtIdPerfil"
+                            label="ID de perfil:"
                             variant="outlined"
                             color="secondary"
                             fullWidth
-                            value={formModulo.txtIdModulo}
+                            value={formPerfil.txtIdPerfil}
                             disabled
                         />
                     </Grid>
@@ -79,17 +84,17 @@ const FormModulo = (props) => {
                 <Grid item xs={12}>
                     <TextField
                         name="txtNombre"
-                        label="Nombre de módulo:"
+                        label="Nombre de perfil:"
                         variant="outlined"
                         color="secondary"
                         fullWidth
                         autoFocus
-                        value={formModulo.txtNombre}
+                        value={formPerfil.txtNombre}
                         onChange={handleChangeForm}
                     />
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="primary" fullWidth onClick={funcSaveModulo}>
+                    <Button variant="contained" color="primary" fullWidth onClick={funcSavePerfil}>
                         Guardar
                     </Button>
                 </Grid>
@@ -103,4 +108,4 @@ const FormModulo = (props) => {
     );
 };
 
-export default FormModulo;
+export default FormPerfil;

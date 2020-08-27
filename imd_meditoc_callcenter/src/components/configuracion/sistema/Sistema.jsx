@@ -1,6 +1,7 @@
 import React, { useState, Fragment, useEffect } from "react";
 import { IconButton, Tooltip } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
+import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import SistemaModulo from "./SistemaModulo";
 import FormModulo from "./FormModulo";
 import Simbologia from "./Simbologia";
@@ -23,7 +24,7 @@ const Sistema = (props) => {
     const [modalAgregarModuloOpen, setModalAgregarModuloOpen] = useState(false);
 
     const funcGetPermisosXPerfil = async () => {
-        funcLoader(true, "Consultado perfiles...");
+        funcLoader(true, "Consultado elementos del sistema...");
         const response = await cguController.funcGetPermisosXPeril();
         funcLoader();
 
@@ -45,6 +46,7 @@ const Sistema = (props) => {
     };
 
     useEffect(() => {
+        // eslint-disable-next-line
         funcGetPermisosXPerfil();
     }, []);
 
@@ -53,7 +55,7 @@ const Sistema = (props) => {
             <SubmoduloBarra title="SISTEMA">
                 <Tooltip title="Nuevo módulo" arrow>
                     <IconButton onClick={handleAgregarModuloOpen}>
-                        <AddIcon className="color-0" />
+                        <InsertDriveFileIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
             </SubmoduloBarra>

@@ -111,12 +111,12 @@ class CGUController {
     return response
   }
 
-  async funcSavePermiso(entPermiso) {
+  async funcSavePermiso(entPermisos) {
     let response = { Code: 0, Message: '', Result: false }
     try {
       const apiResponse = await fetch(`${serverMain}${this.apiSavePermiso}`, {
         method: 'POST',
-        body: JSON.stringify(entPermiso),
+        body: JSON.stringify(entPermisos),
         headers: {
           'Content-Type': 'application/json',
         },
