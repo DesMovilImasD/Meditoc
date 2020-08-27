@@ -140,7 +140,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("Api/CGU/GET/PermisoXPerfil")]
         public IMDResponse<List<EntPermisoSistema>> CObtenerPermisoxPerfil([FromUri] int? iIdPerfil = null)
         {
@@ -187,6 +187,58 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
                 logger.Error(IMDSerialize.Serialize(67823458338139, $"Error en {metodo}([FromBody]EntPermiso entPermiso): {ex.Message}", entPermisos, ex, response));
             }
 
+            return response;
+        }
+
+        [HttpGet]
+        [Route("Api/CGU/Get/Permisos")]
+        public IMDResponse<List<EntPerfil>> CObtenerPerfil([FromUri] int? iIdPerfil, bool bActivo, bool bBaja)
+        {
+            IMDResponse<List<EntPerfil>> response = new IMDResponse<List<EntPerfil>>();
+
+            string metodo = nameof(this.CObtenerPerfil);
+            logger.Info(IMDSerialize.Serialize(67823458359118, $"Inicia {metodo}([FromBody] int? iIdPerfil, bool bActivo, bool bBaja)", iIdPerfil, bActivo, bBaja));
+
+            try
+            {
+                BusPerfil busPerfil = new BusPerfil();
+
+                response = busPerfil.BObtenerPerfil(iIdPerfil, bActivo, bBaja);
+
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458359895;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458359895, $"Error en {metodo}([FromBody] int? iIdPerfil, bool bActivo, bool bBaja): {ex.Message}", iIdPerfil, bActivo, bBaja, ex, response));
+            }
+            return response;
+        }
+
+        [HttpGet]
+        [Route("Api/CGU/Get/Usuarios")]
+        public IMDResponse<List<EntUsuario>> CObtenerUsuario([FromUri] int? iIdUsuario = null, int? iIdTipoCuenta = null, int? iIdPerfil = null, string sUsuario = null, string sPassword = null, bool? bActivo = null, bool? bBaja = null)
+        {
+            IMDResponse<List<EntUsuario>> response = new IMDResponse<List<EntUsuario>>();
+
+            string metodo = nameof(this.CObtenerUsuario);
+            logger.Info(IMDSerialize.Serialize(67823458363780, $"Inicia {metodo}([FromUri] int? iIdUsuario = null, int? iIdTipoCuenta = null, int? iIdPerfil = null, string sUsuario = null, string sPassword = null, bool? bActivo = null, bool? bBaja = null)", iIdUsuario, iIdTipoCuenta, iIdPerfil, sUsuario, sPassword, bActivo, bBaja));
+
+            try
+            {
+                BusUsuario busUsuario = new BusUsuario();
+
+                response = busUsuario.BObtenerUsuario(iIdUsuario, iIdTipoCuenta, iIdPerfil, sUsuario, sPassword, bActivo, bBaja);
+
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458364557;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458364557, $"Error en {metodo}([FromUri] int? iIdUsuario = null, int? iIdTipoCuenta = null, int? iIdPerfil = null, string sUsuario = null, string sPassword = null, bool? bActivo = null, bool? bBaja = null): {ex.Message}", iIdUsuario, iIdTipoCuenta, iIdPerfil, sUsuario, sPassword, bActivo, bBaja, ex, response));
+            }
             return response;
         }
     }

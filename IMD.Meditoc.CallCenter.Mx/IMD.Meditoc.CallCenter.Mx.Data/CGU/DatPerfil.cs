@@ -20,6 +20,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
         private Database database;
         IMDCommonData imdCommonData;
         private string savePerfil;
+        private string ObtenerPerfil;
 
         public DatPerfil()
         {
@@ -28,6 +29,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             database = imdCommonData.DGetDatabase(FsConnectionString, "MeditocComercial", "Meditoc1");
 
             savePerfil = "sva_cgu_save_perfil";
+            ObtenerPerfil = "svc_cgu_perfiles";
         }
 
         public IMDResponse<bool> DSavePerfil(EntPerfil entPerfil)
@@ -55,6 +57,34 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
                 response.Message = "Ocurrió un error al intentar guardar el perfil.";
 
                 logger.Error(IMDSerialize.Serialize(67823458332700, $"Error en {metodo}(EntPerfil entPerfil): {ex.Message}", entPerfil, ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<DataTable> DObtenerPerfil(int? iIdPerfil, bool bActivo, bool bBaja)
+        {
+            IMDResponse<DataTable> response = new IMDResponse<DataTable>();
+
+            string metodo = nameof(this.DObtenerPerfil);
+            logger.Info(IMDSerialize.Serialize(67823458356010, $"Inicia {metodo}(int? iIdPerfil, bool bActivo, bool bBaja)", iIdPerfil, bActivo, bBaja));
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(ObtenerPerfil))
+                {
+                    database.AddInParameter(dbCommand, "piIdPerfil", DbType.Int32, iIdPerfil);
+                    database.AddInParameter(dbCommand, "pbActivo", DbType.Boolean, bActivo);
+                    database.AddInParameter(dbCommand, "pbBaja", DbType.Boolean, bBaja);
+
+                    response = imdCommonData.DExecuteDT(database, dbCommand);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458356787;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458356787, $"Error en {metodo}(int? iIdPerfil, bool bActivo, bool bBaja): {ex.Message}", iIdPerfil, bActivo, bBaja, ex, response));
             }
             return response;
         }
