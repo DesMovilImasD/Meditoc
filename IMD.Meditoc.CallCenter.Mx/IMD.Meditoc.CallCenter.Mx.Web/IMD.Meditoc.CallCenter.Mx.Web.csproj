@@ -43,8 +43,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="IMD.Admin.Logs.Web">
+      <HintPath>..\..\Items\IMD.Admin.Logs.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="IMD.Admin.Utilities.Web">
+      <HintPath>..\..\Items\IMD.Admin.Utilities.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\Items\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.7\lib\net45\System.Web.Cors.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -54,6 +66,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.7\lib\net45\System.Web.Http.Cors.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -81,16 +96,19 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="index.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\CGUController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Data.json" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -101,7 +119,17 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
+    <Folder Include="Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IMD.Meditoc.CallCenter.Mx.Business\IMD.Meditoc.CallCenter.Mx.Business.csproj">
+      <Project>{6B32EFC2-ED21-4A39-9CA3-06BA29C24A3A}</Project>
+      <Name>IMD.Meditoc.CallCenter.Mx.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IMD.Meditoc.CallCenter.Mx.Entities\IMD.Meditoc.CallCenter.Mx.Entities.csproj">
+      <Project>{AAF67865-FC5B-4634-BD6B-DB5AA38E47D3}</Project>
+      <Name>IMD.Meditoc.CallCenter.Mx.Entities</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
