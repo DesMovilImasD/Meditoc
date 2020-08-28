@@ -97,7 +97,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 
                     entUsuario.iIdUsuario = dr.ConvertTo<int>("iIdUsuario");
                     entUsuario.iIdTipoCuenta = dr.ConvertTo<int>("iIdTipoCuenta");
+                    entUsuario.sTipoCuenta = dr.ConvertTo<string>("sTipoCuenta");
                     entUsuario.iIdPerfil = dr.ConvertTo<int>("iIdPerfil");
+                    entUsuario.sPerfil = dr.ConvertTo<string>("sPerfil");
                     entUsuario.sUsuario = dr.ConvertTo<string>("sUsuario");
                     entUsuario.sPassword = dr.ConvertTo<string>("sPassword");
                     entUsuario.sNombres = dr.ConvertTo<string>("sNombres");

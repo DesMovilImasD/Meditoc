@@ -18,6 +18,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
         private string saveUsuario;
         private string getUsuario;
         private string cambioContrasenia;
+        private string getLogin;
 
         public DatUsuario()
         {
@@ -28,6 +29,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             saveUsuario = "sva_cgu_save_usuario";
             getUsuario = "svc_cgu_usuarios";
             cambioContrasenia = "sva_cgu_CambiarContrasenia";
+            getLogin = "svc_cgu_login";
         }
 
         public IMDResponse<bool> DSaveUsuario(EntUsuario entUsuario)
@@ -126,6 +128,34 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458366111, $"Error en {metodo}(int iIdUsuario, string sPassword): {ex.Message}", iIdUsuario, sPassword, ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<DataTable> DLogin()
+        {
+            IMDResponse<DataTable> response = new IMDResponse<DataTable>();
+
+            string metodo = nameof(this.DLogin);
+            logger.Info(IMDSerialize.Serialize(67823458373104, $"Inicia {metodo}"));
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(cambioContrasenia))
+                {
+                    /*database.AddInParameter(dbCommand, "piIdUsuario", DbType.Int32, iIdUsuario);
+                    database.AddInParameter(dbCommand, "piIdUsuarioUltMod", DbType.Int32, iIdUsuarioUltMod);
+                    database.AddInParameter(dbCommand, "psPassword", DbType.Int32, sPassword);
+
+                    response = imdCommonData.DExecute(database, dbCommand);*/
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458373881;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458373881, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }
