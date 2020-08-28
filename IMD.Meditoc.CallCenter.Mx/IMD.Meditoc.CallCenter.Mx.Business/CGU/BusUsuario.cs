@@ -154,6 +154,16 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     return response;
                 }
 
+                response = datUsuario.DValidaUsuarioYCorreo(entUsuario.sUsuario, "", true);
+                if (!response.Result)
+                {
+                    response.Code = 67823458345132;
+                    response.Message = "Ya existe un usuario registrado.";
+                    response.Result = false;
+
+                    return response;
+                }
+
                 if (entUsuario.sPassword == "")
                 {
                     response.Code = 67823458345132;
@@ -176,6 +186,25 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 {
                     response.Code = 67823458345132;
                     response.Message = "El apellido materno del usuario no puede ser vacio.";
+                    response.Result = false;
+
+                    return response;
+                }
+
+                if (entUsuario.sCorreo == "")
+                {
+                    response.Code = 67823458345132;
+                    response.Message = "El correo del usuario no puede ser vacio.";
+                    response.Result = false;
+
+                    return response;
+                }
+
+                response = datUsuario.DValidaUsuarioYCorreo("", entUsuario.sCorreo, false);
+                if (!response.Result)
+                {
+                    response.Code = 67823458345132;
+                    response.Message = "Ya existe un correo registrado.";
                     response.Result = false;
 
                     return response;
@@ -233,7 +262,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             IMDResponse<EntUsuario> response = new IMDResponse<EntUsuario>();
 
             string metodo = nameof(this.BLogin);
-            logger.Info(IMDSerialize.Serialize(67823458374658, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458374658, $"Inicia {metodo}(string sUsuario, string sPassword)", sUsuario, sPassword));
 
             try
             {
@@ -247,6 +276,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     response.Message = dtUsuario.Message;
                     return response;
                 }
+
+                if (dtUsuario.Result.Rows.Count > 0)
+                {
+                    response.Message = "Usuario o contraseña incorrecta.";
+                    return response;
+                }
+
                 EntUsuario entUsuario = new EntUsuario();
 
                 foreach (DataRow item in dtUsuario.Result.Rows)
@@ -276,11 +312,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 
                 response.Result = entUsuario;
 
-                if (response.Result.iIdUsuario == 0)
-                {
-                    response.Message = "Usuario o contraseña incorrectos.";
-                    return response;
-                }
+
 
                 response.Message = "Inicio de sesión existoso.";
             }
@@ -289,7 +321,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 response.Code = 67823458375435;
                 response.Message = "Ocurrió un error inesperado";
 
-                logger.Error(IMDSerialize.Serialize(67823458375435, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458375435, $"Error en {metodo}(string sUsuario, string sPassword): {ex.Message}", sUsuario, sPassword, ex, response));
             }
             return response;
         }

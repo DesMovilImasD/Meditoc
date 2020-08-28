@@ -211,7 +211,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             IMDResponse<EntUsuario> response = new IMDResponse<EntUsuario>();
 
             string metodo = nameof(this.CLogin);
-            logger.Info(IMDSerialize.Serialize(67823458376212, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458376212, $"Inicia {metodo}([FromUri] string sUsuario, string sPassword)", sUsuario, sPassword));
 
             try
             {
@@ -224,7 +224,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
                 response.Code = 67823458376989;
                 response.Message = "Ocurrió un error inesperado";
 
-                logger.Error(IMDSerialize.Serialize(67823458376989, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458376989, $"Error en {metodo}([FromUri] string sUsuario, string sPassword): {ex.Message}", sUsuario, sPassword, ex, response));
             }
             return response;
         }
