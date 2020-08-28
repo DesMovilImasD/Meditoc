@@ -7,6 +7,10 @@ import Alert from './components/Alert'
 import ContentMain from './components/ContentMain'
 import { HashRouter } from 'react-router-dom'
 import Login from './components/login/Login'
+import { MuiPickersUtilsProvider } from '@material-ui/pickers'
+import MomentUtils from '@date-io/moment'
+import 'moment/locale/es'
+
 /*************************************************************
  * Descripcion: App del proyecto
  * Creado: Cristopher Noh
@@ -15,7 +19,7 @@ import Login from './components/login/Login'
  *************************************************************/
 function App() {
   const [usuarioSesion, setUsuarioSesion] = useState({ iIdUsuario: 1 })
-  const [usuarioActivo, setUsuarioActivo] = useState(false)
+  const [usuarioActivo, setUsuarioActivo] = useState(true)
 
   //Guardar valores de estado del loader
   const [entLoader, setEntLoader] = useState({
@@ -67,19 +71,21 @@ function App() {
           </Button>
         )}
       >
-        <HashRouter>
-          <Loader entLoader={entLoader} />
-          <Alert entAlert={entAlert} />
-          {usuarioActivo === true ? (
-            <ContentMain
-              usuarioSesion={usuarioSesion}
-              funcLoader={funcLoader}
-              funcAlert={funcAlert}
-            />
-          ) : (
-            <Login />
-          )}
-        </HashRouter>
+        <MuiPickersUtilsProvider utils={MomentUtils} locale="es">
+          <HashRouter>
+            <Loader entLoader={entLoader} />
+            <Alert entAlert={entAlert} />
+            {usuarioActivo === true ? (
+              <ContentMain
+                usuarioSesion={usuarioSesion}
+                funcLoader={funcLoader}
+                funcAlert={funcAlert}
+              />
+            ) : (
+              <Login />
+            )}
+          </HashRouter>
+        </MuiPickersUtilsProvider>
       </SnackbarProvider>
     </ThemeProvider>
   )

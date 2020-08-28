@@ -5,6 +5,7 @@ import { Switch, Route } from "react-router-dom";
 import { urlSystem } from "../configurations/urlConfig";
 import Sistema from "./configuracion/sistema/Sistema";
 import Perfiles from "./configuracion/perfiles/Perfiles";
+import Usuarios from "./configuracion/usuarios/Usuarios";
 
 /*************************************************************
  * Descripcion: Contiene las secciones y vistas de todo el portal de Meditoc
@@ -35,6 +36,9 @@ const ContentMain = (props) => {
                     </Route>
                     <Route exact path={urlSystem.configuracion.perfiles}>
                         <Perfiles usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
+                    </Route>
+                    <Route exact path={urlSystem.configuracion.usuarios}>
+                        <Usuarios usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
                     </Route>
                 </Switch>
             </div>

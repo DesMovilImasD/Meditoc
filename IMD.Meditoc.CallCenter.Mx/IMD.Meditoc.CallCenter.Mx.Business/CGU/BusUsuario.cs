@@ -39,16 +39,23 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     return response;
                 }
 
-                response = bValidaDatos(entUsuario);
+                if (entUsuario.bActivo == true && entUsuario.bBaja == false)
+                {
 
-                if (!response.Result) //Se valida que los datos que contiene el objeto de perfil no esten vacios.
+                    response = bValidaDatos(entUsuario);
+
+                    if (!response.Result) //Se valida que los datos que contiene el objeto de perfil no esten vacios.
+                    {
+                        return response;
+                    }
+                    entUsuario.sPassword = BEncodePassword(entUsuario.sPassword);
+                }
+
+                response = datUsuario.DSaveUsuario(entUsuario);
+                if(response.Code != 0)
                 {
                     return response;
                 }
-
-                entUsuario.sPassword = BEncodePassword(entUsuario.sPassword);
-
-                response = datUsuario.DSaveUsuario(entUsuario);
 
                 response.Code = 0;
                 response.Message = entUsuario.iIdUsuario == 0 ? "El usuario se guardó correctamente" : "El usuario se actualizo correctamente";
@@ -76,6 +83,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 
                 IMDResponse<DataTable> dtUsuario = datUsuario.DObtenerUsuario(iIdUsuario, iIdTipoCuenta, iIdPerfil, sUsuario, sPassword, bActivo, bBaja);
                 List<EntUsuario> lstUsuaeios = new List<EntUsuario>();
+
+                if(dtUsuario.Code != 0)
+                {
+                    return dtUsuario.GetResponse<List<EntUsuario>>();
+                }
 
                 foreach (DataRow item in dtUsuario.Result.Rows)
                 {
@@ -179,7 +191,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     return response;
                 }
 
-                response.Result = true;                
+                response.Result = true;
             }
             catch (Exception ex)
             {

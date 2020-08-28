@@ -257,7 +257,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         }
 
         [HttpGet]
-        [Route("Api/CGU/Get/Permisos")]
+        [Route("Api/CGU/Get/Perfiles")]
         public IMDResponse<List<EntPerfil>> CObtenerPerfil([FromUri] int? iIdPerfil, bool bActivo, bool bBaja)
         {
             IMDResponse<List<EntPerfil>> response = new IMDResponse<List<EntPerfil>>();

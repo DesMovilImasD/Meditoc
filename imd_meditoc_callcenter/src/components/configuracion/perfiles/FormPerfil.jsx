@@ -10,7 +10,7 @@ import CGUController from "../../../controllers/CGUController";
  * Invocado desde: Perfiles
  *************************************************************/
 const FormPerfil = (props) => {
-    const { entPerfil, open, setOpen, usuarioSesion, funcLoader, funcAlert } = props;
+    const { entPerfil, open, setOpen, funcGetPerfiles, usuarioSesion, funcLoader, funcAlert } = props;
 
     const cguController = new CGUController();
 
@@ -36,6 +36,7 @@ const FormPerfil = (props) => {
         } else {
             setOpen(false);
             funcAlert(response.Message, "success");
+            funcGetPerfiles();
         }
 
         funcLoader();

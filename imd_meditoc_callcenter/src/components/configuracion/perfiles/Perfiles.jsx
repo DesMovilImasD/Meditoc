@@ -27,17 +27,10 @@ const Perfiles = (props) => {
     const columns = [
         { title: "ID Perfil", field: "iIdPerfil", align: "center" },
         { title: "Descripción", field: "sNombre", align: "center" },
-        { title: "Fecha de registro", field: "dtFechaCreacion", align: "center" },
-    ];
-
-    const data = [
-        { iIdPerfil: 1, sNombre: "Superadministrador", dtFechaCreacion: "26-08-2020" },
-        { iIdPerfil: 2, sNombre: "Administrador", dtFechaCreacion: "26-08-2020" },
-        { iIdPerfil: 3, sNombre: "Doctor", dtFechaCreacion: "26-08-2020" },
-        { iIdPerfil: 4, sNombre: "Especialista", dtFechaCreacion: "26-08-2020" },
     ];
 
     const [listaSistema, setListaSistema] = useState([]);
+    const [listaPerfiles, setListaPerfiles] = useState([]);
 
     const [modalFormPerfilOpen, setModalFormPerfilOpen] = useState(false);
     const [modalFormEliminarPerfilOpen, setModalFormEliminarPerfilOpen] = useState(false);
@@ -60,6 +53,19 @@ const Perfiles = (props) => {
         setListaSistema(response.Result);
     };
 
+    const funcGetPerfiles = async () => {
+        funcLoader(true, "Consultado perfiles del sistema...");
+        const response = await cguController.funcGetPerfiles();
+        funcLoader();
+
+        if (response.Code !== 0) {
+            funcAlert(response.Message);
+            return;
+        }
+
+        setListaPerfiles(response.Result);
+    };
+
     //Nuevo perfil
     const handleClickNuevoPerfil = () => {
         setPerfilForModalForm({ iIdPerfil: 0, sNombre: "" });
@@ -72,7 +78,7 @@ const Perfiles = (props) => {
             funcAlert("Seleccione un perfil de la tabla para continuar", "warning");
             return;
         }
-        setPerfilForModalForm({ iIdPerfil: perfilSeleccionado.iIdPerfil, sNombre: perfilSeleccionado.sNombre });
+        setPerfilForModalForm(perfilSeleccionado);
         setModalFormPerfilOpen(true);
     };
 
@@ -82,7 +88,7 @@ const Perfiles = (props) => {
             funcAlert("Seleccione un perfil de la tabla para continuar", "warning");
             return;
         }
-        setPerfilForModalForm({ iIdPerfil: perfilSeleccionado.iIdPerfil, sNombre: perfilSeleccionado.sNombre });
+        setPerfilForModalForm(perfilSeleccionado);
         setModalFormEliminarPerfilOpen(true);
     };
 
@@ -92,7 +98,7 @@ const Perfiles = (props) => {
             funcAlert("Seleccione un perfil de la tabla para continuar", "warning");
             return;
         }
-        setPerfilForModalForm({ iIdPerfil: perfilSeleccionado.iIdPerfil, sNombre: perfilSeleccionado.sNombre });
+        setPerfilForModalForm(perfilSeleccionado);
         setModalFormPermisosOpen(true);
     };
 
@@ -100,6 +106,7 @@ const Perfiles = (props) => {
     useEffect(() => {
         // eslint-disable-next-line
         funcGetPermisosXPerfil();
+        funcGetPerfiles();
     }, []);
 
     return (
@@ -129,7 +136,7 @@ const Perfiles = (props) => {
             <SubmoduloContenido>
                 <MeditocTable
                     columns={columns}
-                    data={data}
+                    data={listaPerfiles}
                     rowSelected={perfilSeleccionado}
                     setRowSelected={setPerfilSeleccionado}
                     mainField="iIdPerfil"
@@ -140,6 +147,7 @@ const Perfiles = (props) => {
                 entPerfil={perfilForModalForm}
                 open={modalFormPerfilOpen}
                 setOpen={setModalFormPerfilOpen}
+                funcGetPerfiles={funcGetPerfiles}
                 usuarioSesion={usuarioSesion}
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
@@ -149,6 +157,7 @@ const Perfiles = (props) => {
                 setPerfilSeleccionado={setPerfilSeleccionado}
                 open={modalFormEliminarPerfilOpen}
                 setOpen={setModalFormEliminarPerfilOpen}
+                funcGetPerfiles={funcGetPerfiles}
                 usuarioSesion={usuarioSesion}
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}

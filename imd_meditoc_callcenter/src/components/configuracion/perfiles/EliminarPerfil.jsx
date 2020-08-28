@@ -10,7 +10,16 @@ import { Grid, Button } from "@material-ui/core";
  * Invocado desde: Perfiles
  *************************************************************/
 const EliminarPerfil = (props) => {
-    const { entPerfil, setPerfilSeleccionado, open, setOpen, usuarioSesion, funcLoader, funcAlert } = props;
+    const {
+        entPerfil,
+        setPerfilSeleccionado,
+        open,
+        setOpen,
+        funcGetPerfiles,
+        usuarioSesion,
+        funcLoader,
+        funcAlert,
+    } = props;
 
     const cguController = new CGUController();
 
@@ -32,6 +41,7 @@ const EliminarPerfil = (props) => {
             setOpen(false);
             setPerfilSeleccionado({ iIdPerfil: 0, sNombre: "" });
             funcAlert(response.Message, "success");
+            funcGetPerfiles();
         }
 
         funcLoader();

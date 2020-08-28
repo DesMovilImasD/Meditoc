@@ -14,6 +14,8 @@ class CGUController {
     this.apiSaveUsuario = 'Api/CGU/Create/Usuario'
     this.apiSavePermiso = 'Api/CGU/Create/Permiso'
     this.apiGetPermisosXPerfil = 'Api/CGU/GET/PermisoXPerfil'
+    this.apiGetPerfiles = 'Api/CGU/Get/Perfiles'
+    this.apiGetUsuarios = 'Api/CGU/Get/Usuarios'
   }
 
   async funcSaveModulo(entCreateModulo) {
@@ -135,18 +137,48 @@ class CGUController {
     try {
       const apiResponse = await fetch(
         `${serverMain}${this.apiGetPermisosXPerfil}?iIdPerfil=${iIdPerfil}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
       )
 
       response = await apiResponse.json()
     } catch (error) {
       response.Code = -1
       response.Message = 'Ocurrió un error al intentar obtener los permisos'
+    }
+    return response
+  }
+
+  async funcGetPerfiles(iIdPerfil = null, bActivo = true, bBaja = false) {
+    let response = { Code: 0, Message: '', Result: [] }
+    try {
+      const apiResponse = await fetch(
+        `${serverMain}${this.apiGetPerfiles}?iIdPerfil=${iIdPerfil}&bActivo=${bActivo}&bBaja=${bBaja}`,
+      )
+
+      response = await apiResponse.json()
+    } catch (error) {
+      response.Code = -1
+      response.Message = 'Ocurrió un error al intentar obtener los perfiles'
+    }
+    return response
+  }
+
+  async funcGetUsuarios(
+    iIdUsuario = null,
+    iIdTipoCuenta = null,
+    iIdPerfil = null,
+    bActivo = true,
+    bBaja = false,
+  ) {
+    let response = { Code: 0, Message: '', Result: [] }
+    try {
+      const apiResponse = await fetch(
+        `${serverMain}${this.apiGetUsuarios}?iIdUsuario=${iIdUsuario}&iIdTipoCuenta=${iIdTipoCuenta}&iIdPerfil=${iIdPerfil}&bActivo=${bActivo}&bBaja=${bBaja}`,
+      )
+
+      response = await apiResponse.json()
+    } catch (error) {
+      response.Code = -1
+      response.Message = 'Ocurrió un error al intentar obtener los usuarios'
     }
     return response
   }

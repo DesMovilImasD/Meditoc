@@ -25,6 +25,7 @@ const ModalForm = (props) => {
                 timeout: 300,
                 style: { backgroundColor: "rgb(255 255 255 / 0.6)" },
             }}
+            style={{ overflowY: "auto" }}
         >
             <Fade in={open}>
                 <div className={`modal-form modal-${size}`}>
