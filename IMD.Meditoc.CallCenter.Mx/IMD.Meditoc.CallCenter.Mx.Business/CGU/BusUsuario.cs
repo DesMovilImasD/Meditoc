@@ -1,10 +1,12 @@
 ﻿using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
+using IMD.Admin.Utilities.Web;
 using IMD.Meditoc.CallCenter.Mx.Data.CGU;
 using IMD.Meditoc.CallCenter.Mx.Entities.CGU;
 using log4net;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,6 +46,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     return response;
                 }
 
+                entUsuario.sPassword = BEncodePassword(entUsuario.sPassword);
+
                 response = datUsuario.DSaveUsuario(entUsuario);
 
                 response.Code = 0;
@@ -60,7 +64,57 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             return response;
         }
 
+        public IMDResponse<List<EntUsuario>> BObtenerUsuario(int? iIdUsuario, int? iIdTipoCuenta, int? iIdPerfil, string sUsuario, string sPassword, bool? bActivo, bool? bBaja)
+        {
+            IMDResponse<List<EntUsuario>> response = new IMDResponse<List<EntUsuario>>();
 
+            string metodo = nameof(this.BObtenerUsuario);
+            logger.Info(IMDSerialize.Serialize(67823458362226, $"Inicia {metodo}(int? iIdUsuario, int? iIdTipoCuenta, int? iIdPerfil, string sUsuario, string sPassword, bool bActivo, bool bBaja)", iIdUsuario, iIdTipoCuenta, iIdPerfil, sUsuario, sPassword, bActivo, bBaja));
+
+            try
+            {
+
+                IMDResponse<DataTable> dtUsuario = datUsuario.DObtenerUsuario(iIdUsuario, iIdTipoCuenta, iIdPerfil, sUsuario, sPassword, bActivo, bBaja);
+                List<EntUsuario> lstUsuaeios = new List<EntUsuario>();
+
+                foreach (DataRow item in dtUsuario.Result.Rows)
+                {
+
+                    IMDDataRow dr = new IMDDataRow(item);
+                    EntUsuario entUsuario = new EntUsuario();
+
+                    entUsuario.iIdUsuario = dr.ConvertTo<int>("iIdUsuario");
+                    entUsuario.iIdTipoCuenta = dr.ConvertTo<int>("iIdTipoCuenta");
+                    entUsuario.iIdPerfil = dr.ConvertTo<int>("iIdPerfil");
+                    entUsuario.sUsuario = dr.ConvertTo<string>("sUsuario");
+                    entUsuario.sPassword = dr.ConvertTo<string>("sPassword");
+                    entUsuario.sNombres = dr.ConvertTo<string>("sNombres");
+                    entUsuario.sApellidoPaterno = dr.ConvertTo<string>("sApellidoPaterno");
+                    entUsuario.sApellidoMaterno = dr.ConvertTo<string>("sApellidoMaterno");
+                    entUsuario.dtFechaNacimiento = dr.ConvertTo<DateTime>("dtFechaNacimiento");
+                    entUsuario.sTelefono = dr.ConvertTo<string>("sTelefono");
+                    entUsuario.sCorreo = dr.ConvertTo<string>("sCorreo");
+                    entUsuario.sDomicilio = dr.ConvertTo<string>("sDomicilio");
+                    entUsuario.iIdUsuarioMod = dr.ConvertTo<int>("iIdUsuarioMod");
+                    entUsuario.bActivo = dr.ConvertTo<bool>("bActivo");
+                    entUsuario.bBaja = dr.ConvertTo<bool>("bBaja");
+
+                    lstUsuaeios.Add(entUsuario);
+                }
+
+
+                response.Message = "Lista de usuarios";
+                response.Result = lstUsuaeios;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458363003;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458363003, $"Error en {metodo}(int? iIdUsuario, int? iIdTipoCuenta, int? iIdPerfil, string sUsuario, string sPassword, bool bActivo, bool bBaja): {ex.Message}", iIdUsuario, iIdTipoCuenta, iIdPerfil, sUsuario, sPassword, bActivo, bBaja, ex, response));
+            }
+            return response;
+        }
         public IMDResponse<bool> bValidaDatos(EntUsuario entUsuario)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
@@ -96,8 +150,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     response.Result = false;
 
                     return response;
-                }                
-                
+                }
+
                 if (entUsuario.sPassword == "")
                 {
                     response.Code = 67823458345132;
@@ -125,6 +179,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     return response;
                 }
 
+                response.Result = true;                
             }
             catch (Exception ex)
             {
@@ -134,6 +189,84 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 logger.Error(IMDSerialize.Serialize(67823458341247, $"Error en {metodo}(EntUsuario entUsuario): {ex.Message}", entUsuario, ex, response));
             }
             return response;
+        }
+
+        public IMDResponse<bool> BCambiarContrasenia(int iIdUsuario, string sPassword, int iIdUsuarioUltMod)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.BCambiarContrasenia);
+            logger.Info(IMDSerialize.Serialize(67823458369996, $"Inicia {metodo}(int iIdUsuario, string sPassword)", iIdUsuario, sPassword));
+
+            try
+            {
+
+                sPassword = BEncodePassword(sPassword);
+
+                response = datUsuario.DCambiarContrasenia(iIdUsuario, sPassword, iIdUsuarioUltMod);
+
+                if (response.Code != 0)
+                {
+                    response.Message = "Ocurrio un error al modificar la contraseña";
+                    response.Result = false;
+
+                    return response;
+                }
+
+                response.Result = true;
+                response.Message = "La contraseña se modifico correctamente";
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458370773;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458370773, $"Error en {metodo}(int iIdUsuario, string sPassword): {ex.Message}", iIdUsuario, sPassword, ex, response));
+            }
+            return response;
+        }
+
+        public string BEncodePassword(string sPassWord)
+        {
+            IMDResponse<string> response = new IMDResponse<string>();
+            try
+            {
+                IMDEndec authentication = new IMDEndec();
+
+                response = authentication.BEncrypt(sPassWord, "M3diT0cPassword1", "Evector1");
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return response.Result;
+        }
+
+        public string BDeCodePassWord(string sPassWord)
+        {
+            IMDResponse<string> response = new IMDResponse<string>();
+
+            string metodo = nameof(this.BDeCodePassWord);
+            logger.Info(IMDSerialize.Serialize(67823458366888, $"Inicia {metodo}(string sPassWord)"));
+
+            try
+            {
+                IMDEndec authentication = new IMDEndec();
+
+                response = authentication.BDecrypt(sPassWord, "M3diT0cPassword1", "Evector1");
+
+                sPassWord = response.Result;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458367665;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458367665, $"Error en {metodo}(string sPassWord): {ex.Message}", ex, response));
+            }
+            return sPassWord;
         }
     }
 }

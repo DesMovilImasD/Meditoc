@@ -16,6 +16,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
         private Database database;
         IMDCommonData imdCommonData;
         private string saveUsuario;
+        private string getUsuario;
+        private string cambioContrasenia;
 
         public DatUsuario()
         {
@@ -24,6 +26,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             database = imdCommonData.DGetDatabase(FsConnectionString, "MeditocComercial", "Meditoc1");
 
             saveUsuario = "sva_cgu_save_usuario";
+            getUsuario = "svc_cgu_usuarios";
+            cambioContrasenia = "sva_cgu_CambiarContrasenia";
         }
 
         public IMDResponse<bool> DSaveUsuario(EntUsuario entUsuario)
@@ -62,6 +66,66 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458343578, $"Error en {metodo}(EntUsuario entUsuario): {ex.Message}", entUsuario, ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<DataTable> DObtenerUsuario(int? iIdUsuario, int? iIdTipoCuenta, int? iIdPerfil, string sUsuario, string sPassword, bool? bActivo, bool? bBaja)
+        {
+            IMDResponse<DataTable> response = new IMDResponse<DataTable>();
+
+            string metodo = nameof(this.DObtenerUsuario);
+            logger.Info(IMDSerialize.Serialize(67823458360672, $"Inicia {metodo}(int? iIdUsuario, int? iIdTipoCuenta, int? iIdPerfil, string sUsuario, string sPassword, bool bActivo, bool bBaja)", iIdUsuario, iIdTipoCuenta, iIdPerfil, sUsuario, sPassword, bActivo, bBaja));
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(getUsuario))
+                {
+                    database.AddInParameter(dbCommand, "piIdUsuario", DbType.Int32, iIdUsuario);
+                    database.AddInParameter(dbCommand, "piIdTipoCuenta", DbType.Int32, iIdTipoCuenta);
+                    database.AddInParameter(dbCommand, "piIdPerfil", DbType.Int32, iIdPerfil);
+                    database.AddInParameter(dbCommand, "psUsuario", DbType.String, sUsuario);
+                    database.AddInParameter(dbCommand, "psPassword", DbType.String, sPassword);
+                    database.AddInParameter(dbCommand, "pbActivo", DbType.Boolean, bActivo);
+                    database.AddInParameter(dbCommand, "pbBaja", DbType.Boolean, bBaja);
+
+                    response = imdCommonData.DExecuteDT(database, dbCommand);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458361449;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458361449, $"Error en {metodo}(int? iIdUsuario, int? iIdTipoCuenta, int? iIdPerfil, string sUsuario, string sPassword, bool bActivo, bool bBaja): {ex.Message}", iIdUsuario, iIdTipoCuenta, iIdPerfil, sUsuario, sPassword, bActivo, bBaja, ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<bool> DCambiarContrasenia(int iIdUsuario, string sPassword, int iIdUsuarioUltMod)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.DCambiarContrasenia);
+            logger.Info(IMDSerialize.Serialize(67823458365334, $"Inicia {metodo}(int iIdUsuario, string sPassword)", iIdUsuario, sPassword));
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(cambioContrasenia))
+                {
+                    database.AddInParameter(dbCommand, "piIdUsuario", DbType.Int32, iIdUsuario);
+                    database.AddInParameter(dbCommand, "piIdUsuarioUltMod", DbType.Int32, iIdUsuarioUltMod);
+                    database.AddInParameter(dbCommand, "psPassword", DbType.Int32, sPassword);
+
+                    response = imdCommonData.DExecute(database, dbCommand);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458366111;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458366111, $"Error en {metodo}(int iIdUsuario, string sPassword): {ex.Message}", iIdUsuario, sPassword, ex, response));
             }
             return response;
         }

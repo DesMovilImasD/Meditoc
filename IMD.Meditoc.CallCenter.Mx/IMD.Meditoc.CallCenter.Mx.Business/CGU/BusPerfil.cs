@@ -4,6 +4,8 @@ using IMD.Meditoc.CallCenter.Mx.Data.CGU;
 using IMD.Meditoc.CallCenter.Mx.Entities.CGU;
 using log4net;
 using System;
+using System.Collections.Generic;
+using System.Data;
 
 namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 {
@@ -34,7 +36,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     return response;
                 }
 
-                response = bValidaDatos(entPerfil); 
+                response = bValidaDatos(entPerfil);
 
                 if (response.Code != 0) //Se valida que los datos que contiene el objeto de perfil no esten vacios.
                 {
@@ -64,6 +66,50 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             return response;
         }
 
+        public IMDResponse<List<EntPerfil>> BObtenerPerfil(int? iIdPerfil, bool bActivo, bool bBaja)
+        {
+            IMDResponse<List<EntPerfil>> response = new IMDResponse<List<EntPerfil>>();
+
+            string metodo = nameof(this.BObtenerPerfil);
+            logger.Info(IMDSerialize.Serialize(67823458357564, $"Inicia {metodo}(int? iIdPerfil, bool bActivo, bool bBaja)", iIdPerfil, bActivo, bBaja));
+
+            try
+            {
+                IMDResponse<DataTable> dtPerfil = datPerfil.DObtenerPerfil(iIdPerfil, bActivo, bBaja);
+                List<EntPerfil> lstPerfiles = new List<EntPerfil>();
+
+                if (dtPerfil.Code != 0)
+                {
+                    response.Message = "No se encuentran perfiles";
+                    return response;
+                }
+
+
+                foreach (DataRow item in dtPerfil.Result.Rows)
+                {
+                    IMDDataRow dr = new IMDDataRow(item);
+                    EntPerfil entPerfil = new EntPerfil();
+
+                    entPerfil.iIdPerfil = dr.ConvertTo<int>("iIdPerfil");
+                    entPerfil.sNombre = dr.ConvertTo<string>("sNombre");
+                    entPerfil.bActivo = dr.ConvertTo<bool>("bActivo");
+                    entPerfil.bBaja = dr.ConvertTo<bool>("bBaja");
+
+                    lstPerfiles.Add(entPerfil);
+                }
+
+                response.Result = lstPerfiles;
+                response.Message = "Lista de perfiles.";
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458358341;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458358341, $"Error en {metodo}(int? iIdPerfil, bool bActivo, bool bBaja): {ex.Message}", iIdPerfil, bActivo, bBaja, ex, response));
+            }
+            return response;
+        }
 
         public IMDResponse<bool> bValidaDatos(EntPerfil entPerfil)
         {
