@@ -89,7 +89,7 @@ const SistemaSubmodulo = (props) => {
                             {submodulo.sNombre} ({submodulo.iIdSubModulo})
                         </span>
                     </div>
-                    <Tooltip title={`Agregar un botón a ${submodulo.sNombre}`} placement="top" arrow>
+                    <Tooltip title={`Agregar un botón nuevo a ${submodulo.sNombre}`} placement="top" arrow>
                         <IconButton onClick={handleClickNuevoBoton}>
                             <AddIcon className={colorClass} />
                         </IconButton>

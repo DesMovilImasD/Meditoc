@@ -6,6 +6,7 @@ import { SnackbarProvider } from 'notistack'
 import Alert from './components/Alert'
 import ContentMain from './components/ContentMain'
 import { HashRouter } from 'react-router-dom'
+import Login from './components/login/Login'
 /*************************************************************
  * Descripcion: App del proyecto
  * Creado: Cristopher Noh
@@ -13,6 +14,9 @@ import { HashRouter } from 'react-router-dom'
  * Invocado desde:  ---------Elemento Raíz----------
  *************************************************************/
 function App() {
+  const [usuarioSesion, setUsuarioSesion] = useState({ iIdUsuario: 1 })
+  const [usuarioActivo, setUsuarioActivo] = useState(false)
+
   //Guardar valores de estado del loader
   const [entLoader, setEntLoader] = useState({
     open: false,
@@ -66,7 +70,15 @@ function App() {
         <HashRouter>
           <Loader entLoader={entLoader} />
           <Alert entAlert={entAlert} />
-          <ContentMain funcLoader={funcLoader} funcAlert={funcAlert} />
+          {usuarioActivo === true ? (
+            <ContentMain
+              usuarioSesion={usuarioSesion}
+              funcLoader={funcLoader}
+              funcAlert={funcAlert}
+            />
+          ) : (
+            <Login />
+          )}
         </HashRouter>
       </SnackbarProvider>
     </ThemeProvider>

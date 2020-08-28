@@ -53,7 +53,7 @@ const Sistema = (props) => {
     return (
         <Fragment>
             <SubmoduloBarra title="SISTEMA">
-                <Tooltip title="Nuevo módulo" arrow>
+                <Tooltip title="Agregar un nuevo módulo" arrow>
                     <IconButton onClick={handleAgregarModuloOpen}>
                         <InsertDriveFileIcon className="color-0" />
                     </IconButton>

@@ -30,6 +30,7 @@ body {
         "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    height: 100%;
 }
 
 code {
@@ -215,4 +216,69 @@ code {
 
 .MuiTableSortLabel-icon {
     opacity: 1 !important;
+}
+
+.login-page {
+    height: 100%;
+}
+
+.login-logo-container {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+.login-logo-img {
+    max-width: 550px;
+}
+
+.full {
+    height: 100%;
+}
+
+.login-container {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    overflow: auto;
+}
+
+.login-form-container {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+.login-form-back {
+    height: 100%;
+    background-color: var(--color-primary-blue);
+    display: grid;
+    align-self: center;
+    color: var(--color-unset);
+}
+
+.login-input {
+    width: 80%;
+    margin: auto;
+    height: 100%;
+}
+@media only screen and (max-width: 959px) {
+    .login-form-back {
+        height: 520px;
+        padding-top: 20px;
+        display: block;
+        box-sizing: border-box;
+    }
+    .login-logo-img {
+        max-width: 400px;
+    }
+}
+@media only screen and (max-width: 599px) {
+    .login-logo-img {
+        max-width: 300px;
+    }
+}
+
+.login-form-img {
+    width: 230px;
 }

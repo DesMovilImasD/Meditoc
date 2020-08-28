@@ -81,6 +81,10 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             try
             {
                 IMDResponse<DataSet> dtPermisos = datPermiso.DObtenerPermisosPorPerfil(iIdPermiso);
+                if(dtPermisos.Code != 0)
+                {
+                    return dtPermisos.GetResponse<List<EntPermisoSistema>>();
+                }
 
                 var drBotones = dtPermisos.Result.Tables[2].Rows;
                 var drSubmodulos = dtPermisos.Result.Tables[1].Rows;

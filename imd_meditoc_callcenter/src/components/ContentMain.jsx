@@ -13,11 +13,8 @@ import Perfiles from "./configuracion/perfiles/Perfiles";
  * Invocado desde: App
  *************************************************************/
 const ContentMain = (props) => {
-    const { funcLoader, funcAlert } = props;
+    const { usuarioSesion, funcLoader, funcAlert } = props;
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const [usuarioSesion, setUsuarioSesion] = useState({
-        iIdUsuario: 1,
-    });
 
     const toggleDrawer = (open) => (event) => {
         if (event.type === "keydown" && (event.key === "Tab" || event.key === "Shift")) {
