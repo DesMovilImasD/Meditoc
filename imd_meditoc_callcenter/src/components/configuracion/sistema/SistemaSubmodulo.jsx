@@ -110,16 +110,20 @@ const SistemaSubmodulo = (props) => {
                         <Paper elevation={0}>
                             <Table size="small">
                                 <TableBody>
-                                    {submodulo.lstBotones.map((boton) => (
-                                        <SistemaBoton
-                                            key={boton.iIdBoton}
-                                            boton={boton}
-                                            usuarioSesion={usuarioSesion}
-                                            funcGetPermisosXPerfil={funcGetPermisosXPerfil}
-                                            funcLoader={funcLoader}
-                                            funcAlert={funcAlert}
-                                        />
-                                    ))}
+                                    {submodulo.lstBotones.length > 0 ? (
+                                        submodulo.lstBotones.map((boton) => (
+                                            <SistemaBoton
+                                                key={boton.iIdBoton}
+                                                boton={boton}
+                                                usuarioSesion={usuarioSesion}
+                                                funcGetPermisosXPerfil={funcGetPermisosXPerfil}
+                                                funcLoader={funcLoader}
+                                                funcAlert={funcAlert}
+                                            />
+                                        ))
+                                    ) : (
+                                        <div className="center">(No hay botones configurados para este submódulo)</div>
+                                    )}
                                 </TableBody>
                             </Table>
                         </Paper>

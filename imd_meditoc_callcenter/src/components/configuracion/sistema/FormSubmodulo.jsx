@@ -98,6 +98,7 @@ const FormSubmodulo = (props) => {
                         label="Nombre de submódulo:"
                         variant="outlined"
                         color="secondary"
+                        autoComplete="off"
                         fullWidth
                         autoFocus
                         value={formSubmodulo.txtNombre}

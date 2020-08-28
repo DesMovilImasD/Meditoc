@@ -43,6 +43,7 @@ const Simbologia = () => {
                 className={classes.absolute}
                 onMouseEnter={() => setFabOpen(true)}
                 onMouseLeave={() => setFabOpen(false)}
+                onClick={() => setFabOpen(true)}
             >
                 <LiveHelpIcon />
             </Fab>

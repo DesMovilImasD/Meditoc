@@ -113,6 +113,7 @@ const FormBoton = (props) => {
                         label="Nombre de botón:"
                         variant="outlined"
                         color="secondary"
+                        autoComplete="off"
                         fullWidth
                         autoFocus
                         value={formBoton.txtNombre}

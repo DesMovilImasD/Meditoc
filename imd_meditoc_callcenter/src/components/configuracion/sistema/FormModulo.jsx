@@ -82,6 +82,7 @@ const FormModulo = (props) => {
                         label="Nombre de módulo:"
                         variant="outlined"
                         color="secondary"
+                        autoComplete="off"
                         fullWidth
                         autoFocus
                         value={formModulo.txtNombre}

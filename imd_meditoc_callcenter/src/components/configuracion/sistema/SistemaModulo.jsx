@@ -97,16 +97,20 @@ const SistemaModulo = (props) => {
                 </AccordionSummary>
                 <AccordionDetails>
                     <div className="acc-content">
-                        {modulo.lstSubModulo.map((submodulo) => (
-                            <SistemaSubmodulo
-                                key={submodulo.iIdSubModulo}
-                                submodulo={submodulo}
-                                usuarioSesion={usuarioSesion}
-                                funcGetPermisosXPerfil={funcGetPermisosXPerfil}
-                                funcLoader={funcLoader}
-                                funcAlert={funcAlert}
-                            />
-                        ))}
+                        {modulo.lstSubModulo.length > 0 ? (
+                            modulo.lstSubModulo.map((submodulo) => (
+                                <SistemaSubmodulo
+                                    key={submodulo.iIdSubModulo}
+                                    submodulo={submodulo}
+                                    usuarioSesion={usuarioSesion}
+                                    funcGetPermisosXPerfil={funcGetPermisosXPerfil}
+                                    funcLoader={funcLoader}
+                                    funcAlert={funcAlert}
+                                />
+                            ))
+                        ) : (
+                            <div className="center">(No hay submódulos configurados para este módulo)</div>
+                        )}
                     </div>
                 </AccordionDetails>
             </Accordion>

@@ -38,7 +38,7 @@ const NavBar = (props) => {
 
     return (
         <div className="flx-grw-1">
-            <AppBar position="static" color="inherit" elevation={0}>
+            <AppBar position="relative" color="inherit" elevation={0}>
                 <Toolbar>
                     <IconButton className="size-50" onClick={toggleDrawer(true)}>
                         <MenuIcon className="color-1" />

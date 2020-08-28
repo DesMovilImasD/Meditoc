@@ -7,6 +7,7 @@ import CGUController from "../../../controllers/CGUController";
 import SubmoduloContenido from "../../SubmoduloContenido";
 import SeleccionarModulos from "./SeleccionarModulo";
 import PermisoModulo from "./PermisoModulo";
+import Simbologia from "../sistema/Simbologia";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -50,7 +51,7 @@ const Permisos = (props) => {
 
     return (
         <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
-            <SubmoduloBarra title={"Administrador de permisos para " + entPerfil.sNombre}>
+            <SubmoduloBarra title={"Administrar permisos para " + entPerfil.sNombre}>
                 <Tooltip title="Cerrar ventana" arrow>
                     <IconButton onClick={handleClose}>
                         <CancelPresentationIcon className="color-0" />
@@ -97,6 +98,7 @@ const Permisos = (props) => {
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
             />
+            <Simbologia />
         </Dialog>
     );
 };

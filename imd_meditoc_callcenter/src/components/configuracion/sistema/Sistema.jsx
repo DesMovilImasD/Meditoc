@@ -61,19 +61,20 @@ const Sistema = (props) => {
             </SubmoduloBarra>
 
             <SubmoduloContenido>
-                {listaSistema.length > 0
-                    ? listaSistema.map((modulo) => (
-                          <SistemaModulo
-                              key={modulo.iIdModulo}
-                              modulo={modulo}
-                              usuarioSesion={usuarioSesion}
-                              funcGetPermisosXPerfil={funcGetPermisosXPerfil}
-                              funcLoader={funcLoader}
-                              funcAlert={funcAlert}
-                          />
-                      ))
-                    : "(No hay módulos configurados)"}
-                {}
+                {listaSistema.length > 0 ? (
+                    listaSistema.map((modulo) => (
+                        <SistemaModulo
+                            key={modulo.iIdModulo}
+                            modulo={modulo}
+                            usuarioSesion={usuarioSesion}
+                            funcGetPermisosXPerfil={funcGetPermisosXPerfil}
+                            funcLoader={funcLoader}
+                            funcAlert={funcAlert}
+                        />
+                    ))
+                ) : (
+                    <div className="center">(No hay módulos configurados)</div>
+                )}
             </SubmoduloContenido>
 
             <Simbologia />

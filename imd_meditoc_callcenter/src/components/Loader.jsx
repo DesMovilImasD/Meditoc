@@ -26,7 +26,7 @@ const Loader = (props) => {
         <Backdrop
             className={classes.backdrop}
             open={entLoader.open}
-            style={{ backgroundColor: "rgb(255 255 255 / 0.5)" }}
+            style={{ backgroundColor: "rgb(255 255 255 / 0.7)" }}
         >
             <div className="center">
                 <CircularProgress color="primary" />

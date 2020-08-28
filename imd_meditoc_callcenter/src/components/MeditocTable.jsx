@@ -51,13 +51,14 @@ const MeditocTable = (props) => {
             }}
             options={{
                 rowStyle: (rowData) => ({
-                    backgroundColor: rowData[mainField] === rowSelected[mainField] ? theme.palette.grey[400] : "#fff",
+                    backgroundColor:
+                        rowData[mainField] === rowSelected[mainField] ? theme.palette.secondary.light : "#fff",
                     color: rowData[mainField] === rowSelected[mainField] ? "#fff" : theme.palette.secondary.main,
                 }),
                 searchFieldVariant: "outlined",
                 columnsButton: true,
                 padding: "dense",
-                headerStyle: { color: theme.palette.primary.main, fontSize: 19 },
+                headerStyle: { color: theme.palette.primary.main, fontSize: 18 },
                 sorting: true,
                 showTextRowsSelected: true,
                 showSelectAllCheckbox: false,
