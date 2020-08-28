@@ -6,6 +6,7 @@ using log4net;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Net.Http.Headers;
 using System.Web.Http;
 
 namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
@@ -180,7 +181,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 
         [HttpPost]
         [Route("Api/CGU/Create/CambiarContrasenia")]
-        public IMDResponse<bool> CCambiarContrasenia([FromBody] int iIdUsuario, string sPassword, int iIdUsuarioUltMod)
+        public IMDResponse<bool> CCambiarContrasenia([FromUri] int iIdUsuario, string sPassword, int iIdUsuarioUltMod)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
@@ -202,6 +203,32 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             }
             return response;
         }
+
+        [HttpPost]
+        [Route("Api/CGU/Get/Login")]
+        public IMDResponse<EntUsuario> CLogin([FromUri] string sUsuario, string sPassword)
+        {
+            IMDResponse<EntUsuario> response = new IMDResponse<EntUsuario>();
+
+            string metodo = nameof(this.CLogin);
+            logger.Info(IMDSerialize.Serialize(67823458376212, $"Inicia {metodo}"));
+
+            try
+            {
+                BusUsuario busUsuario = new BusUsuario();
+                response = busUsuario.BLogin(sUsuario, sPassword);
+
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458376989;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458376989, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
         #endregion
 
         #region Permiso        

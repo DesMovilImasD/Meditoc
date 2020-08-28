@@ -181,7 +181,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     return response;
                 }
 
-                response.Result = true;                
+                response.Result = true;
             }
             catch (Exception ex)
             {
@@ -224,6 +224,72 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458370773, $"Error en {metodo}(int iIdUsuario, string sPassword): {ex.Message}", iIdUsuario, sPassword, ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<EntUsuario> BLogin(string sUsuario, string sPassword)
+        {
+            IMDResponse<EntUsuario> response = new IMDResponse<EntUsuario>();
+
+            string metodo = nameof(this.BLogin);
+            logger.Info(IMDSerialize.Serialize(67823458374658, $"Inicia {metodo}"));
+
+            try
+            {
+                sPassword = BEncodePassword(sPassword);
+
+                IMDResponse<DataTable> dtUsuario = datUsuario.DLogin(sUsuario, sPassword);
+
+                if (dtUsuario.Code != 0)
+                {
+                    response.Code = dtUsuario.Code;
+                    response.Message = dtUsuario.Message;
+                    return response;
+                }
+                EntUsuario entUsuario = new EntUsuario();
+
+                foreach (DataRow item in dtUsuario.Result.Rows)
+                {
+
+                    IMDDataRow dr = new IMDDataRow(item);
+
+
+                    entUsuario.iIdUsuario = dr.ConvertTo<int>("iIdUsuario");
+                    entUsuario.iIdTipoCuenta = dr.ConvertTo<int>("iIdTipoCuenta");
+                    entUsuario.sTipoCuenta = dr.ConvertTo<string>("sTipoCuenta");
+                    entUsuario.iIdPerfil = dr.ConvertTo<int>("iIdPerfil");
+                    entUsuario.sPerfil = dr.ConvertTo<string>("sPerfil");
+                    entUsuario.sUsuario = dr.ConvertTo<string>("sUsuario");
+                    entUsuario.sPassword = dr.ConvertTo<string>("sPassword");
+                    entUsuario.sNombres = dr.ConvertTo<string>("sNombres");
+                    entUsuario.sApellidoPaterno = dr.ConvertTo<string>("sApellidoPaterno");
+                    entUsuario.sApellidoMaterno = dr.ConvertTo<string>("sApellidoMaterno");
+                    entUsuario.dtFechaNacimiento = dr.ConvertTo<DateTime>("dtFechaNacimiento");
+                    entUsuario.sTelefono = dr.ConvertTo<string>("sTelefono");
+                    entUsuario.sCorreo = dr.ConvertTo<string>("sCorreo");
+                    entUsuario.sDomicilio = dr.ConvertTo<string>("sDomicilio");
+                    entUsuario.iIdUsuarioMod = dr.ConvertTo<int>("iIdUsuarioMod");
+                    entUsuario.bActivo = dr.ConvertTo<bool>("bActivo");
+                    entUsuario.bBaja = dr.ConvertTo<bool>("bBaja");
+                }
+
+                response.Result = entUsuario;
+
+                if (response.Result.iIdUsuario == 0)
+                {
+                    response.Message = "Usuario o contraseña incorrectos.";
+                    return response;
+                }
+
+                response.Message = "Inicio de sesión existoso.";
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458375435;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458375435, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }

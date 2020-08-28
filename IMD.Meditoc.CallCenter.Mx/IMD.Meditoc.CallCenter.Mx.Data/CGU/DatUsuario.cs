@@ -132,7 +132,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             return response;
         }
 
-        public IMDResponse<DataTable> DLogin()
+        public IMDResponse<DataTable> DLogin(string sUsuario, string sPassword)
         {
             IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
@@ -141,13 +141,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(cambioContrasenia))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(getLogin))
                 {
-                    /*database.AddInParameter(dbCommand, "piIdUsuario", DbType.Int32, iIdUsuario);
-                    database.AddInParameter(dbCommand, "piIdUsuarioUltMod", DbType.Int32, iIdUsuarioUltMod);
-                    database.AddInParameter(dbCommand, "psPassword", DbType.Int32, sPassword);
+                    database.AddInParameter(dbCommand, "psUsuario", DbType.String, sUsuario);                    
+                    database.AddInParameter(dbCommand, "psPassword", DbType.String, sPassword);
 
-                    response = imdCommonData.DExecute(database, dbCommand);*/
+                    response = imdCommonData.DExecuteDT(database, dbCommand);
                 }
             }
             catch (Exception ex)
