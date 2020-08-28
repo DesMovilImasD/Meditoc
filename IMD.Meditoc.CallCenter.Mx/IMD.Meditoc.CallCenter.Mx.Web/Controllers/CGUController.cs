@@ -5,6 +5,7 @@ using IMD.Meditoc.CallCenter.Mx.Entities.CGU;
 using log4net;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Web.Http;
 
 namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
@@ -13,7 +14,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(CGUController));
 
-
+        #region Modulo
         [HttpPost]
         [Route("Api/CGU/Create/Modulo")]
         public IMDResponse<bool> CCreateModulo([FromBody] EntModulo entCreateModulo)
@@ -38,7 +39,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 
             return response;
         }
+        #endregion
 
+        #region SubModulo
         [HttpPost]
         [Route("Api/CGU/Create/SubModulo")]
         public IMDResponse<bool> CCreateSubModulo([FromBody] EntSubModulo entCreateSubModulo)
@@ -63,8 +66,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 
             return response;
         }
+        #endregion
 
-
+        #region Boton
         [HttpPost]
         [Route("Api/CGU/Create/Boton")]
         public IMDResponse<bool> CCreateBoton([FromBody] EntBoton entBoton)
@@ -89,6 +93,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 
             return response;
         }
+        #endregion
+
+        #region Perfil
 
         [HttpPost]
         [Route("Api/CGU/Create/Perfil")]
@@ -115,6 +122,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
+
+        #endregion
+
+        #region Usuario
+
         [HttpPost]
         [Route("Api/CGU/Create/Usuario")]
         public IMDResponse<bool> CCreateUsuario([FromBody] EntUsuario entUsuario)
@@ -139,6 +151,60 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 
             return response;
         }
+
+        [HttpGet]
+        [Route("Api/CGU/Get/Usuarios")]
+        public IMDResponse<List<EntUsuario>> CObtenerUsuario([FromUri] int? iIdUsuario = null, int? iIdTipoCuenta = null, int? iIdPerfil = null, string sUsuario = null, string sPassword = null, bool? bActivo = null, bool? bBaja = null)
+        {
+            IMDResponse<List<EntUsuario>> response = new IMDResponse<List<EntUsuario>>();
+
+            string metodo = nameof(this.CObtenerUsuario);
+            logger.Info(IMDSerialize.Serialize(67823458363780, $"Inicia {metodo}([FromUri] int? iIdUsuario = null, int? iIdTipoCuenta = null, int? iIdPerfil = null, string sUsuario = null, string sPassword = null, bool? bActivo = null, bool? bBaja = null)", iIdUsuario, iIdTipoCuenta, iIdPerfil, sUsuario, sPassword, bActivo, bBaja));
+
+            try
+            {
+                BusUsuario busUsuario = new BusUsuario();
+
+                response = busUsuario.BObtenerUsuario(iIdUsuario, iIdTipoCuenta, iIdPerfil, sUsuario, sPassword, bActivo, bBaja);
+
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458364557;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458364557, $"Error en {metodo}([FromUri] int? iIdUsuario = null, int? iIdTipoCuenta = null, int? iIdPerfil = null, string sUsuario = null, string sPassword = null, bool? bActivo = null, bool? bBaja = null): {ex.Message}", iIdUsuario, iIdTipoCuenta, iIdPerfil, sUsuario, sPassword, bActivo, bBaja, ex, response));
+            }
+            return response;
+        }
+
+        [HttpPost]
+        [Route("Api/CGU/Create/CambiarContrasenia")]
+        public IMDResponse<bool> CCambiarContrasenia([FromBody] int iIdUsuario, string sPassword, int iIdUsuarioUltMod)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.CCambiarContrasenia);
+            logger.Info(IMDSerialize.Serialize(67823458371550, $"Inicia {metodo}"));
+
+            try
+            {
+                BusUsuario busUsuario = new BusUsuario();
+                response = busUsuario.BCambiarContrasenia(iIdUsuario, sPassword, iIdUsuario);
+
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458372327;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458372327, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+        #endregion
+
+        #region Permiso        
 
         [HttpGet]
         [Route("Api/CGU/GET/PermisoXPerfil")]
@@ -215,31 +281,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             }
             return response;
         }
+        #endregion
 
-        [HttpGet]
-        [Route("Api/CGU/Get/Usuarios")]
-        public IMDResponse<List<EntUsuario>> CObtenerUsuario([FromUri] int? iIdUsuario = null, int? iIdTipoCuenta = null, int? iIdPerfil = null, string sUsuario = null, string sPassword = null, bool? bActivo = null, bool? bBaja = null)
-        {
-            IMDResponse<List<EntUsuario>> response = new IMDResponse<List<EntUsuario>>();
-
-            string metodo = nameof(this.CObtenerUsuario);
-            logger.Info(IMDSerialize.Serialize(67823458363780, $"Inicia {metodo}([FromUri] int? iIdUsuario = null, int? iIdTipoCuenta = null, int? iIdPerfil = null, string sUsuario = null, string sPassword = null, bool? bActivo = null, bool? bBaja = null)", iIdUsuario, iIdTipoCuenta, iIdPerfil, sUsuario, sPassword, bActivo, bBaja));
-
-            try
-            {
-                BusUsuario busUsuario = new BusUsuario();
-
-                response = busUsuario.BObtenerUsuario(iIdUsuario, iIdTipoCuenta, iIdPerfil, sUsuario, sPassword, bActivo, bBaja);
-
-            }
-            catch (Exception ex)
-            {
-                response.Code = 67823458364557;
-                response.Message = "Ocurrió un error inesperado";
-
-                logger.Error(IMDSerialize.Serialize(67823458364557, $"Error en {metodo}([FromUri] int? iIdUsuario = null, int? iIdTipoCuenta = null, int? iIdPerfil = null, string sUsuario = null, string sPassword = null, bool? bActivo = null, bool? bBaja = null): {ex.Message}", iIdUsuario, iIdTipoCuenta, iIdPerfil, sUsuario, sPassword, bActivo, bBaja, ex, response));
-            }
-            return response;
-        }
     }
 }
