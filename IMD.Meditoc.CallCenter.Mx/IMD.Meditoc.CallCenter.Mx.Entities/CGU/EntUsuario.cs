@@ -8,10 +8,10 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.CGU
 {
     public class EntUsuario
     {
-        public int iIdUsuario { get; set; }
-        public int iIdTipoCuenta { get; set; }
+        public int? iIdUsuario { get; set; }
+        public int? iIdTipoCuenta { get; set; }
         public string sTipoCuenta { get; set; }
-        public int iIdPerfil { get; set; }
+        public int? iIdPerfil { get; set; }
         public string sPerfil { get; set; }
         public string sUsuario { get; set; }
         public string sPassword { get; set; }

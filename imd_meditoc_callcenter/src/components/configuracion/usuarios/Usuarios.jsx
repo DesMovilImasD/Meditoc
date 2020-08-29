@@ -47,12 +47,13 @@ const Usuarios = (props) => {
     const [listaUsuarios, setListaUsuarios] = useState([]);
     const [listaPerfiles, setListaPerfiles] = useState([]);
     const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(usuarioEntidadVacia);
+    const [usuarioParaModalForm, setUsuarioParaModalForm] = useState(usuarioEntidadVacia);
 
     const [modalFormUsuarioNuevoOpen, setModalFormUsuarioNuevoOpen] = useState(false);
-    const [modalFormUsuarioEditarOpen, setModalFormUsuarioEditarOpen] = useState(false);
-    const [modalFormUsuarioEliminarOpen, setModalFormUsuarioEliminarOpen] = useState(true);
+    const [modalFormUsuarioEliminarOpen, setModalFormUsuarioEliminarOpen] = useState(false);
 
     const handleClickNuevoUsuario = () => {
+        setUsuarioParaModalForm(usuarioEntidadVacia);
         setModalFormUsuarioNuevoOpen(true);
     };
 
@@ -61,7 +62,8 @@ const Usuarios = (props) => {
             funcAlert("Seleccione un usuario para continuar", "warning");
             return;
         }
-        setModalFormUsuarioEditarOpen(true);
+        setUsuarioParaModalForm(usuarioSeleccionado);
+        setModalFormUsuarioNuevoOpen(true);
     };
 
     const handleClickEliminarUsuario = () => {
@@ -166,20 +168,11 @@ const Usuarios = (props) => {
                 />
             </SubmoduloContenido>
             <FormUsuario
-                entUsuario={usuarioEntidadVacia}
+                entUsuario={usuarioParaModalForm}
                 listaPerfiles={listaPerfiles}
                 open={modalFormUsuarioNuevoOpen}
+                setUsuarioSeleccionado={setUsuarioSeleccionado}
                 setOpen={setModalFormUsuarioNuevoOpen}
-                funcGetUsuarios={funcGetUsuarios}
-                usuarioSesion={usuarioSesion}
-                funcLoader={funcLoader}
-                funcAlert={funcAlert}
-            />
-            <FormUsuario
-                entUsuario={usuarioSeleccionado}
-                listaPerfiles={listaPerfiles}
-                open={modalFormUsuarioEditarOpen}
-                setOpen={setModalFormUsuarioEditarOpen}
                 funcGetUsuarios={funcGetUsuarios}
                 usuarioSesion={usuarioSesion}
                 funcLoader={funcLoader}

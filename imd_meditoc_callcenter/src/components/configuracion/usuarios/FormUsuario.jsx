@@ -7,22 +7,32 @@ import CGUController from "../../../controllers/CGUController";
 import { useEffect } from "react";
 
 const FormUsuario = (props) => {
-    const { entUsuario, listaPerfiles, open, setOpen, funcGetUsuarios, usuarioSesion, funcLoader, funcAlert } = props;
+    const {
+        entUsuario,
+        listaPerfiles,
+        open,
+        setOpen,
+        setUsuarioSeleccionado,
+        funcGetUsuarios,
+        usuarioSesion,
+        funcLoader,
+        funcAlert,
+    } = props;
 
     const cguController = new CGUController();
 
     const [formUsuario, setFormUsuario] = useState({
-        txtNombres: entUsuario.sNombres,
-        txtApellidoPaterno: entUsuario.sApellidoPaterno,
-        txtApellidoMaterno: entUsuario.sApellidoMaterno,
-        txtPerfil: entUsuario.iIdPerfil,
-        txtTipoCuenta: entUsuario.iIdTipoCuenta,
-        txtFechaNacimiento: entUsuario.dtFechaNacimiento,
-        txtTelefono: entUsuario.sTelefono,
-        txtCorreoElectronico: entUsuario.sCorreo,
-        txtDomicilio: entUsuario.sDomicilio,
-        txtUsuario: entUsuario.sUsuario,
-        txtPassword: entUsuario.sPassword,
+        txtNombres: "",
+        txtApellidoPaterno: "",
+        txtApellidoMaterno: "",
+        txtPerfil: "",
+        txtTipoCuenta: "",
+        txtFechaNacimiento: "",
+        txtTelefono: "",
+        txtCorreoElectronico: "",
+        txtDomicilio: "",
+        txtUsuario: "",
+        txtPassword: "",
     });
 
     const handleChangeFormulario = (e) => {
@@ -73,17 +83,17 @@ const FormUsuario = (props) => {
             return;
         }
 
-        if (formUsuario.txtPassword === "" || formUsuario.txtPassword.length < 6) {
-            funcAlert("Ingrese una contraseña válida de almenos 6 caracteres", "warning");
+        if (entUsuario.iIdUsuario === 0 && (formUsuario.txtPassword === "" || formUsuario.txtPassword.length < 6)) {
+            funcAlert("Ingrese una contraseña válida de al menos 6 caracteres", "warning");
             return;
         }
 
         const entSaveUsuario = {
-            iIdUsuario: 0,
+            iIdUsuario: entUsuario.iIdUsuario,
             iIdTipoCuenta: entUsuario.iIdTipoCuenta,
             iIdPerfil: parseInt(formUsuario.txtPerfil),
             sUsuario: formUsuario.txtUsuario,
-            sPassword: formUsuario.txtPassword,
+            sPassword: formUsuario.txtPassword === "" ? null : formUsuario.txtPassword,
             sNombres: formUsuario.txtNombres,
             sApellidoPaterno: formUsuario.txtApellidoPaterno,
             sApellidoMaterno: formUsuario.txtApellidoMaterno === "" ? null : formUsuario.txtApellidoMaterno,
@@ -104,6 +114,10 @@ const FormUsuario = (props) => {
         } else {
             setOpen(false);
             funcAlert(response.Message, "success");
+            setUsuarioSeleccionado({
+                ...entSaveUsuario,
+                sPassword: "",
+            });
             funcGetUsuarios();
         }
 
@@ -126,7 +140,7 @@ const FormUsuario = (props) => {
             txtCorreoElectronico: entUsuario.sCorreo,
             txtDomicilio: entUsuario.sDomicilio,
             txtUsuario: entUsuario.sUsuario,
-            txtPassword: entUsuario.sPassword,
+            txtPassword: "",
         });
     }, [entUsuario]);
 
