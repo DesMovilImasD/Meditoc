@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React, { Fragment, useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Accordion, AccordionSummary, Tooltip, IconButton, AccordionDetails } from "@material-ui/core";
@@ -6,9 +7,10 @@ import AccountTreeIcon from "@material-ui/icons/AccountTree";
 import AddIcon from "@material-ui/icons/Add";
 import BlockIcon from "@material-ui/icons/Block";
 import theme from "../../../configurations/themeConfig";
-import EliminarPermisoModulo from "./EliminarPermisoModulo";
 import SeleccionarSubmodulo from "./SeleccionarSubmodulo";
 import PermisoSubmodulo from "./PermisoSubmodulo";
+import CGUController from "../../../controllers/CGUController";
+import Confirmacion from "../../Confirmacion";
 
 const useStyles = makeStyles({
     backColor: {
@@ -23,6 +25,12 @@ const useStyles = makeStyles({
     },
 });
 
+/*************************************************************
+ * Descripcion: Representa una fila de un módulo con las opciones de agregar permisos a submódulo y quitar el permiso de este módulo
+ * Creado: Cristopher Noh
+ * Fecha: 28/08/2020
+ * Invocado desde: Permisos
+ *************************************************************/
 const PermisoModulo = (props) => {
     const {
         entPerfil,
@@ -35,25 +43,23 @@ const PermisoModulo = (props) => {
         funcAlert,
     } = props;
 
-    const [modalEliminarPermisoModuloOpen, setModalEliminarPermisoModuloOpen] = useState(false);
-    const [modalSeleccionarSubmodulosOpen, setModalSeleccionarSubmodulosOpen] = useState(false);
-
-    const [lstSubmodulosSistema, setLstSubmodulosSistema] = useState([]);
-    const [lstSubmodulosPerfil, setLstSubmodulosPerfil] = useState([]);
-
-    const handleClickEliminarPermisoModulo = (e) => {
-        e.stopPropagation();
-        setModalEliminarPermisoModuloOpen(true);
-    };
-
-    const handleClickAgregarSubmodulo = (e) => {
-        e.stopPropagation();
-        setModalSeleccionarSubmodulosOpen(true);
-    };
-
+    //Variables de estilos
     const classes = useStyles();
     const colorClass = "color-1";
 
+    //State para mostrar/ocultar la alerta de confirmación para quitar permisos a este módulo
+    const [modalEliminarPermisoModuloOpen, setModalEliminarPermisoModuloOpen] = useState(false);
+
+    //State para mostrar/ocultar el modal para seleccionar los submódulos disponibles de este módulo para darles permisos
+    const [modalSeleccionarSubmodulosOpen, setModalSeleccionarSubmodulosOpen] = useState(false);
+
+    //Lista de todos los submódulos disponibles para dar permisos de este módulo
+    const [lstSubmodulosSistema, setLstSubmodulosSistema] = useState([]);
+
+    //lista de los submódulos de este módulo a los cuales el perfil tiene permisos
+    const [lstSubmodulosPerfil, setLstSubmodulosPerfil] = useState([]);
+
+    //Filtar los submódulos del sistema para mostrar únicamente submódulos que no tienen permisos para que el usuario los pueda seleccionar
     useEffect(() => {
         let lstSubmodulosSistemaTemp = [];
         try {
@@ -66,7 +72,51 @@ const PermisoModulo = (props) => {
             lstSubmodulosPerfilTemp = listaPermisosPerfil.find((x) => x.iIdModulo === entModulo.iIdModulo).lstSubModulo;
         } catch (error) {}
         setLstSubmodulosPerfil(lstSubmodulosPerfilTemp);
+
+        // eslint-disable-next-line
     }, [listaPermisosPerfil]);
+
+    //Funcion para abrir la alerta de confirmación para quitar permisos a este módulo
+    const handleClickEliminarPermisoModulo = (e) => {
+        e.stopPropagation();
+        setModalEliminarPermisoModuloOpen(true);
+    };
+
+    //Función para abrir el modal para seleccionar los submódulos disponibles de este módulo para darles permisos
+    const handleClickAgregarSubmodulo = (e) => {
+        e.stopPropagation();
+        setModalSeleccionarSubmodulosOpen(true);
+    };
+
+    //Consumir servicio para quitar el permiso al perfil de acceder a este módulo
+    const funcEliminarPermisoModulo = async () => {
+        const listaPermisosParaGuardar = [
+            {
+                iIdPerfil: entPerfil.iIdPerfil,
+                iIdModulo: entModulo.iIdModulo,
+                iIdSubModulo: 0,
+                iIdBoton: 0,
+                iIdUsuarioMod: usuarioSesion.iIdUsuario,
+                bActivo: false,
+                bBaja: true,
+            },
+        ];
+
+        funcLoader(true, "Removiendo permisos de módulo...");
+
+        const cguController = new CGUController();
+        const response = await cguController.funcSavePermiso(listaPermisosParaGuardar);
+
+        if (response.Code !== 0) {
+            funcAlert(response.Message);
+        } else {
+            setModalEliminarPermisoModuloOpen(false);
+            funcAlert(response.Message, "success");
+            funcGetPermisosXPerfil();
+        }
+
+        funcLoader();
+    };
 
     return (
         <Fragment>
@@ -121,16 +171,14 @@ const PermisoModulo = (props) => {
                     </div>
                 </AccordionDetails>
             </Accordion>
-            <EliminarPermisoModulo
-                entPerfil={entPerfil}
-                entModulo={entModulo}
+            <Confirmacion
+                title="Quitar permiso a módulo"
                 open={modalEliminarPermisoModuloOpen}
                 setOpen={setModalEliminarPermisoModuloOpen}
-                funcGetPermisosXPerfil={funcGetPermisosXPerfil}
-                usuarioSesion={usuarioSesion}
-                funcLoader={funcLoader}
-                funcAlert={funcAlert}
-            />
+                okFunc={funcEliminarPermisoModulo}
+            >
+                ¿Desea remover el permiso para el módulo {entModulo.sNombre} y todos sus submódulos y botones?
+            </Confirmacion>
             <SeleccionarSubmodulo
                 entPerfil={entPerfil}
                 entModulo={entModulo}
@@ -145,6 +193,24 @@ const PermisoModulo = (props) => {
             />
         </Fragment>
     );
+};
+
+PermisoModulo.propTypes = {
+    entModulo: PropTypes.shape({
+        iIdModulo: PropTypes.number,
+        sNombre: PropTypes.string,
+    }),
+    entPerfil: PropTypes.shape({
+        iIdPerfil: PropTypes.number,
+    }),
+    funcAlert: PropTypes.func,
+    funcGetPermisosXPerfil: PropTypes.func,
+    funcLoader: PropTypes.func,
+    listaPermisosPerfil: PropTypes.array,
+    listaSistema: PropTypes.array,
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.number,
+    }),
 };
 
 export default PermisoModulo;

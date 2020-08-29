@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React, { useState, useEffect } from "react";
 import { Dialog, IconButton, Tooltip, Slide } from "@material-ui/core";
 import SubmoduloBarra from "../../SubmoduloBarra";
@@ -13,40 +14,54 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
+/*************************************************************
+ * Descripcion: Representa la ventana de administración de los permisos para el perfil previamente seleccionado
+ * Creado: Cristopher Noh
+ * Fecha: 28/08/2020
+ * Invocado desde: Perfiles
+ *************************************************************/
 const Permisos = (props) => {
     const { entPerfil, listaSistema, open, setOpen, usuarioSesion, funcLoader, funcAlert } = props;
 
-    const cguController = new CGUController();
+    //Lista de modulos que el perfil tiene permisos para acceder
+    const [listaPermisosModulo, setListaPermisosModulo] = useState([]);
 
-    const [listaPermisosPerfil, setListaPermisosPerfil] = useState([]);
+    //State para mostrar/ocultar el modal para seleccionar los módulos disponibles para que el usuario les de permisos
     const [modalSeleccionarModulosOpen, setModalSeleccionarModulosOpen] = useState(false);
 
+    //Funcion para esta ventana de administrarció de permisos
     const handleClose = () => {
         setOpen(false);
     };
 
+    //Función para abrir el modal para seleccionar los módulos disponibles para que el usuario les de permisos
     const handleClickSeleccionarModulos = () => {
         setModalSeleccionarModulosOpen(true);
     };
 
-    //Obtener todos los permisos actuales del perfil a administrar
+    //Consumir servicio para obtener todos los permisos actuales del perfil seleccionado
     const funcGetPermisosXPerfil = async () => {
         funcLoader(true, "Consultado permisos del perfil...");
+
+        const cguController = new CGUController();
         const response = await cguController.funcGetPermisosXPeril(entPerfil.iIdPerfil);
-        funcLoader();
 
         if (response.Code !== 0) {
             funcAlert(response.Message);
             return;
         }
+        funcLoader();
 
-        setListaPermisosPerfil(response.Result);
+        setListaPermisosModulo(response.Result);
     };
 
+    //Actualizar la lista de permisos actuales del perfil seleccionado
     useEffect(() => {
         if (entPerfil.iIdPerfil !== 0 && open === true) {
             funcGetPermisosXPerfil();
         }
+
+        // eslint-disable-next-line
     }, [entPerfil]);
 
     return (
@@ -65,14 +80,14 @@ const Permisos = (props) => {
             </SubmoduloBarra>
             <div>
                 <SubmoduloContenido>
-                    {listaPermisosPerfil.length > 0 ? (
-                        listaPermisosPerfil.map((modulo) => (
+                    {listaPermisosModulo.length > 0 ? (
+                        listaPermisosModulo.map((modulo) => (
                             <PermisoModulo
                                 key={modulo.iIdModulo}
                                 entPerfil={entPerfil}
                                 entModulo={modulo}
                                 listaSistema={listaSistema}
-                                listaPermisosPerfil={listaPermisosPerfil}
+                                listaPermisosPerfil={listaPermisosModulo}
                                 funcGetPermisosXPerfil={funcGetPermisosXPerfil}
                                 usuarioSesion={usuarioSesion}
                                 funcLoader={funcLoader}
@@ -89,7 +104,7 @@ const Permisos = (props) => {
 
             <SeleccionarModulos
                 entPerfil={entPerfil}
-                listaPermisosPerfil={listaPermisosPerfil}
+                listaPermisosPerfil={listaPermisosModulo}
                 listaSistema={listaSistema}
                 open={modalSeleccionarModulosOpen}
                 setOpen={setModalSeleccionarModulosOpen}
@@ -101,6 +116,19 @@ const Permisos = (props) => {
             <Simbologia />
         </Dialog>
     );
+};
+
+Permisos.propTypes = {
+    entPerfil: PropTypes.shape({
+        iIdPerfil: PropTypes.number,
+        sNombre: PropTypes.string,
+    }),
+    funcAlert: PropTypes.func,
+    funcLoader: PropTypes.func,
+    listaSistema: PropTypes.array,
+    open: PropTypes.bool,
+    setOpen: PropTypes.func,
+    usuarioSesion: PropTypes.object,
 };
 
 export default Permisos;

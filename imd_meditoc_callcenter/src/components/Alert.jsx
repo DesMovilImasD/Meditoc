@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import PropTypes from "prop-types";
+import React, { useEffect } from "react";
 import { useSnackbar } from "notistack";
 
 /*************************************************************
@@ -10,12 +11,15 @@ import { useSnackbar } from "notistack";
 const Alert = (props) => {
     const { entAlert } = props;
 
+    //Instancia para desplegar alertas
     const { enqueueSnackbar } = useSnackbar();
 
+    //Funcion para mostrar una alerta
     const handleShowAlert = () => {
         enqueueSnackbar(entAlert.message, { variant: entAlert.variant });
     };
 
+    //Desplegar alertas
     useEffect(() => {
         if (entAlert.message !== "") {
             handleShowAlert();
@@ -23,7 +27,14 @@ const Alert = (props) => {
         // eslint-disable-next-line
     }, [entAlert]);
 
-    return "";
+    return <div></div>;
+};
+
+Alert.propTypes = {
+    entAlert: PropTypes.shape({
+        message: PropTypes.string,
+        variant: PropTypes.string,
+    }),
 };
 
 export default Alert;

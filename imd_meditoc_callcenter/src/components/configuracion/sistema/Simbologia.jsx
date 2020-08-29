@@ -29,11 +29,12 @@ const useStyles = makeStyles({
  * componentes (Módulo, Submódulo y Botón) para el adminsitrador de CGU
  * Creado: Cristopher Noh
  * Fecha: 26/08/2020
- * Invocado desde: Sistema
+ * Invocado desde: Sistema, Permisos
  *************************************************************/
 const Simbologia = () => {
     const classes = useStyles();
 
+    //Guardar state (Mostrar/Ocultar) de la simbología
     const [fabOpen, setFabOpen] = useState(false);
 
     return (

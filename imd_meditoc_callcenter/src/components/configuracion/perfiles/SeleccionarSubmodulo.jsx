@@ -1,9 +1,16 @@
+import PropTypes from "prop-types";
 import React, { useState, useEffect } from "react";
 import ModalForm from "../../ModalForm";
 import { Grid, List, ListItem, ListItemIcon, Checkbox, Button, ListItemText } from "@material-ui/core";
 import CGUController from "../../../controllers/CGUController";
 import WebIcon from "@material-ui/icons/Web";
 
+/*************************************************************
+ * Descripcion: Representa un modal con la lista de submódulos disponibles para dar permisos al perfil en el módulo previamente seleccionado
+ * Creado: Cristopher Noh
+ * Fecha: 28/08/2020
+ * Invocado desde: PermisoModulo
+ *************************************************************/
 const SeleccionarSubmodulo = (props) => {
     const {
         entPerfil,
@@ -18,11 +25,28 @@ const SeleccionarSubmodulo = (props) => {
         funcAlert,
     } = props;
 
-    const cguController = new CGUController();
-
+    //Lista de submodulos para seleccionar
     const [submodulosParaSeleccionar, setSubmodulosParaSeleccionar] = useState([]);
+
+    //Lista de submodulos seleccionados
     const [submodulosSeleccionados, setSubmodulosSeleccionados] = useState([]);
 
+    //Filtrar los submodulos para mostrar solo los disponibles para seleccionar
+    useEffect(() => {
+        const listaIdSubmoduloPerfil = lstSubmodulosPerfil.map((x) => x.iIdSubModulo);
+        setSubmodulosParaSeleccionar(
+            lstSubmodulosSistema.filter((x) => !listaIdSubmoduloPerfil.includes(x.iIdSubModulo))
+        );
+
+        // eslint-disable-next-line
+    }, [lstSubmodulosPerfil]);
+
+    //Funcion para cerrar este modal
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    //Funcion para capturar los submodulos que el usuario seleccione
     const handleChangeSubmoduloCheckbox = (submoduloSeleccionado) => {
         const moduloIndex = submodulosSeleccionados.indexOf(submoduloSeleccionado);
         const nuevosSubmodulosSeleccionados = [...submodulosSeleccionados];
@@ -36,6 +60,7 @@ const SeleccionarSubmodulo = (props) => {
         setSubmodulosSeleccionados(nuevosSubmodulosSeleccionados);
     };
 
+    //Consumir servicio para dar permisos a los submodulos seleccionados (al perfil)
     const funcSavePermisosSubmodulo = async () => {
         if (submodulosSeleccionados.length < 1) {
             funcAlert("Debe seleccionar al menos un submódulo para asignar el permiso", "warning");
@@ -54,7 +79,9 @@ const SeleccionarSubmodulo = (props) => {
 
         funcLoader(true, "Guardando permisos para submódulos...");
 
+        const cguController = new CGUController();
         const response = await cguController.funcSavePermiso(listaPermisosParaGuardar);
+
         if (response.Code !== 0) {
             funcAlert(response.Message);
         } else {
@@ -66,17 +93,6 @@ const SeleccionarSubmodulo = (props) => {
 
         funcLoader();
     };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    useEffect(() => {
-        const listaIdSubmoduloPerfil = lstSubmodulosPerfil.map((x) => x.iIdSubModulo);
-        setSubmodulosParaSeleccionar(
-            lstSubmodulosSistema.filter((x) => !listaIdSubmoduloPerfil.includes(x.iIdSubModulo))
-        );
-    }, [lstSubmodulosPerfil]);
 
     return (
         <ModalForm title="Seleccionar submódulos para agregar" size="small" open={open} setOpen={setOpen}>
@@ -109,7 +125,7 @@ const SeleccionarSubmodulo = (props) => {
                 </Grid>
                 <Grid item sm={6} xs={12}>
                     <Button variant="contained" color="primary" fullWidth onClick={funcSavePermisosSubmodulo}>
-                        Agregar módulos
+                        Agregar submódulos
                     </Button>
                 </Grid>
                 <Grid item sm={6} xs={12}>
@@ -120,6 +136,25 @@ const SeleccionarSubmodulo = (props) => {
             </Grid>
         </ModalForm>
     );
+};
+
+SeleccionarSubmodulo.propTypes = {
+    entModulo: PropTypes.shape({
+        iIdModulo: PropTypes.number,
+    }),
+    entPerfil: PropTypes.shape({
+        iIdPerfil: PropTypes.number,
+    }),
+    funcAlert: PropTypes.func,
+    funcGetPermisosXPerfil: PropTypes.func,
+    funcLoader: PropTypes.func,
+    lstSubmodulosPerfil: PropTypes.array,
+    lstSubmodulosSistema: PropTypes.array,
+    open: PropTypes.bool,
+    setOpen: PropTypes.func,
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.number,
+    }),
 };
 
 export default SeleccionarSubmodulo;

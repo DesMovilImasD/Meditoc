@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, TextField, Input, Button, Fade } from "@material-ui/core";
+import { Grid, TextField, Button, Fade } from "@material-ui/core";
 import { imgLogoLogin, imgLogoMeditocCasa } from "../../configurations/imgConfig";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import theme from "../../configurations/themeConfig";
@@ -49,6 +49,8 @@ const Login = () => {
 
     useEffect(() => {
         setImgLogoFade(true);
+
+        // eslint-disable-next-line
     }, []);
 
     return (

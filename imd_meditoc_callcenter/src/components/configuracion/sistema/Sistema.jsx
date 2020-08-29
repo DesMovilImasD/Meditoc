@@ -1,6 +1,6 @@
+import PropTypes from "prop-types";
 import React, { useState, Fragment, useEffect } from "react";
 import { IconButton, Tooltip } from "@material-ui/core";
-import AddIcon from "@material-ui/icons/Add";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import SistemaModulo from "./SistemaModulo";
 import FormModulo from "./FormModulo";
@@ -18,11 +18,22 @@ import CGUController from "../../../controllers/CGUController";
 const Sistema = (props) => {
     const { usuarioSesion, funcLoader, funcAlert } = props;
 
+    //Servicios API
     const cguController = new CGUController();
 
+    //Objeto vacío de un módulo
+    const moduloEntidadVacia = {
+        iIdModulo: 0,
+        sNombre: "",
+    };
+
+    //Guardar lista de los elementos del sistema (módulos, submódulos y botones)
     const [listaSistema, setListaSistema] = useState([]);
+
+    //Guardar state (Mostrar/Ocultar) del formulario para crear módulos
     const [modalAgregarModuloOpen, setModalAgregarModuloOpen] = useState(false);
 
+    //Consumir servicio para consultar los elementos del sistema (módulos, submódulos y botones)
     const funcGetPermisosXPerfil = async () => {
         funcLoader(true, "Consultado elementos del sistema...");
         const response = await cguController.funcGetPermisosXPeril();
@@ -36,18 +47,16 @@ const Sistema = (props) => {
         setListaSistema(response.Result);
     };
 
+    //Funcion para mostrar el formulario para crear módulos
     const handleAgregarModuloOpen = () => {
         setModalAgregarModuloOpen(true);
     };
 
-    const entModuloNuevo = {
-        iIdModulo: 0,
-        sNombre: "",
-    };
-
+    //Consultar elementos del sistema en la primera carga de este componente
     useEffect(() => {
-        // eslint-disable-next-line
         funcGetPermisosXPerfil();
+
+        // eslint-disable-next-line
     }, []);
 
     return (
@@ -65,7 +74,7 @@ const Sistema = (props) => {
                     listaSistema.map((modulo) => (
                         <SistemaModulo
                             key={modulo.iIdModulo}
-                            modulo={modulo}
+                            entModulo={modulo}
                             usuarioSesion={usuarioSesion}
                             funcGetPermisosXPerfil={funcGetPermisosXPerfil}
                             funcLoader={funcLoader}
@@ -80,7 +89,7 @@ const Sistema = (props) => {
             <Simbologia />
 
             <FormModulo
-                entModulo={entModuloNuevo}
+                entModulo={moduloEntidadVacia}
                 open={modalAgregarModuloOpen}
                 setOpen={setModalAgregarModuloOpen}
                 usuarioSesion={usuarioSesion}
@@ -90,6 +99,12 @@ const Sistema = (props) => {
             />
         </Fragment>
     );
+};
+
+Sistema.propTypes = {
+    funcAlert: PropTypes.func,
+    funcLoader: PropTypes.func,
+    usuarioSesion: PropTypes.object,
 };
 
 export default Sistema;

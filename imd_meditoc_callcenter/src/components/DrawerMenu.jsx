@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Drawer } from "@material-ui/core";
@@ -45,6 +46,11 @@ const DrawerMenu = (props) => {
             </div>
         </Drawer>
     );
+};
+
+DrawerMenu.propTypes = {
+    drawerOpen: PropTypes.bool,
+    toggleDrawer: PropTypes.func,
 };
 
 export default DrawerMenu;

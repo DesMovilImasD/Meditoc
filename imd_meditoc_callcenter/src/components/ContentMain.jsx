@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React, { Fragment, useState } from "react";
 import NavBar from "./NavBar";
 import DrawerMenu from "./DrawerMenu";
@@ -17,6 +18,7 @@ const ContentMain = (props) => {
     const { usuarioSesion, funcLoader, funcAlert } = props;
     const [drawerOpen, setDrawerOpen] = useState(false);
 
+    //Desplegar/Ocultar menu lateral izquerdo
     const toggleDrawer = (open) => (event) => {
         if (event.type === "keydown" && (event.key === "Tab" || event.key === "Shift")) {
             return;
@@ -44,6 +46,12 @@ const ContentMain = (props) => {
             </div>
         </Fragment>
     );
+};
+
+ContentMain.propTypes = {
+    funcAlert: PropTypes.func,
+    funcLoader: PropTypes.func,
+    usuarioSesion: PropTypes.object,
 };
 
 export default ContentMain;

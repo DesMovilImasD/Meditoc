@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React, { useState, Fragment } from "react";
 import {
     Accordion,
@@ -18,8 +19,9 @@ import theme from "../../../configurations/themeConfig";
 import SistemaBoton from "./SistemaBoton";
 import EditIcon from "@material-ui/icons/Edit";
 import FormSubmodulo from "./FormSubmodulo";
-import EliminarSubmodulo from "./EliminarSubmodulo";
 import FormBoton from "./FormBoton";
+import CGUController from "../../../controllers/CGUController";
+import Confirmacion from "../../Confirmacion";
 
 const useStyles = makeStyles({
     backColor: {
@@ -41,35 +43,74 @@ const useStyles = makeStyles({
  * Invocado desde: SistemaModulo
  *************************************************************/
 const SistemaSubmodulo = (props) => {
-    const { submodulo, usuarioSesion, funcGetPermisosXPerfil, funcLoader, funcAlert } = props;
+    const { entSubmodulo, usuarioSesion, funcGetPermisosXPerfil, funcLoader, funcAlert } = props;
 
     const classes = useStyles();
+
+    //Color para los íconos y letrar de este componente
     const colorClass = "color-2";
 
-    const entBotonNuevo = {
-        iIdModulo: submodulo.iIdModulo,
-        iIdSubModulo: submodulo.iIdSubModulo,
+    //Servicio API
+    const cguController = new CGUController();
+
+    //Entidad vacía de un botón
+    const botonEntidadVacia = {
+        iIdModulo: entSubmodulo.iIdModulo,
+        iIdSubModulo: entSubmodulo.iIdSubModulo,
         iIdBoton: 0,
         sNombre: "",
     };
 
+    //State para mostrar/ocultar el formulario para editar este submódulo
     const [modalEditarSubmoduloOpen, setModalEditarSubmoduloOpen] = useState(false);
+
+    //State para mostrar/ocultar la alerta de confirmación para eliminar este submódulo
     const [modalEliminarSubmoduloOpen, setModalEliminarSubmoduloOpen] = useState(false);
+
+    //State para mostrar/ocultar el formulario para crear un botón de este submódulo
     const [modalNuevoBotonOpen, setModalNuevoBotonOpen] = useState(false);
 
+    //Funcion para mostrar el formulario para editar este submódulo
     const handleClickEditarSubmodulo = (e) => {
         e.stopPropagation();
         setModalEditarSubmoduloOpen(true);
     };
 
+    //Funcion para mostrar la alerta de confirmación para eliminar este submódulo
     const handleClickEliminarSubmodulo = (e) => {
         e.stopPropagation();
         setModalEliminarSubmoduloOpen(true);
     };
 
+    //Función para mostrar el formulario para crear un botón de este submódulo
     const handleClickNuevoBoton = (e) => {
         e.stopPropagation();
         setModalNuevoBotonOpen(true);
+    };
+
+    //Consumir servicio para eliminar este submódulo de la base
+    const funcEliminarSubmodulo = async () => {
+        funcLoader(true, "Removiendo submódulo...");
+
+        const entSaveSubmodulo = {
+            iIdModulo: entSubmodulo.iIdModulo,
+            iIdSubModulo: entSubmodulo.iIdSubModulo,
+            iIdUsuarioMod: usuarioSesion.iIdUsuario,
+            sNombre: null,
+            bActivo: false,
+            bBaja: true,
+        };
+
+        const response = await cguController.funcSaveSubmodulo(entSaveSubmodulo);
+        if (response.Code !== 0) {
+            funcAlert(response.Message);
+        } else {
+            setModalEliminarSubmoduloOpen(false);
+            funcAlert(response.Message, "success");
+            funcGetPermisosXPerfil();
+        }
+
+        funcLoader();
     };
 
     return (
@@ -77,7 +118,7 @@ const SistemaSubmodulo = (props) => {
             <Accordion elevation={0} classes={{ root: classes.hideLineAcc }}>
                 <AccordionSummary
                     expandIcon={
-                        <Tooltip title={`Mostrar/Ocultar botones de ${submodulo.sNombre}`} placement="top-end" arrow>
+                        <Tooltip title={`Mostrar/Ocultar botones de ${entSubmodulo.sNombre}`} placement="top-end" arrow>
                             <ExpandMore className={colorClass} />
                         </Tooltip>
                     }
@@ -86,20 +127,20 @@ const SistemaSubmodulo = (props) => {
                     <div className="align-self-center flx-grw-1">
                         <WebIcon className={colorClass + " vertical-align-middle"} />
                         <span className={colorClass + " size-15"}>
-                            {submodulo.sNombre} ({submodulo.iIdSubModulo})
+                            {entSubmodulo.sNombre} ({entSubmodulo.iIdSubModulo})
                         </span>
                     </div>
-                    <Tooltip title={`Agregar un botón nuevo a ${submodulo.sNombre}`} placement="top" arrow>
+                    <Tooltip title={`Agregar un botón nuevo a ${entSubmodulo.sNombre}`} placement="top" arrow>
                         <IconButton onClick={handleClickNuevoBoton}>
                             <AddIcon className={colorClass} />
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title={`Editar el submódulo ${submodulo.sNombre}`} placement="top" arrow>
+                    <Tooltip title={`Editar el submódulo ${entSubmodulo.sNombre}`} placement="top" arrow>
                         <IconButton onClick={handleClickEditarSubmodulo}>
                             <EditIcon className={colorClass} />
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title={`Eliminar el submódulo ${submodulo.sNombre}`} placement="top" arrow>
+                    <Tooltip title={`Eliminar el submódulo ${entSubmodulo.sNombre}`} placement="top" arrow>
                         <IconButton onClick={handleClickEliminarSubmodulo}>
                             <DeleteIcon className={colorClass} />
                         </IconButton>
@@ -110,11 +151,11 @@ const SistemaSubmodulo = (props) => {
                         <Paper elevation={0}>
                             <Table size="small">
                                 <TableBody>
-                                    {submodulo.lstBotones.length > 0 ? (
-                                        submodulo.lstBotones.map((boton) => (
+                                    {entSubmodulo.lstBotones.length > 0 ? (
+                                        entSubmodulo.lstBotones.map((boton) => (
                                             <SistemaBoton
                                                 key={boton.iIdBoton}
-                                                boton={boton}
+                                                entBoton={boton}
                                                 usuarioSesion={usuarioSesion}
                                                 funcGetPermisosXPerfil={funcGetPermisosXPerfil}
                                                 funcLoader={funcLoader}
@@ -131,7 +172,7 @@ const SistemaSubmodulo = (props) => {
                 </AccordionDetails>
             </Accordion>
             <FormSubmodulo
-                entSubmodulo={submodulo}
+                entSubmodulo={entSubmodulo}
                 open={modalEditarSubmoduloOpen}
                 setOpen={setModalEditarSubmoduloOpen}
                 usuarioSesion={usuarioSesion}
@@ -139,17 +180,16 @@ const SistemaSubmodulo = (props) => {
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
             />
-            <EliminarSubmodulo
-                entSubmodulo={submodulo}
+            <Confirmacion
+                title="Eliminar submódulo"
+                okFunc={funcEliminarSubmodulo}
                 open={modalEliminarSubmoduloOpen}
                 setOpen={setModalEliminarSubmoduloOpen}
-                usuarioSesion={usuarioSesion}
-                funcGetPermisosXPerfil={funcGetPermisosXPerfil}
-                funcLoader={funcLoader}
-                funcAlert={funcAlert}
-            />
+            >
+                ¿Desea eliminar el submódulo {entSubmodulo.sNombre} junto con todos sus botones?
+            </Confirmacion>
             <FormBoton
-                entBoton={entBotonNuevo}
+                entBoton={botonEntidadVacia}
                 open={modalNuevoBotonOpen}
                 setOpen={setModalNuevoBotonOpen}
                 usuarioSesion={usuarioSesion}
@@ -159,6 +199,21 @@ const SistemaSubmodulo = (props) => {
             />
         </Fragment>
     );
+};
+
+SistemaSubmodulo.propTypes = {
+    entSubmodulo: PropTypes.shape({
+        iIdModulo: PropTypes.number,
+        iIdSubModulo: PropTypes.number,
+        lstBotones: PropTypes.array,
+        sNombre: PropTypes.string,
+    }),
+    funcAlert: PropTypes.func,
+    funcGetPermisosXPerfil: PropTypes.func,
+    funcLoader: PropTypes.func,
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.number,
+    }),
 };
 
 export default SistemaSubmodulo;

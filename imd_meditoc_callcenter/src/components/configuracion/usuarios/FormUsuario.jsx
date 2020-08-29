@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 import ModalForm from "../../ModalForm";
 import { Grid, TextField, FormControl, InputLabel, Select, MenuItem, Button } from "@material-ui/core";
@@ -6,6 +7,12 @@ import { useState } from "react";
 import CGUController from "../../../controllers/CGUController";
 import { useEffect } from "react";
 
+/*************************************************************
+ * Descripcion: Formulario para registrar o editar un usuario
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ * Invocado desde: ContentMain
+ *************************************************************/
 const FormUsuario = (props) => {
     const {
         entUsuario,
@@ -19,8 +26,7 @@ const FormUsuario = (props) => {
         funcAlert,
     } = props;
 
-    const cguController = new CGUController();
-
+    //Objeto para guardar los valores de los inputs del formulario
     const [formUsuario, setFormUsuario] = useState({
         txtNombres: "",
         txtApellidoPaterno: "",
@@ -35,6 +41,7 @@ const FormUsuario = (props) => {
         txtPassword: "",
     });
 
+    //Función para capturar los valores de los inputs
     const handleChangeFormulario = (e) => {
         setFormUsuario({
             ...formUsuario,
@@ -42,7 +49,13 @@ const FormUsuario = (props) => {
         });
     };
 
-    const handleClickGuardarUsuario = async () => {
+    //Funcion para cerrar este modal
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    //Consumir servicio para registrar/editar los datos del usuario en le base
+    const funcSaveUsuario = async () => {
         if (formUsuario.txtNombres === "") {
             funcAlert("El nombre del usuario es requerido", "warning");
             return;
@@ -92,6 +105,8 @@ const FormUsuario = (props) => {
             iIdUsuario: entUsuario.iIdUsuario,
             iIdTipoCuenta: entUsuario.iIdTipoCuenta,
             iIdPerfil: parseInt(formUsuario.txtPerfil),
+            sTipoCuenta: entUsuario.sTipoCuenta,
+            sPerfil: entUsuario.sPerfil,
             sUsuario: formUsuario.txtUsuario,
             sPassword: formUsuario.txtPassword === "" ? null : formUsuario.txtPassword,
             sNombres: formUsuario.txtNombres,
@@ -108,7 +123,9 @@ const FormUsuario = (props) => {
 
         funcLoader(true, "Guardando usuario...");
 
+        const cguController = new CGUController();
         const response = await cguController.funcSaveUsuario(entSaveUsuario);
+
         if (response.Code !== 0) {
             funcAlert(response.Message);
         } else {
@@ -122,10 +139,6 @@ const FormUsuario = (props) => {
         }
 
         funcLoader();
-    };
-
-    const handleClose = () => {
-        setOpen(false);
     };
 
     useEffect(() => {
@@ -223,7 +236,7 @@ const FormUsuario = (props) => {
                         label="Fecha de nacimiento"
                         inputVariant="outlined"
                         openTo="year"
-                        format="dd/MM/yyyy"
+                        format="DD/MM/YYYY"
                         views={["year", "month", "date"]}
                         InputAdornmentProps={{ position: "end" }}
                         fullWidth
@@ -291,7 +304,7 @@ const FormUsuario = (props) => {
                     />
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="primary" fullWidth onClick={handleClickGuardarUsuario}>
+                    <Button variant="contained" color="primary" fullWidth onClick={funcSaveUsuario}>
                         Guardar
                     </Button>
                 </Grid>
@@ -303,6 +316,34 @@ const FormUsuario = (props) => {
             </Grid>
         </ModalForm>
     );
+};
+
+FormUsuario.propTypes = {
+    entUsuario: PropTypes.shape({
+        dtFechaNacimiento: PropTypes.string,
+        iIdPerfil: PropTypes.number,
+        iIdTipoCuenta: PropTypes.number,
+        iIdUsuario: PropTypes.number,
+        sApellidoMaterno: PropTypes.string,
+        sApellidoPaterno: PropTypes.string,
+        sCorreo: PropTypes.string,
+        sDomicilio: PropTypes.string,
+        sNombres: PropTypes.string,
+        sPerfil: PropTypes.string,
+        sTelefono: PropTypes.string,
+        sTipoCuenta: PropTypes.string,
+        sUsuario: PropTypes.string,
+    }),
+    funcAlert: PropTypes.func,
+    funcGetUsuarios: PropTypes.func,
+    funcLoader: PropTypes.func,
+    listaPerfiles: PropTypes.array,
+    open: PropTypes.bool,
+    setOpen: PropTypes.func,
+    setUsuarioSeleccionado: PropTypes.func,
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.number,
+    }),
 };
 
 export default FormUsuario;

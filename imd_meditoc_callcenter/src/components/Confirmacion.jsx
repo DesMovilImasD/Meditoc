@@ -1,16 +1,27 @@
+import PropTypes from "prop-types";
 import React from "react";
 import ModalForm from "./ModalForm";
 import { Grid, Button } from "@material-ui/core";
 
+/*************************************************************
+ * Descripcion: Representa una alerta de confirmación genérica
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ * Invocado desde: -
+ *************************************************************/
 const Confirmacion = (props) => {
     const { open, setOpen, title, children, okMessage, cancelMessage, okFunc, cancelFunc } = props;
 
+    //Titulo de la alerta
     const fTitle = title === undefined ? "Confirmación" : title;
 
+    //Texto para boton OK
     const fOkMessage = okMessage === undefined ? "Aceptar" : okMessage;
 
+    //Texto para boton Cancelar
     const fCancelMessage = cancelMessage === undefined ? "Cancelar" : cancelMessage;
 
+    //Funcion al presionar OK
     const fOKFunc =
         okFunc === undefined
             ? () => {
@@ -18,6 +29,7 @@ const Confirmacion = (props) => {
               }
             : okFunc;
 
+    //Funcion al presionar Cancelar
     const fCancelFunc =
         cancelFunc === undefined
             ? () => {
@@ -44,6 +56,17 @@ const Confirmacion = (props) => {
             </Grid>
         </ModalForm>
     );
+};
+
+Confirmacion.propTypes = {
+    cancelFunc: PropTypes.any,
+    cancelMessage: PropTypes.any,
+    children: PropTypes.any,
+    okFunc: PropTypes.any,
+    okMessage: PropTypes.any,
+    open: PropTypes.bool,
+    setOpen: PropTypes.func,
+    title: PropTypes.any,
 };
 
 export default Confirmacion;

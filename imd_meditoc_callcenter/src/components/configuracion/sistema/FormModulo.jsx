@@ -1,7 +1,9 @@
+import PropTypes from "prop-types";
 import React, { useState } from "react";
 import ModalForm from "../../ModalForm";
 import { Grid, TextField, Button } from "@material-ui/core";
 import CGUController from "../../../controllers/CGUController";
+import { useEffect } from "react";
 
 /*************************************************************
  * Descripcion: Modal del formulario para Agregar/Modificar un módulo
@@ -12,13 +14,16 @@ import CGUController from "../../../controllers/CGUController";
 const FormModulo = (props) => {
     const { entModulo, open, setOpen, usuarioSesion, funcGetPermisosXPerfil, funcLoader, funcAlert } = props;
 
+    //Servicios API
     const cguController = new CGUController();
 
+    //Objeto para guardar los valore de los inputs
     const [formModulo, setFormModulo] = useState({
-        txtIdModulo: entModulo.iIdModulo,
-        txtNombre: entModulo.sNombre,
+        txtIdModulo: "",
+        txtNombre: "",
     });
 
+    //Consumir servicio para guardar el modulo en la base
     const funcSaveModulo = async () => {
         funcLoader(true, "Guardando módulo...");
 
@@ -36,23 +41,33 @@ const FormModulo = (props) => {
         } else {
             setOpen(false);
             funcAlert(response.Message, "success");
-            //setFormModulo({ ...formModulo, txtNombre: "" });
             funcGetPermisosXPerfil();
         }
 
         funcLoader();
     };
 
+    //Funcion para cerrar el formulario
     const handleClose = () => {
         setOpen(false);
     };
 
+    //Funcion para capturar los valores de los inputs
     const handleChangeForm = (e) => {
         setFormModulo({
             ...formModulo,
             [e.target.name]: e.target.value,
         });
     };
+
+    //Actualizar los valores de los inputs con los datos de entModulo al cargar el componente
+    useEffect(() => {
+        setFormModulo({
+            txtIdModulo: entModulo.iIdModulo,
+            txtNombre: entModulo.sNombre,
+        });
+        // eslint-disable-next-line
+    }, [entModulo]);
 
     return (
         <ModalForm
@@ -102,6 +117,21 @@ const FormModulo = (props) => {
             </Grid>
         </ModalForm>
     );
+};
+
+FormModulo.propTypes = {
+    entModulo: PropTypes.shape({
+        iIdModulo: PropTypes.number,
+        sNombre: PropTypes.string,
+    }),
+    funcAlert: PropTypes.func,
+    funcGetPermisosXPerfil: PropTypes.func,
+    funcLoader: PropTypes.func,
+    open: PropTypes.bool,
+    setOpen: PropTypes.func,
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.number,
+    }),
 };
 
 export default FormModulo;

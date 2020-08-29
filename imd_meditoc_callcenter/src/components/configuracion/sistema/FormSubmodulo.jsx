@@ -1,7 +1,9 @@
+import PropTypes from "prop-types";
 import React, { useState } from "react";
 import ModalForm from "../../ModalForm";
 import { Grid, TextField, Button } from "@material-ui/core";
 import CGUController from "../../../controllers/CGUController";
+import { useEffect } from "react";
 
 /*************************************************************
  * Descripcion: Modal del formulario para Agregar/Modificar un submódulo
@@ -12,14 +14,17 @@ import CGUController from "../../../controllers/CGUController";
 const FormSubmodulo = (props) => {
     const { entSubmodulo, open, setOpen, usuarioSesion, funcGetPermisosXPerfil, funcLoader, funcAlert } = props;
 
+    //Servicios API
     const cguController = new CGUController();
 
+    //Objeto para guardar los valores de los inputs
     const [formSubmodulo, setFormSubmodulo] = useState({
-        txtIdModulo: entSubmodulo.iIdModulo,
-        txtIdSubmodulo: entSubmodulo.iIdSubModulo,
-        txtNombre: entSubmodulo.sNombre,
+        txtIdModulo: "",
+        txtIdSubmodulo: "",
+        txtNombre: "",
     });
 
+    //Consumir servicio para guardar el submodulo en la base
     const funcSaveSubmodulo = async () => {
         funcLoader(true, "Guardando submódulo...");
 
@@ -38,23 +43,34 @@ const FormSubmodulo = (props) => {
         } else {
             setOpen(false);
             funcAlert(response.Message, "success");
-            //setFormSubmodulo({ ...formSubmodulo, txtNombre: "" });
             funcGetPermisosXPerfil();
         }
 
         funcLoader();
     };
 
+    //Funcion para cerrar el formulario
     const handleClose = () => {
         setOpen(false);
     };
 
+    //Funcion para capturar los valores de los inputs
     const handleChangeForm = (e) => {
         setFormSubmodulo({
             ...formSubmodulo,
             [e.target.name]: e.target.value,
         });
     };
+
+    //Actualizar los valores de los inputs con los datos de entSubmodulo al cargar el componente
+    useEffect(() => {
+        setFormSubmodulo({
+            txtIdModulo: entSubmodulo.iIdModulo,
+            txtIdSubmodulo: entSubmodulo.iIdSubModulo,
+            txtNombre: entSubmodulo.sNombre,
+        });
+        // eslint-disable-next-line
+    }, [entSubmodulo]);
 
     return (
         <ModalForm
@@ -118,6 +134,22 @@ const FormSubmodulo = (props) => {
             </Grid>
         </ModalForm>
     );
+};
+
+FormSubmodulo.propTypes = {
+    entSubmodulo: PropTypes.shape({
+        iIdModulo: PropTypes.number,
+        iIdSubModulo: PropTypes.number,
+        sNombre: PropTypes.string,
+    }),
+    funcAlert: PropTypes.func,
+    funcGetPermisosXPerfil: PropTypes.func,
+    funcLoader: PropTypes.func,
+    open: PropTypes.bool,
+    setOpen: PropTypes.func,
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.number,
+    }),
 };
 
 export default FormSubmodulo;

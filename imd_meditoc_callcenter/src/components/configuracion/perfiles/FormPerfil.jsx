@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React, { useState, useEffect } from "react";
 import ModalForm from "../../ModalForm";
 import { Grid, TextField, Button } from "@material-ui/core";
@@ -12,13 +13,31 @@ import CGUController from "../../../controllers/CGUController";
 const FormPerfil = (props) => {
     const { entPerfil, open, setOpen, funcGetPerfiles, usuarioSesion, funcLoader, funcAlert } = props;
 
-    const cguController = new CGUController();
+    //Objeto para guardar los valores de los inputs de formulario
+    const [formPerfil, setFormPerfil] = useState({ txtIdPerfil: "", txtNombre: "" });
 
-    const [formPerfil, setFormPerfil] = useState({
-        txtIdPerfil: entPerfil.iIdPerfil,
-        txtNombre: entPerfil.sNombre,
-    });
+    //Actualizar los inputs del formulario con lo datos de entPerfil al cargar el componente
+    useEffect(() => {
+        setFormPerfil({
+            txtIdPerfil: entPerfil.iIdPerfil,
+            txtNombre: entPerfil.sNombre,
+        });
+    }, [entPerfil]);
 
+    //Funcion para cerrar el formulario
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    //Funcion para capturar los valores de los inputs
+    const handleChangeForm = (e) => {
+        setFormPerfil({
+            ...formPerfil,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    //Consumir servicio para guardar el perfil nuevo en la base
     const funcSavePerfil = async () => {
         funcLoader(true, "Guardando perfil...");
 
@@ -30,7 +49,9 @@ const FormPerfil = (props) => {
             bBaja: false,
         };
 
+        const cguController = new CGUController();
         const response = await cguController.funcSavePerfil(entSavePerfil);
+
         if (response.Code !== 0) {
             funcAlert(response.Message);
         } else {
@@ -41,24 +62,6 @@ const FormPerfil = (props) => {
 
         funcLoader();
     };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const handleChangeForm = (e) => {
-        setFormPerfil({
-            ...formPerfil,
-            [e.target.name]: e.target.value,
-        });
-    };
-
-    useEffect(() => {
-        setFormPerfil({
-            txtIdPerfil: entPerfil.iIdPerfil,
-            txtNombre: entPerfil.sNombre,
-        });
-    }, [entPerfil]);
 
     return (
         <ModalForm
@@ -107,6 +110,21 @@ const FormPerfil = (props) => {
             </Grid>
         </ModalForm>
     );
+};
+
+FormPerfil.propTypes = {
+    entPerfil: PropTypes.shape({
+        iIdPerfil: PropTypes.number,
+        sNombre: PropTypes.string,
+    }),
+    funcAlert: PropTypes.func,
+    funcGetPerfiles: PropTypes.func,
+    funcLoader: PropTypes.func,
+    open: PropTypes.bool,
+    setOpen: PropTypes.func,
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.number,
+    }),
 };
 
 export default FormPerfil;

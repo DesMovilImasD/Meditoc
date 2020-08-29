@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React, { useState, Fragment } from "react";
 import { Accordion, AccordionSummary, AccordionDetails, IconButton, Tooltip } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
@@ -9,8 +10,9 @@ import theme from "../../../configurations/themeConfig";
 import SistemaSubmodulo from "./SistemaSubmodulo";
 import EditIcon from "@material-ui/icons/Edit";
 import FormModulo from "./FormModulo";
-import EliminarModulo from "./EliminarModulo";
 import FormSubmodulo from "./FormSubmodulo";
+import CGUController from "../../../controllers/CGUController";
+import Confirmacion from "../../Confirmacion";
 
 const useStyles = makeStyles({
     backColor: {
@@ -32,34 +34,72 @@ const useStyles = makeStyles({
  * Invocado desde: Sistema
  *************************************************************/
 const SistemaModulo = (props) => {
-    const { modulo, usuarioSesion, funcGetPermisosXPerfil, funcLoader, funcAlert } = props;
+    const { entModulo, usuarioSesion, funcGetPermisosXPerfil, funcLoader, funcAlert } = props;
 
     const classes = useStyles();
+
+    //Color para los íconos y letras de este componente
     const colorClass = "color-1";
 
-    const [modalEditarModuloOpen, setModalEditarModuloOpen] = useState(false);
-    const [modalEliminarModuloOpen, setModalEliminarModuloOpen] = useState(false);
-    const [modalNuevoSubmoduloOpen, setModalNuevoSubmoduloOpen] = useState(false);
+    //Servicios API
+    const cguController = new CGUController();
 
-    const entSubmoduloNuevo = {
-        iIdModulo: modulo.iIdModulo,
+    //Entidad vacía de un submódulo
+    const submoduloEntidadVacia = {
+        iIdModulo: entModulo.iIdModulo,
         iIdSubModulo: 0,
         sNombre: "",
     };
 
+    //State para mostrar/ocultar el formulario para editar este módulo
+    const [modalEditarModuloOpen, setModalEditarModuloOpen] = useState(false);
+
+    //State para mostrar/ocultar la alerta de confirmación para eliminar este módulo
+    const [modalEliminarModuloOpen, setModalEliminarModuloOpen] = useState(false);
+
+    //State para mostrar/ocultar el formulario para crear un submódulo de este módulo
+    const [modalNuevoSubmoduloOpen, setModalNuevoSubmoduloOpen] = useState(false);
+
+    //Funcion para mostrar el formulario para crear un submódulo de este módulo
     const handleClickNuevoSubmodulo = (e) => {
         e.stopPropagation();
         setModalNuevoSubmoduloOpen(true);
     };
 
+    //Funcion para mostrar el formulario para editar este módulo
     const handleClickEditar = (e) => {
         e.stopPropagation();
         setModalEditarModuloOpen(true);
     };
 
+    //Funcion para mostrar la alerta de confirmación para eliminar este módulo
     const handleClickEliminar = (e) => {
         e.stopPropagation();
         setModalEliminarModuloOpen(true);
+    };
+
+    //Consumir servicio para eliminar este módulo de la base
+    const funcEliminarModulo = async () => {
+        funcLoader(true, "Removiendo módulo...");
+
+        const entSaveModulo = {
+            iIdModulo: entModulo.iIdModulo,
+            iIdUsuarioMod: usuarioSesion.iIdUsuario,
+            sNombre: null,
+            bActivo: false,
+            bBaja: true,
+        };
+
+        const response = await cguController.funcSaveModulo(entSaveModulo);
+        if (response.Code !== 0) {
+            funcAlert(response.Message);
+        } else {
+            setModalEliminarModuloOpen(false);
+            funcAlert(response.Message, "success");
+            funcGetPermisosXPerfil();
+        }
+
+        funcLoader();
     };
 
     return (
@@ -67,7 +107,7 @@ const SistemaModulo = (props) => {
             <Accordion elevation={0} classes={{ root: classes.hideLineAcc }}>
                 <AccordionSummary
                     expandIcon={
-                        <Tooltip title={`Mostrar/Ocultar submódulos de ${modulo.sNombre}`} placement="top-end" arrow>
+                        <Tooltip title={`Mostrar/Ocultar submódulos de ${entModulo.sNombre}`} placement="top-end" arrow>
                             <ExpandMore className={colorClass} />
                         </Tooltip>
                     }
@@ -76,20 +116,20 @@ const SistemaModulo = (props) => {
                     <div className="align-self-center flx-grw-1">
                         <AccountTreeIcon className={colorClass + " vertical-align-middle"} />
                         <span className={colorClass + " size-15"}>
-                            {modulo.sNombre} ({modulo.iIdModulo})
+                            {entModulo.sNombre} ({entModulo.iIdModulo})
                         </span>
                     </div>
-                    <Tooltip title={`Agregar un submódulo nuevo a ${modulo.sNombre}`} placement="top" arrow>
+                    <Tooltip title={`Agregar un submódulo nuevo a ${entModulo.sNombre}`} placement="top" arrow>
                         <IconButton onClick={handleClickNuevoSubmodulo}>
                             <AddIcon className={colorClass} />
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title={`Editar el módulo ${modulo.sNombre}`} placement="top" arrow>
+                    <Tooltip title={`Editar el módulo ${entModulo.sNombre}`} placement="top" arrow>
                         <IconButton onClick={handleClickEditar}>
                             <EditIcon className={colorClass} />
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title={`Eliminar el módulo ${modulo.sNombre}`} placement="top" arrow>
+                    <Tooltip title={`Eliminar el módulo ${entModulo.sNombre}`} placement="top" arrow>
                         <IconButton onClick={handleClickEliminar}>
                             <DeleteIcon className={colorClass} />
                         </IconButton>
@@ -97,11 +137,11 @@ const SistemaModulo = (props) => {
                 </AccordionSummary>
                 <AccordionDetails>
                     <div className="acc-content">
-                        {modulo.lstSubModulo.length > 0 ? (
-                            modulo.lstSubModulo.map((submodulo) => (
+                        {entModulo.lstSubModulo.length > 0 ? (
+                            entModulo.lstSubModulo.map((submodulo) => (
                                 <SistemaSubmodulo
                                     key={submodulo.iIdSubModulo}
-                                    submodulo={submodulo}
+                                    entSubmodulo={submodulo}
                                     usuarioSesion={usuarioSesion}
                                     funcGetPermisosXPerfil={funcGetPermisosXPerfil}
                                     funcLoader={funcLoader}
@@ -114,8 +154,9 @@ const SistemaModulo = (props) => {
                     </div>
                 </AccordionDetails>
             </Accordion>
+
             <FormModulo
-                entModulo={modulo}
+                entModulo={entModulo}
                 open={modalEditarModuloOpen}
                 setOpen={setModalEditarModuloOpen}
                 usuarioSesion={usuarioSesion}
@@ -123,17 +164,16 @@ const SistemaModulo = (props) => {
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
             />
-            <EliminarModulo
-                entModulo={modulo}
+            <Confirmacion
+                title="Eliminar módulo"
+                okFunc={funcEliminarModulo}
                 open={modalEliminarModuloOpen}
                 setOpen={setModalEliminarModuloOpen}
-                usuarioSesion={usuarioSesion}
-                funcGetPermisosXPerfil={funcGetPermisosXPerfil}
-                funcLoader={funcLoader}
-                funcAlert={funcAlert}
-            />
+            >
+                ¿Desea eliminar el módulo {entModulo.sNombre} junto con todos sus submódulos y botones?
+            </Confirmacion>
             <FormSubmodulo
-                entSubmodulo={entSubmoduloNuevo}
+                entSubmodulo={submoduloEntidadVacia}
                 open={modalNuevoSubmoduloOpen}
                 setOpen={setModalNuevoSubmoduloOpen}
                 usuarioSesion={usuarioSesion}
@@ -143,6 +183,20 @@ const SistemaModulo = (props) => {
             />
         </Fragment>
     );
+};
+
+SistemaModulo.propTypes = {
+    entModulo: PropTypes.shape({
+        iIdModulo: PropTypes.number,
+        lstSubModulo: PropTypes.array,
+        sNombre: PropTypes.any,
+    }),
+    funcAlert: PropTypes.func,
+    funcGetPermisosXPerfil: PropTypes.func,
+    funcLoader: PropTypes.func,
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.number,
+    }),
 };
 
 export default SistemaModulo;
