@@ -6,13 +6,13 @@ import ExpandMore from "@material-ui/icons/ExpandMore";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
 import { makeStyles } from "@material-ui/core/styles";
-import theme from "../../../configurations/themeConfig";
+import theme from "../../../../configurations/themeConfig";
 import SistemaSubmodulo from "./SistemaSubmodulo";
 import EditIcon from "@material-ui/icons/Edit";
 import FormModulo from "./FormModulo";
 import FormSubmodulo from "./FormSubmodulo";
-import CGUController from "../../../controllers/CGUController";
-import Confirmacion from "../../Confirmacion";
+import CGUController from "../../../../controllers/CGUController";
+import Confirmacion from "../../../utilidades/Confirmacion";
 
 const useStyles = makeStyles({
     backColor: {

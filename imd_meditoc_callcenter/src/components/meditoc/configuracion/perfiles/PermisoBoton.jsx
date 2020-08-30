@@ -4,8 +4,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { TableRow, TableCell, Tooltip, IconButton } from "@material-ui/core";
 import ExtensionIcon from "@material-ui/icons/Extension";
 import BlockIcon from "@material-ui/icons/Block";
-import CGUController from "../../../controllers/CGUController";
-import Confirmacion from "../../Confirmacion";
+import CGUController from "../../../../controllers/CGUController";
+import Confirmacion from "../../../utilidades/Confirmacion";
 
 const useStyles = makeStyles({
     cell: {

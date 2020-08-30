@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
 import React from "react";
-import ModalForm from "../../ModalForm";
+import ModalForm from "../../../utilidades/ModalForm";
 import { Grid, TextField, FormControl, InputLabel, Select, MenuItem, Button } from "@material-ui/core";
 import { DatePicker } from "@material-ui/pickers";
 import { useState } from "react";
-import CGUController from "../../../controllers/CGUController";
+import CGUController from "../../../../controllers/CGUController";
 import { useEffect } from "react";
 
 /*************************************************************

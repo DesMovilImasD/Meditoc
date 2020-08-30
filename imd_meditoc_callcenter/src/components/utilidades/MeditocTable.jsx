@@ -1,7 +1,7 @@
 import React from "react";
 import MaterialTable, { MTableBodyRow } from "material-table";
-import tableIcons from "../configurations/dataTableIconsConfig";
-import theme from "../configurations/themeConfig";
+import tableIcons from "../../configurations/dataTableIconsConfig";
+import theme from "../../configurations/themeConfig";
 import { TextField } from "@material-ui/core";
 
 /*************************************************************

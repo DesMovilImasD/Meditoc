@@ -1,17 +1,17 @@
 import PropTypes from "prop-types";
 import React, { Fragment } from "react";
-import SubmoduloBarra from "../../SubmoduloBarra";
+import SubmoduloBarra from "../../../utilidades/SubmoduloBarra";
 import { Tooltip, IconButton } from "@material-ui/core";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import SubmoduloContenido from "../../SubmoduloContenido";
+import SubmoduloContenido from "../../../utilidades/SubmoduloContenido";
 import { useState } from "react";
-import MeditocTable from "../../MeditocTable";
-import CGUController from "../../../controllers/CGUController";
+import MeditocTable from "../../../utilidades/MeditocTable";
+import CGUController from "../../../../controllers/CGUController";
 import { useEffect } from "react";
 import FormUsuario from "./FormUsuario";
-import Confirmacion from "../../Confirmacion";
+import Confirmacion from "../../../utilidades/Confirmacion";
 
 /*************************************************************
  * Descripcion: Submódulo para vista principal "USUARIOS" del portal Meditoc

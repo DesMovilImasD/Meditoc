@@ -5,9 +5,9 @@ import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import SistemaModulo from "./SistemaModulo";
 import FormModulo from "./FormModulo";
 import Simbologia from "./Simbologia";
-import SubmoduloBarra from "../../SubmoduloBarra";
-import SubmoduloContenido from "../../SubmoduloContenido";
-import CGUController from "../../../controllers/CGUController";
+import SubmoduloBarra from "../../../utilidades/SubmoduloBarra";
+import SubmoduloContenido from "../../../utilidades/SubmoduloContenido";
+import CGUController from "../../../../controllers/CGUController";
 
 /*************************************************************
  * Descripcion: Submódulo para la vista principal "SISTEMA" del portal Meditoc

@@ -5,7 +5,7 @@ import WebIcon from "@material-ui/icons/Web";
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
 import ExtensionIcon from "@material-ui/icons/Extension";
 import { makeStyles } from "@material-ui/core/styles";
-import theme from "../../../configurations/themeConfig";
+import theme from "../../../../configurations/themeConfig";
 
 const useStyles = makeStyles({
     absolute: {

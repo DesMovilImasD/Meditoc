@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import React, { useState, useEffect } from "react";
-import ModalForm from "../../ModalForm";
+import ModalForm from "../../../utilidades/ModalForm";
 import { Grid, List, ListItem, ListItemIcon, Checkbox, ListItemText, Button } from "@material-ui/core";
-import CGUController from "../../../controllers/CGUController";
+import CGUController from "../../../../controllers/CGUController";
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
 
 /*************************************************************

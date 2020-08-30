@@ -4,9 +4,9 @@ import NavBar from "./NavBar";
 import DrawerMenu from "./DrawerMenu";
 import { Switch, Route } from "react-router-dom";
 import { urlSystem } from "../configurations/urlConfig";
-import Sistema from "./configuracion/sistema/Sistema";
-import Perfiles from "./configuracion/perfiles/Perfiles";
-import Usuarios from "./configuracion/usuarios/Usuarios";
+import Sistema from "./meditoc/configuracion/sistema/Sistema";
+import Perfiles from "./meditoc/configuracion/perfiles/Perfiles";
+import Usuarios from "./meditoc/configuracion/usuarios/Usuarios";
 
 /*************************************************************
  * Descripcion: Contiene las secciones y vistas de todo el portal de Meditoc

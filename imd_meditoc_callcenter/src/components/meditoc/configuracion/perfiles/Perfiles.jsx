@@ -1,17 +1,17 @@
 import PropTypes from "prop-types";
 import React, { Fragment, useState, useEffect } from "react";
-import SubmoduloBarra from "../../SubmoduloBarra";
+import SubmoduloBarra from "../../../utilidades/SubmoduloBarra";
 import { Tooltip, IconButton } from "@material-ui/core";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
-import SubmoduloContenido from "../../SubmoduloContenido";
-import MeditocTable from "../../MeditocTable";
-import CGUController from "../../../controllers/CGUController";
+import SubmoduloContenido from "../../../utilidades/SubmoduloContenido";
+import MeditocTable from "../../../utilidades/MeditocTable";
+import CGUController from "../../../../controllers/CGUController";
 import FormPerfil from "./FormPerfil";
 import Permisos from "./Permisos";
-import Confirmacion from "../../Confirmacion";
+import Confirmacion from "../../../utilidades/Confirmacion";
 
 /*************************************************************
  * Descripcion: Submódulo para la vista principal "PERFILES" del portal Meditoc

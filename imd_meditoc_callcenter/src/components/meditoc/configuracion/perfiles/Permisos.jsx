@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
 import React, { useState, useEffect } from "react";
 import { Dialog, IconButton, Tooltip, Slide } from "@material-ui/core";
-import SubmoduloBarra from "../../SubmoduloBarra";
+import SubmoduloBarra from "../../../utilidades/SubmoduloBarra";
 import AddIcon from "@material-ui/icons/Add";
 import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
-import CGUController from "../../../controllers/CGUController";
-import SubmoduloContenido from "../../SubmoduloContenido";
+import CGUController from "../../../../controllers/CGUController";
+import SubmoduloContenido from "../../../utilidades/SubmoduloContenido";
 import SeleccionarModulos from "./SeleccionarModulo";
 import PermisoModulo from "./PermisoModulo";
 import Simbologia from "../sistema/Simbologia";

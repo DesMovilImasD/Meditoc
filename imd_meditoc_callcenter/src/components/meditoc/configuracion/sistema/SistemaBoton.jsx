@@ -6,8 +6,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { makeStyles } from "@material-ui/core/styles";
 import EditIcon from "@material-ui/icons/Edit";
 import FormBoton from "./FormBoton";
-import CGUController from "../../../controllers/CGUController";
-import Confirmacion from "../../Confirmacion";
+import CGUController from "../../../../controllers/CGUController";
+import Confirmacion from "../../../utilidades/Confirmacion";
 
 const useStyles = makeStyles({
     cell: {

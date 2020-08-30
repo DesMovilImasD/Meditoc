@@ -15,13 +15,13 @@ import ExpandMore from "@material-ui/icons/ExpandMore";
 import DeleteIcon from "@material-ui/icons/Delete";
 import WebIcon from "@material-ui/icons/Web";
 import { makeStyles } from "@material-ui/core/styles";
-import theme from "../../../configurations/themeConfig";
+import theme from "../../../../configurations/themeConfig";
 import SistemaBoton from "./SistemaBoton";
 import EditIcon from "@material-ui/icons/Edit";
 import FormSubmodulo from "./FormSubmodulo";
 import FormBoton from "./FormBoton";
-import CGUController from "../../../controllers/CGUController";
-import Confirmacion from "../../Confirmacion";
+import CGUController from "../../../../controllers/CGUController";
+import Confirmacion from "../../../utilidades/Confirmacion";
 
 const useStyles = makeStyles({
     backColor: {

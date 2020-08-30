@@ -15,11 +15,11 @@ import ExpandMore from "@material-ui/icons/ExpandMore";
 import WebIcon from "@material-ui/icons/Web";
 import AddIcon from "@material-ui/icons/Add";
 import BlockIcon from "@material-ui/icons/Block";
-import theme from "../../../configurations/themeConfig";
+import theme from "../../../../configurations/themeConfig";
 import SeleccionarBoton from "./SeleccionarBoton";
 import PermisoBoton from "./PermisoBoton";
-import CGUController from "../../../controllers/CGUController";
-import Confirmacion from "../../Confirmacion";
+import CGUController from "../../../../controllers/CGUController";
+import Confirmacion from "../../../utilidades/Confirmacion";
 
 const useStyles = makeStyles({
     backColor: {
