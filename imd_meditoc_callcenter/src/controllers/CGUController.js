@@ -16,6 +16,8 @@ class CGUController {
     this.apiGetPermisosXPerfil = 'Api/CGU/GET/PermisoXPerfil'
     this.apiGetPerfiles = 'Api/CGU/Get/Perfiles'
     this.apiGetUsuarios = 'Api/CGU/Get/Usuarios'
+    this.apiCambiarPassword = 'Api/CGU/Create/CambiarContrasenia'
+    this.apiGetLogin = 'Api/CGU/Get/Login'
   }
 
   async funcSaveModulo(entCreateModulo) {
@@ -179,6 +181,42 @@ class CGUController {
     } catch (error) {
       response.Code = -1
       response.Message = 'Ocurrió un error al intentar obtener los usuarios'
+    }
+    return response
+  }
+
+  async funcCambiarPassword(
+    iIdUsuario = 0,
+    sPassword = '',
+    iIdUsuarioUltMod = 0,
+  ) {
+    let response = { Code: 0, Message: '', Result: false }
+    try {
+      const apiResponse = await fetch(
+        `${serverMain}${this.apiCambiarPassword}?iIdUsuario=${iIdUsuario}&sPassword=${sPassword}&iIdUsuarioUltMod=${iIdUsuarioUltMod}`,
+        { method: 'POST' },
+      )
+
+      response = await apiResponse.json()
+    } catch (error) {
+      response.Code = -1
+      response.Message = 'Ocurrió un error al intentar cambiar la contraseña'
+    }
+    return response
+  }
+
+  async funcGetLogin(sUsuario = '', sPassword = '') {
+    let response = { Code: 0, Message: '', Result: {} }
+    try {
+      const apiResponse = await fetch(
+        `${serverMain}${this.apiGetLogin}?sUsuario=${sUsuario}&sPassword=${sPassword}`,
+        { method: 'POST' },
+      )
+
+      response = await apiResponse.json()
+    } catch (error) {
+      response.Code = -1
+      response.Message = 'Ocurrió un error al validar los datos de sesión'
     }
     return response
   }

@@ -119,7 +119,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
                 {
                     database.AddInParameter(dbCommand, "piIdUsuario", DbType.Int32, iIdUsuario);
                     database.AddInParameter(dbCommand, "piIdUsuarioUltMod", DbType.Int32, iIdUsuarioUltMod);
-                    database.AddInParameter(dbCommand, "psPassword", DbType.Int32, sPassword);
+                    database.AddInParameter(dbCommand, "psPassword", DbType.String, sPassword);
 
                     response = imdCommonData.DExecute(database, dbCommand);
                 }

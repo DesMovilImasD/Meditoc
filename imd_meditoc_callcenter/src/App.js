@@ -18,8 +18,12 @@ import 'moment/locale/es'
  * Invocado desde:  ---------Elemento Raíz----------
  *************************************************************/
 function App() {
-  const [usuarioSesion, setUsuarioSesion] = useState({ iIdUsuario: 1 })
-  const [usuarioActivo, setUsuarioActivo] = useState(true)
+  const [usuarioSesion, setUsuarioSesion] = useState({
+    iIdUsuario: 0,
+    sNombres: '',
+    sApellidoPaterno: '',
+  })
+  const [usuarioActivo, setUsuarioActivo] = useState(false)
 
   //Guardar valores de estado del loader
   const [entLoader, setEntLoader] = useState({
@@ -78,11 +82,18 @@ function App() {
             {usuarioActivo === true ? (
               <ContentMain
                 usuarioSesion={usuarioSesion}
+                setUsuarioSesion={setUsuarioSesion}
+                setUsuarioActivo={setUsuarioActivo}
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
               />
             ) : (
-              <Login />
+              <Login
+                setUsuarioSesion={setUsuarioSesion}
+                setUsuarioActivo={setUsuarioActivo}
+                funcLoader={funcLoader}
+                funcAlert={funcAlert}
+              />
             )}
           </HashRouter>
         </MuiPickersUtilsProvider>

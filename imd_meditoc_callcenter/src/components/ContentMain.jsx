@@ -15,7 +15,7 @@ import Usuarios from "./meditoc/configuracion/usuarios/Usuarios";
  * Invocado desde: App
  *************************************************************/
 const ContentMain = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert } = props;
+    const { usuarioSesion, setUsuarioSesion, setUsuarioActivo, funcLoader, funcAlert } = props;
     const [drawerOpen, setDrawerOpen] = useState(false);
 
     //Desplegar/Ocultar menu lateral izquerdo
@@ -29,7 +29,14 @@ const ContentMain = (props) => {
 
     return (
         <Fragment>
-            <NavBar toggleDrawer={toggleDrawer} />
+            <NavBar
+                toggleDrawer={toggleDrawer}
+                setUsuarioSesion={setUsuarioSesion}
+                setUsuarioActivo={setUsuarioActivo}
+                usuarioSesion={usuarioSesion}
+                funcLoader={funcLoader}
+                funcAlert={funcAlert}
+            />
             <DrawerMenu drawerOpen={drawerOpen} toggleDrawer={toggleDrawer} />
             <div>
                 <Switch>

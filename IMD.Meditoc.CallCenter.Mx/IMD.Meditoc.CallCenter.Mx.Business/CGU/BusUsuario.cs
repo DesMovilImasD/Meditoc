@@ -289,8 +289,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     return response;
                 }
 
-                if (dtUsuario.Result.Rows.Count > 0)
+                if (dtUsuario.Result.Rows.Count != 1)
                 {
+                    response.Code = 78772637586;
                     response.Message = "Usuario o contraseña incorrecta.";
                     return response;
                 }
@@ -309,7 +310,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     entUsuario.iIdPerfil = dr.ConvertTo<int>("iIdPerfil");
                     entUsuario.sPerfil = dr.ConvertTo<string>("sPerfil");
                     entUsuario.sUsuario = dr.ConvertTo<string>("sUsuario");
-                    entUsuario.sPassword = dr.ConvertTo<string>("sPassword");
+                    //entUsuario.sPassword = dr.ConvertTo<string>("sPassword");
                     entUsuario.sNombres = dr.ConvertTo<string>("sNombres");
                     entUsuario.sApellidoPaterno = dr.ConvertTo<string>("sApellidoPaterno");
                     entUsuario.sApellidoMaterno = dr.ConvertTo<string>("sApellidoMaterno");

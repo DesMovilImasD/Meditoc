@@ -5,6 +5,7 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import theme from "../../configurations/themeConfig";
 import { useState } from "react";
 import { useEffect } from "react";
+import CGUController from "../../controllers/CGUController";
 
 const useStyles = makeStyles(() => ({
     button: {
@@ -42,14 +43,64 @@ const TextFieldWhite = withStyles({
     },
 })(TextField);
 
-const Login = () => {
+const Login = (props) => {
+    const { setUsuarioSesion, setUsuarioActivo, funcLoader, funcAlert } = props;
+
     const classes = useStyles();
 
     const [imgLogoFade, setImgLogoFade] = useState(false);
 
+    const [formLogin, setFormLogin] = useState({
+        txtUsuarioMeditoc: "",
+        txtPasswordMeditoc: "",
+    });
+
+    const handleChangeFormLogin = (e) => {
+        setFormLogin({
+            ...formLogin,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    const funcApiLogin = async (MeditocTkn, MeditocKey) => {
+        funcLoader(true, "Validando datos de sesión..");
+
+        const cguController = new CGUController();
+
+        const response = await cguController.funcGetLogin(MeditocTkn, MeditocKey);
+        if (response.Code === 0) {
+            sessionStorage.setItem("MeditocTkn", MeditocTkn);
+            sessionStorage.setItem("MeditocKey", MeditocKey);
+
+            setUsuarioSesion(response.Result);
+            setUsuarioActivo(true);
+        } else {
+            sessionStorage.removeItem("MeditocTkn");
+            sessionStorage.removeItem("MeditocKey");
+            funcAlert(response.Message);
+        }
+
+        funcLoader();
+    };
+
+    const handleSubmitFormLogin = (e) => {
+        e.preventDefault();
+
+        funcApiLogin(formLogin.txtUsuarioMeditoc, formLogin.txtPasswordMeditoc);
+    };
+
+    const funcValidarSesion = () => {
+        const MeditocTkn = sessionStorage.getItem("MeditocTkn");
+        const MeditocKey = sessionStorage.getItem("MeditocKey");
+
+        if (MeditocTkn != null && MeditocKey != null) {
+            funcApiLogin(MeditocTkn, MeditocKey);
+        }
+    };
+
     useEffect(() => {
         setImgLogoFade(true);
-
+        funcValidarSesion();
         // eslint-disable-next-line
     }, []);
 
@@ -64,7 +115,7 @@ const Login = () => {
                     </div>
                 </Grid>
                 <Grid item md={4} xs={12} className="login-form-back">
-                    <form className="login-form-container">
+                    <form className="login-form-container" onSubmit={handleSubmitFormLogin}>
                         <Grid container spacing={4}>
                             <Grid item xs={12}>
                                 <img src={imgLogoMeditocCasa} alt="LOGOMEDITOCCASA" className="login-form-img" />
@@ -74,19 +125,25 @@ const Login = () => {
                             </Grid>
                             <Grid item xs={12}>
                                 <TextFieldWhite
+                                    name="txtUsuarioMeditoc"
                                     variant="outlined"
                                     fullWidth
-                                    autoComplete="new-password"
+                                    autoComplete="off"
                                     label="Usuario:"
+                                    value={formLogin.txtUsuarioMeditoc}
+                                    onChange={handleChangeFormLogin}
                                 />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextFieldWhite
+                                    name="txtPasswordMeditoc"
                                     variant="outlined"
                                     fullWidth
                                     autoComplete="new-password"
                                     label="Contraseña:"
                                     type="password"
+                                    value={formLogin.txtPasswordMeditoc}
+                                    onChange={handleChangeFormLogin}
                                 />
                             </Grid>
                             <Grid item xs={12}>
