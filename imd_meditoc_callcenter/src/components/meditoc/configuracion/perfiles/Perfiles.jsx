@@ -64,7 +64,7 @@ const Perfiles = (props) => {
     //Funcion para abrir el modal para editar un perfil
     const handleClickEditarPerfil = () => {
         if (perfilSeleccionado.iIdPerfil === 0) {
-            funcAlert("Seleccione un perfil de la tabla para continuar", "warning");
+            funcAlert("Seleccione un perfil de la tabla para continuar");
             return;
         }
         setPerfilForModalForm(perfilSeleccionado);
@@ -74,7 +74,7 @@ const Perfiles = (props) => {
     //Función para abrir la alerta de confirmación para borrar un perfil
     const handleClickEliminarPerfil = () => {
         if (perfilSeleccionado.iIdPerfil === 0) {
-            funcAlert("Seleccione un perfil de la tabla para continuar", "warning");
+            funcAlert("Seleccione un perfil de la tabla para continuar");
             return;
         }
         setModalFormEliminarPerfilOpen(true);
@@ -83,7 +83,7 @@ const Perfiles = (props) => {
     //Función para abrir la ventana de administración de permisos para el perfil seleccionado
     const handleClickPermisosPerfil = () => {
         if (perfilSeleccionado.iIdPerfil === 0) {
-            funcAlert("Seleccione un perfil de la tabla para continuar", "warning");
+            funcAlert("Seleccione un perfil de la tabla para continuar");
             return;
         }
         setPerfilForModalForm(perfilSeleccionado);

@@ -59,7 +59,7 @@ const PermisoModulo = (props) => {
     //lista de los submódulos de este módulo a los cuales el perfil tiene permisos
     const [lstSubmodulosPerfil, setLstSubmodulosPerfil] = useState([]);
 
-    //Filtar los submódulos del sistema para mostrar únicamente submódulos que no tienen permisos para que el usuario los pueda seleccionar
+    //Filtar los submódulos del sistema para mostrar únicamente los que pertenecen a este módulo
     useEffect(() => {
         let lstSubmodulosSistemaTemp = [];
         try {

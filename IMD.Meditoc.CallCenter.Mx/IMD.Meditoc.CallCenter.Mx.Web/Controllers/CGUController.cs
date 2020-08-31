@@ -282,6 +282,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
         #endregion
-
+        [HttpGet]
+        [Route("status")]
+        public string Status()
+        {
+            return "SERVER OK";
+        }
     }
 }

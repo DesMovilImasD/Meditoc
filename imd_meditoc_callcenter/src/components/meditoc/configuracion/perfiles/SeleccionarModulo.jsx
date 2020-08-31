@@ -60,7 +60,7 @@ const SeleccionarModulos = (props) => {
     //Consumir servicio para dar permisos a los módulos seleccionados
     const funcSavePermisosModulo = async () => {
         if (modulosSeleccionados.length < 1) {
-            funcAlert("Debe seleccionar al menos un módulo para asignar el permiso", "warning");
+            funcAlert("Debe seleccionar al menos un módulo para asignar el permiso");
             return;
         }
 

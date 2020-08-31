@@ -6,6 +6,7 @@ import { DatePicker } from "@material-ui/pickers";
 import { useState } from "react";
 import CGUController from "../../../../controllers/CGUController";
 import { useEffect } from "react";
+import InputTelefono from "../../../utilidades/InputTelefono";
 
 /*************************************************************
  * Descripcion: Formulario para registrar o editar un usuario
@@ -57,47 +58,47 @@ const FormUsuario = (props) => {
     //Consumir servicio para registrar/editar los datos del usuario en le base
     const funcSaveUsuario = async () => {
         if (formUsuario.txtNombres === "") {
-            funcAlert("El nombre del usuario es requerido", "warning");
+            funcAlert("El nombre del usuario es requerido");
             return;
         }
 
         if (formUsuario.txtApellidoPaterno === "") {
-            funcAlert("El apellido paterno del usuario es requerido", "warning");
+            funcAlert("El apellido paterno del usuario es requerido");
             return;
         }
 
         if (parseInt(formUsuario.txtPerfil) <= 0) {
-            funcAlert("Seleccione un perfil para el usuario", "warning");
+            funcAlert("Seleccione un perfil para el usuario");
             return;
         }
 
         if (parseInt(formUsuario.txtTipoCuenta) <= 0) {
-            funcAlert("Seleccione un tipo de cuenta para el usuario", "warning");
+            funcAlert("Seleccione un tipo de cuenta para el usuario");
             return;
         }
 
         if (formUsuario.txtFechaNacimiento === "") {
-            funcAlert("La fecha de nacimiento del usuario es requerido", "warning");
+            funcAlert("La fecha de nacimiento del usuario es requerido");
             return;
         }
 
         if (formUsuario.txtTelefono === "") {
-            funcAlert("El teléfono del usuario es requerido", "warning");
+            funcAlert("El teléfono del usuario es requerido");
             return;
         }
 
         if (formUsuario.txtCorreoElectronico === "") {
-            funcAlert("El correo electrónico del usuario es requerido", "warning");
+            funcAlert("El correo electrónico del usuario es requerido");
             return;
         }
 
         if (formUsuario.txtUsuario === "") {
-            funcAlert("El nombre de usuario es requerido", "warning");
+            funcAlert("El nombre de usuario es requerido");
             return;
         }
 
         if (entUsuario.iIdUsuario === 0 && (formUsuario.txtPassword === "" || formUsuario.txtPassword.length < 6)) {
-            funcAlert("Ingrese una contraseña válida de al menos 6 caracteres", "warning");
+            funcAlert("Ingrese una contraseña válida de al menos 6 caracteres");
             return;
         }
 
@@ -257,6 +258,9 @@ const FormUsuario = (props) => {
                         fullWidth
                         name="txtTelefono"
                         value={formUsuario.txtTelefono}
+                        InputProps={{
+                            inputComponent: InputTelefono,
+                        }}
                         onChange={handleChangeFormulario}
                     />
                 </Grid>

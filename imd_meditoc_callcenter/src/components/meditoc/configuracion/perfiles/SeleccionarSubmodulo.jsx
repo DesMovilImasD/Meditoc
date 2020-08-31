@@ -63,7 +63,7 @@ const SeleccionarSubmodulo = (props) => {
     //Consumir servicio para dar permisos a los submodulos seleccionados (al perfil)
     const funcSavePermisosSubmodulo = async () => {
         if (submodulosSeleccionados.length < 1) {
-            funcAlert("Debe seleccionar al menos un submódulo para asignar el permiso", "warning");
+            funcAlert("Debe seleccionar al menos un submódulo para asignar el permiso");
             return;
         }
 

@@ -68,7 +68,7 @@ const PermisoSubmodulo = (props) => {
     //Lista de botones de este submódulo que ya tienen permisos en el perfil
     const [lstBotonesPermiso, setLstBotonesPermiso] = useState([]);
 
-    //Filtrar los botones de este submódulo para mostrar únicamente los que están disponibles para que el usuario les de permisos
+    //Filtrar los botones de este submódulo para mostrar únicamente los pertenecen a este submódulo
     useEffect(() => {
         let lstBotontesSistemaTemp = [];
         try {

@@ -61,7 +61,7 @@ const SeleccionarBoton = (props) => {
     //Consumir servicio para dar permisos a los botones seleccionados
     const funcSavePermisosBotones = async () => {
         if (botonesSeleccionados.length < 1) {
-            funcAlert("Debe seleccionar al menos un botón para asignar el permiso", "warning");
+            funcAlert("Debe seleccionar al menos un botón para asignar el permiso");
             return;
         }
 

@@ -83,7 +83,7 @@ const Usuarios = (props) => {
     //Función para abrir el formulario para editar un usuario
     const handleClickEditarUsuario = () => {
         if (usuarioSeleccionado.iIdUsuario === 0) {
-            funcAlert("Seleccione un usuario para continuar", "warning");
+            funcAlert("Seleccione un usuario para continuar");
             return;
         }
         setUsuarioParaModalForm(usuarioSeleccionado);
@@ -93,7 +93,7 @@ const Usuarios = (props) => {
     //Función para abrir la alerta de confirmación para dar de baja un usuario
     const handleClickEliminarUsuario = () => {
         if (usuarioSeleccionado.iIdUsuario === 0) {
-            funcAlert("Seleccione un usuario para continuar", "warning");
+            funcAlert("Seleccione un usuario para continuar");
             return;
         }
         setModalFormUsuarioEliminarOpen(true);
