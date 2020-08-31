@@ -19,6 +19,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
         private string getUsuario;
         private string cambioContrasenia;
         private string getLogin;
+        private string validaUsuarioCorreo;
 
         public DatUsuario()
         {
@@ -30,6 +31,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             getUsuario = "svc_cgu_usuarios";
             cambioContrasenia = "sva_cgu_CambiarContrasenia";
             getLogin = "svc_cgu_login";
+            validaUsuarioCorreo = "svc_cgu_ValidaUsuarioCorreo";
         }
 
         public IMDResponse<bool> DSaveUsuario(EntUsuario entUsuario)
@@ -132,22 +134,22 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             return response;
         }
 
-        public IMDResponse<DataTable> DLogin()
+        public IMDResponse<DataTable> DLogin(string sUsuario, string sPassword)
         {
             IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
             string metodo = nameof(this.DLogin);
-            logger.Info(IMDSerialize.Serialize(67823458373104, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458373104, $"Inicia {metodo}(string sUsuario, string sPassword)", sUsuario, sPassword));
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(cambioContrasenia))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(getLogin))
                 {
-                    /*database.AddInParameter(dbCommand, "piIdUsuario", DbType.Int32, iIdUsuario);
-                    database.AddInParameter(dbCommand, "piIdUsuarioUltMod", DbType.Int32, iIdUsuarioUltMod);
-                    database.AddInParameter(dbCommand, "psPassword", DbType.Int32, sPassword);
+                    database.AddInParameter(dbCommand, "psUsuario", DbType.String, sUsuario);
+                    database.AddInParameter(dbCommand, "psPassword", DbType.String, sPassword);
 
-                    response = imdCommonData.DExecute(database, dbCommand);*/
+                    response = imdCommonData.DExecuteDT(database, dbCommand);
+
                 }
             }
             catch (Exception ex)
@@ -155,7 +157,44 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
                 response.Code = 67823458373881;
                 response.Message = "Ocurrió un error inesperado";
 
-                logger.Error(IMDSerialize.Serialize(67823458373881, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458373881, $"Error en {metodo}(string sUsuario, string sPassword): {ex.Message}", sUsuario, sPassword, ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<bool> DValidaUsuarioYCorreo(string sUsuario, string sCorreo, bool bValida)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.DValidaUsuarioYCorreo);
+            logger.Info(IMDSerialize.Serialize(67823458377766, $"Inicia {metodo}"));
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(validaUsuarioCorreo))
+                {
+                    database.AddInParameter(dbCommand, "psUsuario", DbType.String, sUsuario);
+                    database.AddInParameter(dbCommand, "psCorreo", DbType.String, sCorreo);
+                    database.AddInParameter(dbCommand, "pbValida", DbType.Boolean, bValida);
+
+                    IMDResponse<DataTable> dt = imdCommonData.DExecuteDT(database, dbCommand);
+
+                    if (dt.Result.Rows.Count > 0)
+                    {
+                        response.Result = false;
+                    }
+                    else
+                    {
+                        response.Result = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458378543;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458378543, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }

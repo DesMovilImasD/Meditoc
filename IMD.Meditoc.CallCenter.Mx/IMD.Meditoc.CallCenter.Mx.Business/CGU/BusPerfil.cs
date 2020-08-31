@@ -80,6 +80,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 
                 if (dtPerfil.Code != 0)
                 {
+                    response.Code = 67823458358341;
                     response.Message = "No se encuentran perfiles";
                     return response;
                 }
