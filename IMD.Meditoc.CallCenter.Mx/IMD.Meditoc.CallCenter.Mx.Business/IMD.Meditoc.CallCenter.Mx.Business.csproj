@@ -61,6 +61,7 @@
     <Compile Include="CGU\BusPermiso.cs" />
     <Compile Include="CGU\BusSubModulo.cs" />
     <Compile Include="CGU\BusUsuario.cs" />
+    <Compile Include="Empresa\BusEmpresa.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

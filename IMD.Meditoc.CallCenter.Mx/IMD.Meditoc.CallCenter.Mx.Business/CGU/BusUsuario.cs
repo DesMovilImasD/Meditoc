@@ -293,7 +293,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 
                     IMDDataRow dr = new IMDDataRow(item);
 
-
                     entUsuario.iIdUsuario = dr.ConvertTo<int>("iIdUsuario");
                     entUsuario.iIdTipoCuenta = dr.ConvertTo<int>("iIdTipoCuenta");
                     entUsuario.sTipoCuenta = dr.ConvertTo<string>("sTipoCuenta");
