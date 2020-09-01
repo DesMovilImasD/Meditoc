@@ -82,7 +82,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             {
 
                 IMDResponse<DataTable> dtUsuario = datUsuario.DObtenerUsuario(iIdUsuario, iIdTipoCuenta, iIdPerfil, sUsuario, sPassword, bActivo, bBaja);
-                List<EntUsuario> lstUsuaeios = new List<EntUsuario>();
+                List<EntUsuario> lstUsuario = new List<EntUsuario>();
+
+                if (dtUsuario.Code != 0)
+                {
+                    return dtUsuario.GetResponse<List<EntUsuario>>();
+                }
 
                 if(dtUsuario.Code != 0)
                 {
@@ -113,12 +118,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     entUsuario.bActivo = dr.ConvertTo<bool>("bActivo");
                     entUsuario.bBaja = dr.ConvertTo<bool>("bBaja");
 
-                    lstUsuaeios.Add(entUsuario);
+                    lstUsuario.Add(entUsuario);
                 }
 
 
                 response.Message = "Lista de usuarios";
-                response.Result = lstUsuaeios;
+                response.Result = lstUsuario;
             }
             catch (Exception ex)
             {
@@ -284,9 +289,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 
                 if (dtUsuario.Code != 0)
                 {
-                    response.Code = dtUsuario.Code;
-                    response.Message = dtUsuario.Message;
-                    return response;
+                    return dtUsuario.GetResponse<EntUsuario>();
                 }
 
                 if (dtUsuario.Result.Rows.Count != 1)
