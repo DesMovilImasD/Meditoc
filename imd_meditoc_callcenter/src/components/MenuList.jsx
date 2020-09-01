@@ -108,7 +108,7 @@ const MenuList = (props) => {
                             <ListItemIcon>
                                 <BusinessIcon className="color-0" />
                             </ListItemIcon>
-                            <ListItemText primary="Institución" />
+                            <ListItemText primary="Empresas" />
                         </ListItem>
                     </Link>
                     <Link to={urlSystem.administracion.productos} className={classes.link}>

@@ -81,6 +81,9 @@ code {
 .color-3 {
     color: var(--color-primary-gray);
 }
+.color-4 {
+    color: var(--color-secondary-gray);
+}
 
 .bg-color-1 {
     background-color: var(--color-primary-blue);

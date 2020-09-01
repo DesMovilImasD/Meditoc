@@ -19,11 +19,25 @@ import 'moment/locale/es'
  *************************************************************/
 function App() {
   const [usuarioSesion, setUsuarioSesion] = useState({
-    iIdUsuario: 0,
-    sNombres: '',
-    sApellidoPaterno: '',
+    iIdUsuario: 4,
+    iIdTipoCuenta: 1,
+    iIdPerfil: 1,
+    sTipoCuenta: null,
+    sPerfil: null,
+    sUsuario: 'jperez',
+    sPassword: null,
+    sNombres: 'Juanito',
+    sApellidoPaterno: 'Perez',
+    sApellidoMaterno: null,
+    dtFechaNacimiento: '1982-06-04T01:38:00',
+    sTelefono: '9994450694',
+    sCorreo: 'g098@live.com.mx',
+    sDomicilio: '12',
+    iIdUsuarioMod: 0,
+    bActivo: false,
+    bBaja: false,
   })
-  const [usuarioActivo, setUsuarioActivo] = useState(false)
+  const [usuarioActivo, setUsuarioActivo] = useState(true)
 
   //Guardar valores de estado del loader
   const [entLoader, setEntLoader] = useState({

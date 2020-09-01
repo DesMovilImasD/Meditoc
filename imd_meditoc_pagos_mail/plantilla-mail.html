@@ -13,10 +13,13 @@
         margin: 0;
       }
       .center {
-        text-align: center;
+        text-align: center !important;
       }
       .right {
-        text-align: right;
+        text-align: right !important;
+      }
+      .left {
+        text-align: left !important;
       }
       .light {
         font-weight: 300;
@@ -95,6 +98,16 @@
       }
       .link:hover {
         text-decoration: underline;
+      }
+
+      .table-border {
+        border-right: 10px solid #115c8a;
+      }
+      .table-border-l {
+        border-left: 10px solid #115c8a;
+      }
+      .table-border-b td {
+        border-bottom: 2px solid #115c8a;
       }
     </style>
   </head>
@@ -207,7 +220,7 @@
                 </table>
               </td>
             </tr>
-            <tr>
+            <!-- <tr>
               <td class="normal large">
                 <span class="font-default">
                   La contraseña de accesso para sus folios es:
@@ -217,14 +230,177 @@
                   data.password
                 </span>
               </td>
-            </tr>
-            <tr>
+            </tr> -->
+            <tr class="center">
               <td>
                 <span class="font-default normal large">
-                  Guarda tus credenciales, te servirán para acceder a Meditoc
+                  Guarda tus credenciales, te servirán para acceder a Meditoc:
                 </span>
               </td>
             </tr>
+            <tr class="center">
+              <td>
+                <span class="font-default bold large font-primary">
+                  Membresía 1 Año - Vigencia al 01/12/2020
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <table class="table-detail font-primary">
+                  <thead>
+                    <tr class="font-table bold small font-secondary">
+                      <th>Usuario</th>
+                      <th>Contraseña</th>
+                      <th width="10%" class="table-border"></th>
+                      <th width="10%" class="table-border-l"></th>
+                      <th>Usuario</th>
+                      <th>Contraseña</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="font-table bold small center table-border-b">
+                      <td>
+                        <small>1-</small>
+                        Folio001
+                      </td>
+                      <td>Pass001</td>
+                      <td class="table-border"></td>
+                      <td class="table-border-l"></td>
+                      <td>
+                        <small>5-</small>
+                        Folio001
+                      </td>
+                      <td>Pass001</td>
+                    </tr>
+                    <tr class="font-table bold small center table-border-b">
+                      <td>
+                        <small>2-</small>
+                        Folio001
+                      </td>
+                      <td>Pass001</td>
+                      <td class="table-border"></td>
+                      <td class="table-border-l"></td>
+                      <td>
+                        <small>6-</small>
+                        Folio001
+                      </td>
+                      <td>Pass001</td>
+                    </tr>
+                    <tr class="font-table bold small center table-border-b">
+                      <td>
+                        <small>3-</small>
+                        Folio001
+                      </td>
+                      <td>Pass001</td>
+                      <td class="table-border"></td>
+                      <td class="table-border-l"></td>
+                      <td>
+                        <small>7-</small>
+                        Folio001
+                      </td>
+                      <td>Pass001</td>
+                    </tr>
+                    <tr class="font-table bold small center">
+                      <td>
+                        <small>4-</small>
+                        Folio001
+                      </td>
+                      <td>Pass001</td>
+                      <td class="table-border"></td>
+                      <td class="table-border-l"></td>
+                      <td>
+                        <small>8-</small>
+                        Folio001
+                      </td>
+                      <td>Pass001</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr class="center">
+              <td>
+                <span class="font-default bold large font-primary">
+                  Membresía 1 Año - Vigencia al 01/12/2020
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <table class="table-detail font-primary">
+                  <thead>
+                    <tr class="font-table bold small font-secondary">
+                      <th>Usuario</th>
+                      <th>Contraseña</th>
+                      <th width="10%" class="table-border"></th>
+                      <th width="10%" class="table-border-l"></th>
+                      <th>Usuario</th>
+                      <th>Contraseña</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="font-table bold small center table-border-b">
+                      <td>
+                        <small>1-</small>
+                        Folio001
+                      </td>
+                      <td>Pass001</td>
+                      <td class="table-border"></td>
+                      <td class="table-border-l"></td>
+                      <td>
+                        <small>5-</small>
+                        Folio001
+                      </td>
+                      <td>Pass001</td>
+                    </tr>
+                    <tr class="font-table bold small center table-border-b">
+                      <td>
+                        <small>2-</small>
+                        Folio001
+                      </td>
+                      <td>Pass001</td>
+                      <td class="table-border"></td>
+                      <td class="table-border-l"></td>
+                      <td>
+                        <small>6-</small>
+                        Folio001
+                      </td>
+                      <td>Pass001</td>
+                    </tr>
+                    <tr class="font-table bold small center table-border-b">
+                      <td>
+                        <small>3-</small>
+                        Folio001
+                      </td>
+                      <td>Pass001</td>
+                      <td class="table-border"></td>
+                      <td class="table-border-l"></td>
+                      <td>
+                        <small>7-</small>
+                        Folio001
+                      </td>
+                      <td>Pass001</td>
+                    </tr>
+                    <tr class="font-table bold small center">
+                      <td>
+                        <small>4-</small>
+                        Folio001
+                      </td>
+                      <td>Pass001</td>
+                      <td class="table-border"></td>
+                      <td class="table-border-l"></td>
+                      <td>
+                        <small>8-</small>
+                        Folio001
+                      </td>
+                      <td>Pass001</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+
             <tr>
               <td>
                 <hr class="divider" />

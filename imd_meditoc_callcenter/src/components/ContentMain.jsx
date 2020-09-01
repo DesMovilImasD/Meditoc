@@ -7,6 +7,8 @@ import { urlSystem } from "../configurations/urlConfig";
 import Sistema from "./meditoc/configuracion/sistema/Sistema";
 import Perfiles from "./meditoc/configuracion/perfiles/Perfiles";
 import Usuarios from "./meditoc/configuracion/usuarios/Usuarios";
+import Productos from "./meditoc/administracion/productos/Productos";
+import Empresa from "./meditoc/administracion/empresa/Empresa";
 
 /*************************************************************
  * Descripcion: Contiene las secciones y vistas de todo el portal de Meditoc
@@ -48,6 +50,12 @@ const ContentMain = (props) => {
                     </Route>
                     <Route exact path={urlSystem.configuracion.usuarios}>
                         <Usuarios usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
+                    </Route>
+                    <Route exact path={urlSystem.administracion.productos}>
+                        <Productos usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
+                    </Route>
+                    <Route exact path={urlSystem.administracion.institucion}>
+                        <Empresa usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
                     </Route>
                 </Switch>
             </div>
