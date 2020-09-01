@@ -2,10 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 import Prices from './components/Prices/Main'
 import Pays from './components/Payments/Main'
+import Directories from './components/Directory/Main'
 import theme from './configuration/themeConfig'
 import { ThemeProvider } from '@material-ui/core'
 import Loader from './components/Loader'
-import { urlProducts, urlPayments, urlBase } from './configuration/urlConfig'
+import {
+  urlProducts,
+  urlPayments,
+  urlBase,
+  urlDirectory,
+} from './configuration/urlConfig'
 import { serverWs } from './configuration/serverConfig'
 import { apiGetPolicies } from './configuration/apiConfig'
 
@@ -96,6 +102,9 @@ function App() {
           </Route>
           <Route exact path={urlPayments}>
             <Pays appInfo={appInfo} funcLoader={funcLoader} />
+          </Route>
+          <Route exact path={urlDirectory}>
+            <Directories appInfo={appInfo} funcLoader={funcLoader} />
           </Route>
         </Switch>
       </BrowserRouter>

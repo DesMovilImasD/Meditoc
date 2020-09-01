@@ -656,3 +656,101 @@ body {
     text-decoration: underline;
     transition: var(--transition-menu);
 }
+
+.price-directory-container {
+    background-color: var(--color-unset);
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.price-directory-description-container {
+    text-align: center;
+    align-self: center;
+}
+
+.price-directory-description {
+    font-family: var(--font-default);
+    font-style: normal;
+    font-weight: normal;
+    font-size: 30px;
+    line-height: 40px;
+    color: var(--color-secondary-gray);
+}
+
+.price-directory-logo {
+    width: 95%;
+}
+
+.directory-cover-container {
+    background: linear-gradient(180deg, #6dd5ed 0%, #2193b0 100%);
+    color: var(--color-unset);
+    box-sizing: border-box;
+    padding: 0px 40px;
+    text-align: center;
+}
+
+.directory-header-description-container {
+    align-self: center;
+}
+
+.directory-header-description {
+    font-family: var(--font-default);
+    font-style: normal;
+    font-weight: bold;
+    font-size: 35px;
+    line-height: 40px;
+}
+
+.directory-header-logo {
+    width: 100%;
+}
+
+.directory-content {
+    width: 80%;
+    margin: 40px auto;
+}
+
+.directory-pagination-container {
+    box-sizing: border-box;
+    text-align: center;
+    overflow-x: auto;
+    padding: 10px 0px;
+}
+
+.directory-doctor-name-container {
+    border-bottom: 2px solid var(--color-primary-blue);
+}
+.directory-doctor-name {
+    font-family: var(--font-default);
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 40px;
+    color: var(--color-primary-blue);
+}
+
+.directory-doctor-label {
+    font-family: var(--font-secondary);
+    font-size: 15px;
+    font-style: normal;
+    font-weight: normal;
+    color: var(--color-primary-gray);
+}
+
+.directory-doctor-value {
+    font-family: var(--font-secondary);
+    font-size: 15px;
+    font-style: normal;
+    font-weight: normal;
+    color: var(--color-secondary-gray);
+}
+
+.directory-doctor-img-container {
+    text-align: right;
+    margin-right: 20px;
+}
+.directory-doctor-img {
+    width: 200px;
+    border-radius: 10px;
+    border-bottom: 15px solid var(--color-primary-blue);
+}
