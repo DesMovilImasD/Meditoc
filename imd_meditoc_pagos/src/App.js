@@ -26,6 +26,7 @@ function App() {
   const [appInfo, setAppInfo] = useState({
     nMaximoDescuento: 0.9,
     sAvisoDePrivacidad: '#',
+    sConektaPublicKey: 'key_U1YRzL1et3iFj6RouWCrfKw',
     sCorreoContacto: 'contacto@meditoc.com',
     sCorreoSoporte: 'contacto@meditoc.com',
     sDireccionEmpresa: 'Calle 17 #113, Col. Itzimná, 97100, Mérida, Yuc.',

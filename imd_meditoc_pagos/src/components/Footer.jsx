@@ -3,6 +3,8 @@ import React from "react";
 import { Grid } from "@material-ui/core";
 import { logoMeditocWhite } from "../configuration/imgConfig";
 
+
+
 /*****************************************************
  * Descripción: Footer del sitio
  * Autor: Cristopher Noh
@@ -31,7 +33,7 @@ const Footer = (props) => {
                         </div>
                         <div>
                             <span className="price-footer-address">Mail: {appInfo.sCorreoContacto}</span>
-                        </div>
+                        </div>                        
                     </Grid>
                     <Grid item md={6} xs={12}>
                         <iframe
