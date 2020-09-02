@@ -17,10 +17,14 @@ const logoMeditocMain = '/store/img/logo-meditoc-main.png'
 const logoMeditocWhite = '/store/img/logo-meditoc-white.png'
 const logoMeditocSolutions = '/store/img/logo-soluciones.png'
 const logoMeditocCover = '/store/img/portada-meditoc.png'
+const logoappleAvalible = '/store/img/appleAvalible.svg'
+const logoplayAvalible = '/store/img/playAvalible.svg'
 
 export {
   logoMeditocMain,
   logoMeditocWhite,
   logoMeditocSolutions,
   logoMeditocCover,
+  logoappleAvalible,
+  logoplayAvalible
 }

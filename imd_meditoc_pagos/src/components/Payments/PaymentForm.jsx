@@ -22,7 +22,7 @@ import InputCardNumber from "../Inputs/InputCardNumber";
 import InputCVV from "../Inputs/InputCVV";
 import { serverWs, serverWa } from "../../configuration/serverConfig";
 import { apiBuy, apiRevalidateCoupon } from "../../configuration/apiConfig";
-import apiKeyToken, { apiKeyLanguage } from "../../configuration/tokenConfig";
+import { apiKeyLanguage } from "../../configuration/tokenConfig";
 import {
     rxVisaCard,
     rxMasterCard,
@@ -35,6 +35,7 @@ import {
 import InputPhone from "../Inputs/InputPhone";
 import { useTax } from "../../configuration/taxConfig";
 import { cardEnviromentProd, lstCardTest } from "../../configuration/cardConfig";
+
 
 const useStyles = makeStyles((theme) => ({
     paylabel: {
@@ -63,6 +64,7 @@ const PaymentForm = (props) => {
         setEntOrder,
         setErrorOrder,
         funcLoader,
+
     } = props;
 
     //Tamaño del icono para los inputs del formulario
@@ -164,7 +166,7 @@ const PaymentForm = (props) => {
 
         setFormErrorMessage("");
 
-        window.Conekta.setPublicKey(apiKeyToken);
+        window.Conekta.setPublicKey(appInfo.sConektaPublicKey);
         window.Conekta.setLanguage(apiKeyLanguage);
 
         let formErrorMessage = "";
@@ -602,7 +604,7 @@ const PaymentForm = (props) => {
                                 id="txtCVV"
                                 name="txtCVV"
                                 variant="outlined"
-                                label="Código de verificación:"
+                                label="Código de verificación (CVC):"
                                 fullWidth
                                 InputProps={{
                                     startAdornment: (
@@ -839,6 +841,7 @@ const PaymentForm = (props) => {
                     </Grid>
                 </div>
             </div>
+
         </Fragment>
     );
 };
