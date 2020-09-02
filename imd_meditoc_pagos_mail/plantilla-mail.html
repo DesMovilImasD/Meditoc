@@ -88,6 +88,9 @@
       .total-detail {
         background-color: #989898;
       }
+      .group-detail {
+        background-color: #11b6ca;
+      }
       .divider {
         height: 1px;
         border: 0;
@@ -107,7 +110,7 @@
         border-left: 10px solid #115c8a;
       }
       .table-border-b td {
-        border-bottom: 2px solid #115c8a;
+        border-bottom: 1px solid #ccc;
       }
     </style>
   </head>
@@ -162,9 +165,6 @@
                       Descripción
                     </td>
                     <td>
-                      Folio
-                    </td>
-                    <td>
                       Cantidad
                     </td>
                     <td>
@@ -176,9 +176,6 @@
                       item.sDescripcion
                     </td>
                     <td>
-                      item.sFolio
-                    </td>
-                    <td>
                       item.nCantidad
                     </td>
                     <td>
@@ -186,7 +183,6 @@
                     </td>
                   </tr>
                   <tr class="font-table bold small center">
-                    <td></td>
                     <td>
                       Subtotal
                     </td>
@@ -196,7 +192,6 @@
                     </td>
                   </tr>
                   <tr class="font-table bold small center">
-                    <td></td>
                     <td>
                       Código de descuento
                     </td>
@@ -207,8 +202,25 @@
                       data.montoDescuento
                     </td>
                   </tr>
-                  <tr class="total-detail font-unset bold small center">
+                  <tr class="font-table bold small center">
+                    <td>
+                      Total sin IVA
+                    </td>
                     <td></td>
+                    <td>
+                      data.montoSinIVA
+                    </td>
+                  </tr>
+                  <tr class="font-table bold small center">
+                    <td>
+                      data.IVA
+                    </td>
+                    <td></td>
+                    <td>
+                      data.montoIVA
+                    </td>
+                  </tr>
+                  <tr class="total-detail font-unset bold small center">
                     <td>
                       Total
                     </td>
@@ -238,169 +250,80 @@
                 </span>
               </td>
             </tr>
-            <tr class="center">
-              <td>
-                <span class="font-default bold large font-primary">
-                  Membresía 1 Año - Vigencia al 01/12/2020
-                </span>
-              </td>
-            </tr>
             <tr>
               <td>
-                <table class="table-detail font-primary">
-                  <thead>
-                    <tr class="font-table bold small font-secondary">
-                      <th>Usuario</th>
-                      <th>Contraseña</th>
-                      <th width="10%" class="table-border"></th>
-                      <th width="10%" class="table-border-l"></th>
-                      <th>Usuario</th>
-                      <th>Contraseña</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr class="font-table bold small center table-border-b">
-                      <td>
-                        <small>1-</small>
-                        Folio001
-                      </td>
-                      <td>Pass001</td>
-                      <td class="table-border"></td>
-                      <td class="table-border-l"></td>
-                      <td>
-                        <small>5-</small>
-                        Folio001
-                      </td>
-                      <td>Pass001</td>
-                    </tr>
-                    <tr class="font-table bold small center table-border-b">
-                      <td>
-                        <small>2-</small>
-                        Folio001
-                      </td>
-                      <td>Pass001</td>
-                      <td class="table-border"></td>
-                      <td class="table-border-l"></td>
-                      <td>
-                        <small>6-</small>
-                        Folio001
-                      </td>
-                      <td>Pass001</td>
-                    </tr>
-                    <tr class="font-table bold small center table-border-b">
-                      <td>
-                        <small>3-</small>
-                        Folio001
-                      </td>
-                      <td>Pass001</td>
-                      <td class="table-border"></td>
-                      <td class="table-border-l"></td>
-                      <td>
-                        <small>7-</small>
-                        Folio001
-                      </td>
-                      <td>Pass001</td>
-                    </tr>
-                    <tr class="font-table bold small center">
-                      <td>
-                        <small>4-</small>
-                        Folio001
-                      </td>
-                      <td>Pass001</td>
-                      <td class="table-border"></td>
-                      <td class="table-border-l"></td>
-                      <td>
-                        <small>8-</small>
-                        Folio001
-                      </td>
-                      <td>Pass001</td>
-                    </tr>
-                  </tbody>
+                <table class="table-detail">
+                  <tr class="group-detail font-unset bold small center">
+                    <td colspan="3">
+                      Membresía 1 Año - Vigencia al 01/12/2020
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <table class="table-detail">
+                        <thead>
+                          <tr class="font-table bold small font-secondary">
+                            <th>Usuario</th>
+                            <th>Contraseña</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            class="font-table bold small center table-border-b"
+                          >
+                            <td>
+                              <small>1-</small>
+                              Folio001
+                            </td>
+                            <td>Pass001</td>
+                          </tr>
+                          <tr
+                            class="font-table bold small center table-border-b"
+                          >
+                            <td>
+                              <small>1-</small>
+                              Folio001
+                            </td>
+                            <td>Pass001</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                    <td width="5%"></td>
+                    <td>
+                      <table class="table-detail">
+                        <thead>
+                          <tr class="font-table bold small font-secondary">
+                            <th>Usuario</th>
+                            <th>Contraseña</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            class="font-table bold small center table-border-b"
+                          >
+                            <td>
+                              <small>1-</small>
+                              Folio001
+                            </td>
+                            <td>Pass001</td>
+                          </tr>
+                          <tr
+                            class="font-table bold small center table-border-b"
+                          >
+                            <td>
+                              <small>1-</small>
+                              Folio001
+                            </td>
+                            <td>Pass001</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
                 </table>
               </td>
             </tr>
-            <tr class="center">
-              <td>
-                <span class="font-default bold large font-primary">
-                  Membresía 1 Año - Vigencia al 01/12/2020
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <table class="table-detail font-primary">
-                  <thead>
-                    <tr class="font-table bold small font-secondary">
-                      <th>Usuario</th>
-                      <th>Contraseña</th>
-                      <th width="10%" class="table-border"></th>
-                      <th width="10%" class="table-border-l"></th>
-                      <th>Usuario</th>
-                      <th>Contraseña</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr class="font-table bold small center table-border-b">
-                      <td>
-                        <small>1-</small>
-                        Folio001
-                      </td>
-                      <td>Pass001</td>
-                      <td class="table-border"></td>
-                      <td class="table-border-l"></td>
-                      <td>
-                        <small>5-</small>
-                        Folio001
-                      </td>
-                      <td>Pass001</td>
-                    </tr>
-                    <tr class="font-table bold small center table-border-b">
-                      <td>
-                        <small>2-</small>
-                        Folio001
-                      </td>
-                      <td>Pass001</td>
-                      <td class="table-border"></td>
-                      <td class="table-border-l"></td>
-                      <td>
-                        <small>6-</small>
-                        Folio001
-                      </td>
-                      <td>Pass001</td>
-                    </tr>
-                    <tr class="font-table bold small center table-border-b">
-                      <td>
-                        <small>3-</small>
-                        Folio001
-                      </td>
-                      <td>Pass001</td>
-                      <td class="table-border"></td>
-                      <td class="table-border-l"></td>
-                      <td>
-                        <small>7-</small>
-                        Folio001
-                      </td>
-                      <td>Pass001</td>
-                    </tr>
-                    <tr class="font-table bold small center">
-                      <td>
-                        <small>4-</small>
-                        Folio001
-                      </td>
-                      <td>Pass001</td>
-                      <td class="table-border"></td>
-                      <td class="table-border-l"></td>
-                      <td>
-                        <small>8-</small>
-                        Folio001
-                      </td>
-                      <td>Pass001</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-            </tr>
-
             <tr>
               <td>
                 <hr class="divider" />
