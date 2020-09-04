@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
-import ModalForm from "../../../utilidades/ModalForm";
+import MeditocModal from "../../../utilidades/MeditocModal";
 import { Grid, TextField, Button } from "@material-ui/core";
 import CGUController from "../../../../controllers/CGUController";
 import { useEffect } from "react";
@@ -73,7 +73,7 @@ const FormSubmodulo = (props) => {
     }, [entSubmodulo]);
 
     return (
-        <ModalForm
+        <MeditocModal
             title={entSubmodulo.iIdSubModulo === 0 ? "Nuevo submódulo" : "Editar submódulo"}
             size="small"
             open={open}
@@ -132,7 +132,7 @@ const FormSubmodulo = (props) => {
                     </Button>
                 </Grid>
             </Grid>
-        </ModalForm>
+        </MeditocModal>
     );
 };
 

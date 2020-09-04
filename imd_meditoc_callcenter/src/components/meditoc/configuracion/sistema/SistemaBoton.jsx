@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import EditIcon from "@material-ui/icons/Edit";
 import FormBoton from "./FormBoton";
 import CGUController from "../../../../controllers/CGUController";
-import Confirmacion from "../../../utilidades/Confirmacion";
+import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 
 const useStyles = makeStyles({
     cell: {
@@ -107,14 +107,14 @@ const SistemaBoton = (props) => {
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
             />
-            <Confirmacion
+            <MeditocConfirmacion
                 title="Eliminar botón"
                 okFunc={funcEliminarBoton}
                 open={modalEliminarBotonOpen}
                 setOpen={setModalEliminarBotonOpen}
             >
                 ¿Desea eliminar el botón {entBoton.sNombre}?
-            </Confirmacion>
+            </MeditocConfirmacion>
         </Fragment>
     );
 };

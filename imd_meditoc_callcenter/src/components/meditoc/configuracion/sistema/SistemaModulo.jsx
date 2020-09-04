@@ -12,7 +12,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import FormModulo from "./FormModulo";
 import FormSubmodulo from "./FormSubmodulo";
 import CGUController from "../../../../controllers/CGUController";
-import Confirmacion from "../../../utilidades/Confirmacion";
+import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 
 const useStyles = makeStyles({
     backColor: {
@@ -164,14 +164,14 @@ const SistemaModulo = (props) => {
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
             />
-            <Confirmacion
+            <MeditocConfirmacion
                 title="Eliminar módulo"
                 okFunc={funcEliminarModulo}
                 open={modalEliminarModuloOpen}
                 setOpen={setModalEliminarModuloOpen}
             >
                 ¿Desea eliminar el módulo {entModulo.sNombre} junto con todos sus submódulos y botones?
-            </Confirmacion>
+            </MeditocConfirmacion>
             <FormSubmodulo
                 entSubmodulo={submoduloEntidadVacia}
                 open={modalNuevoSubmoduloOpen}

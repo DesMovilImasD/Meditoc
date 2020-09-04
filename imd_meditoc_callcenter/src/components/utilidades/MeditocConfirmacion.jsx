@@ -1,7 +1,8 @@
 import PropTypes from "prop-types";
 import React from "react";
-import ModalForm from "./ModalForm";
+import MeditocModal from "./MeditocModal";
 import { Grid, Button } from "@material-ui/core";
+import MeditocModalBotones from "./MeditocModalBotones";
 
 /*************************************************************
  * Descripcion: Representa una alerta de confirmación genérica
@@ -14,12 +15,6 @@ const Confirmacion = (props) => {
 
     //Titulo de la alerta
     const fTitle = title === undefined ? "Confirmación" : title;
-
-    //Texto para boton OK
-    const fOkMessage = okMessage === undefined ? "Aceptar" : okMessage;
-
-    //Texto para boton Cancelar
-    const fCancelMessage = cancelMessage === undefined ? "Cancelar" : cancelMessage;
 
     //Funcion al presionar OK
     const fOKFunc =
@@ -38,23 +33,20 @@ const Confirmacion = (props) => {
             : cancelFunc;
 
     return (
-        <ModalForm title={fTitle} size="small" open={open} setOpen={setOpen}>
+        <MeditocModal title={fTitle} size="small" open={open} setOpen={setOpen}>
             <Grid container spacing={3}>
                 <Grid item xs={12} className="center">
                     {children}
                 </Grid>
-                <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="primary" fullWidth onClick={fOKFunc}>
-                        {fOkMessage}
-                    </Button>
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="secondary" fullWidth onClick={fCancelFunc}>
-                        {fCancelMessage}
-                    </Button>
-                </Grid>
+                <MeditocModalBotones
+                    okMessage={okMessage}
+                    cancelMessage={cancelMessage}
+                    okFunc={fOKFunc}
+                    cancelFunc={fCancelFunc}
+                    align="center"
+                />
             </Grid>
-        </ModalForm>
+        </MeditocModal>
     );
 };
 

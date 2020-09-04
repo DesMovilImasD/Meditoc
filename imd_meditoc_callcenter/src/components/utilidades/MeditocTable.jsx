@@ -11,10 +11,36 @@ import { TextField } from "@material-ui/core";
  * Invocado desde: -
  *************************************************************/
 const MeditocTable = (props) => {
-    const { columns, data, rowSelected, setRowSelected, mainField, doubleClick } = props;
+    const {
+        columns,
+        data,
+        rowSelected,
+        setRowSelected,
+        mainField,
+        doubleClick,
+        selection,
+        rowsSelected,
+        setRowsSelected,
+        cellEditable,
+        onCellEditable,
+    } = props;
 
     //Funcion a ejecutar al dar doble click sobre una fila
     const funcDoubleClick = doubleClick === undefined ? () => {} : doubleClick;
+
+    const mtSelection = selection === undefined ? false : selection;
+
+    const mtRowSelected = mtSelection === false ? rowSelected : null;
+
+    const mtSetRowSelected = mtSelection === false ? setRowSelected : (prop) => {};
+
+    const mtRowsSelected = mtSelection === true ? rowsSelected : null;
+
+    const mtSetRowsSelected = mtSelection === true ? setRowsSelected : (prop) => {};
+
+    const mtCellEditable = cellEditable === undefined ? false : cellEditable;
+
+    const mtOnCellEditable = onCellEditable === undefined ? (newValue, oldValue, row, column) => {} : onCellEditable;
 
     return (
         <MaterialTable
@@ -22,11 +48,19 @@ const MeditocTable = (props) => {
             data={data}
             icons={tableIcons}
             title=""
-            onRowClick={(e, rowData) => setRowSelected(rowData)}
+            onRowClick={mtSelection === false ? (e, rowData) => mtSetRowSelected(rowData) : () => {}}
+            onSelectionChange={
+                mtSelection === true
+                    ? (rows) => {
+                          mtSetRowsSelected(rows);
+                      }
+                    : () => {}
+            }
             components={{
                 Container: (props) => <div {...props}></div>,
                 FilterRow: (props) => (
                     <tr>
+                        {mtSelection === true ? <td></td> : null}
                         {props.columns.map((column, index) => (
                             <td key={index}>
                                 <TextField
@@ -44,7 +78,7 @@ const MeditocTable = (props) => {
                                             textAlign: column.align,
                                         },
                                     }}
-                                ></TextField>
+                                />
                             </td>
                         ))}
                     </tr>
@@ -52,19 +86,40 @@ const MeditocTable = (props) => {
                 Row: (props) => (
                     <MTableBodyRow
                         {...props}
-                        onDoubleClick={(e) => {
-                            setRowSelected(props.data);
-                            funcDoubleClick();
-                        }}
+                        onDoubleClick={
+                            mtSelection === false
+                                ? (e) => {
+                                      mtSetRowSelected(props.data);
+                                      funcDoubleClick();
+                                  }
+                                : () => {}
+                        }
                     />
                 ),
             }}
+            cellEditable={
+                mtCellEditable === true
+                    ? {
+                          onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
+                              return new Promise((resolve, reject) => {
+                                  mtOnCellEditable(newValue, oldValue, rowData, columnDef.field);
+                                  resolve(() => {});
+                              });
+                          },
+                      }
+                    : null
+            }
             localization={{
                 body: {
                     emptyDataSourceMessage: "Sin datos para mostrar",
                     filterRow: {
                         filterTooltip: "Filtrar",
                         filterPlaceHolder: "Buscar en columna",
+                    },
+                    editRow: {
+                        saveTooltip: "Aceptar",
+                        cancelTooltip: "Cancelar",
+                        deleteText: "¿Desea eliminar este elemento?",
                     },
                 },
                 grouping: {
@@ -91,19 +146,27 @@ const MeditocTable = (props) => {
                     showColumnsTitle: "Mostrar columnas",
                     searchPlaceholder: "Buscar en la tabla",
                     searchAriaLabel: "Buscar en la tabla",
+                    nRowsSelected: "Elementos seleccionados: {0}",
                 },
             }}
             options={{
-                rowStyle: (rowData) => ({
-                    //linear-gradient(0deg, rgb(17 92 138 / 76%) 0%, rgba(18,182,203,1) 100%); op.1
-                    //linear-gradient(239deg, rgba(17,92,138,1) 0%, rgba(18,182,203,1) 100%); op.2
-                    background:
-                        rowData[mainField] === rowSelected[mainField]
-                            ? `linear-gradient(0deg, rgba(17,92,138,1) 0%, rgba(18,182,203,1) 100%)`
-                            : "#fff",
-                    color: rowData[mainField] === rowSelected[mainField] ? "#fff" : theme.palette.secondary.main,
-                }),
-                selection: false,
+                rowStyle:
+                    mtSelection === false
+                        ? (rowData) => ({
+                              //linear-gradient(0deg, rgb(17 92 138 / 76%) 0%, rgba(18,182,203,1) 100%); op.1
+                              //linear-gradient(239deg, rgba(17,92,138,1) 0%, rgba(18,182,203,1) 100%); op.2
+                              background:
+                                  rowData[mainField] === mtRowSelected[mainField]
+                                      ? `linear-gradient(0deg, rgba(17,92,138,1) 0%, rgba(18,182,203,1) 100%)`
+                                      : "#fff",
+                              color:
+                                  rowData[mainField] === mtRowSelected[mainField]
+                                      ? "#fff"
+                                      : theme.palette.secondary.main,
+                          })
+                        : null,
+                selection: mtSelection,
+
                 addRowPosition: "first",
                 search: false,
                 searchFieldVariant: "outlined",
@@ -121,8 +184,8 @@ const MeditocTable = (props) => {
                 padding: "dense",
                 headerStyle: { color: theme.palette.primary.main, fontSize: 18 },
                 sorting: true,
-                showTextRowsSelected: true,
-                showSelectAllCheckbox: false,
+                showTextRowsSelected: false,
+                showSelectAllCheckbox: true,
                 tableLayout: "auto",
                 grouping: false,
                 columnResizable: true,

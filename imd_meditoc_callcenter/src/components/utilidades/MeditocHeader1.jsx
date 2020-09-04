@@ -12,7 +12,7 @@ const SubmoduloBarra = (props) => {
     return (
         <div className="bar-main">
             <div className="flx-grw-1">{children}</div>
-            <div className="ops-nor bold size-20 align-self-center">{title}</div>
+            <div className="ops-nor bold size-30 align-self-center">{title}</div>
         </div>
     );
 };

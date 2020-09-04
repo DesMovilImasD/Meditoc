@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
-import ModalForm from "../../../utilidades/ModalForm";
+import MeditocModal from "../../../utilidades/MeditocModal";
 import { Grid, TextField, Button } from "@material-ui/core";
 import CGUController from "../../../../controllers/CGUController";
 import { useEffect } from "react";
@@ -76,7 +76,7 @@ const FormBoton = (props) => {
     }, [entBoton]);
 
     return (
-        <ModalForm
+        <MeditocModal
             title={entBoton.iIdBoton === 0 ? "Nuevo botón" : "Editar botón"}
             size="small"
             open={open}
@@ -149,7 +149,7 @@ const FormBoton = (props) => {
                     </Button>
                 </Grid>
             </Grid>
-        </ModalForm>
+        </MeditocModal>
     );
 };
 

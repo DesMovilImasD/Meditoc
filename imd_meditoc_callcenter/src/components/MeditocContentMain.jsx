@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Fragment, useState } from "react";
-import NavBar from "./NavBar";
-import DrawerMenu from "./DrawerMenu";
+import MeditocNavBar from "./MeditocNavBar";
+import MeditocDrawerLeft from "./MeditocDrawerLeft";
 import { Switch, Route } from "react-router-dom";
 import { urlSystem } from "../configurations/urlConfig";
 import Sistema from "./meditoc/configuracion/sistema/Sistema";
@@ -31,7 +31,7 @@ const ContentMain = (props) => {
 
     return (
         <Fragment>
-            <NavBar
+            <MeditocNavBar
                 toggleDrawer={toggleDrawer}
                 setUsuarioSesion={setUsuarioSesion}
                 setUsuarioActivo={setUsuarioActivo}
@@ -39,7 +39,7 @@ const ContentMain = (props) => {
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
             />
-            <DrawerMenu drawerOpen={drawerOpen} toggleDrawer={toggleDrawer} />
+            <MeditocDrawerLeft drawerOpen={drawerOpen} toggleDrawer={toggleDrawer} />
             <div>
                 <Switch>
                     <Route exact path={urlSystem.configuracion.sistema}>

@@ -117,18 +117,31 @@ const Content = (props) => {
                             />
                         </Grid>
                         <Grid item xs={12} style={{ marginBottom: 50 }}>
-                        <div>
-                    <p><span className="price-footer-address">Para utilizar el servicio, descarga la app “Meditoc 360” disponible en Appstore y Playstore.</span></p>
-                    <span><a href="https://apps.apple.com/mx/app/meditoc-360/id1521078394"><img src={logoappleAvalible} alt="" width="150px" height="85px"/></a></span>
-                    <span><a href="https://play.google.com/store/apps/details?id=com.meditoc.callCenter.comercial"><img src={logoplayAvalible} alt="" width="150px" height="85px"/></a></span>                    
-                </div>
+                            <div>
+                                <p>
+                                    <span className="price-footer-address">
+                                        Para utilizar el servicio, descarga la app “Meditoc 360” disponible en Appstore
+                                        y Playstore.
+                                    </span>
+                                </p>
+                                <span>
+                                    <a href="https://apps.apple.com/mx/app/meditoc-360/id1521078394">
+                                        <img src={logoappleAvalible} alt="" width="150px" height="85px" />
+                                    </a>
+                                </span>
+                                <span>
+                                    <a href="https://play.google.com/store/apps/details?id=com.meditoc.callCenter.comercial">
+                                        <img src={logoplayAvalible} alt="" width="150px" height="85px" />
+                                    </a>
+                                </span>
+                            </div>
                         </Grid>
                     </Grid>
                 ) : errorOrder === false ? (
                     <PaymentOk appInfo={appInfo} entOrder={entOrder} />
                 ) : (
                     <PaymentError />
-                )}                
+                )}
             </div>
         </div>
     );

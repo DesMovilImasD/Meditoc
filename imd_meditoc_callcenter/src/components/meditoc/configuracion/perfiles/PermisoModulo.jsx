@@ -10,7 +10,7 @@ import theme from "../../../../configurations/themeConfig";
 import SeleccionarSubmodulo from "./SeleccionarSubmodulo";
 import PermisoSubmodulo from "./PermisoSubmodulo";
 import CGUController from "../../../../controllers/CGUController";
-import Confirmacion from "../../../utilidades/Confirmacion";
+import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 
 const useStyles = makeStyles({
     backColor: {
@@ -171,14 +171,14 @@ const PermisoModulo = (props) => {
                     </div>
                 </AccordionDetails>
             </Accordion>
-            <Confirmacion
+            <MeditocConfirmacion
                 title="Quitar permiso a módulo"
                 open={modalEliminarPermisoModuloOpen}
                 setOpen={setModalEliminarPermisoModuloOpen}
                 okFunc={funcEliminarPermisoModulo}
             >
                 ¿Desea remover el permiso para el módulo {entModulo.sNombre} y todos sus submódulos y botones?
-            </Confirmacion>
+            </MeditocConfirmacion>
             <SeleccionarSubmodulo
                 entPerfil={entPerfil}
                 entModulo={entModulo}

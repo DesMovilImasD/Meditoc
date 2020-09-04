@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import ModalForm from "../../../utilidades/ModalForm";
+import MeditocModal from "../../../utilidades/MeditocModal";
 import { Grid, TextField, FormControl, InputLabel, Select, MenuItem, Button } from "@material-ui/core";
 import { DatePicker } from "@material-ui/pickers";
 import { useState } from "react";
@@ -159,7 +159,7 @@ const FormUsuario = (props) => {
     }, [entUsuario]);
 
     return (
-        <ModalForm
+        <MeditocModal
             title={entUsuario.iIdUsuario === 0 ? "Nuevo usuario" : "Editar usuario"}
             size="normal"
             open={open}
@@ -318,7 +318,7 @@ const FormUsuario = (props) => {
                     </Button>
                 </Grid>
             </Grid>
-        </ModalForm>
+        </MeditocModal>
     );
 };
 

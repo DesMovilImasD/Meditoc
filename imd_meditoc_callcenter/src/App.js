@@ -1,12 +1,12 @@
 import React, { useState, createRef } from 'react'
 import { ThemeProvider, Button, Typography } from '@material-ui/core'
 import theme from './configurations/themeConfig'
-import Loader from './components/utilidades/Loader'
+import MeditocLoader from './components/utilidades/MeditocLoader'
 import { SnackbarProvider } from 'notistack'
-import Alert from './components/utilidades/Alert'
-import ContentMain from './components/ContentMain'
+import MeditocAlert from './components/utilidades/MeditocAlert'
+import MeditocContentMain from './components/MeditocContentMain'
 import { HashRouter } from 'react-router-dom'
-import Login from './components/login/Login'
+import MeditocLogin from './components/login/MeditocLogin'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import MomentUtils from '@date-io/moment'
 import 'moment/locale/es'
@@ -91,10 +91,10 @@ function App() {
       >
         <MuiPickersUtilsProvider utils={MomentUtils} locale="es">
           <HashRouter>
-            <Loader entLoader={entLoader} />
-            <Alert entAlert={entAlert} />
+            <MeditocLoader entLoader={entLoader} />
+            <MeditocAlert entAlert={entAlert} />
             {usuarioActivo === true ? (
-              <ContentMain
+              <MeditocContentMain
                 usuarioSesion={usuarioSesion}
                 setUsuarioSesion={setUsuarioSesion}
                 setUsuarioActivo={setUsuarioActivo}
@@ -102,7 +102,7 @@ function App() {
                 funcAlert={funcAlert}
               />
             ) : (
-              <Login
+              <MeditocLogin
                 setUsuarioSesion={setUsuarioSesion}
                 setUsuarioActivo={setUsuarioActivo}
                 funcLoader={funcLoader}

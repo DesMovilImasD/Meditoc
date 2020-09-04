@@ -5,8 +5,8 @@ import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import SistemaModulo from "./SistemaModulo";
 import FormModulo from "./FormModulo";
 import Simbologia from "./Simbologia";
-import SubmoduloBarra from "../../../utilidades/SubmoduloBarra";
-import SubmoduloContenido from "../../../utilidades/SubmoduloContenido";
+import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
+import MeditocBody from "../../../utilidades/MeditocBody";
 import CGUController from "../../../../controllers/CGUController";
 
 /*************************************************************
@@ -61,15 +61,15 @@ const Sistema = (props) => {
 
     return (
         <Fragment>
-            <SubmoduloBarra title="SISTEMA">
+            <MeditocHeader1 title="SISTEMA">
                 <Tooltip title="Agregar un nuevo módulo" arrow>
                     <IconButton onClick={handleAgregarModuloOpen}>
                         <InsertDriveFileIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
-            </SubmoduloBarra>
+            </MeditocHeader1>
 
-            <SubmoduloContenido>
+            <MeditocBody>
                 {listaSistema.length > 0 ? (
                     listaSistema.map((modulo) => (
                         <SistemaModulo
@@ -84,7 +84,7 @@ const Sistema = (props) => {
                 ) : (
                     <div className="center">(No hay módulos configurados)</div>
                 )}
-            </SubmoduloContenido>
+            </MeditocBody>
 
             <Simbologia />
 

@@ -1,17 +1,17 @@
 import PropTypes from "prop-types";
 import React, { Fragment, useState, useEffect } from "react";
-import SubmoduloBarra from "../../../utilidades/SubmoduloBarra";
+import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
 import { Tooltip, IconButton } from "@material-ui/core";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
-import SubmoduloContenido from "../../../utilidades/SubmoduloContenido";
+import MeditocBody from "../../../utilidades/MeditocBody";
 import MeditocTable from "../../../utilidades/MeditocTable";
 import CGUController from "../../../../controllers/CGUController";
 import FormPerfil from "./FormPerfil";
 import Permisos from "./Permisos";
-import Confirmacion from "../../../utilidades/Confirmacion";
+import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 
 /*************************************************************
  * Descripcion: Submódulo para la vista principal "PERFILES" del portal Meditoc
@@ -153,7 +153,7 @@ const Perfiles = (props) => {
 
     return (
         <Fragment>
-            <SubmoduloBarra title="PERFILES">
+            <MeditocHeader1 title="PERFILES">
                 <Tooltip title="Nuevo perfil" arrow>
                     <IconButton onClick={handleClickNuevoPerfil}>
                         <InsertDriveFileIcon className="color-0" />
@@ -174,8 +174,8 @@ const Perfiles = (props) => {
                         <VerifiedUserIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
-            </SubmoduloBarra>
-            <SubmoduloContenido>
+            </MeditocHeader1>
+            <MeditocBody>
                 <MeditocTable
                     columns={columns}
                     data={listaPerfiles}
@@ -185,7 +185,7 @@ const Perfiles = (props) => {
                     isLoading={false}
                     doubleClick={handleClickEditarPerfil}
                 />
-            </SubmoduloContenido>
+            </MeditocBody>
             <FormPerfil
                 entPerfil={perfilForModalForm}
                 open={modalFormPerfilOpen}
@@ -195,14 +195,14 @@ const Perfiles = (props) => {
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
             />
-            <Confirmacion
+            <MeditocConfirmacion
                 title="Eliminar perfil"
                 open={modalFormEliminarPerfilOpen}
                 setOpen={setModalFormEliminarPerfilOpen}
                 okFunc={funcEliminarPerfil}
             >
                 ¿Desea eliminar el perfil {perfilSeleccionado.sNombre} y todos sus permisos?
-            </Confirmacion>
+            </MeditocConfirmacion>
             <Permisos
                 entPerfil={perfilForModalForm}
                 listaSistema={listaSistema}

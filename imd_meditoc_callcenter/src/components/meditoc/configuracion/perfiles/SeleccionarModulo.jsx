@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useState, useEffect } from "react";
-import ModalForm from "../../../utilidades/ModalForm";
+import MeditocModal from "../../../utilidades/MeditocModal";
 import { Grid, List, ListItem, ListItemIcon, Checkbox, ListItemText, Button } from "@material-ui/core";
 import CGUController from "../../../../controllers/CGUController";
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
@@ -92,7 +92,7 @@ const SeleccionarModulos = (props) => {
     };
 
     return (
-        <ModalForm title="Seleccionar módulos para agregar" size="small" open={open} setOpen={setOpen}>
+        <MeditocModal title="Seleccionar módulos para agregar" size="small" open={open} setOpen={setOpen}>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <List>
@@ -131,7 +131,7 @@ const SeleccionarModulos = (props) => {
                     </Button>
                 </Grid>
             </Grid>
-        </ModalForm>
+        </MeditocModal>
     );
 };
 

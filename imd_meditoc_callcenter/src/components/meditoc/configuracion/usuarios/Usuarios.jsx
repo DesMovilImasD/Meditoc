@@ -1,17 +1,17 @@
 import PropTypes from "prop-types";
 import React, { Fragment } from "react";
-import SubmoduloBarra from "../../../utilidades/SubmoduloBarra";
+import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
 import { Tooltip, IconButton } from "@material-ui/core";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import SubmoduloContenido from "../../../utilidades/SubmoduloContenido";
+import MeditocBody from "../../../utilidades/MeditocBody";
 import { useState } from "react";
 import MeditocTable from "../../../utilidades/MeditocTable";
 import CGUController from "../../../../controllers/CGUController";
 import { useEffect } from "react";
 import FormUsuario from "./FormUsuario";
-import Confirmacion from "../../../utilidades/Confirmacion";
+import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 
 /*************************************************************
  * Descripcion: Submódulo para vista principal "USUARIOS" del portal Meditoc
@@ -173,7 +173,7 @@ const Usuarios = (props) => {
 
     return (
         <Fragment>
-            <SubmoduloBarra title="USUARIOS">
+            <MeditocHeader1 title="USUARIOS">
                 <Tooltip title="Nuevo usuario" arrow>
                     <IconButton onClick={handleClickNuevoUsuario}>
                         <InsertDriveFileIcon className="color-0" />
@@ -189,8 +189,8 @@ const Usuarios = (props) => {
                         <DeleteIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
-            </SubmoduloBarra>
-            <SubmoduloContenido>
+            </MeditocHeader1>
+            <MeditocBody>
                 <MeditocTable
                     columns={columns}
                     data={listaUsuarios}
@@ -199,7 +199,7 @@ const Usuarios = (props) => {
                     mainField="iIdUsuario"
                     doubleClick={handleClickEditarUsuario}
                 />
-            </SubmoduloContenido>
+            </MeditocBody>
             <FormUsuario
                 entUsuario={usuarioParaModalForm}
                 listaPerfiles={listaPerfiles}
@@ -211,14 +211,14 @@ const Usuarios = (props) => {
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
             />
-            <Confirmacion
+            <MeditocConfirmacion
                 title="Eliminar usuario"
                 open={modalFormUsuarioEliminarOpen}
                 setOpen={setModalFormUsuarioEliminarOpen}
                 okFunc={funcEliminarUsuario}
             >
                 ¿Desea eliminar el usuario {usuarioSeleccionado.sUsuario}?
-            </Confirmacion>
+            </MeditocConfirmacion>
         </Fragment>
     );
 };

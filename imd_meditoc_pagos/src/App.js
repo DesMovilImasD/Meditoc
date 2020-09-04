@@ -8,6 +8,7 @@ import Loader from './components/Loader'
 import { urlProducts, urlPayments, urlBase } from './configuration/urlConfig'
 import { serverWs } from './configuration/serverConfig'
 import { apiGetPolicies } from './configuration/apiConfig'
+import apiKeyToken from './configuration/tokenConfig'
 
 /*****************************************************
  * Descripción: App principal web
@@ -26,7 +27,7 @@ function App() {
   const [appInfo, setAppInfo] = useState({
     nMaximoDescuento: 0.9,
     sAvisoDePrivacidad: '#',
-    sConektaPublicKey: 'key_U1YRzL1et3iFj6RouWCrfKw',
+    sConektaPublicKey: apiKeyToken,
     sCorreoContacto: 'contacto@meditoc.com',
     sCorreoSoporte: 'contacto@meditoc.com',
     sDireccionEmpresa: 'Calle 17 #113, Col. Itzimná, 97100, Mérida, Yuc.',

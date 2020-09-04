@@ -1,5 +1,5 @@
 import React from "react";
-import ModalForm from "../../../utilidades/ModalForm";
+import MeditocModal from "../../../utilidades/MeditocModal";
 import { Grid, TextField, Button } from "@material-ui/core";
 import { useState } from "react";
 import CGUController from "../../../../controllers/CGUController";
@@ -51,7 +51,7 @@ const FormCambiarPassword = (props) => {
     };
 
     return (
-        <ModalForm title="Cambiar contraseña" size="small" open={open} setOpen={setOpen}>
+        <MeditocModal title="Cambiar contraseña" size="small" open={open} setOpen={setOpen}>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <TextField
@@ -90,7 +90,7 @@ const FormCambiarPassword = (props) => {
                     </Button>
                 </Grid>
             </Grid>
-        </ModalForm>
+        </MeditocModal>
     );
 };
 

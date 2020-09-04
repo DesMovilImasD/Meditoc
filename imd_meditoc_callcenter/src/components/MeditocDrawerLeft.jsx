@@ -3,7 +3,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Drawer } from "@material-ui/core";
 import theme from "../configurations/themeConfig";
-import MenuList from "./MenuList";
+import MeditocMenuList from "./MeditocMenuList";
 
 const useStyles = makeStyles({
     drawerColor: {
@@ -42,7 +42,7 @@ const DrawerMenu = (props) => {
                 //onClick={toggleDrawer(false)}
                 onKeyDown={toggleDrawer(false)}
             >
-                <MenuList toggleDrawer={toggleDrawer} />
+                <MeditocMenuList toggleDrawer={toggleDrawer} />
             </div>
         </Drawer>
     );

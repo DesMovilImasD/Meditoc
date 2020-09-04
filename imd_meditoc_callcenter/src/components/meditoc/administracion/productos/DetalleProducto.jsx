@@ -1,5 +1,5 @@
 import React from "react";
-import ModalForm from "../../../utilidades/ModalForm";
+import MeditocModal from "../../../utilidades/MeditocModal";
 import { Grid, Button } from "@material-ui/core";
 import InfoField from "../../../utilidades/InfoField";
 
@@ -12,7 +12,7 @@ const DetalleProducto = (props) => {
     };
 
     return (
-        <ModalForm title="Detalle de producto" size="normal" open={open} setOpen={setOpen}>
+        <MeditocModal title="Detalle de producto" size="normal" open={open} setOpen={setOpen}>
             <Grid container spacing={3}>
                 <Grid item sm={6} xs={12}>
                     <InfoField label="ID de producto:" value={entProducto.iIdProducto} />
@@ -53,7 +53,7 @@ const DetalleProducto = (props) => {
                     </Button>
                 </Grid>
             </Grid>
-        </ModalForm>
+        </MeditocModal>
     );
 };
 

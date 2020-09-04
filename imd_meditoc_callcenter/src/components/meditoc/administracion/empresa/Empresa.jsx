@@ -1,16 +1,20 @@
 import React, { Fragment, useState } from "react";
-import SubmoduloBarra from "../../../utilidades/SubmoduloBarra";
+import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
 import { Tooltip, IconButton } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
 import ListAltOutlinedIcon from "@material-ui/icons/ListAltOutlined";
-import NoteAddRoundedIcon from "@material-ui/icons/NoteAddRounded";
-import EventAvailableRoundedIcon from "@material-ui/icons/EventAvailableRounded";
-import SubmoduloContenido from "../../../utilidades/SubmoduloContenido";
+
+import MeditocBody from "../../../utilidades/MeditocBody";
 import MeditocTable from "../../../utilidades/MeditocTable";
+import FormEmpresa from "./FormEmpresa";
+import FoliosEmpresa from "./FoliosEmpresa";
 
 const Empresa = (props) => {
+    const { funcAlert } = props;
+
     const columns = [
         { title: "ID", field: "iIdEmpresa", align: "center" },
         { title: "Nombre", field: "sNombre", align: "center" },
@@ -37,36 +41,57 @@ const Empresa = (props) => {
     const [empresaSeleccionada, setEmpresaSeleccionada] = useState(empresaEntidadVacia);
     const [empresaParaModalForm, setEmpresaParaModalForm] = useState(empresaEntidadVacia);
 
+    const [modalFormEmpresaOpen, setModalFormEmpresaOpen] = useState(false);
+    const [modalFoliosEmpresaOpen, setModalFoliosEmpresaOpen] = useState(false);
+
+    const handleClickNuevaEmpresa = () => {
+        setEmpresaParaModalForm(empresaEntidadVacia);
+        setModalFormEmpresaOpen(true);
+    };
+
+    const handleClickEditarEmpresa = () => {
+        if (empresaSeleccionada.iIdEmpresa === 0) {
+            funcAlert("Seleccione una empresa de la tabla para continuar");
+            return;
+        }
+        setEmpresaParaModalForm(empresaSeleccionada);
+        setModalFormEmpresaOpen(true);
+    };
+
+    const handleClickFoliosEmpresa = () => {
+        if (empresaSeleccionada.iIdEmpresa === 0) {
+            funcAlert("Seleccione una empresa de la tabla para continuar");
+            return;
+        }
+        setEmpresaParaModalForm(empresaSeleccionada);
+        setModalFoliosEmpresaOpen(true);
+    };
+
     return (
         <Fragment>
-            <SubmoduloBarra title="EMPRESA">
-                <Tooltip title="Detalle empresa" arrow>
+            <MeditocHeader1 title="EMPRESAS">
+                <Tooltip title="Nueva empresa" arrow>
+                    <IconButton onClick={handleClickNuevaEmpresa}>
+                        <InsertDriveFileIcon className="color-0" />
+                    </IconButton>
+                </Tooltip>
+                {/* <Tooltip title="Detalle empresa" arrow>
                     <IconButton>
                         <FormatListBulletedIcon className="color-0" />
                     </IconButton>
-                </Tooltip>
+                </Tooltip> */}
                 <Tooltip title="Editar datos de empresa" arrow>
-                    <IconButton>
+                    <IconButton onClick={handleClickEditarEmpresa}>
                         <EditIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
-                <Tooltip title="Ver folios de empresa" arrow>
-                    <IconButton>
+                <Tooltip title="Administrar folios de empresa" arrow>
+                    <IconButton onClick={handleClickFoliosEmpresa}>
                         <ListAltOutlinedIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
-                <Tooltip title="Agregar folios a empresa" arrow>
-                    <IconButton>
-                        <NoteAddRoundedIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Agregar vigencia a folios de empresa" arrow>
-                    <IconButton>
-                        <EventAvailableRoundedIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-            </SubmoduloBarra>
-            <SubmoduloContenido>
+            </MeditocHeader1>
+            <MeditocBody>
                 <MeditocTable
                     columns={columns}
                     data={listaEmpresas}
@@ -74,7 +99,18 @@ const Empresa = (props) => {
                     setRowSelected={setEmpresaSeleccionada}
                     mainField="iIdEmpresa"
                 />
-            </SubmoduloContenido>
+            </MeditocBody>
+            <FormEmpresa
+                entEmpresa={empresaParaModalForm}
+                open={modalFormEmpresaOpen}
+                setOpen={setModalFormEmpresaOpen}
+            />
+            <FoliosEmpresa
+                entEmpresa={empresaParaModalForm}
+                open={modalFoliosEmpresaOpen}
+                setOpen={setModalFoliosEmpresaOpen}
+                funcAlert={funcAlert}
+            />
         </Fragment>
     );
 };

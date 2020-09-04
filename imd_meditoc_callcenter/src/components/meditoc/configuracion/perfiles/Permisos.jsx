@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
 import React, { useState, useEffect } from "react";
 import { Dialog, IconButton, Tooltip, Slide } from "@material-ui/core";
-import SubmoduloBarra from "../../../utilidades/SubmoduloBarra";
+import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
 import AddIcon from "@material-ui/icons/Add";
 import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
 import CGUController from "../../../../controllers/CGUController";
-import SubmoduloContenido from "../../../utilidades/SubmoduloContenido";
+import MeditocBody from "../../../utilidades/MeditocBody";
 import SeleccionarModulos from "./SeleccionarModulo";
 import PermisoModulo from "./PermisoModulo";
 import Simbologia from "../sistema/Simbologia";
@@ -66,7 +66,7 @@ const Permisos = (props) => {
 
     return (
         <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
-            <SubmoduloBarra title={"Administrar permisos para " + entPerfil.sNombre}>
+            <MeditocHeader1 title={"Administrar permisos para " + entPerfil.sNombre}>
                 <Tooltip title="Cerrar ventana" arrow>
                     <IconButton onClick={handleClose}>
                         <CancelPresentationIcon className="color-0" />
@@ -77,9 +77,9 @@ const Permisos = (props) => {
                         <AddIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
-            </SubmoduloBarra>
+            </MeditocHeader1>
             <div>
-                <SubmoduloContenido>
+                <MeditocBody>
                     {listaPermisosModulo.length > 0 ? (
                         listaPermisosModulo.map((modulo) => (
                             <PermisoModulo
@@ -99,7 +99,7 @@ const Permisos = (props) => {
                             (Este perfil no tiene ningún permiso para acceder a los módulos de Meditoc CallCenter)
                         </div>
                     )}
-                </SubmoduloContenido>
+                </MeditocBody>
             </div>
 
             <SeleccionarModulos

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useState, useEffect } from "react";
-import ModalForm from "../../../utilidades/ModalForm";
+import MeditocModal from "../../../utilidades/MeditocModal";
 import { Grid, TextField, Button } from "@material-ui/core";
 import CGUController from "../../../../controllers/CGUController";
 
@@ -64,7 +64,7 @@ const FormPerfil = (props) => {
     };
 
     return (
-        <ModalForm
+        <MeditocModal
             title={entPerfil.iIdPerfil === 0 ? "Nuevo perfil" : "Editar perfil"}
             size="small"
             open={open}
@@ -108,7 +108,7 @@ const FormPerfil = (props) => {
                     </Button>
                 </Grid>
             </Grid>
-        </ModalForm>
+        </MeditocModal>
     );
 };
 

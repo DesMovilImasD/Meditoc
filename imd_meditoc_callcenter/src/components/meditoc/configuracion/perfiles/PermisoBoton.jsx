@@ -5,7 +5,7 @@ import { TableRow, TableCell, Tooltip, IconButton } from "@material-ui/core";
 import ExtensionIcon from "@material-ui/icons/Extension";
 import BlockIcon from "@material-ui/icons/Block";
 import CGUController from "../../../../controllers/CGUController";
-import Confirmacion from "../../../utilidades/Confirmacion";
+import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 
 const useStyles = makeStyles({
     cell: {
@@ -80,14 +80,14 @@ const PermisoBoton = (props) => {
                     </Tooltip>
                 </TableCell>
             </TableRow>
-            <Confirmacion
+            <MeditocConfirmacion
                 title="Quitar permiso a botón"
                 open={modalEliminarBotonOpen}
                 setOpen={setModalEliminarBotonOpen}
                 okFunc={funcEliminarPermisoBoton}
             >
                 ¿Desea remover el permiso para el boton {entBoton.sNombre}?
-            </Confirmacion>
+            </MeditocConfirmacion>
         </Fragment>
     );
 };

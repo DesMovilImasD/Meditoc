@@ -1,15 +1,16 @@
 import React, { Fragment } from "react";
-import SubmoduloBarra from "../../../utilidades/SubmoduloBarra";
+import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
+import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
 import { Tooltip, IconButton } from "@material-ui/core";
-import SubmoduloContenido from "../../../utilidades/SubmoduloContenido";
+import MeditocBody from "../../../utilidades/MeditocBody";
 import { useState } from "react";
 import MeditocTable from "../../../utilidades/MeditocTable";
 import FormProducto from "./FormProducto";
-import Confirmacion from "../../../utilidades/Confirmacion";
+import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 import DetalleProducto from "./DetalleProducto";
 
 /*************************************************************
@@ -117,10 +118,10 @@ const Productos = (props) => {
 
     return (
         <Fragment>
-            <SubmoduloBarra title="PRODUCTOS">
+            <MeditocHeader1 title="PRODUCTOS">
                 <Tooltip title="Nuevo producto" arrow>
                     <IconButton onClick={handleClickNuevoProducto}>
-                        <InsertDriveFileIcon className="color-0" />
+                        <AddIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Detalle producto" arrow>
@@ -138,8 +139,8 @@ const Productos = (props) => {
                         <DeleteIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
-            </SubmoduloBarra>
-            <SubmoduloContenido>
+            </MeditocHeader1>
+            <MeditocBody>
                 <MeditocTable
                     columns={columns}
                     data={listaProductos}
@@ -148,20 +149,20 @@ const Productos = (props) => {
                     mainField="iIdProducto"
                     doubleClick={handleClickDetallesProducto}
                 />
-            </SubmoduloContenido>
+            </MeditocBody>
             <FormProducto
                 entProducto={productoParaModalForm}
                 open={modalFormProductoOpen}
                 setOpen={setModalFormProductoOpen}
             />
-            <Confirmacion
+            <MeditocConfirmacion
                 title="Eliminar prodicto"
                 open={modalEliminarProductoOpen}
                 setOpen={setModalEliminarProductoOpen}
                 okFunc={funcEliminarProducto}
             >
                 ¿Desea eliminar el producto "{productoSeleccionado.sNombre}"?
-            </Confirmacion>
+            </MeditocConfirmacion>
             <DetalleProducto
                 entProducto={productoSeleccionado}
                 open={modalDetalleProductoOpen}

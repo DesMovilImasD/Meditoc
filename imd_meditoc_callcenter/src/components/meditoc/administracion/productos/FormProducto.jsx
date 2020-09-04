@@ -1,5 +1,5 @@
 import React from "react";
-import ModalForm from "../../../utilidades/ModalForm";
+import MeditocModal from "../../../utilidades/MeditocModal";
 import {
     Grid,
     TextField,
@@ -19,9 +19,9 @@ const FormProducto = (props) => {
     const { entProducto, open, setOpen } = props;
 
     const [formProducto, setFormProducto] = useState({
-        rdTipoProducto: "",
+        rdTipoProducto: "1",
         chkComercial: false,
-        txtNombre: "",
+        txtNombreProducto: "",
         txtNombreCorto: "",
         txtDescripcion: "",
         txtCosto: "",
@@ -32,9 +32,9 @@ const FormProducto = (props) => {
 
     useEffect(() => {
         setFormProducto({
-            rdTipoProducto: entProducto.iIdTipoProducto,
+            rdTipoProducto: entProducto.iIdTipoProducto.toString(),
             chkComercial: entProducto.bComercial,
-            txtNombre: entProducto.sNombre,
+            txtNombreProducto: entProducto.sNombre,
             txtNombreCorto: entProducto.sNombreCorto,
             txtDescripcion: entProducto.sDescripcion,
             txtCosto: entProducto.fCosto,
@@ -83,7 +83,7 @@ const FormProducto = (props) => {
     };
 
     return (
-        <ModalForm
+        <MeditocModal
             title={entProducto.iIdProducto === 0 ? "Nuevo producto" : "Editar producto"}
             size="normal"
             open={open}
@@ -99,8 +99,8 @@ const FormProducto = (props) => {
                             value={formProducto.rdTipoProducto}
                             onChange={handleChangeFormProducto}
                         >
-                            <FormControlLabel value={1} control={<Radio />} label="Membresía" />
-                            <FormControlLabel value={2} control={<Radio />} label="Servicio" />
+                            <FormControlLabel value="1" control={<Radio />} label="Membresía" />
+                            <FormControlLabel value="2" control={<Radio />} label="Servicio" />
                         </RadioGroup>
                     </FormControl>
                 </Grid>
@@ -120,12 +120,12 @@ const FormProducto = (props) => {
                 </Grid>
                 <Grid item sm={6} xs={12}>
                     <TextField
-                        name="txtNombre"
+                        name="txtNombreProducto"
                         label="Nombre del producto:"
                         fullWidth
                         variant="outlined"
                         placeholder="Ej. Membresía 6 meses"
-                        value={formProducto.txtNombre}
+                        value={formProducto.txtNombreProducto}
                         onChange={handleChangeFormProducto}
                     />
                 </Grid>
@@ -196,18 +196,21 @@ const FormProducto = (props) => {
                         onChange={handleChangeFormProducto}
                     />
                 </Grid>
-                <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="primary" fullWidth>
+                <Grid item xs={12} className="right">
+                    <Button variant="contained" style={{ color: "#888", marginRight: "20px" }} onClick={handleClose}>
+                        Cancelar
+                    </Button>
+                    <Button variant="contained" color="primary">
                         Guardar
                     </Button>
                 </Grid>
-                <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="secondary" fullWidth onClick={handleClose}>
-                        Cancelar
+                {/* <Grid item sm={6} xs={12}>
+                    <Button variant="text" color="primary" fullWidth>
+                        Guardar
                     </Button>
-                </Grid>
+                </Grid> */}
             </Grid>
-        </ModalForm>
+        </MeditocModal>
     );
 };
 
