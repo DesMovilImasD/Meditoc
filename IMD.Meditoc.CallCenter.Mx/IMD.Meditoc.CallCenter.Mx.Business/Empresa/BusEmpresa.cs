@@ -41,7 +41,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Empresa
 
                 if (response.Code != 0 || dtEmpresa.Result.Rows.Count == 0)
                 {
-                    response.Message = "Ocurrio un error al guardar la empresa";
+                    response.Message = "Ocurrio un error al guardar la empresa";                    
                     return response;
                 }
 
