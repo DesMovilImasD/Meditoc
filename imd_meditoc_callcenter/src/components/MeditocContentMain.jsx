@@ -9,6 +9,8 @@ import Perfiles from "./meditoc/configuracion/perfiles/Perfiles";
 import Usuarios from "./meditoc/configuracion/usuarios/Usuarios";
 import Productos from "./meditoc/administracion/productos/Productos";
 import Empresa from "./meditoc/administracion/empresa/Empresa";
+import Cupones from "./meditoc/administracion/cupones/Cupones";
+import MeditocPortada from "./MeditocPortada";
 
 /*************************************************************
  * Descripcion: Contiene las secciones y vistas de todo el portal de Meditoc
@@ -42,6 +44,9 @@ const ContentMain = (props) => {
             <MeditocDrawerLeft drawerOpen={drawerOpen} toggleDrawer={toggleDrawer} />
             <div>
                 <Switch>
+                    <Route exact path="/">
+                        <MeditocPortada />
+                    </Route>
                     <Route exact path={urlSystem.configuracion.sistema}>
                         <Sistema usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
                     </Route>
@@ -56,6 +61,9 @@ const ContentMain = (props) => {
                     </Route>
                     <Route exact path={urlSystem.administracion.institucion}>
                         <Empresa usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
+                    </Route>
+                    <Route exact path={urlSystem.administracion.cupones}>
+                        <Cupones usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
                     </Route>
                 </Switch>
             </div>

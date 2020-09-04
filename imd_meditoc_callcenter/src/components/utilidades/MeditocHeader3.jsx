@@ -1,4 +1,5 @@
 import React from "react";
+import { Paper } from "@material-ui/core";
 
 const MeditocHeader3 = (props) => {
     const { title, children } = props;

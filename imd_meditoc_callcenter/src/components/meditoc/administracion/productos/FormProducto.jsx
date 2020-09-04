@@ -64,19 +64,19 @@ const FormProducto = (props) => {
         switch (nombreCampo) {
             case "txtNombreProducto":
                 if (valorCampo !== "" && !formProductoOK.txtNombreProducto) {
-                    setFormProductoOK({ ...formProductoOK, [nombreCampo]: valorCampo });
+                    setFormProductoOK({ ...formProductoOK, [nombreCampo]: true });
                 }
                 break;
 
             case "txtNombreCorto":
                 if (valorCampo !== "" && !formProductoOK.txtNombreCorto) {
-                    setFormProductoOK({ ...formProductoOK, [nombreCampo]: valorCampo });
+                    setFormProductoOK({ ...formProductoOK, [nombreCampo]: true });
                 }
                 break;
 
             case "txtDescripcion":
                 if (valorCampo !== "" && !formProductoOK.txtDescripcion) {
-                    setFormProductoOK({ ...formProductoOK, [nombreCampo]: valorCampo });
+                    setFormProductoOK({ ...formProductoOK, [nombreCampo]: true });
                 }
                 break;
 
@@ -86,31 +86,31 @@ const FormProducto = (props) => {
                         return;
                     }
                     if (!formProductoOK.txtCosto) {
-                        setFormProductoOK({ ...formProductoOK, [nombreCampo]: valorCampo });
+                        setFormProductoOK({ ...formProductoOK, [nombreCampo]: true });
                     }
                 }
                 break;
 
             case "txtMesesVigencia":
                 if (valorCampo !== "") {
-                    if (valorCampo % 1 !== 0) {
+                    if (valorCampo === "0" || valorCampo % 1 !== 0) {
                         return;
                     }
                     if (!formProductoOK.txtMesesVigencia) {
-                        setFormProductoOK({ ...formProductoOK, [nombreCampo]: valorCampo });
+                        setFormProductoOK({ ...formProductoOK, [nombreCampo]: true });
                     }
                 }
                 break;
 
             case "txtIcono":
                 if (valorCampo !== "" && !formProductoOK.txtIcono) {
-                    setFormProductoOK({ ...formProductoOK, [nombreCampo]: valorCampo });
+                    setFormProductoOK({ ...formProductoOK, [nombreCampo]: true });
                 }
                 break;
 
             case "txtPrefijoFolio":
                 if (valorCampo !== "" && !formProductoOK.txtPrefijoFolio) {
-                    setFormProductoOK({ ...formProductoOK, [nombreCampo]: valorCampo });
+                    setFormProductoOK({ ...formProductoOK, [nombreCampo]: true });
                 }
                 break;
 
@@ -162,21 +162,12 @@ const FormProducto = (props) => {
         if (formProducto.txtCosto === "") {
             formProductoOKValidacion.txtCosto = false;
             bFormError = true;
-        } else if (isNaN(formProducto.txtCosto)) {
-            formProductoOKValidacion.txtCosto = false;
-            bFormError = true;
-        } else if (parseInt(formProducto.txtCosto) <= 0) {
+        } else if (formProducto.txtCosto <= 0) {
             formProductoOKValidacion.txtCosto = false;
             bFormError = true;
         }
 
         if (formProducto.txtMesesVigencia === "") {
-            formProductoOKValidacion.txtMesesVigencia = false;
-            bFormError = true;
-        } else if (isNaN(formProducto.txtMesesVigencia)) {
-            formProductoOKValidacion.txtMesesVigencia = false;
-            bFormError = true;
-        } else if (parseInt(formProducto.txtMesesVigencia) <= 0 || parseInt(formProducto.txtMesesVigencia) % 1 !== 0) {
             formProductoOKValidacion.txtMesesVigencia = false;
             bFormError = true;
         }
