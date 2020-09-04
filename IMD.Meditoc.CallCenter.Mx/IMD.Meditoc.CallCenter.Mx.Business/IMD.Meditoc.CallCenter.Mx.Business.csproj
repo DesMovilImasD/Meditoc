@@ -44,6 +44,7 @@
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -53,12 +54,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusPoliticas.cs" />
     <Compile Include="CGU\BusBoton.cs" />
     <Compile Include="CGU\BusModulo.cs" />
     <Compile Include="CGU\BusPerfil.cs" />
     <Compile Include="CGU\BusPermiso.cs" />
     <Compile Include="CGU\BusSubModulo.cs" />
     <Compile Include="CGU\BusUsuario.cs" />
+    <Compile Include="Empresa\BusEmpresa.cs" />
+    <Compile Include="Producto\BusProducto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

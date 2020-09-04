@@ -5,8 +5,6 @@ using IMD.Meditoc.CallCenter.Mx.Entities.CGU;
 using log4net;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Net.Http.Headers;
 using System.Web.Http;
 
 namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers

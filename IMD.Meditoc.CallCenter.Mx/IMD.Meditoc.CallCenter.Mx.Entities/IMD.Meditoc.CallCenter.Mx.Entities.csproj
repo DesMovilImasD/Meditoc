@@ -60,7 +60,12 @@
     <Compile Include="CGU\EntPermisoSistema.cs" />
     <Compile Include="CGU\EntSubModulo.cs" />
     <Compile Include="CGU\EntUsuario.cs" />
+    <Compile Include="Empresa\EntEmpresa.cs" />
+    <Compile Include="EntMensualidad.cs" />
+    <Compile Include="EntPoliticas.cs" />
+    <Compile Include="Producto\EntProducto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
