@@ -145,13 +145,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Producto
                     return response;
                 }
 
-                if (entProducto.fCosto == 0)
+                if (entProducto.fCosto <= 0)
                 {
                     response.Message = "El costo debe ser mayor a 0.";
                     return response;
                 }
 
-                if (entProducto.iMesVigencia == 0)
+                if (entProducto.iMesVigencia <= 0)
                 {
                     response.Message = "La vigencia debe ser mayor a 0.";
                     return response;

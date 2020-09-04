@@ -22,28 +22,46 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Empresa
             datEmpresa = new DatEmpresa();
         }
 
-        public IMDResponse<bool> BSaveEmpresa(EntEmpresa entEmpresa)
+        public IMDResponse<EntEmpresa> BSaveEmpresa(EntEmpresa entEmpresa)
         {
-            IMDResponse<bool> response = new IMDResponse<bool>();
+            IMDResponse<bool> responseValidation = new IMDResponse<bool>();
+            IMDResponse<EntEmpresa> response = new IMDResponse<EntEmpresa>();
 
             string metodo = nameof(this.BSaveEmpresa);
             logger.Info(IMDSerialize.Serialize(67823458383982, $"Inicia {metodo}(EntEmpresa entEmpresa)", entEmpresa));
 
             try
             {
-                response = BValidaDatos(entEmpresa);
+                responseValidation = BValidaDatos(entEmpresa);
 
-                if (!response.Result)
-                    return response;
+                if (!responseValidation.Result)
+                    return response = responseValidation.GetResponse<EntEmpresa>();
 
-                response = datEmpresa.DSaveEmpresa(entEmpresa);
+                IMDResponse<DataTable> dtEmpresa = datEmpresa.DSaveEmpresa(entEmpresa);
 
-                if (response.Code != 0)
+                if (response.Code != 0 || dtEmpresa.Result.Rows.Count == 0)
                 {
                     response.Message = "Ocurrio un error al guardar la empresa";
                     return response;
                 }
 
+                EntEmpresa oEmpresa = new EntEmpresa();
+                foreach (DataRow item in dtEmpresa.Result.Rows)
+                {
+                    IMDDataRow dr = new IMDDataRow(item);
+
+                    oEmpresa.iIdEmpresa = dr.ConvertTo<int>("iIdEmpresa");
+                    oEmpresa.sNombre = dr.ConvertTo<string>("sNombre");
+                    oEmpresa.sFolioEmpresa = dr.ConvertTo<string>("sFolioEmpresa");
+                    oEmpresa.sCorreo = dr.ConvertTo<string>("sCorreo");
+                    oEmpresa.sFechaCreacion = dr.ConvertTo<DateTime>("dtFechaCreacion").ToShortDateString();
+                    oEmpresa.bActivo = Convert.ToBoolean(dr.ConvertTo<int>("bActivo"));
+                    oEmpresa.bBaja = Convert.ToBoolean(dr.ConvertTo<int>("bBaja"));
+                }
+
+                response.Code = 0;
+                response.Message = entEmpresa.iIdEmpresa == 0 ? "Se agrego con exito" : "Se actualizo con exito";
+                response.Result = oEmpresa;
             }
             catch (Exception ex)
             {
@@ -65,27 +83,30 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Empresa
             try
             {
                 response.Code = 67823458385536;
+                response.Result = false;
 
                 if (entEmpresa.sNombre == "")
                 {
                     response.Message = "El nombre no puede ser vacio";
-                    response.Result = false;
                     return response;
                 }
 
                 if (entEmpresa.sCorreo == "")
                 {
                     response.Message = "El correo no puede ser vacio";
-                    response.Result = false;
                     return response;
                 }
 
+                IMDResponse<List<EntEmpresa>> lstEmpresas = BGetEmpresas(null);
 
-                if (entEmpresa.sFolioEmpresa == "")
+                if (lstEmpresas.Result.Count > 0)
                 {
-                    response.Message = "Debe generar un folio para la empresa";
-                    response.Result = false;
-                    return response;
+                    if (lstEmpresas.Result.Exists(c => c.sCorreo == entEmpresa.sCorreo) && entEmpresa.iIdEmpresa == 0)
+                    {
+                        response.Message = "Ya existe una empresa con ese correo registrado.";
+                        return response;
+                    }
+
                 }
 
                 response.Code = 0;
@@ -101,7 +122,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Empresa
             return response;
         }
 
-        public IMDResponse<List<EntEmpresa>> BGetEmpresas()
+        public IMDResponse<List<EntEmpresa>> BGetEmpresas(int? iIdEmpresa)
         {
             IMDResponse<List<EntEmpresa>> response = new IMDResponse<List<EntEmpresa>>();
 
@@ -110,7 +131,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Empresa
 
             try
             {
-                IMDResponse<DataTable> dtEmpresa = datEmpresa.DGetEmpresas();
+                IMDResponse<DataTable> dtEmpresa = datEmpresa.DGetEmpresas(iIdEmpresa);
                 List<EntEmpresa> lstEmpresa = new List<EntEmpresa>();
                 EntEmpresa entEmpresa;
 
@@ -128,8 +149,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Empresa
                     entEmpresa.sNombre = dr.ConvertTo<string>("sNombre");
                     entEmpresa.sFolioEmpresa = dr.ConvertTo<string>("sFolioEmpresa");
                     entEmpresa.sCorreo = dr.ConvertTo<string>("sCorreo");
-                    entEmpresa.bActivo = dr.ConvertTo<bool>("bActivo");
-                    entEmpresa.bBaja = dr.ConvertTo<bool>("bBaja");
+                    entEmpresa.sFechaCreacion = dr.ConvertTo<DateTime>("dtFechaCreacion").ToShortDateString();
+                    entEmpresa.bActivo = Convert.ToBoolean(dr.ConvertTo<int>("bActivo"));
+                    entEmpresa.bBaja = Convert.ToBoolean(dr.ConvertTo<int>("bBaja"));
 
                     lstEmpresa.Add(entEmpresa);
                 }

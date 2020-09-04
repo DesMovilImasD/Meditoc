@@ -28,9 +28,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Empresa
             getEmpresa = "svc_meditoc_empresa";
         }
 
-        public IMDResponse<bool> DSaveEmpresa(EntEmpresa entEmpresa)
+        public IMDResponse<DataTable> DSaveEmpresa(EntEmpresa entEmpresa)
         {
-            IMDResponse<bool> response = new IMDResponse<bool>();
+            IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
             string metodo = nameof(this.DSaveEmpresa);
             logger.Info(IMDSerialize.Serialize(67823458382428, $"Inicia {metodo}(EntEmpresa entEmpresa)", entEmpresa));
@@ -41,12 +41,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Empresa
                 {
                     database.AddInParameter(dbCommand, "piIdEmpresa", DbType.Int32, entEmpresa.iIdEmpresa);
                     database.AddInParameter(dbCommand, "psNombre", DbType.String, entEmpresa.sNombre);
-                    database.AddInParameter(dbCommand, "psFolioEmpresa", DbType.String, entEmpresa.sFolioEmpresa);
                     database.AddInParameter(dbCommand, "psCorreo", DbType.String, entEmpresa.sCorreo);
+                    database.AddInParameter(dbCommand, "piIdUsuarioMod", DbType.String, entEmpresa.iIdUsuarioMod);
                     database.AddInParameter(dbCommand, "pbActivo", DbType.Boolean, entEmpresa.bActivo);
                     database.AddInParameter(dbCommand, "pbBaja", DbType.Boolean, entEmpresa.bBaja);
 
-                    response = imdCommonData.DExecute(database, dbCommand);
+                    response = imdCommonData.DExecuteDT(database, dbCommand);
                 }
             }
             catch (Exception ex)
@@ -60,7 +60,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Empresa
         }
 
 
-        public IMDResponse<DataTable> DGetEmpresas()
+        public IMDResponse<DataTable> DGetEmpresas(int? iIdEmpresa)
         {
             IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
@@ -71,6 +71,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Empresa
             {
                 using (DbCommand dbCommand = database.GetStoredProcCommand(getEmpresa))
                 {
+                    database.AddInParameter(dbCommand, "piIdEmpresa", DbType.Int32, iIdEmpresa);
+
                     response = imdCommonData.DExecuteDT(database, dbCommand);
                 }
             }
