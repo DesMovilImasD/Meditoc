@@ -43,6 +43,9 @@
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data">
       <HintPath>..\..\Items\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -63,9 +66,32 @@
     <Compile Include="Empresa\EntEmpresa.cs" />
     <Compile Include="EntMensualidad.cs" />
     <Compile Include="EntPoliticas.cs" />
+    <Compile Include="Ordenes\EntCharge.cs" />
+    <Compile Include="Ordenes\EntChargeDetail.cs" />
+    <Compile Include="Ordenes\EntCreateCharge.cs" />
+    <Compile Include="Ordenes\EntCreateCustomerInfo.cs" />
+    <Compile Include="Ordenes\EntCreateDiscountLine.cs" />
+    <Compile Include="Ordenes\EntCreateLineItem.cs" />
+    <Compile Include="Ordenes\EntCreateOrder.cs" />
+    <Compile Include="Ordenes\EntCreatePaymentMethod.cs" />
+    <Compile Include="Ordenes\EntCreateUserAgent.cs" />
+    <Compile Include="Ordenes\EntCustomerInfo.cs" />
+    <Compile Include="Ordenes\EntLineItem.cs" />
+    <Compile Include="Ordenes\EntLineItemDetail.cs" />
+    <Compile Include="Ordenes\EntOrder.cs" />
+    <Compile Include="Ordenes\EntPaymentMehod.cs" />
+    <Compile Include="Ordenes\EntWebHook.cs" />
+    <Compile Include="Ordenes\EntWebHookData.cs" />
+    <Compile Include="Ordenes\EntWebHookLog.cs" />
     <Compile Include="Producto\EntProducto.cs" />
+    <Compile Include="Promociones\EntCreateCupon.cs" />
+    <Compile Include="Promociones\EntCupon.cs" />
+    <Compile Include="Promociones\EnumCategoriaCupon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
