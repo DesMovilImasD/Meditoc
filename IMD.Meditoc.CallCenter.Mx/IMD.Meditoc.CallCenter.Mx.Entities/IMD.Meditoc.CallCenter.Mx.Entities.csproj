@@ -63,6 +63,7 @@
     <Compile Include="Empresa\EntEmpresa.cs" />
     <Compile Include="EntMensualidad.cs" />
     <Compile Include="EntPoliticas.cs" />
+    <Compile Include="Producto\EntProducto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

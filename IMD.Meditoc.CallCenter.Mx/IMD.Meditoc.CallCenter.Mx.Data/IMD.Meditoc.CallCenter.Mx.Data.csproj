@@ -63,6 +63,7 @@
     <Compile Include="CGU\DatSubModulo.cs" />
     <Compile Include="CGU\DatUsuario.cs" />
     <Compile Include="Empresa\DatEmpresa.cs" />
+    <Compile Include="Producto\DatProducto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

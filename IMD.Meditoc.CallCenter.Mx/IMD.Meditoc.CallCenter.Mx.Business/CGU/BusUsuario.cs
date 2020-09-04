@@ -1,15 +1,11 @@
 ﻿using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
-using IMD.Admin.Utilities.Web;
 using IMD.Meditoc.CallCenter.Mx.Data.CGU;
 using IMD.Meditoc.CallCenter.Mx.Entities.CGU;
 using log4net;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 {
