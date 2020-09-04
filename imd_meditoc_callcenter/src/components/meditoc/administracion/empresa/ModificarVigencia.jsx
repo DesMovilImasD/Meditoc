@@ -3,19 +3,31 @@ import MeditocModal from "../../../utilidades/MeditocModal";
 import { Grid, Button } from "@material-ui/core";
 import { DateTimePicker } from "@material-ui/pickers";
 import { useState } from "react";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 
-const AgregarVigencia = (props) => {
+const ModificarVigencia = (props) => {
     const { entEmpresa, open, setOpen } = props;
 
     const [txtFechaVigencia, setTxtFechaVigencia] = useState(null);
+    const [txtFechaVigenciaOK, setTxtFechaVigenciaOK] = useState(true);
 
     const handleChangeVigencia = (date) => {
+        if (date !== null && date !== "" && !txtFechaVigenciaOK) {
+            setTxtFechaVigenciaOK(true);
+        }
+
         setTxtFechaVigencia(date);
     };
 
     //Funcion para cerrar este modal
     const handleClose = () => {
         setOpen(false);
+    };
+
+    const handleClickModificarVigencia = () => {
+        if (txtFechaVigencia === null || txtFechaVigencia === "") {
+            setTxtFechaVigenciaOK(false);
+        }
     };
 
     return (
@@ -30,24 +42,18 @@ const AgregarVigencia = (props) => {
                         views={["year", "month", "date", "hours", "minutes"]}
                         InputAdornmentProps={{ position: "end" }}
                         openTo="year"
+                        required
                         format="DD/MM/YYYY hh:mm a"
                         value={txtFechaVigencia}
                         onChange={handleChangeVigencia}
+                        error={!txtFechaVigenciaOK}
+                        helperText={!txtFechaVigenciaOK ? "Ingrese una fecha de vencimiento válida" : ""}
                     />
                 </Grid>
-                <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="primary" fullWidth>
-                        CONFIRMAR
-                    </Button>
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="secondary" fullWidth onClick={handleClose}>
-                        Cancelar
-                    </Button>
-                </Grid>
+                <MeditocModalBotones okFunc={handleClickModificarVigencia} cancelFunc={handleClose} />
             </Grid>
         </MeditocModal>
     );
 };
 
-export default AgregarVigencia;
+export default ModificarVigencia;

@@ -1,6 +1,6 @@
 import React from "react";
 import MeditocFullModal from "../../../utilidades/MeditocFullModal";
-import { Tooltip, Button, IconButton, Typography } from "@material-ui/core";
+import { Tooltip, IconButton } from "@material-ui/core";
 import NoteAddRoundedIcon from "@material-ui/icons/NoteAddRounded";
 import CloseRoundedIcon from "@material-ui/icons/CloseRounded";
 import EventAvailableRoundedIcon from "@material-ui/icons/EventAvailableRounded";
@@ -8,8 +8,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { useState } from "react";
 import MeditocBody from "../../../utilidades/MeditocBody";
 import MeditocTable from "../../../utilidades/MeditocTable";
-import AgregarFolios from "./AgregarFolios";
-import AgregarVigencia from "./AgregarVigencia";
+import CrearFolios from "./CrearFolios";
+import ModificarVigencia from "./ModificarVigencia";
 import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 import MeditocHeader2 from "../../../utilidades/MeditocHeader2";
 import MeditocHeader3 from "../../../utilidades/MeditocHeader3";
@@ -101,8 +101,13 @@ const FoliosEmpresa = (props) => {
                     />
                 </MeditocBody>
             </div>
-            <AgregarFolios entEmpresa={entEmpresa} open={modalAgregarFoliosOpen} setOpen={setModalAgregarFoliosOpen} />
-            <AgregarVigencia
+            <CrearFolios
+                entEmpresa={entEmpresa}
+                open={modalAgregarFoliosOpen}
+                setOpen={setModalAgregarFoliosOpen}
+                funcAlert={funcAlert}
+            />
+            <ModificarVigencia
                 entEmpresa={entEmpresa}
                 open={modalAgregarVigenciaOpen}
                 setOpen={setModalAgregarVigenciaOpen}

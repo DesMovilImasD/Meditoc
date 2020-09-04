@@ -1,13 +1,13 @@
 import React from "react";
 import MeditocModal from "../../../utilidades/MeditocModal";
-import { Grid, Typography, Button, Table, TableBody, TableRow, TableCell, TableContainer } from "@material-ui/core";
+import { Grid, Typography, Table, TableBody, TableRow, TableCell, TableContainer } from "@material-ui/core";
 import { useState } from "react";
 import MeditocTable from "../../../utilidades/MeditocTable";
 import { useEffect } from "react";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 
-const AgregarFolios = (props) => {
-    const { entEmpresa, open, setOpen } = props;
+const CrearFolios = (props) => {
+    const { entEmpresa, open, setOpen, funcAlert } = props;
 
     const columns = [
         { title: "ID", field: "iIdProducto", align: "center", editable: "never", hidden: true },
@@ -52,6 +52,21 @@ const AgregarFolios = (props) => {
         setOpen(false);
     };
 
+    const handleClickCrearFolios = () => {
+        if (listaProductosSeleccionados.length < 1) {
+            funcAlert(
+                "Para generar los folios debe seleccionar al menos un producto de la lista e ingresar la cantidad (mínimo 1).",
+                "warning"
+            );
+        }
+        if (listaProductosSeleccionados.some((x) => x.iCantidad === 0)) {
+            funcAlert(
+                "Verifique que las cantidades ingresadas para los productos seleccionados sean como mínimo 1.",
+                "warning"
+            );
+        }
+    };
+
     useEffect(() => {
         const calcSubtotal = listaProductosSeleccionados.reduce((a, b) => a + b.iCantidad * b.fCosto, 0);
 
@@ -63,7 +78,7 @@ const AgregarFolios = (props) => {
 
     return (
         <MeditocModal
-            title={`Agregar folios a ${entEmpresa.sNombre} (${entEmpresa.sFolioEmpresa})`}
+            title={`Crear folios para ${entEmpresa.sNombre} (${entEmpresa.sFolioEmpresa})`}
             size="large"
             open={open}
             setOpen={setOpen}
@@ -127,10 +142,14 @@ const AgregarFolios = (props) => {
                         </Table>
                     </TableContainer>
                 </Grid>
-                <MeditocModalBotones okMessage="Generar folios" cancelFunc={handleClose} />
+                <MeditocModalBotones
+                    okMessage="Generar folios"
+                    okFunc={handleClickCrearFolios}
+                    cancelFunc={handleClose}
+                />
             </Grid>
         </MeditocModal>
     );
 };
 
-export default AgregarFolios;
+export default CrearFolios;

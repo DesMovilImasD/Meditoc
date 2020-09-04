@@ -47,11 +47,11 @@ const DetalleProducto = (props) => {
                 <Grid item sm={6} xs={12}>
                     <InfoField label="Foliador:" value={entProducto.sPrefijoFolio} />
                 </Grid>
-                <Grid item xs={12}>
+                {/* <Grid item xs={12}>
                     <Button variant="contained" color="secondary" fullWidth onClick={handleClose}>
                         ACPETAR
                     </Button>
-                </Grid>
+                </Grid> */}
             </Grid>
         </MeditocModal>
     );
