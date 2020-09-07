@@ -12,6 +12,8 @@ import MeditocTable from "../../../utilidades/MeditocTable";
 import FormProducto from "./FormProducto";
 import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 import DetalleProducto from "./DetalleProducto";
+import ProductoController from "../../../../controllers/ProductoController";
+import { useEffect } from "react";
 
 /*************************************************************
  * Descripcion: Submódulo para vista principal "PRODUCTOS" del portal Meditoc
@@ -20,50 +22,22 @@ import DetalleProducto from "./DetalleProducto";
  * Invocado desde: ContentMain
  *************************************************************/
 const Productos = (props) => {
-    const { funcAlert } = props;
+    const { usuarioSesion, funcLoader, funcAlert } = props;
+
+    const productoController = new ProductoController();
 
     const columns = [
         { title: "ID", field: "iIdProducto", align: "center", hidden: true },
         { title: "Nombre", field: "sNombre", align: "center" },
         { title: "Tipo", field: "sTipoProducto", align: "center" },
-        { title: "Costo", field: "fCosto", align: "center" },
+        { title: "Costo", field: "sCosto", align: "center" },
         { title: "Meses de vigencia", field: "iMesVigencia", align: "center" },
-        { title: "Comercial", field: "bComercial", align: "center" },
-    ];
-
-    const data = [
-        {
-            iIdProducto: 1,
-            iIdTipoProducto: 1,
-            sTipoProducto: "Servicio",
-            sNombre: "Membresía 3 meses",
-            sNombreCorto: "3 meses",
-            sDescripcion: "Servicio méditoc online por 3 meses",
-            fCosto: 300,
-            iMesVigencia: 3,
-            sIcon: "f479",
-            bComercial: true,
-            sPrefijoFolio: "VS",
-        },
-        {
-            iIdProducto: 2,
-            iIdTipoProducto: 1,
-            sTipoProducto: "Servicio",
-            sNombre: "Membresía 6 meses",
-            sNombreCorto: "6 meses",
-            sDescripcion: "Servicio méditoc online por 6 meses",
-            fCosto: 600,
-            iMesVigencia: 6,
-            sIcon: "f479",
-            bComercial: true,
-            sPrefijoFolio: "VS",
-        },
+        { title: "Comercial", field: "sComercial", align: "center" },
     ];
 
     const productoEntidadVacia = {
         iIdProducto: 0,
         iIdTipoProducto: 1,
-        sTipoProducto: "",
         sNombre: "",
         sNombreCorto: "",
         sDescripcion: "",
@@ -72,9 +46,12 @@ const Productos = (props) => {
         sIcon: "",
         bComercial: false,
         sPrefijoFolio: "",
+        iIdUsuarioMod: 0,
+        bActivo: false,
+        bBaja: false,
     };
 
-    const [listaProductos, setListaProductos] = useState(data);
+    const [listaProductos, setListaProductos] = useState([]);
     const [productoSeleccionado, setProductoSeleccionado] = useState(productoEntidadVacia);
     const [productoParaModalForm, setProductoParaModalForm] = useState(productoEntidadVacia);
 
@@ -112,9 +89,46 @@ const Productos = (props) => {
         setModalDetalleProductoOpen(true);
     };
 
-    const funcEliminarProducto = () => {
+    const funcEliminarProducto = async () => {
+        funcLoader(true, "Eliminando producto...");
+
+        const entProductoSubmit = {
+            iIdProducto: productoSeleccionado.iIdProducto,
+            iIdUsuarioMod: usuarioSesion.iIdUsuario,
+            bActivo: false,
+            bBaja: true,
+        };
+
+        const response = await productoController.funcSaveProducto(entProductoSubmit);
+
+        if (response.Code === 0) {
+            funcAlert(response.Message, "success");
+            funcConsultarProductos();
+        } else {
+            funcAlert(response.Message);
+        }
         setModalEliminarProductoOpen(false);
+
+        funcLoader();
     };
+
+    const funcConsultarProductos = async () => {
+        funcLoader(true, "Consultando productos...");
+
+        const response = await productoController.funcGetProductos();
+
+        if (response.Code === 0) {
+            setListaProductos(response.Result);
+        } else {
+            funcAlert(response.Message);
+        }
+
+        funcLoader();
+    };
+
+    useEffect(() => {
+        funcConsultarProductos();
+    }, []);
 
     return (
         <Fragment>
@@ -154,6 +168,10 @@ const Productos = (props) => {
                 entProducto={productoParaModalForm}
                 open={modalFormProductoOpen}
                 setOpen={setModalFormProductoOpen}
+                funcConsultarProductos={funcConsultarProductos}
+                usuarioSesion={usuarioSesion}
+                funcLoader={funcLoader}
+                funcAlert={funcAlert}
             />
             <MeditocConfirmacion
                 title="Eliminar prodicto"

@@ -17,9 +17,10 @@ import { useState } from "react";
 import { useEffect } from "react";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import { listIconsMedicalProducts } from "../../../../configurations/iconProductConfig";
+import ProductoController from "../../../../controllers/ProductoController";
 
 const FormProducto = (props) => {
-    const { entProducto, open, setOpen } = props;
+    const { entProducto, open, setOpen, funcConsultarProductos, usuarioSesion, funcLoader, funcAlert } = props;
 
     const [formProducto, setFormProducto] = useState({
         rdTipoProducto: "1",
@@ -132,7 +133,7 @@ const FormProducto = (props) => {
         });
     };
 
-    const handleClickGuardarProducto = () => {
+    const handleClickGuardarProducto = async () => {
         let formProductoOKValidacion = {
             txtNombreProducto: true,
             txtNombreCorto: true,
@@ -167,7 +168,7 @@ const FormProducto = (props) => {
             bFormError = true;
         }
 
-        if (formProducto.txtMesesVigencia === "") {
+        if (formProducto.txtMesesVigencia === "" && formProducto.rdTipoProducto === "1") {
             formProductoOKValidacion.txtMesesVigencia = false;
             bFormError = true;
         }
@@ -186,6 +187,38 @@ const FormProducto = (props) => {
         if (bFormError) {
             return;
         }
+
+        const entProductoSubmit = {
+            iIdProducto: entProducto.iIdProducto,
+            iIdTipoProducto: parseInt(formProducto.rdTipoProducto),
+            sNombre: formProducto.txtNombreProducto,
+            sNombreCorto: formProducto.txtNombreCorto,
+            sDescripcion: formProducto.txtDescripcion,
+            fCosto: parseFloat(formProducto.txtCosto),
+            iMesVigencia: formProducto.rdTipoProducto === "2" ? 0 : parseInt(formProducto.txtMesesVigencia),
+            sIcon: formProducto.txtIcono,
+            bComercial: formProducto.chkComercial,
+            sPrefijoFolio: formProducto.txtPrefijoFolio,
+            iIdUsuarioMod: usuarioSesion.iIdUsuario,
+            bActivo: true,
+            bBaja: false,
+        };
+
+        funcLoader(true, "Guardando producto...");
+
+        const productoController = new ProductoController();
+
+        const response = await productoController.funcSaveProducto(entProductoSubmit);
+
+        if (response.Code === 0) {
+            funcAlert(response.Message, "success");
+            setOpen(false);
+            funcConsultarProductos();
+        } else {
+            funcAlert(response.Message);
+        }
+
+        funcLoader();
     };
 
     return (
@@ -196,34 +229,6 @@ const FormProducto = (props) => {
             setOpen={setOpen}
         >
             <Grid container spacing={3}>
-                <Grid item sm={6} xs={12}>
-                    <FormControl componet="fieldset">
-                        <FormLabel component="legend">Tipo de producto:</FormLabel>
-                        <RadioGroup
-                            row
-                            name="rdTipoProducto"
-                            value={formProducto.rdTipoProducto}
-                            onChange={handleChangeFormProducto}
-                        >
-                            <FormControlLabel value="1" control={<Radio />} label="Membresía" />
-                            <FormControlLabel value="2" control={<Radio />} label="Servicio" />
-                        </RadioGroup>
-                    </FormControl>
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <FormGroup row>
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    name="chkComercial"
-                                    checked={formProducto.chkComercial}
-                                    onChange={handleChangeFormProducto}
-                                />
-                            }
-                            label="Es producto comercial"
-                        />
-                    </FormGroup>
-                </Grid>
                 <Grid item sm={6} xs={12}>
                     <TextField
                         name="txtNombreProducto"
@@ -269,6 +274,56 @@ const FormProducto = (props) => {
                         helperText={!formProductoOK.txtDescripcion ? "La descripción del producto es requerido" : ""}
                     />
                 </Grid>
+
+                <Grid item sm={6} xs={12}>
+                    <FormControl componet="fieldset">
+                        <FormLabel component="legend">Tipo de producto:</FormLabel>
+                        <RadioGroup
+                            row
+                            name="rdTipoProducto"
+                            value={formProducto.rdTipoProducto}
+                            onChange={handleChangeFormProducto}
+                        >
+                            <FormControlLabel value="1" control={<Radio />} label="Membresía" />
+                            <FormControlLabel value="2" control={<Radio />} label="Servicio" />
+                        </RadioGroup>
+                    </FormControl>
+                </Grid>
+
+                <Grid item sm={6} xs={12}>
+                    {formProducto.rdTipoProducto === "1" ? (
+                        <TextField
+                            name="txtMesesVigencia"
+                            label="Meses de vigencia de folio:"
+                            fullWidth
+                            variant="outlined"
+                            placeholder="Ej. 6"
+                            value={formProducto.txtMesesVigencia}
+                            onChange={handleChangeFormProducto}
+                            required
+                            error={!formProductoOK.txtMesesVigencia}
+                            helperText={
+                                !formProductoOK.txtMesesVigencia
+                                    ? "Ingrese un número válido para los meses de vigencia"
+                                    : ""
+                            }
+                        />
+                    ) : null}
+                </Grid>
+                <Grid item sm={6} xs={12}>
+                    <FormGroup row>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    name="chkComercial"
+                                    checked={formProducto.chkComercial}
+                                    onChange={handleChangeFormProducto}
+                                />
+                            }
+                            label="Es producto comercial"
+                        />
+                    </FormGroup>
+                </Grid>
                 <Grid item sm={6} xs={12}>
                     <TextField
                         name="txtCosto"
@@ -281,24 +336,6 @@ const FormProducto = (props) => {
                         required
                         error={!formProductoOK.txtCosto}
                         helperText={!formProductoOK.txtCosto ? "Ingrese un monto válido para el producto" : ""}
-                    />
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <TextField
-                        name="txtMesesVigencia"
-                        label="Meses de vigencia de folio:"
-                        fullWidth
-                        variant="outlined"
-                        placeholder="Ej. 6"
-                        value={formProducto.txtMesesVigencia}
-                        onChange={handleChangeFormProducto}
-                        required
-                        error={!formProductoOK.txtMesesVigencia}
-                        helperText={
-                            !formProductoOK.txtMesesVigencia
-                                ? "Ingrese un número válido para los meses de vigencia"
-                                : ""
-                        }
                     />
                 </Grid>
                 <Grid item sm={6} xs={12}>

@@ -26,10 +26,7 @@ const DetalleProducto = (props) => {
                     <InfoField label="Descripción:" value={entProducto.sDescripcion} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <InfoField
-                        label="Costo:"
-                        value={"$" + entProducto.fCosto.toLocaleString("en-US", { minimumFractionDigits: 2 })}
-                    />
+                    <InfoField label="Costo:" value={entProducto.sCosto} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
                     <InfoField label="Meses de vigencia:" value={entProducto.iMesVigencia} />
@@ -38,7 +35,7 @@ const DetalleProducto = (props) => {
                     <InfoField label="Ícono:" value={entProducto.sIcon} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <InfoField label="Comercial:" value={entProducto.bComercial === true ? "Sí" : "No"} />
+                    <InfoField label="Comercial:" value={entProducto.sComercial} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
                     <InfoField label="Foliador:" value={entProducto.sPrefijoFolio} />

@@ -11,9 +11,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Producto
         public string sNombreCorto { get; set; }
         public string sDescripcion { get; set; }
         public double fCosto { get; set; }
+        public string sCosto { get; set; }
         public int iMesVigencia { get; set; }
         public string sIcon { get; set; }
         public bool bComercial { get; set; }
+        public string sComercial { get; set; }
         public string sPrefijoFolio { get; set; }
         public int iIdUsuarioMod { get; set; }
         public bool bActivo { get; set; }
