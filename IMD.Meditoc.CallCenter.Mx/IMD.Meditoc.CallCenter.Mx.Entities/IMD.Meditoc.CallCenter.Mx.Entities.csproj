@@ -64,8 +64,10 @@
     <Compile Include="CGU\EntSubModulo.cs" />
     <Compile Include="CGU\EntUsuario.cs" />
     <Compile Include="Empresa\EntEmpresa.cs" />
+    <Compile Include="EntConecktaPago.cs" />
     <Compile Include="EntMensualidad.cs" />
     <Compile Include="EntPoliticas.cs" />
+    <Compile Include="Folio\EntFolio.cs" />
     <Compile Include="Ordenes\EntCharge.cs" />
     <Compile Include="Ordenes\EntChargeDetail.cs" />
     <Compile Include="Ordenes\EntCreateCharge.cs" />
@@ -76,6 +78,7 @@
     <Compile Include="Ordenes\EntCreatePaymentMethod.cs" />
     <Compile Include="Ordenes\EntCreateUserAgent.cs" />
     <Compile Include="Ordenes\EntCustomerInfo.cs" />
+    <Compile Include="Ordenes\EntDetalleCompra.cs" />
     <Compile Include="Ordenes\EntLineItem.cs" />
     <Compile Include="Ordenes\EntLineItemDetail.cs" />
     <Compile Include="Ordenes\EntOrder.cs" />
@@ -83,6 +86,7 @@
     <Compile Include="Ordenes\EntWebHook.cs" />
     <Compile Include="Ordenes\EntWebHookData.cs" />
     <Compile Include="Ordenes\EntWebHookLog.cs" />
+    <Compile Include="Paciente\EntPaciente.cs" />
     <Compile Include="Producto\EntProducto.cs" />
     <Compile Include="Promociones\EntCreateCupon.cs" />
     <Compile Include="Promociones\EntCupon.cs" />

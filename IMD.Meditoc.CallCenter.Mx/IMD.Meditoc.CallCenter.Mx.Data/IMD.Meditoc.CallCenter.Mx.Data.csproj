@@ -64,6 +64,7 @@
     <Compile Include="CGU\DatSubModulo.cs" />
     <Compile Include="CGU\DatUsuario.cs" />
     <Compile Include="Empresa\DatEmpresa.cs" />
+    <Compile Include="Folio\DatFolio.cs" />
     <Compile Include="Ordenes\DatOrder.cs" />
     <Compile Include="Producto\DatProducto.cs" />
     <Compile Include="Promociones\DatPromociones.cs" />

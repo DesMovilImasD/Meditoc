@@ -16,8 +16,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Producto
         private Database database;
         IMDCommonData imdCommonData;
         string saveProducto;
-        string ObtenerProductos;
-        string ObtenerProductoById;
+        string ObtenerProductos;        
 
         public DatProducto()
         {
