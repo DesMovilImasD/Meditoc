@@ -135,11 +135,6 @@ const FormCupon = (props) => {
         });
     };
 
-    //Funcion para cerrar este modal
-    const handleClose = () => {
-        setOpen(false);
-    };
-
     const handleClickGuardarCupon = () => {
         let formCuponOKValidacion = {
             txtCodigoCupon: true,
@@ -330,7 +325,7 @@ const FormCupon = (props) => {
                         onChange={handleChangeFormCupon}
                     />
                 </Grid>
-                <MeditocModalBotones okMessage="Guardar" okFunc={handleClickGuardarCupon} cancelFunc={handleClose} />
+                <MeditocModalBotones okMessage="Guardar" okFunc={handleClickGuardarCupon} setOpen={setOpen} />
             </Grid>
         </MeditocModal>
     );

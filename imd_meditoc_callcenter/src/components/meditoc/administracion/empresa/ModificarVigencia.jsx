@@ -19,11 +19,6 @@ const ModificarVigencia = (props) => {
         setTxtFechaVigencia(date);
     };
 
-    //Funcion para cerrar este modal
-    const handleClose = () => {
-        setOpen(false);
-    };
-
     const handleClickModificarVigencia = () => {
         if (txtFechaVigencia === null || txtFechaVigencia === "") {
             setTxtFechaVigenciaOK(false);
@@ -50,7 +45,7 @@ const ModificarVigencia = (props) => {
                         helperText={!txtFechaVigenciaOK ? "Ingrese una fecha de vencimiento válida" : ""}
                     />
                 </Grid>
-                <MeditocModalBotones okFunc={handleClickModificarVigencia} cancelFunc={handleClose} />
+                <MeditocModalBotones okFunc={handleClickModificarVigencia} setOpen={setOpen} />
             </Grid>
         </MeditocModal>
     );

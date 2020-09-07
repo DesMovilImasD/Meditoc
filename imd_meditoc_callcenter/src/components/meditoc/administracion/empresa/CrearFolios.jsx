@@ -47,11 +47,6 @@ const CrearFolios = (props) => {
         setListaProductosEmpresa(listaProductosEmpresaCopia);
     };
 
-    //Funcion para cerrar este modal
-    const handleClose = () => {
-        setOpen(false);
-    };
-
     const handleClickCrearFolios = () => {
         if (listaProductosSeleccionados.length < 1) {
             funcAlert(
@@ -142,11 +137,7 @@ const CrearFolios = (props) => {
                         </Table>
                     </TableContainer>
                 </Grid>
-                <MeditocModalBotones
-                    okMessage="Generar folios"
-                    okFunc={handleClickCrearFolios}
-                    cancelFunc={handleClose}
-                />
+                <MeditocModalBotones okMessage="Generar folios" okFunc={handleClickCrearFolios} setOpen={setOpen} />
             </Grid>
         </MeditocModal>
     );

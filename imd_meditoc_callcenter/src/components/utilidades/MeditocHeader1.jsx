@@ -14,7 +14,7 @@ const SubmoduloBarra = (props) => {
         <Paper elevation={2}>
             <div className="bar-main">
                 <div className="flx-grw-1">{children}</div>
-                <div className="ops-nor bold size-30 align-self-center">{title}</div>
+                <div className="ops-nor bold size-25 align-self-center">{title}</div>
             </div>
         </Paper>
     );

@@ -2,14 +2,10 @@ import React from "react";
 import MeditocModal from "../../../utilidades/MeditocModal";
 import { Grid, Button } from "@material-ui/core";
 import InfoField from "../../../utilidades/InfoField";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 
 const DetalleProducto = (props) => {
     const { entProducto, open, setOpen } = props;
-
-    //Funcion para cerrar este modal
-    const handleClose = () => {
-        setOpen(false);
-    };
 
     return (
         <MeditocModal title="Detalle de producto" size="normal" open={open} setOpen={setOpen}>
@@ -47,11 +43,7 @@ const DetalleProducto = (props) => {
                 <Grid item sm={6} xs={12}>
                     <InfoField label="Foliador:" value={entProducto.sPrefijoFolio} />
                 </Grid>
-                {/* <Grid item xs={12}>
-                    <Button variant="contained" color="secondary" fullWidth onClick={handleClose}>
-                        ACPETAR
-                    </Button>
-                </Grid> */}
+                <MeditocModalBotones okMessage="Aceptar" setOpen={setOpen} hideCancel />
             </Grid>
         </MeditocModal>
     );

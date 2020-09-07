@@ -66,7 +66,7 @@ const MeditocTable = (props) => {
                                 <TextField
                                     variant="outlined"
                                     onChange={(e) => {
-                                        props.onFilterChanged(index, e.target.value);
+                                        props.onFilterChanged(columns.indexOf(column), e.target.value);
                                     }}
                                     style={{
                                         margin: 10,
@@ -189,6 +189,7 @@ const MeditocTable = (props) => {
                 tableLayout: "auto",
                 grouping: false,
                 columnResizable: true,
+                draggable: false,
             }}
         />
     );

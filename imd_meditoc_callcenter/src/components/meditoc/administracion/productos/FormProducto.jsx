@@ -188,11 +188,6 @@ const FormProducto = (props) => {
         }
     };
 
-    //Funcion para cerrar este modal
-    const handleClose = () => {
-        setOpen(false);
-    };
-
     return (
         <MeditocModal
             title={entProducto.iIdProducto === 0 ? "Nuevo producto" : "Editar producto"}
@@ -344,7 +339,7 @@ const FormProducto = (props) => {
                         helperText={!formProductoOK.txtPrefijoFolio ? "El prefijo para el folio es requerido" : ""}
                     />
                 </Grid>
-                <MeditocModalBotones okMessage="Guardar" okFunc={handleClickGuardarProducto} cancelFunc={handleClose} />
+                <MeditocModalBotones okMessage="Guardar" okFunc={handleClickGuardarProducto} setOpen={setOpen} />
             </Grid>
         </MeditocModal>
     );

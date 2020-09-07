@@ -56,11 +56,6 @@ const FormEmpresa = (props) => {
         });
     };
 
-    //Funcion para cerrar este modal
-    const handleClose = () => {
-        setOpen(false);
-    };
-
     const handleClickGuardarEmpresa = () => {
         let bFormError = false;
         let formEmpresaOKValidacion = {
@@ -129,7 +124,7 @@ const FormEmpresa = (props) => {
                         helperText={!formEmpresaOK.txtCorreoEmpresa ? "Ingrese un correo electrónico válido" : ""}
                     />
                 </Grid>
-                <MeditocModalBotones okMessage="Guardar" okFunc={handleClickGuardarEmpresa} cancelFunc={handleClose} />
+                <MeditocModalBotones okMessage="Guardar" okFunc={handleClickGuardarEmpresa} setOpen={setOpen} />
             </Grid>
         </MeditocModal>
     );

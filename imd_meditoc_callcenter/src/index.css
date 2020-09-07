@@ -39,6 +39,34 @@ body {
     height: 100%;
 }
 
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #bbb;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:active {
+    background-color: #999999;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #b3b3b3;
+    /* box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2); */
+}
+
+::-webkit-scrollbar-track {
+    background: #fff;
+}
+
+::-webkit-scrollbar-track:hover,
+::-webkit-scrollbar-track:active {
+    background: #fff;
+}
+
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
@@ -312,4 +340,8 @@ code {
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
     font-family: var(--font-icon-fa);
+}
+
+.react-swipeable-view-container {
+    transition: transform 0.35s cubic-bezier(0.15, 0.3, 0.25, 1) 0s !important;
 }

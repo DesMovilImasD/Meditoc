@@ -67,13 +67,10 @@ const FoliosEmpresa = (props) => {
     return (
         <MeditocFullModal open={open} setOpen={setOpen}>
             <div>
-                <MeditocHeader2 title={`Administrar folios de ${entEmpresa.sNombre} (${entEmpresa.sFolioEmpresa})`}>
-                    <Tooltip title="Cerrar ventana" arrow>
-                        <IconButton onClick={handleClose}>
-                            <CloseRoundedIcon className="color-0" />
-                        </IconButton>
-                    </Tooltip>
-                </MeditocHeader2>
+                <MeditocHeader2
+                    title={`Administrar folios de ${entEmpresa.sNombre} (${entEmpresa.sFolioEmpresa})`}
+                    setOpen={setOpen}
+                />
                 <MeditocBody>
                     <MeditocHeader3 title={`Folios generados: ${listaFoliosEmpresa.length}`}>
                         <Tooltip title="Crear folios a empresa" arrow>

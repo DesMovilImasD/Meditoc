@@ -11,6 +11,7 @@ import Productos from "./meditoc/administracion/productos/Productos";
 import Empresa from "./meditoc/administracion/empresa/Empresa";
 import Cupones from "./meditoc/administracion/cupones/Cupones";
 import MeditocPortada from "./MeditocPortada";
+import Colaboradores from "./meditoc/administracion/colaboradores/Colaboradores";
 
 /*************************************************************
  * Descripcion: Contiene las secciones y vistas de todo el portal de Meditoc
@@ -64,6 +65,9 @@ const ContentMain = (props) => {
                     </Route>
                     <Route exact path={urlSystem.administracion.cupones}>
                         <Cupones usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
+                    </Route>
+                    <Route exact path={urlSystem.administracion.colaboradores}>
+                        <Colaboradores usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
                     </Route>
                 </Switch>
             </div>

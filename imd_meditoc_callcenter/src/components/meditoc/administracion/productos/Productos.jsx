@@ -23,7 +23,7 @@ const Productos = (props) => {
     const { funcAlert } = props;
 
     const columns = [
-        { title: "ID", field: "iIdProducto", align: "center" },
+        { title: "ID", field: "iIdProducto", align: "center", hidden: true },
         { title: "Nombre", field: "sNombre", align: "center" },
         { title: "Tipo", field: "sTipoProducto", align: "center" },
         { title: "Costo", field: "fCosto", align: "center" },
