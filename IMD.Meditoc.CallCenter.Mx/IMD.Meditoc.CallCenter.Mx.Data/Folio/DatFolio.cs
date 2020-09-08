@@ -27,7 +27,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             string FsConnectionString = "cnxMeditoc";
             database = imdCommonData.DGetDatabase(FsConnectionString, "MeditocComercial", "Meditoc1");
 
-            saveFolio = "sva_meditoc_save_folo";
+            saveFolio = "sva_meditoc_save_folio";
 
         }
 
@@ -37,7 +37,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
             string metodo = nameof(this.DSaveFolio);
-            logger.Info(IMDSerialize.Serialize(67823458418170, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458418170, $"Inicia {metodo}(EntFolio entFolio)", entFolio));
 
             try
             {
@@ -46,7 +46,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
                 {
                     database.AddInParameter(dbCommand, "piIdEmpresa", DbType.Int32, entFolio.iIdEmpresa);
                     database.AddInParameter(dbCommand, "piIdProducto", DbType.Int32, entFolio.iIdProducto);
-                    database.AddInParameter(dbCommand, "piIdConsecutivo", DbType.Int32, entFolio.iConsecutivo);
+                    database.AddInParameter(dbCommand, "piConsecutivo", DbType.Int32, entFolio.iConsecutivo);
                     database.AddInParameter(dbCommand, "piIdOrigen", DbType.Int32, entFolio.iIdOrigen);
                     database.AddInParameter(dbCommand, "psPassword", DbType.String, entFolio.sPassword);
                     database.AddInParameter(dbCommand, "pdtFechaVencimiento", DbType.DateTime, entFolio.dtFechaVencimiento);
@@ -61,7 +61,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
                 response.Code = 67823458418947;
                 response.Message = "Ocurrió un error inesperado";
 
-                logger.Error(IMDSerialize.Serialize(67823458418947, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458418947, $"Error en {metodo}(EntFolio entFolio): {ex.Message}", entFolio, ex, response));
             }
             return response;
         }
