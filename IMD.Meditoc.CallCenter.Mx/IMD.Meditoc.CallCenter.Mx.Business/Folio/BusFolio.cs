@@ -373,7 +373,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                         lstArticulosDetalle.Add(clsDetalleCompraArticulo);
                     }
-                    entFolio.iConsecutivo--;
                 }
 
                 oDetalleFolioempresa.Result.lstArticulos = lstArticulosDetalle;
@@ -386,6 +385,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 }
 
                 response.Code = 0;
+                response.Message = "Los folios fueron enviados al siguiente correo " + oDetalleFolioempresa.Result.entEmpresa.sCorreo;
                 response.Result = true;
             }
             catch (Exception ex)
@@ -566,8 +566,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 string asunto = $"Meditoc - Detalle de folios";
                 string para = detalleFolio.entEmpresa.sCorreo;
 
-                //ARTICULOS
-                //string htmlArticulos = string.Empty;
+                //ARTICULOS                
                 List<EntDetalleCompraArticulo> articulosMostrar = detalleFolio.
                     lstArticulos.
                     GroupBy(x => x.iIdProducto).
@@ -579,40 +578,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                         nCantidad = x.Count(),
                         dtFechaVencimiento = x.Select(y => y.dtFechaVencimiento).First()
                     }).ToList();
-
-                //foreach (EntDetalleCompraArticulo item in articulosMostrar)
-                //{
-                //    string plantillaArticulo = " <tr class=\"product-detail font-table normal small center\"><td>item.sDescripcion</td><td>item.nCantidad</td><td>item.nPrecio</td></tr>";
-                //    plantillaArticulo = plantillaArticulo.Replace("item.sDescripcion", item.sDescripcion);
-                //    plantillaArticulo = plantillaArticulo.Replace("item.nCantidad", item.nCantidad.ToString());
-                //    plantillaArticulo = plantillaArticulo.Replace("item.nPrecio", (item.nPrecio * item.nCantidad).ToString("C", CultureInfo.CreateSpecificCulture("en-US")));
-
-                //    htmlArticulos += plantillaArticulo;
-                //}
-
-                //DESCUENTOS
-                //string htmlDescuento = string.Empty;
-
-                //if (!string.IsNullOrEmpty(oDetalleCompra.sCodigoCupon))
-                //{
-                //    string plantillaDescuento = "<tr class=\"font-table bold small center\"><td>Código de descuento</td><td>oDetalleCompra.codigoDescuento</td><td>oDetalleCompra.montoDescuento</td></tr>";
-
-                //    plantillaDescuento = plantillaDescuento.Replace("oDetalleCompra.codigoDescuento", oDetalleCompra.sCodigoCupon);
-                //    plantillaDescuento = plantillaDescuento.Replace("oDetalleCompra.montoDescuento", $"-{oDetalleCompra.nTotalDescuento.ToString("C", CultureInfo.CreateSpecificCulture("en-US"))}");
-                //    htmlDescuento = plantillaDescuento;
-                //}
-
-                //IVA
-                //double iva = Convert.ToDouble(ConfigurationManager.AppSettings["nIVA"]);
-                //string htmlIVA = string.Empty;
-                //if (iva > 0 && oDetalleCompra.bAplicaIVA)
-                //{
-                //    string plantillaIVA = "<tr class=\"font-table bold small center\"><td>Total sin IVA</td><td></td><td>oDetalleCompra.montoSinIVA</td></tr><tr class=\"font-table bold small center\"><td>oDetalleCompra.IVA</td><td></td><td>oDetalleCompra.montoIVA</td></tr>";
-                //    plantillaIVA = plantillaIVA.Replace("oDetalleCompra.IVA", $"IVA ({(iva * 100)}%)");
-                //    plantillaIVA = plantillaIVA.Replace("oDetalleCompra.montoIVA", $"+{oDetalleCompra.nTotalIVA.ToString("C", CultureInfo.CreateSpecificCulture("en-US"))}");
-                //    plantillaIVA = plantillaIVA.Replace("oDetalleCompra.montoSinIVA", $"{(oDetalleCompra.nTotalPagado - oDetalleCompra.nTotalIVA).ToString("C", CultureInfo.CreateSpecificCulture("en-US"))}");
-                //    htmlIVA = plantillaIVA;
-                //}
 
                 //FOLIOS
                 string htmlFolios = string.Empty;
@@ -665,14 +630,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 plantillaBody = plantillaBody.Replace("sLogoMeditoc", ConfigurationManager.AppSettings["sLogoMeditoc"]);
                 plantillaBody = plantillaBody.Replace("oDetalleCompra.sNombre", detalleFolio.entEmpresa.sNombre);
-                //plantillaBody = plantillaBody.Replace("oDetalleCompra.sOrden", oDetalleCompra.sOrden);
                 plantillaBody = plantillaBody.Replace("oDetalleCompra.sFechaCompra", DateTime.Now.ToString("dd/MM/yyyy"));
-                //plantillaBody = plantillaBody.Replace("oDetalleCompra.articulo", htmlArticulos);
-                //plantillaBody = plantillaBody.Replace("oDetalleCompra.montoTotal", oDetalleCompra.nTotal.ToString("C", CultureInfo.CreateSpecificCulture("en-US")));
-                //plantillaBody = plantillaBody.Replace("oDetalleCompra.descuento", htmlDescuento);
-                //plantillaBody = plantillaBody.Replace("oDetalleCompra.iva", htmlIVA);
-                //plantillaBody = plantillaBody.Replace("oDetalleCompra.cantidadTotal", detalleFolio.lstArticulos.Sum(x => x.nCantidad).ToString());
-                //plantillaBody = plantillaBody.Replace("oDetalleCompra.MontoPagado", oDetalleCompra.nTotalPagado.ToString("C", CultureInfo.CreateSpecificCulture("en-US")));
                 plantillaBody = plantillaBody.Replace("oDetalleCompra.folios", htmlFolios);
                 plantillaBody = plantillaBody.Replace("sLinkApple", ConfigurationManager.AppSettings["sLinkApple"]);
                 plantillaBody = plantillaBody.Replace("sLogoApple", ConfigurationManager.AppSettings["sLogoApple"]);

@@ -56,7 +56,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             try
             {
                 BusFolio busFolio = new BusFolio();
-                busFolio.BNuevoFolioEmpresa(entFolioxEmpresa);
+                response = busFolio.BNuevoFolioEmpresa(entFolioxEmpresa);
 
             }
             catch (Exception ex)
