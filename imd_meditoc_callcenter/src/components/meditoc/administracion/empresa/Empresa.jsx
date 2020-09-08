@@ -12,16 +12,23 @@ import MeditocBody from "../../../utilidades/MeditocBody";
 import MeditocTable from "../../../utilidades/MeditocTable";
 import FormEmpresa from "./FormEmpresa";
 import FoliosEmpresa from "./FoliosEmpresa";
+import EmpresaController from "../../../../controllers/EmpresaController";
+import { useEffect } from "react";
 
 const Empresa = (props) => {
-    const { funcAlert } = props;
+    const { usuarioSesion, funcLoader, funcAlert } = props;
 
-    const columns = [
-        { title: "ID", field: "iIdEmpresa", align: "center" },
+    const empresaController = new EmpresaController();
+
+    let columns = [
+        { title: "ID", field: "iIdEmpresa", align: "center", hidden: true },
         { title: "Nombre", field: "sNombre", align: "center" },
         { title: "Folio", field: "sFolioEmpresa", align: "center" },
         { title: "Correo", field: "sCorreo", align: "center" },
+        { title: "Fecha", field: "sFechaCreacion", align: "center" },
     ];
+
+    const [columnas, setColumnas] = useState(columns);
 
     const empresaEntidadVacia = {
         iIdEmpresa: 0,
@@ -30,14 +37,7 @@ const Empresa = (props) => {
         sCorreo: "",
     };
 
-    const data = [
-        { iIdEmpresa: 1, sNombre: "Empresa-A", sFolioEmpresa: "EM-0001", sCorreo: "empresaa@gmail.com" },
-        { iIdEmpresa: 2, sNombre: "Empresa-B", sFolioEmpresa: "EM-0002", sCorreo: "empresab@gmail.com" },
-        { iIdEmpresa: 3, sNombre: "Empresa-C", sFolioEmpresa: "EM-0003", sCorreo: "empresac@gmail.com" },
-        { iIdEmpresa: 4, sNombre: "Empresa-D", sFolioEmpresa: "EM-0004", sCorreo: "empresad@gmail.com" },
-    ];
-
-    const [listaEmpresas, setListaEmpresas] = useState(data);
+    const [listaEmpresas, setListaEmpresas] = useState([]);
 
     const [empresaSeleccionada, setEmpresaSeleccionada] = useState(empresaEntidadVacia);
     const [empresaParaModalForm, setEmpresaParaModalForm] = useState(empresaEntidadVacia);
@@ -67,6 +67,24 @@ const Empresa = (props) => {
         setEmpresaParaModalForm(empresaSeleccionada);
         setModalFoliosEmpresaOpen(true);
     };
+
+    const funcGetEmpresas = async () => {
+        funcLoader(true, "Consultando empresas...");
+
+        const response = await empresaController.funcGetEmpresas();
+
+        if (response.Code === 0) {
+            setListaEmpresas(response.Result);
+        } else {
+            funcAlert(response.Message);
+        }
+
+        funcLoader();
+    };
+
+    useEffect(() => {
+        funcGetEmpresas();
+    }, []);
 
     return (
         <Fragment>
@@ -105,6 +123,10 @@ const Empresa = (props) => {
                 entEmpresa={empresaParaModalForm}
                 open={modalFormEmpresaOpen}
                 setOpen={setModalFormEmpresaOpen}
+                funcGetEmpresas={funcGetEmpresas}
+                usuarioSesion={usuarioSesion}
+                funcLoader={funcLoader}
+                funcAlert={funcAlert}
             />
             <FoliosEmpresa
                 entEmpresa={empresaParaModalForm}

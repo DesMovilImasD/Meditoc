@@ -125,13 +125,16 @@ const Content = (props) => {
                                     </span>
                                 </p>
                                 <span>
-                                    <a href="https://apps.apple.com/mx/app/meditoc-360/id1521078394">
-                                        <img src={logoappleAvalible} alt="" width="150px" height="85px" />
+                                    <a href="https://apps.apple.com/mx/app/meditoc-360/id1521078394" target="_blank">
+                                        <img src={logoappleAvalible} alt="app-store" />
                                     </a>
                                 </span>
-                                <span>
-                                    <a href="https://play.google.com/store/apps/details?id=com.meditoc.callCenter.comercial">
-                                        <img src={logoplayAvalible} alt="" width="150px" height="85px" />
+                                <span style={{ marginLeft: 10 }}>
+                                    <a
+                                        href="https://play.google.com/store/apps/details?id=com.meditoc.callCenter.comercial"
+                                        target="_blank"
+                                    >
+                                        <img src={logoplayAvalible} alt="play-store" />
                                     </a>
                                 </span>
                             </div>

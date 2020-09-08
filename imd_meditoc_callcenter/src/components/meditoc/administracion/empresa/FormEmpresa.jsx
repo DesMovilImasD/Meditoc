@@ -5,9 +5,10 @@ import { useState } from "react";
 import { useEffect } from "react";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import { rxCorreo } from "../../../../configurations/regexConfig";
+import EmpresaController from "../../../../controllers/EmpresaController";
 
 const FormEmpresa = (props) => {
-    const { entEmpresa, open, setOpen } = props;
+    const { entEmpresa, open, setOpen, funcGetEmpresas, usuarioSesion, funcLoader, funcAlert } = props;
 
     const [formEmpresa, setFormEmpresa] = useState({
         txtFolioEmpresa: "",
@@ -56,7 +57,7 @@ const FormEmpresa = (props) => {
         });
     };
 
-    const handleClickGuardarEmpresa = () => {
+    const handleClickGuardarEmpresa = async () => {
         let bFormError = false;
         let formEmpresaOKValidacion = {
             txtFolioEmpresa: true,
@@ -75,6 +76,30 @@ const FormEmpresa = (props) => {
         if (bFormError) {
             return;
         }
+
+        const entEmpresaSubmit = {
+            iIdEmpresa: entEmpresa.iIdEmpresa,
+            sNombre: formEmpresa.txtNombreEmpresa,
+            sCorreo: formEmpresa.txtCorreoEmpresa,
+            iIdUsuarioMod: usuarioSesion.iIdUsuario,
+            bActivo: true,
+            bBaja: false,
+        };
+
+        funcLoader(true, "Guardando empresa...");
+
+        const empresaController = new EmpresaController();
+        const response = await empresaController.funcSaveEmpresa(entEmpresaSubmit);
+
+        if (response.Code === 0) {
+            funcAlert(response.Message, "success");
+            setOpen(false);
+            funcGetEmpresas();
+        } else {
+            funcAlert(response.Message);
+        }
+
+        funcLoader();
     };
 
     return (

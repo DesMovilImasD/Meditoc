@@ -12,9 +12,10 @@ import {
     Divider,
 } from "@material-ui/core";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
+import PromocionesController from "../../../../controllers/PromocionesController";
 
 const FormCupon = (props) => {
-    const { open, setOpen } = props;
+    const { open, setOpen, usuarioSesion, funcLoader, funcAlert } = props;
 
     const personalizado = "personalizado";
     const aleatorio = "aleatorio";
@@ -135,7 +136,7 @@ const FormCupon = (props) => {
         });
     };
 
-    const handleClickGuardarCupon = () => {
+    const handleClickGuardarCupon = async () => {
         let formCuponOKValidacion = {
             txtCodigoCupon: true,
             txtLongitudCupon: true,
@@ -193,6 +194,32 @@ const FormCupon = (props) => {
         if (bFormError) {
             return;
         }
+
+        const entCreateCupon = {
+            fiIdCuponCategoria: parseInt(formCupon.txtTipoCupon),
+            fsDescripcion: formCupon.txtDescripcion,
+            fsCodigo: rdCuponCodigoValue === personalizado ? formCupon.txtCodigoCupon : null,
+            fiLongitudCodigo: rdCuponCodigoValue === aleatorio ? parseInt(formCupon.txtLongitudCupon) : null,
+            fnMontoDescuento: formCupon.txtTipoCupon === "1" ? parseFloat(formCupon.txtMontoDescuento) : null,
+            fnPorcentajeDescuento: formCupon.txtTipoCupon === "2" ? parseFloat(formCupon.txtPorcentajeDescuento) : null,
+            fiTotalLanzamiento: parseInt(formCupon.txtTotalCupones),
+            fiDiasActivo: formCupon.txtDiasActivos === "" ? null : parseInt(formCupon.txtDiasActivos),
+        };
+
+        funcLoader(true, "Generando cupón...");
+
+        const promocionesController = new PromocionesController();
+
+        const response = await promocionesController.funcCrearCupon(entCreateCupon, usuarioSesion.iIdUsuario);
+
+        if (response.Code === 0) {
+            funcAlert(response.Message, "success");
+            setOpen(false);
+        } else {
+            funcAlert(response.Message);
+        }
+
+        funcLoader();
     };
 
     return (

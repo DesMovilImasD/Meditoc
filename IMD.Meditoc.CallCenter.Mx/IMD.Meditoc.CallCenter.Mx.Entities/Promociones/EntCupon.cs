@@ -13,11 +13,14 @@ namespace IMD.Admin.Conekta.Entities
         public string fsDescripcionCategoria { get; set; }
         public string fsCodigo { get; set; }
         public double? fnMontoDescuento { get; set; }
+        public string sMontoDescuento { get; set; }
         public double? fnPorcentajeDescuento { get; set; }
+        public string sPorcentajeDescuento { get; set; }
         public int? fiMesBono { get; set; }
         public int fiTotalLanzamiento { get; set; }
         public int fiTotalCanjeado { get; set; }
         public DateTime? fdtFechaVencimiento { get; set; }
+        public string sFechaVencimiento { get; set; }
         public bool fbActivo { get; set; }
         public bool fbBaja { get; set; }
     }

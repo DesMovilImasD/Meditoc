@@ -9,47 +9,29 @@ import { useState } from "react";
 import MeditocTable from "../../../utilidades/MeditocTable";
 import FormCupon from "./FormCupon";
 import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
+import PromocionesController from "../../../../controllers/PromocionesController";
+import { useEffect } from "react";
 
 const Cupones = (props) => {
-    const { funcAlert } = props;
+    const { usuarioSesion, funcLoader, funcAlert } = props;
+
+    const promocionesController = new PromocionesController();
 
     const columns = [
-        { title: "ID", field: "iIdCupon", align: "center" },
-        { title: "Código", field: "sCodigo", align: "center" },
-        { title: "Monto descuento", field: "nMontoDescuento", align: "center" },
-        { title: "Porcentaje descuento", field: "nPorcentajeDescuento", align: "center" },
-        { title: "Total", field: "iTotalLanzamiento", align: "center" },
-        { title: "Canjeado", field: "iTotalCanjeado", align: "center" },
-        { title: "Vencimiento", field: "dtFechaVencimiento", align: "center" },
+        { title: "ID", field: "fiIdCupon", align: "center", hidden: true },
+        { title: "Código", field: "fsCodigo", align: "center" },
+        { title: "Monto descuento", field: "sMontoDescuento", align: "center" },
+        { title: "Porcentaje descuento", field: "sPorcentajeDescuento", align: "center" },
+        { title: "Total", field: "fiTotalLanzamiento", align: "center" },
+        { title: "Canjeado", field: "fiTotalCanjeado", align: "center" },
+        { title: "Vencimiento", field: "sFechaVencimiento", align: "center" },
     ];
 
     const cuponEntidadVacia = {
-        iIdCupon: 0,
-        iIdCuponCategoria: 0,
-        sDescripcion: "",
-        sCodigo: "",
-        nMontoDescuento: 0,
-        nPorcentajeDescuento: 0,
-        iTotalLanzamiento: 0,
-        iTotalCanjeado: 0,
-        dtFechaVencimiento: "",
+        fiIdCupon: 0,
     };
 
-    const data = [
-        {
-            iIdCupon: 1,
-            iIdCuponCategoria: 1,
-            sDescripcion: "a",
-            sCodigo: "a",
-            nMontoDescuento: 1,
-            nPorcentajeDescuento: 1,
-            iTotalLanzamiento: 1,
-            iTotalCanjeado: 1,
-            dtFechaVencimiento: "",
-        },
-    ];
-
-    const [listaCupones, setListaCupones] = useState(data);
+    const [listaCupones, setListaCupones] = useState([]);
     const [cuponSeleccionado, setCuponSeleccionado] = useState(cuponEntidadVacia);
 
     const [modalFormCuponOpen, setModalFormCuponOpen] = useState(false);
@@ -66,6 +48,24 @@ const Cupones = (props) => {
         }
         setModalEliminarCuponOpen(true);
     };
+
+    const funcObtenerCupones = async () => {
+        funcLoader(true, "Consultando cupones");
+
+        const response = await promocionesController.funcObtenerCupones();
+
+        if (response.Code === 0) {
+            setListaCupones(response.Result);
+        } else {
+            funcAlert(response.Message);
+        }
+
+        funcLoader();
+    };
+
+    useEffect(() => {
+        funcObtenerCupones();
+    }, []);
 
     return (
         <Fragment>
@@ -92,16 +92,22 @@ const Cupones = (props) => {
                     data={listaCupones}
                     rowSelected={cuponSeleccionado}
                     setRowSelected={setCuponSeleccionado}
-                    mainField="iIdCupon"
+                    mainField="fiIdCupon"
                 />
             </MeditocBody>
-            <FormCupon open={modalFormCuponOpen} setOpen={setModalFormCuponOpen} />
+            <FormCupon
+                open={modalFormCuponOpen}
+                setOpen={setModalFormCuponOpen}
+                usuarioSesion={usuarioSesion}
+                funcLoader={funcLoader}
+                funcAlert={funcAlert}
+            />
             <MeditocConfirmacion
                 title="Eliminar cupón"
                 open={modalEliminarCuponOpen}
                 setOpen={setModalEliminarCuponOpen}
             >
-                ¿Desea eliminar el cupón con código {cuponSeleccionado.sCodigo}?
+                ¿Desea eliminar el cupón con código {cuponSeleccionado.fsCodigo}?
             </MeditocConfirmacion>
         </Fragment>
     );

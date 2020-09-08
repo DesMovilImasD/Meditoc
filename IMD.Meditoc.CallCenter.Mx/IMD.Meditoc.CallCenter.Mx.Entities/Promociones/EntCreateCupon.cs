@@ -15,6 +15,6 @@ namespace IMD.Admin.Conekta.Entities
         public double? fnPorcentajeDescuento { get; set; }
         public int? fiMesBono { get; set; }
         public int fiTotalLanzamiento { get; set; }
-        public int fiDiasActivo { get; set; }
+        public int? fiDiasActivo { get; set; }
     }
 }

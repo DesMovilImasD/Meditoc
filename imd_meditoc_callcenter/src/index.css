@@ -345,3 +345,8 @@ code {
 .react-swipeable-view-container {
     transition: transform 0.35s cubic-bezier(0.15, 0.3, 0.25, 1) 0s !important;
 }
+
+/* .MTableToolbar-searchField-15 {
+    width: 100% !important;
+    padding-left: 0px;
+} */

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import MaterialTable, { MTableBodyRow } from "material-table";
 import tableIcons from "../../configurations/dataTableIconsConfig";
 import theme from "../../configurations/themeConfig";
-import { TextField } from "@material-ui/core";
+import { TextField, useForkRef, Paper } from "@material-ui/core";
+import { useState } from "react";
 
 /*************************************************************
  * Descripcion: Contiene la estructura de una tabla para desplegar datos en las secciones del portal que lo requiera
@@ -48,7 +49,13 @@ const MeditocTable = (props) => {
             data={data}
             icons={tableIcons}
             title=""
-            onRowClick={mtSelection === false ? (e, rowData) => mtSetRowSelected(rowData) : () => {}}
+            onRowClick={
+                mtSelection === false
+                    ? (e, rowData) => {
+                          mtSetRowSelected(rowData);
+                      }
+                    : () => {}
+            }
             onSelectionChange={
                 mtSelection === true
                     ? (rows) => {
@@ -56,33 +63,49 @@ const MeditocTable = (props) => {
                       }
                     : () => {}
             }
+            // onFilterChange={(filter) => {
+            //     if (filter.length > 0) {
+            //         filter.forEach((f) => {
+            //             console.log(f);
+            //             // let columnsCopy = [...columns];
+            //             // columnsCopy[
+            //             //     columnsCopy.indexOf(columnsCopy.find((c) => (c.field = f.column.field)))
+            //             // ].defaultFilter = f.value;
+
+            //             let columnsCopy = [...columns];
+            //             columnsCopy[f.column.tableData.id].defaultFilter = f.value;
+            //             setColumnas(columnsCopy);
+            //         });
+            //     }
+            // }}
             components={{
-                Container: (props) => <div {...props}></div>,
-                FilterRow: (props) => (
-                    <tr>
-                        {mtSelection === true ? <td></td> : null}
-                        {props.columns.map((column, index) => (
-                            <td key={index}>
-                                <TextField
-                                    variant="outlined"
-                                    onChange={(e) => {
-                                        props.onFilterChanged(columns.indexOf(column), e.target.value);
-                                    }}
-                                    style={{
-                                        margin: 10,
-                                        width: "90%",
-                                    }}
-                                    placeholder={`Buscar en ${column.title}...`}
-                                    inputProps={{
-                                        style: {
-                                            textAlign: column.align,
-                                        },
-                                    }}
-                                />
-                            </td>
-                        ))}
-                    </tr>
-                ),
+                //Container: (props) => <Paper {...props} elevation={0} />,
+                //Container: (props) => <div {...props}></div>,
+                // FilterRow: (props) => (
+                //     <tr>
+                //         {mtSelection === true ? <td></td> : null}
+                //         {props.columns.map((column, index) => (
+                //             <td key={index}>
+                //                 <TextField
+                //                     variant="outlined"
+                //                     onChange={(e) => {
+                //                         props.onFilterChanged(columns.indexOf(column), e.target.value);
+                //                     }}
+                //                     style={{
+                //                         margin: 10,
+                //                         width: "90%",
+                //                     }}
+                //                     placeholder={`Buscar en ${column.title}...`}
+                //                     inputProps={{
+                //                         style: {
+                //                             textAlign: column.align,
+                //                         },
+                //                     }}
+                //                 />
+                //             </td>
+                //         ))}
+                //     </tr>
+                // ),
                 Row: (props) => (
                     <MTableBodyRow
                         {...props}
@@ -155,10 +178,10 @@ const MeditocTable = (props) => {
                         ? (rowData) => ({
                               //linear-gradient(0deg, rgb(17 92 138 / 76%) 0%, rgba(18,182,203,1) 100%); op.1
                               //linear-gradient(239deg, rgba(17,92,138,1) 0%, rgba(18,182,203,1) 100%); op.2
-                              background:
-                                  rowData[mainField] === mtRowSelected[mainField]
-                                      ? `linear-gradient(0deg, rgba(17,92,138,1) 0%, rgba(18,182,203,1) 100%)`
-                                      : "#fff",
+
+                              //linear-gradient(0deg, rgba(17,92,138,1) 0%, rgba(18,182,203,1) 100%)
+
+                              background: rowData[mainField] === mtRowSelected[mainField] ? `#bbb` : "#fff",
                               color:
                                   rowData[mainField] === mtRowSelected[mainField]
                                       ? "#fff"
@@ -166,22 +189,20 @@ const MeditocTable = (props) => {
                           })
                         : null,
                 selection: mtSelection,
-
-                addRowPosition: "first",
-                search: false,
-                searchFieldVariant: "outlined",
-                searchFieldAlignment: "left",
-                searchFieldStyle: { maxWidth: "500px" },
+                search: true,
+                // searchFieldVariant: "outlined",
+                // searchFieldAlignment: "left",
+                //searchFieldStyle: { width: "80%" },
                 searchAutoFocus: true,
                 columnsButton: true,
                 paginationType: "normal",
-                pageSizeOptions: [10, 20, 50, 100],
-                pageSize: 10,
-                filtering: true,
+                pageSizeOptions: [25, 50, 100],
+                pageSize: 25,
+                filtering: false,
                 filterCellStyle: { textAlign: "center" },
                 hideFilterIcons: true,
                 emptyRowsWhenPaging: false,
-                padding: "dense",
+                padding: "default",
                 headerStyle: { color: theme.palette.primary.main, fontSize: 18 },
                 sorting: true,
                 showTextRowsSelected: false,

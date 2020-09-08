@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import MeditocModal from "../../../utilidades/MeditocModal";
-import { Grid, TextField, MenuItem, IconButton, Tooltip, Divider } from "@material-ui/core";
+import { Grid, TextField, MenuItem, IconButton, Tooltip, Divider, Typography } from "@material-ui/core";
 import { useState } from "react";
 import MeditocTabHeader from "../../../utilidades/MeditocTabHeader";
 import MeditocTabBody from "../../../utilidades/MeditocTabBody";
@@ -384,6 +384,11 @@ const FormColaborador = (props) => {
                     <MeditocTabBody index={tabIndex} setIndex={setTabIndex}>
                         <MeditocTabPanel id={0} index={tabIndex}>
                             <Grid container spacing={3}>
+                                <Grid item xs={12}>
+                                    <Typography variant="caption">
+                                        Los datos ingresados seran mostrados en el directorio de Médicos de Meditoc.
+                                    </Typography>
+                                </Grid>
                                 <Grid item xs={12}>
                                     <TextField
                                         name="txtNombreDirectorio"

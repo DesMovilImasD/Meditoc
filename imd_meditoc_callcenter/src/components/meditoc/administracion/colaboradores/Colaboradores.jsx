@@ -21,7 +21,7 @@ const Colaboradores = (props) => {
     };
     return (
         <Fragment>
-            <MeditocHeader1 title="COLABORADES">
+            <MeditocHeader1 title="COLABORADORES">
                 <Tooltip title="Nuevo colaborador" arrow>
                     <IconButton onClick={handleClickNuevoColaborador}>
                         <AddRoundedIcon className="color-0" />

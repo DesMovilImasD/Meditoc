@@ -153,7 +153,7 @@ namespace IMD.Admin.Conekta.Business
                 long amount = entCreateOrder.charges[0].amount;
                 bool aplicaPromocion = false;
 
-                BusPromociones busPromociones = new BusPromociones();
+                BusPromociones busPromociones = new BusPromociones("hdiu4soi3IHD334F", "SKlru3nc");
                 if (entCreateOrder.coupon != null)
                 {
                     IMDResponse<EntCupon> respuestaValidarPromocion = busPromociones.BValidarCupon(piIdCupon: entCreateOrder.coupon);
