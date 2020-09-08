@@ -22,8 +22,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities
         public List<line_items> lstLineItems;
 
         [JsonProperty(PropertyName = "charges")]
-        public List<charges> lstCharges;
-        public string sPrefijoFolio { get; set; }
+        public List<charges> lstCharges;        
     }
 
     public class payment_method

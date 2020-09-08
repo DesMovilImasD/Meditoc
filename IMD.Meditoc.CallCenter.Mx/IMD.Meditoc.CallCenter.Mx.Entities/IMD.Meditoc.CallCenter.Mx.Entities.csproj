@@ -64,11 +64,13 @@
     <Compile Include="CGU\EntSubModulo.cs" />
     <Compile Include="CGU\EntUsuario.cs" />
     <Compile Include="Empresa\EntEmpresa.cs" />
+    <Compile Include="Empresa\EntEmpresaDetalleFolio.cs" />
     <Compile Include="EntConecktaPago.cs" />
     <Compile Include="Correo\EntCorreo.cs" />
     <Compile Include="EntMensualidad.cs" />
     <Compile Include="EntPoliticas.cs" />
     <Compile Include="Folio\EntFolio.cs" />
+    <Compile Include="Folio\EntFolioxEmpresa.cs" />
     <Compile Include="Ordenes\EntCharge.cs" />
     <Compile Include="Ordenes\EntChargeDetail.cs" />
     <Compile Include="Ordenes\EntCreateCharge.cs" />
