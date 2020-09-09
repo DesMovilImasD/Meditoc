@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusAgent.cs" />
+    <Compile Include="BusGeneratePassword.cs" />
     <Compile Include="BusOrder.cs" />
     <Compile Include="BusPoliticas.cs" />
     <Compile Include="BusPromociones.cs" />
@@ -65,7 +66,10 @@
     <Compile Include="CGU\BusPermiso.cs" />
     <Compile Include="CGU\BusSubModulo.cs" />
     <Compile Include="CGU\BusUsuario.cs" />
+    <Compile Include="Correo\BusCorreo.cs" />
     <Compile Include="Empresa\BusEmpresa.cs" />
+    <Compile Include="Folio\BusFolio.cs" />
+    <Compile Include="Paciente\BusPaciente.cs" />
     <Compile Include="Producto\BusProducto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ServOrder.cs" />
