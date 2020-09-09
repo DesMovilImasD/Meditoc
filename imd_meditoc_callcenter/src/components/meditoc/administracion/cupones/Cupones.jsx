@@ -24,6 +24,7 @@ const Cupones = (props) => {
         { title: "Porcentaje descuento", field: "sPorcentajeDescuento", align: "center" },
         { title: "Total", field: "fiTotalLanzamiento", align: "center" },
         { title: "Canjeado", field: "fiTotalCanjeado", align: "center" },
+        { title: "Creado", field: "sFechaCreacion", align: "center" },
         { title: "Vencimiento", field: "sFechaVencimiento", align: "center" },
     ];
 
@@ -42,7 +43,7 @@ const Cupones = (props) => {
     };
 
     const handleClickEliminarCupon = () => {
-        if (cuponSeleccionado.iIdCupon === 0) {
+        if (cuponSeleccionado.fiIdCupon === 0) {
             funcAlert("Seleccione un cupón para continuar");
             return;
         }
@@ -56,6 +57,25 @@ const Cupones = (props) => {
 
         if (response.Code === 0) {
             setListaCupones(response.Result);
+        } else {
+            funcAlert(response.Message);
+        }
+
+        funcLoader();
+    };
+
+    const funcDesactivarCupon = async () => {
+        funcLoader(true, "Desactivando cupón..");
+
+        const response = await promocionesController.funcDesactivarCupon(
+            cuponSeleccionado.fiIdCupon,
+            usuarioSesion.iIdUsuario
+        );
+
+        if (response.Code === 0) {
+            funcAlert(response.Message, "success");
+            setModalEliminarCuponOpen(false);
+            await funcObtenerCupones();
         } else {
             funcAlert(response.Message);
         }
@@ -98,6 +118,7 @@ const Cupones = (props) => {
             <FormCupon
                 open={modalFormCuponOpen}
                 setOpen={setModalFormCuponOpen}
+                funcObtenerCupones={funcObtenerCupones}
                 usuarioSesion={usuarioSesion}
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
@@ -106,6 +127,7 @@ const Cupones = (props) => {
                 title="Eliminar cupón"
                 open={modalEliminarCuponOpen}
                 setOpen={setModalEliminarCuponOpen}
+                okFunc={funcDesactivarCupon}
             >
                 ¿Desea eliminar el cupón con código {cuponSeleccionado.fsCodigo}?
             </MeditocConfirmacion>

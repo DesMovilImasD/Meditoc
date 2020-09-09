@@ -103,7 +103,7 @@ const Productos = (props) => {
 
         if (response.Code === 0) {
             funcAlert(response.Message, "success");
-            funcConsultarProductos();
+            await funcConsultarProductos();
         } else {
             funcAlert(response.Message);
         }

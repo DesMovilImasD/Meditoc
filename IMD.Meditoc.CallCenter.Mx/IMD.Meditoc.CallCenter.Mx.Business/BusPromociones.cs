@@ -390,7 +390,9 @@ namespace IMD.Admin.Conekta.Business
                     cupon.fbActivo = Convert.ToBoolean(dr.ConvertTo<int>("bActivo"));
                     cupon.fbBaja = Convert.ToBoolean(dr.ConvertTo<int>("bBaja"));
                     cupon.fdtFechaVencimiento = dr.ConvertTo<DateTime?>("dtFechaVencimiento");
-                    cupon.sFechaVencimiento = cupon.fdtFechaVencimiento == null ? null : ((DateTime)cupon.fdtFechaVencimiento).ToString("dd/MM/yy HH:mm");
+                    cupon.sFechaVencimiento = cupon.fdtFechaVencimiento == null ? "Hasta agotar" : ((DateTime)cupon.fdtFechaVencimiento).ToString("dd/MM/yy HH:mm");
+                    cupon.dtFechaCreacion = dr.ConvertTo<DateTime?>("dtFechaCreacion");
+                    cupon.sFechaCreacion = cupon.dtFechaCreacion == null ? null : ((DateTime)cupon.dtFechaCreacion).ToString("dd/MM/yy HH:mm");
                     cupon.fiIdCupon = dr.ConvertTo<int>("iIdCupon");
                     cupon.fiIdCuponCategoria = dr.ConvertTo<int>("iIdCuponCategoria");
                     cupon.fiMesBono = dr.ConvertTo<int?>("iMesBono");

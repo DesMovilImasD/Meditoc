@@ -213,7 +213,7 @@ const FormProducto = (props) => {
         if (response.Code === 0) {
             funcAlert(response.Message, "success");
             setOpen(false);
-            funcConsultarProductos();
+            await funcConsultarProductos();
         } else {
             funcAlert(response.Message);
         }

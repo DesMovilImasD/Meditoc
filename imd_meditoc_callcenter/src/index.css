@@ -346,7 +346,15 @@ code {
     transition: transform 0.35s cubic-bezier(0.15, 0.3, 0.25, 1) 0s !important;
 }
 
-/* .MTableToolbar-searchField-15 {
-    width: 100% !important;
+.MTableToolbar-searchField-15 {
+    width: 500px !important;
     padding-left: 0px;
-} */
+}
+
+.MTableToolbar-root-10 {
+    padding-top: 20px !important;
+}
+
+.MuiTableRow-root:hover {
+    background: #f5f5f5 !important;
+}

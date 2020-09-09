@@ -21,6 +21,8 @@ namespace IMD.Admin.Conekta.Entities
         public int fiTotalCanjeado { get; set; }
         public DateTime? fdtFechaVencimiento { get; set; }
         public string sFechaVencimiento { get; set; }
+        public DateTime? dtFechaCreacion { get; set; }
+        public string sFechaCreacion { get; set; }
         public bool fbActivo { get; set; }
         public bool fbBaja { get; set; }
     }

@@ -94,7 +94,7 @@ const FormEmpresa = (props) => {
         if (response.Code === 0) {
             funcAlert(response.Message, "success");
             setOpen(false);
-            funcGetEmpresas();
+            await funcGetEmpresas();
         } else {
             funcAlert(response.Message);
         }

@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import MaterialTable, { MTableBodyRow } from "material-table";
 import tableIcons from "../../configurations/dataTableIconsConfig";
 import theme from "../../configurations/themeConfig";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { TextField, useForkRef, Paper } from "@material-ui/core";
 import { useState } from "react";
 
@@ -43,12 +45,26 @@ const MeditocTable = (props) => {
 
     const mtOnCellEditable = onCellEditable === undefined ? (newValue, oldValue, row, column) => {} : onCellEditable;
 
+    const actions = [
+        {
+            icon: EditIcon,
+            tooltip: "Editar",
+            onClick: (event, data) => alert(JSON.stringify(data)),
+        },
+        {
+            icon: DeleteIcon,
+            tooltip: "Eliminar",
+            onClick: (event, data) => alert(JSON.stringify(data)),
+        },
+    ];
+
     return (
         <MaterialTable
             columns={columns}
             data={data}
             icons={tableIcons}
             title=""
+            //actions={actions}
             onRowClick={
                 mtSelection === false
                     ? (e, rowData) => {
@@ -78,48 +94,50 @@ const MeditocTable = (props) => {
             //         });
             //     }
             // }}
-            components={{
-                //Container: (props) => <Paper {...props} elevation={0} />,
-                //Container: (props) => <div {...props}></div>,
-                // FilterRow: (props) => (
-                //     <tr>
-                //         {mtSelection === true ? <td></td> : null}
-                //         {props.columns.map((column, index) => (
-                //             <td key={index}>
-                //                 <TextField
-                //                     variant="outlined"
-                //                     onChange={(e) => {
-                //                         props.onFilterChanged(columns.indexOf(column), e.target.value);
-                //                     }}
-                //                     style={{
-                //                         margin: 10,
-                //                         width: "90%",
-                //                     }}
-                //                     placeholder={`Buscar en ${column.title}...`}
-                //                     inputProps={{
-                //                         style: {
-                //                             textAlign: column.align,
-                //                         },
-                //                     }}
-                //                 />
-                //             </td>
-                //         ))}
-                //     </tr>
-                // ),
-                Row: (props) => (
-                    <MTableBodyRow
-                        {...props}
-                        onDoubleClick={
-                            mtSelection === false
-                                ? (e) => {
-                                      mtSetRowSelected(props.data);
-                                      funcDoubleClick();
-                                  }
-                                : () => {}
-                        }
-                    />
-                ),
-            }}
+            components={
+                {
+                    //Container: (props) => <Paper {...props} elevation={0} />,
+                    //Container: (props) => <div {...props}></div>,
+                    // FilterRow: (props) => (
+                    //     <tr>
+                    //         {mtSelection === true ? <td></td> : null}
+                    //         {props.columns.map((column, index) => (
+                    //             <td key={index}>
+                    //                 <TextField
+                    //                     variant="outlined"
+                    //                     onChange={(e) => {
+                    //                         props.onFilterChanged(columns.indexOf(column), e.target.value);
+                    //                     }}
+                    //                     style={{
+                    //                         margin: 10,
+                    //                         width: "90%",
+                    //                     }}
+                    //                     placeholder={`Buscar en ${column.title}...`}
+                    //                     inputProps={{
+                    //                         style: {
+                    //                             textAlign: column.align,
+                    //                         },
+                    //                     }}
+                    //                 />
+                    //             </td>
+                    //         ))}
+                    //     </tr>
+                    // ),
+                    // Row: (props) => (
+                    //     <MTableBodyRow
+                    //         {...props}
+                    //         onDoubleClick={
+                    //             mtSelection === false
+                    //                 ? (e) => {
+                    //                       mtSetRowSelected(props.data);
+                    //                       funcDoubleClick();
+                    //                   }
+                    //                 : () => {}
+                    //         }
+                    //     />
+                    // ),
+                }
+            }
             cellEditable={
                 mtCellEditable === true
                     ? {
@@ -181,18 +199,23 @@ const MeditocTable = (props) => {
 
                               //linear-gradient(0deg, rgba(17,92,138,1) 0%, rgba(18,182,203,1) 100%)
 
-                              background: rowData[mainField] === mtRowSelected[mainField] ? `#bbb` : "#fff",
-                              color:
-                                  rowData[mainField] === mtRowSelected[mainField]
-                                      ? "#fff"
-                                      : theme.palette.secondary.main,
+                              background: rowData[mainField] === mtRowSelected[mainField] ? `#e8e8e8` : "#fff",
+                              color: theme.palette.secondary.main,
+                              //   color:
+                              //       rowData[mainField] === mtRowSelected[mainField]
+                              //           ? "#fff"
+                              //           : theme.palette.secondary.main,
                           })
                         : null,
                 selection: mtSelection,
                 search: true,
-                // searchFieldVariant: "outlined",
-                // searchFieldAlignment: "left",
-                //searchFieldStyle: { width: "80%" },
+                searchFieldVariant: "outlined",
+                searchFieldAlignment: "left",
+                // searchFieldStyle: { width: "80%" },
+                // actionsCellStyle: {
+                //     color: theme.palette.secondary.main,
+                // },
+                //actionsColumnIndex: -1,
                 searchAutoFocus: true,
                 columnsButton: true,
                 paginationType: "normal",

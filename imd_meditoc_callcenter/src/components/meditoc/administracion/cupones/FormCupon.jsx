@@ -15,7 +15,7 @@ import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import PromocionesController from "../../../../controllers/PromocionesController";
 
 const FormCupon = (props) => {
-    const { open, setOpen, usuarioSesion, funcLoader, funcAlert } = props;
+    const { open, setOpen, funcObtenerCupones, usuarioSesion, funcLoader, funcAlert } = props;
 
     const personalizado = "personalizado";
     const aleatorio = "aleatorio";
@@ -200,7 +200,7 @@ const FormCupon = (props) => {
             fsDescripcion: formCupon.txtDescripcion,
             fsCodigo: rdCuponCodigoValue === personalizado ? formCupon.txtCodigoCupon : null,
             fiLongitudCodigo: rdCuponCodigoValue === aleatorio ? parseInt(formCupon.txtLongitudCupon) : null,
-            fnMontoDescuento: formCupon.txtTipoCupon === "1" ? parseFloat(formCupon.txtMontoDescuento) : null,
+            fnMontoDescuento: formCupon.txtTipoCupon === "1" ? parseFloat(formCupon.txtMontoDescuento) * 100 : null,
             fnPorcentajeDescuento: formCupon.txtTipoCupon === "2" ? parseFloat(formCupon.txtPorcentajeDescuento) : null,
             fiTotalLanzamiento: parseInt(formCupon.txtTotalCupones),
             fiDiasActivo: formCupon.txtDiasActivos === "" ? null : parseInt(formCupon.txtDiasActivos),
@@ -215,6 +215,7 @@ const FormCupon = (props) => {
         if (response.Code === 0) {
             funcAlert(response.Message, "success");
             setOpen(false);
+            await funcObtenerCupones();
         } else {
             funcAlert(response.Message);
         }
