@@ -72,15 +72,15 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 
         [HttpPost]
         [Route("Api/Folio/Get/LoginApp")]
-        public IMDResponse<bool> CLoginApp([FromUri] string sUsuario, string sPassword)
+        public IMDResponse<EntFolio> CLoginApp([FromUri] string sUsuario, string sPassword)
         {
-            IMDResponse<bool> response = new IMDResponse<bool>();
+            IMDResponse<EntFolio> response = new IMDResponse<EntFolio>();
 
             string metodo = nameof(this.CLoginApp);
             logger.Info(IMDSerialize.Serialize(67823458431379, $"Inicia {metodo}([FromUri] string sUsuario, string sPassword)", sUsuario, sPassword));
-			
-			
-			try
+
+
+            try
             {
                 BusFolio busFolio = new BusFolio();
 
@@ -92,9 +92,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458432156, $"Error en {metodo}([FromUri] string sUsuario, string sPassword): {ex.Message}", sUsuario, sPassword, ex, response));
-			}
-			return response;
-		}
+            }
+            return response;
+        }
 
         [HttpGet]
         [Route("Api/Folios/Get/Report")]
@@ -166,6 +166,32 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458446142, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+
+        [HttpGet]
+        [Route("Api/Folio/Update/TerminosYCondiciones")]
+        public IMDResponse<bool> CTerminosYCondiciones(string sFolio = null)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.CTerminosYCondiciones);
+            logger.Info(IMDSerialize.Serialize(67823458464013, $"Inicia {metodo}(string sFolio = null)", sFolio));
+
+            try
+            {
+                BusFolio busFolio = new BusFolio();
+
+                response = busFolio.BTerminosYCondiciones(sFolio);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458464790;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458464790, $"Error en {metodo}(string sFolio = null): {ex.Message}", sFolio, ex, response));
             }
             return response;
         }

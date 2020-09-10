@@ -24,6 +24,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
         string getFolios;
         string updFechaVencimiento;
         string delFolioEmpresa;
+        string updTerminosYCondiciones;
 
         public DatFolio()
         {
@@ -36,6 +37,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             getFolios = "svc_meditoc_folios";
             updFechaVencimiento = "sva_meditoc_upd_foliovigencia";
             delFolioEmpresa = "sva_meditoc_del_folioempresa";
+            updTerminosYCondiciones = "svc_meditoc_upd_terminosyCondiciones";
         }
 
 
@@ -87,7 +89,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
                 {
                     database.AddInParameter(dbCommand, "psUsuario", DbType.String, sUsuario);
                     database.AddInParameter(dbCommand, "psPassword", DbType.String, sPassword);
-response = imdCommonData.DExecuteDT(database, dbCommand);
+                    response = imdCommonData.DExecuteDT(database, dbCommand);
                 }
             }
             catch (Exception ex)
@@ -97,12 +99,12 @@ response = imdCommonData.DExecuteDT(database, dbCommand);
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458429048, $"Error en {metodo}(string sUsuario, string sPassword): {ex.Message}", sUsuario, sPassword, ex, response));
-				}
+            }
             return response;
         }
 
 
-        public IMDResponse<DataTable> DGetFolios(int? piIdFolio = null, int? piIdEmpresa = null, int? piIdProducto= null, int? piIdOrigen = null, string psFolio = null, string psOrdenConekta = null, bool? pbTerminosYCondiciones = null, bool? pbActivo = true, bool? pbBaja = false)
+        public IMDResponse<DataTable> DGetFolios(int? piIdFolio = null, int? piIdEmpresa = null, int? piIdProducto = null, int? piIdOrigen = null, string psFolio = null, string psOrdenConekta = null, bool? pbTerminosYCondiciones = null, bool? pbActivo = true, bool? pbBaja = false)
         {
             IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
@@ -190,6 +192,32 @@ response = imdCommonData.DExecuteDT(database, dbCommand);
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458443034, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<bool> DTerminosYCondiciones(string sFolio = null)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.DTerminosYCondiciones);
+            logger.Info(IMDSerialize.Serialize(67823458460905, $"Inicia {metodo}(string sFolio = null)", sFolio));
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(updTerminosYCondiciones))
+                {
+                    database.AddInParameter(dbCommand, "psFolio", DbType.String, sFolio);
+
+                    response = imdCommonData.DExecute(database, dbCommand);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458461682;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458461682, $"Error en {metodo}(string sFolio = null): {ex.Message}", sFolio, ex, response));
             }
             return response;
         }
