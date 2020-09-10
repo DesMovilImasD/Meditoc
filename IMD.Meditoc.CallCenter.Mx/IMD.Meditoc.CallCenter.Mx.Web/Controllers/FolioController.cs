@@ -4,6 +4,7 @@ using IMD.Meditoc.CallCenter.Mx.Business.Folio;
 using IMD.Meditoc.CallCenter.Mx.Entities;
 using IMD.Meditoc.CallCenter.Mx.Entities.Folio;
 using IMD.Meditoc.CallCenter.Mx.Entities.Ordenes;
+using IMD.Meditoc.CallCenter.Mx.Web.Tokens;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
+        [MeditocAuthentication]
         [HttpPost]
         [Route("Api/Folio/Create/FolioEmpresa")]
         public IMDResponse<bool> CNuevoFolioEmpresa([FromBody] EntFolioxEmpresa entFolioxEmpresa)
@@ -69,7 +71,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
-
+		[MeditocAuthentication]
         [HttpPost]
         [Route("Api/Folio/Get/LoginApp")]
         public IMDResponse<EntFolio> CLoginApp([FromUri] string sUsuario, string sPassword)
@@ -96,6 +98,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
+        [MeditocAuthentication]
         [HttpGet]
         [Route("Api/Folios/Get/Report")]
         public IMDResponse<List<EntFolioReporte>> CGetFolios(int? piIdFolio = null, int? piIdEmpresa = null, int? piIdProducto = null, int? piIdOrigen = null, string psFolio = null, string psOrdenConekta = null, bool? pbTerminosYCondiciones = null, bool? pbActivo = true, bool? pbBaja = false)
@@ -120,6 +123,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
+        [MeditocAuthentication]
         [HttpPost]
         [Route("Api/Folio/Update/FechaVencimiento")]
         public IMDResponse<bool> CUpdFechaVencimiento(EntFolioFV entFolioFV)
@@ -144,6 +148,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
+        [MeditocAuthentication]
         [HttpPost]
         [Route("Api/Folio/Delete/FoliosEmpresa")]
         public IMDResponse<bool> CEliminarFoliosEmpresa(EntFolioFV entFolioFV)
@@ -170,7 +175,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
-
+		[MeditocAuthentication]
         [HttpGet]
         [Route("Api/Folio/Update/TerminosYCondiciones")]
         public IMDResponse<bool> CTerminosYCondiciones(string sFolio = null)

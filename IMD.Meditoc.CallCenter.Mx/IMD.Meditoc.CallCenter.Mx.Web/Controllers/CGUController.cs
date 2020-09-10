@@ -2,6 +2,7 @@
 using IMD.Admin.Utilities.Entities;
 using IMD.Meditoc.CallCenter.Mx.Business.CGU;
 using IMD.Meditoc.CallCenter.Mx.Entities.CGU;
+using IMD.Meditoc.CallCenter.Mx.Web.Tokens;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         private static readonly ILog logger = LogManager.GetLogger(typeof(CGUController));
 
         #region Modulo
+        [MeditocAuthentication]
         [HttpPost]
         [Route("Api/CGU/Create/Modulo")]
         public IMDResponse<bool> CCreateModulo([FromBody] EntModulo entCreateModulo)
@@ -41,6 +43,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         #endregion
 
         #region SubModulo
+        [MeditocAuthentication]
         [HttpPost]
         [Route("Api/CGU/Create/SubModulo")]
         public IMDResponse<bool> CCreateSubModulo([FromBody] EntSubModulo entCreateSubModulo)
@@ -68,6 +71,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         #endregion
 
         #region Boton
+        [MeditocAuthentication]
         [HttpPost]
         [Route("Api/CGU/Create/Boton")]
         public IMDResponse<bool> CCreateBoton([FromBody] EntBoton entBoton)
@@ -96,6 +100,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 
         #region Perfil
 
+        [MeditocAuthentication]
         [HttpPost]
         [Route("Api/CGU/Create/Perfil")]
         public IMDResponse<bool> CCreatePerfil([FromBody] EntPerfil entPerfil)
@@ -126,6 +131,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 
         #region Usuario
 
+        [MeditocAuthentication]
         [HttpPost]
         [Route("Api/CGU/Create/Usuario")]
         public IMDResponse<EntUsuario> CCreateUsuario([FromBody] EntUsuario entUsuario)
@@ -151,6 +157,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
+        [MeditocAuthentication]
         [HttpGet]
         [Route("Api/CGU/Get/Usuarios")]
         public IMDResponse<List<EntUsuario>> CObtenerUsuario([FromUri] int? iIdUsuario = null, int? iIdTipoCuenta = null, int? iIdPerfil = null, string sUsuario = null, string sPassword = null, bool? bActivo = null, bool? bBaja = null)
@@ -177,6 +184,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
+        [MeditocAuthentication]
         [HttpPost]
         [Route("Api/CGU/Create/CambiarContrasenia")]
         public IMDResponse<bool> CCambiarContrasenia([FromUri] int iIdUsuario, string sPassword, int iIdUsuarioUltMod)
@@ -231,6 +239,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 
         #region Permiso        
 
+        [MeditocAuthentication]
         [HttpGet]
         [Route("Api/CGU/GET/PermisoXPerfil")]
         public IMDResponse<List<EntPermisoSistema>> CObtenerPermisoxPerfil([FromUri] int? iIdPerfil = null)
@@ -256,6 +265,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
+        [MeditocAuthentication]
         [HttpPost]
         [Route("Api/CGU/Create/Permiso")]
         public IMDResponse<bool> CCreatePermiso([FromBody] List<EntPermiso> entPermisos)
@@ -281,6 +291,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
+        [MeditocAuthentication]
         [HttpGet]
         [Route("Api/CGU/Get/Perfiles")]
         public IMDResponse<List<EntPerfil>> CObtenerPerfil([FromUri] int? iIdPerfil, bool bActivo, bool bBaja)
@@ -307,6 +318,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
         #endregion
+
         [HttpGet]
         [Route("status")]
         public string Status()

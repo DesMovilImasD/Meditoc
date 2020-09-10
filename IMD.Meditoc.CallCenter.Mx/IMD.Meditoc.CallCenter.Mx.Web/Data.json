@@ -4,5 +4,33 @@
   "Vector": "Meditoc1",
   "cifrado": "61Cb4qdXrbIPL8az9svQS9NpHT6a0CjLrB3waEkXKz6zqKiBv+K6dlRiIKlTACBBl9ESxHsDpvAo138vwBQwTbWioAY4D1QXqA+m1lPwTW0=",
   "SemillaPassword": "M3diT0cPassword1",
-  "VectorPassword": "Evector1"
+  "VectorPassword": "Evector1",
+  "Headers" {
+    "AppKey": {
+      "String": "MeditocAppKeyAuthenticacion2020WebOK",
+      "Key": "M3dit0cAppKeyV4l",
+      "Vector": "MeditocK",
+      "Result": "qSVBJIQpOqtp0UfwzwX1EUdrIZWiM0TjSuZvYJc8JOWNdiwRuiIAyhiQNjoEGWPa"
+    },
+    "AppToken": {
+      "String": "IMD.Meditoc.CallCenterServices.MX.AppTokenAuthenticacion2020WebOK",
+      "Key": "M3dit0cAppToken8",
+      "Vector": "MeditocT",
+      "Result": "Xx3ePv63cUTg77QPATmztJ/VXHuXkjCBBECfy54028VGoN5SZ2tUNrc42dYQZPXvfpbk3YT5PTwLDXxc4yeUNRoeb4QoX6UywCDFIH5U2+Q="
+    }
+  },
+  "HeadersV2" {
+    "AppKey": {
+      "String": "MeditocAppKeyAuthenti0WebOK",
+      "Key": "M3dit0cAppKeyV4l",
+      "Vector": "MeditocK",
+      "Result": "qSVBJIQpOqtp0UfwzwX1ER6fNYR8YiPU/bw5CdEqYqk="
+    },
+    "AppToken": {
+      "String": "IMD.Meditoc.CallCenterSTthenticacion2020WebOK",
+      "Key": "M3dit0cAppToken8",
+      "Vector": "MeditocT",
+      "Result": "Xx3ePv63cUTg77QPATmztJ3J8cdO1riA7g+lVRzOzhfnl9FnaVT1O2YIv8YCTVRZ"
+    }
+  }
 }

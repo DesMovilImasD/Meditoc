@@ -41,7 +41,7 @@ namespace IMD.Admin.Conekta.Services
             string conektaApiKeyEncriptada = ConfigurationManager.AppSettings["CONEKTA_APIKEY"];
 
             IMDEndec imdEndec = new IMDEndec();
-            conketaApiKey = imdEndec.BDecrypt(conektaApiKeyEncriptada, "hdiu4soi3IHD334F", "SKlru3nc").Result;
+            conketaApiKey = imdEndec.BDecrypt(conektaApiKeyEncriptada, "MeditocComercial", "Meditoc1").Result;
             conketaVersion = ConfigurationManager.AppSettings["CONEKTA_VERSION"];
             conektaLocale = ConfigurationManager.AppSettings["CONEKTA_LOCALE"];
         }

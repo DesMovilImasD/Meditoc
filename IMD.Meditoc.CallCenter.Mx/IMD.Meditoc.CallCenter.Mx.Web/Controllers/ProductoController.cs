@@ -2,6 +2,7 @@
 using IMD.Admin.Utilities.Entities;
 using IMD.Meditoc.CallCenter.Mx.Business.Producto;
 using IMD.Meditoc.CallCenter.Mx.Entities.Producto;
+using IMD.Meditoc.CallCenter.Mx.Web.Tokens;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(ProductoController));
 
+        [MeditocAuthentication]
         [HttpPost]
         [Route("Api/Producto/Create/Producto")]
         public IMDResponse<bool> BSaveProducto([FromBody] EntProducto entProducto)
@@ -38,6 +40,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
+        [MeditocAuthentication]
         [HttpGet]
         [Route("Api/Producto/Get/ObtenerProducto")]
         public IMDResponse<List<EntProducto>> BObtenerProductoByID([FromUri] int? iIdProducto = null)

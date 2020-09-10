@@ -114,6 +114,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tokens\MeditocFailureResult.cs" />
+    <Compile Include="Tokens\MeditocAuthentication.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data.json" />
@@ -128,7 +130,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Data\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IMD.Meditoc.CallCenter.Mx.Business\IMD.Meditoc.CallCenter.Mx.Business.csproj">
