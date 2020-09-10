@@ -756,7 +756,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 response.Code = 0;
                 response.Message = "Login correcto";
 				response.Result = true;
-			}catch(){
+			}catch(Exception ex){
 				response.Code = 67823458430602;
                 response.Message = "Ocurrió un error inesperado";
 
