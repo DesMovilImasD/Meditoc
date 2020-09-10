@@ -4,6 +4,7 @@ using IMD.Admin.Conekta.Entities.Orders;
 using IMD.Admin.Conekta.Entities.WebHooks;
 using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
+using IMD.Meditoc.CallCenter.Mx.Web.Tokens;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -18,8 +19,8 @@ namespace IMD.Admin.Conekta.Web.Controllers
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(ConektaController));
 
-        private readonly BusOrder busOrder = new BusOrder("hdiu4soi3IHD334F", "SKlru3nc");
-        private readonly BusWebHook busWebHook = new BusWebHook("hdiu4soi3IHD334F", "SKlru3nc");
+        private readonly BusOrder busOrder = new BusOrder("MeditocComercial", "Meditoc1");
+        private readonly BusWebHook busWebHook = new BusWebHook("MeditocComercial", "Meditoc1");
 
         [HttpPost]
         [Route("Api/Conekta/Create/Order")]
@@ -44,6 +45,7 @@ namespace IMD.Admin.Conekta.Web.Controllers
             return response;
         }
 
+        [MeditocAuthentication]
         [HttpGet]
         [Route("Api/Conekta/Get/Order")]
         public IMDResponse<EntOrder> CGetOrder([FromUri]string orderId)
@@ -88,13 +90,6 @@ namespace IMD.Admin.Conekta.Web.Controllers
                 logger.Error(IMDSerialize.Serialize(67823458156321, $"Error en {metodo}([FromBody]EntWebHook entWebHook): {ex.Message}", entWebHook, ex, response));
             }
             return response;
-        }
-
-        [HttpGet]
-        [Route("Server/Status")]
-        public string ProbarServer()
-        {
-            return "Server OK";
         }
     }
 }

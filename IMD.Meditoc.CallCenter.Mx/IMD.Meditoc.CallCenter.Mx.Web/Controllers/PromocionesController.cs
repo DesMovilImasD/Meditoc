@@ -3,6 +3,7 @@ using IMD.Admin.Conekta.Entities;
 using IMD.Admin.Conekta.Entities.Promotions;
 using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
+using IMD.Meditoc.CallCenter.Mx.Web.Tokens;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -17,8 +18,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(PromocionesController));
 
-        private readonly BusPromociones busPromociones = new BusPromociones("hdiu4soi3IHD334F", "SKlru3nc");
+        private readonly BusPromociones busPromociones = new BusPromociones("MeditocComercial", "Meditoc1");
 
+        [MeditocAuthentication]
         [HttpPost]
         [Route("api/promociones/guardar/cupon")]
         public IMDResponse<bool> CActivarCupon([FromBody]EntCreateCupon entCreateCupon, [FromUri]int? piIdUsuario = null)
@@ -42,6 +44,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
+        [MeditocAuthentication]
         [HttpPost]
         [Route("api/promociones/aplicar/cupon")]
         public IMDResponse<bool> CAplicarCupon([FromUri]int piIdCupon, [FromUri]int? piIdUsuario = null)
@@ -88,6 +91,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
+        [MeditocAuthentication]
         [HttpPost]
         [Route("api/promociones/desactivar/cupon")]
         public IMDResponse<bool> CDesactivarCupon([FromUri]int piIdCupon, [FromUri]int? piIdUsuario = null)
@@ -111,6 +115,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
+        [MeditocAuthentication]
         [HttpGet]
         [Route("api/promociones/obtener/cupones")]
         public IMDResponse<List<EntCupon>> CObtenerCupones([FromUri]int? piIdCupon = null, [FromUri]int? piIdCuponCategoria = null, [FromUri]string psDescripcion = null, [FromUri]string psCodigo = null, [FromUri]DateTime? pdtFechaVencimientoInicio = null, [FromUri]DateTime? pdtFechaVencimientoFin = null, [FromUri]DateTime? pdtFechaCreacionInicio = null, [FromUri]DateTime? pdtFechaCreacionFin = null, [FromUri]bool? pbActivo = true, [FromUri]bool? pbBaja = false)
@@ -134,7 +139,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
-        //https://localhost:44344/api/promociones/validar/cupon/email?piIdCupon=10005&psEmail=g098@live.com.mx
         [HttpGet]
         [Route("api/promociones/validar/cupon/email")]
         public IMDResponse<bool> CGetCuponUsed([FromUri]int piIdCupon, [FromUri]string psEmail)
@@ -158,6 +162,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
+        [MeditocAuthentication]
         [HttpGet]
         [Route("api/promociones/obtener/cupon/autocompletar")]
         public IMDResponse<List<string>> CGetCuponAutocomplete()

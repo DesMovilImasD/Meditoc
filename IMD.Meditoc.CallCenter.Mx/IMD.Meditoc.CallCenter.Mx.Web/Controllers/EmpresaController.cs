@@ -2,6 +2,7 @@
 using IMD.Admin.Utilities.Entities;
 using IMD.Meditoc.CallCenter.Mx.Business.Empresa;
 using IMD.Meditoc.CallCenter.Mx.Entities.Empresa;
+using IMD.Meditoc.CallCenter.Mx.Web.Tokens;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Web.Http;
 
 namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 {
+    [MeditocAuthentication]
     public class EmpresaController : ApiController
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(CGUController));

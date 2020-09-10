@@ -73,7 +73,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 }
 
                 //Se manda a llamar la creaciión de orden de conekta
-                BusOrder busOrder = new BusOrder("hdiu4soi3IHD334F", "SKlru3nc");
+                BusOrder busOrder = new BusOrder("MeditocComercial", "Meditoc1");
 
                 EntCreateOrder entCreateOrder = new EntCreateOrder();
 

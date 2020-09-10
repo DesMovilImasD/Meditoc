@@ -2,6 +2,7 @@
 using IMD.Admin.Utilities.Entities;
 using IMD.Meditoc.CallCenter.Mx.Business.Catalogos;
 using IMD.Meditoc.CallCenter.Mx.Entities.Catalogos;
+using IMD.Meditoc.CallCenter.Mx.Web.Tokens;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ using System.Web.Http;
 
 namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 {
+    [MeditocAuthentication]
     public class EspecialidadController : ApiController
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(EspecialidadController));
