@@ -13,6 +13,7 @@ import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import BusinessIcon from "@material-ui/icons/Business";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import LoyaltyIcon from "@material-ui/icons/Loyalty";
+import EmojiObjectsIcon from "@material-ui/icons/EmojiObjects";
 import GradeIcon from "@material-ui/icons/Grade";
 import CardMembershipIcon from "@material-ui/icons/CardMembership";
 import CallIcon from "@material-ui/icons/Call";
@@ -125,6 +126,14 @@ const MenuList = (props) => {
                                 <LoyaltyIcon className="color-0" />
                             </ListItemIcon>
                             <ListItemText primary="Cupones" />
+                        </ListItem>
+                    </Link>
+                    <Link to={urlSystem.administracion.especialidades} className={classes.link}>
+                        <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
+                            <ListItemIcon>
+                                <EmojiObjectsIcon className="color-0" />
+                            </ListItemIcon>
+                            <ListItemText primary="Especialidades médicas" />
                         </ListItem>
                     </Link>
                 </List>

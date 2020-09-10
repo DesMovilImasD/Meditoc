@@ -13,7 +13,10 @@ import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import { rxCorreo } from "../../../../configurations/regexConfig";
 
 const FormColaborador = (props) => {
-    const { entColaborador, open, setOpen } = props;
+    const { entColaborador, open, setOpen, listaEspecialidades } = props;
+
+    const iIdTipoDoctorCallCenter = 1;
+    const iIdTipoDoctorEspecialista = 2;
 
     const [formColaborador, setFormColaborador] = useState({
         txtNombreDirectorio: "",
@@ -25,6 +28,7 @@ const FormColaborador = (props) => {
         txtNumeroSala: "",
         txtDireccionConsultorio: "",
         txtUrlDoctor: "",
+        txtMapsDoctor: "",
         txtNombreDoctor: "",
         txtApellidoPaterno: "",
         txtApellidoMaterno: "",
@@ -48,6 +52,7 @@ const FormColaborador = (props) => {
         txtNumeroSala: true,
         txtDireccionConsultorio: true,
         txtUrlDoctor: true,
+        txtMapsDoctor: true,
         txtNombreDoctor: true,
         txtApellidoPaterno: true,
         txtApellidoMaterno: true,
@@ -63,11 +68,11 @@ const FormColaborador = (props) => {
 
     const [tabIndex, setTabIndex] = useState(0);
 
-    const [sclTipoColaborador, setSclTipoColaborador] = useState("1");
+    // const [sclTipoColaborador, setSclTipoColaborador] = useState("1");
 
-    const handleChangeTipoColaborador = (e) => {
-        setSclTipoColaborador(e.target.value);
-    };
+    // const handleChangeTipoColaborador = (e) => {
+    //     setSclTipoColaborador(e.target.value);
+    // };
 
     const handleChangeFormColaborador = (e) => {
         const campoNombre = e.target.name;
@@ -116,7 +121,7 @@ const FormColaborador = (props) => {
                 break;
 
             case "txtEspecialidad":
-                if (!formColaboradorOK.txtEspecialidad) {
+                if (!formColaboradorOK.txtEspecialidad && entColaborador.iIdTipoDoctor === iIdTipoDoctorEspecialista) {
                     if (campoValor !== "") {
                         setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
                     }
@@ -197,7 +202,10 @@ const FormColaborador = (props) => {
                 }
                 break;
             case "txtUsuarioAdministrativo":
-                if (!formColaboradorOK.txtUsuarioAdministrativo && sclTipoColaborador === "2") {
+                if (
+                    !formColaboradorOK.txtUsuarioAdministrativo &&
+                    entColaborador.iIdTipoDoctor === iIdTipoDoctorEspecialista
+                ) {
                     if (campoValor !== "") {
                         setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
                     }
@@ -205,7 +213,10 @@ const FormColaborador = (props) => {
                 break;
 
             case "txtPasswordAdministrativo":
-                if (!formColaboradorOK.txtPasswordAdministrativo && sclTipoColaborador === "2") {
+                if (
+                    !formColaboradorOK.txtPasswordAdministrativo &&
+                    entColaborador.iIdTipoDoctor === iIdTipoDoctorEspecialista
+                ) {
                     if (campoValor !== "") {
                         setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
                     }
@@ -289,7 +300,7 @@ const FormColaborador = (props) => {
             errorDatosDoctor = true;
         }
 
-        if (formColaborador.txtEspecialidad === "") {
+        if (formColaborador.txtEspecialidad === "" && entColaborador.iIdTipoDoctor === iIdTipoDoctorEspecialista) {
             formColaboradorOKValidacion.txtEspecialidad = false;
             errorDatosDoctor = true;
         }
@@ -341,7 +352,7 @@ const FormColaborador = (props) => {
             errorUsuarioPassword = true;
         }
 
-        if (sclTipoColaborador === "2") {
+        if (entColaborador.iIdTipoDoctor === iIdTipoDoctorEspecialista) {
             if (formColaborador.txtUsuarioAdministrativo === "") {
                 formColaboradorOKValidacion.txtUsuarioAdministrativo = false;
                 errorUsuarioPassword = true;
@@ -373,7 +384,16 @@ const FormColaborador = (props) => {
     };
 
     return (
-        <MeditocModal size="normal" title="Nuevo colaborador" open={open} setOpen={setOpen}>
+        <MeditocModal
+            size="normal"
+            title={
+                entColaborador.iIdTipoDoctor === iIdTipoDoctorCallCenter
+                    ? "Nuevo Colaborador CallCenter"
+                    : "Nuevo Colaborador Especialista"
+            }
+            open={open}
+            setOpen={setOpen}
+        >
             <MeditocTabHeader
                 tabs={["DATOS DEL DOCTOR", "DATOS DE CUENTA", "USUARIO Y CONTRASEÑA"]}
                 index={tabIndex}
@@ -473,25 +493,31 @@ const FormColaborador = (props) => {
                                         }
                                     />
                                 </Grid>
+                                {entColaborador.iIdTipoDoctor === iIdTipoDoctorEspecialista ? (
+                                    <Grid item sm={6} xs={12}>
+                                        <TextField
+                                            name="txtEspecialidad"
+                                            label="Especialidad:"
+                                            variant="outlined"
+                                            fullWidth
+                                            select
+                                            required
+                                            value={formColaborador.txtEspecialidad}
+                                            onChange={handleChangeFormColaborador}
+                                            error={!formColaboradorOK.txtEspecialidad}
+                                            helperText={
+                                                !formColaboradorOK.txtEspecialidad ? "La especialidad es requerida" : ""
+                                            }
+                                        >
+                                            {listaEspecialidades.map((especialidad) => (
+                                                <MenuItem value={especialidad.iIdEspecialidad}>
+                                                    {especialidad.sNombre}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                    </Grid>
+                                ) : null}
 
-                                <Grid item sm={6} xs={12}>
-                                    <TextField
-                                        name="txtEspecialidad"
-                                        label="Especialidad:"
-                                        variant="outlined"
-                                        fullWidth
-                                        select
-                                        required
-                                        value={formColaborador.txtEspecialidad}
-                                        onChange={handleChangeFormColaborador}
-                                        error={!formColaboradorOK.txtEspecialidad}
-                                        helperText={
-                                            !formColaboradorOK.txtEspecialidad ? "La especialidad es requerida" : ""
-                                        }
-                                    >
-                                        <MenuItem value="0">Médico general</MenuItem>
-                                    </TextField>
-                                </Grid>
                                 <Grid item sm={6} xs={12}>
                                     <TextField
                                         name="txtNumeroSala"
@@ -509,7 +535,11 @@ const FormColaborador = (props) => {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid
+                                    item
+                                    sm={entColaborador.iIdTipoDoctor === iIdTipoDoctorCallCenter ? 6 : 12}
+                                    xs={12}
+                                >
                                     <TextField
                                         name="txtDireccionConsultorio"
                                         label="Dirección del consultorio:"
@@ -526,6 +556,16 @@ const FormColaborador = (props) => {
                                         variant="outlined"
                                         fullWidth
                                         value={formColaborador.txtUrlDoctor}
+                                        onChange={handleChangeFormColaborador}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        name="txtMapsDoctor"
+                                        label="Ubicación en maps:"
+                                        variant="outlined"
+                                        fullWidth
+                                        value={formColaborador.txtMapsDoctor}
                                         onChange={handleChangeFormColaborador}
                                     />
                                 </Grid>
@@ -666,7 +706,7 @@ const FormColaborador = (props) => {
                         </MeditocTabPanel>
                         <MeditocTabPanel id={2} index={tabIndex}>
                             <Grid container spacing={3}>
-                                <Grid item xs={12}>
+                                {/* <Grid item xs={12}>
                                     <TextField
                                         name="txtTipoColaborador"
                                         label="Tipo de colaborador:"
@@ -684,7 +724,7 @@ const FormColaborador = (props) => {
                                         <MenuItem value="1">Médico CallCenter</MenuItem>
                                         <MenuItem value="2">Médico Especialista</MenuItem>
                                     </TextField>
-                                </Grid>
+                                </Grid> */}
                                 <Grid item xs={12}>
                                     <span className="rob-nor bold size-15 color-4">USUARIO TITULAR</span>
                                     <Divider />
@@ -726,7 +766,7 @@ const FormColaborador = (props) => {
                                         }
                                     />
                                 </Grid>
-                                {sclTipoColaborador === "2" ? (
+                                {entColaborador.iIdTipoDoctor === iIdTipoDoctorEspecialista ? (
                                     <Fragment>
                                         <Grid item xs={12}>
                                             <span className="rob-nor bold size-15 color-4">USUARIO ADMINISTRATIVO</span>

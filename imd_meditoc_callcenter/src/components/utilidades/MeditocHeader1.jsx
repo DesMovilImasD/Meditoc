@@ -7,7 +7,7 @@ import { Paper } from "@material-ui/core";
  * Fecha: 26/08/2020
  * Invocado desde: Sistema, Perfiles
  *************************************************************/
-const SubmoduloBarra = (props) => {
+const MeditocHeader1 = (props) => {
     const { children, title } = props;
 
     return (
@@ -20,4 +20,4 @@ const SubmoduloBarra = (props) => {
     );
 };
 
-export default SubmoduloBarra;
+export default MeditocHeader1;

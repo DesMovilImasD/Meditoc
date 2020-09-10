@@ -128,9 +128,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 
         [HttpPost]
         [Route("Api/CGU/Create/Usuario")]
-        public IMDResponse<bool> CCreateUsuario([FromBody] EntUsuario entUsuario)
+        public IMDResponse<EntUsuario> CCreateUsuario([FromBody] EntUsuario entUsuario)
         {
-            IMDResponse<bool> response = new IMDResponse<bool>();
+            IMDResponse<EntUsuario> response = new IMDResponse<EntUsuario>();
 
             string metodo = nameof(this.CCreateModulo);
             logger.Info(IMDSerialize.Serialize(67823458338139, $"Inicia {metodo}([FromBody]EntUsuario entUsuario)", entUsuario));

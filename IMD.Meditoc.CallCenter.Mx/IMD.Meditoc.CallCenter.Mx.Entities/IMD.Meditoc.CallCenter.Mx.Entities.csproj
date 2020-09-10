@@ -56,6 +56,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Catalogos\EntEspecialidad.cs" />
+    <Compile Include="Catalogos\EnumEspecialidadPrincipal.cs" />
     <Compile Include="CGU\EntBoton.cs" />
     <Compile Include="CGU\EntModulo.cs" />
     <Compile Include="CGU\EntPerfil.cs" />
@@ -63,6 +65,10 @@
     <Compile Include="CGU\EntPermisoSistema.cs" />
     <Compile Include="CGU\EntSubModulo.cs" />
     <Compile Include="CGU\EntUsuario.cs" />
+    <Compile Include="CGU\EnumPerfilPrincipal.cs" />
+    <Compile Include="CGU\EnumTipoCuenta.cs" />
+    <Compile Include="Colaborador\EntCreateColaborador.cs" />
+    <Compile Include="Colaborador\EnumTipoDoctor.cs" />
     <Compile Include="Empresa\EntEmpresa.cs" />
     <Compile Include="Empresa\EntEmpresaDetalleFolio.cs" />
     <Compile Include="EntConecktaPago.cs" />
@@ -70,6 +76,8 @@
     <Compile Include="EntMensualidad.cs" />
     <Compile Include="EntPoliticas.cs" />
     <Compile Include="Folio\EntFolio.cs" />
+    <Compile Include="Folio\EntFolioFV.cs" />
+    <Compile Include="Folio\EntFolioReporte.cs" />
     <Compile Include="Folio\EntFolioxEmpresa.cs" />
     <Compile Include="Ordenes\EntCharge.cs" />
     <Compile Include="Ordenes\EntChargeDetail.cs" />
@@ -79,6 +87,7 @@
     <Compile Include="Ordenes\EntCreateLineItem.cs" />
     <Compile Include="Ordenes\EntCreateOrder.cs" />
     <Compile Include="Ordenes\EntCreatePaymentMethod.cs" />
+    <Compile Include="Ordenes\EntCreateTaxLine.cs" />
     <Compile Include="Ordenes\EntCreateUserAgent.cs" />
     <Compile Include="Ordenes\EntCustomerInfo.cs" />
     <Compile Include="Ordenes\EntDetalleCompra.cs" />

@@ -8,7 +8,7 @@ import CloseIcon from "@material-ui/icons/Close";
  * Fecha: 26/08/2020
  * Invocado desde: EliminarBoton, EliminarModulo, EliminarSubmodulo, FormBoton, FormModulo, FormSubmodulo
  *************************************************************/
-const ModalForm = (props) => {
+const MeditocModal = (props) => {
     const { size, title, children, open, setOpen } = props;
 
     const handleCloseModel = () => {
@@ -44,4 +44,4 @@ const ModalForm = (props) => {
     );
 };
 
-export default ModalForm;
+export default MeditocModal;

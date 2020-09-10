@@ -8,8 +8,8 @@ import MeditocContentMain from './components/MeditocContentMain'
 import { HashRouter } from 'react-router-dom'
 import MeditocLogin from './components/login/MeditocLogin'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
-import MomentUtils from '@date-io/moment'
-import 'moment/locale/es'
+import es from 'date-fns/locale/es'
+import DateFnsUtils from '@date-io/date-fns'
 
 /*************************************************************
  * Descripcion: App del proyecto
@@ -89,7 +89,7 @@ function App() {
           </Button>
         )}
       >
-        <MuiPickersUtilsProvider utils={MomentUtils} locale="es">
+        <MuiPickersUtilsProvider utils={DateFnsUtils} locale={es}>
           <HashRouter>
             <MeditocLoader entLoader={entLoader} />
             <MeditocAlert entAlert={entAlert} />

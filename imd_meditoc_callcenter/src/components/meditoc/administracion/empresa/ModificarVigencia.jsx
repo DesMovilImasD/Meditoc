@@ -4,9 +4,19 @@ import { Grid, Button } from "@material-ui/core";
 import { DateTimePicker } from "@material-ui/pickers";
 import { useState } from "react";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
+import FolioController from "../../../../controllers/FolioController";
 
 const ModificarVigencia = (props) => {
-    const { entEmpresa, open, setOpen } = props;
+    const {
+        entEmpresa,
+        open,
+        setOpen,
+        foliosEmpresaSeleccionado,
+        funcGetFoliosEmpresa,
+        usuarioSesion,
+        funcLoader,
+        funcAlert,
+    } = props;
 
     const [txtFechaVigencia, setTxtFechaVigencia] = useState(null);
     const [txtFechaVigenciaOK, setTxtFechaVigenciaOK] = useState(true);
@@ -19,10 +29,34 @@ const ModificarVigencia = (props) => {
         setTxtFechaVigencia(date);
     };
 
-    const handleClickModificarVigencia = () => {
+    const handleClickModificarVigencia = async () => {
         if (txtFechaVigencia === null || txtFechaVigencia === "") {
             setTxtFechaVigenciaOK(false);
+            return;
         }
+
+        const entFolioFVSubmit = {
+            iIdEmpresa: entEmpresa.iIdEmpresa,
+            iIdUsuario: usuarioSesion.iIdUsuario,
+            dtFechaVencimiento: txtFechaVigencia.toLocaleString(),
+            lstFolios: foliosEmpresaSeleccionado.map((folio) => ({ iIdFolio: folio.iIdFolio })),
+        };
+
+        funcLoader(true, "Actualizado registros...");
+
+        const folioController = new FolioController();
+
+        const response = await folioController.funcUpdFechaVencimiento(entFolioFVSubmit);
+
+        if (response.Code === 0) {
+            funcAlert(response.Message, "success");
+            setOpen(false);
+            setTxtFechaVigencia(null);
+            await funcGetFoliosEmpresa();
+        } else {
+            funcAlert(response.Message);
+        }
+        funcLoader();
     };
 
     return (
@@ -38,7 +72,7 @@ const ModificarVigencia = (props) => {
                         InputAdornmentProps={{ position: "end" }}
                         openTo="year"
                         required
-                        format="DD/MM/YYYY hh:mm a"
+                        format="dd/MM/yyy hh:mm a"
                         value={txtFechaVigencia}
                         onChange={handleChangeVigencia}
                         error={!txtFechaVigenciaOK}

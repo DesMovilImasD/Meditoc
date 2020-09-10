@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
 import { Tooltip, IconButton } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
@@ -7,18 +7,18 @@ import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
 import ListAltOutlinedIcon from "@material-ui/icons/ListAltOutlined";
 import WorkRoundedIcon from "@material-ui/icons/WorkRounded";
-
 import MeditocBody from "../../../utilidades/MeditocBody";
 import MeditocTable from "../../../utilidades/MeditocTable";
 import FormEmpresa from "./FormEmpresa";
 import FoliosEmpresa from "./FoliosEmpresa";
 import EmpresaController from "../../../../controllers/EmpresaController";
-import { useEffect } from "react";
+import ProductoController from "../../../../controllers/ProductoController";
 
 const Empresa = (props) => {
     const { usuarioSesion, funcLoader, funcAlert } = props;
 
     const empresaController = new EmpresaController();
+    const productoController = new ProductoController();
 
     let columns = [
         { title: "ID", field: "iIdEmpresa", align: "center", hidden: true },
@@ -38,6 +38,7 @@ const Empresa = (props) => {
     };
 
     const [listaEmpresas, setListaEmpresas] = useState([]);
+    const [listaProductos, setListaProductos] = useState([]);
 
     const [empresaSeleccionada, setEmpresaSeleccionada] = useState(empresaEntidadVacia);
     const [empresaParaModalForm, setEmpresaParaModalForm] = useState(empresaEntidadVacia);
@@ -82,8 +83,26 @@ const Empresa = (props) => {
         funcLoader();
     };
 
+    const funcGetProductos = async () => {
+        funcLoader(true, "Consultando productos...");
+
+        const response = await productoController.funcGetProductos();
+
+        if (response.Code === 0) {
+            setListaProductos(response.Result);
+        } else {
+            funcAlert(response.Message);
+        }
+        funcLoader();
+    };
+
+    const funcGetData = async () => {
+        await funcGetEmpresas();
+        await funcGetProductos();
+    };
+
     useEffect(() => {
-        funcGetEmpresas();
+        funcGetData();
     }, []);
 
     return (
@@ -132,6 +151,9 @@ const Empresa = (props) => {
                 entEmpresa={empresaParaModalForm}
                 open={modalFoliosEmpresaOpen}
                 setOpen={setModalFoliosEmpresaOpen}
+                listaProductos={listaProductos}
+                usuarioSesion={usuarioSesion}
+                funcLoader={funcLoader}
                 funcAlert={funcAlert}
             />
         </Fragment>

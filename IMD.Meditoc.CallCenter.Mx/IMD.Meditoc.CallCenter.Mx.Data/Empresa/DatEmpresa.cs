@@ -60,7 +60,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Empresa
         }
 
 
-        public IMDResponse<DataTable> DGetEmpresas(int? iIdEmpresa)
+        public IMDResponse<DataTable> DGetEmpresas(int? iIdEmpresa, string psCorreo = null)
         {
             IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
@@ -72,6 +72,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Empresa
                 using (DbCommand dbCommand = database.GetStoredProcCommand(getEmpresa))
                 {
                     database.AddInParameter(dbCommand, "piIdEmpresa", DbType.Int32, iIdEmpresa);
+                    database.AddInParameter(dbCommand, "psCorreo", DbType.String, psCorreo);
 
                     response = imdCommonData.DExecuteDT(database, dbCommand);
                 }

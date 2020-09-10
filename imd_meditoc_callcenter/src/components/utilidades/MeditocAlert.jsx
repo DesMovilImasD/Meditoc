@@ -8,7 +8,7 @@ import { useSnackbar } from "notistack";
  * Fecha: 26/08/2020
  * Invocado desde: App
  *************************************************************/
-const Alert = (props) => {
+const MeditocAlert = (props) => {
     const { entAlert } = props;
 
     //Instancia para desplegar alertas
@@ -30,11 +30,11 @@ const Alert = (props) => {
     return <div></div>;
 };
 
-Alert.propTypes = {
+MeditocAlert.propTypes = {
     entAlert: PropTypes.shape({
         message: PropTypes.string,
         variant: PropTypes.string,
     }),
 };
 
-export default Alert;
+export default MeditocAlert;

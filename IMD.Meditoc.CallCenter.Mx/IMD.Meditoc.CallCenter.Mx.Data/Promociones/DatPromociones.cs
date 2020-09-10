@@ -1,4 +1,5 @@
 ﻿using IMD.Admin.Conekta.Entities;
+using IMD.Admin.Conekta.Entities.Promotions;
 using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Data;
 using IMD.Admin.Utilities.Entities;

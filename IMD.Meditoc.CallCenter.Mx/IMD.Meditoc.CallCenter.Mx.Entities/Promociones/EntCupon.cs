@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace IMD.Admin.Conekta.Entities
+namespace IMD.Admin.Conekta.Entities.Promotions
 {
     public class EntCupon
     {
@@ -13,17 +14,17 @@ namespace IMD.Admin.Conekta.Entities
         public string fsDescripcionCategoria { get; set; }
         public string fsCodigo { get; set; }
         public double? fnMontoDescuento { get; set; }
-        public string sMontoDescuento { get; set; }
         public double? fnPorcentajeDescuento { get; set; }
-        public string sPorcentajeDescuento { get; set; }
         public int? fiMesBono { get; set; }
         public int fiTotalLanzamiento { get; set; }
         public int fiTotalCanjeado { get; set; }
         public DateTime? fdtFechaVencimiento { get; set; }
+        public bool fbActivo { get; set; }
+        public bool fbBaja { get; set; }
         public string sFechaVencimiento { get; set; }
         public DateTime? dtFechaCreacion { get; set; }
         public string sFechaCreacion { get; set; }
-        public bool fbActivo { get; set; }
-        public bool fbBaja { get; set; }
+        public string sMontoDescuento { get; set; }
+        public string sPorcentajeDescuento { get; set; }
     }
 }

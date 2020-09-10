@@ -10,7 +10,7 @@ import MeditocModalBotones from "./MeditocModalBotones";
  * Fecha: 26/08/2020
  * Invocado desde: -
  *************************************************************/
-const Confirmacion = (props) => {
+const MeditocConfirmacion = (props) => {
     const { open, setOpen, title, children, okMessage, cancelMessage, okFunc, cancelFunc } = props;
 
     //Titulo de la alerta
@@ -50,7 +50,7 @@ const Confirmacion = (props) => {
     );
 };
 
-Confirmacion.propTypes = {
+MeditocConfirmacion.propTypes = {
     cancelFunc: PropTypes.any,
     cancelMessage: PropTypes.any,
     children: PropTypes.any,
@@ -61,4 +61,4 @@ Confirmacion.propTypes = {
     title: PropTypes.any,
 };
 
-export default Confirmacion;
+export default MeditocConfirmacion;

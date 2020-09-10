@@ -19,9 +19,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             datUsuario = new DatUsuario();
         }
 
-        public IMDResponse<bool> DSaveUsuario(EntUsuario entUsuario)
+        public IMDResponse<EntUsuario> DSaveUsuario(EntUsuario entUsuario)
         {
-            IMDResponse<bool> response = new IMDResponse<bool>();
+            IMDResponse<EntUsuario> response = new IMDResponse<EntUsuario>();
 
             string metodo = nameof(this.DSaveUsuario);
             logger.Info(IMDSerialize.Serialize(67823458344355, $"Inicia {metodo}(EntUsuario entUsuario)", entUsuario));
@@ -38,24 +38,27 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 if (entUsuario.bActivo == true && entUsuario.bBaja == false)
                 {
 
-                    response = bValidaDatos(entUsuario);
+                    IMDResponse<bool> resValidaDatos = bValidaDatos(entUsuario);
 
-                    if (!response.Result) //Se valida que los datos que contiene el objeto de perfil no esten vacios.
+                    if (!resValidaDatos.Result) //Se valida que los datos que contiene el objeto de perfil no esten vacios.
                     {
-                        return response;
+                        return resValidaDatos.GetResponse< EntUsuario>();
                     }
                     entUsuario.sPassword = BEncodePassword(entUsuario.sPassword);
                 }
 
-                response = datUsuario.DSaveUsuario(entUsuario);
-                if(response.Code != 0)
+                IMDResponse<DataTable> resSaveUsuario = datUsuario.DSaveUsuario(entUsuario);
+                if(resSaveUsuario.Code != 0)
                 {
-                    return response;
+                    return resSaveUsuario.GetResponse<EntUsuario>();
                 }
 
+                IMDDataRow dr = new IMDDataRow(resSaveUsuario.Result.Rows[0]);
+                entUsuario.iIdUsuario = dr.ConvertTo<int>("iIdUsuario");
+
                 response.Code = 0;
-                response.Message = entUsuario.iIdUsuario == 0 ? "El usuario se guardó correctamente" : "El usuario se actualizo correctamente";
-                response.Result = true;
+                response.Message= "El usuario se guardó correctamente";
+                response.Result = entUsuario;
             }
             catch (Exception ex)
             {

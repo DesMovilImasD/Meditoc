@@ -69,5 +69,76 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
+        [HttpGet]
+        [Route("Api/Folios/Get/Report")]
+        public IMDResponse<List<EntFolioReporte>> CGetFolios(int? piIdFolio = null, int? piIdEmpresa = null, int? piIdProducto = null, int? piIdOrigen = null, string psFolio = null, string psOrdenConekta = null, bool? pbTerminosYCondiciones = null, bool? pbActivo = true, bool? pbBaja = false)
+        {
+            IMDResponse<List<EntFolioReporte>> response = new IMDResponse<List<EntFolioReporte>>();
+
+            string metodo = nameof(this.CGetFolios);
+            logger.Info(IMDSerialize.Serialize(67823458436041, $"Inicia {metodo}", piIdFolio, piIdEmpresa, piIdProducto, piIdOrigen, psFolio, psOrdenConekta, pbTerminosYCondiciones, pbActivo, pbBaja));
+
+            try
+            {
+                BusFolio busFolio = new BusFolio();
+                response = busFolio.BGetFolios(piIdFolio, piIdEmpresa, piIdProducto, piIdOrigen, psFolio, psOrdenConekta, pbTerminosYCondiciones, pbActivo, pbBaja);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458436818;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458436818, $"Error en {metodo}: {ex.Message}", piIdFolio, piIdEmpresa, piIdProducto, piIdOrigen, psFolio, psOrdenConekta, pbTerminosYCondiciones, pbActivo, pbBaja, ex, response));
+            }
+            return response;
+        }
+
+        [HttpPost]
+        [Route("Api/Folio/Update/FechaVencimiento")]
+        public IMDResponse<bool> CUpdFechaVencimiento(EntFolioFV entFolioFV)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.CUpdFechaVencimiento);
+            logger.Info(IMDSerialize.Serialize(67823458440703, $"Inicia {metodo}"));
+
+            try
+            {
+                BusFolio busFolio = new BusFolio();
+                response = busFolio.BUpdFechaVencimiento(entFolioFV);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458441480;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458441480, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        [HttpPost]
+        [Route("Api/Folio/Delete/FoliosEmpresa")]
+        public IMDResponse<bool> CEliminarFoliosEmpresa(EntFolioFV entFolioFV)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.CEliminarFoliosEmpresa);
+            logger.Info(IMDSerialize.Serialize(67823458445365, $"Inicia {metodo}"));
+
+            try
+            {
+                BusFolio busFolio = new BusFolio();
+                response = busFolio.BEliminarFoliosEmpresa(entFolioFV);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458446142;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458446142, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
     }
 }

@@ -6,9 +6,9 @@ import React from "react";
  * Fecha: 26/08/2020
  * Invocado desde: Sistema, Perfiles
  *************************************************************/
-const SubmoduloContenido = (props) => {
+const MeditocBody = (props) => {
     const { children } = props;
     return <div className="bar-content">{children}</div>;
 };
 
-export default SubmoduloContenido;
+export default MeditocBody;

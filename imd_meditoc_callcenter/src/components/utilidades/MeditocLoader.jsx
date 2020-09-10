@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
  * Fecha: 26/08/2020
  * Invocado desde: App
  *************************************************************/
-const Loader = (props) => {
+const MeditocLoader = (props) => {
     const { entLoader } = props;
 
     const classes = useStyles();
@@ -39,11 +39,11 @@ const Loader = (props) => {
     );
 };
 
-Loader.propTypes = {
+MeditocLoader.propTypes = {
     entLoader: PropTypes.shape({
         message: PropTypes.string.isRequired,
         open: PropTypes.bool.isRequired,
     }),
 };
 
-export default Loader;
+export default MeditocLoader;

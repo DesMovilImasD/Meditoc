@@ -1,5 +1,6 @@
 ﻿using IMD.Admin.Conekta.Business;
 using IMD.Admin.Conekta.Entities;
+using IMD.Admin.Conekta.Entities.Orders;
 using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
 using IMD.Meditoc.CallCenter.Mx.Business.CGU;
@@ -72,7 +73,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 }
 
                 //Se manda a llamar la creaciión de orden de conekta
-                BusOrder busOrder = new BusOrder();
+                BusOrder busOrder = new BusOrder("hdiu4soi3IHD334F", "SKlru3nc");
 
                 EntCreateOrder entCreateOrder = new EntCreateOrder();
 
@@ -117,9 +118,43 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
             try
             {
-                //Se crea el folio
                 EntFolio entFolio = new EntFolio();
-                entFolio.iIdEmpresa = entConecktaPago.iIdEmpresa;
+
+                //Se asigna empresa al folio
+                BusEmpresa busEmpresa = new BusEmpresa();
+                IMDResponse<List<EntEmpresa>> respuestaObtenerEmpresas = busEmpresa.BGetEmpresas(null, entConecktaPago.pacienteUnico.sCorreo);
+
+                if (respuestaObtenerEmpresas.Code != 0)
+                {
+                    return respuestaObtenerEmpresas.GetResponse<EntDetalleCompra>();
+                }
+
+                if (respuestaObtenerEmpresas.Result.Count > 0)
+                {
+                    EntEmpresa empresaRegistrada = respuestaObtenerEmpresas.Result.FirstOrDefault();
+                    entFolio.iIdEmpresa = empresaRegistrada.iIdEmpresa;
+                }
+                else
+                {
+                    EntEmpresa entEmpresa = new EntEmpresa()
+                    {
+                        iIdEmpresa = 0,
+                        sNombre = entConecktaPago.pacienteUnico.sNombre,
+                        sCorreo = entConecktaPago.pacienteUnico.sCorreo,
+                        iIdUsuarioMod = 1
+                    };
+
+                    IMDResponse<EntEmpresa> respuestaSaveEmpresa = busEmpresa.BSaveEmpresa(entEmpresa);
+                    if (respuestaSaveEmpresa.Code != 0)
+                    {
+                        return respuestaSaveEmpresa.GetResponse<EntDetalleCompra>();
+                    }
+
+                    EntEmpresa empresaRegistrada = respuestaSaveEmpresa.Result;
+                    entFolio.iIdEmpresa = empresaRegistrada.iIdEmpresa;
+                }
+
+                //Se crea el folio
                 entFolio.iIdOrigen = entConecktaPago.iIdOrigen;
                 entFolio.bTerminosYCondiciones = false;
                 entFolio.sOrdenConekta = entOrder.Result.id;
@@ -626,10 +661,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     }
                 }
 
-                string plantillaBody = "<!DOCTYPE html><html><head><meta charset=\"utf-8;\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" /><link href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap\" rel=\"stylesheet\" /><style>body {font-family: Roboto, \"Segoe UI\", Tahoma, Geneva, Verdana, sans-serif;margin: 0;}.center {text-align: center !important;}.right {text-align: right !important;}.left {text-align: left !important;}.light {font-weight: 300;}.normal {font-weight: normal;}.bold {font-weight: 500;}.small {font-size: 12px;}.large {font-size: 15px;}.font-default {color: #707070;}.font-primary {color: #11b6ca;}.font-secondary {color: #115c8a;}.font-unset {color: #ffffff;}.font-table {color: #878787;}.table {margin: auto;width: 100%;max-width: 800px;border: 1px solid #dddddd;border-spacing: 0px;border-collapse: 0px;}.table td {padding: 6px 0px;}.logo-head {background-color: #11b6ca;padding: 5px 0px;}.table-content {margin: auto;width: 90%;border-collapse: collapse;}.table-detail {margin: auto;width: 100%;border-collapse: collapse;}.table-detail td {padding: 8px;vertical-align: top;}.head-detail {background-color: #115c8a;}.product-detail {border-bottom: 1px solid #989898;}.total-detail {background-color: #989898;}.group-detail {background-color: #11b6ca;}.divider {height: 1px;border: 0;background-color: #989898;}.link {text-decoration: none;}.link:hover {text-decoration: underline;}.link-none {text-decoration: none;}.table-border {border-right: 10px solid #115c8a;}.table-border-l {border-left: 10px solid #115c8a;}.table-border-b td {border-bottom: 1px solid #ccc;}</style></head><body><table class=\"table\"><tr><td class=\"logo-head center\"><img alt=\"logo-meditoc\" src=\"sLogoMeditoc\" height=\"50px\" /></td></tr><tr><td><table class=\"table-content\"><tr><td class=\"center\"><span class=\"font-default bold large\"> Gracias por su compra </span></td></tr><tr><td class=\"center\"><span class=\"font-default normal large\"> Fecha de compra: oDetalleCompra.sFechaCompra </span></td></tr><tr class=\"center\"><td><span class=\"font-default normal large\">Guarda tus credenciales, te servirán para acceder a Meditoc:</span></td></tr>oDetalleCompra.folios<tr class=\"center\"><td><p><span class=\"font-default normal large\">Para utilizar el servicio, descarga la app “Meditoc 360” disponible en Appstore y Playstore.</span></p></td></tr><tr class=\"center\"><td><span><a href=\"sLinkApple\" target=\"_blank\"class=\"link-none\"><img src=\"sLogoApple\" height=\"50px\" width=\"150px\"alt=\"APP\" /></a></span><span><a href=\"sLinkPlay\"target=\"_blank\" class=\"link-none\"><img src=\"sLogoPlay\" height=\"50px\" width=\"150px\"alt=\"PLAY\" /></a></span></td></tr><tr><td><hr class=\"divider\" /></td></tr><tr><td><span class=\"font-default light small\">Si requiere factura para su compra, por favor envíenos un correo electrónico a facturacion@meditoc.com con la siguiente información:<br /><ul><li>Asunto del correo con su número de orden (Ej. SOLICITUD DE FACTURA oDetalleCompra.sOrden)</li><li>Nombre o Razón social</li><li>RFC</li><li>Dirección fiscal</li><li>Monto total pagado</li><li>Número de orden</li></ul></span></td></tr><tr><td><span class=\"font-default light small\">De conformidad con la ley federal de protección de datos personales en posesión de los particulares, ponemos a su disposición nuestro&nbsp;<a href=\"sAvisoPrivacidad\" class=\"link font-secondary normal\"> Aviso de Privacidad </a>&nbsp;y&nbsp;<a href=\"sTerminosCondiciones\" class=\"link font-secondary normal\"> Términos y Condiciones. </a></span></td></tr><tr><td class=\"center\"><img alt=\"logo-conekta\" src=\"sLogoConekta\" height=\"40px\" /></td></tr></table></td></tr></table></body></html>";
+                string plantillaBody = "<!DOCTYPE html><html><head><meta charset=\"utf-8;\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" /><link href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap\" rel=\"stylesheet\" /><style>body {font-family: Roboto, \"Segoe UI\", Tahoma, Geneva, Verdana, sans-serif;margin: 0;}.center {text-align: center !important;}.right {text-align: right !important;}.left {text-align: left !important;}.light {font-weight: 300;}.normal {font-weight: normal;}.bold {font-weight: 500;}.small {font-size: 12px;}.large {font-size: 15px;}.font-default {color: #707070;}.font-primary {color: #11b6ca;}.font-secondary {color: #115c8a;}.font-unset {color: #ffffff;}.font-table {color: #878787;}.table {margin: auto;width: 100%;max-width: 800px;border: 1px solid #dddddd;border-spacing: 0px;border-collapse: 0px;}.table td {padding: 6px 0px;}.logo-head {background-color: #11b6ca;padding: 5px 0px;}.table-content {margin: auto;width: 90%;border-collapse: collapse;}.table-detail {margin: auto;width: 100%;border-collapse: collapse;}.table-detail td {padding: 8px;vertical-align: top;}.head-detail {background-color: #115c8a;}.product-detail {border-bottom: 1px solid #989898;}.total-detail {background-color: #989898;}.group-detail {background-color: #11b6ca;}.divider {height: 1px;border: 0;background-color: #989898;}.link {text-decoration: none;}.link:hover {text-decoration: underline;}.link-none {text-decoration: none;}.table-border {border-right: 10px solid #115c8a;}.table-border-l {border-left: 10px solid #115c8a;}.table-border-b td {border-bottom: 1px solid #ccc;}</style></head><body><table class=\"table\"><tr><td class=\"logo-head center\"><img alt=\"logo-meditoc\" src=\"sLogoMeditoc\" height=\"50px\" /></td></tr><tr><td><table class=\"table-content\"><tr><td class=\"center\"><span class=\"font-default bold large\"> Gracias por su compra </span></td></tr><tr><td class=\"center\"><span class=\"font-default normal large\"> Folio de empresa: oDetalleCompra.sFolioEmpresa </span></td></tr><tr><td class=\"center\"><span class=\"font-default normal large\"> Fecha de compra: oDetalleCompra.sFechaCompra </span></td></tr><tr class=\"center\"><td><span class=\"font-default normal large\">Guarda tus credenciales, te servirán para acceder a Meditoc:</span></td></tr>oDetalleCompra.folios<tr class=\"center\"><td><p><span class=\"font-default normal large\">Para utilizar el servicio, descarga la app “Meditoc 360” disponible en Appstore y Playstore.</span></p></td></tr><tr class=\"center\"><td><span><a href=\"sLinkApple\" target=\"_blank\"class=\"link-none\"><img src=\"sLogoApple\" height=\"50px\" width=\"150px\"alt=\"APP\" /></a></span><span><a href=\"sLinkPlay\"target=\"_blank\" class=\"link-none\"><img src=\"sLogoPlay\" height=\"50px\" width=\"150px\"alt=\"PLAY\" /></a></span></td></tr><tr><td><hr class=\"divider\" /></td></tr><tr><td><span class=\"font-default light small\">Si requiere factura para su compra, por favor envíenos un correo electrónico a facturacion@meditoc.com con la siguiente información:<br /><ul><li>Asunto del correo con su número de orden (Ej. SOLICITUD DE FACTURA oDetalleCompra.sOrden)</li><li>Nombre o Razón social</li><li>RFC</li><li>Dirección fiscal</li><li>Monto total pagado</li><li>Número de orden</li></ul></span></td></tr><tr><td><span class=\"font-default light small\">De conformidad con la ley federal de protección de datos personales en posesión de los particulares, ponemos a su disposición nuestro&nbsp;<a href=\"sAvisoPrivacidad\" class=\"link font-secondary normal\"> Aviso de Privacidad </a>&nbsp;y&nbsp;<a href=\"sTerminosCondiciones\" class=\"link font-secondary normal\"> Términos y Condiciones. </a></span></td></tr><tr><td class=\"center\"><img alt=\"logo-conekta\" src=\"sLogoConekta\" height=\"40px\" /></td></tr></table></td></tr></table></body></html>";
 
                 plantillaBody = plantillaBody.Replace("sLogoMeditoc", ConfigurationManager.AppSettings["sLogoMeditoc"]);
                 plantillaBody = plantillaBody.Replace("oDetalleCompra.sNombre", detalleFolio.entEmpresa.sNombre);
+                plantillaBody = plantillaBody.Replace("oDetalleCompra.sFolioEmpresa", detalleFolio.entEmpresa.sFolioEmpresa);
                 plantillaBody = plantillaBody.Replace("oDetalleCompra.sFechaCompra", DateTime.Now.ToString("dd/MM/yyyy"));
                 plantillaBody = plantillaBody.Replace("oDetalleCompra.folios", htmlFolios);
                 plantillaBody = plantillaBody.Replace("sLinkApple", ConfigurationManager.AppSettings["sLinkApple"]);
@@ -657,6 +693,160 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458424386, $"Error en {metodo}(EntEmpresaDetalleFolio detalleFolio): {ex.Message}", detalleFolio, ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<List<EntFolioReporte>> BGetFolios(int? piIdFolio = null, int? piIdEmpresa = null, int? piIdProducto = null, int? piIdOrigen = null, string psFolio = null, string psOrdenConekta = null, bool? pbTerminosYCondiciones = null, bool? pbActivo = true, bool? pbBaja = false)
+        {
+            IMDResponse<List<EntFolioReporte>> response = new IMDResponse<List<EntFolioReporte>>();
+
+            string metodo = nameof(this.BGetFolios);
+            logger.Info(IMDSerialize.Serialize(67823458434487, $"Inicia {metodo}", piIdFolio, piIdEmpresa, piIdProducto, piIdOrigen, psFolio, psOrdenConekta, pbTerminosYCondiciones, pbActivo, pbBaja));
+
+            try
+            {
+                IMDResponse<DataTable> respuestaObtenerFolios = datFolio.DGetFolios(piIdFolio, piIdEmpresa, piIdProducto, piIdOrigen, psFolio, psOrdenConekta, pbTerminosYCondiciones, pbActivo, pbBaja);
+                if (respuestaObtenerFolios.Code != 0)
+                {
+                    return respuestaObtenerFolios.GetResponse<List<EntFolioReporte>>();
+                }
+
+                List<EntFolioReporte> lstFolios = new List<EntFolioReporte>();
+                foreach (DataRow drFolio in respuestaObtenerFolios.Result.Rows)
+                {
+                    IMDDataRow dr = new IMDDataRow(drFolio);
+
+                    EntFolioReporte folio = new EntFolioReporte
+                    {
+                        bTerminosYCondiciones = dr.ConvertTo<bool>("bTerminosYCondiciones"),
+                        dtFechaCreacion = dr.ConvertTo<DateTime>("dtFechaCreacion"),
+                        dtFechaVencimiento = dr.ConvertTo<DateTime?>("dtFechaVencimiento"),
+                        iConsecutivo = dr.ConvertTo<int>("iConsecutivo"),
+                        iIdEmpresa = dr.ConvertTo<int>("iIdEmpresa"),
+                        iIdFolio = dr.ConvertTo<int>("iIdFolio"),
+                        iIdOrigen = dr.ConvertTo<int>("iIdOrigen"),
+                        iIdProducto = dr.ConvertTo<int>("iIdProducto"),
+                        iIdTipoProducto = dr.ConvertTo<int>("iIdTipoProducto"),
+                        sCorreoEmpresa = dr.ConvertTo<string>("sCorreoEmpresa"),
+                        sFolio = dr.ConvertTo<string>("sFolio"),
+                        sFolioEmpresa = dr.ConvertTo<string>("sFolioEmpresa"),
+                        sIcon = dr.ConvertTo<string>("sIcon"),
+                        sNombreEmpresa = dr.ConvertTo<string>("sNombreEmpresa"),
+                        sNombreProducto = dr.ConvertTo<string>("sNombreProducto"),
+                        sOrdenConekta = dr.ConvertTo<string>("sOrdenConekta"),
+                        sOrigen = dr.ConvertTo<string>("sOrigen"),
+                        sTipoProducto = dr.ConvertTo<string>("sTipoProducto"),
+                    };
+                    folio.sFechaCreacion = folio.dtFechaCreacion.ToString("dd/MM/yyyy HH:mm");
+                    folio.sFechaVencimiento = folio.dtFechaVencimiento == null ? "Sin asignar" : ((DateTime)folio.dtFechaVencimiento).ToString("dd/MM/yyyy HH:mm");
+
+                    lstFolios.Add(folio);
+                }
+
+                response.Code = 0;
+                response.Message = "Folios consultados";
+                response.Result = lstFolios;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458435264;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458435264, $"Error en {metodo}: {ex.Message}", piIdFolio, piIdEmpresa, piIdProducto, piIdOrigen, psFolio, psOrdenConekta, pbTerminosYCondiciones, pbActivo, pbBaja, ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<bool> BUpdFechaVencimiento(EntFolioFV entFolioFV)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.BUpdFechaVencimiento);
+            logger.Info(IMDSerialize.Serialize(67823458439149, $"Inicia {metodo}"));
+
+            try
+            {
+                if (entFolioFV == null)
+                {
+                    response.Code = 345678453;
+                    response.Message = "Por favor, ingrese los datos para continuar";
+                    return response;
+                }
+
+                if (entFolioFV.lstFolios == null || entFolioFV.lstFolios?.Count < 1)
+                {
+                    response.Code = 345678453;
+                    response.Message = "Por favor, seleccione los folios para continuar";
+                    return response;
+                }
+
+                foreach (EntFolioFVItem folio in entFolioFV.lstFolios)
+                {
+                    IMDResponse<bool> respuestaUpdFecha = datFolio.DUpdFechaVencimiento(entFolioFV.iIdEmpresa, folio.iIdFolio, entFolioFV.dtFechaVencimiento, entFolioFV.iIdUsuario);
+                    if (respuestaUpdFecha.Code != 0)
+                    {
+                        return respuestaUpdFecha;
+                    }
+                }
+
+                response.Code = 0;
+                response.Message = "Folios actualizados";
+                response.Result = true;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458439926;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458439926, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+
+        public IMDResponse<bool> BEliminarFoliosEmpresa(EntFolioFV entFolioFV)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.BEliminarFoliosEmpresa);
+            logger.Info(IMDSerialize.Serialize(67823458443811, $"Inicia {metodo}"));
+
+            try
+            {
+                if (entFolioFV == null)
+                {
+                    response.Code = 345678453;
+                    response.Message = "Por favor, ingrese los datos para continuar";
+                    return response;
+                }
+
+                if (entFolioFV.lstFolios == null || entFolioFV.lstFolios?.Count < 1)
+                {
+                    response.Code = 345678453;
+                    response.Message = "Por favor, seleccione los folios para continuar";
+                    return response;
+                }
+
+                foreach (EntFolioFVItem folio in entFolioFV.lstFolios)
+                {
+                    IMDResponse<bool> respuestaUpdFecha = datFolio.DEliminarFoliosEmpresa(entFolioFV.iIdEmpresa, folio.iIdFolio, entFolioFV.iIdUsuario);
+                    if (respuestaUpdFecha.Code != 0)
+                    {
+                        return respuestaUpdFecha;
+                    }
+                }
+
+                response.Code = 0;
+                response.Message = "Folios actualizados";
+                response.Result = true;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458444588;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458444588, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }

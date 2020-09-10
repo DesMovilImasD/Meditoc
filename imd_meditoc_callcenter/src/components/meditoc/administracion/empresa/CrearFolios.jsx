@@ -5,24 +5,36 @@ import { useState } from "react";
 import MeditocTable from "../../../utilidades/MeditocTable";
 import { useEffect } from "react";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
+import FolioController from "../../../../controllers/FolioController";
 
 const CrearFolios = (props) => {
-    const { entEmpresa, open, setOpen, funcAlert } = props;
+    const {
+        entEmpresa,
+        open,
+        setOpen,
+        listaProductos,
+        funcGetFoliosEmpresa,
+        usuarioSesion,
+        funcLoader,
+        funcAlert,
+    } = props;
 
     const columns = [
         { title: "ID", field: "iIdProducto", align: "center", editable: "never", hidden: true },
         { title: "Nombre", field: "sNombre", align: "center", editable: "never" },
-        { title: "Precio", field: "fCosto", align: "center", editable: "never" },
+        { title: "Precio", field: "sCosto", align: "center", editable: "never" },
         { title: "Cantidad", field: "iCantidad", align: "center" },
     ];
 
-    const data = [
-        { iIdProducto: 1, sNombre: "Membresía 3 meses", fCosto: 300, iCantidad: 0 },
-        { iIdProducto: 2, sNombre: "Membresía 6 meses", fCosto: 600, iCantidad: 0 },
-        { iIdProducto: 3, sNombre: "Membresía 9 meses", fCosto: 900, iCantidad: 0 },
-    ];
-
-    const [listaProductosEmpresa, setListaProductosEmpresa] = useState(data);
+    const [listaProductosEmpresa, setListaProductosEmpresa] = useState(
+        listaProductos.map((producto) => ({
+            iIdProducto: producto.iIdProducto,
+            sNombre: producto.sNombre,
+            fCosto: producto.fCosto,
+            sCosto: producto.sCosto,
+            iCantidad: 0,
+        }))
+    );
 
     const [listaProductosSeleccionados, setListaProductosSeleccionados] = useState([]);
 
@@ -30,7 +42,6 @@ const CrearFolios = (props) => {
     const [montoIva, setMontoIva] = useState(0);
 
     const handleCellEditable = (newValue, oldValue, productoEditado, columna) => {
-        console.log(newValue, oldValue, productoEditado, columna);
         if (isNaN(newValue)) {
             return;
         }
@@ -47,19 +58,56 @@ const CrearFolios = (props) => {
         setListaProductosEmpresa(listaProductosEmpresaCopia);
     };
 
-    const handleClickCrearFolios = () => {
+    const handleClickCrearFolios = async () => {
         if (listaProductosSeleccionados.length < 1) {
             funcAlert(
                 "Para generar los folios debe seleccionar al menos un producto de la lista e ingresar la cantidad (mínimo 1).",
                 "warning"
             );
+            return;
         }
         if (listaProductosSeleccionados.some((x) => x.iCantidad === 0)) {
             funcAlert(
                 "Verifique que las cantidades ingresadas para los productos seleccionados sean como mínimo 1.",
                 "warning"
             );
+            return;
         }
+
+        funcLoader(true, "Generando folios nuevos...");
+
+        const folioController = new FolioController();
+
+        const entFoliosEmpresaSubmit = {
+            iIdEmpresa: entEmpresa.iIdEmpresa,
+            iIdOrigen: 5,
+            line_items: listaProductosSeleccionados.map((prod) => ({
+                product_id: prod.iIdProducto,
+                quantity: prod.iCantidad,
+            })),
+        };
+
+        const response = await folioController.funcCrearFoliosEmpresa(entFoliosEmpresaSubmit);
+
+        if (response.Code === 0) {
+            funcAlert(response.Message, "success");
+            setOpen(false);
+            setListaProductosEmpresa(
+                listaProductos.map((producto) => ({
+                    iIdProducto: producto.iIdProducto,
+                    sNombre: producto.sNombre,
+                    fCosto: producto.fCosto,
+                    sCosto: producto.sCosto,
+                    iCantidad: 0,
+                }))
+            );
+            setListaProductosSeleccionados([]);
+            await funcGetFoliosEmpresa();
+        } else {
+            funcAlert(response.Message);
+        }
+
+        funcLoader();
     };
 
     useEffect(() => {

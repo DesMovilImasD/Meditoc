@@ -34,9 +34,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             validaUsuarioCorreo = "svc_cgu_ValidaUsuarioCorreo";
         }
 
-        public IMDResponse<bool> DSaveUsuario(EntUsuario entUsuario)
+        public IMDResponse<DataTable> DSaveUsuario(EntUsuario entUsuario)
         {
-            IMDResponse<bool> response = new IMDResponse<bool>();
+            IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
             string metodo = nameof(this.DSaveUsuario);
             logger.Info(IMDSerialize.Serialize(67823458342801, $"Inicia {metodo}(EntUsuario entUsuario)", entUsuario));
@@ -61,7 +61,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
                     database.AddInParameter(dbCommand, "pbActivo", DbType.Boolean, entUsuario.bActivo);
                     database.AddInParameter(dbCommand, "pbBaja", DbType.Boolean, entUsuario.bBaja);
 
-                    response = imdCommonData.DExecute(database, dbCommand);
+                    response = imdCommonData.DExecuteDT(database, dbCommand);
                 }
             }
             catch (Exception ex)
