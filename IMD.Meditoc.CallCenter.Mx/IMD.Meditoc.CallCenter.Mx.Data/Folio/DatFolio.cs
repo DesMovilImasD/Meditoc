@@ -20,6 +20,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
         private Database database;
         IMDCommonData imdCommonData;
         string saveFolio;
+        string loginApp;
 
         public DatFolio()
         {
@@ -28,6 +29,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             database = imdCommonData.DGetDatabase(FsConnectionString, "MeditocComercial", "Meditoc1");
 
             saveFolio = "sva_meditoc_save_folio";
+            loginApp = "svc_app_login";
 
         }
 
@@ -66,5 +68,32 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             return response;
         }
 
+        public IMDResponse<DataTable> DLoginApp(string sUsuario, string sPassword)
+        {
+            IMDResponse<DataTable> response = new IMDResponse<DataTable>();
+
+            string metodo = nameof(this.DLoginApp);
+            logger.Info(IMDSerialize.Serialize(67823458428271, $"Inicia {metodo}(string sUsuario, string sPassword)", sUsuario, sPassword));
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(loginApp))
+                {
+                    database.AddInParameter(dbCommand, "psUsuario", DbType.String, sUsuario);
+                    database.AddInParameter(dbCommand, "psPassword", DbType.String, sPassword);
+
+
+                    response = imdCommonData.DExecuteDT(database, dbCommand);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458429048;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458429048, $"Error en {metodo}(string sUsuario, string sPassword): {ex.Message}", sUsuario, sPassword, ex, response));
+            }
+            return response;
+        }
     }
 }

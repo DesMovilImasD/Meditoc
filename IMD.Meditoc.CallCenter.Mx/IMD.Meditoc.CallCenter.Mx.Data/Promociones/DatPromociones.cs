@@ -33,7 +33,7 @@ namespace IMD.Admin.Conekta.Data
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         string spSaveCupon;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        string spGetCupones;||
+        string spGetCupones;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         string spUnsubscribeCupon;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]

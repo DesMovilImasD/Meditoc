@@ -69,5 +69,28 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
+        [HttpPost]
+        [Route("Api/Folio/Get/LoginApp")]
+        public IMDResponse<bool> CLoginApp([FromUri] string sUsuario, string sPassword)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.CLoginApp);
+            logger.Info(IMDSerialize.Serialize(67823458431379, $"Inicia {metodo}([FromUri] string sUsuario, string sPassword)", sUsuario, sPassword));
+
+            try
+            {
+                BusFolio busFolio = new BusFolio();
+                response = busFolio.BLoginApp(sUsuario, sPassword);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458432156;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458432156, $"Error en {metodo}([FromUri] string sUsuario, string sPassword): {ex.Message}", sUsuario, sPassword, ex, response));
+            }
+            return response;
+        }
     }
 }

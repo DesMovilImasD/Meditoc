@@ -660,5 +660,74 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             }
             return response;
         }
+
+        public IMDResponse<bool> BLoginApp(string sUsuario, string sPassword)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+            BusUsuario busUsuario = new BusUsuario();
+            EntFolio entFolio = new EntFolio();
+
+            string metodo = nameof(this.BLoginApp);
+            logger.Info(IMDSerialize.Serialize(67823458429825, $"Inicia {metodo}(string sUsuario, string sPassword)", sUsuario, sPassword));
+
+            try
+            {
+                response.Code = 67823458429825;
+
+                if (sUsuario == "")
+                {
+                    response.Message = "El usuario no puede ser vacio";
+                    return response;
+                }
+
+                if (sPassword == "")
+                {
+                    response.Message = "La contraseña no puede ser vacia";
+                    return response;
+                }
+
+                sPassword = busUsuario.BEncodePassword(sPassword);
+
+                IMDResponse<DataTable> dtLoginApp = datFolio.DLoginApp(sUsuario, sPassword);
+
+                if (dtLoginApp.Code != 0)
+                {
+                    return response = dtLoginApp.GetResponse<bool>();
+                }
+
+                if (dtLoginApp.Result.Rows.Count == 0)
+                {
+                    response.Message = "Su usuario o contraseña es invalida";
+                    return response;
+                }
+
+                foreach (DataRow item in dtLoginApp.Result.Rows)
+                {
+                    IMDDataRow dataRow = new IMDDataRow(item);
+
+                    entFolio.sFolio = dataRow.ConvertTo<string>("sFolio");
+                    entFolio.sPassword = dataRow.ConvertTo<string>("sPassword");
+                    entFolio.dtFechaVencimiento = dataRow.ConvertTo<DateTime>("dtFechaVencimiento");
+                }
+
+                if (entFolio.dtFechaVencimiento < DateTime.Now)
+                {
+                    response.Message = "Su folio a expirado.";
+                    return response;
+                }
+
+                response.Code = 0;
+                response.Message = "Login correcto";
+                response.Result = true;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458430602;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458430602, $"Error en {metodo}(string sUsuario, string sPassword): {ex.Message}", sUsuario, sPassword, ex, response));
+            }
+            return response;
+        }
     }
 }
