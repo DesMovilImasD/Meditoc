@@ -1,4 +1,5 @@
 ﻿using IMD.Admin.Conekta.Entities;
+using IMD.Admin.Conekta.Entities.Orders;
 using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
 using log4net;

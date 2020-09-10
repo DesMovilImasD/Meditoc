@@ -57,12 +57,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Catalogos\DatEspecialidad.cs" />
     <Compile Include="CGU\DatBoton.cs" />
     <Compile Include="CGU\DatModulo.cs" />
     <Compile Include="CGU\DatPerfil.cs" />
     <Compile Include="CGU\DatPermiso.cs" />
     <Compile Include="CGU\DatSubModulo.cs" />
     <Compile Include="CGU\DatUsuario.cs" />
+    <Compile Include="Colaborador\DatColaborador.cs" />
     <Compile Include="Empresa\DatEmpresa.cs" />
     <Compile Include="Folio\DatFolio.cs" />
     <Compile Include="Ordenes\DatOrder.cs" />

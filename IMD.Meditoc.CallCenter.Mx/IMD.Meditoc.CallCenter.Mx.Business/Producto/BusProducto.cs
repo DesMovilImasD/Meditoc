@@ -31,10 +31,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Producto
 
             try
             {
-                response = BValidaDatos(entProducto);
-                if (response.Code != 0)
+                if (entProducto.bActivo && !entProducto.bBaja)
                 {
-                    return response;
+                    response = BValidaDatos(entProducto);
+
+                    if (response.Code != 0)
+                    {
+                        return response;
+                    }
                 }
 
                 response = datProducto.DSaveProducto(entProducto);
@@ -90,10 +94,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Producto
                     producto.sNombreCorto = dr.ConvertTo<string>("sNombreCorto");
                     producto.sDescripcion = dr.ConvertTo<string>("sDescripcion");
                     producto.fCosto = dr.ConvertTo<double>("fCosto");
+                    producto.sCosto = producto.fCosto.ToString("C");
                     producto.iMesVigencia = dr.ConvertTo<int>("iMesVigencia");
                     producto.sIcon = dr.ConvertTo<string>("sIcon");
                     producto.sPrefijoFolio = dr.ConvertTo<string>("sPrefijoFolio");
                     producto.bComercial = Convert.ToBoolean(dr.ConvertTo<int>("bComercial"));
+                    producto.sComercial = producto.bComercial ? "Si" : "No";
                     producto.bActivo = Convert.ToBoolean(dr.ConvertTo<int>("bActivo"));
                     producto.bBaja = Convert.ToBoolean(dr.ConvertTo<int>("bBaja"));
 
@@ -151,7 +157,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Producto
                     return response;
                 }
 
-                if (entProducto.iMesVigencia <= 0)
+
+                if (entProducto.iMesVigencia <= 0 && entProducto.iIdTipoProducto == (int)EnumTipoProducto.Membresia)
                 {
                     response.Message = "La vigencia debe ser mayor a 0.";
                     return response;

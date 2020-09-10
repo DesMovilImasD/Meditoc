@@ -1,0 +1,27 @@
+const listIconsMedicalProducts = [
+  { key: 'e06a', htmlIcon: '&#xe06a;' },
+  { key: 'f481', htmlIcon: '&#xf481;' },
+  { key: 'f812', htmlIcon: '&#xf812;' },
+  { key: 'f478', htmlIcon: '&#xf478;' },
+  { key: 'f477', htmlIcon: '&#xf477;' },
+  { key: 'f7f5', htmlIcon: '&#xf7f5;' },
+  { key: 'f7f2', htmlIcon: '&#xf7f2;' },
+  { key: 'f469', htmlIcon: '&#xf469;' },
+  { key: 'f7e6', htmlIcon: '&#xf7e6;' },
+  { key: 'e05c', htmlIcon: '&#xe05c;' },
+  { key: 'f497', htmlIcon: '&#xf497;' },
+  { key: 'f486', htmlIcon: '&#xf486;' },
+  { key: 'f572', htmlIcon: '&#xf572;' },
+  { key: 'f0f0', htmlIcon: '&#xf0f0;' },
+  { key: 'f48e', htmlIcon: '&#xf48e;' },
+  { key: 'f47d', htmlIcon: '&#xf47d;' },
+  { key: 'f0f8', htmlIcon: '&#xf0f8;' },
+  { key: 'e076', htmlIcon: '&#xe076;' },
+  { key: 'f5c9', htmlIcon: '&#xf5c9;' },
+  { key: 'f0f1', htmlIcon: '&#xf0f1;' },
+  { key: 'f610', htmlIcon: '&#xf610;' },
+  { key: 'f0f9', htmlIcon: '&#xf0f9;' },
+  { key: 'f487', htmlIcon: '&#xf487;' },
+]
+
+export { listIconsMedicalProducts }

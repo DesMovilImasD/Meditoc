@@ -1,14 +1,18 @@
-﻿using IMD.Admin.Conekta.Entities;
+﻿using IMD.Admin.Conekta.Entities.Orders;
 using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Data;
 using IMD.Admin.Utilities.Entities;
 using log4net;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace IMD.Admin.Conekta.Data
 {
@@ -40,11 +44,11 @@ namespace IMD.Admin.Conekta.Data
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         string spGetConektaOrder;
 #endif
-        public DatOrder()
+        public DatOrder(string appToken, string appKey)
         {
             imdCommonData = new IMDCommonData();
             string FsConnectionString = "cnxConekta";
-            database = imdCommonData.DGetDatabase(FsConnectionString, "hdiu4soi3IHD334F", "SKlru3nc");
+            database = imdCommonData.DGetDatabase(FsConnectionString, appToken, appKey);
 
             switch (ConfigurationManager.ConnectionStrings[FsConnectionString].ProviderName)
             {
@@ -74,29 +78,33 @@ namespace IMD.Admin.Conekta.Data
         /// </summary>
         /// <param name="puId">ID generado de la orden</param>
         /// <param name="entOrder">Datos de la orden</param>
+        /// <param name="psOrigin">Origen de status</param>
+        /// <param name="piIdCupon">ID del cupón si aplica</param>
         /// <returns></returns>
         public IMDResponse<bool> DSaveConektaOrder(Guid puId, EntOrder entOrder, string psOrigin, int? piIdCupon = null)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.DSaveConektaOrder);
-            logger.Info(IMDSerialize.Serialize(67823458097269, $"Inicia {metodo}(Guid puId, EntOrder entOrder)", puId, entOrder));
+            logger.Info(IMDSerialize.Serialize(67823458097269, $"Inicia {metodo}(Guid puId, EntOrder entOrder, string psOrigin, int? piIdCupon = null)", puId, entOrder, psOrigin, piIdCupon));
 
             try
             {
                 using (DbCommand dbCommand = database.GetStoredProcCommand(spSaveConektaOrder))
                 {
                     database.AddInParameter(dbCommand, "puId", DbType.Guid, puId);
-                    database.AddInParameter(dbCommand, "psOrderId", DbType.String, entOrder.id);
+                    database.AddInParameter(dbCommand, "psOrderId", DbType.String, entOrder.id?.Trim());
                     database.AddInParameter(dbCommand, "pnAmount", DbType.Decimal, entOrder.amount);
+                    database.AddInParameter(dbCommand, "pnAmountDiscount", DbType.Decimal, entOrder.amount_discount);
+                    database.AddInParameter(dbCommand, "pnAmountTax", DbType.Decimal, entOrder.amount_tax);
                     database.AddInParameter(dbCommand, "pnAmountPaid", DbType.Decimal, entOrder.amount_paid);
                     database.AddInParameter(dbCommand, "pnAmountRefunded", DbType.Decimal, entOrder.amount_refunded);
-                    database.AddInParameter(dbCommand, "psCurrency", DbType.String, entOrder.currency);
-                    database.AddInParameter(dbCommand, "psPaymentStatus", DbType.String, entOrder.payment_status);
-                    database.AddInParameter(dbCommand, "psOrigin", DbType.String, psOrigin);
+                    database.AddInParameter(dbCommand, "psCurrency", DbType.String, entOrder.currency?.Trim());
+                    database.AddInParameter(dbCommand, "psPaymentStatus", DbType.String, entOrder.payment_status?.Trim());
+                    database.AddInParameter(dbCommand, "psOrigin", DbType.String, psOrigin?.Trim());
                     database.AddInParameter(dbCommand, "piIdCupon", DbType.Int32, piIdCupon);
-                    database.AddInParameter(dbCommand, "piCreated", DbType.Int32, entOrder.created_at);
-                    database.AddInParameter(dbCommand, "piUpdated", DbType.Int32, entOrder.updated_at);
+                    database.AddInParameter(dbCommand, "piCreated", DbType.Int64, entOrder.created_at);
+                    database.AddInParameter(dbCommand, "piUpdated", DbType.Int64, entOrder.updated_at);
 
                     response = imdCommonData.DExecute(database, dbCommand);
                 }
@@ -106,7 +114,7 @@ namespace IMD.Admin.Conekta.Data
                 response.Code = 67823458098046;
                 response.Message = "Ocurrió un error inesperado al guardar el detalle de la orden en la base de datos";
 
-                logger.Error(IMDSerialize.Serialize(67823458098046, $"Error en {metodo}(Guid puId, EntOrder entOrder): {ex.Message}", puId, entOrder, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458098046, $"Error en {metodo}(Guid puId, EntOrder entOrder, string psOrigin, int? piIdCupon = null): {ex.Message}", puId, entOrder, psOrigin, piIdCupon, ex, response));
             }
             return response;
         }
@@ -131,9 +139,9 @@ namespace IMD.Admin.Conekta.Data
                 using (DbCommand dbCommand = database.GetStoredProcCommand(spSaveCustomerInfo))
                 {
                     database.AddInParameter(dbCommand, "puId", DbType.Guid, puId);
-                    database.AddInParameter(dbCommand, "psEmail", DbType.String, entCustomerInfo.email);
-                    database.AddInParameter(dbCommand, "psPhone", DbType.String, entCustomerInfo.phone);
-                    database.AddInParameter(dbCommand, "psName", DbType.String, entCustomerInfo.name);
+                    database.AddInParameter(dbCommand, "psEmail", DbType.String, entCustomerInfo.email?.Trim());
+                    database.AddInParameter(dbCommand, "psPhone", DbType.String, entCustomerInfo.phone?.Trim());
+                    database.AddInParameter(dbCommand, "psName", DbType.String, entCustomerInfo.name?.Trim());
 
                     response = imdCommonData.DExecute(database, dbCommand);
                 }
@@ -170,8 +178,8 @@ namespace IMD.Admin.Conekta.Data
                 {
                     database.AddInParameter(dbCommand, "puId", DbType.Guid, puId);
                     database.AddInParameter(dbCommand, "piConsecutive", DbType.Int32, piConsecutive);
-                    database.AddInParameter(dbCommand, "psItemId", DbType.String, entLineItemDetail.id);
-                    database.AddInParameter(dbCommand, "psName", DbType.String, entLineItemDetail.name);
+                    database.AddInParameter(dbCommand, "psItemId", DbType.String, entLineItemDetail.id?.Trim());
+                    database.AddInParameter(dbCommand, "psName", DbType.String, entLineItemDetail.name?.Trim());
                     database.AddInParameter(dbCommand, "pnUnitPrice", DbType.Decimal, entLineItemDetail.unit_price);
                     database.AddInParameter(dbCommand, "piQuantity", DbType.Int32, entLineItemDetail.quantity);
 
@@ -195,42 +203,43 @@ namespace IMD.Admin.Conekta.Data
         /// </summary>
         /// <param name="puId">ID generado de la orden</param>
         /// <param name="entChargeDetail">Datos de pago</param>
+        /// <param name="psOrigin">Origen del status</param>
         /// <returns></returns>
         public IMDResponse<bool> DSaveCharge(Guid puId, EntChargeDetail entChargeDetail, string psOrigin)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.DSaveCharge);
-            logger.Info(IMDSerialize.Serialize(67823458101931, $"Inicia {metodo}(Guid puId, EntChargeDetail entChargeDetail)", puId, entChargeDetail));
+            logger.Info(IMDSerialize.Serialize(67823458101931, $"Inicia {metodo}(Guid puId, EntChargeDetail entChargeDetail, string psOrigin)", puId, entChargeDetail, psOrigin));
 
             try
             {
                 using (DbCommand dbCommand = database.GetStoredProcCommand(spSaveCharge))
                 {
                     database.AddInParameter(dbCommand, "puId", DbType.Guid, puId);
-                    database.AddInParameter(dbCommand, "psChargeId", DbType.String, entChargeDetail.id);
-                    database.AddInParameter(dbCommand, "psDeviceFingerprint", DbType.String, entChargeDetail.device_fingerprint);
-                    database.AddInParameter(dbCommand, "psName", DbType.String, entChargeDetail.payment_method.name);
-                    database.AddInParameter(dbCommand, "psExpMonth", DbType.String, entChargeDetail.payment_method.exp_month);
-                    database.AddInParameter(dbCommand, "psExpYear", DbType.String, entChargeDetail.payment_method.exp_year);
-                    database.AddInParameter(dbCommand, "psAuthCode", DbType.String, entChargeDetail.payment_method.auth_code);
-                    database.AddInParameter(dbCommand, "psType", DbType.String, entChargeDetail.payment_method.type);
-                    database.AddInParameter(dbCommand, "psLast4", DbType.String, entChargeDetail.payment_method.last4);
-                    database.AddInParameter(dbCommand, "psBrand", DbType.String, entChargeDetail.payment_method.brand);
-                    database.AddInParameter(dbCommand, "psIssuer", DbType.String, entChargeDetail.payment_method.issuer);
-                    database.AddInParameter(dbCommand, "psAccountType", DbType.String, entChargeDetail.payment_method.account_type);
+                    database.AddInParameter(dbCommand, "psChargeId", DbType.String, entChargeDetail.id?.Trim());
+                    database.AddInParameter(dbCommand, "psDeviceFingerprint", DbType.String, entChargeDetail.device_fingerprint?.Trim());
+                    database.AddInParameter(dbCommand, "psName", DbType.String, entChargeDetail.payment_method.name?.Trim());
+                    database.AddInParameter(dbCommand, "psExpMonth", DbType.String, entChargeDetail.payment_method.exp_month?.Trim());
+                    database.AddInParameter(dbCommand, "psExpYear", DbType.String, entChargeDetail.payment_method.exp_year?.Trim());
+                    database.AddInParameter(dbCommand, "psAuthCode", DbType.String, entChargeDetail.payment_method.auth_code?.Trim());
+                    database.AddInParameter(dbCommand, "psType", DbType.String, entChargeDetail.payment_method.type?.Trim());
+                    database.AddInParameter(dbCommand, "psLast4", DbType.String, entChargeDetail.payment_method.last4?.Trim());
+                    database.AddInParameter(dbCommand, "psBrand", DbType.String, entChargeDetail.payment_method.brand?.Trim());
+                    database.AddInParameter(dbCommand, "psIssuer", DbType.String, entChargeDetail.payment_method.issuer?.Trim());
+                    database.AddInParameter(dbCommand, "psAccountType", DbType.String, entChargeDetail.payment_method.account_type?.Trim());
                     database.AddInParameter(dbCommand, "piMonthlyInstallments", DbType.Int32, entChargeDetail.monthly_installments);
-                    database.AddInParameter(dbCommand, "psCountry", DbType.String, entChargeDetail.payment_method.country);
-                    database.AddInParameter(dbCommand, "psServiceName", DbType.String, entChargeDetail.payment_method.service_name);
-                    database.AddInParameter(dbCommand, "psBarcodeUrl", DbType.String, entChargeDetail.payment_method.barcode_url);
-                    database.AddInParameter(dbCommand, "piExpiresAt", DbType.Int32, entChargeDetail.payment_method.expires_at);
-                    database.AddInParameter(dbCommand, "psStoreName", DbType.String, entChargeDetail.payment_method.store_name);
-                    database.AddInParameter(dbCommand, "psReference", DbType.String, entChargeDetail.payment_method.reference);
-                    database.AddInParameter(dbCommand, "psStatus", DbType.String, entChargeDetail.status);
-                    database.AddInParameter(dbCommand, "psOrigin", DbType.String, psOrigin);
+                    database.AddInParameter(dbCommand, "psCountry", DbType.String, entChargeDetail.payment_method.country?.Trim());
+                    database.AddInParameter(dbCommand, "psServiceName", DbType.String, entChargeDetail.payment_method.service_name?.Trim());
+                    database.AddInParameter(dbCommand, "psBarcodeUrl", DbType.String, entChargeDetail.payment_method.barcode_url?.Trim());
+                    database.AddInParameter(dbCommand, "piExpiresAt", DbType.Int64, entChargeDetail.payment_method.expires_at);
+                    database.AddInParameter(dbCommand, "psStoreName", DbType.String, entChargeDetail.payment_method.store_name?.Trim());
+                    database.AddInParameter(dbCommand, "psReference", DbType.String, entChargeDetail.payment_method.reference?.Trim());
+                    database.AddInParameter(dbCommand, "psStatus", DbType.String, entChargeDetail.status?.Trim());
+                    database.AddInParameter(dbCommand, "psOrigin", DbType.String, psOrigin?.Trim());
                     database.AddInParameter(dbCommand, "pnAmount", DbType.Decimal, entChargeDetail.amount);
                     database.AddInParameter(dbCommand, "piFee", DbType.Int32, entChargeDetail.fee);
-                    database.AddInParameter(dbCommand, "psCustomerId", DbType.String, entChargeDetail.customer_id);
+                    database.AddInParameter(dbCommand, "psCustomerId", DbType.String, entChargeDetail.customer_id?.Trim());
 
                     response = imdCommonData.DExecute(database, dbCommand);
                 }
@@ -240,7 +249,7 @@ namespace IMD.Admin.Conekta.Data
                 response.Code = 67823458102708;
                 response.Message = "Ocurrió un error inesperado al guardar el detalle del pago en la base de datos";
 
-                logger.Error(IMDSerialize.Serialize(67823458102708, $"Error en {metodo}(Guid puId, EntChargeDetail entChargeDetail): {ex.Message}", puId, entChargeDetail, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458102708, $"Error en {metodo}(Guid puId, EntChargeDetail entChargeDetail, string psOrigin): {ex.Message}", puId, entChargeDetail, psOrigin, ex, response));
             }
             return response;
         }
@@ -256,7 +265,7 @@ namespace IMD.Admin.Conekta.Data
             {
                 using (DbCommand dbCommand = database.GetStoredProcCommand(spGetConektaOrder))
                 {
-                    database.AddInParameter(dbCommand, "psOrderId", DbType.String, psOrderId);
+                    database.AddInParameter(dbCommand, "psOrderId", DbType.String, psOrderId?.Trim());
 
                     response = imdCommonData.DExecuteDT(database, dbCommand);
                 }

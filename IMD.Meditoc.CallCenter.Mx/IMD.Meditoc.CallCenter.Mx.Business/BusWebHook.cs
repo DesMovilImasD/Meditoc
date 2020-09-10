@@ -1,5 +1,6 @@
 ﻿using IMD.Admin.Conekta.Data;
-using IMD.Admin.Conekta.Entities;
+using IMD.Admin.Conekta.Entities.Orders;
+using IMD.Admin.Conekta.Entities.WebHooks;
 using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
 using log4net;
@@ -7,7 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace IMD.Admin.Conekta.Business
 {
@@ -24,12 +26,19 @@ namespace IMD.Admin.Conekta.Business
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private DatOrder datOrder;
 #endif
-        public BusWebHook()
+        public BusWebHook(string appToken, string appKey)
         {
-            busOrder = new BusOrder();
-            datOrder = new DatOrder();
+            busOrder = new BusOrder(appToken, appKey);
+            datOrder = new DatOrder(appToken, appKey);
         }
 
+        /// <summary>
+        /// Función: Actualiza los status de la orden escuchando las llamadas de conekta
+        /// Creado: Cristopher Noh 28/07/2020
+        /// Modificado:
+        /// </summary>
+        /// <param name="entWebHook"></param>
+        /// <returns></returns>
         public IMDResponse<bool> BUpdateState(EntWebHook entWebHook)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
@@ -171,7 +180,7 @@ namespace IMD.Admin.Conekta.Business
                     string mensajeErrorGuardado = "";
                     IMDResponse<bool> respuestaGuardarOrden = datOrder.DSaveConektaOrder(uId, entOrder, origin);
                     IMDResponse<bool> respuestaGuardarCargo = datOrder.DSaveCharge(uId, entOrder.charges.data.First(), origin);
-                    if(respuestaGuardarOrden.Code != 0 || respuestaGuardarCargo.Code != 0)
+                    if (respuestaGuardarOrden.Code != 0 || respuestaGuardarCargo.Code != 0)
                     {
                         mensajeErrorGuardado = ". No a sido posible guardar en la base de datos";
                     }

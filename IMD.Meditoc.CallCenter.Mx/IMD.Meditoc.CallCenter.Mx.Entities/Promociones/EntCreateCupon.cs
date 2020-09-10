@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace IMD.Admin.Conekta.Entities
+namespace IMD.Admin.Conekta.Entities.Promotions
 {
     public class EntCreateCupon
     {
@@ -15,6 +16,6 @@ namespace IMD.Admin.Conekta.Entities
         public double? fnPorcentajeDescuento { get; set; }
         public int? fiMesBono { get; set; }
         public int fiTotalLanzamiento { get; set; }
-        public int fiDiasActivo { get; set; }
+        public int? fiDiasActivo { get; set; }
     }
 }

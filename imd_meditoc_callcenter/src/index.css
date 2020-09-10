@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "FontAwesome";
+    src: url("fa-solid-900.woff2");
+}
+
 :root {
     /* Definiciones de colores del tema */
 
@@ -17,6 +22,7 @@
     --font-primary: "Roboto";
     --font-secondary: "Open Sans";
     --font-default: "Roboto Condensed";
+    --font-icon-fa: "FontAwesome";
 
     --transition-menu: 400ms;
 
@@ -30,6 +36,35 @@ body {
         "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    height: 100%;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #bbb;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:active {
+    background-color: #999999;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #b3b3b3;
+    /* box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2); */
+}
+
+::-webkit-scrollbar-track {
+    background: #fff;
+}
+
+::-webkit-scrollbar-track:hover,
+::-webkit-scrollbar-track:active {
+    background: #fff;
 }
 
 code {
@@ -79,6 +114,9 @@ code {
 }
 .color-3 {
     color: var(--color-primary-gray);
+}
+.color-4 {
+    color: var(--color-secondary-gray);
 }
 
 .bg-color-1 {
@@ -186,6 +224,7 @@ code {
     outline: none;
     margin: auto;
     margin-top: 40px;
+    margin-bottom: 40px;
     box-sizing: border-box;
     border-radius: 10px;
     box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14),
@@ -215,4 +254,107 @@ code {
 
 .MuiTableSortLabel-icon {
     opacity: 1 !important;
+}
+
+.login-page {
+    height: 100%;
+}
+
+.login-logo-container {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+.login-logo-img {
+    max-width: 550px;
+}
+
+.full {
+    height: 100%;
+}
+
+.login-container {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    overflow: auto;
+}
+
+.login-form-container {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+.login-form-back {
+    height: 100%;
+    background-color: var(--color-primary-blue);
+    display: grid;
+    align-self: center;
+    color: var(--color-unset);
+}
+
+.login-input {
+    width: 80%;
+    margin: auto;
+    height: 100%;
+}
+@media only screen and (max-width: 959px) {
+    .login-form-back {
+        height: 520px;
+        padding-top: 20px;
+        display: block;
+        box-sizing: border-box;
+    }
+    .login-logo-img {
+        max-width: 400px;
+    }
+}
+@media only screen and (max-width: 599px) {
+    .login-logo-img {
+        max-width: 300px;
+    }
+}
+
+.login-form-img {
+    width: 230px;
+}
+
+.bar-main-3 {
+    border-bottom: 3px solid var(--color-primary-blue);
+    color: var(--color-primary-blue);
+    width: 100%;
+    height: auto;
+    display: flex;
+    box-sizing: border-box;
+    padding-left: 20px;
+    padding-right: 40px;
+    margin-bottom: 20px;
+}
+
+.icon {
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    font-family: var(--font-icon-fa);
+}
+
+.react-swipeable-view-container {
+    transition: transform 0.35s cubic-bezier(0.15, 0.3, 0.25, 1) 0s !important;
+}
+
+.MTableToolbar-searchField-15 {
+    width: 500px !important;
+    padding-left: 0px;
+}
+
+.MTableToolbar-root-10 {
+    padding-top: 20px !important;
+}
+
+.MuiTableRow-root:hover {
+    background: #f5f5f5 !important;
 }

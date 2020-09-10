@@ -14,9 +14,10 @@ const urlSystem = {
   },
   administracion: {
     colaboradores: '/colaboradores',
-    institucion: '/institucion',
+    institucion: '/empresas',
     productos: '/productos',
     cupones: '/cupones',
+    especialidades: '/especialidades',
   },
   folios: {
     folios: '/folios',

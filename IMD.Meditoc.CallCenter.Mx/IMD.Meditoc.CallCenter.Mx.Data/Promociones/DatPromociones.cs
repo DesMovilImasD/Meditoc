@@ -1,4 +1,5 @@
 ﻿using IMD.Admin.Conekta.Entities;
+using IMD.Admin.Conekta.Entities.Promotions;
 using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Data;
 using IMD.Admin.Utilities.Entities;
@@ -25,6 +26,8 @@ namespace IMD.Admin.Conekta.Data
         private string spGetCupones;
         private string spUnsubscribeCupon;
         private string spGetNewIdCupon;
+        private string spGetCuponUsed;
+        private string spGetCuponAutocomplete;
 #else
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Database database;
@@ -38,12 +41,16 @@ namespace IMD.Admin.Conekta.Data
         string spUnsubscribeCupon;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         string spGetNewIdCupon;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        string spGetCuponUsed;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        string spGetCuponAutocomplete;
 #endif
-        public DatPromociones()
+        public DatPromociones(string appToken, string appKey)
         {
             imdCommonData = new IMDCommonData();
             string FsConnectionString = "cnxConekta";
-            database = imdCommonData.DGetDatabase(FsConnectionString, "hdiu4soi3IHD334F", "SKlru3nc");
+            database = imdCommonData.DGetDatabase(FsConnectionString, appToken, appKey);
 
             switch (ConfigurationManager.ConnectionStrings[FsConnectionString].ProviderName)
             {
@@ -52,17 +59,30 @@ namespace IMD.Admin.Conekta.Data
                     spGetCupones = "Orders.svaSaveCustomerInfo";
                     spUnsubscribeCupon = "sve_unsubscribe_cupon";
                     spGetNewIdCupon = "";
+                    spGetCuponUsed = "";
+                    spGetCuponAutocomplete = "";
                     break;
                 case "MySql.Data.MySqlClient":
                     spSaveCupon = "sva_save_cupon";
                     spGetCupones = "svc_get_cupones";
                     spUnsubscribeCupon = "sve_unsubscribe_cupon";
                     spGetNewIdCupon = "svc_get_new_id_cupon";
+                    spGetCuponUsed = "svc_get_cupon_used";
+                    spGetCuponAutocomplete = "svc_get_cupones_autocomplete";
                     break;
                 default:
                     throw new Exception("No se ha especificado el motor de base de datos");
             }
         }
+
+        /// <summary>
+        /// Función: Guarda el cupón en la base
+        /// Creado: Cristopher Noh 28/07/2020
+        /// Modificado:
+        /// </summary>
+        /// <param name="entCupon">Datos de cupón</param>
+        /// <param name="piUsuario">Usuario que crea ek cupón</param>
+        /// <returns></returns>
         public IMDResponse<bool> DSaveCupon(EntCupon entCupon, int? piUsuario = null)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
@@ -76,8 +96,8 @@ namespace IMD.Admin.Conekta.Data
                 {
                     database.AddInParameter(dbCommand, "piIdCupon", DbType.Int32, entCupon.fiIdCupon);
                     database.AddInParameter(dbCommand, "piIdCuponCategoria", DbType.Int32, entCupon.fiIdCuponCategoria);
-                    database.AddInParameter(dbCommand, "psDescripcion", DbType.String, entCupon.fsDescripcion);
-                    database.AddInParameter(dbCommand, "psCodigo", DbType.String, entCupon.fsCodigo);
+                    database.AddInParameter(dbCommand, "psDescripcion", DbType.String, entCupon.fsDescripcion?.Trim());
+                    database.AddInParameter(dbCommand, "psCodigo", DbType.String, entCupon.fsCodigo?.Trim());
                     database.AddInParameter(dbCommand, "pnMontoDescuento", DbType.Decimal, entCupon.fnMontoDescuento);
                     database.AddInParameter(dbCommand, "pnPorcentajeDescuento", DbType.Decimal, entCupon.fnPorcentajeDescuento);
                     database.AddInParameter(dbCommand, "piMesBono", DbType.Int32, entCupon.fiMesBono);
@@ -98,7 +118,23 @@ namespace IMD.Admin.Conekta.Data
             return response;
         }
 
-        public IMDResponse<DataTable> DGetCupones(int? piIdCupon = null, int? piIdCuponCategoria = null, string psDescripcion = null, string psCodigo = null, DateTime? pdtFechaVencimientoInicio = null, DateTime? pdtFechaVencimientoFin = null, DateTime? pdtFechaCreacionInicio = null, DateTime? pdtFechaCreacionFin = null, bool pbActivo = true, bool pbBaja = false)
+        /// <summary>
+        /// Función: Obtiene los cupones de la base
+        /// Creado: Cristopher Noh 28/07/2020
+        /// Modificado:
+        /// </summary>
+        /// <param name="piIdCupon">Id de cupón</param>
+        /// <param name="piIdCuponCategoria">Categoría del cupón</param>
+        /// <param name="psDescripcion">Descripción del cupón</param>
+        /// <param name="psCodigo">Código de cupón</param>
+        /// <param name="pdtFechaVencimientoInicio">Fecha de vencimiento desde...</param>
+        /// <param name="pdtFechaVencimientoFin">..a la Fecha de vencimiento</param>
+        /// <param name="pdtFechaCreacionInicio">Fecha de creación desde...</param>
+        /// <param name="pdtFechaCreacionFin">...a la fecha de creación</param>
+        /// <param name="pbActivo">Cupón activo</param>
+        /// <param name="pbBaja">Cupón inactivo</param>
+        /// <returns></returns>
+        public IMDResponse<DataTable> DGetCupones(int? piIdCupon = null, int? piIdCuponCategoria = null, string psDescripcion = null, string psCodigo = null, DateTime? pdtFechaVencimientoInicio = null, DateTime? pdtFechaVencimientoFin = null, DateTime? pdtFechaCreacionInicio = null, DateTime? pdtFechaCreacionFin = null, bool? pbActivo = true, bool? pbBaja = false)
         {
             IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
@@ -111,8 +147,8 @@ namespace IMD.Admin.Conekta.Data
                 {
                     database.AddInParameter(dbCommand, "piIdCupon", DbType.Int32, piIdCupon);
                     database.AddInParameter(dbCommand, "piIdCuponCategoria", DbType.Int32, piIdCuponCategoria);
-                    database.AddInParameter(dbCommand, "psDescripcion", DbType.String, psDescripcion);
-                    database.AddInParameter(dbCommand, "psCodigo", DbType.String, psCodigo);
+                    database.AddInParameter(dbCommand, "psDescripcion", DbType.String, psDescripcion?.Trim());
+                    database.AddInParameter(dbCommand, "psCodigo", DbType.String, psCodigo?.Trim());
                     database.AddInParameter(dbCommand, "pdtFechaVencimientoInicio", DbType.DateTime, pdtFechaVencimientoInicio);
                     database.AddInParameter(dbCommand, "pdtFechaVencimientoFin", DbType.DateTime, pdtFechaVencimientoFin);
                     database.AddInParameter(dbCommand, "pdtFechaCreacionInicio", DbType.DateTime, pdtFechaCreacionInicio);
@@ -132,6 +168,15 @@ namespace IMD.Admin.Conekta.Data
             }
             return response;
         }
+
+        /// <summary>
+        /// Función: Da de baja un cupón
+        /// Creado: Cristopher Noh 28/07/2020
+        /// Modificado:
+        /// </summary>
+        /// <param name="piIdCupon">ID de cupón</param>
+        /// <param name="piIdUsuario">Usuario que da de baja</param>
+        /// <returns></returns>
         public IMDResponse<bool> DUnsuscribeCupon(int piIdCupon, int? piIdUsuario = null)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
@@ -160,11 +205,17 @@ namespace IMD.Admin.Conekta.Data
             return response;
         }
 
-        public IMDResponse<DataTable> CGetNewCouponID()
+        /// <summary>
+        /// Función: Genera un nuevo ID de cupón
+        /// Creado: Cristopher Noh 28/07/2020
+        /// Modificado:
+        /// </summary>
+        /// <returns></returns>
+        public IMDResponse<DataTable> DGetNewCouponID()
         {
             IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
-            string metodo = nameof(this.CGetNewCouponID);
+            string metodo = nameof(this.DGetNewCouponID);
             logger.Info(IMDSerialize.Serialize(67823458209934, $"Inicia {metodo}()"));
 
             try
@@ -177,9 +228,74 @@ namespace IMD.Admin.Conekta.Data
             catch (Exception ex)
             {
                 response.Code = 67823458210711;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al generar el cupón";
 
                 logger.Error(IMDSerialize.Serialize(67823458210711, $"Error en {metodo}(): {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        /// <summary>
+        /// Función: Valida si un usuario ya aplico el cupón antes
+        /// Creado: Cristopher Noh 28/07/2020
+        /// Modificado:
+        /// </summary>
+        /// <param name="piIdCupon">ID de cupón</param>
+        /// <param name="psEmail">Correo del cliente que compra</param>
+        /// <returns></returns>
+        public IMDResponse<DataTable> DGetCuponUsed(int piIdCupon, string psEmail)
+        {
+            IMDResponse<DataTable> response = new IMDResponse<DataTable>();
+
+            string metodo = nameof(this.DGetCuponUsed);
+            logger.Info(IMDSerialize.Serialize(67823458213042, $"Inicia {metodo}(int piIdCupon, string psEmail)", piIdCupon, psEmail));
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spGetCuponUsed))
+                {
+                    database.AddInParameter(dbCommand, "piIdCupon", DbType.Int32, piIdCupon);
+                    database.AddInParameter(dbCommand, "psEmail", DbType.String, psEmail?.Trim());
+
+                    response = imdCommonData.DExecuteDT(database, dbCommand);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458213819;
+                response.Message = "Ocurrió un error inesperado al validar el cupón";
+
+                logger.Error(IMDSerialize.Serialize(67823458213819, $"Error en {metodo}(int piIdCupon, string psEmail): {ex.Message}", piIdCupon, psEmail, ex, response));
+            }
+            return response;
+        }
+
+        /// <summary>
+        /// Función: Obtiene solo los nombres de cupones para autocompletado
+        /// Creado: Cristopher Noh 14/08/2020
+        /// Modificado:
+        /// </summary>
+        /// <returns></returns>
+        public IMDResponse<DataTable> DGetCuponAutocomplete()
+        {
+            IMDResponse<DataTable> response = new IMDResponse<DataTable>();
+
+            string metodo = nameof(this.DGetCuponAutocomplete);
+            logger.Info(IMDSerialize.Serialize(67823458234798, $"Inicia {metodo}()"));
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spGetCuponAutocomplete))
+                {
+                    response = imdCommonData.DExecuteDT(database, dbCommand);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458235575;
+                response.Message = "Ocurrió un error inesperado al consultar los códigos";
+
+                logger.Error(IMDSerialize.Serialize(67823458235575, $"Error en {metodo}(): {ex.Message}", ex, response));
             }
             return response;
         }

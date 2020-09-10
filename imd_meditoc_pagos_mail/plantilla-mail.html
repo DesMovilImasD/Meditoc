@@ -12,42 +12,59 @@
         font-family: Roboto, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
       }
+
       .center {
-        text-align: center;
+        text-align: center !important;
       }
+
       .right {
-        text-align: right;
+        text-align: right !important;
       }
+
+      .left {
+        text-align: left !important;
+      }
+
       .light {
         font-weight: 300;
       }
+
       .normal {
         font-weight: normal;
       }
+
       .bold {
         font-weight: 500;
       }
+
       .small {
         font-size: 12px;
       }
+
       .large {
         font-size: 15px;
       }
+
       .font-default {
         color: #707070;
       }
+
       .font-primary {
         color: #11b6ca;
       }
+
       .font-secondary {
         color: #115c8a;
       }
+
       .font-unset {
         color: #ffffff;
       }
+
       .font-table {
         color: #878787;
       }
+
       .table {
         margin: auto;
         width: 100%;
@@ -56,55 +73,88 @@
         border-spacing: 0px;
         border-collapse: 0px;
       }
+
       .table td {
         padding: 6px 0px;
       }
+
       .logo-head {
         background-color: #11b6ca;
         padding: 5px 0px;
       }
+
       .table-content {
         margin: auto;
         width: 90%;
         border-collapse: collapse;
       }
+
       .table-detail {
         margin: auto;
         width: 100%;
         border-collapse: collapse;
       }
+
       .table-detail td {
         padding: 8px;
+        vertical-align: top;
       }
+
       .head-detail {
         background-color: #115c8a;
       }
+
       .product-detail {
         border-bottom: 1px solid #989898;
       }
+
       .total-detail {
         background-color: #989898;
       }
+
+      .group-detail {
+        background-color: #11b6ca;
+      }
+
       .divider {
         height: 1px;
         border: 0;
         background-color: #989898;
       }
+
       .link {
         text-decoration: none;
       }
+
       .link:hover {
         text-decoration: underline;
       }
+
+      .link-none {
+        text-decoration: none;
+      }
+
+      .table-border {
+        border-right: 10px solid #115c8a;
+      }
+
+      .table-border-l {
+        border-left: 10px solid #115c8a;
+      }
+
+      .table-border-b td {
+        border-bottom: 1px solid #ccc;
+      }
     </style>
   </head>
+
   <body>
     <table class="table">
       <tr>
         <td class="logo-head center">
           <img
             alt="logo-meditoc"
-            src="http://148.240.238.149/store/img/logo-meditoc.png"
+            src="http://201.46.92.51/img/logo-meditoc.png"
             height="50px"
           />
         </td>
@@ -121,17 +171,11 @@
             </tr>
             <tr>
               <td class="normal large center">
-                <span class="font-default">
-                  data.sNombre tu orden
-                </span>
+                <span class="font-default">data.sNombre tu orden</span>
                 &nbsp;
-                <span class="font-primary">
-                  data.sOrden
-                </span>
+                <span class="font-primary">data.sOrden</span>
                 &nbsp;
-                <span class="font-default">
-                  ha sido generada con éxito
-                </span>
+                <span class="font-default">ha sido generada con éxito</span>
               </td>
             </tr>
             <tr>
@@ -145,83 +189,172 @@
               <td>
                 <table class="table-detail">
                   <tr class="head-detail font-unset bold small center">
-                    <td>
-                      Descripción
-                    </td>
-                    <td>
-                      Folio
-                    </td>
-                    <td>
-                      Cantidad
-                    </td>
-                    <td>
-                      Precio
-                    </td>
+                    <td>Descripción</td>
+                    <td>Cantidad</td>
+                    <td>Precio</td>
                   </tr>
                   <tr class="product-detail font-table normal small center">
-                    <td>
-                      item.sDescripcion
-                    </td>
-                    <td>
-                      item.sFolio
-                    </td>
-                    <td>
-                      item.nCantidad
-                    </td>
-                    <td>
-                      item.nPrecio
-                    </td>
+                    <td>item.sDescripcion</td>
+                    <td>item.nCantidad</td>
+                    <td>item.nPrecio</td>
                   </tr>
                   <tr class="font-table bold small center">
+                    <td>Subtotal</td>
                     <td></td>
-                    <td>
-                      Subtotal
-                    </td>
-                    <td></td>
-                    <td>
-                      data.montoTotal
-                    </td>
+                    <td>data.montoTotal</td>
                   </tr>
                   <tr class="font-table bold small center">
+                    <td>Código de descuento</td>
+                    <td>data.codigoDescuento</td>
+                    <td>data.montoDescuento</td>
+                  </tr>
+                  <tr class="font-table bold small center">
+                    <td>Total sin IVA</td>
                     <td></td>
-                    <td>
-                      Código de descuento
-                    </td>
-                    <td>
-                      data.codigoDescuento
-                    </td>
-                    <td>
-                      data.montoDescuento
-                    </td>
+                    <td>data.montoSinIVA</td>
+                  </tr>
+                  <tr class="font-table bold small center">
+                    <td>data.IVA</td>
+                    <td></td>
+                    <td>data.montoIVA</td>
                   </tr>
                   <tr class="total-detail font-unset bold small center">
-                    <td></td>
-                    <td>
-                      Total
-                    </td>
+                    <td>Total</td>
                     <td>data.cantidadTotal</td>
-                    <td>
-                      data.MontoPagado
-                    </td>
+                    <td>data.MontoPagado</td>
                   </tr>
                 </table>
               </td>
             </tr>
-            <tr>
-              <td class="normal large">
-                <span class="font-default">
-                  La contraseña de accesso para sus folios es:
-                </span>
-                &nbsp;
-                <span class="font-primary">
-                  data.password
+            <tr class="center">
+              <td>
+                <span class="font-default normal large">
+                  Guarda tus credenciales, te servirán para acceder a Meditoc:
                 </span>
               </td>
             </tr>
             <tr>
               <td>
-                <span class="font-default normal large">
-                  Guarda tus credenciales, te servirán para acceder a Meditoc
+                <table class="table-detail">
+                  <tr class="group-detail font-unset bold small center">
+                    <td colspan="3">
+                      Membresía 1 Año - Vigencia al 01/12/2020
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <table class="table-detail">
+                        <thead>
+                          <tr class="font-table bold small font-secondary">
+                            <th>Usuario</th>
+                            <th>Contraseña</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            class="font-table bold small center table-border-b"
+                          >
+                            <td>
+                              <small>1-</small>
+                              Folio001
+                            </td>
+                            <td>Pass001</td>
+                          </tr>
+                          <tr
+                            class="font-table bold small center table-border-b"
+                          >
+                            <td>
+                              <small>1-</small>
+                              Folio001
+                            </td>
+                            <td>Pass001</td>
+                          </tr>
+                          <tr
+                            class="font-table bold small center table-border-b"
+                          >
+                            <td>
+                              <small>1-</small>
+                              Folio001
+                            </td>
+                            <td>Pass001</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                    <td width="5%"></td>
+                    <td>
+                      <table class="table-detail">
+                        <thead>
+                          <tr class="font-table bold small font-secondary">
+                            <th>Usuario</th>
+                            <th>Contraseña</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            class="font-table bold small center table-border-b"
+                          >
+                            <td>
+                              <small>1-</small>
+                              Folio001
+                            </td>
+                            <td>Pass001</td>
+                          </tr>
+                          <tr
+                            class="font-table bold small center table-border-b"
+                          >
+                            <td>
+                              <small>1-</small>
+                              Folio001
+                            </td>
+                            <td>Pass001</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr class="center">
+              <td>
+                <p>
+                  <span class="font-default normal large">
+                    Para utilizar el servicio, descarga la app “Meditoc 360”
+                    disponible en Appstore y Playstore.
+                  </span>
+                </p>
+              </td>
+            </tr>
+            <tr class="center">
+              <td>
+                <span>
+                  <a
+                    href="https://apps.apple.com/mx/app/meditoc-360/id1521078394"
+                    target="_blank"
+                    class="link-none"
+                  >
+                    <img
+                      src="http://201.46.92.51/img/appleAvalible.svg"
+                      height="50px"
+                      width="150px"
+                      alt="APP"
+                    />
+                  </a>
+                </span>
+                <span>
+                  <a
+                    href="https://play.google.com/store/apps/details?id=com.meditoc.callCenter.comercial"
+                    target="_blank"
+                    class="link-none"
+                  >
+                    <img
+                      src="http://201.46.92.51/img/playAvalible.svg"
+                      height="50px"
+                      width="150px"
+                      alt="PLAY"
+                    />
+                  </a>
                 </span>
               </td>
             </tr>
@@ -271,7 +404,7 @@
               <td class="center">
                 <img
                   alt="logo-meditoc"
-                  src="http://148.240.238.149/store/img/logo-conekta.jpg"
+                  src="http://201.46.92.51/img/logo-conekta.jpg"
                   height="40px"
                 />
               </td>

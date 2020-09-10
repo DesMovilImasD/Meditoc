@@ -17,8 +17,12 @@
 // const serverWs = 'http://201.46.92.51/'
 
 //Producción Unificado
-const serverWa = 'https://201.46.92.51/WA/'
-const serverWs = 'https://201.46.92.51/WA/'
+// const serverWa = 'https://201.46.92.51/WA/'
+// const serverWs = 'https://201.46.92.51/WA/'
+
+//PRODUCCIÓN BUENO
+const serverWa = 'https://productos.meditoc.com/WA/'
+const serverWs = 'https://productos.meditoc.com/WA/'
 
 //Unificado
 // const serverWa = 'http://148.240.238.149/wa/'
