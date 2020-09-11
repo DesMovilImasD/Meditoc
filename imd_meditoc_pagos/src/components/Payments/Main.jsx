@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Fragment, useEffect } from "react";
-import Header from "./Header";
+import Header from "../Header";
 import Content from "./Content";
 import Footer from "../Footer";
 

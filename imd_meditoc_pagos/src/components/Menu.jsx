@@ -1,6 +1,6 @@
 import React from "react";
-import { logoMeditocMain } from "../../configuration/imgConfig";
-import { urlBase } from "../../configuration/urlConfig";
+import { logoMeditocMain } from "../configuration/imgConfig";
+import { urlBase } from "../configuration/urlConfig";
 
 /*****************************************************
  * Descripción: Menu de la pagina de precios

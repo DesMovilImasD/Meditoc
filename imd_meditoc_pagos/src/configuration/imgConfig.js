@@ -17,6 +17,10 @@ const logoMeditocMain = '/store/img/logo-meditoc-main.png'
 const logoMeditocWhite = '/store/img/logo-meditoc-white.png'
 const logoMeditocSolutions = '/store/img/logo-soluciones.png'
 const logoMeditocCover = '/store/img/portada-meditoc.png'
+const logoMeditocDoctor = '/store/img/MeditocDoctor.svg'
+const logoMeditocDoctorFondo = '/store/img/MeditocDoctorFondo.svg'
+const logoMeditocDoctores = '/store/img/MeditocDoctores.svg'
+const logoMeditocDoctorSample = '/store/img/MeditocDoctorSample.png'
 const logoappleAvalible = '/store/img/app-store2.png'
 const logoplayAvalible = '/store/img/play-store2.png'
 
@@ -25,6 +29,10 @@ export {
   logoMeditocWhite,
   logoMeditocSolutions,
   logoMeditocCover,
+  logoMeditocDoctor,
+  logoMeditocDoctorFondo,
+  logoMeditocDoctores,
+  logoMeditocDoctorSample,
   logoappleAvalible,
   logoplayAvalible,
 }
