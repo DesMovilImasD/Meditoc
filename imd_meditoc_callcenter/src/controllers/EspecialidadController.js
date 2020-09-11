@@ -1,3 +1,8 @@
+import {
+  MeditocHeadersCT,
+  MeditocHeaders,
+} from '../configurations/headersConfig'
+
 const { serverMain } = require('../configurations/serverConfig')
 
 class EspecialidadController {
@@ -14,9 +19,7 @@ class EspecialidadController {
         {
           method: 'POST',
           body: JSON.stringify(entEspecialidad),
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: MeditocHeadersCT,
         },
       )
 
@@ -33,6 +36,9 @@ class EspecialidadController {
     try {
       const apiResponse = await fetch(
         `${serverMain}${this.apiGetEspecialidad}?piIdEspecialidad=${piIdEspecialidad}`,
+        {
+          headers: MeditocHeaders,
+        },
       )
 
       response = await apiResponse.json()

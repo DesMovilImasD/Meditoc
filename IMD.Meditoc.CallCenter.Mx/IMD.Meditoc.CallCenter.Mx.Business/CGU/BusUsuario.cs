@@ -19,11 +19,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             datUsuario = new DatUsuario();
         }
 
-        public IMDResponse<EntUsuario> DSaveUsuario(EntUsuario entUsuario)
+        public IMDResponse<EntUsuario> BSaveUsuario(EntUsuario entUsuario)
         {
             IMDResponse<EntUsuario> response = new IMDResponse<EntUsuario>();
 
-            string metodo = nameof(this.DSaveUsuario);
+            string metodo = nameof(this.BSaveUsuario);
             logger.Info(IMDSerialize.Serialize(67823458344355, $"Inicia {metodo}(EntUsuario entUsuario)", entUsuario));
 
             try
@@ -42,13 +42,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 
                     if (!resValidaDatos.Result) //Se valida que los datos que contiene el objeto de perfil no esten vacios.
                     {
-                        return resValidaDatos.GetResponse< EntUsuario>();
+                        return resValidaDatos.GetResponse<EntUsuario>();
                     }
                     entUsuario.sPassword = BEncodePassword(entUsuario.sPassword);
                 }
 
                 IMDResponse<DataTable> resSaveUsuario = datUsuario.DSaveUsuario(entUsuario);
-                if(resSaveUsuario.Code != 0)
+                if (resSaveUsuario.Code != 0)
                 {
                     return resSaveUsuario.GetResponse<EntUsuario>();
                 }
@@ -57,7 +57,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 entUsuario.iIdUsuario = dr.ConvertTo<int>("iIdUsuario");
 
                 response.Code = 0;
-                response.Message= "El usuario se guardó correctamente";
+                response.Message = "El usuario se guardó correctamente";
                 response.Result = entUsuario;
             }
             catch (Exception ex)
@@ -88,7 +88,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     return dtUsuario.GetResponse<List<EntUsuario>>();
                 }
 
-                if(dtUsuario.Code != 0)
+                if (dtUsuario.Code != 0)
                 {
                     return dtUsuario.GetResponse<List<EntUsuario>>();
                 }
@@ -170,23 +170,31 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     return response;
                 }
 
-                response = datUsuario.DValidaUsuarioYCorreo(entUsuario.sUsuario, "", true);
-                if (!response.Result)
-                {
-                    response.Code = 67823458345132;
-                    response.Message = "Ya existe un usuario registrado.";
-                    response.Result = false;
 
-                    return response;
+                if (entUsuario.iIdUsuario == 0)
+                {
+
+                    response = datUsuario.DValidaUsuarioYCorreo(entUsuario.sUsuario, "", true);
+                    if (!response.Result)
+                    {
+                        response.Code = 67823458345132;
+                        response.Message = "Ya existe un usuario registrado.";
+                        response.Result = false;
+
+                        return response;
+                    }
                 }
 
                 if (entUsuario.sPassword == "")
                 {
-                    response.Code = 67823458345132;
-                    response.Message = "La contraseña del usuario no puede ser vacio.";
-                    response.Result = false;
+                    if (entUsuario.iIdUsuario == 0)
+                    {
+                        response.Code = 67823458345132;
+                        response.Message = "La contraseña del usuario no puede ser vacio.";
+                        response.Result = false;
 
-                    return response;
+                        return response;
+                    }
                 }
 
                 if (entUsuario.sApellidoPaterno == "")
@@ -198,14 +206,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     return response;
                 }
 
-                if (entUsuario.sApellidoMaterno == "")
-                {
-                    response.Code = 67823458345132;
-                    response.Message = "El apellido materno del usuario no puede ser vacio.";
-                    response.Result = false;
+                //if (entUsuario.sApellidoMaterno == "")
+                //{
+                //    response.Code = 67823458345132;
+                //    response.Message = "El apellido materno del usuario no puede ser vacio.";
+                //    response.Result = false;
 
-                    return response;
-                }
+                //    return response;
+                //}
 
                 if (entUsuario.sCorreo == "")
                 {
@@ -216,14 +224,21 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     return response;
                 }
 
-                response = datUsuario.DValidaUsuarioYCorreo("", entUsuario.sCorreo, false);
-                if (!response.Result)
+                if (entUsuario.iIdTipoCuenta == (int)EnumTipoCuenta.Titular)
                 {
-                    response.Code = 67823458345132;
-                    response.Message = "Ya existe un correo registrado.";
-                    response.Result = false;
+                    if (entUsuario.iIdUsuario == 0)
+                    {
 
-                    return response;
+                        response = datUsuario.DValidaUsuarioYCorreo("", entUsuario.sCorreo, false);
+                        if (!response.Result)
+                        {
+                            response.Code = 67823458345132;
+                            response.Message = "Ya existe un correo registrado.";
+                            response.Result = false;
+
+                            return response;
+                        }
+                    }
                 }
 
                 response.Result = true;

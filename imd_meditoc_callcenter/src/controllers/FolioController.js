@@ -1,3 +1,8 @@
+import {
+  MeditocHeadersCT,
+  MeditocHeaders,
+} from '../configurations/headersConfig'
+
 const { serverMain } = require('../configurations/serverConfig')
 
 class FolioController {
@@ -16,9 +21,7 @@ class FolioController {
         {
           method: 'POST',
           body: JSON.stringify(entFolioEmpresa),
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: MeditocHeadersCT,
         },
       )
 
@@ -46,6 +49,9 @@ class FolioController {
     try {
       const apiResponse = await fetch(
         `${serverMain}${this.apiObtenerFolios}?piIdFolio=${piIdFolio}&piIdEmpresa=${piIdEmpresa}&piIdProducto=${piIdProducto}&piIdOrigen=${piIdOrigen}&psFolio=${psFolio}&psOrdenConekta=${psOrdenConekta}&pbTerminosYCondiciones=${pbTerminosYCondiciones}&pbActivo=${pbActivo}&pbBaja=${pbBaja}`,
+        {
+          headers: MeditocHeaders,
+        },
       )
 
       response = await apiResponse.json()
@@ -64,9 +70,7 @@ class FolioController {
         {
           method: 'POST',
           body: JSON.stringify(entFolioFV),
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: MeditocHeadersCT,
         },
       )
 
@@ -87,9 +91,7 @@ class FolioController {
         {
           method: 'POST',
           body: JSON.stringify(entFolioFV),
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: MeditocHeadersCT,
         },
       )
 

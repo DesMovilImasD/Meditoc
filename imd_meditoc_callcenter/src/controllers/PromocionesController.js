@@ -1,3 +1,8 @@
+import {
+  MeditocHeadersCT,
+  MeditocHeaders,
+} from '../configurations/headersConfig'
+
 const { serverMain } = require('../configurations/serverConfig')
 
 class PromocionesController {
@@ -16,9 +21,7 @@ class PromocionesController {
         {
           method: 'POST',
           body: JSON.stringify(entCreateCupon),
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: MeditocHeadersCT,
         },
       )
 
@@ -37,6 +40,7 @@ class PromocionesController {
         `${serverMain}${this.apiDesactivarCupon}?piIdCupon=${piIdCupon}&piIdUsuario=${piIdUsuario}`,
         {
           method: 'POST',
+          headers: MeditocHeaders,
         },
       )
 
@@ -51,7 +55,12 @@ class PromocionesController {
   async funcObtenerCupones() {
     let response = { Code: 0, Message: '', Result: [] }
     try {
-      const apiResponse = await fetch(`${serverMain}${this.apiObtenerCupones}`)
+      const apiResponse = await fetch(
+        `${serverMain}${this.apiObtenerCupones}`,
+        {
+          headers: MeditocHeaders,
+        },
+      )
 
       response = await apiResponse.json()
     } catch (error) {
@@ -66,6 +75,9 @@ class PromocionesController {
     try {
       const apiResponse = await fetch(
         `${serverMain}${this.apiAutocompletarCupon}`,
+        {
+          headers: MeditocHeaders,
+        },
       )
 
       response = await apiResponse.json()

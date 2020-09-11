@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React, { Fragment } from "react";
 import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
 import { Tooltip, IconButton } from "@material-ui/core";
-import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
+import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import MeditocBody from "../../../utilidades/MeditocBody";
@@ -37,7 +37,7 @@ const Usuarios = (props) => {
         sNombres: "",
         sApellidoPaterno: "",
         sApellidoMaterno: "",
-        dtFechaNacimiento: "",
+        dtFechaNacimiento: null,
         sTelefono: "",
         sCorreo: "",
         sDomicilio: "",
@@ -48,7 +48,7 @@ const Usuarios = (props) => {
 
     //Columnas de la tabla de usuarios
     const columns = [
-        { title: "ID", field: "iIdUsuario", align: "center" },
+        { title: "ID", field: "iIdUsuario", align: "center", hidden: true },
         { title: "Tipo de cuenta", field: "sTipoCuenta", align: "center" },
         { title: "Perfil", field: "sPerfil", align: "center" },
         { title: "Usuario", field: "sUsuario", align: "center" },
@@ -132,18 +132,18 @@ const Usuarios = (props) => {
         const entUsuarioSave = {
             iIdUsuario: usuarioSeleccionado.iIdUsuario,
             iIdTipoCuenta: usuarioSeleccionado.iIdTipoCuenta,
-            iIdPerfil: null,
-            sTipoCuenta: null,
-            sPerfil: null,
-            sUsuario: null,
-            sPassword: null,
-            sNombres: null,
-            sApellidoPaterno: null,
-            sApellidoMaterno: null,
-            dtFechaNacimiento: null,
-            sTelefono: null,
-            sCorreo: null,
-            sDomicilio: null,
+            // iIdPerfil: null,
+            // sTipoCuenta: null,
+            // sPerfil: null,
+            // sUsuario: null,
+            // sPassword: null,
+            // sNombres: null,
+            // sApellidoPaterno: null,
+            // sApellidoMaterno: null,
+            // dtFechaNacimiento: null,
+            // sTelefono: null,
+            // sCorreo: null,
+            // sDomicilio: null,
             iIdUsuarioMod: usuarioSesion.iIdUsuario,
             bActivo: false,
             bBaja: true,
@@ -176,7 +176,7 @@ const Usuarios = (props) => {
             <MeditocHeader1 title="USUARIOS">
                 <Tooltip title="Nuevo usuario" arrow>
                     <IconButton onClick={handleClickNuevoUsuario}>
-                        <InsertDriveFileIcon className="color-0" />
+                        <PersonAddIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Editar usuario" arrow>

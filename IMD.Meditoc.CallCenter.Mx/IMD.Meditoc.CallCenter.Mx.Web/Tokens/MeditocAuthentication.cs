@@ -28,13 +28,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Tokens
 
             try
             {
-                if (headers.Where(x => x.Key == "AppKey").Count() != 1)
+                if (headers.Where(x => x.Key == "AppKey" || x.Key == "appkey").Count() != 1)
                 {
                     SetHttpUnauthorized(httpAuthenticationContext);
                     return;
                 }
 
-                if (headers.Where(x => x.Key == "AppToken").Count() != 1)
+                if (headers.Where(x => x.Key == "AppToken" || x.Key == "apptoken").Count() != 1)
                 {
                     SetHttpUnauthorized(httpAuthenticationContext);
                     return;
@@ -46,8 +46,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Tokens
 
                 if (string.IsNullOrWhiteSpace(appKey) || string.IsNullOrWhiteSpace(appToken))
                 {
-                    SetHttpUnauthorized(httpAuthenticationContext);
-                    return;
+                    appKey = headers.GetValues("appkey").FirstOrDefault();
+                    appToken = headers.GetValues("apptoken").FirstOrDefault();
+                    if (string.IsNullOrWhiteSpace(appKey) || string.IsNullOrWhiteSpace(appToken))
+                    {
+                        SetHttpUnauthorized(httpAuthenticationContext);
+                        return;
+                    }
+
                 }
 
                 IMDEndec iMDEndec = new IMDEndec();

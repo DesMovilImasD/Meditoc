@@ -67,6 +67,7 @@
     <Compile Include="CGU\EntUsuario.cs" />
     <Compile Include="CGU\EnumPerfilPrincipal.cs" />
     <Compile Include="CGU\EnumTipoCuenta.cs" />
+    <Compile Include="Colaborador\EntColaborador.cs" />
     <Compile Include="Colaborador\EntCreateColaborador.cs" />
     <Compile Include="Colaborador\EnumTipoDoctor.cs" />
     <Compile Include="Empresa\EntEmpresa.cs" />
