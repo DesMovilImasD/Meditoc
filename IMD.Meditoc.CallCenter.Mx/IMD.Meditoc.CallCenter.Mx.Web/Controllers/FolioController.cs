@@ -71,7 +71,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
-		[MeditocAuthentication]
+        [MeditocAuthentication]
         [HttpPost]
         [Route("Api/Folio/Get/LoginApp")]
         public IMDResponse<EntFolio> CLoginApp([FromUri] string sUsuario, string sPassword)
@@ -175,7 +175,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
-		[MeditocAuthentication]
+        [MeditocAuthentication]
         [HttpGet]
         [Route("Api/Folio/Update/TerminosYCondiciones")]
         public IMDResponse<bool> CTerminosYCondiciones(string sFolio = null)
@@ -197,6 +197,34 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458464790, $"Error en {metodo}(string sFolio = null): {ex.Message}", sFolio, ex, response));
+            }
+            return response;
+        }
+
+        [MeditocAuthentication]
+        [HttpGet]
+        [Route("Api/Folio/Update/FolioPassword")]
+        public IMDResponse<bool> CUpdPassword(string sFolio = null, string sPassword = null)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.CUpdPassword);
+            logger.Info(IMDSerialize.Serialize(67823458498201, $"Inicia {metodo}(string sFolio = null, string  sPassword = null)", sFolio, sPassword));
+
+            try
+            {
+
+                BusFolio busFolio = new BusFolio();
+                response = busFolio.BUpdPassword(sFolio, sPassword);
+
+
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458498978;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458498978, $"Error en {metodo}(string sFolio = null, string  sPassword = null): {ex.Message}", sFolio, sPassword, ex, response));
             }
             return response;
         }

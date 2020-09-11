@@ -962,5 +962,39 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             }
             return response;
         }
+
+        public IMDResponse<bool> BUpdPassword(string sFolio = null, string sPassword = null)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.BUpdPassword);
+            logger.Info(IMDSerialize.Serialize(67823458499755, $"Inicia {metodo}(string sFolio = null, string sPassword = null)", sFolio, sPassword));
+
+            try
+            {
+                BusUsuario busUsuario = new BusUsuario();
+
+                sPassword = busUsuario.BEncodePassword(sPassword);
+
+                response = datFolio.DUpdPassword(sFolio, sPassword);
+
+                if (response.Code != 0)
+                {
+                    return response;
+                }
+
+                response.Code = 0;
+                response.Message = "Se realizo el cambio de contraseña con exito";
+                response.Result = true;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458500532;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458500532, $"Error en {metodo}: {ex.Message}(string sFolio = null, string sPassword = null)", sFolio, sPassword, ex, response));
+            }
+            return response;
+        }
     }
 }

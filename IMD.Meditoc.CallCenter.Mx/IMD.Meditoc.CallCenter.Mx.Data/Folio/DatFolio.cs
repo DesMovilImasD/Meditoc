@@ -25,6 +25,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
         string updFechaVencimiento;
         string delFolioEmpresa;
         string updTerminosYCondiciones;
+        string updPassword;
 
         public DatFolio()
         {
@@ -38,6 +39,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             updFechaVencimiento = "sva_meditoc_upd_foliovigencia";
             delFolioEmpresa = "sva_meditoc_del_folioempresa";
             updTerminosYCondiciones = "svc_meditoc_upd_terminosyCondiciones";
+            updPassword = "svc_meditoc_upd_updPassword";
         }
 
 
@@ -218,6 +220,35 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458461682, $"Error en {metodo}(string sFolio = null): {ex.Message}", sFolio, ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<bool> DUpdPassword(string sFolio = null, string sPassword = null)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.DUpdPassword);
+            logger.Info(IMDSerialize.Serialize(67823458502863, $"Inicia {metodo}(string sFolio = null, string sPassword = null)", sFolio, sPassword));
+
+            try
+            {
+
+                using (DbCommand dbCommand = database.GetStoredProcCommand(updPassword))
+                {
+                    database.AddInParameter(dbCommand, "psFolio", DbType.String, sFolio);
+                    database.AddInParameter(dbCommand, "psPassword", DbType.String, sPassword);
+
+                    response = imdCommonData.DExecute(database, dbCommand);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458503640;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458503640, $"Error en {metodo}(string sFolio = null, string sPassword = null): {ex.Message}", sFolio, sPassword, ex, response));
             }
             return response;
         }
