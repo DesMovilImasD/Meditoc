@@ -74,6 +74,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Producto
                 List<EntProducto> lstProductos = new List<EntProducto>();
                 IMDResponse<DataTable> dtProductos = datProducto.DObterProductos(iIdProducto);
 
+                if (dtProductos.Code != 0)
+                {
+                    response = dtProductos.GetResponse<List<EntProducto>>();
+                    return response;
+                }
+
                 if (dtProductos.Result.Rows.Count == 0)
                 {
                     response = dtProductos.GetResponse<List<EntProducto>>();
@@ -198,6 +204,62 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Producto
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458411177, $"Error en {metodo}(EntProducto entProducto): {ex.Message}", entProducto, ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<List<EntProducto>> BgetServices()
+        {
+            IMDResponse<List<EntProducto>> response = new IMDResponse<List<EntProducto>>();
+
+            string metodo = nameof(this.BgetServices);
+            logger.Info(IMDSerialize.Serialize(67823458467121, $"Inicia {metodo}"));
+
+            try
+            {
+                response = BObtenerProductos(null);
+
+                response.Result = response.Result
+                    .Where(x => x.iIdTipoProducto == 2 && x.bComercial)
+                    .ToList();
+
+                response.Code = 0;
+                response.Message = "Lista de servicios";
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458467898;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458467898, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<List<EntProducto>> BgetMembership()
+        {
+            IMDResponse<List<EntProducto>> response = new IMDResponse<List<EntProducto>>();
+
+            string metodo = nameof(this.BgetMembership);
+            logger.Info(IMDSerialize.Serialize(67823458468675, $"Inicia {metodo}"));
+
+            try
+            {
+                response = BObtenerProductos(null);
+
+                response.Result = response.Result
+                    .Where(x => x.iIdTipoProducto == 1 && x.bComercial)
+                    .ToList();
+
+                response.Code = 0;
+                response.Message = "Lista de membrecias";
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458469452;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458469452, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }

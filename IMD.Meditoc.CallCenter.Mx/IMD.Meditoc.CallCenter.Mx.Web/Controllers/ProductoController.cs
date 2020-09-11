@@ -65,5 +65,58 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             }
             return response;
         }
+
+        [MeditocAuthentication]
+        [HttpGet]
+        [Route("Api/Producto/Get/ObtenerMembresia")]
+        public IMDResponse<List<EntProducto>> CgetMembership()
+        {
+            IMDResponse<List<EntProducto>> response = new IMDResponse<List<EntProducto>>();
+
+            string metodo = nameof(this.CgetMembership);
+            logger.Info(IMDSerialize.Serialize(67823458471783, $"Inicia {metodo}"));
+
+            try
+            {
+                BusProducto busProducto = new BusProducto();
+
+                response = busProducto.BgetMembership();
+
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458472560;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458472560, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        [MeditocAuthentication]
+        [HttpGet]
+        [Route("Api/Producto/Get/ObtenerServicio")]
+        public IMDResponse<List<EntProducto>> CgetServices()
+        {
+            IMDResponse<List<EntProducto>> response = new IMDResponse<List<EntProducto>>();
+
+            string metodo = nameof(this.CgetServices);
+            logger.Info(IMDSerialize.Serialize(67823458473337, $"Inicia {metodo}"));
+
+            try
+            {
+                BusProducto busProducto = new BusProducto();
+
+                response = busProducto.BgetServices();
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458474114;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458474114, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
     }
 }

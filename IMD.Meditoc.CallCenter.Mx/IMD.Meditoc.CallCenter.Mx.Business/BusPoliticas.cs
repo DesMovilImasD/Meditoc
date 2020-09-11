@@ -6,9 +6,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IMD.Meditoc.CallCenter.Mx.Business
 {
@@ -19,6 +16,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business
         public IMDResponse<EntPoliticas> ObtenerPoliticas()
         {
             IMDResponse<EntPoliticas> response = new IMDResponse<EntPoliticas>();
+            IMDResponse<List<EntIceLinkServer>> lstServers = new IMDResponse<List<EntIceLinkServer>>();
 
             string metodo = nameof(this.ObtenerPoliticas);
             logger.Info(IMDSerialize.Serialize(67823458380874, $"Inicia {metodo}"));
@@ -26,6 +24,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business
             try
             {
                 EntPoliticas entPoliticas = new EntPoliticas();
+
+
+                lstServers = BgetIceLinkServer();
 
                 entPoliticas.sAvisoDePrivacidad = ConfigurationManager.AppSettings["sAvisoDePrivacidad"];
                 entPoliticas.sTerminosYCondiciones = ConfigurationManager.AppSettings["sTerminosYCondiciones"];
@@ -35,6 +36,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business
                 entPoliticas.sTelefonoEmpresa = ConfigurationManager.AppSettings["sTelefonoEmpresa"];
                 entPoliticas.nMaximoDescuento = Convert.ToDouble(ConfigurationManager.AppSettings["nMaximoDescuento"]);
                 entPoliticas.nIVA = Convert.ToDouble(ConfigurationManager.AppSettings["nIVA"]);
+                entPoliticas.sLlaveDominio = ConfigurationManager.AppSettings["sLlaveDominio"];
+                entPoliticas.sLlaveIcelink = ConfigurationManager.AppSettings["sLlaveIcelink"];
+                entPoliticas.rutasIceServer = lstServers.Result;
 
                 string sMensualidades = ConfigurationManager.AppSettings["sMensualidades"];
                 if (!string.IsNullOrWhiteSpace(sMensualidades))
@@ -52,6 +56,48 @@ namespace IMD.Meditoc.CallCenter.Mx.Business
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458381651, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<List<EntIceLinkServer>> BgetIceLinkServer()
+        {
+            IMDResponse<List<EntIceLinkServer>> response = new IMDResponse<List<EntIceLinkServer>>();
+            List<EntIceLinkServer> iceLinkServers;
+            EntIceLinkServer oIceLinkServers;
+
+            string metodo = nameof(this.BgetIceLinkServer);
+            logger.Info(IMDSerialize.Serialize(67823458465567, $"Inicia {metodo}"));
+
+            try
+            {
+                string sIceLinkServer = ConfigurationManager.AppSettings["sIceLinkServers"].ToString();
+                iceLinkServers = new List<EntIceLinkServer>();
+                string[] oServer = sIceLinkServer.Split('|');
+
+                foreach (var item in oServer)
+                {
+                    string[] oDatos = item.Split(',');
+
+                    oIceLinkServers = new EntIceLinkServer
+                    {
+                        sServer = oDatos[0],
+                        sUser = oDatos[1],
+                        sPassword = oDatos[2]
+                    };
+
+                    iceLinkServers.Add(oIceLinkServers);
+                }
+
+                response.Code = 0;                
+                response.Result = iceLinkServers;                
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458466344;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458466344, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }

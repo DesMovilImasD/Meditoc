@@ -706,6 +706,78 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             return response;
         }
 
+
+        public IMDResponse<EntFolio> BLoginApp(string sUsuario, string sPassword)
+        {
+            IMDResponse<EntFolio> response = new IMDResponse<EntFolio>();
+            BusUsuario busUsuario = new BusUsuario();
+            EntFolio entFolio = new EntFolio();
+
+            string metodo = nameof(this.BLoginApp);
+            logger.Info(IMDSerialize.Serialize(67823458429825, $"Inicia {metodo}(string sUsuario, string sPassword)", sUsuario, sPassword));
+
+            try
+            {
+                response.Code = 67823458429825;
+
+                if (sUsuario == "")
+                {
+                    response.Message = "El usuario no puede ser vacio";
+                    return response;
+                }
+
+                if (sPassword == "")
+                {
+                    response.Message = "La contraseña no puede ser vacia";
+                    return response;
+                }
+
+                sPassword = busUsuario.BEncodePassword(sPassword);
+
+                IMDResponse<DataTable> dtLoginApp = datFolio.DLoginApp(sUsuario, sPassword);
+
+                if (dtLoginApp.Code != 0)
+                {
+                    return response = dtLoginApp.GetResponse<EntFolio>();
+                }
+
+                if (dtLoginApp.Result.Rows.Count == 0)
+                {
+                    response.Message = "Su usuario o contraseña es invalida";
+                    return response;
+                }
+
+                foreach (DataRow item in dtLoginApp.Result.Rows)
+                {
+                    IMDDataRow dataRow = new IMDDataRow(item);
+
+                    entFolio.sFolio = dataRow.ConvertTo<string>("sFolio");
+                    entFolio.sPassword = dataRow.ConvertTo<string>("sPassword");
+                    entFolio.dtFechaVencimiento = dataRow.ConvertTo<DateTime>("dtFechaVencimiento");
+                    entFolio.bTerminosYCondiciones = Convert.ToBoolean(dataRow.ConvertTo<int>("bTerminosYCondiciones"));
+                }
+
+                if (entFolio.dtFechaVencimiento < DateTime.Now)
+                {
+                    response.Message = "Su folio a expirado.";
+                    return response;
+                }
+
+                response.Code = 0;
+                response.Message = "Login correcto";
+                response.Result = entFolio;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458430602;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458430602, $"Error en {metodo}(string sUsuario, string sPassword): {ex.Message}", sUsuario, sPassword, ex, response));
+            }
+            return response;
+        }
+
+
         public IMDResponse<List<EntFolioReporte>> BGetFolios(int? piIdFolio = null, int? piIdEmpresa = null, int? piIdProducto = null, int? piIdOrigen = null, string psFolio = null, string psOrdenConekta = null, bool? pbTerminosYCondiciones = null, bool? pbActivo = true, bool? pbBaja = false)
         {
             IMDResponse<List<EntFolioReporte>> response = new IMDResponse<List<EntFolioReporte>>();
@@ -860,10 +932,84 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             }
             catch (Exception ex)
             {
+
                 response.Code = 67823458444588;
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458444588, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<bool> BTerminosYCondiciones(string sFolio = null)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.BTerminosYCondiciones);
+            logger.Info(IMDSerialize.Serialize(67823458462459, $"Inicia {metodo}"));
+
+            try
+            {
+                if (sFolio == null || sFolio == "")
+                {
+                    response.Code = 67823458462459;
+                    response.Message = "El folio se encuentra vacio";
+                    response.Result = false;
+                    return response;
+                }
+
+                response = datFolio.DTerminosYCondiciones(sFolio);
+
+                if (response.Code != 0)
+                {
+                    response.Message = "No se pudo validar los terminos y condiciones";
+                    return response;
+                }
+
+                response.Code = 0;
+                response.Message = "Terminos y condiciones aceptados";
+                response.Result = true;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458463236;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458463236, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<bool> BUpdPassword(string sFolio = null, string sPassword = null)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.BUpdPassword);
+            logger.Info(IMDSerialize.Serialize(67823458499755, $"Inicia {metodo}(string sFolio = null, string sPassword = null)", sFolio, sPassword));
+
+            try
+            {
+                BusUsuario busUsuario = new BusUsuario();
+
+                sPassword = busUsuario.BEncodePassword(sPassword);
+
+                response = datFolio.DUpdPassword(sFolio, sPassword);
+
+                if (response.Code != 0)
+                {
+                    return response;
+                }
+
+                response.Code = 0;
+                response.Message = "Se realizo el cambio de contraseña con exito";
+                response.Result = true;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458500532;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458500532, $"Error en {metodo}: {ex.Message}(string sFolio = null, string sPassword = null)", sFolio, sPassword, ex, response));
             }
             return response;
         }

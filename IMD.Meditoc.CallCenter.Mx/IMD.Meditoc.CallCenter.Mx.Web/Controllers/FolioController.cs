@@ -72,6 +72,33 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         }
 
         [MeditocAuthentication]
+        [HttpPost]
+        [Route("Api/Folio/Get/LoginApp")]
+        public IMDResponse<EntFolio> CLoginApp([FromUri] string sUsuario, string sPassword)
+        {
+            IMDResponse<EntFolio> response = new IMDResponse<EntFolio>();
+
+            string metodo = nameof(this.CLoginApp);
+            logger.Info(IMDSerialize.Serialize(67823458431379, $"Inicia {metodo}([FromUri] string sUsuario, string sPassword)", sUsuario, sPassword));
+
+
+            try
+            {
+                BusFolio busFolio = new BusFolio();
+
+                response = busFolio.BLoginApp(sUsuario, sPassword);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458432156;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458432156, $"Error en {metodo}([FromUri] string sUsuario, string sPassword): {ex.Message}", sUsuario, sPassword, ex, response));
+            }
+            return response;
+        }
+
+        [MeditocAuthentication]
         [HttpGet]
         [Route("Api/Folios/Get/Report")]
         public IMDResponse<List<EntFolioReporte>> CGetFolios(int? piIdFolio = null, int? piIdEmpresa = null, int? piIdProducto = null, int? piIdOrigen = null, string psFolio = null, string psOrdenConekta = null, bool? pbTerminosYCondiciones = null, bool? pbActivo = true, bool? pbBaja = false)
@@ -131,9 +158,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             string metodo = nameof(this.CEliminarFoliosEmpresa);
             logger.Info(IMDSerialize.Serialize(67823458445365, $"Inicia {metodo}"));
 
+
             try
             {
                 BusFolio busFolio = new BusFolio();
+
                 response = busFolio.BEliminarFoliosEmpresa(entFolioFV);
             }
             catch (Exception ex)
@@ -142,6 +171,60 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458446142, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        [MeditocAuthentication]
+        [HttpGet]
+        [Route("Api/Folio/Update/TerminosYCondiciones")]
+        public IMDResponse<bool> CTerminosYCondiciones(string sFolio = null)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.CTerminosYCondiciones);
+            logger.Info(IMDSerialize.Serialize(67823458464013, $"Inicia {metodo}(string sFolio = null)", sFolio));
+
+            try
+            {
+                BusFolio busFolio = new BusFolio();
+
+                response = busFolio.BTerminosYCondiciones(sFolio);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458464790;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458464790, $"Error en {metodo}(string sFolio = null): {ex.Message}", sFolio, ex, response));
+            }
+            return response;
+        }
+
+        [MeditocAuthentication]
+        [HttpGet]
+        [Route("Api/Folio/Update/FolioPassword")]
+        public IMDResponse<bool> CUpdPassword(string sFolio = null, string sPassword = null)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.CUpdPassword);
+            logger.Info(IMDSerialize.Serialize(67823458498201, $"Inicia {metodo}(string sFolio = null, string  sPassword = null)", sFolio, sPassword));
+
+            try
+            {
+
+                BusFolio busFolio = new BusFolio();
+                response = busFolio.BUpdPassword(sFolio, sPassword);
+
+
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458498978;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458498978, $"Error en {metodo}(string sFolio = null, string  sPassword = null): {ex.Message}", sFolio, sPassword, ex, response));
             }
             return response;
         }
