@@ -92,9 +92,9 @@ const FormEmpresa = (props) => {
         const response = await empresaController.funcSaveEmpresa(entEmpresaSubmit);
 
         if (response.Code === 0) {
-            funcAlert(response.Message, "success");
             setOpen(false);
             await funcGetEmpresas();
+            funcAlert(response.Message, "success");
         } else {
             funcAlert(response.Message);
         }

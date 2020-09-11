@@ -96,6 +96,11 @@ const Usuarios = (props) => {
             funcAlert("Seleccione un usuario para continuar");
             return;
         }
+
+        if (usuarioSeleccionado.iIdUsuario === 1) {
+            funcAlert("Este usuario no se puede eliminar", "info");
+            return;
+        }
         setModalFormUsuarioEliminarOpen(true);
     };
 

@@ -4,6 +4,7 @@ import MeditocModal from "../../../utilidades/MeditocModal";
 import { Grid, List, ListItem, ListItemIcon, Checkbox, ListItemText, Button } from "@material-ui/core";
 import CGUController from "../../../../controllers/CGUController";
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 
 /*************************************************************
  * Descripcion: Representa un modal con la lista de modulos disponibles para dar permisos al perfil
@@ -37,11 +38,6 @@ const SeleccionarModulos = (props) => {
 
         // eslint-disable-next-line
     }, [listaPermisosPerfil]);
-
-    //Funcion para cerrar este modal
-    const handleClose = () => {
-        setOpen(false);
-    };
 
     //Función para capturar los modulos que el usuario seleccione
     const handleChangeModuloCheckbox = (moduloSeleccionado) => {
@@ -120,16 +116,12 @@ const SeleccionarModulos = (props) => {
                         )}
                     </List>
                 </Grid>
-                <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="primary" fullWidth onClick={funcSavePermisosModulo}>
-                        Agregar módulos
-                    </Button>
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="secondary" fullWidth onClick={handleClose}>
-                        Cancelar
-                    </Button>
-                </Grid>
+                <MeditocModalBotones
+                    open={open}
+                    setOpen={setOpen}
+                    okMessage="Dar permisos"
+                    okFunc={funcSavePermisosModulo}
+                />
             </Grid>
         </MeditocModal>
     );

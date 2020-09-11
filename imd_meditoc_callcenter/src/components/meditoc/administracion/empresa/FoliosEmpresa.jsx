@@ -83,9 +83,9 @@ const FoliosEmpresa = (props) => {
         const response = await folioController.funcEliminarFoliosEmpresa(entFolioFVSubmit);
 
         if (response.Code === 0) {
-            funcAlert(response.Message, "success");
             setFoliosEmpresaSeleccionado([]);
             setModalEliminarFoliosOpen(false);
+            funcAlert(response.Message, "success");
             await funcGetFoliosEmpresa();
         } else {
             funcAlert(response.Message);

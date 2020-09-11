@@ -24,6 +24,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
         string saveColaboradorFoto;
         string getColaboradorFoto;
         string deleteColaboradorFoto;
+        string getColaboradorDirectorio;
 
         public DatColaborador()
         {
@@ -36,6 +37,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
             saveColaboradorFoto = "sva_meditoc_save_colaboradorfoto";
             getColaboradorFoto = "svc_meditoc_colaboradorfoto";
             deleteColaboradorFoto = "sva_meditoc_del_colaboradorfoto";
+            getColaboradorDirectorio = "svc_meditoc_colaboradordirectorio";
         }
 
         public IMDResponse<bool> DSaveColaborador(EntCreateColaborador entCreateColaborador)
@@ -186,6 +188,33 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458492762, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<DataTable> DGetDirectorio(int? piIdEspecialidad = null, string psBuscador = null)
+        {
+            IMDResponse<DataTable> response = new IMDResponse<DataTable>();
+
+            string metodo = nameof(this.DGetDirectorio);
+            logger.Info(IMDSerialize.Serialize(67823458496647, $"Inicia {metodo}"));
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(getColaboradorDirectorio))
+                {
+                    database.AddInParameter(dbCommand, "piIdEspecialidad", DbType.Int32, piIdEspecialidad);
+                    database.AddInParameter(dbCommand, "psBuscador", DbType.String, psBuscador);
+
+                    response = imdCommonData.DExecuteDT(database, dbCommand);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458497424;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458497424, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }

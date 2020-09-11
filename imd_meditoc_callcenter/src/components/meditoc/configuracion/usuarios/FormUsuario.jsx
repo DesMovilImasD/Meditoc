@@ -60,9 +60,109 @@ const FormUsuario = (props) => {
 
     //Función para capturar los valores de los inputs
     const handleChangeFormulario = (e) => {
+        const nombreCampo = e.target.name;
+        const valorCampo = e.target.value;
+
+        switch (nombreCampo) {
+            case "txtNombres":
+                if (!formUsuarioOK.txtNombres) {
+                    if (valorCampo !== "") {
+                        setFormUsuarioOK({
+                            ...formUsuarioOK,
+                            [nombreCampo]: true,
+                        });
+                    }
+                }
+                break;
+
+            case "txtApellidoPaterno":
+                if (!formUsuarioOK.txtApellidoPaterno) {
+                    if (valorCampo !== "") {
+                        setFormUsuarioOK({
+                            ...formUsuarioOK,
+                            [nombreCampo]: true,
+                        });
+                    }
+                }
+                break;
+
+            case "txtPerfil":
+                if (!formUsuarioOK.txtPerfil) {
+                    if (valorCampo !== "" && parseInt(valorCampo) > 0) {
+                        setFormUsuarioOK({
+                            ...formUsuarioOK,
+                            [nombreCampo]: true,
+                        });
+                    }
+                }
+                break;
+
+            case "txtTelefono":
+                if (!formUsuarioOK.txtTelefono) {
+                    const telefonoValidacionUsuario = valorCampo.replace(/ /g, "");
+                    if (telefonoValidacionUsuario !== "" && telefonoValidacionUsuario.length === 10) {
+                        setFormUsuarioOK({
+                            ...formUsuarioOK,
+                            [nombreCampo]: true,
+                        });
+                    }
+                }
+                break;
+
+            case "txtCorreoElectronico":
+                if (!formUsuarioOK.txtCorreoElectronico) {
+                    if (valorCampo !== "" && rxCorreo.test(valorCampo)) {
+                        setFormUsuarioOK({
+                            ...formUsuarioOK,
+                            [nombreCampo]: true,
+                        });
+                    }
+                }
+                break;
+
+            case "txtUsuario":
+                if (!formUsuarioOK.txtUsuario) {
+                    if (valorCampo !== "") {
+                        setFormUsuarioOK({
+                            ...formUsuarioOK,
+                            [nombreCampo]: true,
+                        });
+                    }
+                }
+                break;
+
+            case "txtPassword":
+                if (!formUsuarioOK.txtPassword) {
+                    if (valorCampo !== "" && entUsuario.iIdUsuario === 0) {
+                        setFormUsuarioOK({
+                            ...formUsuarioOK,
+                            [nombreCampo]: true,
+                        });
+                    }
+                }
+                break;
+
+            default:
+                break;
+        }
         setFormUsuario({
             ...formUsuario,
-            [e.target.name]: e.target.value,
+            [nombreCampo]: valorCampo,
+        });
+    };
+
+    const handleChangeDate = (date) => {
+        if (!formUsuarioOK.txtFechaNacimiento) {
+            if (date !== "" && date !== null) {
+                setFormUsuarioOK({
+                    ...formUsuarioOK,
+                    txtFechaNacimiento: true,
+                });
+            }
+        }
+        setFormUsuario({
+            ...formUsuario,
+            txtFechaNacimiento: date,
         });
     };
 
@@ -139,7 +239,7 @@ const FormUsuario = (props) => {
 
         const entSaveUsuario = {
             iIdUsuario: entUsuario.iIdUsuario,
-            iIdTipoCuenta: entUsuario.iIdUsuario,
+            iIdTipoCuenta: entUsuario.iIdTipoCuenta,
             iIdPerfil: parseInt(formUsuario.txtPerfil),
             sTipoCuenta: entUsuario.sTipoCuenta,
             sPerfil: entUsuario.sPerfil,
@@ -148,7 +248,7 @@ const FormUsuario = (props) => {
             sNombres: formUsuario.txtNombres,
             sApellidoPaterno: formUsuario.txtApellidoPaterno,
             sApellidoMaterno: formUsuario.txtApellidoMaterno === "" ? null : formUsuario.txtApellidoMaterno,
-            dtFechaNacimiento: formUsuario.txtFechaNacimiento.toLocaleString(),
+            dtFechaNacimiento: formUsuario.txtFechaNacimiento.toLocaleDateString(),
             sTelefono: formUsuario.txtTelefono,
             sCorreo: formUsuario.txtCorreoElectronico,
             sDomicilio: formUsuario.txtDomicilio === "" ? null : formUsuario.txtDomicilio,
@@ -157,24 +257,24 @@ const FormUsuario = (props) => {
             bBaja: false,
         };
 
-        // funcLoader(true, "Guardando usuario...");
+        funcLoader(true, "Guardando usuario...");
 
-        // const cguController = new CGUController();
-        // const response = await cguController.funcSaveUsuario(entSaveUsuario);
+        const cguController = new CGUController();
+        const response = await cguController.funcSaveUsuario(entSaveUsuario);
 
-        // if (response.Code !== 0) {
-        //     funcAlert(response.Message);
-        // } else {
-        //     setOpen(false);
-        //     funcAlert(response.Message, "success");
-        //     setUsuarioSeleccionado({
-        //         ...entSaveUsuario,
-        //         sPassword: "",
-        //     });
-        //     funcGetUsuarios();
-        // }
+        if (response.Code === 0) {
+            setOpen(false);
+            setUsuarioSeleccionado({
+                ...entSaveUsuario,
+                sPassword: "",
+            });
+            await funcGetUsuarios();
+            funcAlert(response.Message, "success");
+        } else {
+            funcAlert(response.Message);
+        }
 
-        // funcLoader();
+        funcLoader();
     };
 
     useEffect(() => {
@@ -287,14 +387,12 @@ const FormUsuario = (props) => {
                         views={["year", "month", "date"]}
                         InputAdornmentProps={{ position: "end" }}
                         fullWidth
+                        clearable
+                        clearLabel="Limpiar"
+                        cancelLabel="Cancelar"
                         name="txtFechaNacimiento"
                         value={formUsuario.txtFechaNacimiento}
-                        onChange={(date) =>
-                            setFormUsuario({
-                                ...formUsuario,
-                                txtFechaNacimiento: date,
-                            })
-                        }
+                        onChange={handleChangeDate}
                         required
                         error={!formUsuarioOK.txtFechaNacimiento}
                         helperText={!formUsuarioOK.txtFechaNacimiento ? "La fecha de nacimiento es requerido" : null}

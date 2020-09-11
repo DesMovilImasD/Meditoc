@@ -16,11 +16,11 @@ using System.Web.Http;
 
 namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 {
-    [MeditocAuthentication]
     public class ColaboradorController : ApiController
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(EspecialidadController));
 
+        [MeditocAuthentication]
         [HttpPost]
         [Route("Api/Colaborador/Save/CallCenter/Especialista")]
         public IMDResponse<bool> CSaveColaborador(EntCreateColaborador entCreateColaborador)
@@ -45,6 +45,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
+        [MeditocAuthentication]
         [HttpGet]
         [Route("Api/Get/Colaboradores/CallCenter/Especialistas")]
         public IMDResponse<List<EntColaborador>> CGetColaborador(int? piIdColaborador = null, int? piIdTipoDoctor = null, int? piIdEspecialidad = null, int? piIdUsuarioCGU = null)
@@ -69,6 +70,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
+        [MeditocAuthentication]
         [HttpPost]
         [Route("Api/Colaborador/Save/Foto")]
         public IMDResponse<bool> CSaveColaboradorFoto(int piIdColaborador, int piIdUsuarioMod)
@@ -93,6 +95,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
+        [MeditocAuthentication]
         [HttpGet]
         [Route("Api/Colaborador/Get/Foto")]
         public IMDResponse<string> CGetColaboradorFoto(int piIdColaborador)
@@ -117,6 +120,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
+        [MeditocAuthentication]
         [HttpGet]
         [Route("Api/Colaborador/Descargar/Foto")]
         public HttpResponseMessage CDescargarColaboradorFoto(int piIdColaborador)
@@ -152,6 +156,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
+        [MeditocAuthentication]
         [HttpPost]
         [Route("Api/Colaborador/Eliminar/Foto")]
         public IMDResponse<bool> CEliminarColaborador(int piIdColaborador, int piIdUsuarioMod)
@@ -172,6 +177,30 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458495870, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        [HttpGet]
+        [Route("Api/Colaborador/Get/Directorio/Especialistas")]
+        public IMDResponse<List<EntColaboradorDirectorio>> CGetDirectorio(int? piIdEspecialidad = null, string psBuscador = null)
+        {
+            IMDResponse<List<EntColaboradorDirectorio>> response = new IMDResponse<List<EntColaboradorDirectorio>>();
+
+            string metodo = nameof(this.CGetDirectorio);
+            logger.Info(IMDSerialize.Serialize(67823458505971, $"Inicia {metodo}"));
+
+            try
+            {
+                BusColaborador busColaborador = new BusColaborador();
+                response = busColaborador.BGetDirectorio(piIdEspecialidad, psBuscador);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458506748;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458506748, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }

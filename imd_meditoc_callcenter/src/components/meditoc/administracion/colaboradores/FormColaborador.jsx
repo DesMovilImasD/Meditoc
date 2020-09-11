@@ -453,7 +453,7 @@ const FormColaborador = (props) => {
             sNombresDoctor: formColaborador.txtNombreDoctor,
             sApellidoPaternoDoctor: formColaborador.txtApellidoPaterno,
             sApellidoMaternoDoctor: formColaborador.txtApellidoMaterno,
-            dtFechaNacimientoDoctor: formColaborador.txtFechaNacimiento.toLocaleString(),
+            dtFechaNacimientoDoctor: formColaborador.txtFechaNacimiento.toLocaleDateString(),
             sTelefonoDoctor: formColaborador.txtTelefono,
             sCorreoDoctor: formColaborador.txtCorreoElectronico,
             sDomicilioDoctor: formColaborador.txtDomicilio,

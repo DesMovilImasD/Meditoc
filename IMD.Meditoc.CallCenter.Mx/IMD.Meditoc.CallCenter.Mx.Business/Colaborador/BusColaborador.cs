@@ -444,5 +444,73 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
             }
             return response;
         }
+
+        public IMDResponse<List<EntColaboradorDirectorio>> BGetDirectorio(int? piIdEspecialidad = null, string psBuscador = null)
+        {
+            IMDResponse<List<EntColaboradorDirectorio>> response = new IMDResponse<List<EntColaboradorDirectorio>>();
+
+            string metodo = nameof(this.BGetDirectorio);
+            logger.Info(IMDSerialize.Serialize(67823458504417, $"Inicia {metodo}"));
+
+            try
+            {
+                IMDResponse<DataTable> resGetDirectorio = datColaborador.DGetDirectorio(piIdEspecialidad, psBuscador);
+                if(resGetDirectorio.Code != 0)
+                {
+                    return resGetDirectorio.GetResponse<List<EntColaboradorDirectorio>>();
+                }
+
+                List<EntColaboradorDirectorio> entColaboradorDirectorios = new List<EntColaboradorDirectorio>();
+
+                foreach(DataRow drItem in resGetDirectorio.Result.Rows)
+                {
+                    IMDDataRow dr = new IMDDataRow(drItem);
+
+                    EntColaboradorDirectorio entColaborador = new EntColaboradorDirectorio
+                    {
+                        iIdColaborador = dr.ConvertTo<int>("iIdColaborador"),
+                        iIdEspecialidad = dr.ConvertTo<int>("iIdEspecialidad"),
+                        sCedulaProfecional = dr.ConvertTo<string>("sCedulaProfecional"),
+                        sCorreo = dr.ConvertTo<string>("sCorreo"),
+                        sDireccionConsultorio = dr.ConvertTo<string>("sDireccionConsultorio"),
+                        sEspecialidad = dr.ConvertTo<string>("sEspecialidad"),
+                        sFoto = string.Empty,
+                        sMaps = dr.ConvertTo<string>("sMaps"),
+                        sNombre = dr.ConvertTo<string>("sNombre"),
+                        sRFC = dr.ConvertTo<string>("sRFC"),
+                        sTelefono = dr.ConvertTo<string>("sTelefono"),
+                        sURL = dr.ConvertTo<string>("sURL"),
+                    };
+                    try
+                    {
+                        byte[] foto = drItem["sFoto"] is DBNull ? new byte[0] : (byte[])drItem["sFoto"];
+                        string sFoto = Convert.ToBase64String(foto);
+                        if (string.IsNullOrWhiteSpace(sFoto))
+                        {
+                            sFoto = string.Empty;
+                        }
+
+                        entColaborador.sFoto = sFoto;
+                    }
+                    catch (Exception)
+                    {
+                    }
+
+                    entColaboradorDirectorios.Add(entColaborador);
+                }
+
+                response.Code = 0;
+                response.Message = "Directorio obtenido";
+                response.Result = entColaboradorDirectorios;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458505194;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458505194, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
     }
 }

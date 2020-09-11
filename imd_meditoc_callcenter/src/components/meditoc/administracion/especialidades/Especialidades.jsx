@@ -49,6 +49,10 @@ const Especialidades = (props) => {
             funcAlert("Seleccione una especialidad de la tabla para continuar");
             return;
         }
+        if (especialidadSeleccionada.iIdEspecialidad === 1) {
+            funcAlert("Esta especialidad no se puede eliminar", "info");
+            return;
+        }
         setModalEliminarEspecialidadOpen(true);
     };
 

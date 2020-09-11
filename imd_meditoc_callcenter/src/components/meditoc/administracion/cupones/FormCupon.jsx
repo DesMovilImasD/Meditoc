@@ -213,9 +213,9 @@ const FormCupon = (props) => {
         const response = await promocionesController.funcCrearCupon(entCreateCupon, usuarioSesion.iIdUsuario);
 
         if (response.Code === 0) {
-            funcAlert(response.Message, "success");
             setOpen(false);
             await funcObtenerCupones();
+            funcAlert(response.Message, "success");
         } else {
             funcAlert(response.Message);
         }
