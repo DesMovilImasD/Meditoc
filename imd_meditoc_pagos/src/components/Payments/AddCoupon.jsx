@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { Dialog, DialogContent, TextField, Grid, Button, Typography } from "@material-ui/core";
-import { serverWa } from "../../configuration/serverConfig";
+import { serverMain, serverWa } from "../../configuration/serverConfig";
 import { apiValidateCoupon } from "../../configuration/apiConfig";
 
 /*****************************************************
@@ -38,7 +38,7 @@ const AddCoupon = (props) => {
         funcLoader(true, "Validando cupón...");
 
         try {
-            const apiResponse = await fetch(`${serverWa}${apiValidateCoupon}?psCodigo=${couponCode}`);
+            const apiResponse = await fetch(`${serverMain}${apiValidateCoupon}?psCodigo=${couponCode}`);
 
             const response = await apiResponse.json();
 

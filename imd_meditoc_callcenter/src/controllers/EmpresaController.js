@@ -1,3 +1,8 @@
+import {
+  MeditocHeadersCT,
+  MeditocHeaders,
+} from '../configurations/headersConfig'
+
 const { serverMain } = require('../configurations/serverConfig')
 
 class EmpresaController {
@@ -12,9 +17,7 @@ class EmpresaController {
       const apiResponse = await fetch(`${serverMain}${this.apiSaveEmpresa}`, {
         method: 'POST',
         body: JSON.stringify(entEmpresa),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: MeditocHeadersCT,
       })
 
       response = await apiResponse.json()
@@ -30,6 +33,9 @@ class EmpresaController {
     try {
       const apiResponse = await fetch(
         `${serverMain}${this.apiGetEmpresas}?iIdEmpresa=${iIdEmpresa}`,
+        {
+          headers: MeditocHeaders,
+        },
       )
 
       response = await apiResponse.json()

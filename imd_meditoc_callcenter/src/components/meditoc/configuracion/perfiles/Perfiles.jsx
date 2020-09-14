@@ -77,6 +77,12 @@ const Perfiles = (props) => {
             funcAlert("Seleccione un perfil de la tabla para continuar");
             return;
         }
+
+        const perfilesNoEliminar = [1, 2, 3, 4];
+        if (perfilesNoEliminar.includes(perfilSeleccionado.iIdPerfil)) {
+            funcAlert("Este perfil de sistema no se puede eliminar", "info");
+            return;
+        }
         setModalFormEliminarPerfilOpen(true);
     };
 

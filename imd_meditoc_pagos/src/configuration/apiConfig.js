@@ -8,12 +8,22 @@
 // const apiValidateCoupon = 'api/promociones/validar/cupon'
 
 //Unificado
-const apiBuy = 'api/clientes/service/ws/newuniquequery'
-const apiGetMemberships = 'api/clientes/service/ws/getmembership'
-const apiGetServices = 'api/clientes/service/ws/getservices'
-const apiGetPolicies = 'api/clientes/service/ws/getpolicies'
+// const apiBuy = 'api/clientes/service/ws/newuniquequery'
+// const apiGetMemberships = 'api/clientes/service/ws/getmembership'
+// const apiGetServices = 'api/clientes/service/ws/getservices'
+// const apiGetPolicies = 'api/clientes/service/ws/getpolicies'
+// const apiRevalidateCoupon = 'api/promociones/validar/cupon/email'
+// const apiValidateCoupon = 'api/promociones/validar/cupon'
+
+//NUEVO
+const apiBuy = 'Api/Folio/Create/Folio'
+const apiGetMemberships = 'Api/Producto/Get/ObtenerMembresia'
+const apiGetServices = 'Api/Producto/Get/ObtenerServicio'
+const apiGetPolicies = 'Api/Politicas/Get/Politicas'
 const apiRevalidateCoupon = 'api/promociones/validar/cupon/email'
 const apiValidateCoupon = 'api/promociones/validar/cupon'
+const apiGetDirectorio = 'Api/Colaborador/Get/Directorio/Especialistas'
+const apiGetEspecialidades = 'Api/Especialidad/Get/Registros'
 
 export {
   apiValidateCoupon,
@@ -22,4 +32,6 @@ export {
   apiGetServices,
   apiGetMemberships,
   apiGetPolicies,
+  apiGetDirectorio,
+  apiGetEspecialidades,
 }

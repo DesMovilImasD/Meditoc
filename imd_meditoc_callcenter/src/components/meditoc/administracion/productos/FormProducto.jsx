@@ -211,9 +211,9 @@ const FormProducto = (props) => {
         const response = await productoController.funcSaveProducto(entProductoSubmit);
 
         if (response.Code === 0) {
-            funcAlert(response.Message, "success");
             setOpen(false);
             await funcConsultarProductos();
+            funcAlert(response.Message, "success");
         } else {
             funcAlert(response.Message);
         }

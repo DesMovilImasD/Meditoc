@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import MeditocModal from "../../../utilidades/MeditocModal";
 import { Grid, TextField, Button } from "@material-ui/core";
 import CGUController from "../../../../controllers/CGUController";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
+import { TramRounded } from "@material-ui/icons";
 
 /*************************************************************
  * Descripcion: Formulario para Agregar/Modificar un perfil
@@ -16,6 +18,8 @@ const FormPerfil = (props) => {
     //Objeto para guardar los valores de los inputs de formulario
     const [formPerfil, setFormPerfil] = useState({ txtIdPerfil: "", txtNombre: "" });
 
+    const [formPerfilOK, setFormPerfilOK] = useState({ txtIdPerfil: true, txtNombre: true });
+
     //Actualizar los inputs del formulario con lo datos de entPerfil al cargar el componente
     useEffect(() => {
         setFormPerfil({
@@ -24,13 +28,23 @@ const FormPerfil = (props) => {
         });
     }, [entPerfil]);
 
-    //Funcion para cerrar el formulario
-    const handleClose = () => {
-        setOpen(false);
-    };
-
     //Funcion para capturar los valores de los inputs
     const handleChangeForm = (e) => {
+        const nombreCampo = e.target.name;
+        const valorCampo = e.target.value;
+
+        switch (nombreCampo) {
+            case "txtNombre":
+                if (!formPerfilOK.txtNombre) {
+                    if (valorCampo !== "") {
+                        setFormPerfilOK({ ...formPerfilOK, [nombreCampo]: true });
+                    }
+                }
+                break;
+
+            default:
+                break;
+        }
         setFormPerfil({
             ...formPerfil,
             [e.target.name]: e.target.value,
@@ -39,6 +53,21 @@ const FormPerfil = (props) => {
 
     //Consumir servicio para guardar el perfil nuevo en la base
     const funcSavePerfil = async () => {
+        let formPerfilOKValidacion = { txtIdPerfil: true, txtNombre: true };
+
+        let formError = false;
+
+        if (formPerfil.txtNombre === "") {
+            formPerfilOKValidacion.txtNombre = false;
+            formError = true;
+        }
+
+        setFormPerfilOK(formPerfilOKValidacion);
+
+        if (formError) {
+            return;
+        }
+
         funcLoader(true, "Guardando perfil...");
 
         const entSavePerfil = {
@@ -56,8 +85,8 @@ const FormPerfil = (props) => {
             funcAlert(response.Message);
         } else {
             setOpen(false);
+            await funcGetPerfiles();
             funcAlert(response.Message, "success");
-            funcGetPerfiles();
         }
 
         funcLoader();
@@ -77,7 +106,6 @@ const FormPerfil = (props) => {
                             name="txtIdPerfil"
                             label="ID de perfil:"
                             variant="outlined"
-                            color="secondary"
                             fullWidth
                             value={formPerfil.txtIdPerfil}
                             disabled
@@ -90,23 +118,15 @@ const FormPerfil = (props) => {
                         name="txtNombre"
                         label="Nombre de perfil:"
                         variant="outlined"
-                        color="secondary"
                         fullWidth
                         autoFocus
                         value={formPerfil.txtNombre}
                         onChange={handleChangeForm}
+                        error={!formPerfilOK.txtNombre}
+                        helperText={!formPerfilOK.txtNombre ? "Ingrese un nombre para el perfil" : ""}
                     />
                 </Grid>
-                <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="primary" fullWidth onClick={funcSavePerfil}>
-                        Guardar
-                    </Button>
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="secondary" fullWidth onClick={handleClose}>
-                        Cancelar
-                    </Button>
-                </Grid>
+                <MeditocModalBotones okMessage="Guardar" okFunc={funcSavePerfil} open={open} setOpen={setOpen} />
             </Grid>
         </MeditocModal>
     );

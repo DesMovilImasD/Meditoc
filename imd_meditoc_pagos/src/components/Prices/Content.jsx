@@ -4,7 +4,7 @@ import { Grid, Button } from "@material-ui/core";
 import Memberships from "./Memberships";
 import Orientations from "./Orientations";
 // eslint-disable-next-line
-import { serverWs } from "../../configuration/serverConfig";
+import { serverMain, serverWs } from "../../configuration/serverConfig";
 // eslint-disable-next-line
 import { apiGetServices, apiGetMemberships } from "../../configuration/apiConfig";
 import Enterprise from "./Enterprise";
@@ -31,31 +31,31 @@ const Content = (props) => {
     const funcGetOrientations = async () => {
         funcLoader(true, "Consultando servicios disponibles...");
         try {
-            const apiResponse = await fetch(`${serverWs}${apiGetServices}`, {
-                method: "POST",
+            const apiResponse = await fetch(`${serverMain}${apiGetServices}`, {
+                method: "GET",
+                headers: {
+                    AppKey: "qSVBJIQpOqtp0UfwzwX1ER6fNYR8YiPU/bw5CdEqYqk=",
+                    AppToken: "Xx3ePv63cUTg77QPATmztJ3J8cdO1riA7g+lVRzOzhfnl9FnaVT1O2YIv8YCTVRZ",
+                },
             });
 
             const response = await apiResponse.json();
 
-            if (response.bRespuesta === true) {
-                const lstGetProducts = JSON.parse(response.sParameter1);
+            if (response.Code === 0) {
+                const lstGetProductMapped = response.Result.map((product) => ({
+                    name: product.sNombre,
+                    shortName: product.sNombreCorto,
+                    price: product.fCosto,
+                    id: product.iIdProducto,
+                    productType: 2,
+                    qty: 1,
+                    icon: `&#x${product.sIcon};`,
+                    monthsExpiration: 0,
+                    info: product.sDescripcion,
+                    selected: false,
+                }));
 
-                if (lstGetProducts !== null && lstGetProducts !== undefined) {
-                    const lstGetProductMapped = lstGetProducts.map((product) => ({
-                        name: product.sNombre,
-                        shortName: product.sNombreCorto,
-                        price: product.fPrecio,
-                        id: product.iIdProducto,
-                        productType: 2,
-                        qty: 1,
-                        icon: `&#x${product.sIcon};`,
-                        monthsExpiration: 0,
-                        info: product.sResumen,
-                        selected: false,
-                    }));
-
-                    setLstOrientationProducts(lstGetProductMapped);
-                }
+                setLstOrientationProducts(lstGetProductMapped);
             }
         } catch (error) {}
         funcLoader();
@@ -119,30 +119,31 @@ const Content = (props) => {
     const funcGetMemberships = async () => {
         funcLoader(true, "Consultando membresías disponibles...");
         try {
-            const apiResponse = await fetch(`${serverWs}${apiGetMemberships}`, {
-                method: "POST",
+            const apiResponse = await fetch(`${serverMain}${apiGetMemberships}`, {
+                method: "GET",
+                headers: {
+                    AppKey: "qSVBJIQpOqtp0UfwzwX1ER6fNYR8YiPU/bw5CdEqYqk=",
+                    AppToken: "Xx3ePv63cUTg77QPATmztJ3J8cdO1riA7g+lVRzOzhfnl9FnaVT1O2YIv8YCTVRZ",
+                },
             });
 
             const response = await apiResponse.json();
 
-            if (response.bRespuesta === true) {
-                const lstGetProducts = JSON.parse(response.sParameter1);
-                if (lstGetProducts !== null && lstGetProducts !== undefined) {
-                    const lstGetProductMapped = lstGetProducts.map((product) => ({
-                        name: product.sNombre,
-                        shortName: product.sNombreCorto,
-                        price: product.fPrecio,
-                        id: product.iIdProducto,
-                        productType: 1,
-                        qty: 1,
-                        icon: `&#x${product.sIcon};`,
-                        monthsExpiration: product.iTiempoVigencia,
-                        info: product.sResumen,
-                        selected: false,
-                    }));
+            if (response.Code === 0) {
+                const lstGetProductMapped = response.Result.map((product) => ({
+                    name: product.sNombre,
+                    shortName: product.sNombreCorto,
+                    price: product.fCosto,
+                    id: product.iIdProducto,
+                    productType: 1,
+                    qty: 1,
+                    icon: `&#x${product.sIcon};`,
+                    monthsExpiration: product.iMesVigencia,
+                    info: product.sDescripcion,
+                    selected: false,
+                }));
 
-                    setLstMembershipProducts(lstGetProductMapped);
-                }
+                setLstMembershipProducts(lstGetProductMapped);
             }
         } catch (error) {}
         funcLoader();

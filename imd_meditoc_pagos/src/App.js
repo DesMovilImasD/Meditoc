@@ -2,11 +2,17 @@ import React, { useState, useEffect } from 'react'
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 import Prices from './components/Prices/Main'
 import Pays from './components/Payments/Main'
+import Directories from './components/Directory/Main'
 import theme from './configuration/themeConfig'
 import { ThemeProvider } from '@material-ui/core'
 import Loader from './components/Loader'
-import { urlProducts, urlPayments, urlBase } from './configuration/urlConfig'
-import { serverWs } from './configuration/serverConfig'
+import {
+  urlProducts,
+  urlPayments,
+  urlBase,
+  urlDirectory,
+} from './configuration/urlConfig'
+import { serverMain, serverWs } from './configuration/serverConfig'
 import { apiGetPolicies } from './configuration/apiConfig'
 import apiKeyToken from './configuration/tokenConfig'
 
@@ -70,12 +76,12 @@ function App() {
   //Consumir servicio para obtener los links de las políticas Meditoc
   const funcGetAppInfo = async () => {
     try {
-      const apiResponse = await fetch(`${serverWs}${apiGetPolicies}`)
+      const apiResponse = await fetch(`${serverMain}${apiGetPolicies}`)
 
       const response = await apiResponse.json()
 
-      if (response.bRespuesta === true) {
-        setAppInfo(response.sParameter1)
+      if (response.Code === 0) {
+        setAppInfo(response.Result)
       }
     } catch (error) {}
   }
@@ -98,6 +104,9 @@ function App() {
           </Route>
           <Route exact path={urlPayments}>
             <Pays appInfo={appInfo} funcLoader={funcLoader} />
+          </Route>
+          <Route exact path={urlDirectory}>
+            <Directories appInfo={appInfo} funcLoader={funcLoader} />
           </Route>
         </Switch>
       </BrowserRouter>

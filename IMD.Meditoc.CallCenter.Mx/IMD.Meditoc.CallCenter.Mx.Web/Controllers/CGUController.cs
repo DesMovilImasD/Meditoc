@@ -144,7 +144,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             try
             {
                 BusUsuario busUsuario = new BusUsuario();
-                response = busUsuario.DSaveUsuario(entUsuario);
+                response = busUsuario.BSaveUsuario(entUsuario);
             }
             catch (Exception ex)
             {

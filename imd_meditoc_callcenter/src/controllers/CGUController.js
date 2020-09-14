@@ -1,3 +1,8 @@
+import {
+  MeditocHeadersCT,
+  MeditocHeaders,
+} from '../configurations/headersConfig'
+
 const { serverMain } = require('../configurations/serverConfig')
 
 /*************************************************************
@@ -26,9 +31,7 @@ class CGUController {
       const apiResponse = await fetch(`${serverMain}${this.apiSaveModulo}`, {
         method: 'POST',
         body: JSON.stringify(entCreateModulo),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: MeditocHeadersCT,
       })
 
       response = await apiResponse.json()
@@ -45,9 +48,7 @@ class CGUController {
       const apiResponse = await fetch(`${serverMain}${this.apiSaveSubmodulo}`, {
         method: 'POST',
         body: JSON.stringify(entCreateSubmodulo),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: MeditocHeadersCT,
       })
 
       response = await apiResponse.json()
@@ -64,9 +65,7 @@ class CGUController {
       const apiResponse = await fetch(`${serverMain}${this.apiSaveBoton}`, {
         method: 'POST',
         body: JSON.stringify(entBoton),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: MeditocHeadersCT,
       })
 
       response = await apiResponse.json()
@@ -83,9 +82,7 @@ class CGUController {
       const apiResponse = await fetch(`${serverMain}${this.apiSavePerfil}`, {
         method: 'POST',
         body: JSON.stringify(entPerfil),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: MeditocHeadersCT,
       })
 
       response = await apiResponse.json()
@@ -102,9 +99,7 @@ class CGUController {
       const apiResponse = await fetch(`${serverMain}${this.apiSaveUsuario}`, {
         method: 'POST',
         body: JSON.stringify(entUsuario),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: MeditocHeadersCT,
       })
 
       response = await apiResponse.json()
@@ -121,9 +116,7 @@ class CGUController {
       const apiResponse = await fetch(`${serverMain}${this.apiSavePermiso}`, {
         method: 'POST',
         body: JSON.stringify(entPermisos),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: MeditocHeadersCT,
       })
 
       response = await apiResponse.json()
@@ -139,6 +132,9 @@ class CGUController {
     try {
       const apiResponse = await fetch(
         `${serverMain}${this.apiGetPermisosXPerfil}?iIdPerfil=${iIdPerfil}`,
+        {
+          headers: MeditocHeaders,
+        },
       )
 
       response = await apiResponse.json()
@@ -154,6 +150,9 @@ class CGUController {
     try {
       const apiResponse = await fetch(
         `${serverMain}${this.apiGetPerfiles}?iIdPerfil=${iIdPerfil}&bActivo=${bActivo}&bBaja=${bBaja}`,
+        {
+          headers: MeditocHeaders,
+        },
       )
 
       response = await apiResponse.json()
@@ -175,6 +174,9 @@ class CGUController {
     try {
       const apiResponse = await fetch(
         `${serverMain}${this.apiGetUsuarios}?iIdUsuario=${iIdUsuario}&iIdTipoCuenta=${iIdTipoCuenta}&iIdPerfil=${iIdPerfil}&bActivo=${bActivo}&bBaja=${bBaja}`,
+        {
+          headers: MeditocHeaders,
+        },
       )
 
       response = await apiResponse.json()
@@ -194,7 +196,7 @@ class CGUController {
     try {
       const apiResponse = await fetch(
         `${serverMain}${this.apiCambiarPassword}?iIdUsuario=${iIdUsuario}&sPassword=${sPassword}&iIdUsuarioUltMod=${iIdUsuarioUltMod}`,
-        { method: 'POST' },
+        { method: 'POST', headers: MeditocHeaders },
       )
 
       response = await apiResponse.json()

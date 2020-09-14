@@ -8,6 +8,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Catalogos
 {
     public enum EnumEspecialidadPrincipal
     {
-        MedicinaGeneral = 0
+        MedicinaGeneral = 1
     }
 }

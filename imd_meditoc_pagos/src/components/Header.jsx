@@ -1,5 +1,5 @@
 import React from "react";
-import { logoMeditocSolutions } from "../../configuration/imgConfig";
+import { logoMeditocSolutions } from "../configuration/imgConfig";
 
 /*****************************************************
  * Descripción: Header con el logo de Meditoc en la sección de pagos

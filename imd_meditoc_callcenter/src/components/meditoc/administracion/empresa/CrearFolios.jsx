@@ -90,7 +90,6 @@ const CrearFolios = (props) => {
         const response = await folioController.funcCrearFoliosEmpresa(entFoliosEmpresaSubmit);
 
         if (response.Code === 0) {
-            funcAlert(response.Message, "success");
             setOpen(false);
             setListaProductosEmpresa(
                 listaProductos.map((producto) => ({
@@ -103,6 +102,7 @@ const CrearFolios = (props) => {
             );
             setListaProductosSeleccionados([]);
             await funcGetFoliosEmpresa();
+            funcAlert(response.Message, "success");
         } else {
             funcAlert(response.Message);
         }

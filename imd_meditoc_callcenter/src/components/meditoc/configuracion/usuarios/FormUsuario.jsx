@@ -7,6 +7,8 @@ import { useState } from "react";
 import CGUController from "../../../../controllers/CGUController";
 import { useEffect } from "react";
 import InputTelefono from "../../../utilidades/InputTelefono";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
+import { rxCorreo } from "../../../../configurations/regexConfig";
 
 /*************************************************************
  * Descripcion: Formulario para registrar o editar un usuario
@@ -34,7 +36,7 @@ const FormUsuario = (props) => {
         txtApellidoMaterno: "",
         txtPerfil: "",
         txtTipoCuenta: "",
-        txtFechaNacimiento: "",
+        txtFechaNacimiento: null,
         txtTelefono: "",
         txtCorreoElectronico: "",
         txtDomicilio: "",
@@ -42,63 +44,196 @@ const FormUsuario = (props) => {
         txtPassword: "",
     });
 
+    const [formUsuarioOK, setFormUsuarioOK] = useState({
+        txtNombres: true,
+        txtApellidoPaterno: true,
+        txtApellidoMaterno: true,
+        txtPerfil: true,
+        txtTipoCuenta: true,
+        txtFechaNacimiento: true,
+        txtTelefono: true,
+        txtCorreoElectronico: true,
+        txtDomicilio: true,
+        txtUsuario: true,
+        txtPassword: true,
+    });
+
     //Función para capturar los valores de los inputs
     const handleChangeFormulario = (e) => {
+        const nombreCampo = e.target.name;
+        const valorCampo = e.target.value;
+
+        switch (nombreCampo) {
+            case "txtNombres":
+                if (!formUsuarioOK.txtNombres) {
+                    if (valorCampo !== "") {
+                        setFormUsuarioOK({
+                            ...formUsuarioOK,
+                            [nombreCampo]: true,
+                        });
+                    }
+                }
+                break;
+
+            case "txtApellidoPaterno":
+                if (!formUsuarioOK.txtApellidoPaterno) {
+                    if (valorCampo !== "") {
+                        setFormUsuarioOK({
+                            ...formUsuarioOK,
+                            [nombreCampo]: true,
+                        });
+                    }
+                }
+                break;
+
+            case "txtPerfil":
+                if (!formUsuarioOK.txtPerfil) {
+                    if (valorCampo !== "" && parseInt(valorCampo) > 0) {
+                        setFormUsuarioOK({
+                            ...formUsuarioOK,
+                            [nombreCampo]: true,
+                        });
+                    }
+                }
+                break;
+
+            case "txtTelefono":
+                if (!formUsuarioOK.txtTelefono) {
+                    const telefonoValidacionUsuario = valorCampo.replace(/ /g, "");
+                    if (telefonoValidacionUsuario !== "" && telefonoValidacionUsuario.length === 10) {
+                        setFormUsuarioOK({
+                            ...formUsuarioOK,
+                            [nombreCampo]: true,
+                        });
+                    }
+                }
+                break;
+
+            case "txtCorreoElectronico":
+                if (!formUsuarioOK.txtCorreoElectronico) {
+                    if (valorCampo !== "" && rxCorreo.test(valorCampo)) {
+                        setFormUsuarioOK({
+                            ...formUsuarioOK,
+                            [nombreCampo]: true,
+                        });
+                    }
+                }
+                break;
+
+            case "txtUsuario":
+                if (!formUsuarioOK.txtUsuario) {
+                    if (valorCampo !== "") {
+                        setFormUsuarioOK({
+                            ...formUsuarioOK,
+                            [nombreCampo]: true,
+                        });
+                    }
+                }
+                break;
+
+            case "txtPassword":
+                if (!formUsuarioOK.txtPassword) {
+                    if (valorCampo !== "" && entUsuario.iIdUsuario === 0) {
+                        setFormUsuarioOK({
+                            ...formUsuarioOK,
+                            [nombreCampo]: true,
+                        });
+                    }
+                }
+                break;
+
+            default:
+                break;
+        }
         setFormUsuario({
             ...formUsuario,
-            [e.target.name]: e.target.value,
+            [nombreCampo]: valorCampo,
         });
     };
 
-    //Funcion para cerrar este modal
-    const handleClose = () => {
-        setOpen(false);
+    const handleChangeDate = (date) => {
+        if (!formUsuarioOK.txtFechaNacimiento) {
+            if (date !== "" && date !== null) {
+                setFormUsuarioOK({
+                    ...formUsuarioOK,
+                    txtFechaNacimiento: true,
+                });
+            }
+        }
+        setFormUsuario({
+            ...formUsuario,
+            txtFechaNacimiento: date,
+        });
     };
 
     //Consumir servicio para registrar/editar los datos del usuario en le base
     const funcSaveUsuario = async () => {
+        let formUsuarioOKValidacion = {
+            txtNombres: true,
+            txtApellidoPaterno: true,
+            txtApellidoMaterno: true,
+            txtPerfil: true,
+            txtTipoCuenta: true,
+            txtFechaNacimiento: true,
+            txtTelefono: true,
+            txtCorreoElectronico: true,
+            txtDomicilio: true,
+            txtUsuario: true,
+            txtPassword: true,
+        };
+
+        let formError = false;
+
         if (formUsuario.txtNombres === "") {
-            funcAlert("El nombre del usuario es requerido");
-            return;
+            formUsuarioOKValidacion.txtNombres = false;
+            formError = true;
         }
 
         if (formUsuario.txtApellidoPaterno === "") {
-            funcAlert("El apellido paterno del usuario es requerido");
-            return;
+            formUsuarioOKValidacion.txtApellidoPaterno = false;
+            formError = true;
         }
 
-        if (parseInt(formUsuario.txtPerfil) <= 0) {
-            funcAlert("Seleccione un perfil para el usuario");
-            return;
+        if (formUsuario.txtPerfil === "" || parseInt(formUsuario.txtPerfil) <= 0) {
+            formUsuarioOKValidacion.txtPerfil = false;
+            formError = true;
         }
 
-        if (parseInt(formUsuario.txtTipoCuenta) <= 0) {
-            funcAlert("Seleccione un tipo de cuenta para el usuario");
-            return;
+        // if (parseInt(formUsuario.txtTipoCuenta) <= 0) {
+        //     formUsuarioOKValidacion.txtPerfil = false;
+        //     formError = true;
+        // }
+
+        if (formUsuario.txtFechaNacimiento === "" || formUsuario.txtFechaNacimiento === null) {
+            formUsuarioOKValidacion.txtFechaNacimiento = false;
+            formError = true;
         }
 
-        if (formUsuario.txtFechaNacimiento === "") {
-            funcAlert("La fecha de nacimiento del usuario es requerido");
-            return;
+        const telefonoValidacionUsuario = formUsuario.txtTelefono.replace(/ /g, "");
+
+        if (telefonoValidacionUsuario === "" || telefonoValidacionUsuario.length !== 10) {
+            formUsuarioOKValidacion.txtTelefono = false;
+            formError = true;
         }
 
-        if (formUsuario.txtTelefono === "") {
-            funcAlert("El teléfono del usuario es requerido");
-            return;
-        }
-
-        if (formUsuario.txtCorreoElectronico === "") {
-            funcAlert("El correo electrónico del usuario es requerido");
-            return;
+        if (formUsuario.txtCorreoElectronico === "" || !rxCorreo.test(formUsuario.txtCorreoElectronico)) {
+            formUsuarioOKValidacion.txtCorreoElectronico = false;
+            formError = true;
         }
 
         if (formUsuario.txtUsuario === "") {
-            funcAlert("El nombre de usuario es requerido");
-            return;
+            formUsuarioOKValidacion.txtUsuario = false;
+            formError = true;
         }
 
-        if (entUsuario.iIdUsuario === 0 && (formUsuario.txtPassword === "" || formUsuario.txtPassword.length < 6)) {
-            funcAlert("Ingrese una contraseña válida de al menos 6 caracteres");
+        if (entUsuario.iIdUsuario === 0 && formUsuario.txtPassword === "") {
+            formUsuarioOKValidacion.txtPassword = false;
+            formError = true;
+        }
+
+        setFormUsuarioOK(formUsuarioOKValidacion);
+
+        if (formError === true) {
             return;
         }
 
@@ -113,7 +248,7 @@ const FormUsuario = (props) => {
             sNombres: formUsuario.txtNombres,
             sApellidoPaterno: formUsuario.txtApellidoPaterno,
             sApellidoMaterno: formUsuario.txtApellidoMaterno === "" ? null : formUsuario.txtApellidoMaterno,
-            dtFechaNacimiento: formUsuario.txtFechaNacimiento,
+            dtFechaNacimiento: formUsuario.txtFechaNacimiento.toLocaleDateString(),
             sTelefono: formUsuario.txtTelefono,
             sCorreo: formUsuario.txtCorreoElectronico,
             sDomicilio: formUsuario.txtDomicilio === "" ? null : formUsuario.txtDomicilio,
@@ -127,16 +262,16 @@ const FormUsuario = (props) => {
         const cguController = new CGUController();
         const response = await cguController.funcSaveUsuario(entSaveUsuario);
 
-        if (response.Code !== 0) {
-            funcAlert(response.Message);
-        } else {
+        if (response.Code === 0) {
             setOpen(false);
-            funcAlert(response.Message, "success");
             setUsuarioSeleccionado({
                 ...entSaveUsuario,
                 sPassword: "",
             });
-            funcGetUsuarios();
+            await funcGetUsuarios();
+            funcAlert(response.Message, "success");
+        } else {
+            funcAlert(response.Message);
         }
 
         funcLoader();
@@ -147,7 +282,7 @@ const FormUsuario = (props) => {
             txtNombres: entUsuario.sNombres,
             txtApellidoPaterno: entUsuario.sApellidoPaterno,
             txtApellidoMaterno: entUsuario.sApellidoMaterno,
-            txtPerfil: entUsuario.iIdPerfil,
+            txtPerfil: entUsuario.iIdPerfil === 0 ? "" : entUsuario.iIdPerfil,
             txtTipoCuenta: entUsuario.iIdTipoCuenta,
             txtFechaNacimiento: entUsuario.dtFechaNacimiento,
             txtTelefono: entUsuario.sTelefono,
@@ -174,6 +309,9 @@ const FormUsuario = (props) => {
                         name="txtNombres"
                         value={formUsuario.txtNombres}
                         onChange={handleChangeFormulario}
+                        required
+                        error={!formUsuarioOK.txtNombres}
+                        helperText={!formUsuarioOK.txtNombres ? "El nombre del usuario es requerido" : null}
                     />
                 </Grid>
                 <Grid item sm={6} xs={12}>
@@ -184,6 +322,11 @@ const FormUsuario = (props) => {
                         name="txtApellidoPaterno"
                         value={formUsuario.txtApellidoPaterno}
                         onChange={handleChangeFormulario}
+                        required
+                        error={!formUsuarioOK.txtApellidoPaterno}
+                        helperText={
+                            !formUsuarioOK.txtApellidoPaterno ? "El apellido paterno del usuario es requerido" : null
+                        }
                     />
                 </Grid>
                 <Grid item sm={6} xs={12}>
@@ -197,25 +340,28 @@ const FormUsuario = (props) => {
                     />
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <FormControl fullWidth variant="outlined">
-                        <InputLabel id="lblPerfil">Perfil:</InputLabel>
-                        <Select
-                            id="slcPerfil"
-                            labelId="lblPerfil"
-                            label="Perfil:"
-                            name="txtPerfil"
-                            value={formUsuario.txtPerfil}
-                            onChange={handleChangeFormulario}
-                        >
-                            {listaPerfiles.map((perfil) => (
-                                <MenuItem key={perfil.iIdPerfil} value={perfil.iIdPerfil}>
-                                    {perfil.sNombre}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
+                    <TextField
+                        id="slcPerfil"
+                        labelId="lblPerfil"
+                        label="Perfil:"
+                        name="txtPerfil"
+                        variant="outlined"
+                        select
+                        fullWidth
+                        value={formUsuario.txtPerfil}
+                        onChange={handleChangeFormulario}
+                        required
+                        error={!formUsuarioOK.txtPerfil}
+                        helperText={!formUsuarioOK.txtPerfil ? "Seleccione un perfil para el usuario" : null}
+                    >
+                        {listaPerfiles.map((perfil) => (
+                            <MenuItem key={perfil.iIdPerfil} value={perfil.iIdPerfil}>
+                                {perfil.sNombre}
+                            </MenuItem>
+                        ))}
+                    </TextField>
                 </Grid>
-                <Grid item sm={6} xs={12}>
+                {/* <Grid item sm={6} xs={12}>
                     <FormControl fullWidth variant="outlined" disabled>
                         <InputLabel id="lblTipoCuenta">Tipo de cuenta:</InputLabel>
                         <Select
@@ -230,25 +376,26 @@ const FormUsuario = (props) => {
                             <MenuItem value={2}>Subcuenta</MenuItem>
                         </Select>
                     </FormControl>
-                </Grid>
+                </Grid> */}
                 <Grid item sm={6} xs={12}>
                     <DatePicker
                         disableFuture
                         label="Fecha de nacimiento"
                         inputVariant="outlined"
                         openTo="year"
-                        format="DD/MM/YYYY"
+                        format="dd/MM/yyyy"
                         views={["year", "month", "date"]}
                         InputAdornmentProps={{ position: "end" }}
                         fullWidth
+                        clearable
+                        clearLabel="Limpiar"
+                        cancelLabel="Cancelar"
                         name="txtFechaNacimiento"
                         value={formUsuario.txtFechaNacimiento}
-                        onChange={(date) =>
-                            setFormUsuario({
-                                ...formUsuario,
-                                txtFechaNacimiento: date.toISOString(),
-                            })
-                        }
+                        onChange={handleChangeDate}
+                        required
+                        error={!formUsuarioOK.txtFechaNacimiento}
+                        helperText={!formUsuarioOK.txtFechaNacimiento ? "La fecha de nacimiento es requerido" : null}
                     />
                 </Grid>
                 <Grid item sm={6} xs={12}>
@@ -262,6 +409,9 @@ const FormUsuario = (props) => {
                             inputComponent: InputTelefono,
                         }}
                         onChange={handleChangeFormulario}
+                        required
+                        error={!formUsuarioOK.txtTelefono}
+                        helperText={!formUsuarioOK.txtTelefono ? "El teléfono del usuario es requerido" : null}
                     />
                 </Grid>
                 <Grid item sm={6} xs={12}>
@@ -272,9 +422,16 @@ const FormUsuario = (props) => {
                         name="txtCorreoElectronico"
                         value={formUsuario.txtCorreoElectronico}
                         onChange={handleChangeFormulario}
+                        required
+                        error={!formUsuarioOK.txtCorreoElectronico}
+                        helperText={
+                            !formUsuarioOK.txtCorreoElectronico
+                                ? "El correo electrónico del usuario es requerido"
+                                : null
+                        }
                     />
                 </Grid>
-                <Grid item sm={6} xs={12}>
+                <Grid item xs={12}>
                     <TextField
                         variant="outlined"
                         label="Domicilio:"
@@ -293,6 +450,9 @@ const FormUsuario = (props) => {
                         name="txtUsuario"
                         value={formUsuario.txtUsuario}
                         onChange={handleChangeFormulario}
+                        required
+                        error={!formUsuarioOK.txtUsuario}
+                        helperText={!formUsuarioOK.txtUsuario ? "El nombre usuario es requerido" : null}
                     />
                 </Grid>
                 <Grid item sm={6} xs={12}>
@@ -305,9 +465,13 @@ const FormUsuario = (props) => {
                         name="txtPassword"
                         value={formUsuario.txtPassword}
                         onChange={handleChangeFormulario}
+                        required
+                        error={!formUsuarioOK.txtPassword}
+                        helperText={!formUsuarioOK.txtPassword ? "La contrasañe de usuario es requerido" : null}
                     />
                 </Grid>
-                <Grid item sm={6} xs={12}>
+                <MeditocModalBotones open={open} setOpen={setOpen} okMessage="Guardar" okFunc={funcSaveUsuario} />
+                {/* <Grid item sm={6} xs={12}>
                     <Button variant="contained" color="primary" fullWidth onClick={funcSaveUsuario}>
                         Guardar
                     </Button>
@@ -316,7 +480,7 @@ const FormUsuario = (props) => {
                     <Button variant="contained" color="secondary" fullWidth onClick={handleClose}>
                         Cancelar
                     </Button>
-                </Grid>
+                </Grid> */}
             </Grid>
         </MeditocModal>
     );

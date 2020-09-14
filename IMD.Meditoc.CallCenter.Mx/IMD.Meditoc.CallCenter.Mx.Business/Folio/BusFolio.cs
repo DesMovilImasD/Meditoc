@@ -25,6 +25,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 {
@@ -43,7 +44,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             IMDResponse<EntDetalleCompra> response = new IMDResponse<EntDetalleCompra>();
 
             string metodo = nameof(this.CSaveNuevoFolio);
-            logger.Info(IMDSerialize.Serialize(67823458415062, $"Inicia {metodo}(EntConecktaPago entConecktaPago)",entConecktaPago));
+            logger.Info(IMDSerialize.Serialize(67823458415062, $"Inicia {metodo}(EntConecktaPago entConecktaPago)", entConecktaPago));
 
             try
             {
@@ -81,17 +82,17 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 entCreateOrder = JsonConvert.DeserializeObject<EntCreateOrder>(datosSerealizados);
 
                 IMDResponse<EntOrder> entOrder = busOrder.BCreateOrder(entCreateOrder);
-
-                string f = JsonConvert.SerializeObject(entOrder.Result);
-                IMDResponse<EntRequestOrder> requesOrder = new IMDResponse<EntRequestOrder>();
-                requesOrder.Result = JsonConvert.DeserializeObject<EntRequestOrder>(f);
-
                 if (entOrder.Code != 0)
                 {
                     return response = entOrder.GetResponse<EntDetalleCompra>();
                 }
 
-                //response = BGuardarCompraUnica(requesOrder, entConecktaPago);
+                string f = JsonConvert.SerializeObject(entOrder.Result);
+                IMDResponse<EntRequestOrder> requesOrder = new IMDResponse<EntRequestOrder>();
+                requesOrder.Result = JsonConvert.DeserializeObject<EntRequestOrder>(f);
+
+
+                response = BGuardarCompraUnica(requesOrder, entConecktaPago);
 
                 response.Code = 0;
                 response.Message = "Operación exitosa.";
@@ -101,7 +102,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 response.Code = 67823458415839;
                 response.Message = "Ocurrió un error inesperado";
 
-                logger.Error(IMDSerialize.Serialize(67823458415839, $"Error en {metodo}(EntConecktaPago entConecktaPago): {ex.Message}", entConecktaPago,ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458415839, $"Error en {metodo}(EntConecktaPago entConecktaPago): {ex.Message}", entConecktaPago, ex, response));
             }
             return response;
         }
@@ -119,6 +120,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             try
             {
                 EntFolio entFolio = new EntFolio();
+
+                //using (TransactionScope scope = new TransactionScope())
+                //{
 
                 //Se asigna empresa al folio
                 BusEmpresa busEmpresa = new BusEmpresa();
@@ -242,6 +246,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     }
                     entFolio.iConsecutivo--;
                 }
+                //    scope.Complete();
+                //}
 
                 oDetalleCompra.nTotal = oDetalleCompra.lstArticulos
                     .Sum(x => x.nCantidad * x.nPrecio);
@@ -256,7 +262,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 oDetalleCompra.bAplicaIVA = entConecktaPago.tax;
 
 
-                
+
                 IMDResponse<bool> responseCorreo = this.BEnvioCorreo(oDetalleCompra);
 
                 response.Code = 0;
@@ -346,74 +352,77 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     entFolioxEmpresa.lstLineItems[i].unit_price = (int)(oProducto.fCosto * 100);
                 }
 
-
-                foreach (line_items item in entFolioxEmpresa.lstLineItems)
+                using (TransactionScope scope = new TransactionScope())
                 {
-                    for (int i = 0; i < item.quantity; i++)
+
+                    foreach (line_items item in entFolioxEmpresa.lstLineItems)
                     {
-                        entFolio.iIdProducto = item.product_id;
-
-                        if (item.monthsExpiration == 0)
+                        for (int i = 0; i < item.quantity; i++)
                         {
-                            entFolio.dtFechaVencimiento = DateTime.Now.AddDays(Convert.ToInt16(ConfigurationManager.AppSettings["iDiasDespuesVencimiento"]));
+                            entFolio.iIdProducto = item.product_id;
+
+                            if (item.monthsExpiration == 0)
+                            {
+                                entFolio.dtFechaVencimiento = DateTime.Now.AddDays(Convert.ToInt16(ConfigurationManager.AppSettings["iDiasDespuesVencimiento"]));
+                            }
+
+                            if (item.monthsExpiration != 0)
+                            {
+                                entFolio.dtFechaVencimiento = DateTime.Now.AddMonths(item.monthsExpiration);
+                            }
+
+                            BusGeneratePassword busGenerate = new BusGeneratePassword();
+                            BusUsuario busUsuario = new BusUsuario();
+
+                            entFolio.sPassword = busGenerate.Generate(6);
+
+                            entFolio.sPassword = busUsuario.BEncodePassword(entFolio.sPassword);
+
+                            //Se agrega el folio
+
+                            IMDResponse<DataTable> dtFolio = datFolio.DSaveFolio(entFolio);
+
+                            if (dtFolio.Code != 0)
+                            {
+                                response = dtFolio.GetResponse<bool>();
+                                response.Message = "Ocurrio un erro al guardar el folio";
+                                return response;
+                            }
+
+                            foreach (DataRow item2 in dtFolio.Result.Rows)
+                            {
+                                IMDDataRow dataRow = new IMDDataRow(item2);
+
+                                entFolio.iIdFolio = dataRow.ConvertTo<int>("iIdFolio");
+                                entFolio.sFolio = dataRow.ConvertTo<string>("sFolio");
+
+                            }
+                            //Se agrega el paciente
+                            BusPaciente busPaciente = new BusPaciente();
+
+                            entPaciente.iIdFolio = entFolio.iIdFolio;
+                            IMDResponse<bool> responsePaciente = busPaciente.DSavePaciente(entPaciente);
+
+                            if (responsePaciente.Code != 0)
+                            {
+                                return response = responsePaciente.GetResponse<bool>();
+                            }
+
+                            EntDetalleCompraArticulo clsDetalleCompraArticulo = new EntDetalleCompraArticulo();
+
+                            clsDetalleCompraArticulo.sDescripcion = item.name;
+
+                            clsDetalleCompraArticulo.sFolio = entFolio.sFolio;
+                            clsDetalleCompraArticulo.sPass = busUsuario.BDeCodePassWord(entFolio.sPassword);
+                            clsDetalleCompraArticulo.dtFechaVencimiento = entFolio.dtFechaVencimiento;
+                            clsDetalleCompraArticulo.iIdProducto = item.product_id;
+                            clsDetalleCompraArticulo.iIndex = i + 1;
+
+                            lstArticulosDetalle.Add(clsDetalleCompraArticulo);
                         }
-
-                        if (item.monthsExpiration != 0)
-                        {
-                            entFolio.dtFechaVencimiento = DateTime.Now.AddMonths(item.monthsExpiration);
-                        }
-
-                        BusGeneratePassword busGenerate = new BusGeneratePassword();
-                        BusUsuario busUsuario = new BusUsuario();
-
-                        entFolio.sPassword = busGenerate.Generate(6);
-
-                        entFolio.sPassword = busUsuario.BEncodePassword(entFolio.sPassword);
-
-                        //Se agrega el folio
-
-                        IMDResponse<DataTable> dtFolio = datFolio.DSaveFolio(entFolio);
-
-                        if (dtFolio.Code != 0)
-                        {
-                            response = dtFolio.GetResponse<bool>();
-                            response.Message = "Ocurrio un erro al guardar el folio";
-                            return response;
-                        }
-
-                        foreach (DataRow item2 in dtFolio.Result.Rows)
-                        {
-                            IMDDataRow dataRow = new IMDDataRow(item2);
-
-                            entFolio.iIdFolio = dataRow.ConvertTo<int>("iIdFolio");
-                            entFolio.sFolio = dataRow.ConvertTo<string>("sFolio");
-
-                        }
-                        //Se agrega el paciente
-                        BusPaciente busPaciente = new BusPaciente();
-
-                        entPaciente.iIdFolio = entFolio.iIdFolio;
-                        IMDResponse<bool> responsePaciente = busPaciente.DSavePaciente(entPaciente);
-
-                        if (responsePaciente.Code != 0)
-                        {
-                            return response = responsePaciente.GetResponse<bool>();
-                        }
-
-                        EntDetalleCompraArticulo clsDetalleCompraArticulo = new EntDetalleCompraArticulo();
-
-                        clsDetalleCompraArticulo.sDescripcion = item.name;
-
-                        clsDetalleCompraArticulo.sFolio = entFolio.sFolio;
-                        clsDetalleCompraArticulo.sPass = busUsuario.BDeCodePassWord(entFolio.sPassword);
-                        clsDetalleCompraArticulo.dtFechaVencimiento = entFolio.dtFechaVencimiento;
-                        clsDetalleCompraArticulo.iIdProducto = item.product_id;
-                        clsDetalleCompraArticulo.iIndex = i + 1;
-
-                        lstArticulosDetalle.Add(clsDetalleCompraArticulo);
                     }
+                    scope.Complete();
                 }
-
                 oDetalleFolioempresa.Result.lstArticulos = lstArticulosDetalle;
                 response = this.BEnvioCorreoEmpresa(oDetalleFolioempresa.Result);
 
@@ -857,13 +866,17 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     return response;
                 }
 
-                foreach (EntFolioFVItem folio in entFolioFV.lstFolios)
+                using (TransactionScope scope = new TransactionScope())
                 {
-                    IMDResponse<bool> respuestaUpdFecha = datFolio.DUpdFechaVencimiento(entFolioFV.iIdEmpresa, folio.iIdFolio, entFolioFV.dtFechaVencimiento, entFolioFV.iIdUsuario);
-                    if (respuestaUpdFecha.Code != 0)
+                    foreach (EntFolioFVItem folio in entFolioFV.lstFolios)
                     {
-                        return respuestaUpdFecha;
+                        IMDResponse<bool> respuestaUpdFecha = datFolio.DUpdFechaVencimiento(entFolioFV.iIdEmpresa, folio.iIdFolio, entFolioFV.dtFechaVencimiento, entFolioFV.iIdUsuario);
+                        if (respuestaUpdFecha.Code != 0)
+                        {
+                            return respuestaUpdFecha;
+                        }
                     }
+                    scope.Complete();
                 }
 
                 response.Code = 0;
@@ -904,13 +917,17 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     return response;
                 }
 
-                foreach (EntFolioFVItem folio in entFolioFV.lstFolios)
+                using (TransactionScope scope = new TransactionScope())
                 {
-                    IMDResponse<bool> respuestaUpdFecha = datFolio.DEliminarFoliosEmpresa(entFolioFV.iIdEmpresa, folio.iIdFolio, entFolioFV.iIdUsuario);
-                    if (respuestaUpdFecha.Code != 0)
+                    foreach (EntFolioFVItem folio in entFolioFV.lstFolios)
                     {
-                        return respuestaUpdFecha;
+                        IMDResponse<bool> respuestaUpdFecha = datFolio.DEliminarFoliosEmpresa(entFolioFV.iIdEmpresa, folio.iIdFolio, entFolioFV.iIdUsuario);
+                        if (respuestaUpdFecha.Code != 0)
+                        {
+                            return respuestaUpdFecha;
+                        }
                     }
+                    scope.Complete();
                 }
 
                 response.Code = 0;

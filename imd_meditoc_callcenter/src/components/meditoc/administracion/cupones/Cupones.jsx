@@ -73,9 +73,9 @@ const Cupones = (props) => {
         );
 
         if (response.Code === 0) {
-            funcAlert(response.Message, "success");
             setModalEliminarCuponOpen(false);
             await funcObtenerCupones();
+            funcAlert(response.Message, "success");
         } else {
             funcAlert(response.Message);
         }

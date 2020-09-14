@@ -1,10 +1,11 @@
 import PropTypes from "prop-types";
 import React, { Fragment } from "react";
-import Menu from "./Menu";
+import Menu from "../Menu";
 import Cover from "./Cover";
 import Content from "./Content";
 import Footer from "../Footer";
-import Header from "../Payments/Header";
+import Header from "../Header";
+import Directory from "./Directory";
 
 /*****************************************************
  * Descripción: Estructura principal de la pagina de precios
@@ -21,6 +22,7 @@ const Main = (props) => {
             {/* <Cover /> */}
             <Header />
             <Content funcLoader={funcLoader} />
+            <Directory />
             <Footer appInfo={appInfo} />
         </Fragment>
     );

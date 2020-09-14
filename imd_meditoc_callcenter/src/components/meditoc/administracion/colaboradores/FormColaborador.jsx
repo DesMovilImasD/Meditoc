@@ -11,9 +11,20 @@ import InputTelefono from "../../../utilidades/InputTelefono";
 import { DatePicker } from "@material-ui/pickers";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import { rxCorreo } from "../../../../configurations/regexConfig";
+import ColaboradorController from "../../../../controllers/ColaboradorController";
+import { useEffect } from "react";
 
 const FormColaborador = (props) => {
-    const { entColaborador, open, setOpen, listaEspecialidades } = props;
+    const {
+        entColaborador,
+        open,
+        setOpen,
+        listaEspecialidades,
+        funcGetColaboradores,
+        usuarioSesion,
+        funcLoader,
+        funcAlert,
+    } = props;
 
     const iIdTipoDoctorCallCenter = 1;
     const iIdTipoDoctorEspecialista = 2;
@@ -41,6 +52,30 @@ const FormColaborador = (props) => {
         txtUsuarioAdministrativo: "",
         txtPasswordAdministrativo: "",
     });
+
+    useEffect(() => {
+        setFormColaborador({
+            txtNombreDirectorio: entColaborador.sNombreDirectorio,
+            txtCedulaProfesional: entColaborador.sCedulaProfecional,
+            txtRFC: entColaborador.sRFC,
+            txtTelefonoContacto: entColaborador.sTelefonoDirectorio,
+            txtCorreoElectronicoContacto: entColaborador.sCorreoDirectorio,
+            txtEspecialidad: entColaborador.iIdEspecialidad,
+            txtNumeroSala: entColaborador.iNumSala,
+            txtDireccionConsultorio: entColaborador.sDireccionConsultorio,
+            txtUrlDoctor: entColaborador.sURL,
+            txtMapsDoctor: entColaborador.sMaps,
+            txtNombreDoctor: entColaborador.sNombresDoctor,
+            txtApellidoPaterno: entColaborador.sApellidoPaternoDoctor,
+            txtApellidoMaterno: entColaborador.sApellidoMaternoDoctor,
+            txtFechaNacimiento: entColaborador.dtFechaNacimientoDoctor,
+            txtTelefono: entColaborador.sTelefonoDoctor,
+            txtCorreoElectronico: entColaborador.sCorreoDoctor,
+            txtDomicilio: entColaborador.sDomicilioDoctor,
+            txtUsuarioTitular: entColaborador.sUsuarioTitular,
+            txtUsuarioAdministrativo: entColaborador.sUsuarioAdministrativo,
+        });
+    }, [entColaborador]);
 
     const [formColaboradorOK, setFormColaboradorOK] = useState({
         txtNombreDirectorio: true,
@@ -243,7 +278,7 @@ const FormColaborador = (props) => {
         setFormColaborador({ ...formColaborador, txtFechaNacimiento: date });
     };
 
-    const handleClickGuardarColaborador = () => {
+    const handleClickGuardarColaborador = async () => {
         let formColaboradorOKValidacion = {
             txtNombreDirectorio: true,
             txtCedulaProfesional: true,
@@ -347,9 +382,11 @@ const FormColaborador = (props) => {
             errorUsuarioPassword = true;
         }
 
-        if (formColaborador.txtPasswordTitular === "") {
-            formColaboradorOKValidacion.txtPasswordTitular = false;
-            errorUsuarioPassword = true;
+        if (entColaborador.iIdColaborador === 0) {
+            if (formColaborador.txtPasswordTitular === "") {
+                formColaboradorOKValidacion.txtPasswordTitular = false;
+                errorUsuarioPassword = true;
+            }
         }
 
         if (entColaborador.iIdTipoDoctor === iIdTipoDoctorEspecialista) {
@@ -357,9 +394,11 @@ const FormColaborador = (props) => {
                 formColaboradorOKValidacion.txtUsuarioAdministrativo = false;
                 errorUsuarioPassword = true;
             }
-            if (formColaborador.txtPasswordAdministrativo === "") {
-                formColaboradorOKValidacion.txtPasswordAdministrativo = false;
-                errorUsuarioPassword = true;
+            if (entColaborador.iIdColaborador === 0) {
+                if (formColaborador.txtPasswordAdministrativo === "") {
+                    formColaboradorOKValidacion.txtPasswordAdministrativo = false;
+                    errorUsuarioPassword = true;
+                }
             }
         }
 
@@ -381,6 +420,63 @@ const FormColaborador = (props) => {
             setTabIndex(regresarTab);
             return;
         }
+
+        const entColaboradorSubmit = {
+            iIdColaborador: entColaborador.iIdColaborador,
+            iIdTipoDoctor: entColaborador.iIdTipoDoctor,
+            iIdEspecialidad:
+                entColaborador.iIdTipoDoctor === iIdTipoDoctorCallCenter
+                    ? 0
+                    : parseInt(formColaborador.txtEspecialidad),
+            iIdUsuarioCGU: entColaborador.iIdColaborador === 0 ? 0 : entColaborador.iIdUsuarioCGU,
+            iNumSala: parseInt(formColaborador.txtNumeroSala),
+            sNombreDirectorio: formColaborador.txtNombreDirectorio,
+            sCedulaProfecional: formColaborador.txtCedulaProfesional,
+            sTelefonoDirectorio: formColaborador.txtTelefonoContacto,
+            sCorreoDirectorio: formColaborador.txtCorreoElectronicoContacto,
+            sDireccionConsultorio: formColaborador.txtDireccionConsultorio,
+            sRFC: formColaborador.txtRFC,
+            sURL: formColaborador.txtUrlDoctor,
+            sMaps: formColaborador.txtMapsDoctor,
+            sUsuarioTitular: formColaborador.txtUsuarioTitular,
+            sPasswordTitular: formColaborador.txtPasswordTitular === "" ? null : formColaborador.txtPasswordTitular,
+            sUsuarioAdministrativo:
+                entColaborador.iIdTipoDoctor === iIdTipoDoctorEspecialista
+                    ? formColaborador.txtUsuarioAdministrativo
+                    : null,
+            sPasswordAdministrativo:
+                entColaborador.iIdTipoDoctor === iIdTipoDoctorEspecialista
+                    ? formColaborador.txtPasswordAdministrativo === ""
+                        ? null
+                        : formColaborador.txtPasswordAdministrativo
+                    : null,
+            sNombresDoctor: formColaborador.txtNombreDoctor,
+            sApellidoPaternoDoctor: formColaborador.txtApellidoPaterno,
+            sApellidoMaternoDoctor: formColaborador.txtApellidoMaterno,
+            dtFechaNacimientoDoctor: formColaborador.txtFechaNacimiento.toLocaleDateString(),
+            sTelefonoDoctor: formColaborador.txtTelefono,
+            sCorreoDoctor: formColaborador.txtCorreoElectronico,
+            sDomicilioDoctor: formColaborador.txtDomicilio,
+            iIdUsuarioMod: usuarioSesion.iIdUsuario,
+            bActivo: true,
+            bBaja: false,
+        };
+
+        const colaboradorController = new ColaboradorController();
+
+        funcLoader(true, "Guardando colaborador...");
+
+        const response = await colaboradorController.funcSaveColaborador(entColaboradorSubmit);
+
+        if (response.Code === 0) {
+            setOpen(false);
+            await funcGetColaboradores();
+            funcAlert(response.Message, "success");
+        } else {
+            funcAlert(response.Message);
+        }
+
+        funcLoader();
     };
 
     return (
@@ -510,7 +606,10 @@ const FormColaborador = (props) => {
                                             }
                                         >
                                             {listaEspecialidades.map((especialidad) => (
-                                                <MenuItem value={especialidad.iIdEspecialidad}>
+                                                <MenuItem
+                                                    key={especialidad.iIdEspecialidad}
+                                                    value={especialidad.iIdEspecialidad}
+                                                >
                                                     {especialidad.sNombre}
                                                 </MenuItem>
                                             ))}
@@ -642,7 +741,7 @@ const FormColaborador = (props) => {
                                         label="Fecha de nacimiento:"
                                         inputVariant="outlined"
                                         openTo="year"
-                                        format="DD/MM/YYYY"
+                                        format="dd/MM/yyyy"
                                         views={["year", "month", "date"]}
                                         InputAdornmentProps={{ position: "end" }}
                                         fullWidth

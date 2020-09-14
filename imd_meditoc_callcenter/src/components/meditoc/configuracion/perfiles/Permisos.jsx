@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { Dialog, IconButton, Tooltip, Slide } from "@material-ui/core";
 import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
 import AddIcon from "@material-ui/icons/Add";
@@ -9,10 +9,9 @@ import MeditocBody from "../../../utilidades/MeditocBody";
 import SeleccionarModulos from "./SeleccionarModulo";
 import PermisoModulo from "./PermisoModulo";
 import Simbologia from "../sistema/Simbologia";
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
+import MeditocFullModal from "../../../utilidades/MeditocFullModal";
+import MeditocHeader2 from "../../../utilidades/MeditocHeader2";
+import MeditocHeader3 from "../../../utilidades/MeditocHeader3";
 
 /*************************************************************
  * Descripcion: Representa la ventana de administración de los permisos para el perfil previamente seleccionado
@@ -28,11 +27,6 @@ const Permisos = (props) => {
 
     //State para mostrar/ocultar el modal para seleccionar los módulos disponibles para que el usuario les de permisos
     const [modalSeleccionarModulosOpen, setModalSeleccionarModulosOpen] = useState(false);
-
-    //Funcion para esta ventana de administrarció de permisos
-    const handleClose = () => {
-        setOpen(false);
-    };
 
     //Función para abrir el modal para seleccionar los módulos disponibles para que el usuario les de permisos
     const handleClickSeleccionarModulos = () => {
@@ -65,42 +59,41 @@ const Permisos = (props) => {
     }, [entPerfil]);
 
     return (
-        <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
-            <MeditocHeader1 title={"Administrar permisos para " + entPerfil.sNombre}>
-                <Tooltip title="Cerrar ventana" arrow>
-                    <IconButton onClick={handleClose}>
-                        <CancelPresentationIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Agregar permisos a módulos de Meditoc CallCenter" arrow>
-                    <IconButton onClick={handleClickSeleccionarModulos}>
-                        <AddIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-            </MeditocHeader1>
-            <div>
-                <MeditocBody>
-                    {listaPermisosModulo.length > 0 ? (
-                        listaPermisosModulo.map((modulo) => (
-                            <PermisoModulo
-                                key={modulo.iIdModulo}
-                                entPerfil={entPerfil}
-                                entModulo={modulo}
-                                listaSistema={listaSistema}
-                                listaPermisosPerfil={listaPermisosModulo}
-                                funcGetPermisosXPerfil={funcGetPermisosXPerfil}
-                                usuarioSesion={usuarioSesion}
-                                funcLoader={funcLoader}
-                                funcAlert={funcAlert}
-                            />
-                        ))
-                    ) : (
-                        <div className="color-3 center">
-                            (Este perfil no tiene ningún permiso para acceder a los módulos de Meditoc CallCenter)
-                        </div>
-                    )}
-                </MeditocBody>
-            </div>
+        <Fragment>
+            <MeditocFullModal open={open} setOpen={setOpen}>
+                <div>
+                    <MeditocHeader2 title={"Administrar permisos para " + entPerfil.sNombre} setOpen={setOpen} />
+                    <MeditocBody>
+                        <MeditocHeader3 title="Accesos permitidos">
+                            <Tooltip title="Agregar permisos a módulos de Meditoc CallCenter" arrow>
+                                <IconButton onClick={handleClickSeleccionarModulos}>
+                                    <AddIcon className="color-1" />
+                                </IconButton>
+                            </Tooltip>
+                        </MeditocHeader3>
+                        {listaPermisosModulo.length > 0 ? (
+                            listaPermisosModulo.map((modulo) => (
+                                <PermisoModulo
+                                    key={modulo.iIdModulo}
+                                    entPerfil={entPerfil}
+                                    entModulo={modulo}
+                                    listaSistema={listaSistema}
+                                    listaPermisosPerfil={listaPermisosModulo}
+                                    funcGetPermisosXPerfil={funcGetPermisosXPerfil}
+                                    usuarioSesion={usuarioSesion}
+                                    funcLoader={funcLoader}
+                                    funcAlert={funcAlert}
+                                />
+                            ))
+                        ) : (
+                            <div className="color-3 center">
+                                (Este perfil no tiene ningún permiso para acceder a los módulos de Meditoc CallCenter)
+                            </div>
+                        )}
+                        <Simbologia />
+                    </MeditocBody>
+                </div>
+            </MeditocFullModal>
 
             <SeleccionarModulos
                 entPerfil={entPerfil}
@@ -113,8 +106,7 @@ const Permisos = (props) => {
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
             />
-            <Simbologia />
-        </Dialog>
+        </Fragment>
     );
 };
 

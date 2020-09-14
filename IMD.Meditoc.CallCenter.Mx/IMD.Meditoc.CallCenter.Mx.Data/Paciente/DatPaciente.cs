@@ -44,7 +44,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Paciente
                 {
                     database.AddInParameter(dbCommand, "piIdFolio", DbType.Int32, entPaciente.iIdFolio);
                     database.AddInParameter(dbCommand, "psNombre", DbType.String, entPaciente.sNombre);
-                    database.AddInParameter(dbCommand, "psTelefono", DbType.String, entPaciente.sTelefono);
+                    database.AddInParameter(dbCommand, "psTelefono", DbType.String, entPaciente.sTelefono?.Replace(" ", ""));
                     database.AddInParameter(dbCommand, "psCorreo", DbType.String, entPaciente.sCorreo);
 
                     response = imdCommonData.DExecute(database, dbCommand);
