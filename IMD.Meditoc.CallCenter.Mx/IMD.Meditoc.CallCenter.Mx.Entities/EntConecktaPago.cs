@@ -11,6 +11,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities
     public class EntConecktaPago
     {
         public string currency { get; set; }
+        public int iIdEmpresa { get; set; }
+        public int iIdOrigen { get; set; }
         public bool tax { get; set; }
         public int? coupon { get; set; }
         [JsonProperty(PropertyName = "customer_info")]
@@ -20,8 +22,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities
         public List<line_items> lstLineItems;
 
         [JsonProperty(PropertyName = "charges")]
-        public List<charges> lstCharges;
-        public string sPrefijoFolio { get; set; }
+        public List<charges> lstCharges;        
     }
 
     public class payment_method

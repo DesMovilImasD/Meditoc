@@ -14,6 +14,10 @@ class CGUController {
     this.apiSaveUsuario = 'Api/CGU/Create/Usuario'
     this.apiSavePermiso = 'Api/CGU/Create/Permiso'
     this.apiGetPermisosXPerfil = 'Api/CGU/GET/PermisoXPerfil'
+    this.apiGetPerfiles = 'Api/CGU/Get/Perfiles'
+    this.apiGetUsuarios = 'Api/CGU/Get/Usuarios'
+    this.apiCambiarPassword = 'Api/CGU/Create/CambiarContrasenia'
+    this.apiGetLogin = 'Api/CGU/Get/Login'
   }
 
   async funcSaveModulo(entCreateModulo) {
@@ -111,12 +115,12 @@ class CGUController {
     return response
   }
 
-  async funcSavePermiso(entPermiso) {
+  async funcSavePermiso(entPermisos) {
     let response = { Code: 0, Message: '', Result: false }
     try {
       const apiResponse = await fetch(`${serverMain}${this.apiSavePermiso}`, {
         method: 'POST',
-        body: JSON.stringify(entPermiso),
+        body: JSON.stringify(entPermisos),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -135,18 +139,84 @@ class CGUController {
     try {
       const apiResponse = await fetch(
         `${serverMain}${this.apiGetPermisosXPerfil}?iIdPerfil=${iIdPerfil}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
       )
 
       response = await apiResponse.json()
     } catch (error) {
       response.Code = -1
       response.Message = 'Ocurrió un error al intentar obtener los permisos'
+    }
+    return response
+  }
+
+  async funcGetPerfiles(iIdPerfil = null, bActivo = true, bBaja = false) {
+    let response = { Code: 0, Message: '', Result: [] }
+    try {
+      const apiResponse = await fetch(
+        `${serverMain}${this.apiGetPerfiles}?iIdPerfil=${iIdPerfil}&bActivo=${bActivo}&bBaja=${bBaja}`,
+      )
+
+      response = await apiResponse.json()
+    } catch (error) {
+      response.Code = -1
+      response.Message = 'Ocurrió un error al intentar obtener los perfiles'
+    }
+    return response
+  }
+
+  async funcGetUsuarios(
+    iIdUsuario = null,
+    iIdTipoCuenta = null,
+    iIdPerfil = null,
+    bActivo = true,
+    bBaja = false,
+  ) {
+    let response = { Code: 0, Message: '', Result: [] }
+    try {
+      const apiResponse = await fetch(
+        `${serverMain}${this.apiGetUsuarios}?iIdUsuario=${iIdUsuario}&iIdTipoCuenta=${iIdTipoCuenta}&iIdPerfil=${iIdPerfil}&bActivo=${bActivo}&bBaja=${bBaja}`,
+      )
+
+      response = await apiResponse.json()
+    } catch (error) {
+      response.Code = -1
+      response.Message = 'Ocurrió un error al intentar obtener los usuarios'
+    }
+    return response
+  }
+
+  async funcCambiarPassword(
+    iIdUsuario = 0,
+    sPassword = '',
+    iIdUsuarioUltMod = 0,
+  ) {
+    let response = { Code: 0, Message: '', Result: false }
+    try {
+      const apiResponse = await fetch(
+        `${serverMain}${this.apiCambiarPassword}?iIdUsuario=${iIdUsuario}&sPassword=${sPassword}&iIdUsuarioUltMod=${iIdUsuarioUltMod}`,
+        { method: 'POST' },
+      )
+
+      response = await apiResponse.json()
+    } catch (error) {
+      response.Code = -1
+      response.Message = 'Ocurrió un error al intentar cambiar la contraseña'
+    }
+    return response
+  }
+
+  async funcGetLogin(sUsuario = '', sPassword = '') {
+    let response = { Code: 0, Message: '', Result: {} }
+    try {
+      const apiResponse = await fetch(
+        `${serverMain}${this.apiGetLogin}?sUsuario=${sUsuario}&sPassword=${sPassword}`,
+        { method: 'POST' },
+      )
+
+      response = await apiResponse.json()
+    } catch (error) {
+      response.Code = -1
+      response.Message = 'Ocurrió un error al validar los datos de sesión'
     }
     return response
   }

@@ -1,5 +1,7 @@
 ﻿using IMD.Admin.Conekta.Data;
 using IMD.Admin.Conekta.Entities;
+using IMD.Admin.Conekta.Entities.Orders;
+using IMD.Admin.Conekta.Entities.Promotions;
 using IMD.Admin.Conekta.Services;
 using IMD.Admin.Conekta.Web.Business;
 using IMD.Admin.Utilities.Business;
@@ -10,7 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace IMD.Admin.Conekta.Business
 {
@@ -22,6 +27,7 @@ namespace IMD.Admin.Conekta.Business
         private ServOrder servOrder;
         private DatOrder datOrder;
         private BusAgent busAgent;
+        private BusPromociones busPromociones;
 #else
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private ServOrder servOrder;
@@ -29,12 +35,15 @@ namespace IMD.Admin.Conekta.Business
         private DatOrder datOrder;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private BusAgent busAgent;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private BusPromociones busPromociones;
 #endif
-        public BusOrder()
+        public BusOrder(string appToken, string appKey)
         {
             servOrder = new ServOrder();
-            datOrder = new DatOrder();
+            datOrder = new DatOrder(appToken, appKey);
             busAgent = new BusAgent();
+            busPromociones = new BusPromociones(appToken, appKey);
         }
 
         /// <summary>
@@ -53,6 +62,7 @@ namespace IMD.Admin.Conekta.Business
 
             try
             {
+                string defaultPhoneNumber = "+525555555555";
                 if (entCreateOrder == null)
                 {
                     response.Code = 67823458112809;
@@ -62,7 +72,7 @@ namespace IMD.Admin.Conekta.Business
 
                 if (string.IsNullOrWhiteSpace(entCreateOrder.currency))
                 {
-                    response.Code = 67823458112809;
+                    response.Code = 67823458217704;
                     response.Message = "No se ingresó el tipo de moneda";
                     return response;
                 }
@@ -76,12 +86,28 @@ namespace IMD.Admin.Conekta.Business
 
                 if (string.IsNullOrWhiteSpace(entCreateOrder.customer_info.name))
                 {
-                    entCreateOrder.customer_info.name = "No name info";
+                    response.Code = 45654345434543;
+                    response.Message = "El nombre del cliente es requerido";
+                    return response;
                 }
 
                 if (string.IsNullOrWhiteSpace(entCreateOrder.customer_info.phone))
                 {
-                    entCreateOrder.customer_info.phone = "+5215555555555";
+                    entCreateOrder.customer_info.phone = defaultPhoneNumber;
+                }
+                else
+                {
+                    entCreateOrder.customer_info.phone = entCreateOrder.customer_info.phone.Replace(" ", "");
+                    if (entCreateOrder.customer_info.phone.Length != 10)
+                    {
+                        response.Code = 67823458114363;
+                        response.Message = "El número de teléfono proporcionado debe tener 10 dígitos";
+                        return response;
+                    }
+                    else
+                    {
+                        entCreateOrder.customer_info.phone = $"+52{entCreateOrder.customer_info.phone}";
+                    }
                 }
 
                 if (entCreateOrder.line_items?.Count == 0 || entCreateOrder.line_items == null)
@@ -128,7 +154,6 @@ namespace IMD.Admin.Conekta.Business
                     }
                     catch (Exception)
                     {
-                        //Continuar
                     }
                     DateTime unixStart = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
                     long unixTimeStampInTicks = (DateTime.Now.AddHours(horasLimitePagoOxxo).ToUniversalTime() - unixStart).Ticks;
@@ -152,8 +177,9 @@ namespace IMD.Admin.Conekta.Business
 
                 long amount = entCreateOrder.charges[0].amount;
                 bool aplicaPromocion = false;
+                string couponCode = null;
+                long discount = 0;
 
-                BusPromociones busPromociones = new BusPromociones();
                 if (entCreateOrder.coupon != null)
                 {
                     IMDResponse<EntCupon> respuestaValidarPromocion = busPromociones.BValidarCupon(piIdCupon: entCreateOrder.coupon);
@@ -163,25 +189,74 @@ namespace IMD.Admin.Conekta.Business
                     }
                     else
                     {
+                        double porcentajeDescuentoMaximo = Convert.ToDouble(ConfigurationManager.AppSettings["CONEKTA_DESCUENTO_MAXIMO"]);
+
                         switch (respuestaValidarPromocion.Result.fiIdCuponCategoria)
                         {
                             case (int)EnumCategoriaCupon.DescuentoMonto:
+                                double descuentoMaximo = entCreateOrder.charges[0].amount * porcentajeDescuentoMaximo;
+
+                                if (respuestaValidarPromocion.Result.fnMontoDescuento > descuentoMaximo)
+                                {
+                                    respuestaValidarPromocion.Result.fnMontoDescuento = descuentoMaximo;
+                                }
+                                discount = (long)respuestaValidarPromocion.Result.fnMontoDescuento;
                                 entCreateOrder.discount_lines = new List<EntCreateDiscountLine>
                                 {
                                     new EntCreateDiscountLine
                                     {
                                         type="coupon",
-                                        amount = (long)respuestaValidarPromocion.Result.fnMontoDescuento,
+                                        amount = discount,
                                         code = respuestaValidarPromocion.Result.fsCodigo
                                     }
                                 };
-                                entCreateOrder.charges[0].amount -= (long)respuestaValidarPromocion.Result.fnMontoDescuento;
                                 aplicaPromocion = true;
+                                couponCode = respuestaValidarPromocion.Result.fsCodigo;
+                                break;
+
+                            case (int)EnumCategoriaCupon.DescuentoPorcentaje:
+                                if (respuestaValidarPromocion.Result.fnPorcentajeDescuento > porcentajeDescuentoMaximo)
+                                {
+                                    respuestaValidarPromocion.Result.fnPorcentajeDescuento = porcentajeDescuentoMaximo;
+                                }
+
+                                discount = (long)(entCreateOrder.charges[0].amount * respuestaValidarPromocion.Result.fnPorcentajeDescuento);
+                                entCreateOrder.discount_lines = new List<EntCreateDiscountLine>
+                                {
+                                    new EntCreateDiscountLine
+                                    {
+                                        type="coupon",
+                                        amount = discount,
+                                        code = respuestaValidarPromocion.Result.fsCodigo
+                                    }
+                                };
+                                aplicaPromocion = true;
+                                couponCode = respuestaValidarPromocion.Result.fsCodigo;
                                 break;
                         }
                     }
                 }
-                long amount_paid = entCreateOrder.charges[0].amount;
+
+                entCreateOrder.charges[0].amount -= discount;
+
+                long tax = 0;
+
+                double taxIVA = Convert.ToDouble(ConfigurationManager.AppSettings["CONEKTA_IMPUESTO"]);
+
+                if (taxIVA > 0d)
+                {
+                    tax = (long)(entCreateOrder.charges[0].amount * taxIVA);
+
+                    entCreateOrder.tax_lines = new List<EntCreateTaxLine> {
+                        new EntCreateTaxLine
+                        {
+                            amount = tax,
+                            description = "IVA"
+                        }
+                    };
+                }
+
+                entCreateOrder.charges[0].amount += tax;
 
                 IMDResponse<EntCreateUserAgent> respuestaObtenerAgenteUsuario = busAgent.BGetUserAgent();
                 if (respuestaObtenerAgenteUsuario.Code != 0)
@@ -191,14 +266,14 @@ namespace IMD.Admin.Conekta.Business
 
                 int[] mesesSinInteresesValidos = { 3, 6, 9, 12, 18 };
 
-                string[] ocultarMeses = null;
+                List<string> ocultarPropiedades = new List<string> { "coupon", "tax" };
 
                 if (!mesesSinInteresesValidos.Contains(entCreateOrder.charges[0].payment_method.monthly_installments))
                 {
-                    ocultarMeses = new[] { "monthly_installments" };
+                    ocultarPropiedades.Add("monthly_installments");
                 }
 
-                IMDResponse<string> respuestaServicioCrearOrden = servOrder.SCreateOrder(entCreateOrder, respuestaObtenerAgenteUsuario.Result, ocultarMeses);
+                IMDResponse<string> respuestaServicioCrearOrden = servOrder.SCreateOrder(entCreateOrder, respuestaObtenerAgenteUsuario.Result, ocultarPropiedades.ToArray());
                 if (respuestaServicioCrearOrden.Code != 0)
                 {
                     return respuestaServicioCrearOrden.GetResponse<EntOrder>();
@@ -214,7 +289,14 @@ namespace IMD.Admin.Conekta.Business
                     entOrder = JsonConvert.DeserializeObject<EntOrder>(respuestaServicioCrearOrden.Result);
 
                     entOrder.amount = amount;
-                    entOrder.amount_paid = amount_paid;
+                    entOrder.amount_paid = entCreateOrder.charges[0].amount;
+                    entOrder.coupon_code = couponCode;
+                    entOrder.amount_discount = discount;
+                    entOrder.amount_tax = tax;
+                    if (entOrder.customer_info.phone == defaultPhoneNumber)
+                    {
+                        entOrder.customer_info.phone = null;
+                    }
                 }
                 catch (Exception)
                 {
@@ -248,7 +330,7 @@ namespace IMD.Admin.Conekta.Business
             catch (Exception ex)
             {
                 response.Code = 67823458108924;
-                response.Message = "Error al procesar el pago";
+                response.Message = "No pudimos procesar el pago de tu pedido, revisa nuevamente los datos ingresados o intenta con otra tarjeta.";
 
                 logger.Error(IMDSerialize.Serialize(67823458108924, $"Error en {metodo}(EntCreateOrder entCreateOrder): {ex.Message}", entCreateOrder, ex, response));
             }
@@ -290,7 +372,7 @@ namespace IMD.Admin.Conekta.Business
                     return respuestaServicioConsultarOrden.GetResponse<EntOrder>();
                 }
 
-                logger.Info(IMDSerialize.Serialize(77827203972734, $"Respuesta del servicio consulta por Conekta", orderId, respuestaObtenerAgenteUsuario.Result, respuestaServicioConsultarOrden));
+                logger.Info(IMDSerialize.Serialize(67823458218481, $"Respuesta del servicio consulta por Conekta", orderId, respuestaObtenerAgenteUsuario.Result, respuestaServicioConsultarOrden));
 
 
                 EntOrder entOrder = null;
@@ -323,13 +405,14 @@ namespace IMD.Admin.Conekta.Business
         /// Modificado:
         /// </summary>
         /// <param name="entOrder">Datos de la orden</param>
+        /// <param name="piIdCupon">Cupón si aplicó</param>
         /// <returns>Guardado correcto</returns>
         private IMDResponse<bool> BSaveOrder(EntOrder entOrder, int? piIdCupon = null)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.BSaveOrder);
-            logger.Info(IMDSerialize.Serialize(67823458111255, $"Inicia {metodo}(EntOrder entOrder)", entOrder));
+            logger.Info(IMDSerialize.Serialize(67823458111255, $"Inicia {metodo}(EntOrder entOrder, int? piIdCupon = null)", entOrder, piIdCupon));
 
             try
             {
@@ -378,11 +461,18 @@ namespace IMD.Admin.Conekta.Business
                 response.Code = 67823458112032;
                 response.Message = "Ocurrió un error inesperado al guardar la información en la base de datos";
 
-                logger.Error(IMDSerialize.Serialize(67823458112032, $"Error en {metodo}(EntOrder entOrder): {ex.Message}", entOrder, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458112032, $"Error en {metodo}(EntOrder entOrder, int? piIdCupon = null): {ex.Message}", entOrder, piIdCupon, ex, response));
             }
             return response;
         }
 
+        /// <summary>
+        /// Función: Obtiene el GUID de la orden previamente almacenada
+        /// Creado: Cristopher Noh 03/07/2020
+        /// Modificado:
+        /// </summary>
+        /// <param name="psOrderId">ID de orden Conekta</param>
+        /// <returns></returns>
         public IMDResponse<Guid> BGetOrderGuid(string psOrderId)
         {
             IMDResponse<Guid> response = new IMDResponse<Guid>();
@@ -394,7 +484,7 @@ namespace IMD.Admin.Conekta.Business
             {
                 if (string.IsNullOrEmpty(psOrderId))
                 {
-                    response.Code = 7682736488273;
+                    response.Code = 67823458219258;
                     response.Message = "No se ha podido determinar el ID de la orden";
                     return response;
                 }
@@ -406,7 +496,7 @@ namespace IMD.Admin.Conekta.Business
                 }
                 if (respuestaGetOrderDB.Result.Rows.Count < 1)
                 {
-                    response.Code = 23458738723874;
+                    response.Code = 67823458220035;
                     response.Message = "No se encontró la orden en la base de datos";
                     return response;
                 }

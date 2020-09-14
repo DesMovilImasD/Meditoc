@@ -5,6 +5,8 @@ import PurchaseDetail from "./PurchaseDetail";
 import PaymentForm from "./PaymentForm";
 import PaymentOk from "./PaymentOk";
 import PaymentError from "./PaymentError";
+import { logoappleAvalible } from "../../configuration/imgConfig";
+import { logoplayAvalible } from "../../configuration/imgConfig";
 
 /*****************************************************
  * Descripción: Contiene la estructura de contenido para el
@@ -113,6 +115,29 @@ const Content = (props) => {
                                 setEntOrder={setEntOrder}
                                 setErrorOrder={setErrorOrder}
                             />
+                        </Grid>
+                        <Grid item xs={12} style={{ marginBottom: 50 }}>
+                            <div>
+                                <p>
+                                    <span className="price-footer-address">
+                                        Para utilizar el servicio, descarga la app “Meditoc 360” disponible en Appstore
+                                        y Playstore.
+                                    </span>
+                                </p>
+                                <span>
+                                    <a href="https://apps.apple.com/mx/app/meditoc-360/id1521078394" target="_blank">
+                                        <img src={logoappleAvalible} alt="app-store" />
+                                    </a>
+                                </span>
+                                <span style={{ marginLeft: 10 }}>
+                                    <a
+                                        href="https://play.google.com/store/apps/details?id=com.meditoc.callCenter.comercial"
+                                        target="_blank"
+                                    >
+                                        <img src={logoplayAvalible} alt="play-store" />
+                                    </a>
+                                </span>
+                            </div>
                         </Grid>
                     </Grid>
                 ) : errorOrder === false ? (

@@ -1,9 +1,16 @@
 ﻿using IMD.Admin.Conekta.Business;
 using IMD.Admin.Conekta.Entities;
+using IMD.Admin.Conekta.Entities.Orders;
+using IMD.Admin.Conekta.Entities.WebHooks;
 using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
+using IMD.Meditoc.CallCenter.Mx.Web.Tokens;
 using log4net;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 
 namespace IMD.Admin.Conekta.Web.Controllers
@@ -12,9 +19,12 @@ namespace IMD.Admin.Conekta.Web.Controllers
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(ConektaController));
 
+        private readonly BusOrder busOrder = new BusOrder("MeditocComercial", "Meditoc1");
+        private readonly BusWebHook busWebHook = new BusWebHook("MeditocComercial", "Meditoc1");
+
         [HttpPost]
         [Route("Api/Conekta/Create/Order")]
-        public IMDResponse<EntOrder> CCreateOrder([FromBody] EntCreateOrder entCreateOrder)
+        public IMDResponse<EntOrder> CCreateOrder([FromBody]EntCreateOrder entCreateOrder)
         {
             IMDResponse<EntOrder> response = new IMDResponse<EntOrder>();
 
@@ -23,22 +33,22 @@ namespace IMD.Admin.Conekta.Web.Controllers
 
             try
             {
-                BusOrder busOrder = new BusOrder();
                 response = busOrder.BCreateOrder(entCreateOrder);
             }
             catch (Exception ex)
             {
                 response.Code = 67823458122133;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "No pudimos procesar el pago de tu pedido, revisa nuevamente los datos ingresados o intenta con otra tarjeta.";
 
                 logger.Error(IMDSerialize.Serialize(67823458122133, $"Error en {metodo}([FromBody]EntCreateOrder entCreateOrder): {ex.Message}", entCreateOrder, ex, response));
             }
             return response;
         }
 
+        [MeditocAuthentication]
         [HttpGet]
         [Route("Api/Conekta/Get/Order")]
-        public IMDResponse<EntOrder> CGetOrder([FromUri] string orderId)
+        public IMDResponse<EntOrder> CGetOrder([FromUri]string orderId)
         {
             IMDResponse<EntOrder> response = new IMDResponse<EntOrder>();
 
@@ -47,7 +57,6 @@ namespace IMD.Admin.Conekta.Web.Controllers
 
             try
             {
-                BusOrder busOrder = new BusOrder();
                 response = busOrder.BGetOrder(orderId);
             }
             catch (Exception ex)
@@ -62,7 +71,7 @@ namespace IMD.Admin.Conekta.Web.Controllers
 
         [HttpPost]
         [Route("Api/Conekta/WebHook/Client/Server/Main")]
-        public IMDResponse<bool> CWebHookMain([FromBody] EntWebHook entWebHook)
+        public IMDResponse<bool> CWebHookMain([FromBody]EntWebHook entWebHook)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
@@ -71,7 +80,6 @@ namespace IMD.Admin.Conekta.Web.Controllers
 
             try
             {
-                BusWebHook busWebHook = new BusWebHook();
                 response = busWebHook.BUpdateState(entWebHook);
             }
             catch (Exception ex)

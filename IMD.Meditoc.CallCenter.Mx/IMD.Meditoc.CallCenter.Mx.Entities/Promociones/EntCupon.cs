@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace IMD.Admin.Conekta.Entities
+namespace IMD.Admin.Conekta.Entities.Promotions
 {
     public class EntCupon
     {
@@ -20,5 +21,10 @@ namespace IMD.Admin.Conekta.Entities
         public DateTime? fdtFechaVencimiento { get; set; }
         public bool fbActivo { get; set; }
         public bool fbBaja { get; set; }
+        public string sFechaVencimiento { get; set; }
+        public DateTime? dtFechaCreacion { get; set; }
+        public string sFechaCreacion { get; set; }
+        public string sMontoDescuento { get; set; }
+        public string sPorcentajeDescuento { get; set; }
     }
 }

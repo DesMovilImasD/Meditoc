@@ -1,4 +1,5 @@
 ﻿using IMD.Admin.Conekta.Entities;
+using IMD.Admin.Conekta.Entities.Orders;
 using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
 using log4net;
@@ -7,6 +8,7 @@ using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -39,7 +41,7 @@ namespace IMD.Admin.Conekta.Services
             string conektaApiKeyEncriptada = ConfigurationManager.AppSettings["CONEKTA_APIKEY"];
 
             IMDEndec imdEndec = new IMDEndec();
-            conketaApiKey = imdEndec.BDecrypt(conektaApiKeyEncriptada, "hdiu4soi3IHD334F", "SKlru3nc").Result;
+            conketaApiKey = imdEndec.BDecrypt(conektaApiKeyEncriptada, "MeditocComercial", "Meditoc1").Result;
             conketaVersion = ConfigurationManager.AppSettings["CONEKTA_VERSION"];
             conektaLocale = ConfigurationManager.AppSettings["CONEKTA_LOCALE"];
         }

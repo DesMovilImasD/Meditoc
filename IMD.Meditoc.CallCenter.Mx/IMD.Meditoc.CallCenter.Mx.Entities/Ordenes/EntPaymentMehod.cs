@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace IMD.Admin.Conekta.Entities
+namespace IMD.Admin.Conekta.Entities.Orders
 {
     public class EntPaymentMehod
     {
@@ -19,7 +20,7 @@ namespace IMD.Admin.Conekta.Entities
         public string country { get; set; }
         public string service_name { get; set; }
         public string barcode_url { get; set; }
-        public int expires_at { get; set; }
+        public long expires_at { get; set; }
         public string store_name { get; set; }
         public string reference { get; set; }
     }

@@ -1,11 +1,16 @@
 import React, { useState, createRef } from 'react'
 import { ThemeProvider, Button, Typography } from '@material-ui/core'
 import theme from './configurations/themeConfig'
-import Loader from './components/Loader'
+import MeditocLoader from './components/utilidades/MeditocLoader'
 import { SnackbarProvider } from 'notistack'
-import Alert from './components/Alert'
-import ContentMain from './components/ContentMain'
+import MeditocAlert from './components/utilidades/MeditocAlert'
+import MeditocContentMain from './components/MeditocContentMain'
 import { HashRouter } from 'react-router-dom'
+import MeditocLogin from './components/login/MeditocLogin'
+import { MuiPickersUtilsProvider } from '@material-ui/pickers'
+import es from 'date-fns/locale/es'
+import DateFnsUtils from '@date-io/date-fns'
+
 /*************************************************************
  * Descripcion: App del proyecto
  * Creado: Cristopher Noh
@@ -13,6 +18,27 @@ import { HashRouter } from 'react-router-dom'
  * Invocado desde:  ---------Elemento Raíz----------
  *************************************************************/
 function App() {
+  const [usuarioSesion, setUsuarioSesion] = useState({
+    iIdUsuario: 4,
+    iIdTipoCuenta: 1,
+    iIdPerfil: 1,
+    sTipoCuenta: null,
+    sPerfil: null,
+    sUsuario: 'jperez',
+    sPassword: null,
+    sNombres: 'Juanito',
+    sApellidoPaterno: 'Perez',
+    sApellidoMaterno: null,
+    dtFechaNacimiento: '1982-06-04T01:38:00',
+    sTelefono: '9994450694',
+    sCorreo: 'g098@live.com.mx',
+    sDomicilio: '12',
+    iIdUsuarioMod: 0,
+    bActivo: false,
+    bBaja: false,
+  })
+  const [usuarioActivo, setUsuarioActivo] = useState(true)
+
   //Guardar valores de estado del loader
   const [entLoader, setEntLoader] = useState({
     open: false,
@@ -63,11 +89,28 @@ function App() {
           </Button>
         )}
       >
-        <HashRouter>
-          <Loader entLoader={entLoader} />
-          <Alert entAlert={entAlert} />
-          <ContentMain funcLoader={funcLoader} funcAlert={funcAlert} />
-        </HashRouter>
+        <MuiPickersUtilsProvider utils={DateFnsUtils} locale={es}>
+          <HashRouter>
+            <MeditocLoader entLoader={entLoader} />
+            <MeditocAlert entAlert={entAlert} />
+            {usuarioActivo === true ? (
+              <MeditocContentMain
+                usuarioSesion={usuarioSesion}
+                setUsuarioSesion={setUsuarioSesion}
+                setUsuarioActivo={setUsuarioActivo}
+                funcLoader={funcLoader}
+                funcAlert={funcAlert}
+              />
+            ) : (
+              <MeditocLogin
+                setUsuarioSesion={setUsuarioSesion}
+                setUsuarioActivo={setUsuarioActivo}
+                funcLoader={funcLoader}
+                funcAlert={funcAlert}
+              />
+            )}
+          </HashRouter>
+        </MuiPickersUtilsProvider>
       </SnackbarProvider>
     </ThemeProvider>
   )

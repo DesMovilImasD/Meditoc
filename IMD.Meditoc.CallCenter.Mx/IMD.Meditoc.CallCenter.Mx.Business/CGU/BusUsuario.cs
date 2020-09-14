@@ -19,9 +19,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             datUsuario = new DatUsuario();
         }
 
-        public IMDResponse<bool> DSaveUsuario(EntUsuario entUsuario)
+        public IMDResponse<EntUsuario> DSaveUsuario(EntUsuario entUsuario)
         {
-            IMDResponse<bool> response = new IMDResponse<bool>();
+            IMDResponse<EntUsuario> response = new IMDResponse<EntUsuario>();
 
             string metodo = nameof(this.DSaveUsuario);
             logger.Info(IMDSerialize.Serialize(67823458344355, $"Inicia {metodo}(EntUsuario entUsuario)", entUsuario));
@@ -35,20 +35,30 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     return response;
                 }
 
-                response = bValidaDatos(entUsuario);
-
-                if (!response.Result) //Se valida que los datos que contiene el objeto de perfil no esten vacios.
+                if (entUsuario.bActivo == true && entUsuario.bBaja == false)
                 {
-                    return response;
+
+                    IMDResponse<bool> resValidaDatos = bValidaDatos(entUsuario);
+
+                    if (!resValidaDatos.Result) //Se valida que los datos que contiene el objeto de perfil no esten vacios.
+                    {
+                        return resValidaDatos.GetResponse< EntUsuario>();
+                    }
+                    entUsuario.sPassword = BEncodePassword(entUsuario.sPassword);
                 }
 
-                entUsuario.sPassword = BEncodePassword(entUsuario.sPassword);
+                IMDResponse<DataTable> resSaveUsuario = datUsuario.DSaveUsuario(entUsuario);
+                if(resSaveUsuario.Code != 0)
+                {
+                    return resSaveUsuario.GetResponse<EntUsuario>();
+                }
 
-                response = datUsuario.DSaveUsuario(entUsuario);
+                IMDDataRow dr = new IMDDataRow(resSaveUsuario.Result.Rows[0]);
+                entUsuario.iIdUsuario = dr.ConvertTo<int>("iIdUsuario");
 
                 response.Code = 0;
-                response.Message = entUsuario.iIdUsuario == 0 ? "El usuario se guardó correctamente" : "El usuario se actualizo correctamente";
-                response.Result = true;
+                response.Message= "El usuario se guardó correctamente";
+                response.Result = entUsuario;
             }
             catch (Exception ex)
             {
@@ -74,6 +84,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 List<EntUsuario> lstUsuario = new List<EntUsuario>();
 
                 if (dtUsuario.Code != 0)
+                {
+                    return dtUsuario.GetResponse<List<EntUsuario>>();
+                }
+
+                if(dtUsuario.Code != 0)
                 {
                     return dtUsuario.GetResponse<List<EntUsuario>>();
                 }
@@ -276,8 +291,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     return dtUsuario.GetResponse<EntUsuario>();
                 }
 
-                if (dtUsuario.Result.Rows.Count > 0)
+                if (dtUsuario.Result.Rows.Count != 1)
                 {
+                    response.Code = 78772637586;
                     response.Message = "Usuario o contraseña incorrecta.";
                     return response;
                 }
@@ -295,7 +311,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     entUsuario.iIdPerfil = dr.ConvertTo<int>("iIdPerfil");
                     entUsuario.sPerfil = dr.ConvertTo<string>("sPerfil");
                     entUsuario.sUsuario = dr.ConvertTo<string>("sUsuario");
-                    entUsuario.sPassword = dr.ConvertTo<string>("sPassword");
+                    //entUsuario.sPassword = dr.ConvertTo<string>("sPassword");
                     entUsuario.sNombres = dr.ConvertTo<string>("sNombres");
                     entUsuario.sApellidoPaterno = dr.ConvertTo<string>("sApellidoPaterno");
                     entUsuario.sApellidoMaterno = dr.ConvertTo<string>("sApellidoMaterno");

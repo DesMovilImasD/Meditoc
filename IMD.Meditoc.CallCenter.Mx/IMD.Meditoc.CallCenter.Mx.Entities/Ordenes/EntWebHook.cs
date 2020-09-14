@@ -1,10 +1,11 @@
-﻿using IMD.Admin.Conekta.Entities;
+﻿using IMD.Admin.Conekta.Entities.Orders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace IMD.Admin.Conekta.Entities
+namespace IMD.Admin.Conekta.Entities.WebHooks
 {
     public class EntWebHook
     {
@@ -13,7 +14,7 @@ namespace IMD.Admin.Conekta.Entities
         public string webhook_status { get; set; }
         public string id { get; set; }
         public string type { get; set; }
-        public int created_at { get; set; }
+        public long created_at { get; set; }
         public List<EntWebHookLog> webhook_logs { get; set; }
         public EntOrder @object { get; set; }
     }
