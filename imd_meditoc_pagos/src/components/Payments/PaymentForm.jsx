@@ -20,7 +20,7 @@ import { FaCreditCard, FaCcVisa, FaCcMastercard, FaCcAmex } from "react-icons/fa
 import InputExpirationDate from "../Inputs/InputExpirationDate";
 import InputCardNumber from "../Inputs/InputCardNumber";
 import InputCVV from "../Inputs/InputCVV";
-import { serverWs, serverWa } from "../../configuration/serverConfig";
+import { serverWs, serverWa, serverMain } from "../../configuration/serverConfig";
 import { apiBuy, apiRevalidateCoupon } from "../../configuration/apiConfig";
 import { apiKeyLanguage } from "../../configuration/tokenConfig";
 import {
@@ -403,18 +403,18 @@ const PaymentForm = (props) => {
             coupon: entCoupon === null ? null : entCoupon.fiIdCupon,
             iIdOrigen: 1,
             tax: useTax,
-            pacienteUnico: {
-                sEmail: paymentForm.txtEmail,
-                sNombre: paymentForm.txtName,
-                sTelefono: paymentForm.txtPhone,
+            customer_info: {
+                email: paymentForm.txtEmail,
+                name: paymentForm.txtName,
+                phone: paymentForm.txtPhone,
             },
-            lstLineItems: productList.map((product) => ({
+            line_items: productList.map((product) => ({
                 product_id: product.id,
                 quantity: product.qty,
             })),
-            lstCharges: [
+            charges: [
                 {
-                    payment_: {
+                    payment_method: {
                         monthly_installments: parseInt(paymentForm.txtModality),
                         type: "card",
                         token_id: token.id,
@@ -450,7 +450,7 @@ const PaymentForm = (props) => {
 
             funcLoader(true, "Realizando compra...");
 
-            const apiResponse = await fetch(`${serverWs}${apiBuy}`, {
+            const apiResponse = await fetch(`${serverMain}${apiBuy}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -460,8 +460,8 @@ const PaymentForm = (props) => {
 
             const response = await apiResponse.json();
 
-            if (response.bRespuesta === true) {
-                setEntOrder(response.sParameter1);
+            if (response.Code === 0 && response.Result !== null) {
+                setEntOrder(response.Result);
                 setErrorOrder(false);
 
                 sessionStorage.removeItem("lstItems");
@@ -486,7 +486,7 @@ const PaymentForm = (props) => {
 
         try {
             const apiResponse = await fetch(
-                `${serverWa}${apiRevalidateCoupon}?piIdCupon=${piIdCupon}&psEmail=${psEmail}`
+                `${serverMain}${apiRevalidateCoupon}?piIdCupon=${piIdCupon}&psEmail=${psEmail}`
             );
 
             const response = await apiResponse.json();
