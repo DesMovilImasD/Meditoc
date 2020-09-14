@@ -44,7 +44,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             IMDResponse<EntDetalleCompra> response = new IMDResponse<EntDetalleCompra>();
 
             string metodo = nameof(this.CSaveNuevoFolio);
-            logger.Info(IMDSerialize.Serialize(67823458415062, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458415062, $"Inicia {metodo}(EntConecktaPago entConecktaPago)",entConecktaPago));
 
             try
             {
@@ -92,7 +92,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 requesOrder.Result = JsonConvert.DeserializeObject<EntRequestOrder>(f);
 
 
-                response = BGuardarCompraUnica(requesOrder, entConecktaPago);
+                //response = BGuardarCompraUnica(requesOrder, entConecktaPago);
 
                 response.Code = 0;
                 response.Message = "Operación exitosa.";
@@ -102,7 +102,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 response.Code = 67823458415839;
                 response.Message = "Ocurrió un error inesperado";
 
-                logger.Error(IMDSerialize.Serialize(67823458415839, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458415839, $"Error en {metodo}(EntConecktaPago entConecktaPago): {ex.Message}", entConecktaPago,ex, response));
             }
             return response;
         }
@@ -261,8 +261,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 oDetalleCompra.sTelefono = entConecktaPago.pacienteUnico.sTelefono;
                 oDetalleCompra.bAplicaIVA = entConecktaPago.tax;
 
+
+                
                 IMDResponse<bool> responseCorreo = this.BEnvioCorreo(oDetalleCompra);
 
+                response.Code = 0;
+                response.Result = oDetalleCompra;
             }
             catch (Exception ex)
             {
