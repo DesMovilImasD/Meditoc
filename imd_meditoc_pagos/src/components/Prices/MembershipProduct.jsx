@@ -22,7 +22,9 @@ const MembershipProduct = (props) => {
 
     return (
         <div className={"price-product-large-display" + dividerClass}>
-            <div className="price-product-amount">${product.price.toLocaleString("en-US")}</div>
+            <div className="price-product-amount">
+                ${product.price.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+            </div>
             <div className="price-product-amount-description">{product.shortName}</div>
             <div>
                 <Radio

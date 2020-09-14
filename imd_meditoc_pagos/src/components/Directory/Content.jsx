@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
     Grid,
     TextField,
@@ -9,11 +9,16 @@ import {
     Select,
     MenuItem,
     makeStyles,
-    Hidden,
+    Tooltip,
 } from "@material-ui/core";
 import { BsSearch } from "react-icons/bs";
+import { AiOutlineFileSearch } from "react-icons/ai";
+import { MdClose } from "react-icons/md";
 import Pagination from "@material-ui/lab/Pagination";
 import { logoMeditocDoctorSample } from "../../configuration/imgConfig";
+import { serverMain } from "../../configuration/serverConfig";
+import { apiGetDirectorio, apiGetEspecialidades } from "../../configuration/apiConfig";
+import MedicInfo from "./MedicInfo";
 
 const useStyles = makeStyles({
     ul: {
@@ -22,8 +27,94 @@ const useStyles = makeStyles({
     },
 });
 
-const Content = () => {
+const Content = (props) => {
+    const { funcLoader } = props;
+
     const classes = useStyles();
+    const pageSize = 20;
+
+    const [paginaSeleccionada, setPaginaSeleccionada] = useState(1);
+    const [paginasTotales, setPaginasTotales] = useState(0);
+    const [especialidadSeleccionada, setEspecialidadSeleccionada] = useState("");
+    const [buscadorIngresada, setBuscadorIngresada] = useState("");
+    const [ultimaBusqueda, setUltimaBusqueda] = useState("");
+
+    const [listaColaboradores, setListaColaboradores] = useState([]);
+    const [listaEspecialidades, setListaEspecialidades] = useState([]);
+
+    const funcGetDirectorio = async () => {
+        funcLoader(true, "Consultando en directorio médico...");
+
+        try {
+            const apiResponse = await fetch(
+                `${serverMain}${apiGetDirectorio}?piIdEspecialidad=${especialidadSeleccionada}&psBuscador=${buscadorIngresada}&piPage=${paginaSeleccionada}&piPageSize=${pageSize}`
+            );
+
+            const response = await apiResponse.json();
+
+            if (response.Code === 0) {
+                setPaginasTotales(response.Result.iTotalPaginas);
+                setListaColaboradores(response.Result.lstColaboradores);
+            }
+        } catch (error) {}
+
+        funcLoader();
+    };
+
+    const funcGetEspecialidades = async () => {
+        funcLoader(true, "Consultando especialidades...");
+
+        try {
+            const apiResponse = await fetch(`${serverMain}${apiGetEspecialidades}`, {
+                headers: {
+                    "AppKey": "qSVBJIQpOqtp0UfwzwX1ER6fNYR8YiPU/bw5CdEqYqk=",
+                    "AppToken": "Xx3ePv63cUTg77QPATmztJ3J8cdO1riA7g+lVRzOzhfnl9FnaVT1O2YIv8YCTVRZ",
+                },
+            });
+
+            const response = await apiResponse.json();
+
+            if (response.Code === 0) {
+                setListaEspecialidades(response.Result);
+            }
+        } catch (error) {}
+
+        funcLoader();
+    };
+
+    const handleChangeEspecialidad = (e) => {
+        setEspecialidadSeleccionada(e.target.value);
+    };
+
+    const handleChangePage = (e, page) => {
+        setPaginaSeleccionada(page);
+    };
+
+    const handleChangeBuscador = (e) => {
+        setBuscadorIngresada(e.target.value);
+    };
+
+    const handleClickBuscar = () => {
+        setUltimaBusqueda(buscadorIngresada);
+    };
+
+    const handleClickLimpiar = () => {
+        setBuscadorIngresada("");
+        setUltimaBusqueda("");
+    };
+
+    const funcGetData = async () => {
+        await funcGetDirectorio();
+        await funcGetEspecialidades();
+    };
+
+    useEffect(() => {
+        funcGetData();
+    }, []);
+
+    useEffect(() => {
+        funcGetDirectorio();
+    }, [especialidadSeleccionada, paginaSeleccionada, ultimaBusqueda]);
 
     return (
         <div className="directory-content">
@@ -36,118 +127,74 @@ const Content = () => {
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment edge="start">
-                                    <IconButton>
-                                        <BsSearch />
-                                    </IconButton>
+                                    {ultimaBusqueda !== "" ? (
+                                        <Tooltip title="Limpiar búsqueda" arrow placement="top">
+                                            <IconButton onClick={handleClickLimpiar}>
+                                                <MdClose />
+                                            </IconButton>
+                                        </Tooltip>
+                                    ) : null}
+                                    <Tooltip title="Iniciar búsqueda" arrow placement="top">
+                                        <IconButton onClick={handleClickBuscar}>
+                                            <BsSearch />
+                                        </IconButton>
+                                    </Tooltip>
                                 </InputAdornment>
                             ),
                         }}
+                        value={buscadorIngresada}
+                        onChange={handleChangeBuscador}
                     />
                 </Grid>
                 <Grid item sm={6} xs={12}>
                     <FormControl fullWidth variant="outlined">
                         <InputLabel id="slcEspecialidad">Especialidad:</InputLabel>
-                        <Select labelId="slcEspecialidad" label="Especialidad:">
+                        <Select
+                            labelId="slcEspecialidad"
+                            label="Especialidad:"
+                            value={especialidadSeleccionada}
+                            onChange={handleChangeEspecialidad}
+                        >
                             <MenuItem value="">
                                 <em>Todas las especialidades</em>
                             </MenuItem>
-                            <MenuItem value="10">Cardiología</MenuItem>
-                            <MenuItem value="20">Cirugía General</MenuItem>
-                            <MenuItem value="30">Dermatología</MenuItem>
-                            <MenuItem value="40">Geriatría</MenuItem>
-                            <MenuItem value="50">Hematología</MenuItem>
-                            <MenuItem value="60">Nefrología</MenuItem>
+                            {listaEspecialidades.map((especialidad) =>
+                                especialidad.iIdEspecialidad === 1 ? null : (
+                                    <MenuItem
+                                        key={especialidad.iIdEspecialidad}
+                                        value={especialidad.iIdEspecialidad.toString()}
+                                    >
+                                        {especialidad.sNombre}
+                                    </MenuItem>
+                                )
+                            )}
                         </Select>
                     </FormControl>
                 </Grid>
                 <Grid item xs={12}>
-                    <Grid container spacing={2}>
-                        <Hidden only={["xs"]}>
-                            <Grid item sm={4} xs={12}>
-                                <div className="directory-doctor-img-container">
-                                    <img
-                                        src={logoMeditocDoctorSample}
-                                        alt="LOGOMEDITOCDOCTORSAMPLE"
-                                        className="directory-doctor-img"
-                                    />
-                                </div>
-                            </Grid>
-                        </Hidden>
-                        <Grid item sm={8} xs={12}>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12}>
-                                    <div className="directory-doctor-name-container">
-                                        <span className="directory-doctor-name">Dra. Andrea Ortiz Pavón</span>
-                                    </div>
-                                </Grid>
-                                <Hidden only={["xl", "lg", "md", "sm"]}>
-                                    <Grid xs={12}>
-                                        <img
-                                            src={logoMeditocDoctorSample}
-                                            alt="LOGOMEDITOCDOCTORSAMPLE"
-                                            className="directory-doctor-img"
-                                        />
-                                    </Grid>
-                                </Hidden>
-                                <Grid item xs={6}>
-                                    <span className="directory-doctor-label">Especialidad</span>
-                                    <br />
-                                    <span className="directory-doctor-value">CARDIOLOGÍA</span>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <span className="directory-doctor-label">Céd. Prof</span>
-                                    <br />
-                                    <span className="directory-doctor-value">09238312</span>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <span className="directory-doctor-label">Teléfono</span>
-                                    <br />
-                                    <span className="directory-doctor-value">9991066754</span>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <span className="directory-doctor-label">Whatsapp</span>
-                                    <br />
-                                    <span className="directory-doctor-value">9991066754</span>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <span className="directory-doctor-label">Correo</span>
-                                    <br />
-                                    <span className="directory-doctor-value">andrea@correo.com.mx</span>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <span className="directory-doctor-label">Dirección</span>
-                                    <br />
-                                    <span className="directory-doctor-value">
-                                        Calle 32 No. 123 Temozón Norte Fracc. Santa Gertudris Copó
-                                    </span>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <span className="directory-doctor-label">Consultorio</span>
-                                    <br />
-                                    <span className="directory-doctor-value">
-                                        Hospital Faro del Mayab - Consultorio 241
-                                    </span>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <span className="directory-doctor-label">URL</span>
-                                    <br />
-                                    <span className="directory-doctor-value">www.meditoc.com</span>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                    <div className="directory-pagination-container">
-                        <Pagination
-                            classes={{ ul: classes.ul }}
-                            count={10}
-                            size="large"
-                            showFirstButton
-                            showLastButton
-                            color="primary"
-                        />
-                    </div>
+                    {listaColaboradores.map((entColaborador) => (
+                        <MedicInfo key={entColaborador.iIdColaborador} entColaborador={entColaborador} />
+                    ))}
+                    {paginasTotales > 0 ? (
+                        <div className="directory-pagination-container">
+                            <Pagination
+                                classes={{ ul: classes.ul }}
+                                count={paginasTotales}
+                                size="large"
+                                showFirstButton
+                                showLastButton
+                                color="primary"
+                                page={paginaSeleccionada}
+                                onChange={handleChangePage}
+                            />
+                        </div>
+                    ) : (
+                        <div className="center">
+                            <AiOutlineFileSearch style={{ fontSize: 150, color: "#ccc" }} />
+                            <br />
+                            <span className="price-content-description-normal">No se encontraron registros</span>
+                        </div>
+                    )}
                 </Grid>
             </Grid>
         </div>

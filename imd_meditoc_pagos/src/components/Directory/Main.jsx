@@ -10,7 +10,7 @@ const Main = (props) => {
         <Fragment>
             <Menu />
             <DirectoryHeader />
-            <Content />
+            <Content funcLoader={funcLoader} />
             <Footer appInfo={appInfo} />
         </Fragment>
     );

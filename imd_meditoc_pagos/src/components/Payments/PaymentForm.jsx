@@ -36,7 +36,6 @@ import InputPhone from "../Inputs/InputPhone";
 import { useTax } from "../../configuration/taxConfig";
 import { cardEnviromentProd, lstCardTest } from "../../configuration/cardConfig";
 
-
 const useStyles = makeStyles((theme) => ({
     paylabel: {
         fontSize: 18,
@@ -64,7 +63,6 @@ const PaymentForm = (props) => {
         setEntOrder,
         setErrorOrder,
         funcLoader,
-
     } = props;
 
     //Tamaño del icono para los inputs del formulario
@@ -403,6 +401,7 @@ const PaymentForm = (props) => {
         const entCreateOrder = {
             currency: "MXN",
             coupon: entCoupon === null ? null : entCoupon.fiIdCupon,
+            iIdOrigen: 1,
             tax: useTax,
             pacienteUnico: {
                 sEmail: paymentForm.txtEmail,
@@ -841,7 +840,6 @@ const PaymentForm = (props) => {
                     </Grid>
                 </div>
             </div>
-
         </Fragment>
     );
 };

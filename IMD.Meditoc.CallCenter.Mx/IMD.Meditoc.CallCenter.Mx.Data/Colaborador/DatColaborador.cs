@@ -192,7 +192,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
             return response;
         }
 
-        public IMDResponse<DataTable> DGetDirectorio(int? piIdEspecialidad = null, string psBuscador = null)
+        public IMDResponse<DataTable> DGetDirectorio(int? piIdEspecialidad = null, string psBuscador = null, int piLimitInit = 0, int piLimitEnd = 0)
         {
             IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
@@ -205,6 +205,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
                 {
                     database.AddInParameter(dbCommand, "piIdEspecialidad", DbType.Int32, piIdEspecialidad);
                     database.AddInParameter(dbCommand, "psBuscador", DbType.String, psBuscador);
+                    database.AddInParameter(dbCommand, "piLimitInit", DbType.Int32, piLimitInit);
+                    database.AddInParameter(dbCommand, "piLimitEnd", DbType.Int32, piLimitEnd);
 
                     response = imdCommonData.DExecuteDT(database, dbCommand);
                 }

@@ -82,15 +82,15 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 entCreateOrder = JsonConvert.DeserializeObject<EntCreateOrder>(datosSerealizados);
 
                 IMDResponse<EntOrder> entOrder = busOrder.BCreateOrder(entCreateOrder);
+                if (entOrder.Code != 0)
+                {
+                    return response = entOrder.GetResponse<EntDetalleCompra>();
+                }
 
                 string f = JsonConvert.SerializeObject(entOrder.Result);
                 IMDResponse<EntRequestOrder> requesOrder = new IMDResponse<EntRequestOrder>();
                 requesOrder.Result = JsonConvert.DeserializeObject<EntRequestOrder>(f);
 
-                if (entOrder.Code != 0)
-                {
-                    return response = entOrder.GetResponse<EntDetalleCompra>();
-                }
 
                 response = BGuardarCompraUnica(requesOrder, entConecktaPago);
 

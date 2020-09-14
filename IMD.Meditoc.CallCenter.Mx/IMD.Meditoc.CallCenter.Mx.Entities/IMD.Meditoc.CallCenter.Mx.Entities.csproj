@@ -70,6 +70,7 @@
     <Compile Include="Colaborador\EntColaborador.cs" />
     <Compile Include="Colaborador\EntColaboradorDirectorio.cs" />
     <Compile Include="Colaborador\EntCreateColaborador.cs" />
+    <Compile Include="Colaborador\EntDirectorio.cs" />
     <Compile Include="Colaborador\EnumTipoDoctor.cs" />
     <Compile Include="Empresa\EntEmpresa.cs" />
     <Compile Include="Empresa\EntEmpresaDetalleFolio.cs" />

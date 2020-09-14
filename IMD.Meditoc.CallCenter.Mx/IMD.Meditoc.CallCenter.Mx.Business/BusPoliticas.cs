@@ -38,6 +38,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business
                 entPoliticas.nIVA = Convert.ToDouble(ConfigurationManager.AppSettings["nIVA"]);
                 entPoliticas.sLlaveDominio = ConfigurationManager.AppSettings["sLlaveDominio"];
                 entPoliticas.sLlaveIcelink = ConfigurationManager.AppSettings["sLlaveIcelink"];
+                entPoliticas.sConektaPublicKey = ConfigurationManager.AppSettings["sConektaPublicKey"];
                 entPoliticas.rutasIceServer = lstServers.Result;
 
                 string sMensualidades = ConfigurationManager.AppSettings["sMensualidades"];

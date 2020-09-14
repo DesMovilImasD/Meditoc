@@ -183,9 +183,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 
         [HttpGet]
         [Route("Api/Colaborador/Get/Directorio/Especialistas")]
-        public IMDResponse<List<EntColaboradorDirectorio>> CGetDirectorio(int? piIdEspecialidad = null, string psBuscador = null)
+        public IMDResponse<EntDirectorio> CGetDirectorio(int? piIdEspecialidad = null, string psBuscador = null, int piPage = 0, int piPageSize = 0)
         {
-            IMDResponse<List<EntColaboradorDirectorio>> response = new IMDResponse<List<EntColaboradorDirectorio>>();
+            IMDResponse<EntDirectorio> response = new IMDResponse<EntDirectorio>();
 
             string metodo = nameof(this.CGetDirectorio);
             logger.Info(IMDSerialize.Serialize(67823458505971, $"Inicia {metodo}"));
@@ -193,7 +193,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             try
             {
                 BusColaborador busColaborador = new BusColaborador();
-                response = busColaborador.BGetDirectorio(piIdEspecialidad, psBuscador);
+                response = busColaborador.BGetDirectorio(piIdEspecialidad, psBuscador, piPage, piPageSize);
             }
             catch (Exception ex)
             {

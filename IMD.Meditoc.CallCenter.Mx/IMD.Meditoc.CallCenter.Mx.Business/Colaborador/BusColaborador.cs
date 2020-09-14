@@ -426,7 +426,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
             try
             {
                 IMDResponse<bool> respuestaEliminarColaboradorFoto = datColaborador.DEliminarColaboradorFoto(piIdColaborador, piIdUsuarioMod);
-                if(respuestaEliminarColaboradorFoto.Code != 0)
+                if (respuestaEliminarColaboradorFoto.Code != 0)
                 {
                     return respuestaEliminarColaboradorFoto;
                 }
@@ -445,63 +445,76 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
             return response;
         }
 
-        public IMDResponse<List<EntColaboradorDirectorio>> BGetDirectorio(int? piIdEspecialidad = null, string psBuscador = null)
+        public IMDResponse<EntDirectorio> BGetDirectorio(int? piIdEspecialidad = null, string psBuscador = null, int piPage = 0, int piPageSize = 0)
         {
-            IMDResponse<List<EntColaboradorDirectorio>> response = new IMDResponse<List<EntColaboradorDirectorio>>();
+            IMDResponse<EntDirectorio> response = new IMDResponse<EntDirectorio>();
 
             string metodo = nameof(this.BGetDirectorio);
             logger.Info(IMDSerialize.Serialize(67823458504417, $"Inicia {metodo}"));
 
             try
             {
-                IMDResponse<DataTable> resGetDirectorio = datColaborador.DGetDirectorio(piIdEspecialidad, psBuscador);
-                if(resGetDirectorio.Code != 0)
+                int piLimitInit = (piPage * piPageSize - piPageSize);
+                int piLimitEnd = piPage * piPageSize - 1;
+
+                IMDResponse<DataTable> resGetDirectorio = datColaborador.DGetDirectorio(piIdEspecialidad, psBuscador, piLimitInit, piLimitEnd);
+                if (resGetDirectorio.Code != 0)
                 {
-                    return resGetDirectorio.GetResponse<List<EntColaboradorDirectorio>>();
+                    return resGetDirectorio.GetResponse<EntDirectorio>();
                 }
 
-                List<EntColaboradorDirectorio> entColaboradorDirectorios = new List<EntColaboradorDirectorio>();
+                EntDirectorio entDirectorio = new EntDirectorio();
 
-                foreach(DataRow drItem in resGetDirectorio.Result.Rows)
+                foreach (DataRow drItem in resGetDirectorio.Result.Rows)
                 {
                     IMDDataRow dr = new IMDDataRow(drItem);
 
-                    EntColaboradorDirectorio entColaborador = new EntColaboradorDirectorio
+                    int iIdColaborador = dr.ConvertTo<int>("iIdColaborador");
+
+                    if (iIdColaborador != 0)
                     {
-                        iIdColaborador = dr.ConvertTo<int>("iIdColaborador"),
-                        iIdEspecialidad = dr.ConvertTo<int>("iIdEspecialidad"),
-                        sCedulaProfecional = dr.ConvertTo<string>("sCedulaProfecional"),
-                        sCorreo = dr.ConvertTo<string>("sCorreo"),
-                        sDireccionConsultorio = dr.ConvertTo<string>("sDireccionConsultorio"),
-                        sEspecialidad = dr.ConvertTo<string>("sEspecialidad"),
-                        sFoto = string.Empty,
-                        sMaps = dr.ConvertTo<string>("sMaps"),
-                        sNombre = dr.ConvertTo<string>("sNombre"),
-                        sRFC = dr.ConvertTo<string>("sRFC"),
-                        sTelefono = dr.ConvertTo<string>("sTelefono"),
-                        sURL = dr.ConvertTo<string>("sURL"),
-                    };
-                    try
-                    {
-                        byte[] foto = drItem["sFoto"] is DBNull ? new byte[0] : (byte[])drItem["sFoto"];
-                        string sFoto = Convert.ToBase64String(foto);
-                        if (string.IsNullOrWhiteSpace(sFoto))
+
+                        EntColaboradorDirectorio entColaborador = new EntColaboradorDirectorio
                         {
-                            sFoto = string.Empty;
+                            iIdColaborador = iIdColaborador,
+                            iIdEspecialidad = dr.ConvertTo<int>("iIdEspecialidad"),
+                            sCedulaProfecional = dr.ConvertTo<string>("sCedulaProfecional"),
+                            sCorreo = dr.ConvertTo<string>("sCorreo"),
+                            sDireccionConsultorio = dr.ConvertTo<string>("sDireccionConsultorio"),
+                            sEspecialidad = dr.ConvertTo<string>("sEspecialidad"),
+                            sFoto = string.Empty,
+                            sMaps = dr.ConvertTo<string>("sMaps"),
+                            sNombre = dr.ConvertTo<string>("sNombre"),
+                            sRFC = dr.ConvertTo<string>("sRFC"),
+                            sTelefono = dr.ConvertTo<string>("sTelefono"),
+                            sURL = dr.ConvertTo<string>("sURL"),
+                        };
+                        try
+                        {
+                            byte[] foto = drItem["sFoto"] is DBNull ? new byte[0] : (byte[])drItem["sFoto"];
+                            string sFoto = Convert.ToBase64String(foto);
+                            if (string.IsNullOrWhiteSpace(sFoto))
+                            {
+                                sFoto = string.Empty;
+                            }
+
+                            entColaborador.sFoto = sFoto;
+                        }
+                        catch (Exception)
+                        {
                         }
 
-                        entColaborador.sFoto = sFoto;
+                        entDirectorio.lstColaboradores.Add(entColaborador);
                     }
-                    catch (Exception)
-                    {
-                    }
-
-                    entColaboradorDirectorios.Add(entColaborador);
                 }
+
+                int iCount = Convert.ToInt32(resGetDirectorio.Result.Rows[0]["iCount"].ToString());
+
+                entDirectorio.iTotalPaginas = (int)Math.Ceiling(iCount / (double)piPageSize);
 
                 response.Code = 0;
                 response.Message = "Directorio obtenido";
-                response.Result = entColaboradorDirectorios;
+                response.Result = entDirectorio;
             }
             catch (Exception ex)
             {

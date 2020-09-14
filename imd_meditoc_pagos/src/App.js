@@ -12,7 +12,7 @@ import {
   urlBase,
   urlDirectory,
 } from './configuration/urlConfig'
-import { serverWs } from './configuration/serverConfig'
+import { serverMain, serverWs } from './configuration/serverConfig'
 import { apiGetPolicies } from './configuration/apiConfig'
 import apiKeyToken from './configuration/tokenConfig'
 
@@ -76,12 +76,12 @@ function App() {
   //Consumir servicio para obtener los links de las políticas Meditoc
   const funcGetAppInfo = async () => {
     try {
-      const apiResponse = await fetch(`${serverWs}${apiGetPolicies}`)
+      const apiResponse = await fetch(`${serverMain}${apiGetPolicies}`)
 
       const response = await apiResponse.json()
 
-      if (response.bRespuesta === true) {
-        setAppInfo(response.sParameter1)
+      if (response.Code === 0) {
+        setAppInfo(response.Result)
       }
     } catch (error) {}
   }
