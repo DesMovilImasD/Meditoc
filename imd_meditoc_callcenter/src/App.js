@@ -37,7 +37,7 @@ function App() {
     bActivo: false,
     bBaja: false,
   })
-  const [usuarioActivo, setUsuarioActivo] = useState(true)
+  const [usuarioActivo, setUsuarioActivo] = useState(false)
 
   //Guardar valores de estado del loader
   const [entLoader, setEntLoader] = useState({
