@@ -42,13 +42,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 
                     if (!resValidaDatos.Result) //Se valida que los datos que contiene el objeto de perfil no esten vacios.
                     {
-                        return resValidaDatos.GetResponse< EntUsuario>();
+                        return resValidaDatos.GetResponse<EntUsuario>();
                     }
                     entUsuario.sPassword = BEncodePassword(entUsuario.sPassword);
                 }
 
                 IMDResponse<DataTable> resSaveUsuario = datUsuario.DSaveUsuario(entUsuario);
-                if(resSaveUsuario.Code != 0)
+                if (resSaveUsuario.Code != 0)
                 {
                     return resSaveUsuario.GetResponse<EntUsuario>();
                 }
@@ -57,7 +57,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 entUsuario.iIdUsuario = dr.ConvertTo<int>("iIdUsuario");
 
                 response.Code = 0;
-                response.Message= "El usuario se guardó correctamente";
+                response.Message = "El usuario se guardó correctamente";
                 response.Result = entUsuario;
             }
             catch (Exception ex)
@@ -88,7 +88,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     return dtUsuario.GetResponse<List<EntUsuario>>();
                 }
 
-                if(dtUsuario.Code != 0)
+                if (dtUsuario.Code != 0)
                 {
                     return dtUsuario.GetResponse<List<EntUsuario>>();
                 }
@@ -358,6 +358,24 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             return response.Result;
         }
 
+        public string BEncodePassword(string sCadena, string sKey, string sVector)
+        {
+            IMDResponse<string> response = new IMDResponse<string>();
+            try
+            {
+                IMDEndec authentication = new IMDEndec();
+
+                response = authentication.BEncrypt(sCadena, sKey, sVector);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return response.Result;
+        }
+
         public string BDeCodePassWord(string sPassWord)
         {
             IMDResponse<string> response = new IMDResponse<string>();
@@ -381,6 +399,31 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 logger.Error(IMDSerialize.Serialize(67823458367665, $"Error en {metodo}(string sPassWord): {ex.Message}", ex, response));
             }
             return sPassWord;
+        }
+
+        public string BDeCodePassWord(string sCadena, string sKey, string sVector)
+        {
+            IMDResponse<string> response = new IMDResponse<string>();
+
+            string metodo = nameof(this.BDeCodePassWord);
+            logger.Info(IMDSerialize.Serialize(67823458366888, $"Inicia {metodo}(string sCadena, string sKey, string sVector)"));
+
+            try
+            {
+                IMDEndec authentication = new IMDEndec();
+
+                response = authentication.BDecrypt(sCadena, sKey, sVector);
+
+                sCadena = response.Result;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458367665;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458367665, $"Error en {metodo}(string sCadena, string sKey, string sVector): {ex.Message}", ex, response));
+            }
+            return sCadena;
         }
     }
 }

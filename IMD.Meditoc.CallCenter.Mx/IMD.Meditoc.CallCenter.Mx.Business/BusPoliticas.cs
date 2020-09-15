@@ -1,5 +1,6 @@
 ﻿using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
+using IMD.Meditoc.CallCenter.Mx.Business.CGU;
 using IMD.Meditoc.CallCenter.Mx.Entities;
 using log4net;
 using Newtonsoft.Json;
@@ -23,6 +24,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business
 
             try
             {
+                BusUsuario busUsuario = new BusUsuario();
                 EntPoliticas entPoliticas = new EntPoliticas();
 
 
@@ -38,6 +40,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business
                 entPoliticas.nIVA = Convert.ToDouble(ConfigurationManager.AppSettings["nIVA"]);
                 entPoliticas.sLlaveDominio = ConfigurationManager.AppSettings["sLlaveDominio"];
                 entPoliticas.sLlaveIcelink = ConfigurationManager.AppSettings["sLlaveIcelink"];
+                entPoliticas.sConektaPublicKey = busUsuario.BDeCodePassWord(ConfigurationManager.AppSettings["sConektaPublicKey"], "MeditocComercial", "Meditoc1");
                 entPoliticas.rutasIceServer = lstServers.Result;
 
                 string sMensualidades = ConfigurationManager.AppSettings["sMensualidades"];

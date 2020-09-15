@@ -91,7 +91,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     return response = entOrder.GetResponse<EntDetalleCompra>();
                 }
 
-                //response = BGuardarCompraUnica(requesOrder, entConecktaPago);
+                response = BGuardarCompraUnica(requesOrder, entConecktaPago);
 
                 response.Code = 0;
                 response.Message = "Operación exitosa.";
