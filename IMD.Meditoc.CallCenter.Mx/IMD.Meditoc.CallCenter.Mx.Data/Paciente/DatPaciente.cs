@@ -20,6 +20,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Paciente
         private Database database;
         IMDCommonData imdCommonData;
         string savePaciente;
+        string getPacientes;
 
         public DatPaciente()
         {
@@ -28,6 +29,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Paciente
             database = imdCommonData.DGetDatabase(FsConnectionString, "MeditocComercial", "Meditoc1");
 
             savePaciente = "sva_meditoc_save_paciente";
+            getPacientes = "svc_meditoc_pacientes";
         }
 
         public IMDResponse<bool> DSavePaciente(EntPaciente entPaciente)
@@ -57,6 +59,33 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Paciente
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458422832, $"Error en {metodo}(EntPaciente entPaciente): {ex.Message}", entPaciente, ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<DataTable> DGetPacientes(int? piIdPaciente = null, int? piIdFolio = null)
+        {
+            IMDResponse<DataTable> response = new IMDResponse<DataTable>();
+
+            string metodo = nameof(this.DGetPacientes);
+            logger.Info(IMDSerialize.Serialize(67823458515295, $"Inicia {metodo}"));
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(getPacientes))
+                {
+                    database.AddInParameter(dbCommand, "piIdPaciente", DbType.Int32, piIdPaciente);
+                    database.AddInParameter(dbCommand, "piIdFolio", DbType.Int32, piIdFolio);
+
+                    response = imdCommonData.DExecuteDT(database, dbCommand);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458516072;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458516072, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }

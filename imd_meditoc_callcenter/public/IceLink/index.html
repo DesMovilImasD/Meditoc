@@ -1,0 +1,370 @@
+﻿<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+
+    <title>IceLink Video Chat</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Frozen Mountain Software is the industry leader in creating powerful commercial software libraries for internet based real-time communications applications.">
+    <meta name="keywords" content="webrtc, websync, icelink, real-time communications">
+    <link rel="shortcut icon" type="image/png" href="images/favicon.ico">
+
+    <!--[if lt IE 11]>
+        <script src="js/vendor/css3-mediaqueries.js"></script>
+    <![endif]-->
+
+    <script language="javascript">
+        /* IE11 Fix for SP2010 */
+        if (typeof (UserAgentInfo) != 'undefined' && !window.addEventListener) {
+            UserAgentInfo.strBrowser = 1;
+        }
+    </script>
+    <style>
+
+
+        .toggle-button {
+            position: fixed;
+            width: 44px;
+            height: 40px;
+            padding: 4px;
+            transition: .25s;
+            z-index: 1000;
+            top: 3%;
+            right: 1%;
+        }
+
+            .toggle-button:hover {
+                cursor: pointer;
+            }
+
+            .toggle-button .menu-bar {
+                position: absolute;
+                border-radius: 2px;
+                width: 80%;
+                transition: .5s;
+            }
+
+            .toggle-button .menu-bar-top {
+                border: 4px solid #03A9F4;
+                border-bottom: none;
+                top: 0;
+            }
+
+            .toggle-button .menu-bar-middle {
+                height: 4px;
+                background-color: #03A9F4;
+                margin-top: 7px;
+                margin-bottom: 7px;
+                top: 4px;
+            }
+
+            .toggle-button .menu-bar-bottom {
+                border: 4px solid #03A9F4;
+                border-top: none;
+                top: 22px;
+            }
+
+        .button-open .menu-bar-top {
+            transform: rotate(45deg) translate(8px, 8px);
+            transition: .5s;
+            border: 2px solid #ffffff;
+        }
+
+        .button-open .menu-bar-middle {
+            transform: translate(230px);
+            transition: .1s ease-in;
+            opacity: 0;
+        }
+
+        .button-open .menu-bar-bottom {
+            transform: rotate(-45deg) translate(8px, -7px);
+            transition: .5s;
+            border: 2px solid #ffffff;
+        }
+
+        .button-open:hover .menu-bar-top {
+            border: 2px solid #5e0881;
+        }
+
+        .button-open:hover .menu-bar-bottom {
+            border: 2px solid #5e0881;
+        }
+
+        .menu-wrap {
+            background-color: #5ab8cb;
+            position: fixed;
+            top: 0;
+            height: 100%;
+            width: 300px;
+            margin-right: -300px;
+            font-size: 1em;
+            font-weight: 700;
+            overflow: auto;
+            transition: .25s;
+            z-index: 999;
+            right: 0;
+        }
+
+        .menu-show {
+            margin-right: 0;
+            box-shadow: 4px 2px 15px 1px #B9ADAD;
+        }
+
+        .send {
+            margin-top: auto;
+            margin-bottom: 10px;
+            margin-left: 0;
+            border-radius: 5px;
+            background-color: #41c9e8;
+            padding: 10px;
+            position: relative;
+            font-weight: 600;
+            color: #fff;
+            width: 75%;
+        }
+        /*.send b {
+                color: #000;
+                background: #fff;
+                border-radius: 5px;
+                padding: 2px;
+            }*/
+        .recived {
+            margin-top: auto;
+            margin-bottom: 10px;
+            margin-left: 0;
+            border-radius: 5px;
+            background-color: #81808161;
+            padding: 10px;
+            position: relative;
+            font-weight: 600;
+            color: #fff;
+            width: 75%;
+            right: 0;
+            margin-left: 25%;
+        }
+        /*.recived b {
+                color: #000;
+                background: #fff;
+                border-radius: 5px;
+                padding: 2px;
+            }*/
+        code {
+            color: #5ab8cb !important;
+        }
+        .slider_call {
+            height: 80px;
+            
+            padding: 10px 5px 10px 5px;
+            border-radius: 5px;
+        }
+        .resolve_call {
+            color: green;
+            background: #fff;
+            padding: 2px 4px 2px 4px;
+            border-radius: 5px;
+            font-size: 20px;
+        }
+        .reject_call {
+            color: red;
+            background: #fff;
+            padding: 2px 4px 2px 4px;
+            border-radius: 5px;
+            font-size: 20px;
+        }
+    </style>
+
+    <link href="css/varela.css" rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+</head>
+<body>
+    <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+
+    <div id="content" class="container-fluid">
+        <audio src="Sound/call.mp3" id="sound-mdg" style="display:block"> </audio>
+        <audio src="Sound/reciveb.mp3" id="sound-call" style="display:block"></audio>
+        <div id="sessionSelector">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <form class="session-form form-horizontal">
+                            <div class="form-group">
+                                <label for="name-input" class="col-sm-2 control-label">Tu Nombre:</label>
+                                <div class="col-sm-10">
+                                    <input onClick="this.setSelectionRange(0, this.value.length)" class="form-control" type="text" id="name-input" name="name-input" value="" placeholder="Enter name here...">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="start-session-input" class="col-sm-2 control-label">Sala ID:</label>
+                                <div class="col-sm-10">
+                                    <input onClick="this.setSelectionRange(0, this.value.length)" class="form-control" type="text" id="start-session-input" name="start-session-input" maxlength="6" value="">
+                                </div>
+                            </div>
+                            <div class="form-group" style="display:none;">
+                                <label for="options" class="col-sm-2 control-label">Options:</label>
+                                <div class="col-sm-10">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" id="screencapture-checkbox" disabled>Capture Screen
+                                            <button type="button" class="btn btn-default hidden" id="chromeExtensionInstallButton">Install Chrome Extension</button>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-2 col-sm-offset-2">
+                                    <button id="start-session-button" class="btn btn-default">Join</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="video-chat" style="display:none;">
+            <div id="loading"></div>
+            <div class="row table-row">
+                <div class="col-sm-12 col-md-12 col-lg-8">
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <div id="video" class="embed-responsive-item">
+                            <a href="#" id="fullscreen">
+                                <i id="fullscreen-icon" class="fa fa-expand"></i>
+                            </a>
+                        </div>
+                        <span id="toggle-button" class="toggle-button" style="display:none">
+                            <div class="menu-bar menu-bar-top"></div>
+                            <div class="menu-bar menu-bar-middle"></div>
+                            <div class="menu-bar menu-bar-bottom"></div>
+                        </span>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-11" style="position: absolute;top: 87%;left: 5%;"
+                            <div class="btn-toolbar" role="toolbar" style="background-color: #ffff;border-radius: 5px;margin: 0;padding: 0;">
+                                <div class="btn-group" role="group">
+                                    <button style="color:red;" class="btn btn-default reject_call" id="endCall"  title="Terminar llamada"><i class="fa fa-phone" aria-hidden="true"></i></button>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-default" id="toggleAudioMute">&nbsp;<i class="fa fa-lg fa-microphone" aria-hidden="true"></i></button>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-default" id="toggleVideoMute" style="background: url(images/cam.png) center center / 20px no-repeat rgb(255, 255, 255); background-size:20px;">&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-8" style="padding: 2% 0 2% 0;">
+                    <div class="row">
+                        <div class="col-md-11">
+                            <div class="well" id="text" style="height:100%;overflow-y:scroll;min-height: 200px;max-height: 200px;"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-11">
+                            <div class="input-group">
+                                <input id="sendInput" type="text" class="form-control" placeholder="Mensaje...">
+                                <span class="input-group-btn">
+                                    <button id="sendButton" class="btn btn-default" type="button">Enviar</button>
+                                    <br />
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="menu-wrap">
+                    <div class="menu-sidebar">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <div class="row"><br /></div>
+                            <div class="row">
+                                <div class="col-md-11">
+                                    <div class="btn-toolbar" role="toolbar">
+                                        <div class="btn-group" role="group">
+                                            <button style="display:none" class="btn btn-default reject_call" id="leaveButton"><i class="fa fa-phone" aria-hidden="true"></i></button>
+                                        </div>
+                                        <div class="btn-group" role="group">
+                                            <button class="btn btn-default" id="toggleAudioMute">&nbsp;<i class="fa fa-lg fa-microphone" aria-hidden="true"></i></button>
+                                        </div>
+                                        <div class="btn-group" role="group">
+                                            <button class="btn btn-default" id="toggleVideoMute" style="background:url(images/cam.png) no-repeat center; background-size:20px;">&nbsp;&nbsp;&nbsp;&nbsp;</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row"><br /></div>
+                            <div class="row">
+                                <div class="col-md-11">
+                                    Audio Device:<br />
+                                    <select id="audioDeviceList" class="form-control"></select><br />
+                                    Video Device:<br />
+                                    <select id="videoDeviceList" class="form-control"></select>
+                                </div>
+                            </div>
+                            <div class="row"><br /></div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-wrap slider_call" id="Slider_Call">
+                    <div class="menu-sidebar">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-12" style="text-align: center;">
+                                    <div class="col-md-12" style="color:#ffffff;">
+                                        <p>Llamada entrante</p>
+                                    </div>
+                                    <div class="col-md-6" style="width: 30%;display: inline-block;">
+                                        <a id="resolve_call" class="resolve_call" href="#" id="bs_call_resolve" style="color:green;">
+                                            <i class="fa fa-phone" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6" style="width: 30%;display: inline-block;">
+                                        <a id="reject_call" class="reject_call" href="#" id="bs_call_reject" style="color:red;">
+                                            <i class="fa fa-phone" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="log" style="display: none"></div>
+
+                <!-- WebSync 4 libraries -->
+                <script type="text/javascript" src="lib/fm.js"></script>
+                <script type="text/javascript" src="lib/fm.websync.js"></script>
+                <script type="text/javascript" src="lib/fm.websync.subscribers.js"></script>
+                <script type="text/javascript" src="lib/fm.websync.chat.js"></script>
+
+                <!-- IceLink 3 libraries -->
+                <script type="text/javascript" src="lib/fm.icelink.js"></script>
+                <script type="text/javascript" src="lib/fm.icelink.websync4.js"></script>
+
+                <script type="text/javascript" src="js/app.js"></script>
+                <script type="text/javascript" src="js/signalling.js"></script>
+                <script type="text/javascript" src="js/index.js"></script>
+
+                <script src="js/vendor/jquery-1.11.2.min.js"></script>
+
+</body>
+</html>

@@ -54,7 +54,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Empresa
                     oEmpresa.sNombre = dr.ConvertTo<string>("sNombre");
                     oEmpresa.sFolioEmpresa = dr.ConvertTo<string>("sFolioEmpresa");
                     oEmpresa.sCorreo = dr.ConvertTo<string>("sCorreo");
-                    oEmpresa.sFechaCreacion = dr.ConvertTo<DateTime>("dtFechaCreacion").ToShortDateString();
+                    oEmpresa.sFechaCreacion = dr.ConvertTo<DateTime>("dtFechaCreacion").ToString("dd/MM/yyyy");
                     oEmpresa.bActivo = Convert.ToBoolean(dr.ConvertTo<int>("bActivo"));
                     oEmpresa.bBaja = Convert.ToBoolean(dr.ConvertTo<int>("bBaja"));
                 }

@@ -56,6 +56,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CallCenter\EntCallCenter.cs" />
+    <Compile Include="CallCenter\EntOnlineMod.cs" />
     <Compile Include="Catalogos\EntEspecialidad.cs" />
     <Compile Include="Catalogos\EnumEspecialidadPrincipal.cs" />
     <Compile Include="CGU\EntBoton.cs" />
@@ -72,6 +74,10 @@
     <Compile Include="Colaborador\EntCreateColaborador.cs" />
     <Compile Include="Colaborador\EntDirectorio.cs" />
     <Compile Include="Colaborador\EnumTipoDoctor.cs" />
+    <Compile Include="Consultas\EntConsulta.cs" />
+    <Compile Include="Consultas\EntDetalleConsulta.cs" />
+    <Compile Include="Consultas\EntHistorialClinico.cs" />
+    <Compile Include="Consultas\EnumEstatusConsulta.cs" />
     <Compile Include="Empresa\EntEmpresa.cs" />
     <Compile Include="Empresa\EntEmpresaDetalleFolio.cs" />
     <Compile Include="EntConecktaPago.cs" />

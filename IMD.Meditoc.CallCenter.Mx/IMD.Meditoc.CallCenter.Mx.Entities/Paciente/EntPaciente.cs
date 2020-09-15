@@ -26,6 +26,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Paciente
         [JsonProperty(PropertyName = "email")]
         public string sCorreo { get; set; }
         public string sTipoSangre { get; set; }
+        public DateTime? dtFechaNacimiento { get; set; }
         public string sdtFechaNacimiento { get; set; }
     }
 }
