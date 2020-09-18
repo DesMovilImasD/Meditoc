@@ -61,6 +61,7 @@
     <Compile Include="BusPoliticas.cs" />
     <Compile Include="BusPromociones.cs" />
     <Compile Include="BusWebHook.cs" />
+    <Compile Include="CallCenter\BusCallCenter.cs" />
     <Compile Include="Catalogos\BusEspecialidad.cs" />
     <Compile Include="CGU\BusBoton.cs" />
     <Compile Include="CGU\BusModulo.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="CGU\BusSubModulo.cs" />
     <Compile Include="CGU\BusUsuario.cs" />
     <Compile Include="Colaborador\BusColaborador.cs" />
+    <Compile Include="Consulta\BusConsulta.cs" />
     <Compile Include="Correo\BusCorreo.cs" />
     <Compile Include="Empresa\BusEmpresa.cs" />
     <Compile Include="Folio\BusFolio.cs" />

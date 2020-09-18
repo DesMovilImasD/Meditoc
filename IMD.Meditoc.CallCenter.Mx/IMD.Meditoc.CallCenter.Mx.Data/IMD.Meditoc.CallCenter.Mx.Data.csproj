@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CallCenter\DatCallCenter.cs" />
     <Compile Include="Catalogos\DatEspecialidad.cs" />
     <Compile Include="CGU\DatBoton.cs" />
     <Compile Include="CGU\DatModulo.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="CGU\DatSubModulo.cs" />
     <Compile Include="CGU\DatUsuario.cs" />
     <Compile Include="Colaborador\DatColaborador.cs" />
+    <Compile Include="Consulta\DatConsulta.cs" />
     <Compile Include="Empresa\DatEmpresa.cs" />
     <Compile Include="Folio\DatFolio.cs" />
     <Compile Include="Ordenes\DatOrder.cs" />

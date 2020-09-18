@@ -15,7 +15,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities
         public string sLlaveIcelink { get; set; }
         public string sLlaveDominio { get; set; }
         public string sConektaPublicKey { get; set; }
-
         public bool bTieneMesesSinIntereses { get; set; }
         public List<EntMensualidad> lstMensualidades { get; set; }
         public List<EntIceLinkServer> rutasIceServer { get; set; }

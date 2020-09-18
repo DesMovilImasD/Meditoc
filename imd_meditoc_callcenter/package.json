@@ -1,5 +1,5 @@
 {
-    "homepage": "http://localhost/call_center/",
+    "homepage": "http://localhost/MeditocCallCenter/",
     "name": "imd_meditoc_callcenter",
     "version": "0.1.0",
     "private": true,
@@ -29,6 +29,7 @@
     },
     "scripts": {
         "start": "react-scripts start",
+        "cleanBuild": "rimraf ./build/*",
         "build": "npm run cleanBuild && set \"GENERATE_SOURCEMAP=false\" && react-scripts build ",
         "test": "react-scripts test",
         "eject": "react-scripts eject"

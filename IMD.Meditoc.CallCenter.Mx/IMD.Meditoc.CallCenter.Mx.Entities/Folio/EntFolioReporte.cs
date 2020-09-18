@@ -20,9 +20,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Folio
         public string sIcon { get; set; }
         public int iConsecutivo { get; set; }
         public int iIdOrigen { get; set; }
+        public int iIdPaciente { get; set; }
+        public string sCorreoPaciente { get; set; }
         public string sOrigen { get; set; }
         public string sFolio { get; set; }
-        //public string sPassword { get; set; }
+        public string sPassword { get; set; }
         public string sOrdenConekta { get; set; }
         public bool bTerminosYCondiciones { get; set; }
         public DateTime? dtFechaVencimiento { get; set; }

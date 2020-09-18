@@ -56,8 +56,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CallCenter\EntCallCenter.cs" />
+    <Compile Include="CallCenter\EntNuevaConsulta.cs" />
+    <Compile Include="CallCenter\EntOnlineMod.cs" />
     <Compile Include="Catalogos\EntEspecialidad.cs" />
     <Compile Include="Catalogos\EnumEspecialidadPrincipal.cs" />
+    <Compile Include="Catalogos\EnumOrigen.cs" />
     <Compile Include="CGU\EntBoton.cs" />
     <Compile Include="CGU\EntModulo.cs" />
     <Compile Include="CGU\EntPerfil.cs" />
@@ -72,6 +76,10 @@
     <Compile Include="Colaborador\EntCreateColaborador.cs" />
     <Compile Include="Colaborador\EntDirectorio.cs" />
     <Compile Include="Colaborador\EnumTipoDoctor.cs" />
+    <Compile Include="Consultas\EntConsulta.cs" />
+    <Compile Include="Consultas\EntDetalleConsulta.cs" />
+    <Compile Include="Consultas\EntHistorialClinico.cs" />
+    <Compile Include="Consultas\EnumEstatusConsulta.cs" />
     <Compile Include="Empresa\EntEmpresa.cs" />
     <Compile Include="Empresa\EntEmpresaDetalleFolio.cs" />
     <Compile Include="EntConecktaPago.cs" />
@@ -104,6 +112,7 @@
     <Compile Include="Ordenes\EntWebHookLog.cs" />
     <Compile Include="Paciente\EntPaciente.cs" />
     <Compile Include="Producto\EntProducto.cs" />
+    <Compile Include="Producto\EnumProductos.cs" />
     <Compile Include="Producto\EnumTipoProducto.cs" />
     <Compile Include="Promociones\EntCreateCupon.cs" />
     <Compile Include="Promociones\EntCupon.cs" />
