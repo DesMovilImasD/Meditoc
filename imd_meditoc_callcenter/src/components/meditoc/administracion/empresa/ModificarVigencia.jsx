@@ -1,10 +1,11 @@
 import React from "react";
 import MeditocModal from "../../../utilidades/MeditocModal";
-import { Grid, Button } from "@material-ui/core";
+import { Grid, Button, InputAdornment, IconButton } from "@material-ui/core";
 import { DateTimePicker } from "@material-ui/pickers";
 import { useState } from "react";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import FolioController from "../../../../controllers/FolioController";
+import DateRangeIcon from "@material-ui/icons/DateRange";
 
 const ModificarVigencia = (props) => {
     const {
@@ -69,7 +70,15 @@ const ModificarVigencia = (props) => {
                         fullWidth
                         inputVariant="outlined"
                         views={["year", "month", "date", "hours", "minutes"]}
-                        InputAdornmentProps={{ position: "end" }}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton>
+                                        <DateRangeIcon />
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
                         openTo="year"
                         required
                         format="dd/MM/yyy hh:mm a"

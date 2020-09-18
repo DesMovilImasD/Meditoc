@@ -440,7 +440,7 @@ const PaymentForm = (props) => {
             if (entCreateOrder.coupon !== null) {
                 const responseRevalidate = await funcApiRevalidateCoupon(
                     entCreateOrder.coupon,
-                    entCreateOrder.pacienteUnico.sEmail
+                    entCreateOrder.customer_info.email
                 );
 
                 if (!responseRevalidate) {

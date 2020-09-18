@@ -24,9 +24,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Paciente
             datPaciente = new DatPaciente();
         }
 
-        public IMDResponse<bool> DSavePaciente(EntPaciente entPaciente)
+        public IMDResponse<EntPaciente> DSavePaciente(EntPaciente entPaciente)
         {
-            IMDResponse<bool> response = new IMDResponse<bool>();
+            IMDResponse<EntPaciente> response = new IMDResponse<EntPaciente>();
 
             string metodo = nameof(this.DSavePaciente);
             logger.Info(IMDSerialize.Serialize(67823458420501, $"Inicia {metodo}(EntPaciente entPaciente)", entPaciente));
@@ -34,15 +34,17 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Paciente
             try
             {
 
-                IMDResponse<bool> imdResponse = datPaciente.DSavePaciente(entPaciente);
+                IMDResponse<DataTable> imdResponse = datPaciente.DSavePaciente(entPaciente);
 
                 if (imdResponse.Code != 0)
                 {
-                    return imdResponse;
+                    return imdResponse.GetResponse<EntPaciente>();
                 }
 
+                entPaciente.iIdPaciente = Convert.ToInt32(imdResponse.Result.Rows[0]["iIdPaciente"].ToString());
+
                 response.Code = 0;
-                response.Result = true;
+                response.Result = entPaciente;
             }
             catch (Exception ex)
             {

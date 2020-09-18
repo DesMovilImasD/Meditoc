@@ -148,7 +148,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                     entCallCenter.entConsulta = resSaveConsulta.Result;
                 }
 
-                IMDResponse<List<EntHistorialClinico>> resGetHistorial = busConsulta.BGetHistorialMedico(piIdPaciente: entCallCenter.entPaciente.iIdPaciente);
+                IMDResponse<List<EntHistorialClinico>> resGetHistorial = busConsulta.BGetHistorialMedico(piIdFolio: entCallCenter.entFolio.iIdFolio);
                 if (resGetHistorial.Code != 0)
                 {
                     return resGetHistorial.GetResponse<EntCallCenter>();

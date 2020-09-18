@@ -188,6 +188,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
                         sFechaProgramadaInicio = string.Empty,
                         sFechaVencimiento = string.Empty,
                         sFolio = dr.ConvertTo<string>("sFolio"),
+                        sPassword = dr.ConvertTo<string>("sPassword"),
                         sFolioEmpresa = dr.ConvertTo<string>("sFolioEmpresa"),
                         sNombreColaborador = dr.ConvertTo<string>("sNombreColaborador"),
                         sNombreEmpresa = dr.ConvertTo<string>("sNombreEmpresa"),
@@ -222,6 +223,74 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458531612, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<List<EntDetalleConsulta>> BGetDisponibilidadConsulta(int piIdColaborador, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null)
+        {
+            IMDResponse<List<EntDetalleConsulta>> response = new IMDResponse<List<EntDetalleConsulta>>();
+
+            string metodo = nameof(this.BGetDisponibilidadConsulta);
+            logger.Info(IMDSerialize.Serialize(67823458537051, $"Inicia {metodo}"));
+
+            try
+            {
+                IMDResponse<DataTable> resGetConsulta = datConsulta.DGetDisponibilidadConsulta(piIdColaborador, pdtFechaProgramadaInicio, pdtFechaProgramadaFin);
+                if (resGetConsulta.Code != 0)
+                {
+                    return resGetConsulta.GetResponse<List<EntDetalleConsulta>>();
+                }
+
+                List<EntDetalleConsulta> lstConsultas = new List<EntDetalleConsulta>();
+
+                foreach (DataRow drConsulta in resGetConsulta.Result.Rows)
+                {
+                    IMDDataRow dr = new IMDDataRow(drConsulta);
+
+                    EntDetalleConsulta consulta = new EntDetalleConsulta
+                    {
+                        dtFechaConsultaFin = dr.ConvertTo<DateTime?>("dtFechaConsultaFin"),
+                        dtFechaConsultaInicio = dr.ConvertTo<DateTime?>("dtFechaConsultaInicio"),
+                        dtFechaCreacion = dr.ConvertTo<DateTime?>("dtFechaCreacion"),
+                        dtFechaProgramadaFin = dr.ConvertTo<DateTime?>("dtFechaProgramadaFin"),
+                        dtFechaProgramadaInicio = dr.ConvertTo<DateTime?>("dtFechaProgramadaInicio"),
+                        dtFechaVencimiento = dr.ConvertTo<DateTime?>("dtFechaVencimiento"),
+                        iIdColaborador = dr.ConvertTo<int?>("iIdColaborador"),
+                        iIdConsulta = dr.ConvertTo<int?>("iIdConsulta"),
+                        iIdEmpresa = dr.ConvertTo<int?>("iIdEmpresa"),
+                        iIdEspecialidad = dr.ConvertTo<int?>("iIdEspecialidad"),
+                        iIdEstatusConsulta = dr.ConvertTo<int?>("iIdEstatusConsulta"),
+                        iIdFolio = dr.ConvertTo<int?>("iIdFolio"),
+                        iIdPaciente = dr.ConvertTo<int?>("iIdPaciente"),
+                        iIdTipoDoctor = dr.ConvertTo<int?>("iIdTipoDoctor"),
+                        iIdTipoProducto = dr.ConvertTo<int?>("iIdTipoProducto"),
+                        iNumSala = dr.ConvertTo<int?>("iNumSala"),
+                        sFolio = dr.ConvertTo<string>("sFolio"),
+                        sFolioEmpresa = dr.ConvertTo<string>("sFolioEmpresa"),
+                    };
+
+                    consulta.sFechaConsultaFin = consulta.dtFechaConsultaFin?.ToString("dd/MM/yyyy HH:mm");
+                    consulta.sFechaConsultaInicio = consulta.dtFechaConsultaInicio?.ToString("dd/MM/yyyy HH:mm");
+                    consulta.sFechaCreacion = consulta.dtFechaCreacion?.ToString("dd/MM/yyyy HH:mm");
+                    consulta.sFechaNacimientoPaciente = consulta.dtFechaNacimientoPaciente?.ToString("dd/MM/yyyy HH:mm");
+                    consulta.sFechaProgramadaFin = consulta.dtFechaProgramadaFin?.ToString("dd/MM/yyyy HH:mm");
+                    consulta.sFechaProgramadaInicio = consulta.dtFechaProgramadaInicio?.ToString("dd/MM/yyyy HH:mm");
+                    consulta.sFechaVencimiento = consulta.dtFechaVencimiento?.ToString("dd/MM/yyyy HH:mm");
+
+                    lstConsultas.Add(consulta);
+                }
+
+                response.Code = 0;
+                response.Message = "Consultas obtenidas";
+                response.Result = lstConsultas;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458537828;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458537828, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }

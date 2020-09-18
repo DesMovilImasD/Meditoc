@@ -32,6 +32,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Consultas
         public string sSexoPaciente { get; set; }
         public int? iIdFolio { get; set; }
         public string sFolio { get; set; }
+        public string sPassword { get; set; }
         public string sOrdenConekta { get; set; }
         public bool bTerminosYCondiciones { get; set; }
         public DateTime? dtFechaVencimiento { get; set; }

@@ -32,9 +32,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Paciente
             getPacientes = "svc_meditoc_pacientes";
         }
 
-        public IMDResponse<bool> DSavePaciente(EntPaciente entPaciente)
+        public IMDResponse<DataTable> DSavePaciente(EntPaciente entPaciente)
         {
-            IMDResponse<bool> response = new IMDResponse<bool>();
+            IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
             string metodo = nameof(this.DSavePaciente);
             logger.Info(IMDSerialize.Serialize(67823458422055, $"Inicia {metodo}(EntPaciente entPaciente)", entPaciente));
@@ -49,7 +49,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Paciente
                     database.AddInParameter(dbCommand, "psTelefono", DbType.String, entPaciente.sTelefono?.Replace(" ", ""));
                     database.AddInParameter(dbCommand, "psCorreo", DbType.String, entPaciente.sCorreo);
 
-                    response = imdCommonData.DExecute(database, dbCommand);
+                    response = imdCommonData.DExecuteDT(database, dbCommand);
                 }
 
             }
