@@ -1,6 +1,7 @@
 ﻿using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
 using IMD.Meditoc.CallCenter.Mx.Data.Consulta;
+using IMD.Meditoc.CallCenter.Mx.Entities.CallCenter;
 using IMD.Meditoc.CallCenter.Mx.Entities.Consultas;
 using log4net;
 using System;
@@ -141,6 +142,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
 
             try
             {
+                pdtFechaProgramadaInicio = pdtFechaProgramadaInicio?.Date;
+                pdtFechaProgramadaFin = pdtFechaProgramadaFin?.AddDays(1).Date;
+
                 IMDResponse<DataTable> resGetConsulta = datConsulta.DGetDetalleConsulta(piIdConsulta, piIdPaciente, piIdColaborador, piIdEstatusConsulta, pdtFechaProgramadaInicio, pdtFechaProgramadaFin, pdtFechaConsultaInicio, pdtFechaConsultaFin);
                 if (resGetConsulta.Code != 0)
                 {
@@ -227,7 +231,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
             return response;
         }
 
-        public IMDResponse<List<EntDetalleConsulta>> BGetDisponibilidadConsulta(int piIdColaborador, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null)
+        public IMDResponse<List<EntDetalleConsulta>> BGetDisponibilidadConsulta(int piIdColaborador, int piIdConsulta, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null)
         {
             IMDResponse<List<EntDetalleConsulta>> response = new IMDResponse<List<EntDetalleConsulta>>();
 
@@ -236,7 +240,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
 
             try
             {
-                IMDResponse<DataTable> resGetConsulta = datConsulta.DGetDisponibilidadConsulta(piIdColaborador, pdtFechaProgramadaInicio, pdtFechaProgramadaFin);
+                IMDResponse<DataTable> resGetConsulta = datConsulta.DGetDisponibilidadConsulta(piIdColaborador, piIdConsulta, pdtFechaProgramadaInicio, pdtFechaProgramadaFin);
                 if (resGetConsulta.Code != 0)
                 {
                     return resGetConsulta.GetResponse<List<EntDetalleConsulta>>();
@@ -291,6 +295,44 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458537828, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<bool> BCancelarConsulta(EntNuevaConsulta consulta)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.BCancelarConsulta);
+            logger.Info(IMDSerialize.Serialize(67823458552591, $"Inicia {metodo}"));
+
+            try
+            {
+                if (consulta == null)
+                {
+                    response.Code = 9837987634567;
+                    response.Message = "No se ingresó información de consulta";
+                    return response;
+                }
+
+                consulta.consulta.iIdEstatusConsulta = (int)EnumEstatusConsulta.Cancelado;
+
+                IMDResponse<bool> resDelConsulta = datConsulta.DCancelarConsulta(consulta.consulta.iIdConsulta, consulta.iIdUsuarioMod, (int)consulta.consulta.iIdEstatusConsulta);
+                if (resDelConsulta.Code != 0)
+                {
+                    return resDelConsulta;
+                }
+
+                response.Code = 0;
+                response.Result = true;
+                response.Message = "Consulta cancelada";
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458553368;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458553368, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }

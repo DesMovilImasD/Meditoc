@@ -77,7 +77,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Tests
 
             BusFolio busFolio = new BusFolio();
 
-            var res = busFolio.BNuevoFolioEspecialista(entNuevaConsulta);
+            var res = busFolio.BNuevaConsulta(entNuevaConsulta);
             string json = JsonConvert.SerializeObject(res, Formatting.Indented);
         }
     }

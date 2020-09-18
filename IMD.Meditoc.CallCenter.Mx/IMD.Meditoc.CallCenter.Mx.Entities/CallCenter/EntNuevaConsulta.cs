@@ -10,6 +10,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.CallCenter
 {
     public class EntNuevaConsulta
     {
+        public int iIdUsuarioMod { get; set; }
         public string sFolio { get; set; }
         public EntCustomerInfo customerInfo { get; set; }
         public EntConsulta consulta { get; set; }

@@ -130,7 +130,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             try
             {
                 BusFolio busFolio = new BusFolio();
-                response = busFolio.BNuevoFolioEspecialista(entNuevaConsulta);
+                response = busFolio.BNuevaConsulta(entNuevaConsulta);
             }
             catch (Exception ex)
             {
@@ -138,6 +138,30 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458539382, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        [HttpPost]
+        [Route("Api/CallCenter/Cancelar/Folio/Especialista/Consulta")]
+        public IMDResponse<bool> CCancelarConsulta(EntNuevaConsulta entNuevaConsulta)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.CCancelarConsulta);
+            logger.Info(IMDSerialize.Serialize(67823458554145, $"Inicia {metodo}"));
+
+            try
+            {
+                BusConsulta busConsulta = new BusConsulta();
+                response = busConsulta.BCancelarConsulta(entNuevaConsulta);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458554922;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458554922, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }

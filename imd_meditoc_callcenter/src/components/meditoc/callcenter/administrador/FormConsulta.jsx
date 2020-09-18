@@ -1,6 +1,6 @@
 import { Divider, Grid, IconButton, InputAdornment, TextField } from "@material-ui/core";
 import { DateTimePicker } from "@material-ui/pickers";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { rxCorreo } from "../../../../configurations/regexConfig";
 import InputTelefono from "../../../utilidades/InputTelefono";
 import MeditocModal from "../../../utilidades/MeditocModal";
@@ -23,6 +23,7 @@ const Consulta = (props) => {
     } = props;
 
     const [formConsulta, setFormConsulta] = useState({
+        txtFolio: "",
         txtNombrePaciente: "",
         txtTelefonoPaciente: "",
         txtCorreoPaciente: "",
@@ -31,12 +32,28 @@ const Consulta = (props) => {
     });
 
     const [formConsultaOK, setFormConsultaOK] = useState({
+        txtFolio: true,
         txtNombrePaciente: true,
         txtTelefonoPaciente: true,
         txtCorreoPaciente: true,
         txtFechaProgramadaInicio: true,
         txtFechaProgramadaFin: true,
     });
+
+    useEffect(() => {
+        setFormConsulta({
+            txtFolio: entConsulta.sFolio === undefined ? "" : entConsulta.sFolio,
+            txtNombrePaciente: entConsulta.sNombrePaciente === undefined ? "" : entConsulta.sNombrePaciente,
+            txtTelefonoPaciente: "",
+            txtCorreoPaciente: "",
+            txtFechaProgramadaInicio:
+                entConsulta.dtFechaProgramadaInicio === undefined
+                    ? null
+                    : new Date(entConsulta.dtFechaProgramadaInicio),
+            txtFechaProgramadaFin:
+                entConsulta.dtFechaProgramadaFin === undefined ? null : new Date(entConsulta.dtFechaProgramadaFin),
+        });
+    }, [entConsulta]);
 
     const handleChangeFormulario = (e) => {
         const nombreCampo = e.target.name;
@@ -54,7 +71,7 @@ const Consulta = (props) => {
                 }
                 break;
             case "txtTelefonoPaciente":
-                if (!formConsultaOK.txtTelefonoPaciente) {
+                if (!formConsultaOK.txtTelefonoPaciente && entConsulta.iIdConsulta === 0) {
                     const telefonoValidacion = valorCampo.replace(/ /g, "");
                     if (telefonoValidacion !== "" && telefonoValidacion.length === 10) {
                         setFormConsultaOK({
@@ -65,7 +82,7 @@ const Consulta = (props) => {
                 }
                 break;
             case "txtCorreoPaciente":
-                if (!formConsultaOK.txtCorreoPaciente) {
+                if (!formConsultaOK.txtCorreoPaciente && entConsulta.iIdConsulta === 0) {
                     if (valorCampo !== "" && rxCorreo.test(valorCampo)) {
                         setFormConsultaOK({
                             ...formConsultaOK,
@@ -132,16 +149,18 @@ const Consulta = (props) => {
             formError = true;
         }
 
-        const telefonoValidacion = formConsulta.txtTelefonoPaciente.replace(/ /g, "");
+        if (entConsulta.iIdConsulta === 0) {
+            const telefonoValidacion = formConsulta.txtTelefonoPaciente.replace(/ /g, "");
 
-        if (telefonoValidacion === "" || telefonoValidacion.length !== 10) {
-            formConsultaOKValidacion.txtTelefonoPaciente = false;
-            formError = true;
-        }
+            if (telefonoValidacion === "" || telefonoValidacion.length !== 10) {
+                formConsultaOKValidacion.txtTelefonoPaciente = false;
+                formError = true;
+            }
 
-        if (formConsulta.txtCorreoPaciente === "" || !rxCorreo.test(formConsulta.txtCorreoPaciente)) {
-            formConsultaOKValidacion.txtCorreoPaciente = false;
-            formError = true;
+            if (formConsulta.txtCorreoPaciente === "" || !rxCorreo.test(formConsulta.txtCorreoPaciente)) {
+                formConsultaOKValidacion.txtCorreoPaciente = false;
+                formError = true;
+            }
         }
 
         if (formConsulta.txtFechaProgramadaInicio === null) {
@@ -161,6 +180,7 @@ const Consulta = (props) => {
         }
 
         const entNuevaConsulta = {
+            sFolio: formConsulta.txtFolio,
             customerInfo: {
                 name: formConsulta.txtNombrePaciente,
                 phone: formConsulta.txtTelefonoPaciente,
@@ -169,10 +189,10 @@ const Consulta = (props) => {
             consulta: {
                 iIdConsulta: entConsulta.iIdConsulta,
                 iIdColaborador: usuarioColaborador.iIdColaborador,
-                iIdEstatusConsulta: entConsulta.iIdConsulta === 0 ? 1 : 2,
                 dtFechaProgramadaInicio: formConsulta.txtFechaProgramadaInicio.toLocaleString(),
                 dtFechaProgramadaFin: formConsulta.txtFechaProgramadaFin.toLocaleString(),
             },
+            iIdUsuarioMod: usuarioSesion.iIdUsuario,
         };
 
         funcLoader(true, "Guardando consulta...");
@@ -201,6 +221,28 @@ const Consulta = (props) => {
         >
             <Grid container spacing={3}>
                 <Grid item xs={12}>
+                    <span className="rob-nor bold size-15 color-4">FOLIO DEL PACIENTE</span>
+                    <br />
+                    {entConsulta.iIdConsulta === 0 ? (
+                        <span className="rob-nor size-15 color-4">
+                            (Ingresar solamente si el paciente ya cuenta con un folio)
+                        </span>
+                    ) : null}
+
+                    <Divider />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        name="txtFolio"
+                        label="Folio:"
+                        variant="outlined"
+                        fullWidth
+                        disabled={entConsulta.iIdConsulta !== 0}
+                        value={formConsulta.txtFolio}
+                        onChange={handleChangeFormulario}
+                    />
+                </Grid>
+                <Grid item xs={12}>
                     <span className="rob-nor bold size-15 color-4">DATOS DEL PACIENTE</span>
                     <Divider />
                 </Grid>
@@ -211,6 +253,7 @@ const Consulta = (props) => {
                         variant="outlined"
                         fullWidth
                         required
+                        disabled={entConsulta.iIdConsulta !== 0}
                         value={formConsulta.txtNombrePaciente}
                         onChange={handleChangeFormulario}
                         error={!formConsultaOK.txtNombrePaciente}
@@ -224,6 +267,7 @@ const Consulta = (props) => {
                         variant="outlined"
                         fullWidth
                         required
+                        disabled={entConsulta.iIdConsulta !== 0}
                         InputProps={{
                             inputComponent: InputTelefono,
                         }}
@@ -240,6 +284,7 @@ const Consulta = (props) => {
                         variant="outlined"
                         fullWidth
                         required
+                        disabled={entConsulta.iIdConsulta !== 0}
                         value={formConsulta.txtCorreoPaciente}
                         onChange={handleChangeFormulario}
                         error={!formConsultaOK.txtCorreoPaciente}
@@ -258,7 +303,7 @@ const Consulta = (props) => {
                         inputVariant="outlined"
                         fullWidth
                         required
-                        format="dd/MM/yyy hh:mm a"
+                        format="dd/MM/yyyy hh:mm a"
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
@@ -269,7 +314,6 @@ const Consulta = (props) => {
                             ),
                         }}
                         disablePast
-                        InputAdornmentProps={{ position: "end" }}
                         value={formConsulta.txtFechaProgramadaInicio}
                         onChange={handleChangeFechaInicio}
                         error={!formConsultaOK.txtFechaProgramadaInicio}

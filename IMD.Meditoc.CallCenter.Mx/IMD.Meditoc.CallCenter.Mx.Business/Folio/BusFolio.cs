@@ -47,11 +47,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             busConsulta = new BusConsulta();
         }
 
-        public IMDResponse<EntDetalleCompra> CSaveNuevoFolio(EntConecktaPago entConecktaPago)
+        public IMDResponse<EntDetalleCompra> BNuevoFolioCompra(EntConecktaPago entConecktaPago)
         {
             IMDResponse<EntDetalleCompra> response = new IMDResponse<EntDetalleCompra>();
 
-            string metodo = nameof(this.CSaveNuevoFolio);
+            string metodo = nameof(this.BNuevoFolioCompra);
             logger.Info(IMDSerialize.Serialize(67823458415062, $"Inicia {metodo}(EntConecktaPago entConecktaPago)", entConecktaPago));
 
             try
@@ -189,70 +189,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 {
                     for (int i = 0; i < item.quantity; i++)
                     {
-                        entFolio.iIdProducto = item.product_id;
-
-                        if (item.monthsExpiration == 0)
+                        IMDResponse<bool> resGenerarFolio = this.BGenerarFolioCompra(entFolio, entPaciente, item, oDetalleCompra, i);
+                        if (resGenerarFolio.Code != 0)
                         {
-                            entFolio.dtFechaVencimiento = DateTime.Now.AddDays(Convert.ToInt16(ConfigurationManager.AppSettings["iDiasDespuesVencimiento"]));
+                            return resGenerarFolio.GetResponse<EntDetalleCompra>();
                         }
-
-                        if (item.monthsExpiration != 0)
-                        {
-                            entFolio.dtFechaVencimiento = DateTime.Now.AddMonths(item.monthsExpiration);
-                        }
-
-                        BusGeneratePassword busGenerate = new BusGeneratePassword();
-                        BusUsuario busUsuario = new BusUsuario();
-
-                        entFolio.sPassword = busGenerate.Generate(6);
-
-                        entFolio.sPassword = busUsuario.BEncodePassword(entFolio.sPassword);
-
-                        //Se agrega el folio
-
-                        IMDResponse<DataTable> dtFolio = datFolio.DSaveFolio(entFolio);
-
-                        if (dtFolio.Code != 0)
-                        {
-                            response = dtFolio.GetResponse<EntDetalleCompra>();
-                            response.Message = "Ocurrio un erro al guardar el folio";
-                            return response;
-                        }
-
-                        foreach (DataRow item2 in dtFolio.Result.Rows)
-                        {
-                            IMDDataRow dataRow = new IMDDataRow(item2);
-
-                            entFolio.iIdFolio = dataRow.ConvertTo<int>("iIdFolio");
-                            entFolio.sFolio = dataRow.ConvertTo<string>("sFolio");
-
-                        }
-                        //Se agrega el paciente
-                        BusPaciente busPaciente = new BusPaciente();
-
-                        entPaciente.iIdFolio = entFolio.iIdFolio;
-                        IMDResponse<EntPaciente> responsePaciente = busPaciente.DSavePaciente(entPaciente);
-
-                        if (responsePaciente.Code != 0)
-                        {
-                            return response = responsePaciente.GetResponse<EntDetalleCompra>();
-                        }
-
-
-
-                        EntDetalleCompraArticulo clsDetalleCompraArticulo = new EntDetalleCompraArticulo();
-
-                        clsDetalleCompraArticulo.sDescripcion = item.name;
-
-                        clsDetalleCompraArticulo.nCantidad = 1;
-                        clsDetalleCompraArticulo.nPrecio = item.unit_price / 100d;
-                        clsDetalleCompraArticulo.sFolio = entFolio.sFolio;
-                        clsDetalleCompraArticulo.sPass = busUsuario.BDeCodePassWord(entFolio.sPassword);
-                        clsDetalleCompraArticulo.dtFechaVencimiento = entFolio.dtFechaVencimiento;
-                        clsDetalleCompraArticulo.iIdProducto = item.product_id;
-                        clsDetalleCompraArticulo.iIndex = i + 1;
-
-                        oDetalleCompra.lstArticulos.Add(clsDetalleCompraArticulo);
                     }
                     entFolio.iConsecutivo--;
                 }
@@ -272,7 +213,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 oDetalleCompra.bAplicaIVA = entConecktaPago.tax;
 
 
-
                 IMDResponse<bool> responseCorreo = this.BEnvioCorreo(oDetalleCompra);
 
                 response.Code = 0;
@@ -288,173 +228,86 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             return response;
         }
 
-        public IMDResponse<bool> BNuevoFolioEmpresa(EntFolioxEmpresa entFolioxEmpresa)
+        public IMDResponse<bool> BGenerarFolioCompra(EntFolio entFolio, EntPaciente entPaciente, line_items item, EntDetalleCompra oDetalleCompra, int i)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
-            IMDResponse<List<EntEmpresa>> lstEmpresa = new IMDResponse<List<EntEmpresa>>();
-            IMDResponse<EntEmpresaDetalleFolio> oDetalleFolioempresa = new IMDResponse<EntEmpresaDetalleFolio>();
-            List<EntDetalleCompraArticulo> lstArticulosDetalle = new List<EntDetalleCompraArticulo>();
-            oDetalleFolioempresa.Result = new EntEmpresaDetalleFolio();
 
-            string metodo = nameof(this.BNuevoFolioEmpresa);
-            logger.Info(IMDSerialize.Serialize(67823458426717, $"Inicia {metodo}"));
+            string metodo = nameof(this.BGenerarFolioCompra);
+            logger.Info(IMDSerialize.Serialize(67823458549483, $"Inicia {metodo}"));
 
             try
             {
-                if (entFolioxEmpresa.iIdEmpresa == 0)
+                entFolio.iIdProducto = item.product_id;
+
+                if (item.monthsExpiration == 0)
                 {
-                    response.Code = 67823458426717;
-                    response.Message = "Debe seleccionar una empresa";
-                    response.Result = false;
-                    return response;
+                    entFolio.dtFechaVencimiento = DateTime.Now.AddDays(Convert.ToInt16(ConfigurationManager.AppSettings["iDiasDespuesVencimiento"]));
                 }
 
-                //Validar y obtener los dtos de la empresa.
-                BusEmpresa busEmpresa = new BusEmpresa();
-                lstEmpresa = busEmpresa.BGetEmpresas(entFolioxEmpresa.iIdEmpresa);
-
-                if (lstEmpresa.Code != 0)
+                if (item.monthsExpiration != 0)
                 {
-                    return response.GetResponse<bool>();
+                    entFolio.dtFechaVencimiento = DateTime.Now.AddMonths(item.monthsExpiration);
                 }
 
-                EntEmpresa oEmpresa = new EntEmpresa();
-                oEmpresa = lstEmpresa.Result.FirstOrDefault();
-                oDetalleFolioempresa.Result.entEmpresa = oEmpresa;
+                BusGeneratePassword busGenerate = new BusGeneratePassword();
+                BusUsuario busUsuario = new BusUsuario();
 
-                //Se crea el folio
-                EntFolio entFolio = new EntFolio();
-                entFolio.iIdEmpresa = entFolioxEmpresa.iIdEmpresa;
-                entFolio.iIdOrigen = entFolioxEmpresa.iIdOrigen;
-                entFolio.bTerminosYCondiciones = false;
+                entFolio.sPassword = busGenerate.Generate(6);
 
-                //Se crea el paciente
-                EntPaciente entPaciente = new EntPaciente();
+                entFolio.sPassword = busUsuario.BEncodePassword(entFolio.sPassword);
 
-                entPaciente.iIdPaciente = 0;
+                //Se agrega el folio
+
+                IMDResponse<DataTable> dtFolio = datFolio.DSaveFolio(entFolio);
+
+                if (dtFolio.Code != 0)
+                {
+                    return dtFolio.GetResponse<bool>();
+                }
+
+                foreach (DataRow item2 in dtFolio.Result.Rows)
+                {
+                    IMDDataRow dataRow = new IMDDataRow(item2);
+
+                    entFolio.iIdFolio = dataRow.ConvertTo<int>("iIdFolio");
+                    entFolio.sFolio = dataRow.ConvertTo<string>("sFolio");
+
+                }
+                //Se agrega el paciente
+                BusPaciente busPaciente = new BusPaciente();
+
                 entPaciente.iIdFolio = entFolio.iIdFolio;
-                entPaciente.sTelefono = "9999999999";
-                entPaciente.sCorreo = "PPACIENTE@HOTMAIL.COM";
-                entPaciente.sNombre = "PACIENTE";
+                IMDResponse<EntPaciente> responsePaciente = busPaciente.BSavePaciente(entPaciente);
 
-                BusProducto busProducto = new BusProducto();
-                IMDResponse<List<EntProducto>> lstProductos = busProducto.BObtenerProductos(null);
-
-                if (lstProductos.Result == null)
+                if (responsePaciente.Code != 0)
                 {
-                    return response = lstProductos.GetResponse<bool>();
+                    return response = responsePaciente.GetResponse<bool>();
                 }
 
-                for (int i = 0; i < entFolioxEmpresa.lstLineItems.Count; i++)
-                {
-                    EntProducto oProducto = lstProductos.Result
-                        .Find(x => x.iIdProducto == entFolioxEmpresa.lstLineItems[i].product_id);
+                EntDetalleCompraArticulo clsDetalleCompraArticulo = new EntDetalleCompraArticulo();
 
-                    if (oProducto == null)
-                    {
-                        response.Code = 67823458415839;
-                        response.Message = "Producto no válido.";
-                        return response;
-                    }
+                clsDetalleCompraArticulo.sDescripcion = item.name;
 
-                    entFolioxEmpresa.lstLineItems[i].monthsExpiration = oProducto.iMesVigencia;
-                    entFolioxEmpresa.lstLineItems[i].name = oProducto.sNombre;
-                    entFolioxEmpresa.lstLineItems[i].unit_price = (int)(oProducto.fCosto * 100);
-                }
+                clsDetalleCompraArticulo.nCantidad = 1;
+                clsDetalleCompraArticulo.nPrecio = item.unit_price / 100d;
+                clsDetalleCompraArticulo.sFolio = entFolio.sFolio;
+                clsDetalleCompraArticulo.sPass = busUsuario.BDeCodePassWord(entFolio.sPassword);
+                clsDetalleCompraArticulo.dtFechaVencimiento = entFolio.dtFechaVencimiento;
+                clsDetalleCompraArticulo.iIdProducto = item.product_id;
+                clsDetalleCompraArticulo.iIndex = i + 1;
 
-                //using (TransactionScope scope = new TransactionScope())
-                //{
-
-                foreach (line_items item in entFolioxEmpresa.lstLineItems)
-                {
-                    for (int i = 0; i < item.quantity; i++)
-                    {
-                        entFolio.iIdProducto = item.product_id;
-
-                        if (item.monthsExpiration == 0)
-                        {
-                            entFolio.dtFechaVencimiento = DateTime.Now.AddDays(Convert.ToInt16(ConfigurationManager.AppSettings["iDiasDespuesVencimiento"]));
-                        }
-
-                        if (item.monthsExpiration != 0)
-                        {
-                            entFolio.dtFechaVencimiento = DateTime.Now.AddMonths(item.monthsExpiration);
-                        }
-
-                        BusGeneratePassword busGenerate = new BusGeneratePassword();
-                        BusUsuario busUsuario = new BusUsuario();
-
-                        entFolio.sPassword = busGenerate.Generate(6);
-
-                        entFolio.sPassword = busUsuario.BEncodePassword(entFolio.sPassword);
-
-                        //Se agrega el folio
-
-                        IMDResponse<DataTable> dtFolio = datFolio.DSaveFolio(entFolio);
-
-                        if (dtFolio.Code != 0)
-                        {
-                            response = dtFolio.GetResponse<bool>();
-                            response.Message = "Ocurrio un erro al guardar el folio";
-                            return response;
-                        }
-
-                        foreach (DataRow item2 in dtFolio.Result.Rows)
-                        {
-                            IMDDataRow dataRow = new IMDDataRow(item2);
-
-                            entFolio.iIdFolio = dataRow.ConvertTo<int>("iIdFolio");
-                            entFolio.sFolio = dataRow.ConvertTo<string>("sFolio");
-
-                        }
-                        //Se agrega el paciente
-                        BusPaciente busPaciente = new BusPaciente();
-
-                        entPaciente.iIdFolio = entFolio.iIdFolio;
-                        IMDResponse<EntPaciente> responsePaciente = busPaciente.DSavePaciente(entPaciente);
-
-                        if (responsePaciente.Code != 0)
-                        {
-                            return response = responsePaciente.GetResponse<bool>();
-                        }
-
-                        EntDetalleCompraArticulo clsDetalleCompraArticulo = new EntDetalleCompraArticulo();
-
-                        clsDetalleCompraArticulo.sDescripcion = item.name;
-
-                        clsDetalleCompraArticulo.sFolio = entFolio.sFolio;
-                        clsDetalleCompraArticulo.sPass = busUsuario.BDeCodePassWord(entFolio.sPassword);
-                        clsDetalleCompraArticulo.dtFechaVencimiento = entFolio.dtFechaVencimiento;
-                        clsDetalleCompraArticulo.iIdProducto = item.product_id;
-                        clsDetalleCompraArticulo.iIndex = i + 1;
-
-                        lstArticulosDetalle.Add(clsDetalleCompraArticulo);
-                    }
-                }
-                //    scope.Complete();
-                //}
-                oDetalleFolioempresa.Result.lstArticulos = lstArticulosDetalle;
-                response = this.BEnvioCorreoEmpresa(oDetalleFolioempresa.Result);
-
-                if (response.Code != 0)
-                {
-                    response.Message = "Ocurrio un error al mandar el mensaje";
-                    return response;
-                }
-
-                response.Code = 0;
-                response.Message = "Los folios fueron enviados al siguiente correo " + oDetalleFolioempresa.Result.entEmpresa.sCorreo;
-                response.Result = true;
+                oDetalleCompra.lstArticulos.Add(clsDetalleCompraArticulo);
             }
             catch (Exception ex)
             {
-                response.Code = 67823458427494;
+                response.Code = 67823458550260;
                 response.Message = "Ocurrió un error inesperado";
 
-                logger.Error(IMDSerialize.Serialize(67823458427494, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458550260, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }
+
         public IMDResponse<bool> BEnvioCorreo(EntDetalleCompra oDetalleCompra)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
@@ -610,6 +463,199 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             return response;
         }
 
+        public IMDResponse<bool> BNuevosFoliosEmpresa(EntFolioxEmpresa entFolioxEmpresa)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+            IMDResponse<List<EntEmpresa>> lstEmpresa = new IMDResponse<List<EntEmpresa>>();
+            IMDResponse<EntEmpresaDetalleFolio> oDetalleFolioempresa = new IMDResponse<EntEmpresaDetalleFolio>();
+            List<EntDetalleCompraArticulo> lstArticulosDetalle = new List<EntDetalleCompraArticulo>();
+            oDetalleFolioempresa.Result = new EntEmpresaDetalleFolio();
+
+            string metodo = nameof(this.BNuevosFoliosEmpresa);
+            logger.Info(IMDSerialize.Serialize(67823458426717, $"Inicia {metodo}"));
+
+            try
+            {
+                if (entFolioxEmpresa.iIdEmpresa == 0)
+                {
+                    response.Code = 67823458426717;
+                    response.Message = "Debe seleccionar una empresa";
+                    response.Result = false;
+                    return response;
+                }
+
+                //Validar y obtener los dtos de la empresa.
+                BusEmpresa busEmpresa = new BusEmpresa();
+                lstEmpresa = busEmpresa.BGetEmpresas(entFolioxEmpresa.iIdEmpresa);
+
+                if (lstEmpresa.Code != 0)
+                {
+                    return response.GetResponse<bool>();
+                }
+
+                EntEmpresa oEmpresa = new EntEmpresa();
+                oEmpresa = lstEmpresa.Result.FirstOrDefault();
+                oDetalleFolioempresa.Result.entEmpresa = oEmpresa;
+
+                //Se crea el folio
+                EntFolio entFolio = new EntFolio();
+                entFolio.iIdEmpresa = entFolioxEmpresa.iIdEmpresa;
+                entFolio.iIdOrigen = entFolioxEmpresa.iIdOrigen;
+                entFolio.bTerminosYCondiciones = false;
+
+                //Se crea el paciente
+                EntPaciente entPaciente = new EntPaciente();
+
+                entPaciente.iIdPaciente = 0;
+                entPaciente.iIdFolio = entFolio.iIdFolio;
+                entPaciente.sTelefono = "9999999999";
+                entPaciente.sCorreo = "PPACIENTE@HOTMAIL.COM";
+                entPaciente.sNombre = "PACIENTE";
+
+                BusProducto busProducto = new BusProducto();
+                IMDResponse<List<EntProducto>> lstProductos = busProducto.BObtenerProductos(null);
+
+                if (lstProductos.Result == null)
+                {
+                    return response = lstProductos.GetResponse<bool>();
+                }
+
+                for (int i = 0; i < entFolioxEmpresa.lstLineItems.Count; i++)
+                {
+                    EntProducto oProducto = lstProductos.Result
+                        .Find(x => x.iIdProducto == entFolioxEmpresa.lstLineItems[i].product_id);
+
+                    if (oProducto == null)
+                    {
+                        response.Code = 67823458415839;
+                        response.Message = "Producto no válido.";
+                        return response;
+                    }
+
+                    entFolioxEmpresa.lstLineItems[i].monthsExpiration = oProducto.iMesVigencia;
+                    entFolioxEmpresa.lstLineItems[i].name = oProducto.sNombre;
+                    entFolioxEmpresa.lstLineItems[i].unit_price = (int)(oProducto.fCosto * 100);
+                }
+
+                //using (TransactionScope scope = new TransactionScope())
+                //{
+
+                foreach (line_items item in entFolioxEmpresa.lstLineItems)
+                {
+                    for (int i = 0; i < item.quantity; i++)
+                    {
+                        IMDResponse<bool> resGenerarFolio = this.BGenerarFolioEmpresa(entFolio, entPaciente, item, lstArticulosDetalle, i);
+                        if (resGenerarFolio.Code != 0)
+                        {
+                            return resGenerarFolio;
+                        }
+                    }
+                }
+                //    scope.Complete();
+                //}
+                oDetalleFolioempresa.Result.lstArticulos = lstArticulosDetalle;
+                response = this.BEnvioCorreoEmpresa(oDetalleFolioempresa.Result);
+
+                if (response.Code != 0)
+                {
+                    response.Message = "Ocurrio un error al mandar el mensaje";
+                    return response;
+                }
+
+                response.Code = 0;
+                response.Message = "Los folios fueron enviados al siguiente correo " + oDetalleFolioempresa.Result.entEmpresa.sCorreo;
+                response.Result = true;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458427494;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458427494, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<bool> BGenerarFolioEmpresa(EntFolio entFolio, EntPaciente entPaciente, line_items item, List<EntDetalleCompraArticulo> lstArticulosDetalle, int i)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.BGenerarFolioEmpresa);
+            logger.Info(IMDSerialize.Serialize(67823458546375, $"Inicia {metodo}"));
+
+            try
+            {
+                entFolio.iIdProducto = item.product_id;
+
+                if (item.monthsExpiration == 0)
+                {
+                    entFolio.dtFechaVencimiento = DateTime.Now.AddDays(Convert.ToInt16(ConfigurationManager.AppSettings["iDiasDespuesVencimiento"]));
+                }
+
+                if (item.monthsExpiration != 0)
+                {
+                    entFolio.dtFechaVencimiento = DateTime.Now.AddMonths(item.monthsExpiration);
+                }
+
+                BusGeneratePassword busGenerate = new BusGeneratePassword();
+                BusUsuario busUsuario = new BusUsuario();
+
+                entFolio.sPassword = busGenerate.Generate(6);
+
+                entFolio.sPassword = busUsuario.BEncodePassword(entFolio.sPassword);
+
+                //Se agrega el folio
+
+                IMDResponse<DataTable> dtFolio = datFolio.DSaveFolio(entFolio);
+
+                if (dtFolio.Code != 0)
+                {
+                    response = dtFolio.GetResponse<bool>();
+                    response.Message = "Ocurrio un erro al guardar el folio";
+                    return response;
+                }
+
+                foreach (DataRow item2 in dtFolio.Result.Rows)
+                {
+                    IMDDataRow dataRow = new IMDDataRow(item2);
+
+                    entFolio.iIdFolio = dataRow.ConvertTo<int>("iIdFolio");
+                    entFolio.sFolio = dataRow.ConvertTo<string>("sFolio");
+
+                }
+                //Se agrega el paciente
+                BusPaciente busPaciente = new BusPaciente();
+
+                entPaciente.iIdFolio = entFolio.iIdFolio;
+                IMDResponse<EntPaciente> responsePaciente = busPaciente.BSavePaciente(entPaciente);
+
+                if (responsePaciente.Code != 0)
+                {
+                    return response = responsePaciente.GetResponse<bool>();
+                }
+
+                EntDetalleCompraArticulo clsDetalleCompraArticulo = new EntDetalleCompraArticulo();
+
+                clsDetalleCompraArticulo.sDescripcion = item.name;
+
+                clsDetalleCompraArticulo.sFolio = entFolio.sFolio;
+                clsDetalleCompraArticulo.sPass = busUsuario.BDeCodePassWord(entFolio.sPassword);
+                clsDetalleCompraArticulo.dtFechaVencimiento = entFolio.dtFechaVencimiento;
+                clsDetalleCompraArticulo.iIdProducto = item.product_id;
+                clsDetalleCompraArticulo.iIndex = i + 1;
+
+                lstArticulosDetalle.Add(clsDetalleCompraArticulo);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458547152;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458547152, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
         public IMDResponse<bool> BEnvioCorreoEmpresa(EntEmpresaDetalleFolio detalleFolio)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
@@ -720,11 +766,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             return response;
         }
 
-        public IMDResponse<EntDetalleCompra> BNuevoFolioEspecialista(EntNuevaConsulta entNuevaConsulta)
+        public IMDResponse<EntDetalleCompra> BNuevaConsulta(EntNuevaConsulta entNuevaConsulta)
         {
             IMDResponse<EntDetalleCompra> response = new IMDResponse<EntDetalleCompra>();
 
-            string metodo = nameof(this.BNuevoFolioEspecialista);
+            string metodo = nameof(this.BNuevaConsulta);
             logger.Info(IMDSerialize.Serialize(67823458533943, $"Inicia {metodo}"));
 
 
@@ -744,6 +790,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     response.Message = "No se ingresaron datos";
                     return response;
                 }
+
                 if (entNuevaConsulta?.consulta?.dtFechaProgramadaInicio == null || entNuevaConsulta?.consulta?.dtFechaProgramadaFin == null)
                 {
                     response.Code = 8767348576345;
@@ -760,7 +807,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 DateTime? buscadorConsultaProgramadaInicio = entNuevaConsulta?.consulta?.dtFechaProgramadaInicio?.AddMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["iMinToleraciaConsultaInicio"]));
                 DateTime? buscadorConsultaProgramadaFin = entNuevaConsulta?.consulta?.dtFechaProgramadaFin?.AddMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["iMinToleraciaConsultaFin"]));
 
-                IMDResponse<List<EntDetalleConsulta>> resGetConsultas = busConsulta.BGetDisponibilidadConsulta((int)entNuevaConsulta.consulta.iIdColaborador, buscadorConsultaProgramadaInicio, buscadorConsultaProgramadaFin);
+                IMDResponse<List<EntDetalleConsulta>> resGetConsultas = busConsulta.BGetDisponibilidadConsulta((int)entNuevaConsulta.consulta.iIdColaborador, entNuevaConsulta.consulta.iIdConsulta, buscadorConsultaProgramadaInicio, buscadorConsultaProgramadaFin);
                 if (resGetConsultas.Code != 0)
                 {
                     return resGetConsultas.GetResponse<EntDetalleCompra>();
@@ -778,181 +825,16 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 {
                     if (!string.IsNullOrEmpty(entNuevaConsulta.sFolio))
                     {
-                        IMDResponse<List<EntFolioReporte>> resGetFolioExiste = this.BGetFolios(psFolio: entNuevaConsulta.sFolio);
-                        if (resGetFolioExiste.Code != 0)
-                        {
-                            return resGetFolioExiste.GetResponse<EntDetalleCompra>();
-                        }
-
-                        if (resGetFolioExiste.Result.Count != 1)
-                        {
-                            goto BNuevoFolio;
-                        }
-
-                        EntFolioReporte folioExistente = resGetFolioExiste.Result.First();
-
-                        EntFolioFV entFolioFV = new EntFolioFV
-                        {
-                            dtFechaVencimiento = (DateTime)entNuevaConsulta?.consulta?.dtFechaProgramadaFin?.AddHours(1),
-                            iIdEmpresa = folioExistente.iIdEmpresa,
-                            iIdUsuario = 1,
-                            lstFolios = new List<EntFolioFVItem>
-                            {
-                                new EntFolioFVItem
-                                {
-                                    iIdFolio = folioExistente.iIdFolio
-                                }
-                            }
-                        };
-
-                        IMDResponse<bool> resUpdVencimiento = this.BUpdFechaVencimiento(entFolioFV);
-                        if (resUpdVencimiento.Code != 0)
-                        {
-                            return resUpdVencimiento.GetResponse<EntDetalleCompra>();
-                        }
-
-                        entNuevaConsulta.consulta.iIdEstatusConsulta = (int)EnumEstatusConsulta.CreadoProgramado;
-                        entNuevaConsulta.consulta.iIdPaciente = folioExistente.iIdPaciente;
-
-                        return this.BConfirmarNuevaConsulta(entNuevaConsulta, folioExistente.sFolio, folioExistente.sPassword);
-
-                    }
-
-                BNuevoFolio:
-                    //Se asigna empresa al folio
-                    EntEmpresa entEmpresa = new EntEmpresa();
-
-                    BusEmpresa busEmpresa = new BusEmpresa();
-                    IMDResponse<List<EntEmpresa>> respuestaObtenerEmpresas = busEmpresa.BGetEmpresas(null, entNuevaConsulta.customerInfo.email);
-
-                    if (respuestaObtenerEmpresas.Code != 0)
-                    {
-                        return respuestaObtenerEmpresas.GetResponse<EntDetalleCompra>();
-                    }
-
-                    if (respuestaObtenerEmpresas.Result.Count > 0)
-                    {
-                        entEmpresa = respuestaObtenerEmpresas.Result.FirstOrDefault();
-                    }
-                    else
-                    {
-                        EntEmpresa entNuevaEmpresa = new EntEmpresa()
-                        {
-                            iIdEmpresa = 0,
-                            sNombre = entNuevaConsulta.customerInfo.name,
-                            sCorreo = entNuevaConsulta.customerInfo.email,
-                            iIdUsuarioMod = 1,
-                            bActivo = true,
-                            bBaja = false
-                        };
-
-                        IMDResponse<EntEmpresa> respuestaSaveEmpresa = busEmpresa.BSaveEmpresa(entNuevaEmpresa);
-                        if (respuestaSaveEmpresa.Code != 0)
-                        {
-                            return respuestaSaveEmpresa.GetResponse<EntDetalleCompra>();
-                        }
-                        entEmpresa = respuestaSaveEmpresa.Result;
-                    }
-
-                    EntFolio entFolio = new EntFolio();
-                    entFolio.iIdOrigen = (int)EnumOrigen.CallCenter;
-                    entFolio.bTerminosYCondiciones = false;
-                    entFolio.iIdEmpresa = entEmpresa.iIdEmpresa;
-
-                    EntPaciente entPaciente = new EntPaciente();
-
-                    entPaciente.iIdPaciente = 0;
-                    entPaciente.iIdFolio = entFolio.iIdFolio;
-                    entPaciente.sTelefono = entNuevaConsulta.customerInfo.phone;
-                    entPaciente.sCorreo = entNuevaConsulta.customerInfo.email;
-                    entPaciente.sNombre = entNuevaConsulta.customerInfo.name;
-
-                    entFolio.iIdProducto = (int)EnumProductos.OrientacionEspecialistaID;
-
-                    entFolio.dtFechaVencimiento = (DateTime)entNuevaConsulta.consulta.dtFechaProgramadaFin?.AddHours(1);
-
-                    BusGeneratePassword busGenerate = new BusGeneratePassword();
-
-                    entFolio.sPassword = busGenerate.Generate(6);
-
-                    entFolio.sPassword = busUsuario.BEncodePassword(entFolio.sPassword);
-
-                    IMDResponse<DataTable> dtFolio = datFolio.DSaveFolio(entFolio);
-
-                    if (dtFolio.Code != 0)
-                    {
-                        response = dtFolio.GetResponse<EntDetalleCompra>();
-                        response.Message = "Ocurrio un erro al guardar el folio";
+                        response = this.BGenerarConsultaConFolio(entNuevaConsulta);
                         return response;
                     }
 
-                    foreach (DataRow item2 in dtFolio.Result.Rows)
-                    {
-                        IMDDataRow dataRow = new IMDDataRow(item2);
-
-                        entFolio.iIdFolio = dataRow.ConvertTo<int>("iIdFolio");
-                        entFolio.sFolio = dataRow.ConvertTo<string>("sFolio");
-
-                    }
-                    //Se agrega el paciente
-                    BusPaciente busPaciente = new BusPaciente();
-
-                    entPaciente.iIdFolio = entFolio.iIdFolio;
-                    IMDResponse<EntPaciente> responsePaciente = busPaciente.DSavePaciente(entPaciente);
-
-                    if (responsePaciente.Code != 0)
-                    {
-                        return response = responsePaciente.GetResponse<EntDetalleCompra>();
-                    }
-
-                    entNuevaConsulta.consulta.iIdEstatusConsulta = (int)EnumEstatusConsulta.CreadoProgramado;
-                    entNuevaConsulta.consulta.iIdPaciente = responsePaciente.Result.iIdPaciente;
-
-                    response = this.BConfirmarNuevaConsulta(entNuevaConsulta, entFolio.sFolio, entFolio.sPassword);
-
+                    response = this.BGenerarConsultaSinFolio(entNuevaConsulta);
                 }
                 else
                 {
 
-                    IMDResponse<List<EntDetalleConsulta>> resGetConsulta = busConsulta.BGetDetalleConsulta(entNuevaConsulta.consulta.iIdConsulta);
-                    if (resGetConsulta.Code != 0)
-                    {
-                        return response = resGetConsulta.GetResponse<EntDetalleCompra>();
-                    }
-
-                    if (resGetConsulta.Result.Count != 1)
-                    {
-                        response.Code = 8767348576345;
-                        response.Message = "La consulta no existe";
-                        return response;
-                    }
-
-                    EntDetalleConsulta consulta = resGetConsulta.Result.First();
-
-                    EntFolioFV entFolioFV = new EntFolioFV
-                    {
-                        dtFechaVencimiento = (DateTime)entNuevaConsulta?.consulta?.dtFechaProgramadaFin?.AddHours(1),
-                        iIdEmpresa = (int)consulta.iIdEmpresa,
-                        iIdUsuario = 1,
-                        lstFolios = new List<EntFolioFVItem>
-                        {
-                            new EntFolioFVItem
-                            {
-                                iIdFolio = (int)consulta.iIdFolio
-                            }
-                        }
-                    };
-
-                    IMDResponse<bool> resUpdVencimiento = this.BUpdFechaVencimiento(entFolioFV);
-                    if (resUpdVencimiento.Code != 0)
-                    {
-                        return resUpdVencimiento.GetResponse<EntDetalleCompra>();
-                    }
-
-                    entNuevaConsulta.consulta.iIdEstatusConsulta = (int)EnumEstatusConsulta.Reprogramado;
-                    entNuevaConsulta.consulta.iIdPaciente = consulta.iIdPaciente;
-
-                    response = this.BConfirmarNuevaConsulta(entNuevaConsulta, consulta.sFolio, consulta.sPassword, true);
+                    response = this.BModificarConsultaFolio(entNuevaConsulta);
                 }
             }
             catch (Exception ex)
@@ -961,6 +843,237 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458534720, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<EntDetalleCompra> BGenerarConsultaConFolio(EntNuevaConsulta entNuevaConsulta)
+        {
+            IMDResponse<EntDetalleCompra> response = new IMDResponse<EntDetalleCompra>();
+
+            string metodo = nameof(this.BGenerarConsultaConFolio);
+            logger.Info(IMDSerialize.Serialize(67823458541713, $"Inicia {metodo}"));
+
+            try
+            {
+                IMDResponse<List<EntFolioReporte>> resGetFolioExiste = this.BGetFolios(psFolio: entNuevaConsulta.sFolio);
+                if (resGetFolioExiste.Code != 0)
+                {
+                    return resGetFolioExiste.GetResponse<EntDetalleCompra>();
+                }
+
+                if (resGetFolioExiste.Result.Count != 1)
+                {
+                    response.Code = 8987837456743;
+                    response.Message = "El folio proporcionado no existe";
+                    return response;
+                }
+
+                EntFolioReporte folioExistente = resGetFolioExiste.Result.First();
+
+                EntFolioFV entFolioFV = new EntFolioFV
+                {
+                    dtFechaVencimiento = (DateTime)entNuevaConsulta?.consulta?.dtFechaProgramadaFin?.AddHours(1),
+                    iIdEmpresa = folioExistente.iIdEmpresa,
+                    iIdUsuario = entNuevaConsulta.iIdUsuarioMod,
+                    lstFolios = new List<EntFolioFVItem>
+                            {
+                                new EntFolioFVItem
+                                {
+                                    iIdFolio = folioExistente.iIdFolio
+                                }
+                            }
+                };
+
+                IMDResponse<bool> resUpdVencimiento = this.BUpdFechaVencimiento(entFolioFV);
+                if (resUpdVencimiento.Code != 0)
+                {
+                    return resUpdVencimiento.GetResponse<EntDetalleCompra>();
+                }
+
+                entNuevaConsulta.consulta.iIdEstatusConsulta = (int)EnumEstatusConsulta.CreadoProgramado;
+                entNuevaConsulta.consulta.iIdPaciente = folioExistente.iIdPaciente;
+                entNuevaConsulta.customerInfo.email = folioExistente.sCorreoPaciente;
+
+                response = this.BConfirmarNuevaConsulta(entNuevaConsulta, folioExistente.sFolio, folioExistente.sPassword);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458542490;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458542490, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<EntDetalleCompra> BGenerarConsultaSinFolio(EntNuevaConsulta entNuevaConsulta)
+        {
+            IMDResponse<EntDetalleCompra> response = new IMDResponse<EntDetalleCompra>();
+
+            string metodo = nameof(this.BGenerarConsultaSinFolio);
+            logger.Info(IMDSerialize.Serialize(67823458543267, $"Inicia {metodo}"));
+
+            try
+            {
+                EntEmpresa entEmpresa = new EntEmpresa();
+
+                BusEmpresa busEmpresa = new BusEmpresa();
+                IMDResponse<List<EntEmpresa>> respuestaObtenerEmpresas = busEmpresa.BGetEmpresas(null, entNuevaConsulta.customerInfo.email);
+
+                if (respuestaObtenerEmpresas.Code != 0)
+                {
+                    return respuestaObtenerEmpresas.GetResponse<EntDetalleCompra>();
+                }
+
+                if (respuestaObtenerEmpresas.Result.Count > 0)
+                {
+                    entEmpresa = respuestaObtenerEmpresas.Result.FirstOrDefault();
+                }
+                else
+                {
+                    EntEmpresa entNuevaEmpresa = new EntEmpresa()
+                    {
+                        iIdEmpresa = 0,
+                        sNombre = entNuevaConsulta.customerInfo.name,
+                        sCorreo = entNuevaConsulta.customerInfo.email,
+                        iIdUsuarioMod = entNuevaConsulta.iIdUsuarioMod,
+                        bActivo = true,
+                        bBaja = false
+                    };
+
+                    IMDResponse<EntEmpresa> respuestaSaveEmpresa = busEmpresa.BSaveEmpresa(entNuevaEmpresa);
+                    if (respuestaSaveEmpresa.Code != 0)
+                    {
+                        return respuestaSaveEmpresa.GetResponse<EntDetalleCompra>();
+                    }
+                    entEmpresa = respuestaSaveEmpresa.Result;
+                }
+
+                EntFolio entFolio = new EntFolio();
+                entFolio.iIdOrigen = (int)EnumOrigen.CallCenter;
+                entFolio.bTerminosYCondiciones = false;
+                entFolio.iIdEmpresa = entEmpresa.iIdEmpresa;
+
+                EntPaciente entPaciente = new EntPaciente();
+
+                entPaciente.iIdPaciente = 0;
+                entPaciente.iIdFolio = entFolio.iIdFolio;
+                entPaciente.sTelefono = entNuevaConsulta.customerInfo.phone;
+                entPaciente.sCorreo = entNuevaConsulta.customerInfo.email;
+                entPaciente.sNombre = entNuevaConsulta.customerInfo.name;
+
+                entFolio.iIdProducto = (int)EnumProductos.OrientacionEspecialistaID;
+
+                entFolio.dtFechaVencimiento = (DateTime)entNuevaConsulta.consulta.dtFechaProgramadaFin?.AddHours(1);
+
+                BusGeneratePassword busGenerate = new BusGeneratePassword();
+
+                entFolio.sPassword = busGenerate.Generate(6);
+
+                entFolio.sPassword = busUsuario.BEncodePassword(entFolio.sPassword);
+
+                entFolio.iIdUsuarioMod = entNuevaConsulta.iIdUsuarioMod;
+
+                IMDResponse<DataTable> dtFolio = datFolio.DSaveFolio(entFolio);
+
+                if (dtFolio.Code != 0)
+                {
+                    response = dtFolio.GetResponse<EntDetalleCompra>();
+                    response.Message = "Ocurrio un erro al guardar el folio";
+                    return response;
+                }
+
+                foreach (DataRow item2 in dtFolio.Result.Rows)
+                {
+                    IMDDataRow dataRow = new IMDDataRow(item2);
+
+                    entFolio.iIdFolio = dataRow.ConvertTo<int>("iIdFolio");
+                    entFolio.sFolio = dataRow.ConvertTo<string>("sFolio");
+
+                }
+                //Se agrega el paciente
+                BusPaciente busPaciente = new BusPaciente();
+
+                entPaciente.iIdFolio = entFolio.iIdFolio;
+                IMDResponse<EntPaciente> responsePaciente = busPaciente.BSavePaciente(entPaciente);
+
+                if (responsePaciente.Code != 0)
+                {
+                    return response = responsePaciente.GetResponse<EntDetalleCompra>();
+                }
+
+                entNuevaConsulta.consulta.iIdEstatusConsulta = (int)EnumEstatusConsulta.CreadoProgramado;
+                entNuevaConsulta.consulta.iIdPaciente = responsePaciente.Result.iIdPaciente;
+
+                response = this.BConfirmarNuevaConsulta(entNuevaConsulta, entFolio.sFolio, entFolio.sPassword);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458544044;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458544044, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<EntDetalleCompra> BModificarConsultaFolio(EntNuevaConsulta entNuevaConsulta)
+        {
+            IMDResponse<EntDetalleCompra> response = new IMDResponse<EntDetalleCompra>();
+
+            string metodo = nameof(this.BModificarConsultaFolio);
+            logger.Info(IMDSerialize.Serialize(67823458544821, $"Inicia {metodo}"));
+
+            try
+            {
+                IMDResponse<List<EntDetalleConsulta>> resGetConsulta = busConsulta.BGetDetalleConsulta(entNuevaConsulta.consulta.iIdConsulta);
+                if (resGetConsulta.Code != 0)
+                {
+                    return response = resGetConsulta.GetResponse<EntDetalleCompra>();
+                }
+
+                if (resGetConsulta.Result.Count != 1)
+                {
+                    response.Code = 8767348576345;
+                    response.Message = "La consulta no existe";
+                    return response;
+                }
+
+                EntDetalleConsulta consulta = resGetConsulta.Result.First();
+
+                EntFolioFV entFolioFV = new EntFolioFV
+                {
+                    dtFechaVencimiento = (DateTime)entNuevaConsulta?.consulta?.dtFechaProgramadaFin?.AddHours(1),
+                    iIdEmpresa = (int)consulta.iIdEmpresa,
+                    iIdUsuario = entNuevaConsulta.iIdUsuarioMod,
+                    lstFolios = new List<EntFolioFVItem>
+                        {
+                            new EntFolioFVItem
+                            {
+                                iIdFolio = (int)consulta.iIdFolio
+                            }
+                        }
+                };
+
+                IMDResponse<bool> resUpdVencimiento = this.BUpdFechaVencimiento(entFolioFV);
+                if (resUpdVencimiento.Code != 0)
+                {
+                    return resUpdVencimiento.GetResponse<EntDetalleCompra>();
+                }
+
+                entNuevaConsulta.consulta.iIdEstatusConsulta = (int)EnumEstatusConsulta.Reprogramado;
+                entNuevaConsulta.consulta.iIdPaciente = consulta.iIdPaciente;
+                entNuevaConsulta.customerInfo.email = consulta.sCorreoPaciente;
+
+                response = this.BConfirmarNuevaConsulta(entNuevaConsulta, consulta.sFolio, consulta.sPassword, true);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458545598;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458545598, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }
@@ -991,13 +1104,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     }
                 };
 
-                IMDResponse<EntConsulta> resGuardarConsulta = busConsulta.BSaveConsulta(entNuevaConsulta.consulta);
+                IMDResponse<EntConsulta> resGuardarConsulta = busConsulta.BSaveConsulta(entNuevaConsulta.consulta, entNuevaConsulta.iIdUsuarioMod);
                 if (resGuardarConsulta.Code != 0)
                 {
                     return response = resGuardarConsulta.GetResponse<EntDetalleCompra>();
                 }
 
-                IMDResponse<bool> responseCorreo = this.BEnvioCorreoEspecialista(entDetalleCompra, reprogramado);
+                IMDResponse<bool> responseCorreo = this.BEnviarCorreoConsulta(entDetalleCompra, reprogramado);
 
                 response.Code = 0;
                 response.Message = "Consulta creada";
@@ -1013,7 +1126,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             return response;
         }
 
-        public IMDResponse<bool> BEnvioCorreoEspecialista(EntDetalleCompra detalleFolio, bool reprogramado = false)
+        public IMDResponse<bool> BEnviarCorreoConsulta(EntDetalleCompra detalleFolio, bool reprogramado = false)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
@@ -1071,7 +1184,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             }
             return response;
         }
-
 
         public IMDResponse<EntFolio> BLoginApp(string sUsuario, string sPassword)
         {
@@ -1143,7 +1255,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             return response;
         }
 
-
         public IMDResponse<List<EntFolioReporte>> BGetFolios(int? piIdFolio = null, int? piIdEmpresa = null, int? piIdProducto = null, int? piIdOrigen = null, string psFolio = null, string psOrdenConekta = null, bool? pbTerminosYCondiciones = null, bool? pbActivo = true, bool? pbBaja = false)
         {
             IMDResponse<List<EntFolioReporte>> response = new IMDResponse<List<EntFolioReporte>>();
@@ -1178,6 +1289,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                         iIdTipoProducto = dr.ConvertTo<int>("iIdTipoProducto"),
                         sCorreoEmpresa = dr.ConvertTo<string>("sCorreoEmpresa"),
                         sFolio = dr.ConvertTo<string>("sFolio"),
+                        sCorreoPaciente = dr.ConvertTo<string>("sCorreoPaciente"),
                         sPassword = dr.ConvertTo<string>("sPassword"),
                         sFolioEmpresa = dr.ConvertTo<string>("sFolioEmpresa"),
                         sIcon = dr.ConvertTo<string>("sIcon"),
@@ -1256,7 +1368,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             }
             return response;
         }
-
 
         public IMDResponse<bool> BEliminarFoliosEmpresa(EntFolioFV entFolioFV)
         {

@@ -24,11 +24,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Paciente
             datPaciente = new DatPaciente();
         }
 
-        public IMDResponse<EntPaciente> DSavePaciente(EntPaciente entPaciente)
+        public IMDResponse<EntPaciente> BSavePaciente(EntPaciente entPaciente)
         {
             IMDResponse<EntPaciente> response = new IMDResponse<EntPaciente>();
 
-            string metodo = nameof(this.DSavePaciente);
+            string metodo = nameof(this.BSavePaciente);
             logger.Info(IMDSerialize.Serialize(67823458420501, $"Inicia {metodo}(EntPaciente entPaciente)", entPaciente));
 
             try

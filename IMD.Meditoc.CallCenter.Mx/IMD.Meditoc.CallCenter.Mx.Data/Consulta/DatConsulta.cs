@@ -22,6 +22,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
         string getHistorialMedico;
         string getDetalleConsulta;
         string getDisponibilidadConsulta;
+        string delConsulta;
 
         public DatConsulta()
         {
@@ -33,6 +34,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             getHistorialMedico = "svc_meditoc_historialclinico";
             getDetalleConsulta = "svc_meditoc_consultas";
             getDisponibilidadConsulta = "svc_meditoc_consultas_disponibilidad";
+            delConsulta = "sva_meditoc_del_consulta";
         }
 
         public IMDResponse<DataTable> DSaveConsulta(int piIdConsulta, int piIdUsuarioMod, int? piIdPaciente = null, int? piIdColaborador = null, int? piIdEstatusConsulta = null, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null, DateTime? pdtFechaConsultaInicio = null, DateTime? pdtFechaConsultaFin = null)
@@ -132,7 +134,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             return response;
         }
 
-        public IMDResponse<DataTable> DGetDisponibilidadConsulta(int piIdColaborador, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null)
+        public IMDResponse<DataTable> DGetDisponibilidadConsulta(int piIdColaborador, int piIdConsulta, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null)
         {
             IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
@@ -144,6 +146,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
                 using (DbCommand dbCommand = database.GetStoredProcCommand(getDisponibilidadConsulta))
                 {
                     database.AddInParameter(dbCommand, "piIdColaborador", DbType.Int32, piIdColaborador);
+                    database.AddInParameter(dbCommand, "piIdConsulta", DbType.Int32, piIdConsulta);
                     database.AddInParameter(dbCommand, "pdtFechaProgramadaInicio", DbType.DateTime, pdtFechaProgramadaInicio);
                     database.AddInParameter(dbCommand, "pdtFechaProgramadaFin", DbType.DateTime, pdtFechaProgramadaFin);
 
@@ -156,6 +159,34 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458536274, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<bool> DCancelarConsulta(int piIdConsulta, int piIdUsuarioMod, int piIdEstatusConsulta)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.DCancelarConsulta);
+            logger.Info(IMDSerialize.Serialize(67823458551037, $"Inicia {metodo}"));
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(delConsulta))
+                {
+                    database.AddInParameter(dbCommand, "piIdConsulta", DbType.Int32, piIdConsulta);
+                    database.AddInParameter(dbCommand, "piIdUsuarioMod", DbType.Int32, piIdUsuarioMod);
+                    database.AddInParameter(dbCommand, "piIdEstatusConsulta", DbType.Int32, piIdEstatusConsulta);
+
+                    response = imdCommonData.DExecute(database, dbCommand);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458551814;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458551814, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }
