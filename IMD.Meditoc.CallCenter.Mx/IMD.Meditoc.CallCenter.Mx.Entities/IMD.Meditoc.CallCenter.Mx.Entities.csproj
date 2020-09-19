@@ -118,10 +118,22 @@
     <Compile Include="Promociones\EntCupon.cs" />
     <Compile Include="Promociones\EnumCategoriaCupon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reportes\Doctores\EntDoctoresGeneric.cs" />
+    <Compile Include="Reportes\Ventas\EntChargeReporte.cs" />
+    <Compile Include="Reportes\Doctores\EntConsulta.cs" />
+    <Compile Include="Reportes\Doctores\EntDoctor.cs" />
+    <Compile Include="Reportes\Doctores\EntDoctoresReporte.cs" />
+    <Compile Include="Reportes\Ventas\EntFolio.cs" />
+    <Compile Include="Reportes\Ventas\EntFolioGeneric.cs" />
+    <Compile Include="Reportes\Ventas\EntLineItemReporte.cs" />
+    <Compile Include="Reportes\Ventas\EntOrden.cs" />
+    <Compile Include="Reportes\Ventas\EntVentasReporte.cs" />
+    <Compile Include="Reportes\EnumReportes.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
