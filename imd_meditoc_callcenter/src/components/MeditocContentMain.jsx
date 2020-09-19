@@ -14,6 +14,7 @@ import MeditocPortada from "./MeditocPortada";
 import Colaboradores from "./meditoc/administracion/colaboradores/Colaboradores";
 import Especialidades from "./meditoc/administracion/especialidades/Especialidades";
 import Administrador from "./meditoc/callcenter/administrador/Administrador";
+import CallCenter from "./meditoc/callcenter/callcenter/CallCenter";
 
 /*************************************************************
  * Descripcion: Contiene las secciones y vistas de todo el portal de Meditoc
@@ -76,6 +77,9 @@ const ContentMain = (props) => {
                     </Route>
                     <Route exact path={urlSystem.callcenter.administrarConsultas}>
                         <Administrador usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
+                    </Route>
+                    <Route exact path={urlSystem.callcenter.consultas}>
+                        <CallCenter usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
                     </Route>
                 </Switch>
             </div>

@@ -1290,6 +1290,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                         sCorreoEmpresa = dr.ConvertTo<string>("sCorreoEmpresa"),
                         sFolio = dr.ConvertTo<string>("sFolio"),
                         sCorreoPaciente = dr.ConvertTo<string>("sCorreoPaciente"),
+                        sNombrePaciente = dr.ConvertTo<string>("sNombrePaciente"),
+                        sTelefonoPaciente = dr.ConvertTo<string>("sTelefonoPaciente"),
                         sPassword = dr.ConvertTo<string>("sPassword"),
                         sFolioEmpresa = dr.ConvertTo<string>("sFolioEmpresa"),
                         sIcon = dr.ConvertTo<string>("sIcon"),

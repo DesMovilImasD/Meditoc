@@ -75,7 +75,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
             return response;
         }
 
-        public IMDResponse<EntCallCenter> BCallCenterStartWithFolio(int iIdColaborador, string sFolio)
+        public IMDResponse<EntCallCenter> BCallCenterStartWithFolio(int iIdColaborador, string sFolio, int iIdUsuarioMod)
         {
             IMDResponse<EntCallCenter> response = new IMDResponse<EntCallCenter>();
 
@@ -108,7 +108,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                 if (resGetFolio.Result.Count != 1)
                 {
                     response.Code = 8793487583457;
-                    response.Message = "El folio no existe";
+                    response.Message = "El folio no existe o ha expirado";
                     return response;
                 }
 
@@ -139,7 +139,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                         dtFechaProgramadaInicio = DateTime.Now
                     };
 
-                    IMDResponse<EntConsulta> resSaveConsulta = busConsulta.BSaveConsulta(entConsulta, entCallCenter.entColaborador.iIdUsuarioCGU);
+                    IMDResponse<EntConsulta> resSaveConsulta = busConsulta.BSaveConsulta(entConsulta, iIdUsuarioMod);
                     if (resSaveConsulta.Code != 0)
                     {
                         return resSaveConsulta.GetResponse<EntCallCenter>();
@@ -158,6 +158,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
 
                 response.Code = 0;
                 response.Result = entCallCenter;
+                response.Message = "Consulta obtenida";
 
             }
             catch (Exception ex)
@@ -199,22 +200,23 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                     return resSaveConsulta.GetResponse<bool>();
                 }
 
-                EntOnlineMod entOnlineMod = new EntOnlineMod
-                {
-                    bOcupado = true,
-                    bOnline = true,
-                    iIdColaborador = iIdColaborador,
-                    iIdUsuarioMod = iIdUsuarioMod
-                };
+                //EntOnlineMod entOnlineMod = new EntOnlineMod
+                //{
+                //    bOcupado = true,
+                //    bOnline = true,
+                //    iIdColaborador = iIdColaborador,
+                //    iIdUsuarioMod = iIdUsuarioMod
+                //};
 
-                IMDResponse<bool> resUpdColaborador = this.BCallCenterOnline(entOnlineMod);
-                if (resSaveConsulta.Code != 0)
-                {
-                    return resUpdColaborador;
-                }
+                //IMDResponse<bool> resUpdColaborador = this.BCallCenterOnline(entOnlineMod);
+                //if (resSaveConsulta.Code != 0)
+                //{
+                //    return resUpdColaborador;
+                //}
 
                 response.Code = 0;
-                response.Message = "Consulta iniciada. " + resUpdColaborador.Message;
+                //response.Message = "Consulta iniciada. " + resUpdColaborador.Message;
+                response.Message = "Consulta iniciada. ";
                 response.Result = true;
             }
             catch (Exception ex)

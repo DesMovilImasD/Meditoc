@@ -4,7 +4,7 @@
  * Fecha: 26/08/2020
  *************************************************************/
 
-const urlBase = '/call_center'
+const urlBase = '/MeditocCallCenter'
 
 const urlSystem = {
   configuracion: {

@@ -160,17 +160,17 @@ const Administrador = (props) => {
         <Fragment>
             <MeditocHeader1 title="ADMINISTRADOR CONSULTAS">
                 <Tooltip title="Nueva consulta" arrow>
-                    <IconButton onClick={handleClickNuevaConsulta}>
+                    <IconButton onClick={handleClickNuevaConsulta} disabled={usuarioColaborador === null}>
                         <AddIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Reprogramar consulta" arrow>
-                    <IconButton onClick={handleEditarConsulta}>
+                    <IconButton onClick={handleEditarConsulta} disabled={usuarioColaborador === null}>
                         <EditIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Cancelar consulta" arrow>
-                    <IconButton onClick={handleCancelarConsulta}>
+                    <IconButton onClick={handleCancelarConsulta} disabled={usuarioColaborador === null}>
                         <DeleteIcon className="color-0" />
                     </IconButton>
                 </Tooltip>

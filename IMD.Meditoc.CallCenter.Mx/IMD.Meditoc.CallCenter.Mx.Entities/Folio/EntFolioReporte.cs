@@ -22,6 +22,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Folio
         public int iIdOrigen { get; set; }
         public int iIdPaciente { get; set; }
         public string sCorreoPaciente { get; set; }
+        public string sNombrePaciente { get; set; }
+        public string sTelefonoPaciente { get; set; }
         public string sOrigen { get; set; }
         public string sFolio { get; set; }
         public string sPassword { get; set; }
