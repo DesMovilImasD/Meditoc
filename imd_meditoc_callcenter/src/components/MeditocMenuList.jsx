@@ -138,7 +138,7 @@ const MenuList = (props) => {
                     </Link>
                 </List>
             </Collapse>
-            <ListItem button onClick={() => setOpenFolios(!openFolios)}>
+            {/* <ListItem button onClick={() => setOpenFolios(!openFolios)}>
                 <ListItemIcon>
                     <GradeIcon className="color-0" />
                 </ListItemIcon>
@@ -156,7 +156,7 @@ const MenuList = (props) => {
                         </ListItem>
                     </Link>
                 </List>
-            </Collapse>
+            </Collapse> */}
             <ListItem button onClick={() => setOpenCallCenter(!openCallCenter)}>
                 <ListItemIcon>
                     <CallIcon className="color-0" />

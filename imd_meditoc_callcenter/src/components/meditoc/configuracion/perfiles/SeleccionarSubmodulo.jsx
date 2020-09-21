@@ -4,6 +4,7 @@ import MeditocModal from "../../../utilidades/MeditocModal";
 import { Grid, List, ListItem, ListItemIcon, Checkbox, Button, ListItemText } from "@material-ui/core";
 import CGUController from "../../../../controllers/CGUController";
 import WebIcon from "@material-ui/icons/Web";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 
 /*************************************************************
  * Descripcion: Representa un modal con la lista de submódulos disponibles para dar permisos al perfil en el módulo previamente seleccionado
@@ -82,13 +83,15 @@ const SeleccionarSubmodulo = (props) => {
         const cguController = new CGUController();
         const response = await cguController.funcSavePermiso(listaPermisosParaGuardar);
 
-        if (response.Code !== 0) {
-            funcAlert(response.Message);
-        } else {
+        if (response.Code === 0) {
             setOpen(false);
-            funcAlert(response.Message, "success");
             setSubmodulosSeleccionados([]);
-            funcGetPermisosXPerfil();
+
+            await funcGetPermisosXPerfil();
+
+            funcAlert(response.Message, "success");
+        } else {
+            funcAlert(response.Message);
         }
 
         funcLoader();
@@ -123,16 +126,11 @@ const SeleccionarSubmodulo = (props) => {
                         )}
                     </List>
                 </Grid>
-                <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="primary" fullWidth onClick={funcSavePermisosSubmodulo}>
-                        Agregar submódulos
-                    </Button>
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="secondary" fullWidth onClick={handleClose}>
-                        Cancelar
-                    </Button>
-                </Grid>
+                <MeditocModalBotones
+                    okMessage="Agregar submódulos"
+                    okFunc={funcSavePermisosSubmodulo}
+                    setOpen={setOpen}
+                />
             </Grid>
         </MeditocModal>
     );

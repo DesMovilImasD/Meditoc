@@ -14,6 +14,7 @@ using IMD.Meditoc.CallCenter.Mx.Entities.Producto;
 using log4net;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -75,7 +76,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
             return response;
         }
 
-        public IMDResponse<EntCallCenter> BCallCenterStartWithFolio(int iIdColaborador, string sFolio)
+        public IMDResponse<EntCallCenter> BCallCenterStartWithFolio(int iIdColaborador, string sFolio, int iIdUsuarioMod)
         {
             IMDResponse<EntCallCenter> response = new IMDResponse<EntCallCenter>();
 
@@ -108,7 +109,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                 if (resGetFolio.Result.Count != 1)
                 {
                     response.Code = 8793487583457;
-                    response.Message = "El folio no existe";
+                    response.Message = "El folio no existe o ha expirado";
                     return response;
                 }
 
@@ -139,13 +140,60 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                         dtFechaProgramadaInicio = DateTime.Now
                     };
 
-                    IMDResponse<EntConsulta> resSaveConsulta = busConsulta.BSaveConsulta(entConsulta, entCallCenter.entColaborador.iIdUsuarioCGU);
+                    IMDResponse<EntConsulta> resSaveConsulta = busConsulta.BSaveConsulta(entConsulta, iIdUsuarioMod);
                     if (resSaveConsulta.Code != 0)
                     {
                         return resSaveConsulta.GetResponse<EntCallCenter>();
                     }
 
                     entCallCenter.entConsulta = resSaveConsulta.Result;
+                }
+                else if (entCallCenter.entColaborador.iIdTipoDoctor == (int)EnumTipoDoctor.MedicoEspecialista)
+                {
+                    IMDResponse<List<EntDetalleConsulta>> resVerificarConsulta = busConsulta.BGetConsultaMomento(entCallCenter.entPaciente.iIdPaciente, entCallCenter.entColaborador.iIdColaborador);
+                    if (resVerificarConsulta.Code != 0)
+                    {
+                        return resVerificarConsulta.GetResponse<EntCallCenter>();
+                    }
+
+                    if (resVerificarConsulta.Result.Count < 1)
+                    {
+                        response.Code = 747837678345;
+                        response.Message = $"No se encontró una consulta programada para el paciente. La tolerancia para el horario programado de la consulta es de {ConfigurationManager.AppSettings["iMinToleraciaConsultaInicio"]} minutos antes de la hora y {ConfigurationManager.AppSettings["iMinToleraciaConsultaFin"]} después de la hora de consulta";
+                        return response;
+                    }
+
+                    EntDetalleConsulta entDetalleConsulta = resVerificarConsulta.Result.First();
+
+                    if (entDetalleConsulta.iIdEstatusConsulta == (int)EnumEstatusConsulta.Cancelado)
+                    {
+                        response.Code = 8787634765784;
+                        response.Message = $"La consulta fue cancelada";
+                        return response;
+                    }
+
+                    if (entDetalleConsulta.iIdEstatusConsulta == (int)EnumEstatusConsulta.Finalizado)
+                    {
+                        response.Code = 4778736783475;
+                        response.Message = $"La consulta ya ha finalizado";
+                        return response;
+                    }
+
+                    EntConsulta entConsulta = new EntConsulta
+                    {
+                        iIdConsulta = (int)entDetalleConsulta.iIdConsulta,
+                        iIdColaborador = entCallCenter.entColaborador.iIdColaborador,
+                        iIdPaciente = entCallCenter.entPaciente.iIdPaciente,
+                        iIdEstatusConsulta = entDetalleConsulta.iIdEstatusConsulta,
+                    };
+
+                    entCallCenter.entConsulta = entConsulta;
+                }
+                else
+                {
+                    response.Code = 348670987235;
+                    response.Message = $"No se puede determinar el tipo de cuenta del usuario";
+                    return response;
                 }
 
                 IMDResponse<List<EntHistorialClinico>> resGetHistorial = busConsulta.BGetHistorialMedico(piIdFolio: entCallCenter.entFolio.iIdFolio);
@@ -158,6 +206,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
 
                 response.Code = 0;
                 response.Result = entCallCenter;
+                response.Message = "Consulta obtenida";
 
             }
             catch (Exception ex)
@@ -199,22 +248,23 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                     return resSaveConsulta.GetResponse<bool>();
                 }
 
-                EntOnlineMod entOnlineMod = new EntOnlineMod
-                {
-                    bOcupado = true,
-                    bOnline = true,
-                    iIdColaborador = iIdColaborador,
-                    iIdUsuarioMod = iIdUsuarioMod
-                };
+                //EntOnlineMod entOnlineMod = new EntOnlineMod
+                //{
+                //    bOcupado = true,
+                //    bOnline = true,
+                //    iIdColaborador = iIdColaborador,
+                //    iIdUsuarioMod = iIdUsuarioMod
+                //};
 
-                IMDResponse<bool> resUpdColaborador = this.BCallCenterOnline(entOnlineMod);
-                if (resSaveConsulta.Code != 0)
-                {
-                    return resUpdColaborador;
-                }
+                //IMDResponse<bool> resUpdColaborador = this.BCallCenterOnline(entOnlineMod);
+                //if (resSaveConsulta.Code != 0)
+                //{
+                //    return resUpdColaborador;
+                //}
 
                 response.Code = 0;
-                response.Message = "Consulta iniciada. " + resUpdColaborador.Message;
+                //response.Message = "Consulta iniciada. " + resUpdColaborador.Message;
+                response.Message = "Consulta iniciada. ";
                 response.Result = true;
             }
             catch (Exception ex)

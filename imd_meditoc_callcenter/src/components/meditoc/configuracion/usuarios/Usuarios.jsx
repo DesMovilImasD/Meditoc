@@ -108,28 +108,27 @@ const Usuarios = (props) => {
     const funcGetUsuarios = async () => {
         funcLoader(true, "Consultado usuarios del Meditoc...");
         const response = await cguController.funcGetUsuarios();
-        funcLoader();
 
-        if (response.Code !== 0) {
+        if (response.Code === 0) {
+            setListaUsuarios(response.Result);
+        } else {
             funcAlert(response.Message);
-            return;
         }
 
-        setListaUsuarios(response.Result);
+        funcLoader();
     };
 
     //Consumir servicio para obtener los perfiles activos del portal
     const funcGetPerfiles = async () => {
         funcLoader(true, "Consultado perfiles del sistema...");
         const response = await cguController.funcGetPerfiles();
-        funcLoader();
 
-        if (response.Code !== 0) {
+        if (response.Code === 0) {
+            setListaPerfiles(response.Result);
+        } else {
             funcAlert(response.Message);
-            return;
         }
-
-        setListaPerfiles(response.Result);
+        funcLoader();
     };
 
     //Consumir servicio para dar de baja un usuario del portal
@@ -157,21 +156,27 @@ const Usuarios = (props) => {
         funcLoader(true, "Eliminando usuario...");
 
         const response = await cguController.funcSaveUsuario(entUsuarioSave);
-        if (response.Code !== 0) {
-            funcAlert(response.Message);
-        } else {
+        if (response.Code === 0) {
             setModalFormUsuarioEliminarOpen(false);
+
+            await funcGetUsuarios();
+
             funcAlert(response.Message, "success");
-            funcGetUsuarios();
+        } else {
+            funcAlert(response.Message);
         }
 
         funcLoader();
     };
 
+    const getData = async () => {
+        await funcGetUsuarios();
+        await funcGetPerfiles();
+    };
+
     //Consultar datos al cargar este componente
     useEffect(() => {
-        funcGetUsuarios();
-        funcGetPerfiles();
+        getData();
 
         // eslint-disable-next-line
     }, []);

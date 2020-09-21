@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React, { Fragment, useState, useEffect } from "react";
 import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
 import { Tooltip, IconButton } from "@material-ui/core";
-import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
+import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
@@ -99,29 +99,31 @@ const Perfiles = (props) => {
     //Consumir servicio para obtener todos los elementos del sistema (módulos, submódulos y botones)
     const funcGetPermisosXPerfil = async () => {
         funcLoader(true, "Consultado elementos del sistema...");
-        const response = await cguController.funcGetPermisosXPeril();
-        funcLoader();
 
-        if (response.Code !== 0) {
+        const response = await cguController.funcGetPermisosXPeril();
+
+        if (response.Code === 0) {
+            setListaSistema(response.Result);
+        } else {
             funcAlert(response.Message);
-            return;
         }
 
-        setListaSistema(response.Result);
+        funcLoader();
     };
 
     //Consumir servicio para obtener todos los perfiles activos del sistema
     const funcGetPerfiles = async () => {
         funcLoader(true, "Consultado perfiles del sistema...");
-        const response = await cguController.funcGetPerfiles();
-        funcLoader();
 
-        if (response.Code !== 0) {
+        const response = await cguController.funcGetPerfiles();
+
+        if (response.Code === 0) {
+            setListaPerfiles(response.Result);
+        } else {
             funcAlert(response.Message);
-            return;
         }
 
-        setListaPerfiles(response.Result);
+        funcLoader();
     };
 
     //Consumir servicio para borrar un perfil en la base
@@ -137,22 +139,28 @@ const Perfiles = (props) => {
         };
 
         const response = await cguController.funcSavePerfil(entSavePerfil);
-        if (response.Code !== 0) {
-            funcAlert(response.Message);
-        } else {
+        if (response.Code === 0) {
             setModalFormEliminarPerfilOpen(false);
             setPerfilSeleccionado({ iIdPerfil: 0, sNombre: "" });
+
+            await funcGetPerfiles();
+
             funcAlert(response.Message, "success");
-            funcGetPerfiles();
+        } else {
+            funcAlert(response.Message);
         }
 
         funcLoader();
     };
 
+    const getData = async () => {
+        await funcGetPermisosXPerfil();
+        await funcGetPerfiles();
+    };
+
     //Consultar datos al cargar el componente
     useEffect(() => {
-        funcGetPermisosXPerfil();
-        funcGetPerfiles();
+        getData();
 
         // eslint-disable-next-line
     }, []);
@@ -162,7 +170,7 @@ const Perfiles = (props) => {
             <MeditocHeader1 title="PERFILES">
                 <Tooltip title="Nuevo perfil" arrow>
                     <IconButton onClick={handleClickNuevoPerfil}>
-                        <InsertDriveFileIcon className="color-0" />
+                        <AddRoundedIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Editar perfil" arrow>

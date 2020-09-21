@@ -6,6 +6,7 @@ using IMD.Meditoc.CallCenter.Mx.Entities.Consultas;
 using log4net;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -102,6 +103,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
                     EntHistorialClinico entHistorialClinico = new EntHistorialClinico
                     {
                         dtFechaCreacion = dr.ConvertTo<DateTime?>("dtFechaCreacion"),
+                        dtFechaConsultaFin = dr.ConvertTo<DateTime?>("dtFechaConsultaFin"),
+                        dtFechaConsultaInicio = dr.ConvertTo<DateTime?>("dtFechaConsultaInicio"),
                         fAltura = dr.ConvertTo<double>("fAltura"),
                         fPeso = dr.ConvertTo<double>("fPeso"),
                         iIdConsulta = dr.ConvertTo<int>("iIdConsulta"),
@@ -114,7 +117,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
                         sTratamiento = dr.ConvertTo<string>("sTratamiento"),
                     };
 
-                    entHistorialClinico.sFechaCreacion = entHistorialClinico.dtFechaCreacion?.ToString("dd/MM/yyyy HH:mm");
+                    entHistorialClinico.sFechaCreacion = entHistorialClinico.dtFechaCreacion?.ToString("ddd dd/MM/yyyy hh:mm tt");
+                    entHistorialClinico.sFechaConsultaInicio = entHistorialClinico.dtFechaConsultaInicio?.ToString("ddd dd/MM/yyyy hh:mm tt");
+                    entHistorialClinico.sFechaConsultaFin = entHistorialClinico.dtFechaConsultaFin?.ToString("ddd dd/MM/yyyy hh:mm tt");
+
+                    TimeSpan? dff = entHistorialClinico.dtFechaConsultaFin - entHistorialClinico.dtFechaConsultaInicio;
+
+                    entHistorialClinico.sDuracionConsulta = dff?.ToString(@"hh\:mm\:ss");
 
                     lstHistorial.Add(entHistorialClinico);
                 }
@@ -333,6 +342,105 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458553368, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+        public IMDResponse<bool> BSaveHistorialClinico(EntHistorialClinico entHistorialClinico)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.BSaveHistorialClinico);
+            logger.Info(IMDSerialize.Serialize(67823458583671, $"Inicia {metodo}"));
+
+            try
+            {
+                if (entHistorialClinico == null)
+                {
+                    response.Code = 7738476787367234;
+                    response.Message = "No se ingresó información de historial";
+                    return response;
+                }
+
+                IMDResponse<bool> resSaveHistorial = datConsulta.DSaveHistorialMedico(
+                    entHistorialClinico.iIdConsulta,
+                    entHistorialClinico.iIdUsuarioMod,
+                    entHistorialClinico.sSintomas,
+                    entHistorialClinico.sDiagnostico,
+                    entHistorialClinico.sTratamiento,
+                    entHistorialClinico.fPeso,
+                    entHistorialClinico.fAltura,
+                    entHistorialClinico.sAlergias,
+                    entHistorialClinico.sComentarios);
+
+                if (resSaveHistorial.Code != 0)
+                {
+                    return resSaveHistorial;
+                }
+
+                response.Code = 0;
+                response.Message = "El historial se guardó correctamente";
+                response.Result = true;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458584448;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458584448, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<List<EntDetalleConsulta>> BGetConsultaMomento(int piIdPaciente, int piIdColaborador)
+        {
+            IMDResponse<List<EntDetalleConsulta>> response = new IMDResponse<List<EntDetalleConsulta>>();
+
+            string metodo = nameof(this.BGetConsultaMomento);
+            logger.Info(IMDSerialize.Serialize(67823458588333, $"Inicia {metodo}"));
+
+            try
+            {
+                int iMinutosToleranciaAntes = Convert.ToInt32(ConfigurationManager.AppSettings["iMinToleraciaConsultaInicio"]);
+                int iMinutosToleranciaDespues = Convert.ToInt32(ConfigurationManager.AppSettings["iMinToleraciaConsultaFin"]);
+
+                IMDResponse<DataTable> resGetConsulta = datConsulta.DGetConsultaProgramada(piIdPaciente, piIdColaborador, iMinutosToleranciaAntes, iMinutosToleranciaDespues);
+                if (resGetConsulta.Code != 0)
+                {
+                    return resGetConsulta.GetResponse<List<EntDetalleConsulta>>();
+                }
+
+                List<EntDetalleConsulta> lstConsultas = new List<EntDetalleConsulta>();
+
+                foreach (DataRow drConsulta in resGetConsulta.Result.Rows)
+                {
+                    IMDDataRow dr = new IMDDataRow(drConsulta);
+
+                    EntDetalleConsulta consulta = new EntDetalleConsulta
+                    {
+                        dtFechaConsultaFin = dr.ConvertTo<DateTime?>("dtFechaConsultaFin"),
+                        dtFechaConsultaInicio = dr.ConvertTo<DateTime?>("dtFechaConsultaInicio"),
+                        dtFechaCreacion = dr.ConvertTo<DateTime?>("dtFechaCreacion"),
+                        dtFechaProgramadaFin = dr.ConvertTo<DateTime?>("dtFechaProgramadaFin"),
+                        dtFechaProgramadaInicio = dr.ConvertTo<DateTime?>("dtFechaProgramadaInicio"),
+                        iIdColaborador = dr.ConvertTo<int?>("iIdColaborador"),
+                        iIdConsulta = dr.ConvertTo<int?>("iIdConsulta"),
+                        iIdEstatusConsulta = dr.ConvertTo<int?>("iIdEstatusConsulta"),
+                        iIdPaciente = dr.ConvertTo<int?>("iIdPaciente"),
+                    };
+
+                    lstConsultas.Add(consulta);
+                }
+
+                response.Code = 0;
+                response.Message = "Consultas obtenidas";
+                response.Result = lstConsultas;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458589110;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458589110, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }

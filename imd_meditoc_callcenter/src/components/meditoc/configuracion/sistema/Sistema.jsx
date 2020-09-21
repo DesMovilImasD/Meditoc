@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useState, Fragment, useEffect } from "react";
 import { IconButton, Tooltip } from "@material-ui/core";
-import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
+import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import SistemaModulo from "./SistemaModulo";
 import FormModulo from "./FormModulo";
 import Simbologia from "./Simbologia";
@@ -37,14 +37,14 @@ const Sistema = (props) => {
     const funcGetPermisosXPerfil = async () => {
         funcLoader(true, "Consultado elementos del sistema...");
         const response = await cguController.funcGetPermisosXPeril();
-        funcLoader();
 
-        if (response.Code !== 0) {
+        if (response.Code === 0) {
+            setListaSistema(response.Result);
+        } else {
             funcAlert(response.Message);
-            return;
         }
 
-        setListaSistema(response.Result);
+        funcLoader();
     };
 
     //Funcion para mostrar el formulario para crear módulos
@@ -64,7 +64,7 @@ const Sistema = (props) => {
             <MeditocHeader1 title="SISTEMA">
                 <Tooltip title="Agregar un nuevo módulo" arrow>
                     <IconButton onClick={handleAgregarModuloOpen}>
-                        <InsertDriveFileIcon className="color-0" />
+                        <AddRoundedIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
             </MeditocHeader1>

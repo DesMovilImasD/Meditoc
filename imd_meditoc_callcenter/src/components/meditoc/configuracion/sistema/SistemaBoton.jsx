@@ -65,12 +65,13 @@ const SistemaBoton = (props) => {
         };
 
         const response = await cguController.funcSaveBoton(entSaveBoton);
-        if (response.Code !== 0) {
-            funcAlert(response.Message);
-        } else {
+
+        if (response.Code === 0) {
             setModalEliminarBotonOpen(false);
+            await funcGetPermisosXPerfil();
             funcAlert(response.Message, "success");
-            funcGetPermisosXPerfil();
+        } else {
+            funcAlert(response.Message);
         }
 
         funcLoader();

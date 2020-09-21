@@ -41,8 +41,9 @@ const FormCambiarPassword = (props) => {
 
         if (response.Code === 0) {
             sessionStorage.setItem("MeditocKey", formCambiarPassword.txtConfirmarPasswordMeditoc);
-            funcAlert(response.Message, "success");
             setOpen(false);
+
+            funcAlert(response.Message, "success");
         } else {
             funcAlert(response.Message);
         }

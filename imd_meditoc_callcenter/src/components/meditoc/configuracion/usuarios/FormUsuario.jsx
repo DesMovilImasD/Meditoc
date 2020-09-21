@@ -284,7 +284,7 @@ const FormUsuario = (props) => {
             txtApellidoMaterno: entUsuario.sApellidoMaterno,
             txtPerfil: entUsuario.iIdPerfil === 0 ? "" : entUsuario.iIdPerfil,
             txtTipoCuenta: entUsuario.iIdTipoCuenta,
-            txtFechaNacimiento: entUsuario.dtFechaNacimiento,
+            txtFechaNacimiento: new Date(entUsuario.dtFechaNacimiento),
             txtTelefono: entUsuario.sTelefono,
             txtCorreoElectronico: entUsuario.sCorreo,
             txtDomicilio: entUsuario.sDomicilio,

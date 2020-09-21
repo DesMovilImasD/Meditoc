@@ -4,6 +4,7 @@ import MeditocModal from "../../../utilidades/MeditocModal";
 import { Grid, TextField, Button } from "@material-ui/core";
 import CGUController from "../../../../controllers/CGUController";
 import { useEffect } from "react";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 
 /*************************************************************
  * Descripcion: Modal del formulario para Agregar/Modificar un botón
@@ -25,8 +26,29 @@ const FormBoton = (props) => {
         txtNombre: "",
     });
 
+    const [formBotonOK, setFormBotonOK] = useState({
+        txtNombre: true,
+    });
+
     //Consumir servicio para guardar boton en la base
     const funcSaveBoton = async () => {
+        let formBotonOKValidacion = {
+            txtNombre: true,
+        };
+
+        let formError = false;
+
+        if (formBoton.txtNombre === "") {
+            formBotonOKValidacion.txtNombre = false;
+            formError = true;
+        }
+
+        setFormBotonOK(formBotonOKValidacion);
+
+        if (formError) {
+            return;
+        }
+
         funcLoader(true, "Guardando botón...");
 
         const entSaveBoton = {
@@ -40,27 +62,41 @@ const FormBoton = (props) => {
         };
 
         const response = await cguController.funcSaveBoton(entSaveBoton);
-        if (response.Code !== 0) {
-            funcAlert(response.Message);
-        } else {
+
+        if (response.Code === 0) {
             setOpen(false);
+            await funcGetPermisosXPerfil();
             funcAlert(response.Message, "success");
-            funcGetPermisosXPerfil();
+        } else {
+            funcAlert(response.Message);
         }
 
         funcLoader();
     };
 
-    //Funcion para cerrar el formulario
-    const handleClose = () => {
-        setOpen(false);
-    };
-
     //Funcion para capturar los valores de los inputs
     const handleChangeForm = (e) => {
+        const nombreCampo = e.target.name;
+        const valorCampo = e.target.value;
+
+        switch (nombreCampo) {
+            case "txtNombre":
+                if (!formBotonOK.txtNombre) {
+                    if (valorCampo !== "") {
+                        setFormBotonOK({
+                            ...formBotonOK,
+                            [nombreCampo]: true,
+                        });
+                    }
+                }
+                break;
+
+            default:
+                break;
+        }
         setFormBoton({
             ...formBoton,
-            [e.target.name]: e.target.value,
+            [nombreCampo]: valorCampo,
         });
     };
 
@@ -136,18 +172,11 @@ const FormBoton = (props) => {
                         autoFocus
                         value={formBoton.txtNombre}
                         onChange={handleChangeForm}
+                        error={!formBotonOK.txtNombre}
+                        helperText={!formBotonOK.txtNombre ? "El nombre del botón el requerido" : ""}
                     />
                 </Grid>
-                <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="primary" fullWidth onClick={funcSaveBoton}>
-                        Guardar
-                    </Button>
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="secondary" fullWidth onClick={handleClose}>
-                        Cancelar
-                    </Button>
-                </Grid>
+                <MeditocModalBotones okMessage="Guardar botón" okFunc={funcSaveBoton} setOpen={setOpen} />
             </Grid>
         </MeditocModal>
     );

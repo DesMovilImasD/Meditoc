@@ -1,0 +1,86 @@
+{
+    "Meditoc CallCenter Proyecto": {
+        "index.js": {
+            "App.js": {
+                "MeditocLoader": null,
+                "MeditocAlert": null,
+                "MeditocLogin": null,
+                "MeditocContentMain": {
+                    "MeditocNavBar": {
+                        "FormCambiarPassword": null
+                    },
+                    "MeditocDrawerLeft": {
+                        "MeditocMenuList": null
+                    },
+                    "MeditocPortada": null,
+                    "Sistema": {
+                        "SistemaModulo": {
+                            "SistemaSubmodulo": {
+                                "SistemaBoton": {
+                                    "FormBoton": null
+                                },
+                                "FormSubmodulo": null,
+                                "FormBoton": null
+                            },
+                            "FormModulo": null,
+                            "FormSubmodulo": null
+                        },
+                        "Simbologia": null,
+                        "FormModulo": null
+                    },
+                    "Perfiles": {
+                        "FormPerfil": null,
+                        "Permisos": {
+                            "PermisoModulo": {
+                                "PermisoSubmodulo": {
+                                    "PermisoBoton": null,
+                                    "SeleccionarBoton": null
+                                },
+                                "SeleccionarSubmodulo": null
+                            },
+                            "Simbologia": null,
+                            "SeleccionarModulos": null
+                        }
+                    },
+                    "Usuarios": {
+                        "FormUsuario": null
+                    },
+                    "Productos": {
+                        "FormProducto": null,
+                        "DetalleProducto": null
+                    },
+                    "Empresa": {
+                        "FormEmpresa": null,
+                        "FoliosEmpresa": {
+                            "CrearFolios": null,
+                            "ModificarVigencia": null
+                        }
+                    },
+                    "Cupones": {
+                        "FormCupon": null
+                    },
+                    "Colaboradores": {
+                        "FormColaborador": null,
+                        "FotoColaborador": null
+                    },
+                    "Especialidades": {
+                        "FormEspecialidad": null
+                    },
+                    "Administrador": {
+                        "FormConsulta": null
+                    },
+                    "CallCenter": {
+                        "FormCallCenter": {
+                            "FormPaciente": null,
+                            "FormDiagnosticoTratamiento": null,
+                            "HistorialClinico": {
+                                "HistorialClinicoDetalle": null
+                            }
+                        },
+                        "FormBuscarFolio": null
+                    }
+                }
+            }
+        }
+    }
+}

@@ -3,9 +3,11 @@ using IMD.Admin.Utilities.Entities;
 using IMD.Meditoc.CallCenter.Mx.Business.CallCenter;
 using IMD.Meditoc.CallCenter.Mx.Business.Consulta;
 using IMD.Meditoc.CallCenter.Mx.Business.Folio;
+using IMD.Meditoc.CallCenter.Mx.Business.Paciente;
 using IMD.Meditoc.CallCenter.Mx.Entities.CallCenter;
 using IMD.Meditoc.CallCenter.Mx.Entities.Consultas;
 using IMD.Meditoc.CallCenter.Mx.Entities.Ordenes;
+using IMD.Meditoc.CallCenter.Mx.Entities.Paciente;
 using IMD.Meditoc.CallCenter.Mx.Web.Tokens;
 using log4net;
 using System;
@@ -48,7 +50,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 
         [HttpPost]
         [Route("Api/CallCenter/Start/Service/WithFolio")]
-        public IMDResponse<EntCallCenter> CCallCenterStartWithFolio(int iIdColaborador, string sFolio)
+        public IMDResponse<EntCallCenter> CCallCenterStartWithFolio(int iIdColaborador, string sFolio, int iIdUsuarioMod)
         {
             IMDResponse<EntCallCenter> response = new IMDResponse<EntCallCenter>();
 
@@ -58,7 +60,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             try
             {
                 BusCallCenter busCallCenter = new BusCallCenter();
-                response = busCallCenter.BCallCenterStartWithFolio(iIdColaborador, sFolio);
+                response = busCallCenter.BCallCenterStartWithFolio(iIdColaborador, sFolio, iIdUsuarioMod);
             }
             catch (Exception ex)
             {
@@ -162,6 +164,102 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458554922, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        [HttpPost]
+        [Route("Api/CallCenter/Iniciar/Consulta")]
+        public IMDResponse<bool> CIniciarConsulta(int iIdConsulta, int iIdColaborador, int iIdUsuarioMod)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.CIniciarConsulta);
+            logger.Info(IMDSerialize.Serialize(67823458555699, $"Inicia {metodo}"));
+
+            try
+            {
+                BusCallCenter busCallCenter = new BusCallCenter();
+                response = busCallCenter.BIniciarConsulta(iIdConsulta, iIdColaborador, iIdUsuarioMod);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458556476;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458556476, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        [HttpPost]
+        [Route("Api/CallCenter/Finalizar/Consulta")]
+        public IMDResponse<bool> CFinalizarConsulta(int iIdConsulta, int iIdColaborador, int iIdUsuarioMod)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.CFinalizarConsulta);
+            logger.Info(IMDSerialize.Serialize(67823458557253, $"Inicia {metodo}"));
+
+            try
+            {
+                BusCallCenter busCallCenter = new BusCallCenter();
+                response = busCallCenter.BFinalizarConsulta(iIdConsulta, iIdColaborador, iIdUsuarioMod);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458558030;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458558030, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        [HttpPost]
+        [Route("Api/CallCenter/Guardar/Datos/Paciente")]
+        public IMDResponse<bool> CGuardarDatosPaciente(EntUpdPaciente entUpdPaciente)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.CGuardarDatosPaciente);
+            logger.Info(IMDSerialize.Serialize(67823458580563, $"Inicia {metodo}"));
+
+            try
+            {
+                BusPaciente busPaciente = new BusPaciente();
+                response = busPaciente.BUpdPaciente(entUpdPaciente);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458581340;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458581340, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        [HttpPost]
+        [Route("Api/CallCenter/Guardar/Historial/Clinico")]
+        public IMDResponse<bool> CSaveHistorialClinico(EntHistorialClinico entHistorialClinico)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.CSaveHistorialClinico);
+            logger.Info(IMDSerialize.Serialize(67823458585225, $"Inicia {metodo}"));
+
+            try
+            {
+                BusConsulta busConsulta = new BusConsulta();
+                response = busConsulta.BSaveHistorialClinico(entHistorialClinico);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458586002;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458586002, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }

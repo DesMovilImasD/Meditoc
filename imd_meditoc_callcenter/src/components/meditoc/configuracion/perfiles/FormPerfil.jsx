@@ -81,12 +81,13 @@ const FormPerfil = (props) => {
         const cguController = new CGUController();
         const response = await cguController.funcSavePerfil(entSavePerfil);
 
-        if (response.Code !== 0) {
-            funcAlert(response.Message);
-        } else {
+        if (response.Code === 0) {
             setOpen(false);
             await funcGetPerfiles();
+
             funcAlert(response.Message, "success");
+        } else {
+            funcAlert(response.Message);
         }
 
         funcLoader();
@@ -126,7 +127,7 @@ const FormPerfil = (props) => {
                         helperText={!formPerfilOK.txtNombre ? "Ingrese un nombre para el perfil" : ""}
                     />
                 </Grid>
-                <MeditocModalBotones okMessage="Guardar" okFunc={funcSavePerfil} open={open} setOpen={setOpen} />
+                <MeditocModalBotones okMessage="Guardar" okFunc={funcSavePerfil} setOpen={setOpen} />
             </Grid>
         </MeditocModal>
     );

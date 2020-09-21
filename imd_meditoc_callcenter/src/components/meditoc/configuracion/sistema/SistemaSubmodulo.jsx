@@ -102,12 +102,14 @@ const SistemaSubmodulo = (props) => {
         };
 
         const response = await cguController.funcSaveSubmodulo(entSaveSubmodulo);
-        if (response.Code !== 0) {
-            funcAlert(response.Message);
-        } else {
+
+        if (response.Code === 0) {
             setModalEliminarSubmoduloOpen(false);
+            await funcGetPermisosXPerfil();
+
             funcAlert(response.Message, "success");
-            funcGetPermisosXPerfil();
+        } else {
+            funcAlert(response.Message);
         }
 
         funcLoader();

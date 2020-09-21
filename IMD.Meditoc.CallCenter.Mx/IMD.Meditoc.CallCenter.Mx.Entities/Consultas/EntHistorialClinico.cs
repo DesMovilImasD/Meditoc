@@ -13,11 +13,17 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Consultas
         public string sSintomas { get; set; }
         public string sDiagnostico { get; set; }
         public string sTratamiento { get; set; }
-        public double fPeso { get; set; }
-        public double fAltura { get; set; }
+        public double? fPeso { get; set; }
+        public double? fAltura { get; set; }
         public string sAlergias { get; set; }
         public string sComentarios { get; set; }
         public DateTime? dtFechaCreacion { get; set; }
         public string sFechaCreacion { get; set; }
+        public DateTime? dtFechaConsultaInicio { get; set; }
+        public string sFechaConsultaInicio { get; set; }
+        public DateTime? dtFechaConsultaFin { get; set; }
+        public string sFechaConsultaFin { get; set; }
+        public int iIdUsuarioMod { get; set; }
+        public string sDuracionConsulta { get; set; }
     }
 }

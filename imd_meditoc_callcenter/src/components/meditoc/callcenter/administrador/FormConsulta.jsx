@@ -332,7 +332,7 @@ const Consulta = (props) => {
                         inputVariant="outlined"
                         fullWidth
                         required
-                        format="dd/MM/yyy hh:mm a"
+                        format="dd/MM/yyyy hh:mm a"
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">

@@ -4,6 +4,7 @@ import MeditocModal from "../../../utilidades/MeditocModal";
 import { Grid, TextField, Button } from "@material-ui/core";
 import CGUController from "../../../../controllers/CGUController";
 import { useEffect } from "react";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 
 /*************************************************************
  * Descripcion: Modal del formulario para Agregar/Modificar un submódulo
@@ -24,8 +25,29 @@ const FormSubmodulo = (props) => {
         txtNombre: "",
     });
 
+    const [formSubmoduloOK, setFormSubmoduloOK] = useState({
+        txtNombre: true,
+    });
+
     //Consumir servicio para guardar el submodulo en la base
     const funcSaveSubmodulo = async () => {
+        let formSubmoduloOKValidacion = {
+            txtNombre: true,
+        };
+
+        let formError = false;
+
+        if (formSubmodulo.txtNombre === "") {
+            formSubmoduloOKValidacion.txtNombre = false;
+            formError = true;
+        }
+
+        setFormSubmoduloOK(formSubmoduloOKValidacion);
+
+        if (formError) {
+            return;
+        }
+
         funcLoader(true, "Guardando submódulo...");
 
         const entSaveSubmodulo = {
@@ -38,27 +60,42 @@ const FormSubmodulo = (props) => {
         };
 
         const response = await cguController.funcSaveSubmodulo(entSaveSubmodulo);
-        if (response.Code !== 0) {
-            funcAlert(response.Message);
-        } else {
+
+        if (response.Code === 0) {
             setOpen(false);
+            await funcGetPermisosXPerfil();
             funcAlert(response.Message, "success");
-            funcGetPermisosXPerfil();
+        } else {
+            funcAlert(response.Message);
         }
 
         funcLoader();
     };
 
-    //Funcion para cerrar el formulario
-    const handleClose = () => {
-        setOpen(false);
-    };
-
     //Funcion para capturar los valores de los inputs
     const handleChangeForm = (e) => {
+        const nombreCampo = e.target.name;
+        const valorCampo = e.target.value;
+
+        switch (nombreCampo) {
+            case "txtNombre":
+                if (!formSubmoduloOK.txtNombre) {
+                    if (valorCampo !== "") {
+                        setFormSubmoduloOK({
+                            ...formSubmoduloOK,
+                            [nombreCampo]: true,
+                        });
+                    }
+                }
+                break;
+
+            default:
+                break;
+        }
+
         setFormSubmodulo({
             ...formSubmodulo,
-            [e.target.name]: e.target.value,
+            [nombreCampo]: valorCampo,
         });
     };
 
@@ -119,18 +156,11 @@ const FormSubmodulo = (props) => {
                         autoFocus
                         value={formSubmodulo.txtNombre}
                         onChange={handleChangeForm}
+                        error={!formSubmoduloOK.txtNombre}
+                        helperText={!formSubmoduloOK.txtNombre ? "El nombre del submódulo es requerido" : ""}
                     />
                 </Grid>
-                <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="primary" fullWidth onClick={funcSaveSubmodulo}>
-                        Guardar
-                    </Button>
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="secondary" fullWidth onClick={handleClose}>
-                        Cancelar
-                    </Button>
-                </Grid>
+                <MeditocModalBotones setOpen={setOpen} okMessage="Guardar submódulo" okFunc={funcSaveSubmodulo} />
             </Grid>
         </MeditocModal>
     );

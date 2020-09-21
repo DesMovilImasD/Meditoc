@@ -804,7 +804,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     return response;
                 }
 
-                DateTime? buscadorConsultaProgramadaInicio = entNuevaConsulta?.consulta?.dtFechaProgramadaInicio?.AddMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["iMinToleraciaConsultaInicio"]));
+                DateTime? buscadorConsultaProgramadaInicio = entNuevaConsulta?.consulta?.dtFechaProgramadaInicio?.AddMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["iMinToleraciaConsultaInicio"]) * -1);
                 DateTime? buscadorConsultaProgramadaFin = entNuevaConsulta?.consulta?.dtFechaProgramadaFin?.AddMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["iMinToleraciaConsultaFin"]));
 
                 IMDResponse<List<EntDetalleConsulta>> resGetConsultas = busConsulta.BGetDisponibilidadConsulta((int)entNuevaConsulta.consulta.iIdColaborador, entNuevaConsulta.consulta.iIdConsulta, buscadorConsultaProgramadaInicio, buscadorConsultaProgramadaFin);
@@ -1290,6 +1290,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                         sCorreoEmpresa = dr.ConvertTo<string>("sCorreoEmpresa"),
                         sFolio = dr.ConvertTo<string>("sFolio"),
                         sCorreoPaciente = dr.ConvertTo<string>("sCorreoPaciente"),
+                        sNombrePaciente = dr.ConvertTo<string>("sNombrePaciente"),
+                        sTelefonoPaciente = dr.ConvertTo<string>("sTelefonoPaciente"),
                         sPassword = dr.ConvertTo<string>("sPassword"),
                         sFolioEmpresa = dr.ConvertTo<string>("sFolioEmpresa"),
                         sIcon = dr.ConvertTo<string>("sIcon"),

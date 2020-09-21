@@ -4,6 +4,7 @@ import MeditocModal from "../../../utilidades/MeditocModal";
 import { Grid, TextField, Button } from "@material-ui/core";
 import CGUController from "../../../../controllers/CGUController";
 import { useEffect } from "react";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 
 /*************************************************************
  * Descripcion: Modal del formulario para Agregar/Modificar un módulo
@@ -23,8 +24,29 @@ const FormModulo = (props) => {
         txtNombre: "",
     });
 
+    const [formModuloOK, setFormModuloOK] = useState({
+        txtNombre: true,
+    });
+
     //Consumir servicio para guardar el modulo en la base
     const funcSaveModulo = async () => {
+        let formModuloOKValidacion = {
+            txtNombre: true,
+        };
+
+        let formError = false;
+
+        if (formModulo.txtNombre === "") {
+            formModuloOKValidacion.txtNombre = false;
+            formError = true;
+        }
+
+        setFormModuloOK(formModuloOKValidacion);
+
+        if (formError) {
+            return;
+        }
+
         funcLoader(true, "Guardando módulo...");
 
         const entSaveModulo = {
@@ -36,27 +58,42 @@ const FormModulo = (props) => {
         };
 
         const response = await cguController.funcSaveModulo(entSaveModulo);
-        if (response.Code !== 0) {
-            funcAlert(response.Message);
-        } else {
+
+        if (response.Code === 0) {
             setOpen(false);
+            await funcGetPermisosXPerfil();
             funcAlert(response.Message, "success");
-            funcGetPermisosXPerfil();
+        } else {
+            funcAlert(response.Message);
         }
 
         funcLoader();
     };
 
-    //Funcion para cerrar el formulario
-    const handleClose = () => {
-        setOpen(false);
-    };
-
     //Funcion para capturar los valores de los inputs
     const handleChangeForm = (e) => {
+        const nombreCampo = e.target.name;
+        const valorCampo = e.target.value;
+
+        switch (nombreCampo) {
+            case "txtNombre":
+                if (!formModuloOK.txtNombre) {
+                    if (valorCampo !== "") {
+                        setFormModuloOK({
+                            ...formModuloOK,
+                            [nombreCampo]: true,
+                        });
+                    }
+                }
+                break;
+
+            default:
+                break;
+        }
+
         setFormModulo({
             ...formModulo,
-            [e.target.name]: e.target.value,
+            [nombreCampo]: valorCampo,
         });
     };
 
@@ -102,18 +139,11 @@ const FormModulo = (props) => {
                         autoFocus
                         value={formModulo.txtNombre}
                         onChange={handleChangeForm}
+                        error={!formModuloOK.txtNombre}
+                        helperText={!formModuloOK.txtNombre ? "El nombre del módulo es requerido" : ""}
                     />
                 </Grid>
-                <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="primary" fullWidth onClick={funcSaveModulo}>
-                        Guardar
-                    </Button>
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="secondary" fullWidth onClick={handleClose}>
-                        Cancelar
-                    </Button>
-                </Grid>
+                <MeditocModalBotones setOpen={setOpen} okMessage="Guardar módulo" okFunc={funcSaveModulo} />
             </Grid>
         </MeditocModal>
     );

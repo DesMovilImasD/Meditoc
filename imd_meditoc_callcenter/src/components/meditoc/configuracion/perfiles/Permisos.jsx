@@ -40,20 +40,24 @@ const Permisos = (props) => {
         const cguController = new CGUController();
         const response = await cguController.funcGetPermisosXPeril(entPerfil.iIdPerfil);
 
-        if (response.Code !== 0) {
+        if (response.Code === 0) {
+            setListaPermisosModulo(response.Result);
+        } else {
             funcAlert(response.Message);
-            return;
         }
-        funcLoader();
 
-        setListaPermisosModulo(response.Result);
+        funcLoader();
+    };
+
+    const getData = async () => {
+        if (entPerfil.iIdPerfil !== 0 && open === true) {
+            await funcGetPermisosXPerfil();
+        }
     };
 
     //Actualizar la lista de permisos actuales del perfil seleccionado
     useEffect(() => {
-        if (entPerfil.iIdPerfil !== 0 && open === true) {
-            funcGetPermisosXPerfil();
-        }
+        getData();
 
         // eslint-disable-next-line
     }, [entPerfil]);
