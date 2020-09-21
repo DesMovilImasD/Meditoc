@@ -11,6 +11,7 @@ import { urlBase } from "../../../../configurations/urlConfig";
 import CallCenterController from "../../../../controllers/CallCenterController";
 import FormBuscarFolio from "./FormBuscarFolio";
 import FormCallCenter from "./FormCallCenter";
+import FolioController from "../../../../controllers/FolioController";
 
 const useStyles = makeStyles(() => ({
     button: {
@@ -30,9 +31,11 @@ const CallCenter = (props) => {
 
     const colaboradorController = new ColaboradorController();
     const callcenterController = new CallCenterController();
+    const folioController = new FolioController();
 
-    const [consultaIniciada, setConsultaIniciada] = useState(true);
-    const [entCallCenter, setEntCallCenter] = useState({});
+    const [consultaIniciada, setConsultaIniciada] = useState(false);
+    const [entCallCenter, setEntCallCenter] = useState(null);
+    const [folioEncontrado, setFolioEncontrado] = useState(null);
 
     const [usuarioColaborador, setUsuarioColaborador] = useState(null);
     const [salaIceLink, setSalaIceLink] = useState(null);
@@ -55,7 +58,41 @@ const CallCenter = (props) => {
 
     const [interTemporizador, setInterTemporizador] = useState(0);
 
-    const handleClickIniciarConsulta = () => {
+    const formularioDiagnosticoYTratamientoVacia = {
+        txtCCPeso: "",
+        txtCCAltura: "",
+        txtCCAlergias: "",
+        txtCCSintomas: "",
+        txtCCDiagnostico: "",
+        txtCCTratamiento: "",
+        txtCCComentarios: "",
+    };
+
+    const [formDiagnosticoTratamiento, setFormDiagnosticoTratamiento] = useState(
+        formularioDiagnosticoYTratamientoVacia
+    );
+
+    const handleClickIniciarConsulta = async () => {
+        const folioLocalStorage = localStorage.getItem("sFolio");
+        if (folioLocalStorage !== null && folioLocalStorage !== undefined && folioLocalStorage !== "") {
+            funcLoader(true, "Buscando folio...");
+
+            const response = await folioController.funcGetFolios(null, null, null, null, folioLocalStorage);
+
+            if (response.Code === 0) {
+                if (response.Result.length === 1) {
+                    setFolioEncontrado(response.Result[0]);
+                } else {
+                    setFolioEncontrado(null);
+                    funcAlert("No se encontró el folio o ha expirado");
+                }
+            } else {
+                setFolioEncontrado(null);
+                funcAlert(response.Message);
+            }
+
+            funcLoader();
+        }
         setModalBuscarFolioOpen(true);
     };
 
@@ -111,12 +148,11 @@ const CallCenter = (props) => {
     };
 
     const funcOnlineMod = async (disponible) => {
-        funcLoader(true, "Actualizando estatus...");
-
         if (disponible === true && consultaIniciada === true) {
             funcAlert("No se puede marcar como DISPONIBLE hasta que la consulta haya finalizado", "warning");
             return;
         }
+        funcLoader(true, "Actualizando estatus...");
 
         const entOnlineMod = {
             iIdColaborador: usuarioColaborador.iIdColaborador,
@@ -165,6 +201,8 @@ const CallCenter = (props) => {
     }, [usuarioColaborador]);
 
     const handleClickFinalizarConsulta = async () => {
+        await funcSaveHistorialClinico();
+
         funcLoader(true, "Finalizando consulta...");
 
         const response = await callcenterController.funcFinalizarConsulta(
@@ -179,10 +217,43 @@ const CallCenter = (props) => {
             funcAlert(response.Message, "success");
             funcDetenerTemporizador();
             setEntCallCenter(null);
+            setFolioEncontrado(null);
+            localStorage.removeItem("sFolio");
             document.getElementById("iframeickelink").contentWindow.CallBacks.FinalizarConsulta();
         } else {
             funcAlert(response.Message);
         }
+        funcLoader();
+    };
+
+    const funcSaveHistorialClinico = async () => {
+        const entHistorialClinico = {
+            iIdConsulta: entCallCenter.entConsulta.iIdConsulta,
+            sSintomas: formDiagnosticoTratamiento.txtCCSintomas,
+            sDiagnostico: formDiagnosticoTratamiento.txtCCDiagnostico,
+            sTratamiento: formDiagnosticoTratamiento.txtCCTratamiento,
+            fPeso:
+                formDiagnosticoTratamiento.txtCCPeso === "" ? null : parseFloat(formDiagnosticoTratamiento.txtCCPeso),
+            fAltura:
+                formDiagnosticoTratamiento.txtCCAltura === ""
+                    ? null
+                    : parseFloat(formDiagnosticoTratamiento.txtCCAltura),
+            sAlergias: formDiagnosticoTratamiento.txtCCAlergias,
+            sComentarios: formDiagnosticoTratamiento.txtCCComentarios,
+            iIdUsuarioMod: usuarioSesion.iIdConsulta,
+        };
+
+        funcLoader(true, "Guardando historial clínico...");
+
+        const response = await callcenterController.funcSaveHistorialClinico(entHistorialClinico);
+
+        if (response.Code === 0) {
+            funcAlert(response.Message, "success");
+            setFormDiagnosticoTratamiento(formularioDiagnosticoYTratamientoVacia);
+        } else {
+            funcAlert(response.Message);
+        }
+
         funcLoader();
     };
 
@@ -234,7 +305,16 @@ const CallCenter = (props) => {
                     </Grid>
                     {consultaIniciada === true && entCallCenter !== null ? (
                         <Grid item sm={7}>
-                            <FormCallCenter />
+                            <FormCallCenter
+                                funcLoader={funcLoader}
+                                funcAlert={funcAlert}
+                                usuarioSesion={usuarioSesion}
+                                usuarioColaborador={usuarioColaborador}
+                                entCallCenter={entCallCenter}
+                                setEntCallCenter={setEntCallCenter}
+                                formDiagnosticoTratamiento={formDiagnosticoTratamiento}
+                                setFormDiagnosticoTratamiento={setFormDiagnosticoTratamiento}
+                            />
                         </Grid>
                     ) : null}
                 </Grid>
@@ -251,6 +331,8 @@ const CallCenter = (props) => {
                 funcOnlineMod={funcOnlineMod}
                 funcIniciarTemporizador={funcIniciarTemporizador}
                 funcReiniciarTemporizador={funcReiniciarTemporizador}
+                folioEncontrado={folioEncontrado}
+                setFolioEncontrado={setFolioEncontrado}
             />
         </Fragment>
     );

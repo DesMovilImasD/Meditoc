@@ -68,6 +68,7 @@ const Login = (props) => {
         const cguController = new CGUController();
 
         const response = await cguController.funcGetLogin(MeditocTkn, MeditocKey);
+        funcLoader();
         if (response.Code === 0) {
             sessionStorage.setItem("MeditocTkn", MeditocTkn);
             sessionStorage.setItem("MeditocKey", MeditocKey);
@@ -79,8 +80,6 @@ const Login = (props) => {
             sessionStorage.removeItem("MeditocKey");
             funcAlert(response.Message);
         }
-
-        funcLoader();
     };
 
     const handleSubmitFormLogin = (e) => {

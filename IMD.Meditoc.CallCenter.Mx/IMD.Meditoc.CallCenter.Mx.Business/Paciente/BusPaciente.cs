@@ -113,5 +113,50 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Paciente
             }
             return response;
         }
+
+        public IMDResponse<bool> BUpdPaciente(EntUpdPaciente entUpdPaciente)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.BUpdPaciente);
+            logger.Info(IMDSerialize.Serialize(67823458579009, $"Inicia {metodo}"));
+
+            try
+            {
+                if (entUpdPaciente == null)
+                {
+                    response.Code = 8787367827367;
+                    response.Message = "No se ingresaron datos";
+                    return response;
+                }
+
+                IMDResponse<bool> resUpdPaciente = datPaciente.DUpdPaciente(
+                    entUpdPaciente.iIdPaciente,
+                    entUpdPaciente.sNombre,
+                    entUpdPaciente.sCorreo,
+                    entUpdPaciente.sTelefono,
+                    entUpdPaciente.sTipoSangre,
+                    entUpdPaciente.dtFechaNacimiento,
+                    entUpdPaciente.iIdSexo,
+                    entUpdPaciente.iIdUsuarioMod);
+
+                if (resUpdPaciente.Code != 0)
+                {
+                    return resUpdPaciente;
+                }
+
+                response.Code = 0;
+                response.Message = "Datos del paciente actualizados";
+                response.Result = true;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458579786;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458579786, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
     }
 }

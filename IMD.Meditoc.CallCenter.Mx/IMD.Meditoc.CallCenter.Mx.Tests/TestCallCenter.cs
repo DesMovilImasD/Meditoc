@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using IMD.Admin.Conekta.Entities.Orders;
 using IMD.Admin.Utilities.Entities;
 using IMD.Meditoc.CallCenter.Mx.Business.CallCenter;
@@ -18,11 +19,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Tests
         public void BCallCenter()
         {
             int iIdColaborador = 3;
-            string sFolio = "VM0000080";
+            string sFolio = "VM0000125";
 
             BusCallCenter busCallCenter = new BusCallCenter();
 
-            IMDResponse<EntCallCenter> res = busCallCenter.BCallCenterStartWithFolio(iIdColaborador, sFolio);
+            IMDResponse<EntCallCenter> res = busCallCenter.BCallCenterStartWithFolio(iIdColaborador, sFolio, 3);
 
             string json = JsonConvert.SerializeObject(res, Formatting.Indented);
         }
@@ -78,6 +79,16 @@ namespace IMD.Meditoc.CallCenter.Mx.Tests
             BusFolio busFolio = new BusFolio();
 
             var res = busFolio.BNuevaConsulta(entNuevaConsulta);
+            string json = JsonConvert.SerializeObject(res, Formatting.Indented);
+        }
+
+        [TestMethod]
+        public void TGetHistorial()
+        {
+            BusConsulta busConsulta = new BusConsulta();
+
+            IMDResponse<List<EntHistorialClinico>> res = busConsulta.BGetHistorialMedico(piIdFolio: 125);
+
             string json = JsonConvert.SerializeObject(res, Formatting.Indented);
         }
     }

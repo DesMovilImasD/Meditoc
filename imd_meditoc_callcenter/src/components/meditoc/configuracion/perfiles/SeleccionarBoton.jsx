@@ -4,6 +4,7 @@ import CGUController from "../../../../controllers/CGUController";
 import MeditocModal from "../../../utilidades/MeditocModal";
 import { Grid, List, ListItem, ListItemIcon, ListItemText, Button, Checkbox } from "@material-ui/core";
 import ExtensionIcon from "@material-ui/icons/Extension";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 
 /*************************************************************
  * Descripcion: Representa un modal con la lista de botones disponibles para dar permisos al perfil en el submódulo previamente seleccionado
@@ -38,11 +39,6 @@ const SeleccionarBoton = (props) => {
 
         // eslint-disable-next-line
     }, [lstBotonesPermiso]);
-
-    //Funcion para cerrar este modal
-    const handleClose = () => {
-        setOpen(false);
-    };
 
     //Funcion para capturar los botones que selecciona el usuario
     const handleChangeBotonCheckbox = (botonSeleccionado) => {
@@ -80,13 +76,15 @@ const SeleccionarBoton = (props) => {
         const cguController = new CGUController();
         const response = await cguController.funcSavePermiso(listaPermisosParaGuardar);
 
-        if (response.Code !== 0) {
-            funcAlert(response.Message);
-        } else {
+        if (response.Code === 0) {
             setOpen(false);
-            funcAlert(response.Message, "success");
             setBotonesSeleccionados([]);
-            funcGetPermisosXPerfil();
+
+            await funcGetPermisosXPerfil();
+
+            funcAlert(response.Message, "success");
+        } else {
+            funcAlert(response.Message);
         }
 
         funcLoader();
@@ -121,16 +119,7 @@ const SeleccionarBoton = (props) => {
                         )}
                     </List>
                 </Grid>
-                <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="primary" fullWidth onClick={funcSavePermisosBotones}>
-                        Agregar botones
-                    </Button>
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="secondary" fullWidth onClick={handleClose}>
-                        Cancelar
-                    </Button>
-                </Grid>
+                <MeditocModalBotones okMessage="Agregar botones" okFunc={funcSavePermisosBotones} setOpen={setOpen} />
             </Grid>
         </MeditocModal>
     );

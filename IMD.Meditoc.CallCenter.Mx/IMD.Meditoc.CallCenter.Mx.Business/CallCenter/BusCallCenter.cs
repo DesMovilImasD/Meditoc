@@ -14,6 +14,7 @@ using IMD.Meditoc.CallCenter.Mx.Entities.Producto;
 using log4net;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -146,6 +147,53 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                     }
 
                     entCallCenter.entConsulta = resSaveConsulta.Result;
+                }
+                else if (entCallCenter.entColaborador.iIdTipoDoctor == (int)EnumTipoDoctor.MedicoEspecialista)
+                {
+                    IMDResponse<List<EntDetalleConsulta>> resVerificarConsulta = busConsulta.BGetConsultaMomento(entCallCenter.entPaciente.iIdPaciente, entCallCenter.entColaborador.iIdColaborador);
+                    if (resVerificarConsulta.Code != 0)
+                    {
+                        return resVerificarConsulta.GetResponse<EntCallCenter>();
+                    }
+
+                    if (resVerificarConsulta.Result.Count < 1)
+                    {
+                        response.Code = 747837678345;
+                        response.Message = $"No se encontró una consulta programada para el paciente. La tolerancia para el horario programado de la consulta es de {ConfigurationManager.AppSettings["iMinToleraciaConsultaInicio"]} minutos antes de la hora y {ConfigurationManager.AppSettings["iMinToleraciaConsultaFin"]} después de la hora de consulta";
+                        return response;
+                    }
+
+                    EntDetalleConsulta entDetalleConsulta = resVerificarConsulta.Result.First();
+
+                    if (entDetalleConsulta.iIdEstatusConsulta == (int)EnumEstatusConsulta.Cancelado)
+                    {
+                        response.Code = 8787634765784;
+                        response.Message = $"La consulta fue cancelada";
+                        return response;
+                    }
+
+                    if (entDetalleConsulta.iIdEstatusConsulta == (int)EnumEstatusConsulta.Finalizado)
+                    {
+                        response.Code = 4778736783475;
+                        response.Message = $"La consulta ya ha finalizado";
+                        return response;
+                    }
+
+                    EntConsulta entConsulta = new EntConsulta
+                    {
+                        iIdConsulta = (int)entDetalleConsulta.iIdConsulta,
+                        iIdColaborador = entCallCenter.entColaborador.iIdColaborador,
+                        iIdPaciente = entCallCenter.entPaciente.iIdPaciente,
+                        iIdEstatusConsulta = entDetalleConsulta.iIdEstatusConsulta,
+                    };
+
+                    entCallCenter.entConsulta = entConsulta;
+                }
+                else
+                {
+                    response.Code = 348670987235;
+                    response.Message = $"No se puede determinar el tipo de cuenta del usuario";
+                    return response;
                 }
 
                 IMDResponse<List<EntHistorialClinico>> resGetHistorial = busConsulta.BGetHistorialMedico(piIdFolio: entCallCenter.entFolio.iIdFolio);

@@ -52,12 +52,14 @@ const PermisoBoton = (props) => {
 
         const cguController = new CGUController();
         const response = await cguController.funcSavePermiso(listaPermisosParaGuardar);
-        if (response.Code !== 0) {
-            funcAlert(response.Message);
-        } else {
+
+        if (response.Code === 0) {
             setModalEliminarBotonOpen(false);
+            await funcGetPermisosXPerfil();
+
             funcAlert(response.Message, "success");
-            funcGetPermisosXPerfil();
+        } else {
+            funcAlert(response.Message);
         }
 
         funcLoader();

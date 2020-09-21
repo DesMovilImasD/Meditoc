@@ -15,6 +15,8 @@ class CallCenterController {
     this.apiCrearConsultaFolio = 'Api/CallCenter/Start/Service/WithFolio'
     this.apiIniciarConsulta = 'Api/CallCenter/Iniciar/Consulta'
     this.apiFinalizarConsulta = 'Api/CallCenter/Finalizar/Consulta'
+    this.apiSavePaciente = 'Api/CallCenter/Guardar/Datos/Paciente'
+    this.apiSaveHistorial = 'Api/CallCenter/Guardar/Historial/Clinico'
   }
 
   async funcGetConsulta(
@@ -165,6 +167,41 @@ class CallCenterController {
     } catch (error) {
       response.Code = -1
       response.Message = 'Ocurrió un error al intentar crear la consulta'
+    }
+    return response
+  }
+
+  async funcSavePaciente(entPaciente) {
+    let response = { Code: 0, Message: '', Result: false }
+    try {
+      const apiResponse = await fetch(`${serverMain}${this.apiSavePaciente}`, {
+        method: 'POST',
+        body: JSON.stringify(entPaciente),
+        headers: MeditocHeadersCT,
+      })
+
+      response = await apiResponse.json()
+    } catch (error) {
+      response.Code = -1
+      response.Message = 'Ocurrió un error al intentar guardar el paciente'
+    }
+    return response
+  }
+
+  async funcSaveHistorialClinico(entHistorialClinico) {
+    let response = { Code: 0, Message: '', Result: false }
+    try {
+      const apiResponse = await fetch(`${serverMain}${this.apiSaveHistorial}`, {
+        method: 'POST',
+        body: JSON.stringify(entHistorialClinico),
+        headers: MeditocHeadersCT,
+      })
+
+      response = await apiResponse.json()
+    } catch (error) {
+      response.Code = -1
+      response.Message =
+        'Ocurrió un error al intentar guardar el historial clinico'
     }
     return response
   }

@@ -68,7 +68,7 @@ const FormColaborador = (props) => {
             txtNombreDoctor: entColaborador.sNombresDoctor,
             txtApellidoPaterno: entColaborador.sApellidoPaternoDoctor,
             txtApellidoMaterno: entColaborador.sApellidoMaternoDoctor,
-            txtFechaNacimiento: entColaborador.dtFechaNacimientoDoctor,
+            txtFechaNacimiento: new Date(entColaborador.dtFechaNacimientoDoctor),
             txtTelefono: entColaborador.sTelefonoDoctor,
             txtCorreoElectronico: entColaborador.sCorreoDoctor,
             txtDomicilio: entColaborador.sDomicilioDoctor,

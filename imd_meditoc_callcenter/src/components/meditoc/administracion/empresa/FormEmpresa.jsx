@@ -36,13 +36,13 @@ const FormEmpresa = (props) => {
 
         switch (nombreCampo) {
             case "txtNombreEmpresa":
-                if (valorCampo != "" && !formEmpresaOK.txtNombreEmpresa) {
+                if (valorCampo !== "" && !formEmpresaOK.txtNombreEmpresa) {
                     setFormEmpresaOK({ ...formEmpresaOK, [nombreCampo]: true });
                 }
                 break;
 
             case "txtCorreoEmpresa":
-                if (valorCampo != "" && rxCorreo.test(valorCampo) && !formEmpresaOK.txtCorreoEmpresa) {
+                if (valorCampo !== "" && rxCorreo.test(valorCampo) && !formEmpresaOK.txtCorreoEmpresa) {
                     setFormEmpresaOK({ ...formEmpresaOK, [nombreCampo]: true });
                 }
                 break;

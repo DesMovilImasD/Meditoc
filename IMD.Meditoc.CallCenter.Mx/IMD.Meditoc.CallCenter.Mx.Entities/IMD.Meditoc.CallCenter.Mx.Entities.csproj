@@ -111,6 +111,7 @@
     <Compile Include="Ordenes\EntWebHookData.cs" />
     <Compile Include="Ordenes\EntWebHookLog.cs" />
     <Compile Include="Paciente\EntPaciente.cs" />
+    <Compile Include="Paciente\EntUpdPaciente.cs" />
     <Compile Include="Producto\EntProducto.cs" />
     <Compile Include="Producto\EnumProductos.cs" />
     <Compile Include="Producto\EnumTipoProducto.cs" />

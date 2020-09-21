@@ -75,13 +75,15 @@ const SeleccionarModulos = (props) => {
         const cguController = new CGUController();
         const response = await cguController.funcSavePermiso(listaPermisosParaGuardar);
 
-        if (response.Code !== 0) {
-            funcAlert(response.Message);
-        } else {
+        if (response.Code === 0) {
             setOpen(false);
-            funcAlert(response.Message, "success");
             setModulosSeleccionados([]);
-            funcGetPermisosXPerfil();
+
+            await funcGetPermisosXPerfil();
+
+            funcAlert(response.Message, "success");
+        } else {
+            funcAlert(response.Message);
         }
 
         funcLoader();
@@ -116,12 +118,7 @@ const SeleccionarModulos = (props) => {
                         )}
                     </List>
                 </Grid>
-                <MeditocModalBotones
-                    open={open}
-                    setOpen={setOpen}
-                    okMessage="Dar permisos"
-                    okFunc={funcSavePermisosModulo}
-                />
+                <MeditocModalBotones setOpen={setOpen} okMessage="Dar permisos" okFunc={funcSavePermisosModulo} />
             </Grid>
         </MeditocModal>
     );

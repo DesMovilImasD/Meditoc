@@ -91,12 +91,13 @@ const SistemaModulo = (props) => {
         };
 
         const response = await cguController.funcSaveModulo(entSaveModulo);
-        if (response.Code !== 0) {
-            funcAlert(response.Message);
-        } else {
+
+        if (response.Code === 0) {
             setModalEliminarModuloOpen(false);
+            await funcGetPermisosXPerfil();
             funcAlert(response.Message, "success");
-            funcGetPermisosXPerfil();
+        } else {
+            funcAlert(response.Message);
         }
 
         funcLoader();

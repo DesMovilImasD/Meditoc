@@ -20,6 +20,8 @@ const FormBuscarFolio = (props) => {
         funcOnlineMod,
         funcIniciarTemporizador,
         funcReiniciarTemporizador,
+        folioEncontrado,
+        setFolioEncontrado,
     } = props;
 
     const folioController = new FolioController();
@@ -33,8 +35,6 @@ const FormBuscarFolio = (props) => {
     });
 
     const [formBuscarFolioOK, setFormBuscarFolioOK] = useState(true);
-
-    const [folioEncontrado, setFolioEncontrado] = useState(null);
 
     const handleChangeFormBuscar = (e) => {
         const nombreCampo = e.target.name;
@@ -93,7 +93,7 @@ const FormBuscarFolio = (props) => {
     useEffect(() => {
         if (folioEncontrado !== null) {
             setFormBuscarFolio({
-                ...formBuscarFolio,
+                txtBuscarFolio: folioEncontrado.sFolio,
                 txtBuscarNombrePaciente: folioEncontrado.sNombrePaciente,
                 txtBuscarTelefonoPaciente:
                     folioEncontrado.sTelefonoPaciente === null ? "" : folioEncontrado.sTelefonoPaciente,
