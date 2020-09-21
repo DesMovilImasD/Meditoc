@@ -88,6 +88,7 @@ function App() {
             <Typography variant="caption">CERRAR</Typography>
           </Button>
         )}
+        disableWindowBlurListener
       >
         <MuiPickersUtilsProvider utils={DateFnsUtils} locale={es}>
           <HashRouter>
