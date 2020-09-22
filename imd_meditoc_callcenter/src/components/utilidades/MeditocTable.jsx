@@ -58,10 +58,14 @@ const MeditocTable = (props) => {
         },
     ];
 
+    const tableColumns = [...columns];
+    tableColumns.unshift({ title: "#", field: "iIndex", align: "center" });
+    const tableData = [...data].map((row, index) => ({ ...row, iIndex: index + 1 }));
+
     return (
         <MaterialTable
-            columns={columns}
-            data={data}
+            columns={tableColumns}
+            data={tableData}
             icons={tableIcons}
             title=""
             //actions={actions}
@@ -219,13 +223,13 @@ const MeditocTable = (props) => {
                 searchAutoFocus: true,
                 columnsButton: true,
                 paginationType: "normal",
-                pageSizeOptions: [25, 50, 100],
-                pageSize: 25,
+                pageSizeOptions: [10, 25, 50, 100],
+                pageSize: 10,
                 filtering: false,
                 filterCellStyle: { textAlign: "center" },
                 hideFilterIcons: true,
                 emptyRowsWhenPaging: false,
-                padding: "default",
+                padding: "dense",
                 headerStyle: { color: theme.palette.primary.main, fontSize: 18 },
                 sorting: true,
                 showTextRowsSelected: false,

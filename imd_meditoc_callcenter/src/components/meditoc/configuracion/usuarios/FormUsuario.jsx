@@ -1,7 +1,17 @@
 import PropTypes from "prop-types";
 import React from "react";
 import MeditocModal from "../../../utilidades/MeditocModal";
-import { Grid, TextField, FormControl, InputLabel, Select, MenuItem, Button } from "@material-ui/core";
+import {
+    Grid,
+    TextField,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    Button,
+    Tooltip,
+    IconButton,
+} from "@material-ui/core";
 import { DatePicker } from "@material-ui/pickers";
 import { useState } from "react";
 import CGUController from "../../../../controllers/CGUController";
@@ -9,6 +19,8 @@ import { useEffect } from "react";
 import InputTelefono from "../../../utilidades/InputTelefono";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import { rxCorreo } from "../../../../configurations/regexConfig";
+import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+import VisibilityIcon from "@material-ui/icons/Visibility";
 
 /*************************************************************
  * Descripcion: Formulario para registrar o editar un usuario
@@ -44,7 +56,7 @@ const FormUsuario = (props) => {
         txtPassword: "",
     });
 
-    const [formUsuarioOK, setFormUsuarioOK] = useState({
+    const validacionFormulario = {
         txtNombres: true,
         txtApellidoPaterno: true,
         txtApellidoMaterno: true,
@@ -56,7 +68,9 @@ const FormUsuario = (props) => {
         txtDomicilio: true,
         txtUsuario: true,
         txtPassword: true,
-    });
+    };
+
+    const [formUsuarioOK, setFormUsuarioOK] = useState(validacionFormulario);
 
     //Función para capturar los valores de los inputs
     const handleChangeFormulario = (e) => {
@@ -168,19 +182,7 @@ const FormUsuario = (props) => {
 
     //Consumir servicio para registrar/editar los datos del usuario en le base
     const funcSaveUsuario = async () => {
-        let formUsuarioOKValidacion = {
-            txtNombres: true,
-            txtApellidoPaterno: true,
-            txtApellidoMaterno: true,
-            txtPerfil: true,
-            txtTipoCuenta: true,
-            txtFechaNacimiento: true,
-            txtTelefono: true,
-            txtCorreoElectronico: true,
-            txtDomicilio: true,
-            txtUsuario: true,
-            txtPassword: true,
-        };
+        let formUsuarioOKValidacion = { ...validacionFormulario };
 
         let formError = false;
 
@@ -284,14 +286,17 @@ const FormUsuario = (props) => {
             txtApellidoMaterno: entUsuario.sApellidoMaterno,
             txtPerfil: entUsuario.iIdPerfil === 0 ? "" : entUsuario.iIdPerfil,
             txtTipoCuenta: entUsuario.iIdTipoCuenta,
-            txtFechaNacimiento: new Date(entUsuario.dtFechaNacimiento),
+            txtFechaNacimiento: entUsuario.dtFechaNacimiento === null ? null : new Date(entUsuario.dtFechaNacimiento),
             txtTelefono: entUsuario.sTelefono,
             txtCorreoElectronico: entUsuario.sCorreo,
             txtDomicilio: entUsuario.sDomicilio,
             txtUsuario: entUsuario.sUsuario,
             txtPassword: "",
         });
+        setFormUsuarioOK(validacionFormulario);
     }, [entUsuario]);
+
+    const [verPassword, setVerPassword] = useState(false);
 
     return (
         <MeditocModal
@@ -354,11 +359,13 @@ const FormUsuario = (props) => {
                         error={!formUsuarioOK.txtPerfil}
                         helperText={!formUsuarioOK.txtPerfil ? "Seleccione un perfil para el usuario" : null}
                     >
-                        {listaPerfiles.map((perfil) => (
-                            <MenuItem key={perfil.iIdPerfil} value={perfil.iIdPerfil}>
-                                {perfil.sNombre}
-                            </MenuItem>
-                        ))}
+                        {listaPerfiles
+                            .filter((x) => x.iIdPerfil !== 3 && x.iIdPerfil !== 4 && x.iIdPerfil !== 5)
+                            .map((perfil) => (
+                                <MenuItem key={perfil.iIdPerfil} value={perfil.iIdPerfil}>
+                                    {perfil.sNombre}
+                                </MenuItem>
+                            ))}
                     </TextField>
                 </Grid>
                 {/* <Grid item sm={6} xs={12}>
@@ -459,7 +466,7 @@ const FormUsuario = (props) => {
                     <TextField
                         variant="outlined"
                         label="Contraseña:"
-                        type="password"
+                        type={verPassword ? "text" : "password"}
                         autoComplete="new-password"
                         fullWidth
                         name="txtPassword"
@@ -468,6 +475,22 @@ const FormUsuario = (props) => {
                         required
                         error={!formUsuarioOK.txtPassword}
                         helperText={!formUsuarioOK.txtPassword ? "La contrasañe de usuario es requerido" : null}
+                        InputProps={{
+                            endAdornment: (
+                                <Tooltip
+                                    title={verPassword ? "Ocultar contraseña" : "Ver contraseña"}
+                                    arrow
+                                    placement="top"
+                                >
+                                    <IconButton
+                                        onMouseDown={() => setVerPassword(true)}
+                                        onMouseUp={() => setVerPassword(false)}
+                                    >
+                                        {verPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                    </IconButton>
+                                </Tooltip>
+                            ),
+                        }}
                     />
                 </Grid>
                 <MeditocModalBotones open={open} setOpen={setOpen} okMessage="Guardar" okFunc={funcSaveUsuario} />

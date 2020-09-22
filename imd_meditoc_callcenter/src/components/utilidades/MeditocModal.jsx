@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal, IconButton, Fade, Backdrop } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
+import Draggable from "react-draggable";
 
 /*************************************************************
  * Descripcion: Contiene la estructura y diseño para los modales del portal Meditoc
@@ -8,6 +9,15 @@ import CloseIcon from "@material-ui/icons/Close";
  * Fecha: 26/08/2020
  * Invocado desde: EliminarBoton, EliminarModulo, EliminarSubmodulo, FormBoton, FormModulo, FormSubmodulo
  *************************************************************/
+
+// function PaperComponent(props) {
+//     return (
+//         <Draggable handle="#draggable-dialog-title" cancel={'[class*="MuiDialogContent-root"]'}>
+//             <Paper {...props} />
+//         </Draggable>
+//     );
+// }
+
 const MeditocModal = (props) => {
     const { size, title, children, open, setOpen } = props;
 
@@ -20,6 +30,7 @@ const MeditocModal = (props) => {
             open={open}
             onClose={handleCloseModel}
             closeAfterTransition
+            disableBackdropClick
             BackdropComponent={Backdrop}
             BackdropProps={{
                 timeout: 300,

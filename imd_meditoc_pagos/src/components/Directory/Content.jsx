@@ -42,12 +42,12 @@ const Content = (props) => {
     const [listaColaboradores, setListaColaboradores] = useState([]);
     const [listaEspecialidades, setListaEspecialidades] = useState([]);
 
-    const funcGetDirectorio = async () => {
+    const funcGetDirectorio = async (especialidad = null, buscador = "", page = null) => {
         funcLoader(true, "Consultando en directorio médico...");
 
         try {
             const apiResponse = await fetch(
-                `${serverMain}${apiGetDirectorio}?piIdEspecialidad=${especialidadSeleccionada}&psBuscador=${buscadorIngresada}&piPage=${paginaSeleccionada}&piPageSize=${pageSize}`
+                `${serverMain}${apiGetDirectorio}?piIdEspecialidad=${especialidad}&psBuscador=${buscador}&piPage=${page}&piPageSize=${pageSize}`
             );
 
             const response = await apiResponse.json();
@@ -82,11 +82,14 @@ const Content = (props) => {
         funcLoader();
     };
 
-    const handleChangeEspecialidad = (e) => {
+    const handleChangeEspecialidad = async (e) => {
+        await funcGetDirectorio(e.target.value, buscadorIngresada, 1);
         setEspecialidadSeleccionada(e.target.value);
+        setPaginaSeleccionada(1);
     };
 
-    const handleChangePage = (e, page) => {
+    const handleChangePage = async (e, page) => {
+        await funcGetDirectorio(especialidadSeleccionada, buscadorIngresada, page);
         setPaginaSeleccionada(page);
     };
 
@@ -94,27 +97,27 @@ const Content = (props) => {
         setBuscadorIngresada(e.target.value);
     };
 
-    const handleClickBuscar = () => {
+    const handleClickBuscar = async () => {
+        await funcGetDirectorio(null, buscadorIngresada, 1);
         setUltimaBusqueda(buscadorIngresada);
+        setPaginaSeleccionada(1);
     };
 
-    const handleClickLimpiar = () => {
+    const handleClickLimpiar = async () => {
+        await funcGetDirectorio(especialidadSeleccionada, "", 1);
         setBuscadorIngresada("");
         setUltimaBusqueda("");
+        setPaginaSeleccionada(1);
     };
 
     const funcGetData = async () => {
-        await funcGetDirectorio();
+        await funcGetDirectorio(null, "", 1);
         await funcGetEspecialidades();
     };
 
     useEffect(() => {
         funcGetData();
     }, []);
-
-    useEffect(() => {
-        funcGetDirectorio();
-    }, [especialidadSeleccionada, paginaSeleccionada, ultimaBusqueda]);
 
     return (
         <div className="directory-content">
@@ -158,16 +161,18 @@ const Content = (props) => {
                             <MenuItem value="">
                                 <em>Todas las especialidades</em>
                             </MenuItem>
-                            {listaEspecialidades.map((especialidad) =>
-                                especialidad.iIdEspecialidad === 1 ? null : (
-                                    <MenuItem
-                                        key={especialidad.iIdEspecialidad}
-                                        value={especialidad.iIdEspecialidad.toString()}
-                                    >
-                                        {especialidad.sNombre}
-                                    </MenuItem>
-                                )
-                            )}
+                            {listaEspecialidades
+                                .sort((a, b) => (a.sNombre > b.sNombre ? 1 : -1))
+                                .map((especialidad) =>
+                                    especialidad.iIdEspecialidad === 1 ? null : (
+                                        <MenuItem
+                                            key={especialidad.iIdEspecialidad}
+                                            value={especialidad.iIdEspecialidad.toString()}
+                                        >
+                                            {especialidad.sNombre}
+                                        </MenuItem>
+                                    )
+                                )}
                         </Select>
                     </FormControl>
                 </Grid>

@@ -115,6 +115,16 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
 
                 entCallCenter.entFolio = resGetFolio.Result.First();
 
+                if(entCallCenter.entFolio.dtFechaVencimiento != null)
+                {
+                    if(DateTime.Now > entCallCenter.entFolio.dtFechaVencimiento)
+                    {
+                        response.Code = 8793487583457;
+                        response.Message = $"El folio expiró el {entCallCenter.entFolio.dtFechaVencimiento?.ToString("dd/MM/yyyy")} a las {entCallCenter.entFolio.dtFechaVencimiento?.ToString("hh:mm tt")}";
+                        return response;
+                    }
+                }
+
                 IMDResponse<List<EntPaciente>> resGetPaciente = busPaciente.BGetPacientes(piIdFolio: entCallCenter.entFolio.iIdFolio);
                 if (resGetPaciente.Code != 0)
                 {
@@ -159,7 +169,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                     if (resVerificarConsulta.Result.Count < 1)
                     {
                         response.Code = 747837678345;
-                        response.Message = $"No se encontró una consulta programada para el paciente. La tolerancia para el horario programado de la consulta es de {ConfigurationManager.AppSettings["iMinToleraciaConsultaInicio"]} minutos antes de la hora y {ConfigurationManager.AppSettings["iMinToleraciaConsultaFin"]} después de la hora de consulta";
+                        response.Message = $"No se encontró una consulta programada para el paciente. La tolerancia para el horario programado de la consulta es de {ConfigurationManager.AppSettings["iMinToleraciaConsultaInicio"]} minutos antes de la hora y {ConfigurationManager.AppSettings["iMinToleraciaConsultaFin"]} minutos después de la hora de consulta";
                         return response;
                     }
 

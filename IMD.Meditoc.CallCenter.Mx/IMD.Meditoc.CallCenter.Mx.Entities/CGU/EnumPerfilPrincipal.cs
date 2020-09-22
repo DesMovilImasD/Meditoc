@@ -11,6 +11,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.CGU
         Superadministrador = 1,
         Administrador,
         DoctorCallCenter,
-        DoctorEspecialista
+        DoctorEspecialista,
+        AdministradorEspecialista
     }
 }

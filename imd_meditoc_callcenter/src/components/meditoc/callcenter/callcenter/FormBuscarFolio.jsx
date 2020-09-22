@@ -99,6 +99,13 @@ const FormBuscarFolio = (props) => {
                     folioEncontrado.sTelefonoPaciente === null ? "" : folioEncontrado.sTelefonoPaciente,
                 txtBuscarCorreoPaciente: folioEncontrado.sCorreoPaciente,
             });
+        } else {
+            setFormBuscarFolio({
+                txtBuscarFolio: "",
+                txtBuscarNombrePaciente: "",
+                txtBuscarTelefonoPaciente: "",
+                txtBuscarCorreoPaciente: "",
+            });
         }
     }, [folioEncontrado]);
 

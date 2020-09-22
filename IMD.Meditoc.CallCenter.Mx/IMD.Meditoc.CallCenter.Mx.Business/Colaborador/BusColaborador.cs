@@ -137,6 +137,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                     }
 
                     entUsuario.iIdTipoCuenta = (int)EnumTipoCuenta.Administrativa;
+                    entUsuario.iIdPerfil = (int)EnumPerfilPrincipal.AdministradorEspecialista;
                     entUsuario.sUsuario = entCreateColaborador.sUsuarioAdministrativo;
                     entUsuario.sPassword = entCreateColaborador.sPasswordAdministrativo;
 
@@ -508,7 +509,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                     }
                 }
 
-                int iCount = Convert.ToInt32(resGetDirectorio.Result.Rows[0]["iCount"].ToString());
+                int iCount = 0;
+                if (resGetDirectorio.Result.Rows.Count > 0)
+                {
+                    iCount = Convert.ToInt32(resGetDirectorio.Result.Rows[0]["iCount"].ToString());
+                }
 
                 entDirectorio.iTotalPaginas = (int)Math.Ceiling(iCount / (double)piPageSize);
 

@@ -37,7 +37,7 @@ const FormCupon = (props) => {
         txtDescripcion: "",
     });
 
-    const [formCuponOK, setFormCuponOK] = useState({
+    const validacionFormulario = {
         txtCodigoCupon: true,
         txtLongitudCupon: true,
         txtTipoCupon: true,
@@ -46,7 +46,9 @@ const FormCupon = (props) => {
         txtTotalCupones: true,
         txtDiasActivos: true,
         txtDescripcion: true,
-    });
+    };
+
+    const [formCuponOK, setFormCuponOK] = useState(validacionFormulario);
 
     const handleChangeFormCupon = (e) => {
         const nombreCampo = e.target.name;
@@ -137,16 +139,7 @@ const FormCupon = (props) => {
     };
 
     const handleClickGuardarCupon = async () => {
-        let formCuponOKValidacion = {
-            txtCodigoCupon: true,
-            txtLongitudCupon: true,
-            txtTipoCupon: true,
-            txtMontoDescuento: true,
-            txtPorcentajeDescuento: true,
-            txtTotalCupones: true,
-            txtDiasActivos: true,
-            txtDescripcion: true,
-        };
+        let formCuponOKValidacion = { ...validacionFormulario };
 
         let bFormError = false;
 

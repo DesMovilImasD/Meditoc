@@ -39,6 +39,7 @@ const Cupones = (props) => {
     const [modalEliminarCuponOpen, setModalEliminarCuponOpen] = useState(false);
 
     const handleClickCrearCupon = () => {
+        //setCuponSeleccionado(cuponEntidadVacia);
         setModalFormCuponOpen(true);
     };
 
@@ -75,6 +76,7 @@ const Cupones = (props) => {
         if (response.Code === 0) {
             setModalEliminarCuponOpen(false);
             await funcObtenerCupones();
+            setCuponSeleccionado(cuponEntidadVacia);
             funcAlert(response.Message, "success");
         } else {
             funcAlert(response.Message);

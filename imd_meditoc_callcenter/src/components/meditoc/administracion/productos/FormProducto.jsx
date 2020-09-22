@@ -34,7 +34,7 @@ const FormProducto = (props) => {
         txtPrefijoFolio: "",
     });
 
-    const [formProductoOK, setFormProductoOK] = useState({
+    const validacionFormulario = {
         txtNombreProducto: true,
         txtNombreCorto: true,
         txtDescripcion: true,
@@ -42,7 +42,9 @@ const FormProducto = (props) => {
         txtMesesVigencia: true,
         txtIcono: true,
         txtPrefijoFolio: true,
-    });
+    };
+
+    const [formProductoOK, setFormProductoOK] = useState(validacionFormulario);
 
     useEffect(() => {
         setFormProducto({
@@ -56,6 +58,7 @@ const FormProducto = (props) => {
             txtIcono: entProducto.sIcon,
             txtPrefijoFolio: entProducto.sPrefijoFolio,
         });
+        setFormProductoOK(validacionFormulario);
     }, [entProducto]);
 
     const handleChangeFormProducto = (e) => {
@@ -134,15 +137,7 @@ const FormProducto = (props) => {
     };
 
     const handleClickGuardarProducto = async () => {
-        let formProductoOKValidacion = {
-            txtNombreProducto: true,
-            txtNombreCorto: true,
-            txtDescripcion: true,
-            txtCosto: true,
-            txtMesesVigencia: true,
-            txtIcono: true,
-            txtPrefijoFolio: true,
-        };
+        let formProductoOKValidacion = { ...validacionFormulario };
         let bFormError = false;
 
         if (formProducto.txtNombreProducto === "") {

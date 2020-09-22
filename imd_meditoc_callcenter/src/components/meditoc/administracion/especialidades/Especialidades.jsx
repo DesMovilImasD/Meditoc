@@ -84,6 +84,7 @@ const Especialidades = (props) => {
 
         if (response.Code === 0) {
             setModalEliminarEspecialidadOpen(false);
+            setEspecialidadSeleccionada(especialidadEntidadVacia);
             await funcGetEspecialidades();
             funcAlert(response.Message, "success");
         } else {
