@@ -58,14 +58,14 @@ const MeditocTable = (props) => {
         },
     ];
 
-    const tableColumns = [...columns];
-    tableColumns.unshift({ title: "#", field: "iIndex", align: "center" });
-    const tableData = [...data].map((row, index) => ({ ...row, iIndex: index + 1 }));
+    // const tableColumns = [...columns];
+    // tableColumns.unshift({ title: "#", field: "iIndex", align: "center" });
+    // const tableData = [...data].map((row, index) => ({ ...row, iIndex: index + 1 }));
 
     return (
         <MaterialTable
-            columns={tableColumns}
-            data={tableData}
+            columns={columns}
+            data={data}
             icons={tableIcons}
             title=""
             //actions={actions}

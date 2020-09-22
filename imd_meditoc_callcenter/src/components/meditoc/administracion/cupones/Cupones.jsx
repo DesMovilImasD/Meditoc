@@ -30,16 +30,34 @@ const Cupones = (props) => {
 
     const cuponEntidadVacia = {
         fiIdCupon: 0,
+        fiIdCuponCategoria: 1,
+        fsDescripcion: "",
+        fsCodigo: "",
+        fiLongitudCodigo: 0,
+        fnMontoDescuento: 0,
+        fnPorcentajeDescuento: 0,
+        fiTotalLanzamiento: 0,
+        fiDiasActivo: 0,
     };
 
     const [listaCupones, setListaCupones] = useState([]);
     const [cuponSeleccionado, setCuponSeleccionado] = useState(cuponEntidadVacia);
+    const [cuponParaModalForm, setCuponParaModalForm] = useState(cuponEntidadVacia);
 
     const [modalFormCuponOpen, setModalFormCuponOpen] = useState(false);
     const [modalEliminarCuponOpen, setModalEliminarCuponOpen] = useState(false);
 
     const handleClickCrearCupon = () => {
-        //setCuponSeleccionado(cuponEntidadVacia);
+        setCuponParaModalForm(cuponEntidadVacia);
+        setModalFormCuponOpen(true);
+    };
+
+    const handleEditarCupon = () => {
+        if (cuponSeleccionado.fiIdCupon === 0) {
+            funcAlert("Seleccione un cupón para continuar");
+            return;
+        }
+        setCuponParaModalForm(cuponSeleccionado);
         setModalFormCuponOpen(true);
     };
 
@@ -98,7 +116,7 @@ const Cupones = (props) => {
                     </IconButton>
                 </Tooltip>
                 {/* <Tooltip title="Editar cupón" arrow>
-                    <IconButton>
+                    <IconButton onClick={handleEditarCupon}>
                         <EditIcon className="color-0" />
                     </IconButton>
                 </Tooltip> */}
@@ -118,6 +136,7 @@ const Cupones = (props) => {
                 />
             </MeditocBody>
             <FormCupon
+                entCupon={cuponParaModalForm}
                 open={modalFormCuponOpen}
                 setOpen={setModalFormCuponOpen}
                 funcObtenerCupones={funcObtenerCupones}

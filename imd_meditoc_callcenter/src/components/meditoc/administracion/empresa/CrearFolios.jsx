@@ -20,10 +20,10 @@ const CrearFolios = (props) => {
     } = props;
 
     const columns = [
-        { title: "ID", field: "iIdProducto", align: "center", editable: "never", hidden: true },
-        { title: "Nombre", field: "sNombre", align: "center", editable: "never" },
-        { title: "Precio", field: "sCosto", align: "center", editable: "never" },
-        { title: "Cantidad", field: "iCantidad", align: "center" },
+        { title: "ID", field: "iIdProducto", align: "left", editable: "never", hidden: true },
+        { title: "Nombre", field: "sNombre", align: "left", editable: "never" },
+        { title: "Precio", field: "sCosto", align: "left", editable: "never" },
+        { title: "Cantidad", field: "iCantidad", align: "left" },
     ];
 
     const [listaProductosEmpresa, setListaProductosEmpresa] = useState(

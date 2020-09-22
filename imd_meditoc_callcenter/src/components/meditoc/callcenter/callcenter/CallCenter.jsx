@@ -262,11 +262,21 @@ const CallCenter = (props) => {
             <MeditocHeader1
                 title={
                     consultaIniciada === false && entCallCenter === null ? (
-                        <Button variant="contained" className={classes.button} onClick={handleClickIniciarConsulta}>
+                        <Button
+                            variant="contained"
+                            className={classes.button}
+                            onClick={handleClickIniciarConsulta}
+                            disabled={usuarioColaborador === null}
+                        >
                             Iniciar consulta
                         </Button>
                     ) : (
-                        <Button variant="contained" className={classes.button} onClick={handleClickFinalizarConsulta}>
+                        <Button
+                            variant="contained"
+                            className={classes.button}
+                            onClick={handleClickFinalizarConsulta}
+                            disabled={usuarioColaborador === null}
+                        >
                             Finalizar consulta
                         </Button>
                     )
@@ -289,6 +299,7 @@ const CallCenter = (props) => {
                     color="inherit"
                     style={{ marginRight: 40 }}
                     onClick={() => funcOnlineMod(!colaboradorDisponible)}
+                    disabled={usuarioColaborador === null}
                 >
                     Estatus: {colaboradorDisponible ? "Disponible" : "Ocupado"}
                 </Button>
