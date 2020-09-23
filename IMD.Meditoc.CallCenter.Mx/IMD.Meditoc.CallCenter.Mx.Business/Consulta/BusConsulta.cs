@@ -210,6 +210,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
                         sOrdenConekta = dr.ConvertTo<string>("sOrdenConekta"),
                         sOrigen = dr.ConvertTo<string>("sOrigen"),
                         sSexoPaciente = dr.ConvertTo<string>("sSexoPaciente"),
+                        sTelefonoPaciente = dr.ConvertTo<string>("sTelefonoPaciente"),
                         sTipoDoctor = dr.ConvertTo<string>("sTipoDoctor"),
                         sTipoProducto = dr.ConvertTo<string>("sTipoProducto"),
                         sTipoSangrePaciente = dr.ConvertTo<string>("sTipoSangrePaciente"),

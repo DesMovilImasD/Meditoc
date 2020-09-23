@@ -21,6 +21,7 @@ import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import { rxCorreo } from "../../../../configurations/regexConfig";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import { EnumPerfilesPrincipales } from "../../../../configurations/enumConfig";
 
 /*************************************************************
  * Descripcion: Formulario para registrar o editar un usuario
@@ -360,7 +361,12 @@ const FormUsuario = (props) => {
                         helperText={!formUsuarioOK.txtPerfil ? "Seleccione un perfil para el usuario" : null}
                     >
                         {listaPerfiles
-                            .filter((x) => x.iIdPerfil !== 3 && x.iIdPerfil !== 4 && x.iIdPerfil !== 5)
+                            .filter(
+                                (x) =>
+                                    x.iIdPerfil !== EnumPerfilesPrincipales.DoctorCallCenter &&
+                                    x.iIdPerfil !== EnumPerfilesPrincipales.DoctorEspecialista &&
+                                    x.iIdPerfil !== EnumPerfilesPrincipales.AdministradorEspecialiesta
+                            )
                             .map((perfil) => (
                                 <MenuItem key={perfil.iIdPerfil} value={perfil.iIdPerfil}>
                                     {perfil.sNombre}
@@ -387,6 +393,7 @@ const FormUsuario = (props) => {
                 <Grid item sm={6} xs={12}>
                     <DatePicker
                         disableFuture
+                        variant="inline"
                         label="Fecha de nacimiento"
                         inputVariant="outlined"
                         openTo="year"

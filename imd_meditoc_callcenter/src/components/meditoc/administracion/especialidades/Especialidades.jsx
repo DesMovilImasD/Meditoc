@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import MeditocTable from "../../../utilidades/MeditocTable";
 import FormEspecialidad from "./FormEspecialidad";
 import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
+import { EnumEspecialidadPrincipal } from "../../../../configurations/enumConfig";
 
 const Especialidades = (props) => {
     const { usuarioSesion, funcLoader, funcAlert } = props;
@@ -49,7 +50,7 @@ const Especialidades = (props) => {
             funcAlert("Seleccione una especialidad de la tabla para continuar");
             return;
         }
-        if (especialidadSeleccionada.iIdEspecialidad === 1) {
+        if (especialidadSeleccionada.iIdEspecialidad === EnumEspecialidadPrincipal.MedicinaGeneral) {
             funcAlert("Esta especialidad no se puede eliminar", "info");
             return;
         }

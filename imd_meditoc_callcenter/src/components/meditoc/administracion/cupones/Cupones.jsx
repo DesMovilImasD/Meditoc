@@ -11,6 +11,7 @@ import FormCupon from "./FormCupon";
 import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 import PromocionesController from "../../../../controllers/PromocionesController";
 import { useEffect } from "react";
+import { EnumCuponCategoria } from "../../../../configurations/enumConfig";
 
 const Cupones = (props) => {
     const { usuarioSesion, funcLoader, funcAlert } = props;
@@ -30,7 +31,7 @@ const Cupones = (props) => {
 
     const cuponEntidadVacia = {
         fiIdCupon: 0,
-        fiIdCuponCategoria: 1,
+        fiIdCuponCategoria: EnumCuponCategoria.DescuentoMonto,
         fsDescripcion: "",
         fsCodigo: "",
         fiLongitudCodigo: 0,

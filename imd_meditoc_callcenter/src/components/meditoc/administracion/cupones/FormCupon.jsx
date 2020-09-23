@@ -14,6 +14,7 @@ import {
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import PromocionesController from "../../../../controllers/PromocionesController";
 import { useEffect } from "react";
+import { EnumCuponCategoria } from "../../../../configurations/enumConfig";
 
 const FormCupon = (props) => {
     const { entCupon, open, setOpen, funcObtenerCupones, usuarioSesion, funcLoader, funcAlert } = props;
@@ -30,7 +31,7 @@ const FormCupon = (props) => {
     const [formCupon, setFormCupon] = useState({
         txtCodigoCupon: "",
         txtLongitudCupon: "",
-        txtTipoCupon: "1",
+        txtTipoCupon: EnumCuponCategoria.DescuentoMonto.toString(),
         txtMontoDescuento: "",
         txtPorcentajeDescuento: "",
         txtTotalCupones: "",
@@ -175,7 +176,7 @@ const FormCupon = (props) => {
             bFormError = true;
         }
 
-        if (formCupon.txtTipoCupon === "1") {
+        if (formCupon.txtTipoCupon === EnumCuponCategoria.DescuentoMonto.toString()) {
             if (formCupon.txtMontoDescuento === "") {
                 formCuponOKValidacion.txtMontoDescuento = false;
                 bFormError = true;

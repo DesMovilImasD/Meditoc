@@ -24,7 +24,7 @@ const urlSystem = {
   },
   callcenter: {
     consultas: '/consultas',
-    administrarConsultas: '/administrar_consultas',
+    administrarConsultas: '/administrar',
   },
   reportes: {
     ordenes: '/ordenes',

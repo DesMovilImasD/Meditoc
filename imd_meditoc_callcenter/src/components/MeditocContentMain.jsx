@@ -24,7 +24,7 @@ import ReportesDoctores from "./meditoc/reportes/ReportesDoctores";
  * Invocado desde: App
  *************************************************************/
 const ContentMain = (props) => {
-    const { usuarioSesion, setUsuarioSesion, setUsuarioActivo, funcLoader, funcAlert } = props;
+    const { usuarioSesion, usuarioPermisos, setUsuarioSesion, setUsuarioActivo, funcLoader, funcAlert } = props;
     const [drawerOpen, setDrawerOpen] = useState(false);
 
     //Desplegar/Ocultar menu lateral izquerdo
@@ -46,7 +46,7 @@ const ContentMain = (props) => {
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
             />
-            <MeditocDrawerLeft drawerOpen={drawerOpen} toggleDrawer={toggleDrawer} />
+            <MeditocDrawerLeft drawerOpen={drawerOpen} usuarioPermisos={usuarioPermisos} toggleDrawer={toggleDrawer} />
             <div>
                 <Switch>
                     <Route exact path="/">

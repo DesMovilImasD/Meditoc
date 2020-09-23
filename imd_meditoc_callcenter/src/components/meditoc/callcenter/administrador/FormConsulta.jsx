@@ -44,8 +44,8 @@ const Consulta = (props) => {
         setFormConsulta({
             txtFolio: entConsulta.sFolio === undefined ? "" : entConsulta.sFolio,
             txtNombrePaciente: entConsulta.sNombrePaciente === undefined ? "" : entConsulta.sNombrePaciente,
-            txtTelefonoPaciente: "",
-            txtCorreoPaciente: "",
+            txtTelefonoPaciente: entConsulta.sTelefonoPaciente === undefined ? "" : entConsulta.sTelefonoPaciente,
+            txtCorreoPaciente: entConsulta.sCorreoPaciente === undefined ? "" : entConsulta.sCorreoPaciente,
             txtFechaProgramadaInicio:
                 entConsulta.dtFechaProgramadaInicio === undefined
                     ? null
@@ -108,13 +108,18 @@ const Consulta = (props) => {
                 setFormConsultaOK({
                     ...formConsultaOK,
                     txtFechaProgramadaInicio: true,
+                    txtFechaProgramadaFin: true,
                 });
             }
         }
 
+        let date2 = new Date(date.getTime());
+        date2.setHours(date2.getHours() + 1);
+
         setFormConsulta({
             ...formConsulta,
             txtFechaProgramadaInicio: date,
+            txtFechaProgramadaFin: date2,
         });
     };
 

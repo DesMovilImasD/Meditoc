@@ -11,6 +11,7 @@ class ColaboradorController {
     this.apiSaveColaboradorFoto = 'Api/Colaborador/Save/Foto'
     this.apiGetColaboradorFoto = 'Api/Colaborador/Get/Foto'
     this.apiDeleteColaboradorFoto = 'Api/Colaborador/Eliminar/Foto'
+    this.apiGetDirectorio = 'Api/Colaborador/Get/Directorio/Especialistas'
   }
 
   async funcSaveColaborador(entColaborador) {
@@ -113,6 +114,30 @@ class ColaboradorController {
       response.Code = -1
       response.Message =
         'Ocurrió un error al intentar eliminar la foto del colaborador'
+    }
+    return response
+  }
+
+  async funcGetDirectorio(
+    piIdEspecialidad = null,
+    psBuscador = '',
+    piPage = null,
+    piPageSize = 0,
+  ) {
+    let response = { Code: 0, Message: '', Result: [] }
+    try {
+      const apiResponse = await fetch(
+        `${serverMain}${this.apiGetDirectorio}?piIdEspecialidad=${piIdEspecialidad}&psBuscador=${psBuscador}&piPage=${piPage}&piPageSize=${piPageSize}`,
+        {
+          headers: MeditocHeaders,
+        },
+      )
+
+      response = await apiResponse.json()
+    } catch (error) {
+      response.Code = -1
+      response.Message =
+        'Ocurrió un error al intentar obtener el directorio médico'
     }
     return response
   }

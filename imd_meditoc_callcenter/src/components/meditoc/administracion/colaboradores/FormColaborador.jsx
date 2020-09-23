@@ -17,6 +17,7 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 
 import { useEffect } from "react";
 import { FormatListBulleted } from "@material-ui/icons";
+import { EnumEspecialidadPrincipal, EnumTipoDoctor } from "../../../../configurations/enumConfig";
 
 const FormColaborador = (props) => {
     const {
@@ -29,9 +30,6 @@ const FormColaborador = (props) => {
         funcLoader,
         funcAlert,
     } = props;
-
-    const iIdTipoDoctorCallCenter = 1;
-    const iIdTipoDoctorEspecialista = 2;
 
     const [formColaborador, setFormColaborador] = useState({
         txtNombreDirectorio: "",
@@ -170,7 +168,10 @@ const FormColaborador = (props) => {
                 break;
 
             case "txtEspecialidad":
-                if (!formColaboradorOK.txtEspecialidad && entColaborador.iIdTipoDoctor === iIdTipoDoctorEspecialista) {
+                if (
+                    !formColaboradorOK.txtEspecialidad &&
+                    entColaborador.iIdTipoDoctor === EnumTipoDoctor.Especialista
+                ) {
                     if (campoValor !== "" && campoValor !== 0) {
                         setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
                     }
@@ -253,7 +254,7 @@ const FormColaborador = (props) => {
             case "txtUsuarioAdministrativo":
                 if (
                     !formColaboradorOK.txtUsuarioAdministrativo &&
-                    entColaborador.iIdTipoDoctor === iIdTipoDoctorEspecialista
+                    entColaborador.iIdTipoDoctor === EnumTipoDoctor.Especialista
                 ) {
                     if (campoValor !== "") {
                         setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
@@ -264,7 +265,7 @@ const FormColaborador = (props) => {
             case "txtPasswordAdministrativo":
                 if (
                     !formColaboradorOK.txtPasswordAdministrativo &&
-                    entColaborador.iIdTipoDoctor === iIdTipoDoctorEspecialista
+                    entColaborador.iIdTipoDoctor === EnumTipoDoctor.Especialista
                 ) {
                     if (campoValor !== "") {
                         setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
@@ -330,7 +331,7 @@ const FormColaborador = (props) => {
 
         if (
             (formColaborador.txtEspecialidad === "" || formColaborador.txtEspecialidad === 0) &&
-            entColaborador.iIdTipoDoctor === iIdTipoDoctorEspecialista
+            entColaborador.iIdTipoDoctor === EnumTipoDoctor.Especialista
         ) {
             formColaboradorOKValidacion.txtEspecialidad = false;
             errorDatosDoctor = true;
@@ -385,7 +386,7 @@ const FormColaborador = (props) => {
             }
         }
 
-        if (entColaborador.iIdTipoDoctor === iIdTipoDoctorEspecialista) {
+        if (entColaborador.iIdTipoDoctor === EnumTipoDoctor.Especialista) {
             if (formColaborador.txtUsuarioAdministrativo === "") {
                 formColaboradorOKValidacion.txtUsuarioAdministrativo = false;
                 errorUsuarioPassword = true;
@@ -421,7 +422,7 @@ const FormColaborador = (props) => {
             iIdColaborador: entColaborador.iIdColaborador,
             iIdTipoDoctor: entColaborador.iIdTipoDoctor,
             iIdEspecialidad:
-                entColaborador.iIdTipoDoctor === iIdTipoDoctorCallCenter
+                entColaborador.iIdTipoDoctor === EnumTipoDoctor.CallCenter
                     ? 0
                     : parseInt(formColaborador.txtEspecialidad),
             iIdUsuarioCGU: entColaborador.iIdColaborador === 0 ? 0 : entColaborador.iIdUsuarioCGU,
@@ -437,11 +438,11 @@ const FormColaborador = (props) => {
             sUsuarioTitular: formColaborador.txtUsuarioTitular,
             sPasswordTitular: formColaborador.txtPasswordTitular === "" ? null : formColaborador.txtPasswordTitular,
             sUsuarioAdministrativo:
-                entColaborador.iIdTipoDoctor === iIdTipoDoctorEspecialista
+                entColaborador.iIdTipoDoctor === EnumTipoDoctor.Especialista
                     ? formColaborador.txtUsuarioAdministrativo
                     : null,
             sPasswordAdministrativo:
-                entColaborador.iIdTipoDoctor === iIdTipoDoctorEspecialista
+                entColaborador.iIdTipoDoctor === EnumTipoDoctor.Especialista
                     ? formColaborador.txtPasswordAdministrativo === ""
                         ? null
                         : formColaborador.txtPasswordAdministrativo
@@ -482,7 +483,7 @@ const FormColaborador = (props) => {
         <MeditocModal
             size="normal"
             title={
-                entColaborador.iIdTipoDoctor === iIdTipoDoctorCallCenter
+                entColaborador.iIdTipoDoctor === EnumTipoDoctor.CallCenter
                     ? "Nuevo Colaborador CallCenter"
                     : "Nuevo Colaborador Especialista"
             }
@@ -589,7 +590,7 @@ const FormColaborador = (props) => {
                                         }
                                     />
                                 </Grid>
-                                {entColaborador.iIdTipoDoctor === iIdTipoDoctorEspecialista ? (
+                                {entColaborador.iIdTipoDoctor === EnumTipoDoctor.Especialista ? (
                                     <Grid item sm={6} xs={12}>
                                         <TextField
                                             name="txtEspecialidad"
@@ -607,7 +608,10 @@ const FormColaborador = (props) => {
                                             }
                                         >
                                             {listaEspecialidades
-                                                .filter((x) => x.iIdEspecialidad !== 1)
+                                                .filter(
+                                                    (x) =>
+                                                        x.iIdEspecialidad !== EnumEspecialidadPrincipal.MedicinaGeneral
+                                                )
                                                 .sort((a, b) => (a.sNombre > b.sNombre ? 1 : -1))
                                                 .map((especialidad) => (
                                                     <MenuItem
@@ -640,7 +644,7 @@ const FormColaborador = (props) => {
                                 </Grid>
                                 <Grid
                                     item
-                                    sm={entColaborador.iIdTipoDoctor === iIdTipoDoctorCallCenter ? 6 : 12}
+                                    sm={entColaborador.iIdTipoDoctor === EnumTipoDoctor.CallCenter ? 6 : 12}
                                     xs={12}
                                 >
                                     <TextField
@@ -741,6 +745,7 @@ const FormColaborador = (props) => {
                                 <Grid item sm={6} xs={12}>
                                     <DatePicker
                                         name="txtFechaNacimiento"
+                                        variant="inline"
                                         disableFuture
                                         label="Fecha de nacimiento:"
                                         inputVariant="outlined"
@@ -889,7 +894,7 @@ const FormColaborador = (props) => {
                                         }}
                                     />
                                 </Grid>
-                                {entColaborador.iIdTipoDoctor === iIdTipoDoctorEspecialista ? (
+                                {entColaborador.iIdTipoDoctor === EnumTipoDoctor.Especialista ? (
                                     <Fragment>
                                         <Grid item xs={12}>
                                             <span className="rob-nor bold size-15 color-4">USUARIO ADMINISTRATIVO</span>

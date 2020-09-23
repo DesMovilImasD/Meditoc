@@ -856,7 +856,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
             try
             {
-                IMDResponse<List<EntFolioReporte>> resGetFolioExiste = this.BGetFolios(psFolio: entNuevaConsulta.sFolio);
+                IMDResponse<List<EntFolioReporte>> resGetFolioExiste = this.BGetFolios(psFolio: entNuevaConsulta.sFolio, pbActivo:null, pbBaja:null);
                 if (resGetFolioExiste.Code != 0)
                 {
                     return resGetFolioExiste.GetResponse<EntDetalleCompra>();

@@ -1,4 +1,4 @@
-import { Grid } from "@material-ui/core";
+import { Grid, TextField } from "@material-ui/core";
 import React from "react";
 import InfoField from "../../../utilidades/InfoField";
 import MeditocModal from "../../../utilidades/MeditocModal";
@@ -9,7 +9,108 @@ const HistorialClinicoDetalle = (props) => {
     return (
         <MeditocModal title="Detalle de la consulta" size="small" open={open} setOpen={setOpen}>
             <Grid container spacing={3}>
+                <Grid item sm={6} xs={12}>
+                    <TextField
+                        variant="outlined"
+                        label="Inicio de consulta:"
+                        InputProps={{ readOnly: true }}
+                        value={historial.sFechaConsultaInicio}
+                        multiline
+                        fullWidth
+                    />
+                </Grid>
+                <Grid item sm={6} xs={12}>
+                    <TextField
+                        variant="outlined"
+                        label="Fin de consulta:"
+                        InputProps={{ readOnly: true }}
+                        value={historial.sFechaConsultaFin}
+                        multiline
+                        fullWidth
+                    />
+                </Grid>
+                <Grid item sm={6} xs={12}>
+                    <TextField
+                        variant="outlined"
+                        label="Peso:"
+                        InputProps={{ readOnly: true }}
+                        value={historial.fPeso}
+                        multiline
+                        fullWidth
+                    />
+                </Grid>
+                <Grid item sm={6} xs={12}>
+                    <TextField
+                        variant="outlined"
+                        label="Altura:"
+                        InputProps={{ readOnly: true }}
+                        value={historial.fAltura}
+                        multiline
+                        fullWidth
+                    />
+                </Grid>
+                <Grid item sm={6} xs={12}>
+                    <TextField
+                        variant="outlined"
+                        label="Alergias:"
+                        InputProps={{ readOnly: true }}
+                        value={historial.sAlergias}
+                        multiline
+                        fullWidth
+                    />
+                </Grid>
+                <Grid item sm={6} xs={12}>
+                    <TextField
+                        variant="outlined"
+                        label="Duración de consulta:"
+                        InputProps={{ readOnly: true }}
+                        value={historial.sDuracionConsulta}
+                        multiline
+                        fullWidth
+                    />
+                </Grid>
                 <Grid item xs={12}>
+                    <TextField
+                        variant="outlined"
+                        label="Síntomas:"
+                        InputProps={{ readOnly: true }}
+                        value={historial.sSintomas}
+                        multiline
+                        fullWidth
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        variant="outlined"
+                        label="Diagnóstico:"
+                        InputProps={{ readOnly: true }}
+                        value={historial.sDiagnostico}
+                        multiline
+                        fullWidth
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        variant="outlined"
+                        label="Tratamiento:"
+                        InputProps={{ readOnly: true }}
+                        value={historial.sTratamiento}
+                        multiline
+                        fullWidth
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        variant="outlined"
+                        label="Observaciones y comentarios:"
+                        InputProps={{ readOnly: true }}
+                        value={historial.sComentarios}
+                        multiline
+                        fullWidth
+                    />
+                </Grid>
+
+                {/* <Grid item xs={12}>
                     <InfoField label="Peso:" value={historial.fPeso} />
                 </Grid>
                 <Grid item xs={12}>
@@ -39,7 +140,7 @@ const HistorialClinicoDetalle = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                     <InfoField label="Duración de consulta:" value={historial.sDuracionConsulta} />
-                </Grid>
+                </Grid> */}
                 <MeditocModalBotones hideCancel okMessage="Cerrar detalle" open={open} setOpen={setOpen} />
             </Grid>
         </MeditocModal>

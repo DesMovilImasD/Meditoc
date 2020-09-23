@@ -7,6 +7,7 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import theme from "../configurations/themeConfig";
 import { imgLogoMeditoc } from "../configurations/imgConfig";
 import FormCambiarPassword from "./meditoc/configuracion/usuarios/FormCambiarPassword";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
     root: {
@@ -24,6 +25,8 @@ const useStyles = makeStyles({
 const NavBar = (props) => {
     const { toggleDrawer, setUsuarioSesion, setUsuarioActivo, usuarioSesion, funcLoader, funcAlert } = props;
     const classes = useStyles();
+
+    const history = useHistory();
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [modalCambiarPasswordOpen, setModalCambiarPasswordOpen] = useState(false);
@@ -45,6 +48,8 @@ const NavBar = (props) => {
     const handleClickCerrarSesion = () => {
         sessionStorage.removeItem("MeditocTkn");
         sessionStorage.removeItem("MeditocKey");
+
+        history.push("/");
 
         setUsuarioSesion({});
         setUsuarioActivo(false);
