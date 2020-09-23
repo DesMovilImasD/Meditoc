@@ -208,19 +208,19 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         [MeditocAuthentication]
         [HttpGet]
         [Route("Api/Colaborador/Get/Colaborador/ObtenerSala")]
-        public IMDResponse<EntColaborador> CObtenerSala(int? iIdTipoProducto = null, int? iIdUsuario = null, DateTime? dtFechaConsulta = null)
+        public IMDResponse<EntColaborador> CObtenerSala(bool? bEsAgendada = null, int? iIdUsuario = null, DateTime? dtFechaConsulta = null)
         {
             IMDResponse<EntColaborador> response = new IMDResponse<EntColaborador>();
 
             string metodo = nameof(this.CObtenerSala);
-            logger.Info(IMDSerialize.Serialize(67823458589887, $"Inicia {metodo}(int? iIdTipoProducto = null, int? iIdUsuario = null, DateTime? dtFechaConsulta = null)"));
+            logger.Info(IMDSerialize.Serialize(67823458589887, $"Inicia {metodo}(bool? bEsAgendadad = null, int? iIdUsuario = null, DateTime? dtFechaConsulta = null)"));
 
             try
             {
 
                 BusColaborador busColaborador = new BusColaborador();
 
-                response = busColaborador.BObtenerSala(iIdTipoProducto, iIdUsuario, dtFechaConsulta);
+                response = busColaborador.BObtenerSala(bEsAgendada, iIdUsuario, dtFechaConsulta);
 
             }
             catch (Exception ex)
@@ -228,7 +228,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
                 response.Code = 67823458590664;
                 response.Message = "Ocurrió un error inesperado";
 
-                logger.Error(IMDSerialize.Serialize(67823458590664, $"Error en {metodo}(int? iIdTipoProducto = null, int? iIdUsuario = null, DateTime? dtFechaConsulta = null): {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458590664, $"Error en {metodo}(bool? bEsAgendadad = null, int? iIdUsuario = null, DateTime? dtFechaConsulta = null): {ex.Message}", ex, response));
             }
             return response;
         }
