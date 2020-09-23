@@ -38,7 +38,7 @@ const FormDiagnosticoTratamiento = (props) => {
     return (
         <Grid container spacing={3}>
             <Grid item xs={12} className="center">
-                <span className="rob-con normal size-20 color-3">
+                <span className="rob-con normal size-15 color-3">
                     (Los datos de esta sección se guardarán automáticamente al finalizar la consulta).
                 </span>
             </Grid>

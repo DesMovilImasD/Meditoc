@@ -754,6 +754,7 @@ body {
     width: 200px;
     border-radius: 10px;
     border-bottom: 15px solid var(--color-primary-blue);
+    box-shadow: 0px 0px 15px -5px rgba(0, 0, 0, 0.75);
 }
 
 .directory-link {

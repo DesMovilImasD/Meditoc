@@ -18,6 +18,7 @@ import InsertPhotoIcon from "@material-ui/icons/InsertPhoto";
 import FotoColaborador from "./FotoColaborador";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import DetalleColaborador from "./DetalleColaborador";
+import { EnumTipoDoctor } from "../../../../configurations/enumConfig";
 
 const Colaboradores = (props) => {
     const { usuarioSesion, funcLoader, funcAlert } = props;
@@ -36,7 +37,7 @@ const Colaboradores = (props) => {
 
     const colaboradorCallCenterEntidadVacia = {
         iIdColaborador: 0,
-        iIdTipoDoctor: 1,
+        iIdTipoDoctor: EnumTipoDoctor.CallCenter,
         sNombreDirectorio: "",
         sCedulaProfecional: "",
         sRFC: "",
@@ -60,7 +61,7 @@ const Colaboradores = (props) => {
 
     const colaboradorEspecialistaEntidadVacia = {
         iIdColaborador: 0,
-        iIdTipoDoctor: 2,
+        iIdTipoDoctor: EnumTipoDoctor.Especialista,
         sNombreDirectorio: "",
         sCedulaProfecional: "",
         sRFC: "",

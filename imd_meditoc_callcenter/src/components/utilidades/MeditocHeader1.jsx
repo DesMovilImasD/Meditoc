@@ -13,7 +13,7 @@ const MeditocHeader1 = (props) => {
     return (
         <Paper elevation={2}>
             <div className="bar-main">
-                <div className="flx-grw-1">{children}</div>
+                <div className="flx-grw-1 align-self-center">{children}</div>
                 <div className="ops-nor bold size-25 align-self-center">{title}</div>
             </div>
         </Paper>

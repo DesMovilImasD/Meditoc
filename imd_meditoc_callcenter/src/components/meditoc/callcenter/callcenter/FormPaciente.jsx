@@ -16,6 +16,7 @@ import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import DateRangeIcon from "@material-ui/icons/DateRange";
 import CallCenterController from "../../../../controllers/CallCenterController";
 import InputTelefono from "../../../utilidades/InputTelefono";
+import { EnumCatSexo } from "../../../../configurations/enumConfig";
 
 const FormPaciente = (props) => {
     const { usuarioSesion, funcLoader, funcAlert, usuarioColaborador, entCallCenter, setEntCallCenter } = props;
@@ -178,8 +179,8 @@ const FormPaciente = (props) => {
                 <FormControl>
                     <FormLabel>Sexo</FormLabel>
                     <RadioGroup name="txtCCSexo" row value={formPaciente.txtCCSexo} onChange={handleChangeFormPaciente}>
-                        <FormControlLabel value="1" control={<Radio />} label="Hombre" />
-                        <FormControlLabel value="2" control={<Radio />} label="Mujer" />
+                        <FormControlLabel value={EnumCatSexo.Hombre.toString()} control={<Radio />} label="Hombre" />
+                        <FormControlLabel value={EnumCatSexo.Mujer.toString()} control={<Radio />} label="Mujer" />
                     </RadioGroup>
                 </FormControl>
             </Grid>

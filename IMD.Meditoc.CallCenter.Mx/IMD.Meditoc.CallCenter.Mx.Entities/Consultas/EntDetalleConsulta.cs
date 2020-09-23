@@ -28,6 +28,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Consultas
         public DateTime? dtFechaNacimientoPaciente { get; set; }
         public string sFechaNacimientoPaciente { get; set; }
         public string sCorreoPaciente { get; set; }
+        public string sTelefonoPaciente { get; set; }
         public string sTipoSangrePaciente { get; set; }
         public string sSexoPaciente { get; set; }
         public int? iIdFolio { get; set; }

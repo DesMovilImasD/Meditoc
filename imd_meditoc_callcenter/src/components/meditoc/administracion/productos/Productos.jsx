@@ -14,6 +14,7 @@ import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 import DetalleProducto from "./DetalleProducto";
 import ProductoController from "../../../../controllers/ProductoController";
 import { useEffect } from "react";
+import { EnumTipoProducto } from "../../../../configurations/enumConfig";
 
 /*************************************************************
  * Descripcion: Submódulo para vista principal "PRODUCTOS" del portal Meditoc
@@ -37,7 +38,7 @@ const Productos = (props) => {
 
     const productoEntidadVacia = {
         iIdProducto: 0,
-        iIdTipoProducto: 1,
+        iIdTipoProducto: EnumTipoProducto.Membresia,
         sNombre: "",
         sNombreCorto: "",
         sDescripcion: "",

@@ -34,7 +34,7 @@ const MeditocModal = (props) => {
             BackdropComponent={Backdrop}
             BackdropProps={{
                 timeout: 300,
-                style: { backgroundColor: "rgb(255 255 255 / 0.6)" },
+                style: { backgroundColor: "rgb(255 255 255 / 0.7)" },
             }}
             style={{ overflowY: "auto" }}
         >

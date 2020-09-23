@@ -16,6 +16,7 @@ import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 import { DatePicker } from "@material-ui/pickers";
 import DateRangeIcon from "@material-ui/icons/DateRange";
 import { SignalCellularNullSharp } from "@material-ui/icons";
+import { EnumEstatusConsulta } from "../../../../configurations/enumConfig";
 
 const Administrador = (props) => {
     const { usuarioSesion, funcLoader, funcAlert } = props;
@@ -111,7 +112,7 @@ const Administrador = (props) => {
             funcAlert("Seleccione una consulta de la tabla para continuar", "warning");
             return;
         }
-        if (consultaSeleccionada.iIdEstatusConsulta === 5) {
+        if (consultaSeleccionada.iIdEstatusConsulta === EnumEstatusConsulta.Cancelado) {
             funcAlert("Las consultas canceladas no se pueden reprogramar", "warning");
             return;
         }
@@ -124,7 +125,7 @@ const Administrador = (props) => {
             funcAlert("Seleccione una consulta de la tabla para continuar", "warning");
             return;
         }
-        if (consultaSeleccionada.iIdEstatusConsulta === 5) {
+        if (consultaSeleccionada.iIdEstatusConsulta === EnumEstatusConsulta.Cancelado) {
             funcAlert("Seleccione una consulta que no haya sido cancelada", "warning");
             return;
         }
@@ -160,19 +161,25 @@ const Administrador = (props) => {
         <Fragment>
             <MeditocHeader1 title="ADMINISTRADOR CONSULTAS">
                 <Tooltip title="Nueva consulta" arrow>
-                    <IconButton onClick={handleClickNuevaConsulta} disabled={usuarioColaborador === null}>
-                        <AddIcon className="color-0" />
-                    </IconButton>
+                    <span>
+                        <IconButton onClick={handleClickNuevaConsulta} disabled={usuarioColaborador === null}>
+                            <AddIcon className="color-0" />
+                        </IconButton>
+                    </span>
                 </Tooltip>
                 <Tooltip title="Reprogramar consulta" arrow>
-                    <IconButton onClick={handleEditarConsulta} disabled={usuarioColaborador === null}>
-                        <EditIcon className="color-0" />
-                    </IconButton>
+                    <span>
+                        <IconButton onClick={handleEditarConsulta} disabled={usuarioColaborador === null}>
+                            <EditIcon className="color-0" />
+                        </IconButton>
+                    </span>
                 </Tooltip>
                 <Tooltip title="Cancelar consulta" arrow>
-                    <IconButton onClick={handleCancelarConsulta} disabled={usuarioColaborador === null}>
-                        <DeleteIcon className="color-0" />
-                    </IconButton>
+                    <span>
+                        <IconButton onClick={handleCancelarConsulta} disabled={usuarioColaborador === null}>
+                            <DeleteIcon className="color-0" />
+                        </IconButton>
+                    </span>
                 </Tooltip>
             </MeditocHeader1>
             <MeditocBody>
@@ -201,6 +208,7 @@ const Administrador = (props) => {
                                 setFiltroForm({
                                     ...filtroForm,
                                     txtFechaDe: date,
+                                    txtFechaA: date,
                                 })
                             }
                             fullWidth
