@@ -1229,6 +1229,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 {
                     IMDDataRow dataRow = new IMDDataRow(item);
 
+                    entFolio.iIdProducto = dataRow.ConvertTo<int>("iIdTipoProducto");
                     entFolio.sFolio = dataRow.ConvertTo<string>("sFolio");
                     entFolio.sPassword = dataRow.ConvertTo<string>("sPassword");
                     entFolio.dtFechaVencimiento = dataRow.ConvertTo<DateTime>("dtFechaVencimiento");
