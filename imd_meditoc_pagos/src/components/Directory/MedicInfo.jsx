@@ -1,4 +1,4 @@
-import { Grid, Hidden } from "@material-ui/core";
+import { Button, Grid, Hidden } from "@material-ui/core";
 import React from "react";
 import { MdAccountBox } from "react-icons/md";
 
@@ -68,10 +68,21 @@ const MedicInfo = (props) => {
                             <br />
                             <span className="directory-doctor-value">{entColaborador.sCorreo}</span>
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item sm={6} xs={12}>
                             <span className="directory-doctor-label">Dirección</span>
                             <br />
                             <span className="directory-doctor-value">{entColaborador.sDireccionConsultorio}</span>
+                        </Grid>
+                        <Grid item sm={6} xs={12}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                target="_blank"
+                                href={entColaborador.sMaps}
+                                rel="noopener noreferrer"
+                            >
+                                Ver en google maps
+                            </Button>
                         </Grid>
                         {/* <Grid item xs={12}>
                             <span className="directory-doctor-label">Consultorio</span>
