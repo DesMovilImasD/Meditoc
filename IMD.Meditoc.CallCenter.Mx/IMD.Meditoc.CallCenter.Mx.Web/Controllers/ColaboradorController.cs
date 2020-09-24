@@ -134,7 +134,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             {
                 BusColaborador busColaborador = new BusColaborador();
                 IMDResponse<MemoryStream> resGetFoto = busColaborador.BDescargarColaboradorFoto(piIdColaborador);
-                if(resGetFoto.Code != 0)
+                if (resGetFoto.Code != 0)
                 {
                     response = Request.CreateResponse(HttpStatusCode.InternalServerError, resGetFoto.Message);
                 }
@@ -201,6 +201,34 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458506748, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        [MeditocAuthentication]
+        [HttpGet]
+        [Route("Api/Colaborador/Get/Colaborador/ObtenerSala")]
+        public IMDResponse<EntColaborador> CObtenerSala(bool? bEsAgendada = null, int? iIdUsuario = null, DateTime? dtFechaConsulta = null)
+        {
+            IMDResponse<EntColaborador> response = new IMDResponse<EntColaborador>();
+
+            string metodo = nameof(this.CObtenerSala);
+            logger.Info(IMDSerialize.Serialize(67823458589887, $"Inicia {metodo}(bool? bEsAgendadad = null, int? iIdUsuario = null, DateTime? dtFechaConsulta = null)"));
+
+            try
+            {
+
+                BusColaborador busColaborador = new BusColaborador();
+
+                response = busColaborador.BObtenerSala(bEsAgendada, iIdUsuario, dtFechaConsulta);
+
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458590664;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458590664, $"Error en {metodo}(bool? bEsAgendadad = null, int? iIdUsuario = null, DateTime? dtFechaConsulta = null): {ex.Message}", ex, response));
             }
             return response;
         }

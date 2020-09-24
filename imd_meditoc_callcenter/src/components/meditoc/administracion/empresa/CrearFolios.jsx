@@ -6,6 +6,7 @@ import MeditocTable from "../../../utilidades/MeditocTable";
 import { useEffect } from "react";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import FolioController from "../../../../controllers/FolioController";
+import { EnumIVA, EnumOrigen } from "../../../../configurations/enumConfig";
 
 const CrearFolios = (props) => {
     const {
@@ -20,10 +21,10 @@ const CrearFolios = (props) => {
     } = props;
 
     const columns = [
-        { title: "ID", field: "iIdProducto", align: "center", editable: "never", hidden: true },
-        { title: "Nombre", field: "sNombre", align: "center", editable: "never" },
-        { title: "Precio", field: "sCosto", align: "center", editable: "never" },
-        { title: "Cantidad", field: "iCantidad", align: "center" },
+        { title: "ID", field: "iIdProducto", align: "left", editable: "never", hidden: true },
+        { title: "Nombre", field: "sNombre", align: "left", editable: "never" },
+        { title: "Precio", field: "sCosto", align: "left", editable: "never" },
+        { title: "Cantidad", field: "iCantidad", align: "left" },
     ];
 
     const [listaProductosEmpresa, setListaProductosEmpresa] = useState(
@@ -80,7 +81,7 @@ const CrearFolios = (props) => {
 
         const entFoliosEmpresaSubmit = {
             iIdEmpresa: entEmpresa.iIdEmpresa,
-            iIdOrigen: 5,
+            iIdOrigen: EnumOrigen.PanelAdministrativo,
             line_items: listaProductosSeleccionados.map((prod) => ({
                 product_id: prod.iIdProducto,
                 quantity: prod.iCantidad,
@@ -113,7 +114,7 @@ const CrearFolios = (props) => {
     useEffect(() => {
         const calcSubtotal = listaProductosSeleccionados.reduce((a, b) => a + b.iCantidad * b.fCosto, 0);
 
-        const calcMontoIva = calcSubtotal * 0.16;
+        const calcMontoIva = calcSubtotal * EnumIVA.IVA;
 
         setSubtotal(calcSubtotal);
         setMontoIva(calcMontoIva);
@@ -160,7 +161,7 @@ const CrearFolios = (props) => {
                                 </TableRow>
                                 <TableRow hover>
                                     <TableCell>
-                                        <span className="rob-nor size-20 color-2">IVA (16%):</span>
+                                        <span className="rob-nor size-20 color-2">IVA ({EnumIVA.IVA * 100}%):</span>
                                     </TableCell>
                                     <TableCell align="right">
                                         <span className="rob-nor size-20 color-3">

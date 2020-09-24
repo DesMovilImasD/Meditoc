@@ -23,18 +23,23 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Catalogos
             datEspecialidad = new DatEspecialidad();
         }
 
+        /// <summary>
+        /// Guardar una especialidad
+        /// </summary>
+        /// <param name="entEspecialidad"></param>
+        /// <returns></returns>
         public IMDResponse<bool> BSaveEspecialidad(EntEspecialidad entEspecialidad)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.BSaveEspecialidad);
-            logger.Info(IMDSerialize.Serialize(67823458450027, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458450027, $"Inicia {metodo}(EntEspecialidad entEspecialidad)", entEspecialidad));
 
             try
             {
                 if (entEspecialidad == null)
                 {
-                    response.Code = 87987834567;
+                    response.Code = -876348289919;
                     response.Message = "No se ingresó información completa";
                     return response;
                 }
@@ -43,7 +48,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Catalogos
                 {
                     if (string.IsNullOrWhiteSpace(entEspecialidad.sNombre))
                     {
-                        response.Code = 39875698730498;
+                        response.Code = -398763241989882;
                         response.Message = "No se ingresó el nombre de la especialidad";
                         return response;
                     }
@@ -62,19 +67,24 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Catalogos
             catch (Exception ex)
             {
                 response.Code = 67823458450804;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al guardar la especialidad";
 
-                logger.Error(IMDSerialize.Serialize(67823458450804, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458450804, $"Error en {metodo}(EntEspecialidad entEspecialidad): {ex.Message}", entEspecialidad, ex, response));
             }
             return response;
         }
 
+        /// <summary>
+        /// Obtener la lista de las especialidades
+        /// </summary>
+        /// <param name="piIdEspecialidad"></param>
+        /// <returns></returns>
         public IMDResponse<List<EntEspecialidad>> BGetEspecialidad(int? piIdEspecialidad = null)
         {
             IMDResponse<List<EntEspecialidad>> response = new IMDResponse<List<EntEspecialidad>>();
 
             string metodo = nameof(this.BGetEspecialidad);
-            logger.Info(IMDSerialize.Serialize(67823458451581, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458451581, $"Inicia {metodo}(int? piIdEspecialidad = null)", piIdEspecialidad));
 
             try
             {
@@ -110,9 +120,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Catalogos
             catch (Exception ex)
             {
                 response.Code = 67823458452358;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al consultar las especialidades";
 
-                logger.Error(IMDSerialize.Serialize(67823458452358, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458452358, $"Error en {metodo}(int? piIdEspecialidad = null): {ex.Message}", piIdEspecialidad, ex, response));
             }
             return response;
         }

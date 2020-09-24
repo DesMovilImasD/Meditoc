@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { Fragment } from "react";
 import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
+import BlockIcon from "@material-ui/icons/Block";
 import ColaboradorController from "../../../../controllers/ColaboradorController";
 import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
 import CallCenterController from "../../../../controllers/CallCenterController";
@@ -16,6 +16,8 @@ import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 import { DatePicker } from "@material-ui/pickers";
 import DateRangeIcon from "@material-ui/icons/DateRange";
 import { SignalCellularNullSharp } from "@material-ui/icons";
+import { EnumEstatusConsulta } from "../../../../configurations/enumConfig";
+import UpdateIcon from "@material-ui/icons/Update";
 
 const Administrador = (props) => {
     const { usuarioSesion, funcLoader, funcAlert } = props;
@@ -111,8 +113,16 @@ const Administrador = (props) => {
             funcAlert("Seleccione una consulta de la tabla para continuar", "warning");
             return;
         }
-        if (consultaSeleccionada.iIdEstatusConsulta === 5) {
+        if (consultaSeleccionada.iIdEstatusConsulta === EnumEstatusConsulta.Cancelado) {
             funcAlert("Las consultas canceladas no se pueden reprogramar", "warning");
+            return;
+        }
+        if (consultaSeleccionada.iIdEstatusConsulta === EnumEstatusConsulta.Finalizado) {
+            funcAlert("Las consultas que ya han finalizado no se pueden reprogramar", "warning");
+            return;
+        }
+        if (consultaSeleccionada.iIdEstatusConsulta === EnumEstatusConsulta.EnConsulta) {
+            funcAlert("El paciente ya se encuentra consultando", "warning");
             return;
         }
         setConsultaParaModal(consultaSeleccionada);
@@ -124,8 +134,16 @@ const Administrador = (props) => {
             funcAlert("Seleccione una consulta de la tabla para continuar", "warning");
             return;
         }
-        if (consultaSeleccionada.iIdEstatusConsulta === 5) {
+        if (consultaSeleccionada.iIdEstatusConsulta === EnumEstatusConsulta.Cancelado) {
             funcAlert("Seleccione una consulta que no haya sido cancelada", "warning");
+            return;
+        }
+        if (consultaSeleccionada.iIdEstatusConsulta === EnumEstatusConsulta.Finalizado) {
+            funcAlert("Las consultas que ya han finalizado no se pueden cancelar", "warning");
+            return;
+        }
+        if (consultaSeleccionada.iIdEstatusConsulta === EnumEstatusConsulta.EnConsulta) {
+            funcAlert("El paciente ya se encuentra consultando", "warning");
             return;
         }
         setModalCancelarConsultaOpen(true);
@@ -160,19 +178,32 @@ const Administrador = (props) => {
         <Fragment>
             <MeditocHeader1 title="ADMINISTRADOR CONSULTAS">
                 <Tooltip title="Nueva consulta" arrow>
-                    <IconButton onClick={handleClickNuevaConsulta} disabled={usuarioColaborador === null}>
-                        <AddIcon className="color-0" />
-                    </IconButton>
+                    <span>
+                        <IconButton onClick={handleClickNuevaConsulta} disabled={usuarioColaborador === null}>
+                            <AddIcon className="color-0" />
+                        </IconButton>
+                    </span>
                 </Tooltip>
                 <Tooltip title="Reprogramar consulta" arrow>
-                    <IconButton onClick={handleEditarConsulta} disabled={usuarioColaborador === null}>
-                        <EditIcon className="color-0" />
-                    </IconButton>
+                    <span>
+                        <IconButton onClick={handleEditarConsulta} disabled={usuarioColaborador === null}>
+                            <EditIcon className="color-0" />
+                        </IconButton>
+                    </span>
                 </Tooltip>
                 <Tooltip title="Cancelar consulta" arrow>
-                    <IconButton onClick={handleCancelarConsulta} disabled={usuarioColaborador === null}>
-                        <DeleteIcon className="color-0" />
-                    </IconButton>
+                    <span>
+                        <IconButton onClick={handleCancelarConsulta} disabled={usuarioColaborador === null}>
+                            <BlockIcon className="color-0" />
+                        </IconButton>
+                    </span>
+                </Tooltip>
+                <Tooltip title="Actualizar tabla de consultas" arrow>
+                    <span>
+                        <IconButton onClick={funcGetConsultas} disabled={usuarioColaborador === null}>
+                            <UpdateIcon className="color-0" />
+                        </IconButton>
+                    </span>
                 </Tooltip>
             </MeditocHeader1>
             <MeditocBody>
@@ -201,8 +232,10 @@ const Administrador = (props) => {
                                 setFiltroForm({
                                     ...filtroForm,
                                     txtFechaDe: date,
+                                    txtFechaA: date,
                                 })
                             }
+                            disabled={usuarioColaborador === null}
                             fullWidth
                             value={filtroForm.txtFechaDe}
                         />
@@ -223,6 +256,7 @@ const Administrador = (props) => {
                                     </InputAdornment>
                                 ),
                             }}
+                            disabled={usuarioColaborador === null}
                             onChange={(date) =>
                                 setFiltroForm({
                                     ...filtroForm,
@@ -243,10 +277,16 @@ const Administrador = (props) => {
                                     txtFechaA: null,
                                 });
                             }}
+                            disabled={usuarioColaborador === null}
                         >
                             LIMIPIAR
                         </Button>
-                        <Button variant="contained" color="primary" onClick={funcGetConsultas}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={funcGetConsultas}
+                            disabled={usuarioColaborador === null}
+                        >
                             FILTRAR
                         </Button>
                     </Grid>

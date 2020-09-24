@@ -20,6 +20,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
         {
             datPermiso = new DatPermiso();
         }
+
+        /// <summary>
+        /// Guardar o actualizar los permisos del perfil
+        /// </summary>
+        /// <param name="entPermisos"></param>
+        /// <returns></returns>
         public IMDResponse<bool> DSavePermiso(List<EntPermiso> entPermisos)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
@@ -31,16 +37,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             {
                 if (entPermisos == null)
                 {
-                    response.Code = 67823458339693;
+                    response.Code = -76823947687234;
                     response.Message = "No se ingresó ningun permiso.";
                     return response;
                 }
 
                 foreach (EntPermiso entPermiso in entPermisos)
                 {
-
-
-                    response = bValidaDatos(entPermiso);
+                    response = BValidaDatos(entPermiso);
 
                     if (!response.Result) //Se valida que los datos que contiene el objeto de perfil no esten vacios.
                     {
@@ -50,50 +54,50 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     response = datPermiso.DSavePermiso(entPermiso);
                     if (response.Code != 0)
                     {
-                        response.Code = 67823458339693;
+                        response.Code = -823487677772384;
                         response.Message = "No se pudieron guardar todos los permisos. Actualice la página antes de intentar de nuevo";
                         return response;
                     }
                 }
 
                 response.Code = 0;
-                //response.Message = entPermiso.iid == 0 ? "El perfil se guardó correctamente" : "El perfil se actualizo correctamente";
+                response.Message = "Los permisos del perfil han sido actualizados";
                 response.Result = true;
 
             }
             catch (Exception ex)
             {
                 response.Code = 67823458348240;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al guardar el permiso solicitado";
 
                 logger.Error(IMDSerialize.Serialize(67823458348240, $"Error en {metodo}(EntPermiso entPermiso): {ex.Message}", entPermisos, ex, response));
             }
             return response;
         }
 
+        /// <summary>
+        /// Obtener los permisos del sistema o de un perfil proporcionado
+        /// </summary>
+        /// <param name="iIdPermiso"></param>
+        /// <returns></returns>
         public IMDResponse<List<EntPermisoSistema>> BObtenerPermisoxPerfil(int? iIdPermiso)
         {
             IMDResponse<List<EntPermisoSistema>> response = new IMDResponse<List<EntPermisoSistema>>();
 
             string metodo = nameof(this.BObtenerPermisoxPerfil);
-            logger.Info(IMDSerialize.Serialize(67823458354456, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458354456, $"Inicia {metodo}(int? iIdPermiso)", iIdPermiso));
 
             try
             {
                 IMDResponse<DataSet> dtPermisos = datPermiso.DObtenerPermisosPorPerfil(iIdPermiso);
-                if(dtPermisos.Code != 0)
-                {
-                    return dtPermisos.GetResponse<List<EntPermisoSistema>>();
-                }
-
                 if (dtPermisos.Code != 0)
                 {
                     return dtPermisos.GetResponse<List<EntPermisoSistema>>();
                 }
 
-                var drBotones = dtPermisos.Result.Tables[2].Rows;
-                var drSubmodulos = dtPermisos.Result.Tables[1].Rows;
-                var drModulos = dtPermisos.Result.Tables[0].Rows;
+                DataRowCollection drBotones = dtPermisos.Result.Tables[2].Rows;
+                DataRowCollection drSubmodulos = dtPermisos.Result.Tables[1].Rows;
+                DataRowCollection drModulos = dtPermisos.Result.Tables[0].Rows;
 
                 List<EntPermisoSistema> lstPermisoSistema = new List<EntPermisoSistema>();
                 List<EntSubModuloPermiso> lstPermisoSubModulo = new List<EntSubModuloPermiso>();
@@ -167,6 +171,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     lstSubModulo = lstPermisoSubModulo.Where(y => y.iIdModulo == x.Key).ToList()
                 }).ToList();
 
+                response.Code = 0;
                 response.Message = "Lista de permisos";
                 response.Result = lstPermisoSistema;
 
@@ -174,25 +179,30 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             catch (Exception ex)
             {
                 response.Code = 67823458355233;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al consultar los permisos";
 
-                logger.Error(IMDSerialize.Serialize(67823458355233, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458355233, $"Error en {metodo}(int? iIdPermiso): {ex.Message}", iIdPermiso, ex, response));
             }
             return response;
         }
 
-        public IMDResponse<bool> bValidaDatos(EntPermiso entPermiso)
+        /// <summary>
+        /// Validar los datos para actualizar los permisos
+        /// </summary>
+        /// <param name="entPermiso"></param>
+        /// <returns></returns>
+        public IMDResponse<bool> BValidaDatos(EntPermiso entPermiso)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
-            string metodo = nameof(this.bValidaDatos);
+            string metodo = nameof(this.BValidaDatos);
             logger.Info(IMDSerialize.Serialize(67823458349017, $"Inicia {metodo}(EntPermiso entPermiso)", entPermiso));
 
             try
             {
                 if (entPermiso.iIdPerfil == 0)
                 {
-                    response.Code = 67823458342024;
+                    response.Code = -987876827364;
                     response.Message = "El id de perfil no puede ser 0";
                     response.Result = false;
 
@@ -201,19 +211,20 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 
                 if (entPermiso.iIdModulo == 0)
                 {
-                    response.Code = 67823458342024;
+                    response.Code = -767819247987123;
                     response.Message = "El id de módulo no puede ser 0";
                     response.Result = false;
 
                     return response;
                 }
 
+                response.Code = 0;
                 response.Result = true;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458349794;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al validar los permisos solicitados";
 
                 logger.Error(IMDSerialize.Serialize(67823458349794, $"Error en {metodo}(EntPermiso entPermiso): {ex.Message}", entPermiso, ex, response));
             }

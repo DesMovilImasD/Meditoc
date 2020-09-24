@@ -1,8 +1,11 @@
 import React from "react";
 import MeditocModal from "../../../utilidades/MeditocModal";
-import { Grid, TextField, Button } from "@material-ui/core";
+import { Grid, TextField, Button, Tooltip, IconButton } from "@material-ui/core";
 import { useState } from "react";
 import CGUController from "../../../../controllers/CGUController";
+import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 
 const FormCambiarPassword = (props) => {
     const { open, setOpen, usuarioSesion, funcLoader, funcAlert } = props;
@@ -17,11 +20,6 @@ const FormCambiarPassword = (props) => {
             ...formCambiarPassword,
             [e.target.name]: e.target.value,
         });
-    };
-
-    //Funcion para cerrar este modal
-    const handleClose = () => {
-        setOpen(false);
     };
 
     const funcCambiarPassword = async () => {
@@ -51,6 +49,8 @@ const FormCambiarPassword = (props) => {
         funcLoader();
     };
 
+    const [verPassword, setVerPassword] = useState(false);
+
     return (
         <MeditocModal title="Cambiar contraseña" size="small" open={open} setOpen={setOpen}>
             <Grid container spacing={3}>
@@ -73,23 +73,30 @@ const FormCambiarPassword = (props) => {
                         name="txtConfirmarPasswordMeditoc"
                         variant="outlined"
                         label="Confirmar contraseña:"
-                        type="password"
+                        type={verPassword ? "text" : "password"}
                         autoComplete="new-password"
                         fullWidth
                         value={formCambiarPassword.txtConfirmarPasswordMeditoc}
                         onChange={handleChangeFormCambiarPassword}
+                        InputProps={{
+                            endAdornment: (
+                                <Tooltip
+                                    title={verPassword ? "Ocultar contraseña" : "Ver contraseña"}
+                                    arrow
+                                    placement="top"
+                                >
+                                    <IconButton
+                                        onMouseDown={() => setVerPassword(true)}
+                                        onMouseUp={() => setVerPassword(false)}
+                                    >
+                                        {verPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                    </IconButton>
+                                </Tooltip>
+                            ),
+                        }}
                     />
                 </Grid>
-                <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="primary" fullWidth onClick={funcCambiarPassword}>
-                        Guardar
-                    </Button>
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="secondary" fullWidth onClick={handleClose}>
-                        Cancelar
-                    </Button>
-                </Grid>
+                <MeditocModalBotones okMessage="Cambiar contraseña" setOpen={setOpen} okFunc={funcCambiarPassword} />
             </Grid>
         </MeditocModal>
     );

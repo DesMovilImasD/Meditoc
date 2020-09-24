@@ -12,6 +12,7 @@ import CGUController from "../../../../controllers/CGUController";
 import FormPerfil from "./FormPerfil";
 import Permisos from "./Permisos";
 import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
+import { EnumPerfilesPrincipales } from "../../../../configurations/enumConfig";
 
 /*************************************************************
  * Descripcion: Submódulo para la vista principal "PERFILES" del portal Meditoc
@@ -78,7 +79,13 @@ const Perfiles = (props) => {
             return;
         }
 
-        const perfilesNoEliminar = [1, 2, 3, 4];
+        const perfilesNoEliminar = [
+            EnumPerfilesPrincipales.Superadministrador,
+            EnumPerfilesPrincipales.Administrador,
+            EnumPerfilesPrincipales.DoctorCallCenter,
+            EnumPerfilesPrincipales.DoctorEspecialista,
+            EnumPerfilesPrincipales.AdministradorEspecialiesta,
+        ];
         if (perfilesNoEliminar.includes(perfilSeleccionado.iIdPerfil)) {
             funcAlert("Este perfil de sistema no se puede eliminar", "info");
             return;

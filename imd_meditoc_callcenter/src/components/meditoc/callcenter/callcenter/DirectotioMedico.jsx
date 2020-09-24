@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import MeditocModal from "../../../utilidades/MeditocModal";
 import {
     Grid,
     TextField,
@@ -11,14 +12,13 @@ import {
     makeStyles,
     Tooltip,
 } from "@material-ui/core";
-import { BsSearch } from "react-icons/bs";
-import { AiOutlineFileSearch } from "react-icons/ai";
-import { MdClose } from "react-icons/md";
 import Pagination from "@material-ui/lab/Pagination";
-import { logoMeditocDoctorSample } from "../../configuration/imgConfig";
-import { serverMain } from "../../configuration/serverConfig";
-import { apiGetDirectorio, apiGetEspecialidades } from "../../configuration/apiConfig";
-import MedicInfo from "./MedicInfo";
+import SearchIcon from "@material-ui/icons/Search";
+import FindInPageIcon from "@material-ui/icons/FindInPage";
+import CloseIcon from "@material-ui/icons/Close";
+import ColaboradorController from "../../../../controllers/ColaboradorController";
+import EspecialidadController from "../../../../controllers/EspecialidadController";
+import DirectorioMedicoDetalle from "./DirectorioMedicoDetalle";
 
 const useStyles = makeStyles({
     ul: {
@@ -27,11 +27,14 @@ const useStyles = makeStyles({
     },
 });
 
-const Content = (props) => {
-    const { funcLoader } = props;
+const DirectotioMedico = (props) => {
+    const { open, setOpen, funcLoader, funcAlert } = props;
 
     const classes = useStyles();
     const pageSize = 20;
+
+    const colaboradorController = new ColaboradorController();
+    const especialidadController = new EspecialidadController();
 
     const [paginaSeleccionada, setPaginaSeleccionada] = useState(1);
     const [paginasTotales, setPaginasTotales] = useState(0);
@@ -45,39 +48,27 @@ const Content = (props) => {
     const funcGetDirectorio = async (especialidad = null, buscador = "", page = null) => {
         funcLoader(true, "Consultando en directorio médico...");
 
-        try {
-            const apiResponse = await fetch(
-                `${serverMain}${apiGetDirectorio}?piIdEspecialidad=${especialidad}&psBuscador=${buscador}&piPage=${page}&piPageSize=${pageSize}`
-            );
+        const response = await colaboradorController.funcGetDirectorio(especialidad, buscador, page, pageSize);
 
-            const response = await apiResponse.json();
-
-            if (response.Code === 0) {
-                setPaginasTotales(response.Result.iTotalPaginas);
-                setListaColaboradores(response.Result.lstColaboradores);
-            }
-        } catch (error) {}
-
+        if (response.Code === 0) {
+            setPaginasTotales(response.Result.iTotalPaginas);
+            setListaColaboradores(response.Result.lstColaboradores);
+        } else {
+            funcAlert(response.Message);
+        }
         funcLoader();
     };
 
     const funcGetEspecialidades = async () => {
         funcLoader(true, "Consultando especialidades...");
 
-        try {
-            const apiResponse = await fetch(`${serverMain}${apiGetEspecialidades}`, {
-                headers: {
-                    "AppKey": "qSVBJIQpOqtp0UfwzwX1ER6fNYR8YiPU/bw5CdEqYqk=",
-                    "AppToken": "Xx3ePv63cUTg77QPATmztJ3J8cdO1riA7g+lVRzOzhfnl9FnaVT1O2YIv8YCTVRZ",
-                },
-            });
+        const response = await especialidadController.funcGetEspecialidad();
 
-            const response = await apiResponse.json();
-
-            if (response.Code === 0) {
-                setListaEspecialidades(response.Result);
-            }
-        } catch (error) {}
+        if (response.Code === 0) {
+            setListaEspecialidades(response.Result);
+        } else {
+            funcAlert(response.Message);
+        }
 
         funcLoader();
     };
@@ -120,7 +111,7 @@ const Content = (props) => {
     }, []);
 
     return (
-        <div className="directory-content">
+        <MeditocModal title="Directorio médico de especialistas" size="large" open={open} setOpen={setOpen}>
             <Grid container spacing={3}>
                 <Grid item sm={6} xs={12}>
                     <TextField
@@ -133,13 +124,13 @@ const Content = (props) => {
                                     {ultimaBusqueda !== "" ? (
                                         <Tooltip title="Limpiar búsqueda" arrow placement="top">
                                             <IconButton onClick={handleClickLimpiar}>
-                                                <MdClose />
+                                                <CloseIcon />
                                             </IconButton>
                                         </Tooltip>
                                     ) : null}
                                     <Tooltip title="Iniciar búsqueda" arrow placement="top">
                                         <IconButton onClick={handleClickBuscar}>
-                                            <BsSearch />
+                                            <SearchIcon />
                                         </IconButton>
                                     </Tooltip>
                                 </InputAdornment>
@@ -178,7 +169,7 @@ const Content = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                     {listaColaboradores.map((entColaborador) => (
-                        <MedicInfo key={entColaborador.iIdColaborador} entColaborador={entColaborador} />
+                        <DirectorioMedicoDetalle key={entColaborador.iIdColaborador} entColaborador={entColaborador} />
                     ))}
                     {paginasTotales > 0 ? (
                         <div className="directory-pagination-container">
@@ -195,15 +186,15 @@ const Content = (props) => {
                         </div>
                     ) : (
                         <div className="center">
-                            <AiOutlineFileSearch style={{ fontSize: 150, color: "#ccc" }} />
+                            <FindInPageIcon style={{ fontSize: 150, color: "#ccc" }} />
                             <br />
                             <span className="price-content-description-normal">No se encontraron registros</span>
                         </div>
                     )}
                 </Grid>
             </Grid>
-        </div>
+        </MeditocModal>
     );
 };
 
-export default Content;
+export default DirectotioMedico;

@@ -16,11 +16,13 @@ const FormEmpresa = (props) => {
         txtCorreoEmpresa: "",
     });
 
-    const [formEmpresaOK, setFormEmpresaOK] = useState({
+    const formularioValidacion = {
         txtFolioEmpresa: true,
         txtNombreEmpresa: true,
         txtCorreoEmpresa: true,
-    });
+    };
+
+    const [formEmpresaOK, setFormEmpresaOK] = useState(formularioValidacion);
 
     useEffect(() => {
         setFormEmpresa({
@@ -28,6 +30,7 @@ const FormEmpresa = (props) => {
             txtNombreEmpresa: entEmpresa.sNombre,
             txtCorreoEmpresa: entEmpresa.sCorreo,
         });
+        setFormEmpresaOK(formularioValidacion);
     }, [entEmpresa]);
 
     const handleChangeFormEmpresa = (e) => {
@@ -59,11 +62,7 @@ const FormEmpresa = (props) => {
 
     const handleClickGuardarEmpresa = async () => {
         let bFormError = false;
-        let formEmpresaOKValidacion = {
-            txtFolioEmpresa: true,
-            txtNombreEmpresa: true,
-            txtCorreoEmpresa: true,
-        };
+        let formEmpresaOKValidacion = { ...formularioValidacion };
         if (formEmpresa.txtNombreEmpresa === "") {
             formEmpresaOKValidacion.txtNombreEmpresa = false;
             bFormError = true;

@@ -137,6 +137,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                     }
 
                     entUsuario.iIdTipoCuenta = (int)EnumTipoCuenta.Administrativa;
+                    entUsuario.iIdPerfil = (int)EnumPerfilPrincipal.AdministradorEspecialista;
                     entUsuario.sUsuario = entCreateColaborador.sUsuarioAdministrativo;
                     entUsuario.sPassword = entCreateColaborador.sPasswordAdministrativo;
 
@@ -508,7 +509,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                     }
                 }
 
-                int iCount = Convert.ToInt32(resGetDirectorio.Result.Rows[0]["iCount"].ToString());
+                int iCount = 0;
+                if (resGetDirectorio.Result.Rows.Count > 0)
+                {
+                    iCount = Convert.ToInt32(resGetDirectorio.Result.Rows[0]["iCount"].ToString());
+                }
 
                 entDirectorio.iTotalPaginas = (int)Math.Ceiling(iCount / (double)piPageSize);
 
@@ -522,6 +527,51 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458505194, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<EntColaborador> BObtenerSala(bool? bAgendada = null, int? iIdUsuario = null, DateTime? dtFechaConsulta = null)
+        {
+            IMDResponse<EntColaborador> response = new IMDResponse<EntColaborador>();
+            EntColaborador oColaborador = new EntColaborador();
+
+            string metodo = nameof(this.BObtenerSala);
+            logger.Info(IMDSerialize.Serialize(67823458591441, $"Inicia {metodo}(int? iIdTipoProducto = null, int? iIdUsuario = null, DateTime? dtFechaConsulta = null)"));
+
+            try
+            {
+                IMDResponse<DataTable> dtColaborador = datColaborador.DObtenerSala(bAgendada, iIdUsuario, dtFechaConsulta);
+
+                if (dtColaborador.Code != 0)
+                {
+                    return dtColaborador.GetResponse<EntColaborador>();
+                }
+
+
+                foreach (DataRow item in dtColaborador.Result.Rows)
+                {
+                    IMDDataRow rows = new IMDDataRow(item);
+
+                    oColaborador = new EntColaborador
+                    {
+                        iIdColaborador = rows.ConvertTo<int>("iIdColaborador"),
+                        iNumSala = rows.ConvertTo<int>("iNumSala")
+
+                    };
+
+                }
+
+                response.Code = 0;
+                response.Message = dtColaborador.Result.Rows.Count > 0 ? "Sala consultada" : "Todos los médicos se encuentran ocupados en este momento.";
+                response.Result = oColaborador;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458592218;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458592218, $"Error en {metodo}(int? iIdTipoProducto = null, int? iIdUsuario = null, DateTime? dtFechaConsulta = null): {ex.Message}", ex, response));
             }
             return response;
         }

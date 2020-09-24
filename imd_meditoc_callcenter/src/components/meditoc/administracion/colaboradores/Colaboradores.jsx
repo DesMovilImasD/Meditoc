@@ -16,6 +16,9 @@ import MeditocTable from "../../../utilidades/MeditocTable";
 import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 import InsertPhotoIcon from "@material-ui/icons/InsertPhoto";
 import FotoColaborador from "./FotoColaborador";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import DetalleColaborador from "./DetalleColaborador";
+import { EnumTipoDoctor } from "../../../../configurations/enumConfig";
 
 const Colaboradores = (props) => {
     const { usuarioSesion, funcLoader, funcAlert } = props;
@@ -34,15 +37,54 @@ const Colaboradores = (props) => {
 
     const colaboradorCallCenterEntidadVacia = {
         iIdColaborador: 0,
-        iIdTipoDoctor: 1,
+        iIdTipoDoctor: EnumTipoDoctor.CallCenter,
+        sNombreDirectorio: "",
+        sCedulaProfecional: "",
+        sRFC: "",
+        sTelefonoDirectorio: "",
+        sCorreoDirectorio: "",
+        iIdEspecialidad: "",
+        iNumSala: "",
+        sDireccionConsultorio: "",
+        sURL: "",
+        sMaps: "",
+        sNombresDoctor: "",
+        sApellidoPaternoDoctor: "",
+        sApellidoMaternoDoctor: "",
+        dtFechaNacimientoDoctor: null,
+        sTelefonoDoctor: "",
+        sCorreoDoctor: "",
+        sDomicilioDoctor: "",
+        sUsuarioTitular: "",
+        sUsuarioAdministrativo: "",
     };
 
     const colaboradorEspecialistaEntidadVacia = {
         iIdColaborador: 0,
-        iIdTipoDoctor: 2,
+        iIdTipoDoctor: EnumTipoDoctor.Especialista,
+        sNombreDirectorio: "",
+        sCedulaProfecional: "",
+        sRFC: "",
+        sTelefonoDirectorio: "",
+        sCorreoDirectorio: "",
+        iIdEspecialidad: "",
+        iNumSala: "",
+        sDireccionConsultorio: "",
+        sURL: "",
+        sMaps: "",
+        sNombresDoctor: "",
+        sApellidoPaternoDoctor: "",
+        sApellidoMaternoDoctor: "",
+        dtFechaNacimientoDoctor: null,
+        sTelefonoDoctor: "",
+        sCorreoDoctor: "",
+        sDomicilioDoctor: "",
+        sUsuarioTitular: "",
+        sUsuarioAdministrativo: "",
     };
 
     const [modalNuevoColaboradorOpen, setModalNuevoColaboradorOpen] = useState(false);
+    const [modalDetalleColaboradorOpen, setModalDetalleColaboradorOpen] = useState(false);
     const [modalEliminarColaboradorOpen, setModalEliminarColaboradorOpen] = useState(false);
     const [modalFotoColaboradorOpen, setModalFotoColaboradorOpen] = useState(false);
 
@@ -60,6 +102,14 @@ const Colaboradores = (props) => {
     const handleClickNuevoColaboradorEspecialista = () => {
         setColaboradorParaModal(colaboradorEspecialistaEntidadVacia);
         setModalNuevoColaboradorOpen(true);
+    };
+
+    const handleClickDetalleColaborador = () => {
+        if (colaboradorSeleccionado.iIdColaborador === 0) {
+            funcAlert("Seleccione un colaborador de la tabla para continuar");
+            return;
+        }
+        setModalDetalleColaboradorOpen(true);
     };
 
     const handleClickEditarColaborador = () => {
@@ -94,6 +144,8 @@ const Colaboradores = (props) => {
         const response = await especialidadController.funcGetEspecialidad();
 
         if (response.Code === 0) {
+            // let especialidades = [...response.Result];
+            // especialidades.sor
             setListaEspecialidades(response.Result);
         } else {
             funcAlert(response.Message);
@@ -128,6 +180,7 @@ const Colaboradores = (props) => {
 
         if (response.Code === 0) {
             setModalEliminarColaboradorOpen(false);
+            setColaboradorSeleccionado(colaboradorCallCenterEntidadVacia);
             await funcGetColaboradores();
             funcAlert(response.Message, "success");
         } else {
@@ -156,6 +209,11 @@ const Colaboradores = (props) => {
                 <Tooltip title="Nuevo Colaborador Especialista" arrow>
                     <IconButton onClick={handleClickNuevoColaboradorEspecialista}>
                         <GroupAddIcon className="color-0" />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Ver detalles de colaborador" arrow>
+                    <IconButton onClick={handleClickDetalleColaborador}>
+                        <VisibilityIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Editar datos de colaborador" arrow>
@@ -192,6 +250,11 @@ const Colaboradores = (props) => {
                 usuarioSesion={usuarioSesion}
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
+            />
+            <DetalleColaborador
+                entColaborador={colaboradorSeleccionado}
+                open={modalDetalleColaboradorOpen}
+                setOpen={setModalDetalleColaboradorOpen}
             />
             <FotoColaborador
                 entColaborador={colaboradorParaModal}

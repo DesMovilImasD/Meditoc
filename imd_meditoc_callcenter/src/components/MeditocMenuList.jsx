@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { List, ListItem, ListItemText, Collapse, makeStyles, ListItemIcon } from "@material-ui/core";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
@@ -40,7 +40,7 @@ const useStyles = makeStyles({
  * Invocado desde: DrawerMenu
  *************************************************************/
 const MenuList = (props) => {
-    const { toggleDrawer } = props;
+    const { toggleDrawer, usuarioPermisos } = props;
 
     const classes = useStyles();
 
@@ -52,92 +52,117 @@ const MenuList = (props) => {
 
     return (
         <List component="div">
-            <ListItem button onClick={() => setOpenConfiguracion(!openConfiguracion)}>
-                <ListItemIcon>
-                    <SettingsIcon className="color-0" />
-                </ListItemIcon>
-                <ListItemText primary="Configuración" />
-                {openConfiguracion ? <ExpandLess /> : <ExpandMore />}
-            </ListItem>
-            <Collapse in={openConfiguracion} unmountOnExit>
-                <List component="div">
-                    <Link to={urlSystem.configuracion.usuarios} className={classes.link}>
-                        <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
-                            <ListItemIcon>
-                                <GroupIcon className="color-0" />
-                            </ListItemIcon>
-                            <ListItemText primary="Usuarios" />
-                        </ListItem>
-                    </Link>
-                    <Link to={urlSystem.configuracion.perfiles} className={classes.link}>
-                        <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
-                            <ListItemIcon>
-                                <VerifiedUserIcon className="color-0" />
-                            </ListItemIcon>
-                            <ListItemText primary="Perfiles" />
-                        </ListItem>
-                    </Link>
-                    <Link to={urlSystem.configuracion.sistema} className={classes.link}>
-                        <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
-                            <ListItemIcon>
-                                <AccountTreeIcon className="color-0" />
-                            </ListItemIcon>
-                            <ListItemText primary="Sistema" />
-                        </ListItem>
-                    </Link>
-                </List>
-            </Collapse>
-            <ListItem button onClick={() => setOpenAdministracion(!openAdministracion)}>
-                <ListItemIcon>
-                    <WorkIcon className="color-0" />
-                </ListItemIcon>
-                <ListItemText primary="Administración" />
-                {openAdministracion ? <ExpandLess /> : <ExpandMore />}
-            </ListItem>
-            <Collapse in={openAdministracion} unmountOnExit>
-                <List component="div">
-                    <Link to={urlSystem.administracion.colaboradores} className={classes.link}>
-                        <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
-                            <ListItemIcon>
-                                <AssignmentIndIcon className="color-0" />
-                            </ListItemIcon>
-                            <ListItemText primary="Colaboradores" />
-                        </ListItem>
-                    </Link>
-                    <Link to={urlSystem.administracion.institucion} className={classes.link}>
-                        <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
-                            <ListItemIcon>
-                                <BusinessIcon className="color-0" />
-                            </ListItemIcon>
-                            <ListItemText primary="Empresas" />
-                        </ListItem>
-                    </Link>
-                    <Link to={urlSystem.administracion.productos} className={classes.link}>
-                        <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
-                            <ListItemIcon>
-                                <ShoppingCartIcon className="color-0" />
-                            </ListItemIcon>
-                            <ListItemText primary="Productos" />
-                        </ListItem>
-                    </Link>
-                    <Link to={urlSystem.administracion.cupones} className={classes.link}>
-                        <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
-                            <ListItemIcon>
-                                <LoyaltyIcon className="color-0" />
-                            </ListItemIcon>
-                            <ListItemText primary="Cupones" />
-                        </ListItem>
-                    </Link>
-                    <Link to={urlSystem.administracion.especialidades} className={classes.link}>
-                        <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
-                            <ListItemIcon>
-                                <EmojiObjectsIcon className="color-0" />
-                            </ListItemIcon>
-                            <ListItemText primary="Especialidades médicas" />
-                        </ListItem>
-                    </Link>
-                </List>
-            </Collapse>
+            {usuarioPermisos.configuracion !== undefined && (
+                <Fragment>
+                    <ListItem button onClick={() => setOpenConfiguracion(!openConfiguracion)}>
+                        <ListItemIcon>
+                            <SettingsIcon className="color-0" />
+                        </ListItemIcon>
+                        <ListItemText primary="Configuración" />
+                        {openConfiguracion ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse in={openConfiguracion} unmountOnExit>
+                        <List component="div">
+                            {usuarioPermisos.configuracion.usuarios !== undefined && (
+                                <Link to={urlSystem.configuracion.usuarios} className={classes.link}>
+                                    <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
+                                        <ListItemIcon>
+                                            <GroupIcon className="color-0" />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Usuarios" />
+                                    </ListItem>
+                                </Link>
+                            )}
+                            {usuarioPermisos.configuracion.perfiles !== undefined && (
+                                <Link to={urlSystem.configuracion.perfiles} className={classes.link}>
+                                    <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
+                                        <ListItemIcon>
+                                            <VerifiedUserIcon className="color-0" />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Perfiles" />
+                                    </ListItem>
+                                </Link>
+                            )}
+                            {usuarioPermisos.configuracion.sistema !== undefined && (
+                                <Link to={urlSystem.configuracion.sistema} className={classes.link}>
+                                    <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
+                                        <ListItemIcon>
+                                            <AccountTreeIcon className="color-0" />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Sistema" />
+                                    </ListItem>
+                                </Link>
+                            )}
+                        </List>
+                    </Collapse>
+                </Fragment>
+            )}
+            {usuarioPermisos.administracion !== undefined && (
+                <Fragment>
+                    <ListItem button onClick={() => setOpenAdministracion(!openAdministracion)}>
+                        <ListItemIcon>
+                            <WorkIcon className="color-0" />
+                        </ListItemIcon>
+                        <ListItemText primary="Administración" />
+                        {openAdministracion ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse in={openAdministracion} unmountOnExit>
+                        <List component="div">
+                            {usuarioPermisos.administracion.colaboradores !== undefined && (
+                                <Link to={urlSystem.administracion.colaboradores} className={classes.link}>
+                                    <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
+                                        <ListItemIcon>
+                                            <AssignmentIndIcon className="color-0" />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Colaboradores" />
+                                    </ListItem>
+                                </Link>
+                            )}
+                            {usuarioPermisos.administracion.empresa !== undefined && (
+                                <Link to={urlSystem.administracion.institucion} className={classes.link}>
+                                    <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
+                                        <ListItemIcon>
+                                            <BusinessIcon className="color-0" />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Empresas" />
+                                    </ListItem>
+                                </Link>
+                            )}
+                            {usuarioPermisos.administracion.productos !== undefined && (
+                                <Link to={urlSystem.administracion.productos} className={classes.link}>
+                                    <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
+                                        <ListItemIcon>
+                                            <ShoppingCartIcon className="color-0" />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Productos" />
+                                    </ListItem>
+                                </Link>
+                            )}
+                            {usuarioPermisos.administracion.cupones !== undefined && (
+                                <Link to={urlSystem.administracion.cupones} className={classes.link}>
+                                    <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
+                                        <ListItemIcon>
+                                            <LoyaltyIcon className="color-0" />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Cupones" />
+                                    </ListItem>
+                                </Link>
+                            )}
+                            {usuarioPermisos.administracion.especialidades !== undefined && (
+                                <Link to={urlSystem.administracion.especialidades} className={classes.link}>
+                                    <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
+                                        <ListItemIcon>
+                                            <EmojiObjectsIcon className="color-0" />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Especialidades médicas" />
+                                    </ListItem>
+                                </Link>
+                            )}
+                        </List>
+                    </Collapse>
+                </Fragment>
+            )}
+
             {/* <ListItem button onClick={() => setOpenFolios(!openFolios)}>
                 <ListItemIcon>
                     <GradeIcon className="color-0" />
@@ -157,60 +182,80 @@ const MenuList = (props) => {
                     </Link>
                 </List>
             </Collapse> */}
-            <ListItem button onClick={() => setOpenCallCenter(!openCallCenter)}>
-                <ListItemIcon>
-                    <CallIcon className="color-0" />
-                </ListItemIcon>
-                <ListItemText primary="CallCenter" />
-                {openCallCenter ? <ExpandLess /> : <ExpandMore />}
-            </ListItem>
-            <Collapse in={openCallCenter} unmountOnExit>
-                <List component="div">
-                    <Link to={urlSystem.callcenter.consultas} className={classes.link}>
-                        <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
-                            <ListItemIcon>
-                                <ContactPhoneIcon className="color-0" />
-                            </ListItemIcon>
-                            <ListItemText primary="Consultas" />
-                        </ListItem>
-                    </Link>
-                    <Link to={urlSystem.callcenter.administrarConsultas} className={classes.link}>
-                        <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
-                            <ListItemIcon>
-                                <AddIcCallIcon className="color-0" />
-                            </ListItemIcon>
-                            <ListItemText primary="Administrar consultas" />
-                        </ListItem>
-                    </Link>
-                </List>
-            </Collapse>
-            <ListItem button onClick={() => setOpenReportes(!openReportes)}>
-                <ListItemIcon>
-                    <PrintIcon className="color-0" />
-                </ListItemIcon>
-                <ListItemText primary="Reportes" />
-                {openReportes ? <ExpandLess /> : <ExpandMore />}
-            </ListItem>
-            <Collapse in={openReportes} unmountOnExit>
-                <List component="div">
-                    <Link to={urlSystem.reportes.ordenes} className={classes.link}>
-                        <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
-                            <ListItemIcon>
-                                <LocalMallIcon className="color-0" />
-                            </ListItemIcon>
-                            <ListItemText primary="Conekta" />
-                        </ListItem>
-                    </Link>
-                    <Link to={urlSystem.reportes.doctores} className={classes.link}>
-                        <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
-                            <ListItemIcon>
-                                <LocalHospitalIcon className="color-0" />
-                            </ListItemIcon>
-                            <ListItemText primary="Doctores" />
-                        </ListItem>
-                    </Link>
-                </List>
-            </Collapse>
+
+            {usuarioPermisos.callcenter !== undefined && (
+                <Fragment>
+                    <ListItem button onClick={() => setOpenCallCenter(!openCallCenter)}>
+                        <ListItemIcon>
+                            <CallIcon className="color-0" />
+                        </ListItemIcon>
+                        <ListItemText primary="CallCenter" />
+                        {openCallCenter ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse in={openCallCenter} unmountOnExit>
+                        <List component="div">
+                            {usuarioPermisos.callcenter.consultas !== undefined && (
+                                <Link to={urlSystem.callcenter.consultas} className={classes.link}>
+                                    <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
+                                        <ListItemIcon>
+                                            <ContactPhoneIcon className="color-0" />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Consultas" />
+                                    </ListItem>
+                                </Link>
+                            )}
+
+                            {usuarioPermisos.callcenter.administrarconsultas !== undefined && (
+                                <Link to={urlSystem.callcenter.administrarConsultas} className={classes.link}>
+                                    <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
+                                        <ListItemIcon>
+                                            <AddIcCallIcon className="color-0" />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Administrar consultas" />
+                                    </ListItem>
+                                </Link>
+                            )}
+                        </List>
+                    </Collapse>
+                </Fragment>
+            )}
+
+            {usuarioPermisos.reportes !== undefined && (
+                <Fragment>
+                    <ListItem button onClick={() => setOpenReportes(!openReportes)}>
+                        <ListItemIcon>
+                            <PrintIcon className="color-0" />
+                        </ListItemIcon>
+                        <ListItemText primary="Reportes" />
+                        {openReportes ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse in={openReportes} unmountOnExit>
+                        <List component="div">
+                            {usuarioPermisos.reportes.ventas !== undefined && (
+                                <Link to={urlSystem.reportes.ordenes} className={classes.link}>
+                                    <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
+                                        <ListItemIcon>
+                                            <LocalMallIcon className="color-0" />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Conekta" />
+                                    </ListItem>
+                                </Link>
+                            )}
+
+                            {usuarioPermisos.reportes.doctores !== undefined && (
+                                <Link to={urlSystem.reportes.doctores} className={classes.link}>
+                                    <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
+                                        <ListItemIcon>
+                                            <LocalHospitalIcon className="color-0" />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Doctores" />
+                                    </ListItem>
+                                </Link>
+                            )}
+                        </List>
+                    </Collapse>
+                </Fragment>
+            )}
         </List>
     );
 };

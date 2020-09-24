@@ -13,9 +13,11 @@ import {
 } from "@material-ui/core";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import PromocionesController from "../../../../controllers/PromocionesController";
+import { useEffect } from "react";
+import { EnumCuponCategoria } from "../../../../configurations/enumConfig";
 
 const FormCupon = (props) => {
-    const { open, setOpen, funcObtenerCupones, usuarioSesion, funcLoader, funcAlert } = props;
+    const { entCupon, open, setOpen, funcObtenerCupones, usuarioSesion, funcLoader, funcAlert } = props;
 
     const personalizado = "personalizado";
     const aleatorio = "aleatorio";
@@ -29,7 +31,7 @@ const FormCupon = (props) => {
     const [formCupon, setFormCupon] = useState({
         txtCodigoCupon: "",
         txtLongitudCupon: "",
-        txtTipoCupon: "1",
+        txtTipoCupon: EnumCuponCategoria.DescuentoMonto.toString(),
         txtMontoDescuento: "",
         txtPorcentajeDescuento: "",
         txtTotalCupones: "",
@@ -37,7 +39,7 @@ const FormCupon = (props) => {
         txtDescripcion: "",
     });
 
-    const [formCuponOK, setFormCuponOK] = useState({
+    const validacionFormulario = {
         txtCodigoCupon: true,
         txtLongitudCupon: true,
         txtTipoCupon: true,
@@ -46,7 +48,23 @@ const FormCupon = (props) => {
         txtTotalCupones: true,
         txtDiasActivos: true,
         txtDescripcion: true,
-    });
+    };
+
+    const [formCuponOK, setFormCuponOK] = useState(validacionFormulario);
+
+    useEffect(() => {
+        setFormCupon({
+            txtCodigoCupon: entCupon.fsCodigo,
+            txtLongitudCupon: entCupon.fiLongitudCodigo === 0 ? "" : entCupon.fiLongitudCodigo,
+            txtTipoCupon: entCupon.fiIdCuponCategoria.toString(),
+            txtMontoDescuento: entCupon.fnMontoDescuento === 0 ? "" : entCupon.fnMontoDescuento,
+            txtPorcentajeDescuento: entCupon.fnPorcentajeDescuento === 0 ? "" : entCupon.fnPorcentajeDescuento,
+            txtTotalCupones: entCupon.fiTotalLanzamiento === 0 ? "" : entCupon.fiTotalLanzamiento,
+            txtDiasActivos: entCupon.fiDiasActivo === 0 ? "" : entCupon.fiDiasActivo,
+            txtDescripcion: entCupon.fsDescripcion,
+        });
+        setFormCuponOK(validacionFormulario);
+    }, [entCupon]);
 
     const handleChangeFormCupon = (e) => {
         const nombreCampo = e.target.name;
@@ -137,16 +155,7 @@ const FormCupon = (props) => {
     };
 
     const handleClickGuardarCupon = async () => {
-        let formCuponOKValidacion = {
-            txtCodigoCupon: true,
-            txtLongitudCupon: true,
-            txtTipoCupon: true,
-            txtMontoDescuento: true,
-            txtPorcentajeDescuento: true,
-            txtTotalCupones: true,
-            txtDiasActivos: true,
-            txtDescripcion: true,
-        };
+        let formCuponOKValidacion = { ...validacionFormulario };
 
         let bFormError = false;
 
@@ -167,7 +176,7 @@ const FormCupon = (props) => {
             bFormError = true;
         }
 
-        if (formCupon.txtTipoCupon === "1") {
+        if (formCupon.txtTipoCupon === EnumCuponCategoria.DescuentoMonto.toString()) {
             if (formCupon.txtMontoDescuento === "") {
                 formCuponOKValidacion.txtMontoDescuento = false;
                 bFormError = true;

@@ -4,7 +4,7 @@ import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
+import VisibilityIcon from "@material-ui/icons/Visibility";
 import { Tooltip, IconButton } from "@material-ui/core";
 import MeditocBody from "../../../utilidades/MeditocBody";
 import { useState } from "react";
@@ -14,6 +14,7 @@ import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 import DetalleProducto from "./DetalleProducto";
 import ProductoController from "../../../../controllers/ProductoController";
 import { useEffect } from "react";
+import { EnumTipoProducto } from "../../../../configurations/enumConfig";
 
 /*************************************************************
  * Descripcion: Submódulo para vista principal "PRODUCTOS" del portal Meditoc
@@ -37,7 +38,7 @@ const Productos = (props) => {
 
     const productoEntidadVacia = {
         iIdProducto: 0,
-        iIdTipoProducto: 1,
+        iIdTipoProducto: EnumTipoProducto.Membresia,
         sNombre: "",
         sNombreCorto: "",
         sDescripcion: "",
@@ -103,6 +104,7 @@ const Productos = (props) => {
 
         if (response.Code === 0) {
             await funcConsultarProductos();
+            setProductoSeleccionado(productoEntidadVacia);
             funcAlert(response.Message, "success");
         } else {
             funcAlert(response.Message);
@@ -138,9 +140,9 @@ const Productos = (props) => {
                         <AddIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
-                <Tooltip title="Detalle producto" arrow>
+                <Tooltip title="Ver detalle de producto" arrow>
                     <IconButton onClick={handleClickDetallesProducto}>
-                        <FormatListBulletedIcon className="color-0" />
+                        <VisibilityIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Editar producto" arrow>

@@ -1,8 +1,8 @@
 import { Button, Grid, Hidden } from "@material-ui/core";
+import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import React from "react";
-import { MdAccountBox } from "react-icons/md";
 
-const MedicInfo = (props) => {
+const DirectorioMedicoDetalle = (props) => {
     const { entColaborador } = props;
 
     return (
@@ -18,7 +18,7 @@ const MedicInfo = (props) => {
                                     className="directory-doctor-img"
                                 />
                             ) : (
-                                <MdAccountBox style={{ fontSize: 220, color: "#ccc" }} />
+                                <AccountBoxIcon style={{ fontSize: 220, color: "#ccc" }} />
                             )}
                         </div>
                     </Grid>
@@ -39,7 +39,7 @@ const MedicInfo = (props) => {
                                         className="directory-doctor-img"
                                     />
                                 ) : (
-                                    <MdAccountBox style={{ fontSize: 220, color: "#ccc" }} />
+                                    <AccountBoxIcon style={{ fontSize: 220, color: "#ccc" }} />
                                 )}
                             </Grid>
                         </Hidden>
@@ -110,4 +110,4 @@ const MedicInfo = (props) => {
     );
 };
 
-export default MedicInfo;
+export default DirectorioMedicoDetalle;

@@ -15,15 +15,17 @@ const FormEspecialidad = (props) => {
         txtNombreEspecialidad: "",
     });
 
+    const validacionFormulario = {
+        txtNombreEspecialidad: true,
+    };
+    const [formEspecialidadOK, setFormEspecialidadOK] = useState(validacionFormulario);
+
     useEffect(() => {
         setFormEspecialidad({
             txtNombreEspecialidad: entEspecialidad.sNombre,
         });
+        setFormEspecialidadOK(validacionFormulario);
     }, [entEspecialidad]);
-
-    const [formEspecialidadOK, setFormEspecialidadOK] = useState({
-        txtNombreEspecialidad: true,
-    });
 
     const handleChangeFormEspecialidad = (e) => {
         const nombreCampo = e.target.name;
@@ -52,9 +54,7 @@ const FormEspecialidad = (props) => {
     };
 
     const handleClickSaveEspecialidad = async () => {
-        let formEspecialidadOKValidacion = {
-            txtNombreEspecialidad: true,
-        };
+        let formEspecialidadOKValidacion = { ...validacionFormulario };
 
         let formError = false;
 

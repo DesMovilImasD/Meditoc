@@ -18,12 +18,13 @@ import { useEffect } from "react";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import { listIconsMedicalProducts } from "../../../../configurations/iconProductConfig";
 import ProductoController from "../../../../controllers/ProductoController";
+import { EnumTipoProducto } from "../../../../configurations/enumConfig";
 
 const FormProducto = (props) => {
     const { entProducto, open, setOpen, funcConsultarProductos, usuarioSesion, funcLoader, funcAlert } = props;
 
     const [formProducto, setFormProducto] = useState({
-        rdTipoProducto: "1",
+        rdTipoProducto: EnumTipoProducto.Membresia.toString(),
         chkComercial: false,
         txtNombreProducto: "",
         txtNombreCorto: "",
@@ -34,7 +35,7 @@ const FormProducto = (props) => {
         txtPrefijoFolio: "",
     });
 
-    const [formProductoOK, setFormProductoOK] = useState({
+    const validacionFormulario = {
         txtNombreProducto: true,
         txtNombreCorto: true,
         txtDescripcion: true,
@@ -42,7 +43,9 @@ const FormProducto = (props) => {
         txtMesesVigencia: true,
         txtIcono: true,
         txtPrefijoFolio: true,
-    });
+    };
+
+    const [formProductoOK, setFormProductoOK] = useState(validacionFormulario);
 
     useEffect(() => {
         setFormProducto({
@@ -56,6 +59,7 @@ const FormProducto = (props) => {
             txtIcono: entProducto.sIcon,
             txtPrefijoFolio: entProducto.sPrefijoFolio,
         });
+        setFormProductoOK(validacionFormulario);
     }, [entProducto]);
 
     const handleChangeFormProducto = (e) => {
@@ -134,15 +138,7 @@ const FormProducto = (props) => {
     };
 
     const handleClickGuardarProducto = async () => {
-        let formProductoOKValidacion = {
-            txtNombreProducto: true,
-            txtNombreCorto: true,
-            txtDescripcion: true,
-            txtCosto: true,
-            txtMesesVigencia: true,
-            txtIcono: true,
-            txtPrefijoFolio: true,
-        };
+        let formProductoOKValidacion = { ...validacionFormulario };
         let bFormError = false;
 
         if (formProducto.txtNombreProducto === "") {
@@ -168,7 +164,10 @@ const FormProducto = (props) => {
             bFormError = true;
         }
 
-        if (formProducto.txtMesesVigencia === "" && formProducto.rdTipoProducto === "1") {
+        if (
+            formProducto.txtMesesVigencia === "" &&
+            formProducto.rdTipoProducto === EnumTipoProducto.Membresia.toString()
+        ) {
             formProductoOKValidacion.txtMesesVigencia = false;
             bFormError = true;
         }
@@ -195,7 +194,10 @@ const FormProducto = (props) => {
             sNombreCorto: formProducto.txtNombreCorto,
             sDescripcion: formProducto.txtDescripcion,
             fCosto: parseFloat(formProducto.txtCosto),
-            iMesVigencia: formProducto.rdTipoProducto === "2" ? 0 : parseInt(formProducto.txtMesesVigencia),
+            iMesVigencia:
+                formProducto.rdTipoProducto === EnumTipoProducto.Servicio.toString()
+                    ? 0
+                    : parseInt(formProducto.txtMesesVigencia),
             sIcon: formProducto.txtIcono,
             bComercial: formProducto.chkComercial,
             sPrefijoFolio: formProducto.txtPrefijoFolio,
@@ -284,14 +286,22 @@ const FormProducto = (props) => {
                             value={formProducto.rdTipoProducto}
                             onChange={handleChangeFormProducto}
                         >
-                            <FormControlLabel value="1" control={<Radio />} label="Membresía" />
-                            <FormControlLabel value="2" control={<Radio />} label="Servicio" />
+                            <FormControlLabel
+                                value={EnumTipoProducto.Membresia.toString()}
+                                control={<Radio />}
+                                label="Membresía"
+                            />
+                            <FormControlLabel
+                                value={EnumTipoProducto.Servicio.toString()}
+                                control={<Radio />}
+                                label="Servicio"
+                            />
                         </RadioGroup>
                     </FormControl>
                 </Grid>
 
                 <Grid item sm={6} xs={12}>
-                    {formProducto.rdTipoProducto === "1" ? (
+                    {formProducto.rdTipoProducto === EnumTipoProducto.Membresia.toString() ? (
                         <TextField
                             name="txtMesesVigencia"
                             label="Meses de vigencia de folio:"

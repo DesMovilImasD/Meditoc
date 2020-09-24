@@ -99,6 +99,13 @@ const FormBuscarFolio = (props) => {
                     folioEncontrado.sTelefonoPaciente === null ? "" : folioEncontrado.sTelefonoPaciente,
                 txtBuscarCorreoPaciente: folioEncontrado.sCorreoPaciente,
             });
+        } else {
+            setFormBuscarFolio({
+                txtBuscarFolio: "",
+                txtBuscarNombrePaciente: "",
+                txtBuscarTelefonoPaciente: "",
+                txtBuscarCorreoPaciente: "",
+            });
         }
     }, [folioEncontrado]);
 
@@ -125,7 +132,7 @@ const FormBuscarFolio = (props) => {
             setEntCallCenter(response.Result);
             setOpen(false);
             await funcIniciarConsulta(response.Result);
-            funcAlert(response.Message, "success");
+            //funcAlert(response.Message, "success");
         } else {
             funcAlert(response.Message);
         }

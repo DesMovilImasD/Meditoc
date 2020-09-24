@@ -37,6 +37,8 @@ function App() {
     bActivo: false,
     bBaja: false,
   })
+
+  const [usuarioPermisos, setUsuarioPermisos] = useState(null)
   const [usuarioActivo, setUsuarioActivo] = useState(false)
 
   //Guardar valores de estado del loader
@@ -97,6 +99,7 @@ function App() {
             {usuarioActivo === true ? (
               <MeditocContentMain
                 usuarioSesion={usuarioSesion}
+                usuarioPermisos={usuarioPermisos}
                 setUsuarioSesion={setUsuarioSesion}
                 setUsuarioActivo={setUsuarioActivo}
                 funcLoader={funcLoader}
@@ -106,6 +109,7 @@ function App() {
               <MeditocLogin
                 setUsuarioSesion={setUsuarioSesion}
                 setUsuarioActivo={setUsuarioActivo}
+                setUsuarioPermisos={setUsuarioPermisos}
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
               />

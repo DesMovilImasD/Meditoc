@@ -22,13 +22,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.BSaveSubModulo);
-            logger.Info(IMDSerialize.Serialize(67823458189732, $"Inicia {metodo}(EntSubModulo entCreateModulo)", entSubModulo));
+            logger.Info(IMDSerialize.Serialize(67823458189732, $"Inicia {metodo}(EntSubModulo entSubModulo)", entSubModulo));
 
             try
             {
                 if (entSubModulo == null)
                 {
-                    response.Code = 8768767234634;
+                    response.Code = -87687687263498;
                     response.Message = "No se ingresó ningun sub módulo.";
                     response.Result = false;
                     return response;
@@ -45,7 +45,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 
                 if (response.Code != 0)
                 {
-                    response.Message = "Hubo un error al guardar el sub módulo.";
+                    response.Message = "Hubo un error al guardar el submódulo.";
                     response.Result = false;
                     return response;
                 }

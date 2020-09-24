@@ -11,6 +11,7 @@ import FormCupon from "./FormCupon";
 import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 import PromocionesController from "../../../../controllers/PromocionesController";
 import { useEffect } from "react";
+import { EnumCuponCategoria } from "../../../../configurations/enumConfig";
 
 const Cupones = (props) => {
     const { usuarioSesion, funcLoader, funcAlert } = props;
@@ -30,15 +31,34 @@ const Cupones = (props) => {
 
     const cuponEntidadVacia = {
         fiIdCupon: 0,
+        fiIdCuponCategoria: EnumCuponCategoria.DescuentoMonto,
+        fsDescripcion: "",
+        fsCodigo: "",
+        fiLongitudCodigo: 0,
+        fnMontoDescuento: 0,
+        fnPorcentajeDescuento: 0,
+        fiTotalLanzamiento: 0,
+        fiDiasActivo: 0,
     };
 
     const [listaCupones, setListaCupones] = useState([]);
     const [cuponSeleccionado, setCuponSeleccionado] = useState(cuponEntidadVacia);
+    const [cuponParaModalForm, setCuponParaModalForm] = useState(cuponEntidadVacia);
 
     const [modalFormCuponOpen, setModalFormCuponOpen] = useState(false);
     const [modalEliminarCuponOpen, setModalEliminarCuponOpen] = useState(false);
 
     const handleClickCrearCupon = () => {
+        setCuponParaModalForm(cuponEntidadVacia);
+        setModalFormCuponOpen(true);
+    };
+
+    const handleEditarCupon = () => {
+        if (cuponSeleccionado.fiIdCupon === 0) {
+            funcAlert("Seleccione un cupón para continuar");
+            return;
+        }
+        setCuponParaModalForm(cuponSeleccionado);
         setModalFormCuponOpen(true);
     };
 
@@ -75,6 +95,7 @@ const Cupones = (props) => {
         if (response.Code === 0) {
             setModalEliminarCuponOpen(false);
             await funcObtenerCupones();
+            setCuponSeleccionado(cuponEntidadVacia);
             funcAlert(response.Message, "success");
         } else {
             funcAlert(response.Message);
@@ -96,7 +117,7 @@ const Cupones = (props) => {
                     </IconButton>
                 </Tooltip>
                 {/* <Tooltip title="Editar cupón" arrow>
-                    <IconButton>
+                    <IconButton onClick={handleEditarCupon}>
                         <EditIcon className="color-0" />
                     </IconButton>
                 </Tooltip> */}
@@ -116,6 +137,7 @@ const Cupones = (props) => {
                 />
             </MeditocBody>
             <FormCupon
+                entCupon={cuponParaModalForm}
                 open={modalFormCuponOpen}
                 setOpen={setModalFormCuponOpen}
                 funcObtenerCupones={funcObtenerCupones}

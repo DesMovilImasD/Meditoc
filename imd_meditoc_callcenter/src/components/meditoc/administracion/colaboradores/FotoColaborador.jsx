@@ -60,6 +60,7 @@ const FotoColaborador = (props) => {
             funcLoader();
         });
         input.click();
+        input.remove();
     };
 
     const funcGetColaboradorFoto = async () => {
