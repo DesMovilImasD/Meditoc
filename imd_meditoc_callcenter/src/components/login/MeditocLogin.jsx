@@ -203,7 +203,7 @@ const Login = (props) => {
 
         switch (iIdPerfil) {
             case EnumPerfilesPrincipales.Superadministrador:
-                history.push(urlSystem.configuracion.sistema);
+                history.push(urlSystem.configuracion.perfiles);
                 break;
             case EnumPerfilesPrincipales.Administrador:
                 history.push(urlSystem.configuracion.usuarios);

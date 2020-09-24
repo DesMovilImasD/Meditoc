@@ -39,18 +39,23 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
             busConsulta = new BusConsulta();
         }
 
+        /// <summary>
+        /// Cambia el estatus del colaborador OCUPADO - DISPONIBLE
+        /// </summary>
+        /// <param name="entOnlineMod"></param>
+        /// <returns></returns>
         public IMDResponse<bool> BCallCenterOnline(EntOnlineMod entOnlineMod)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.BCallCenterOnline);
-            logger.Info(IMDSerialize.Serialize(67823458509079, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458509079, $"Inicia {metodo}(EntOnlineMod entOnlineMod)", entOnlineMod));
 
             try
             {
                 if (entOnlineMod == null)
                 {
-                    response.Code = 7687672346;
+                    response.Code = 767872123751097;
                     response.Message = "No se ingresó información del colaborador";
                     return response;
                 }
@@ -69,19 +74,26 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
             catch (Exception ex)
             {
                 response.Code = 67823458509856;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al intentar actualizar el estatus";
 
-                logger.Error(IMDSerialize.Serialize(67823458509856, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458509856, $"Error en {metodo}(EntOnlineMod entOnlineMod): {ex.Message}", entOnlineMod, ex, response));
             }
             return response;
         }
 
+        /// <summary>
+        /// Crea o busca la consulta para un paciente dependiendo del tipo de colaborador basandose en el folio proporcionado
+        /// </summary>
+        /// <param name="iIdColaborador"></param>
+        /// <param name="sFolio"></param>
+        /// <param name="iIdUsuarioMod"></param>
+        /// <returns></returns>
         public IMDResponse<EntCallCenter> BCallCenterStartWithFolio(int iIdColaborador, string sFolio, int iIdUsuarioMod)
         {
             IMDResponse<EntCallCenter> response = new IMDResponse<EntCallCenter>();
 
             string metodo = nameof(this.BCallCenterStartWithFolio);
-            logger.Info(IMDSerialize.Serialize(67823458513741, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458513741, $"Inicia {metodo}(int iIdColaborador, string sFolio, int iIdUsuarioMod)", iIdColaborador, sFolio, iIdUsuarioMod));
 
             try
             {
@@ -94,7 +106,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                 }
                 if (resGetColaborador.Result.Count != 1)
                 {
-                    response.Code = 8793487583457;
+                    response.Code = -88793457892374;
                     response.Message = "El colaborador no existe";
                     return response;
                 }
@@ -108,18 +120,18 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                 }
                 if (resGetFolio.Result.Count != 1)
                 {
-                    response.Code = 8793487583457;
+                    response.Code = -23459710761984;
                     response.Message = "El folio no existe o ha expirado";
                     return response;
                 }
 
                 entCallCenter.entFolio = resGetFolio.Result.First();
 
-                if(entCallCenter.entFolio.dtFechaVencimiento != null)
+                if (entCallCenter.entFolio.dtFechaVencimiento != null)
                 {
-                    if(DateTime.Now > entCallCenter.entFolio.dtFechaVencimiento)
+                    if (DateTime.Now > entCallCenter.entFolio.dtFechaVencimiento)
                     {
-                        response.Code = 8793487583457;
+                        response.Code = -9776259868345;
                         response.Message = $"El folio expiró el {entCallCenter.entFolio.dtFechaVencimiento?.ToString("dd/MM/yyyy")} a las {entCallCenter.entFolio.dtFechaVencimiento?.ToString("hh:mm tt")}";
                         return response;
                     }
@@ -133,7 +145,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
 
                 if (resGetPaciente.Result.Count != 1)
                 {
-                    response.Code = 8793487583457;
+                    response.Code = -2345771987764112;
                     response.Message = "El paciente no existe";
                     return response;
                 }
@@ -168,7 +180,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
 
                     if (resVerificarConsulta.Result.Count < 1)
                     {
-                        response.Code = 747837678345;
+                        response.Code = -56878843909375;
                         response.Message = $"No se encontró una consulta programada para el paciente. La tolerancia para el horario programado de la consulta es de {ConfigurationManager.AppSettings["iMinToleraciaConsultaInicio"]} minutos antes de la hora y {ConfigurationManager.AppSettings["iMinToleraciaConsultaFin"]} minutos después de la hora de consulta";
                         return response;
                     }
@@ -177,14 +189,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
 
                     if (entDetalleConsulta.iIdEstatusConsulta == (int)EnumEstatusConsulta.Cancelado)
                     {
-                        response.Code = 8787634765784;
+                        response.Code = -978912879598735;
                         response.Message = $"La consulta fue cancelada";
                         return response;
                     }
 
                     if (entDetalleConsulta.iIdEstatusConsulta == (int)EnumEstatusConsulta.Finalizado)
                     {
-                        response.Code = 4778736783475;
+                        response.Code = -4498871498234;
                         response.Message = $"La consulta ya ha finalizado";
                         return response;
                     }
@@ -201,7 +213,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                 }
                 else
                 {
-                    response.Code = 348670987235;
+                    response.Code = -3338296867623;
                     response.Message = $"No se puede determinar el tipo de cuenta del usuario";
                     return response;
                 }
@@ -222,25 +234,32 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
             catch (Exception ex)
             {
                 response.Code = 67823458514518;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al acceder a la consulta del paciente";
 
-                logger.Error(IMDSerialize.Serialize(67823458514518, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458514518, $"Error en {metodo}(int iIdColaborador, string sFolio, int iIdUsuarioMod): {ex.Message}", iIdColaborador, sFolio, iIdUsuarioMod, ex, response));
             }
             return response;
         }
 
+        /// <summary>
+        /// Iniciar la consulta seteando la fecha de inicio de una consulta proporcionada
+        /// </summary>
+        /// <param name="iIdConsulta"></param>
+        /// <param name="iIdColaborador"></param>
+        /// <param name="iIdUsuarioMod"></param>
+        /// <returns></returns>
         public IMDResponse<bool> BIniciarConsulta(int iIdConsulta, int iIdColaborador, int iIdUsuarioMod)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.BIniciarConsulta);
-            logger.Info(IMDSerialize.Serialize(67823458526173, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458526173, $"Inicia {metodo}(int iIdConsulta, int iIdColaborador, int iIdUsuarioMod)", iIdConsulta, iIdColaborador, iIdUsuarioMod));
 
             try
             {
                 if (iIdConsulta == 0)
                 {
-                    response.Code = 8793487583457;
+                    response.Code = -8793487583457;
                     response.Message = "La consulta no existe";
                     return response;
                 }
@@ -258,47 +277,39 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                     return resSaveConsulta.GetResponse<bool>();
                 }
 
-                //EntOnlineMod entOnlineMod = new EntOnlineMod
-                //{
-                //    bOcupado = true,
-                //    bOnline = true,
-                //    iIdColaborador = iIdColaborador,
-                //    iIdUsuarioMod = iIdUsuarioMod
-                //};
-
-                //IMDResponse<bool> resUpdColaborador = this.BCallCenterOnline(entOnlineMod);
-                //if (resSaveConsulta.Code != 0)
-                //{
-                //    return resUpdColaborador;
-                //}
-
                 response.Code = 0;
-                //response.Message = "Consulta iniciada. " + resUpdColaborador.Message;
                 response.Message = "Consulta iniciada. ";
                 response.Result = true;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458526950;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al iniciar la consulta";
 
-                logger.Error(IMDSerialize.Serialize(67823458526950, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458526950, $"Error en {metodo}(int iIdConsulta, int iIdColaborador, int iIdUsuarioMod): {ex.Message}", iIdConsulta, iIdColaborador, iIdUsuarioMod, ex, response));
             }
             return response;
         }
 
+        /// <summary>
+        /// Finaliza la consulta seteando la fecha de fin de consulta proporcionado
+        /// </summary>
+        /// <param name="iIdConsulta"></param>
+        /// <param name="iIdColaborador"></param>
+        /// <param name="iIdUsuarioMod"></param>
+        /// <returns></returns>
         public IMDResponse<bool> BFinalizarConsulta(int iIdConsulta, int iIdColaborador, int iIdUsuarioMod)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.BFinalizarConsulta);
-            logger.Info(IMDSerialize.Serialize(67823458527727, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458527727, $"Inicia {metodo}(int iIdConsulta, int iIdColaborador, int iIdUsuarioMod)", iIdConsulta, iIdColaborador, iIdUsuarioMod));
 
             try
             {
                 if (iIdConsulta == 0)
                 {
-                    response.Code = 8793487583457;
+                    response.Code = -676363680712478;
                     response.Message = "La consulta no existe";
                     return response;
                 }
@@ -325,7 +336,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
 
                 if (resGetConsulta.Result.Count < 1)
                 {
-                    response.Code = 8793487583457;
+                    response.Code = -87812314544512;
                     response.Message = "La consulta no existe";
                     return response;
                 }
@@ -361,9 +372,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
             catch (Exception ex)
             {
                 response.Code = 67823458528504;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al intentar finalizar la consulta";
 
-                logger.Error(IMDSerialize.Serialize(67823458528504, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458528504, $"Error en {metodo}(int iIdConsulta, int iIdColaborador, int iIdUsuarioMod): {ex.Message}", iIdConsulta, iIdColaborador, iIdUsuarioMod, ex, response));
             }
             return response;
         }

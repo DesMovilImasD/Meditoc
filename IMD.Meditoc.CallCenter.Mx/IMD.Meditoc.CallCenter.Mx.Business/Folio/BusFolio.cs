@@ -39,12 +39,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
         DatFolio datFolio;
         BusUsuario busUsuario;
         BusConsulta busConsulta;
+        BusProducto busProducto;
 
         public BusFolio()
         {
             datFolio = new DatFolio();
             busUsuario = new BusUsuario();
             busConsulta = new BusConsulta();
+            busProducto = new BusProducto();
         }
 
         public IMDResponse<EntDetalleCompra> BNuevoFolioCompra(EntConecktaPago entConecktaPago)
@@ -56,7 +58,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
             try
             {
-                BusProducto busProducto = new BusProducto();
                 IMDResponse<List<EntProducto>> lstProductos = busProducto.BObtenerProductos(null);
 
                 if (lstProductos.Result == null)
@@ -512,7 +513,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 entPaciente.sCorreo = "PPACIENTE@HOTMAIL.COM";
                 entPaciente.sNombre = "PACIENTE";
 
-                BusProducto busProducto = new BusProducto();
                 IMDResponse<List<EntProducto>> lstProductos = busProducto.BObtenerProductos(null);
 
                 if (lstProductos.Result == null)
@@ -804,7 +804,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     return response;
                 }
 
-                DateTime? buscadorConsultaProgramadaInicio = entNuevaConsulta?.consulta?.dtFechaProgramadaInicio?.AddMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["iMinToleraciaConsultaInicio"]) * -1);
+                string inicioString = entNuevaConsulta?.consulta?.dtFechaProgramadaInicio?.ToString("dd/MM/yyyy HH:mm");
+                string finString = entNuevaConsulta?.consulta?.dtFechaProgramadaFin?.ToString("dd/MM/yyyy HH:mm");
+
+                entNuevaConsulta.consulta.dtFechaProgramadaInicio = Convert.ToDateTime(inicioString);
+                entNuevaConsulta.consulta.dtFechaProgramadaFin = Convert.ToDateTime(finString);
+
+                DateTime ? buscadorConsultaProgramadaInicio = entNuevaConsulta?.consulta?.dtFechaProgramadaInicio?.AddMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["iMinToleraciaConsultaInicio"]) * -1);
                 DateTime? buscadorConsultaProgramadaFin = entNuevaConsulta?.consulta?.dtFechaProgramadaFin?.AddMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["iMinToleraciaConsultaFin"]));
 
                 IMDResponse<List<EntDetalleConsulta>> resGetConsultas = busConsulta.BGetDisponibilidadConsulta((int)entNuevaConsulta.consulta.iIdColaborador, entNuevaConsulta.consulta.iIdConsulta, buscadorConsultaProgramadaInicio, buscadorConsultaProgramadaFin);
@@ -856,7 +862,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
             try
             {
-                IMDResponse<List<EntFolioReporte>> resGetFolioExiste = this.BGetFolios(psFolio: entNuevaConsulta.sFolio, pbActivo:null, pbBaja:null);
+                IMDResponse<List<EntFolioReporte>> resGetFolioExiste = this.BGetFolios(psFolio: entNuevaConsulta.sFolio, pbActivo: null, pbBaja: null);
                 if (resGetFolioExiste.Code != 0)
                 {
                     return resGetFolioExiste.GetResponse<EntDetalleCompra>();
@@ -873,7 +879,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 EntFolioFV entFolioFV = new EntFolioFV
                 {
-                    dtFechaVencimiento = (DateTime)entNuevaConsulta?.consulta?.dtFechaProgramadaFin?.AddHours(1),
+                    dtFechaVencimiento = (DateTime)entNuevaConsulta?.consulta?.dtFechaProgramadaFin,
                     iIdEmpresa = folioExistente.iIdEmpresa,
                     iIdUsuario = entNuevaConsulta.iIdUsuarioMod,
                     lstFolios = new List<EntFolioFVItem>
@@ -965,7 +971,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 entFolio.iIdProducto = (int)EnumProductos.OrientacionEspecialistaID;
 
-                entFolio.dtFechaVencimiento = (DateTime)entNuevaConsulta.consulta.dtFechaProgramadaFin?.AddHours(1);
+                entFolio.dtFechaVencimiento = (DateTime)entNuevaConsulta.consulta.dtFechaProgramadaFin;
 
                 BusGeneratePassword busGenerate = new BusGeneratePassword();
 

@@ -149,22 +149,24 @@ const Consulta = (props) => {
             txtFechaProgramadaFin: true,
         };
 
-        if (formConsulta.txtNombrePaciente === "") {
-            formConsultaOKValidacion.txtNombrePaciente = false;
-            formError = true;
-        }
-
-        if (entConsulta.iIdConsulta === 0) {
-            const telefonoValidacion = formConsulta.txtTelefonoPaciente.replace(/ /g, "");
-
-            if (telefonoValidacion === "" || telefonoValidacion.length !== 10) {
-                formConsultaOKValidacion.txtTelefonoPaciente = false;
+        if (formConsulta.txtFolio === "") {
+            if (formConsulta.txtNombrePaciente === "") {
+                formConsultaOKValidacion.txtNombrePaciente = false;
                 formError = true;
             }
 
-            if (formConsulta.txtCorreoPaciente === "" || !rxCorreo.test(formConsulta.txtCorreoPaciente)) {
-                formConsultaOKValidacion.txtCorreoPaciente = false;
-                formError = true;
+            if (entConsulta.iIdConsulta === 0) {
+                const telefonoValidacion = formConsulta.txtTelefonoPaciente.replace(/ /g, "");
+
+                if (telefonoValidacion === "" || telefonoValidacion.length !== 10) {
+                    formConsultaOKValidacion.txtTelefonoPaciente = false;
+                    formError = true;
+                }
+
+                if (formConsulta.txtCorreoPaciente === "" || !rxCorreo.test(formConsulta.txtCorreoPaciente)) {
+                    formConsultaOKValidacion.txtCorreoPaciente = false;
+                    formError = true;
+                }
             }
         }
 
@@ -225,77 +227,95 @@ const Consulta = (props) => {
             setOpen={setOpen}
         >
             <Grid container spacing={3}>
-                <Grid item xs={12}>
-                    <span className="rob-nor bold size-15 color-4">FOLIO DEL PACIENTE</span>
-                    <br />
-                    {entConsulta.iIdConsulta === 0 ? (
-                        <span className="rob-nor size-15 color-4">
-                            (Ingresar solamente si el paciente ya cuenta con un folio)
-                        </span>
-                    ) : null}
+                <Grid item sm={6} xs={12}>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            <span className="rob-nor bold size-15 color-4">FOLIO DEL PACIENTE</span>
+                            <br />
+                            {entConsulta.iIdConsulta === 0 ? (
+                                <span className="rob-con size-15 color-4">
+                                    Ingresar solamente si el paciente YA cuenta con un folio
+                                </span>
+                            ) : null}
 
-                    <Divider />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        name="txtFolio"
-                        label="Folio:"
-                        variant="outlined"
-                        fullWidth
-                        disabled={entConsulta.iIdConsulta !== 0}
-                        value={formConsulta.txtFolio}
-                        onChange={handleChangeFormulario}
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <span className="rob-nor bold size-15 color-4">DATOS DEL PACIENTE</span>
-                    <Divider />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        name="txtNombrePaciente"
-                        label="Nombre:"
-                        variant="outlined"
-                        fullWidth
-                        required
-                        disabled={entConsulta.iIdConsulta !== 0}
-                        value={formConsulta.txtNombrePaciente}
-                        onChange={handleChangeFormulario}
-                        error={!formConsultaOK.txtNombrePaciente}
-                        helperText={!formConsultaOK.txtNombrePaciente ? "El nombre es requerido" : ""}
-                    />
+                            <Divider />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                name="txtFolio"
+                                label="Folio:"
+                                variant="outlined"
+                                fullWidth
+                                disabled={entConsulta.iIdConsulta !== 0}
+                                value={formConsulta.txtFolio}
+                                onChange={handleChangeFormulario}
+                            />
+                        </Grid>
+                    </Grid>
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <TextField
-                        name="txtTelefonoPaciente"
-                        label="Teléfono:"
-                        variant="outlined"
-                        fullWidth
-                        required
-                        disabled={entConsulta.iIdConsulta !== 0}
-                        InputProps={{
-                            inputComponent: InputTelefono,
-                        }}
-                        value={formConsulta.txtTelefonoPaciente}
-                        onChange={handleChangeFormulario}
-                        error={!formConsultaOK.txtTelefonoPaciente}
-                        helperText={!formConsultaOK.txtTelefonoPaciente ? "Ingrese un teléfono válido" : ""}
-                    />
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            <span className="rob-nor bold size-15 color-4">DATOS DEL PACIENTE</span>
+                            <br />
+                            {entConsulta.iIdConsulta === 0 ? (
+                                <span className="rob-con size-15 color-4">
+                                    Ingresar solamente si el paciente NO cuenta con un folio
+                                </span>
+                            ) : null}
+
+                            <Divider />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                name="txtNombrePaciente"
+                                label="Nombre:"
+                                variant="outlined"
+                                fullWidth
+                                required={formConsulta.txtFolio === ""}
+                                disabled={entConsulta.iIdConsulta !== 0}
+                                value={formConsulta.txtNombrePaciente}
+                                onChange={handleChangeFormulario}
+                                error={!formConsultaOK.txtNombrePaciente}
+                                helperText={!formConsultaOK.txtNombrePaciente ? "El nombre es requerido" : ""}
+                            />
+                        </Grid>
+                        <Grid item sm={6} xs={12}>
+                            <TextField
+                                name="txtTelefonoPaciente"
+                                label="Teléfono:"
+                                variant="outlined"
+                                fullWidth
+                                required={formConsulta.txtFolio === ""}
+                                disabled={entConsulta.iIdConsulta !== 0}
+                                InputProps={{
+                                    inputComponent: InputTelefono,
+                                }}
+                                value={formConsulta.txtTelefonoPaciente}
+                                onChange={handleChangeFormulario}
+                                error={!formConsultaOK.txtTelefonoPaciente}
+                                helperText={!formConsultaOK.txtTelefonoPaciente ? "Ingrese un teléfono válido" : ""}
+                            />
+                        </Grid>
+                        <Grid item sm={6} xs={12}>
+                            <TextField
+                                name="txtCorreoPaciente"
+                                label="Correo:"
+                                variant="outlined"
+                                fullWidth
+                                required={formConsulta.txtFolio === ""}
+                                disabled={entConsulta.iIdConsulta !== 0}
+                                value={formConsulta.txtCorreoPaciente}
+                                onChange={handleChangeFormulario}
+                                error={!formConsultaOK.txtCorreoPaciente}
+                                helperText={
+                                    !formConsultaOK.txtCorreoPaciente ? "Ingrese un correo electrónico válido" : ""
+                                }
+                            />
+                        </Grid>
+                    </Grid>
                 </Grid>
-                <Grid item sm={6} xs={12}>
-                    <TextField
-                        name="txtCorreoPaciente"
-                        label="Correo:"
-                        variant="outlined"
-                        fullWidth
-                        required
-                        disabled={entConsulta.iIdConsulta !== 0}
-                        value={formConsulta.txtCorreoPaciente}
-                        onChange={handleChangeFormulario}
-                        error={!formConsultaOK.txtCorreoPaciente}
-                        helperText={!formConsultaOK.txtCorreoPaciente ? "Ingrese un correo electrónico válido" : ""}
-                    />
-                </Grid>
+
                 <Grid item xs={12}>
                     <span className="rob-nor bold size-15 color-4">HORARIO DE CONSULTA</span>
                     <Divider />

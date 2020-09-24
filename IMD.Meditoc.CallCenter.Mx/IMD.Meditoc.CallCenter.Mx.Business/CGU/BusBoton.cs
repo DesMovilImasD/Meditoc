@@ -17,44 +17,47 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             datBoton = new DatBoton();
         }
 
+        /// <summary>
+        /// Inserta, actualiza o borra un botón del sistema
+        /// </summary>
+        /// <param name="entBoton"></param>
+        /// <returns></returns>
         public IMDResponse<bool> BSaveBoton(EntBoton entBoton)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.BSaveBoton);
-            logger.Info(IMDSerialize.Serialize(67823458339693, $"Inicia {metodo}(EntBoton entCreateModulo)", entBoton));
+            logger.Info(IMDSerialize.Serialize(67823458339693, $"Inicia {metodo}(EntBoton entBoton)", entBoton));
 
             try
             {
                 if (entBoton == null)
                 {
-                    response.Code = 67823458339693;
+                    response.Code = -8769879283478;
                     response.Message = "No se ingresó ningun botón.";
                     return response;
                 }
 
                 if (entBoton.iIdModulo == 0)
                 {
-                    response.Code = 67823458339693;
+                    response.Code = -776723458769823;
                     response.Message = "Debe contener un módulo agregado.";
                     return response;
                 }
+
                 if (entBoton.iIdSubModulo == 0)
                 {
-                    response.Code = 67823458339693;
+                    response.Code = -33345899238987;
                     response.Message = "Debe contener un submodulo agregado.";
                     return response;
                 }
 
-
-                if (entBoton.sNombre == "")
+                if (string.IsNullOrWhiteSpace(entBoton.sNombre))
                 {
-                    response.Code = 67823458339693;
+                    response.Code = -66723454387234;
                     response.Message = "El nombre no puede ser vacio.";
                     return response;
                 }
-
-
 
                 response = datBoton.DSaveBoton(entBoton);
 
@@ -72,7 +75,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 response.Code = 67823458339693;
                 response.Message = "Ocurrió un error al intentar guardar el botón.";
 
-                logger.Error(IMDSerialize.Serialize(67823458339693, $"Error en {metodo}(EntCreateCupon entCreateCupon): {ex.Message}", entBoton, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458339693, $"Error en {metodo}(EntBoton entBoton): {ex.Message}", entBoton, ex, response));
             }
             return response;
         }

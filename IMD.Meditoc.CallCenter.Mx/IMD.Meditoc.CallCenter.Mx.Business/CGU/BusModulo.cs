@@ -22,6 +22,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             datModulo = new DatModulo();
         }
 
+        /// <summary>
+        /// Inserta, actualiza o borra un módulo del sistema
+        /// </summary>
+        /// <param name="entModulo"></param>
+        /// <returns></returns>
         public IMDResponse<bool> BSaveModulo(EntModulo entModulo)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
@@ -33,14 +38,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             {
                 if (entModulo == null)
                 {
-                    response.Code = 8768767234634;
+                    response.Code = -877656732870195;
                     response.Message = "No se ingresó ningun módulo.";
                     return response;
                 }
 
-                if (entModulo.sNombre == "")
+                if (string.IsNullOrWhiteSpace(entModulo.sNombre))
                 {
-                    response.Code = 8768767234634;
+                    response.Code = -59928366733867;
                     response.Message = "El nombre no puede ser vacio.";
                     return response;
                 }

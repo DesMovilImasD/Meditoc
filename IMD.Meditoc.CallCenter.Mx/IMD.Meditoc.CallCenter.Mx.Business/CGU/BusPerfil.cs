@@ -19,6 +19,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             datPerfil = new DatPerfil();
         }
 
+        /// <summary>
+        /// Guardar un perfil
+        /// </summary>
+        /// <param name="entPerfil"></param>
+        /// <returns></returns>
         public IMDResponse<bool> BSavePerfil(EntPerfil entPerfil)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
@@ -30,13 +35,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             {
                 if (entPerfil == null)
                 {
-                    response.Code = 67823458341247;
-                    response.Message = "No se ingresó ningun sub módulo.";
+                    response.Code = -88678716283680;
+                    response.Message = "No se ingresó ningun submódulo.";
                     response.Result = false;
                     return response;
                 }
 
-                response = bValidaDatos(entPerfil);
+                response = BValidaDatos(entPerfil);
 
                 if (response.Code != 0) //Se valida que los datos que contiene el objeto de perfil no esten vacios.
                 {
@@ -66,6 +71,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             return response;
         }
 
+        //Obtener los perfiles del sistema
         public IMDResponse<List<EntPerfil>> BObtenerPerfil(int? iIdPerfil, bool bActivo, bool bBaja)
         {
             IMDResponse<List<EntPerfil>> response = new IMDResponse<List<EntPerfil>>();
@@ -76,11 +82,16 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             try
             {
                 IMDResponse<DataTable> dtPerfil = datPerfil.DObtenerPerfil(iIdPerfil, bActivo, bBaja);
+                if (dtPerfil.Code != 0)
+                {
+                    return dtPerfil.GetResponse<List<EntPerfil>>();
+                }
+
                 List<EntPerfil> lstPerfiles = new List<EntPerfil>();
 
                 if (dtPerfil.Code != 0)
                 {
-                    response.Code = 67823458358341;
+                    response.Code = -71470986457102;
                     response.Message = "No se encuentran perfiles";
                     return response;
                 }
@@ -112,22 +123,30 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             return response;
         }
 
-        public IMDResponse<bool> bValidaDatos(EntPerfil entPerfil)
+        /// <summary>
+        /// Validar datos para guardar el perfil
+        /// </summary>
+        /// <param name="entPerfil"></param>
+        /// <returns></returns>
+        public IMDResponse<bool> BValidaDatos(EntPerfil entPerfil)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
-            string metodo = nameof(this.bValidaDatos);
+            string metodo = nameof(this.BValidaDatos);
             logger.Info(IMDSerialize.Serialize(67823458342024, $"Inicia {metodo}(EntPerfil entPerfil)", entPerfil));
             try
             {
-                if (entPerfil.sNombre == "")
+                if (string.IsNullOrWhiteSpace(entPerfil.sNombre))
                 {
-                    response.Code = 67823458342024;
+                    response.Code = -51256872819328;
                     response.Message = "El nombre del perfil no puede ser vacio.";
                     response.Result = false;
 
                     return response;
                 }
+
+                response.Code = 0;
+                response.Result = true;
 
             }
             catch (Exception ex)
