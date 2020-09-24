@@ -46,16 +46,17 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Reportes
         /// <param name="psIdOrigen">ID del origen</param>
         /// <param name="psOrderId">Código de la orden</param>
         /// <param name="psStatus">Estatus del pago</param>
+        /// <param name="psCupon">Cupon que se aplico</param>
         /// <param name="pdtFechaInicio">Fecha de creación de la orden desde...</param>
         /// <param name="pdtFechaFinal">...a la fecha de creación de la orden</param>
         /// <param name="pdtFechaVencimiento">Fecha de vencimiento del folio</param>
         /// <returns></returns>
-        public IMDResponse<DataTable> DObtenerReporteVentas(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)
+        public IMDResponse<DataTable> DObtenerReporteVentas(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)
         {
             IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
             string metodo = nameof(this.DObtenerReporteVentas);
-            logger.Info(IMDSerialize.Serialize(67823458558807, $"Inicia {metodo}(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento));
+            logger.Info(IMDSerialize.Serialize(67823458558807, $"Inicia {metodo}(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento));
 
             try
             {
@@ -68,6 +69,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Reportes
                     database.AddInParameter(dbCommand, "psIdOrigen", DbType.String, psIdOrigen);
                     database.AddInParameter(dbCommand, "psOrderId", DbType.String, psOrderId?.Trim());
                     database.AddInParameter(dbCommand, "psStatus", DbType.String, psStatus?.Trim());
+                    database.AddInParameter(dbCommand, "psCupon", DbType.String, psCupon?.Trim());
                     database.AddInParameter(dbCommand, "pdtFechaInicio", DbType.DateTime, pdtFechaInicio);
                     database.AddInParameter(dbCommand, "pdtFechaFinal", DbType.String, pdtFechaFinal);
                     database.AddInParameter(dbCommand, "pdtFechaVencimiento", DbType.String, pdtFechaVencimiento);
@@ -80,7 +82,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Reportes
                 response.Code = 67823458559584;
                 response.Message = "Ocurrió un error inesperado al consultar el detalle de los folios";
 
-                logger.Error(IMDSerialize.Serialize(67823458559584, $"Error en {metodo}: {ex.Message}(string psFolio = null, int? psIdEmpresa = null, int? psIdProducto = null, int? psIdTipoProducto = null, int? psIdOrigen = null, string psOrderId = null, string psStatus = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458559584, $"Error en {metodo}: {ex.Message}(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento, ex, response));
             }
             return response;
         }
@@ -129,9 +131,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Reportes
                     database.AddInParameter(dbCommand, "psRFC", DbType.String, psRFC?.Trim());
                     database.AddInParameter(dbCommand, "psNumSala", DbType.String, psNumSala?.Trim());
                     database.AddInParameter(dbCommand, "pdtFechaProgramadaInicio", DbType.DateTime, pdtFechaProgramadaInicio);
-                    database.AddInParameter(dbCommand, "pdtFechaProgramadaFinal", DbType.String, pdtFechaProgramadaFinal);
-                    database.AddInParameter(dbCommand, "pdtFechaConsultaInicio", DbType.String, pdtFechaConsultaInicio);
-                    database.AddInParameter(dbCommand, "pdtFechaConsultaFin", DbType.String, pdtFechaConsultaFin);
+                    database.AddInParameter(dbCommand, "pdtFechaProgramadaFinal", DbType.DateTime, pdtFechaProgramadaFinal);
+                    database.AddInParameter(dbCommand, "pdtFechaConsultaInicio", DbType.DateTime, pdtFechaConsultaInicio);
+                    database.AddInParameter(dbCommand, "pdtFechaConsultaFin", DbType.DateTime, pdtFechaConsultaFin);
 
                     response = imdCommonData.DExecuteDT(database, dbCommand);
                 }

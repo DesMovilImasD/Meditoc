@@ -16,6 +16,7 @@ import Especialidades from "./meditoc/administracion/especialidades/Especialidad
 import Administrador from "./meditoc/callcenter/administrador/Administrador";
 import CallCenter from "./meditoc/callcenter/callcenter/CallCenter";
 import ReportesDoctores from "./meditoc/reportes/ReportesDoctores";
+import ReportesVentas from "./meditoc/reportes/ReportesVentas";
 
 /*************************************************************
  * Descripcion: Contiene las secciones y vistas de todo el portal de Meditoc
@@ -27,14 +28,17 @@ const ContentMain = (props) => {
     const { usuarioSesion, usuarioPermisos, setUsuarioSesion, setUsuarioActivo, funcLoader, funcAlert } = props;
     const [drawerOpen, setDrawerOpen] = useState(false);
 
-    //Desplegar/Ocultar menu lateral izquerdo
-    const toggleDrawer = (open) => (event) => {
-        if (event.type === "keydown" && (event.key === "Tab" || event.key === "Shift")) {
-            return;
-        }
+  //Desplegar/Ocultar menu lateral izquerdo
+  const toggleDrawer = (open) => (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
 
-        setDrawerOpen(open);
-    };
+    setDrawerOpen(open);
+  };
 
     return (
         <Fragment>
@@ -85,6 +89,13 @@ const ContentMain = (props) => {
                     <Route exact path={urlSystem.reportes.doctores}>
                         <ReportesDoctores usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
                     </Route>
+                    <Route exact path={urlSystem.reportes.ventas}>
+                        <ReportesVentas
+                            usuarioSesion={usuarioSesion}
+                            funcLoader={funcLoader}
+                            funcAlert={funcAlert}
+                        />
+                    </Route>
                 </Switch>
             </div>
         </Fragment>
@@ -92,9 +103,9 @@ const ContentMain = (props) => {
 };
 
 ContentMain.propTypes = {
-    funcAlert: PropTypes.func,
-    funcLoader: PropTypes.func,
-    usuarioSesion: PropTypes.object,
+  funcAlert: PropTypes.func,
+  funcLoader: PropTypes.func,
+  usuarioSesion: PropTypes.object,
 };
 
 export default ContentMain;
