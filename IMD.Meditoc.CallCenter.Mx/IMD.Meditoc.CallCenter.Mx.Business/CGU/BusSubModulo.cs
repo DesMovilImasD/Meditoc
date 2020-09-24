@@ -17,6 +17,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             datSubModulo = new DatSubModulo();
         }
 
+        /// <summary>
+        /// Guarda un submódulo del sistema
+        /// </summary>
+        /// <param name="entSubModulo"></param>
+        /// <returns></returns>
         public IMDResponse<bool> BSaveSubModulo(EntSubModulo entSubModulo)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
@@ -34,7 +39,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     return response;
                 }
 
-                response = bValidaDatos(entSubModulo);
+                response = BValidaDatos(entSubModulo);
 
                 if (response.Code != 0)
                 {
@@ -64,36 +69,44 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             return response;
         }
 
-        public IMDResponse<bool> bValidaDatos(EntSubModulo entSubModulo)
+        /// <summary>
+        /// Valida los datos para guardar un submodulo del sistema
+        /// </summary>
+        /// <param name="entSubModulo"></param>
+        /// <returns></returns>
+        public IMDResponse<bool> BValidaDatos(EntSubModulo entSubModulo)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
-            string metodo = nameof(this.bValidaDatos);
+            string metodo = nameof(this.BValidaDatos);
             logger.Info(IMDSerialize.Serialize(67823458189732, $"Inicia {metodo}(EntSubModulo entCreateModulo)", entSubModulo));
             try
             {
                 if (entSubModulo.iIdModulo == 0)
                 {
-                    response.Code = 8768767234634;
+                    response.Code = -768276382360982;
                     response.Message = "Debe asignarle un módulo.";
                     response.Result = false;
                     return response;
                 }
 
-                if (entSubModulo.sNombre == "")
+                if (string.IsNullOrWhiteSpace(entSubModulo.sNombre))
                 {
-                    response.Code = 8768767234634;
-                    response.Message = "El nombre del submodulo no puede ser vacio";
+                    response.Code = -227619869874;
+                    response.Message = "El nombre del submodulo no puede ser vacío";
                     response.Result = false;
 
                     return response;
                 }
 
+                response.Code = 0;
+                response.Result = true;
+
             }
             catch (Exception ex)
             {
                 response.Code = 67823458190509;
-                response.Message = "Ocurrió un error al intentar guardar el sub módulo.";
+                response.Message = "Ocurrió un error al intentar guardar el submódulo.";
 
                 logger.Error(IMDSerialize.Serialize(67823458190509, $"Error en {metodo}(EntSubModulo entSubModulo): {ex.Message}", entSubModulo, ex, response));
             }

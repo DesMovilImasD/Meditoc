@@ -45,6 +45,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Consultas
         public string sNombreProducto { get; set; }
         public int? iIdTipoProducto { get; set; }
         public string sTipoProducto { get; set; }
+        public int? iIdOrigen { get; set; }
         public string sOrigen { get; set; }
         public int? iNumSala { get; set; }
         public string sNombreColaborador { get; set; }

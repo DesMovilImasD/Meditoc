@@ -810,7 +810,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 entNuevaConsulta.consulta.dtFechaProgramadaInicio = Convert.ToDateTime(inicioString);
                 entNuevaConsulta.consulta.dtFechaProgramadaFin = Convert.ToDateTime(finString);
 
-                DateTime ? buscadorConsultaProgramadaInicio = entNuevaConsulta?.consulta?.dtFechaProgramadaInicio?.AddMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["iMinToleraciaConsultaInicio"]) * -1);
+                DateTime? buscadorConsultaProgramadaInicio = entNuevaConsulta?.consulta?.dtFechaProgramadaInicio?.AddMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["iMinToleraciaConsultaInicio"]) * -1);
                 DateTime? buscadorConsultaProgramadaFin = entNuevaConsulta?.consulta?.dtFechaProgramadaFin?.AddMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["iMinToleraciaConsultaFin"]));
 
                 IMDResponse<List<EntDetalleConsulta>> resGetConsultas = busConsulta.BGetDisponibilidadConsulta((int)entNuevaConsulta.consulta.iIdColaborador, entNuevaConsulta.consulta.iIdConsulta, buscadorConsultaProgramadaInicio, buscadorConsultaProgramadaFin);
@@ -829,13 +829,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 if (entNuevaConsulta.consulta.iIdConsulta == 0)
                 {
-                    if (!string.IsNullOrEmpty(entNuevaConsulta.sFolio))
+                    if (string.IsNullOrWhiteSpace(entNuevaConsulta.sFolio))
+                    {
+                        response = this.BGenerarConsultaSinFolio(entNuevaConsulta);
+                    }
+                    else
                     {
                         response = this.BGenerarConsultaConFolio(entNuevaConsulta);
-                        return response;
                     }
-
-                    response = this.BGenerarConsultaSinFolio(entNuevaConsulta);
                 }
                 else
                 {
@@ -879,17 +880,26 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 EntFolioFV entFolioFV = new EntFolioFV
                 {
-                    dtFechaVencimiento = (DateTime)entNuevaConsulta?.consulta?.dtFechaProgramadaFin,
                     iIdEmpresa = folioExistente.iIdEmpresa,
                     iIdUsuario = entNuevaConsulta.iIdUsuarioMod,
                     lstFolios = new List<EntFolioFVItem>
+                        {
+                            new EntFolioFVItem
                             {
-                                new EntFolioFVItem
-                                {
-                                    iIdFolio = folioExistente.iIdFolio
-                                }
+                                iIdFolio = folioExistente.iIdFolio
                             }
+                        }
                 };
+
+                if (folioExistente.iIdOrigen == (int)EnumOrigen.Particular)
+                {
+                    entFolioFV.dtFechaVencimiento = (DateTime)entNuevaConsulta?.consulta?.dtFechaProgramadaFin;
+                }
+                else
+                {
+                    entFolioFV.dtFechaVencimiento = (DateTime)(entNuevaConsulta?.consulta?.dtFechaProgramadaFin > folioExistente.dtFechaVencimiento ? entNuevaConsulta?.consulta?.dtFechaProgramadaFin : folioExistente.dtFechaVencimiento);
+                }
+
 
                 IMDResponse<bool> resUpdVencimiento = this.BUpdFechaVencimiento(entFolioFV);
                 if (resUpdVencimiento.Code != 0)
@@ -957,7 +967,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 }
 
                 EntFolio entFolio = new EntFolio();
-                entFolio.iIdOrigen = (int)EnumOrigen.CallCenter;
+                entFolio.iIdOrigen = (int)EnumOrigen.Particular;
                 entFolio.bTerminosYCondiciones = false;
                 entFolio.iIdEmpresa = entEmpresa.iIdEmpresa;
 
