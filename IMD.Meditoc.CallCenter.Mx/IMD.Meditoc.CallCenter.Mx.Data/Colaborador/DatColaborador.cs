@@ -224,7 +224,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
         }
 
 
-        public IMDResponse<DataTable> DObtenerSala(int? iIdTipoProducto = null, int? iIdUsuario = null, DateTime? dtFechaConsulta = null)
+        public IMDResponse<DataTable> DObtenerSala(bool? bAgendada = null, int? iIdUsuario = null, DateTime? dtFechaConsulta = null)
         {
             IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
@@ -235,7 +235,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
             {
                 using (DbCommand dbCommand = database.GetStoredProcCommand(getObtenerSala))
                 {
-                    database.AddInParameter(dbCommand, "piIdTipoProducto", DbType.Int32, iIdTipoProducto);
+                    database.AddInParameter(dbCommand, "pbEsAgendada", DbType.Boolean, bAgendada);
                     database.AddInParameter(dbCommand, "piIdUsuario", DbType.String, iIdUsuario);
                     database.AddInParameter(dbCommand, "pdtFechaConsulta", DbType.DateTime, dtFechaConsulta);                    
 

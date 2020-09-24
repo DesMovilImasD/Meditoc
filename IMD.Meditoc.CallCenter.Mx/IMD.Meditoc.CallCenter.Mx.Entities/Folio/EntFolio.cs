@@ -20,6 +20,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Folio
         public bool bTerminosYCondiciones { get; set; }
         public DateTime dtFechaVencimiento { get; set; }
         public int iIdUsuarioMod { get; set; }
+        public bool bEsAgendada { get; set; }
 
     }
 }

@@ -531,7 +531,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
             return response;
         }
 
-        public IMDResponse<EntColaborador> BObtenerSala(int? iIdTipoProducto = null, int? iIdUsuario = null, DateTime? dtFechaConsulta = null)
+        public IMDResponse<EntColaborador> BObtenerSala(bool? bAgendada = null, int? iIdUsuario = null, DateTime? dtFechaConsulta = null)
         {
             IMDResponse<EntColaborador> response = new IMDResponse<EntColaborador>();
             EntColaborador oColaborador = new EntColaborador();
@@ -540,8 +540,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
             logger.Info(IMDSerialize.Serialize(67823458591441, $"Inicia {metodo}(int? iIdTipoProducto = null, int? iIdUsuario = null, DateTime? dtFechaConsulta = null)"));
 
             try
-            {                
-                IMDResponse<DataTable> dtColaborador = datColaborador.DObtenerSala(iIdTipoProducto, iIdUsuario, dtFechaConsulta);
+            {
+                IMDResponse<DataTable> dtColaborador = datColaborador.DObtenerSala(bAgendada, iIdUsuario, dtFechaConsulta);
 
                 if (dtColaborador.Code != 0)
                 {
@@ -563,7 +563,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                 }
 
                 response.Code = 0;
-                response.Message = "Sala consultada";
+                response.Message = dtColaborador.Result.Rows.Count > 0 ? "Sala consultada" : "Todos los médicos se encuentran ocupados en este momento.";
                 response.Result = oColaborador;
             }
             catch (Exception ex)
