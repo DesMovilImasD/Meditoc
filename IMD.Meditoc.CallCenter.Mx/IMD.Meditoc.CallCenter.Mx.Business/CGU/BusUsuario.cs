@@ -44,7 +44,10 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     {
                         return resValidaDatos.GetResponse<EntUsuario>();
                     }
-                    entUsuario.sPassword = BEncodePassword(entUsuario.sPassword);
+                    if (!string.IsNullOrWhiteSpace(entUsuario.sPassword))
+                    {
+                        entUsuario.sPassword = BEncodePassword(entUsuario.sPassword);
+                    }
                 }
 
                 IMDResponse<DataTable> resSaveUsuario = datUsuario.DSaveUsuario(entUsuario);
