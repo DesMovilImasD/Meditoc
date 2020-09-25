@@ -150,31 +150,31 @@ const Content = (props) => {
                     />
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <FormControl fullWidth variant="outlined">
-                        <InputLabel id="slcEspecialidad">Especialidad:</InputLabel>
-                        <Select
-                            labelId="slcEspecialidad"
-                            label="Especialidad:"
-                            value={especialidadSeleccionada}
-                            onChange={handleChangeEspecialidad}
-                        >
-                            <MenuItem value="">
-                                <em>Todas las especialidades</em>
-                            </MenuItem>
-                            {listaEspecialidades
-                                .sort((a, b) => (a.sNombre > b.sNombre ? 1 : -1))
-                                .map((especialidad) =>
-                                    especialidad.iIdEspecialidad === 1 ? null : (
-                                        <MenuItem
-                                            key={especialidad.iIdEspecialidad}
-                                            value={especialidad.iIdEspecialidad.toString()}
-                                        >
-                                            {especialidad.sNombre}
-                                        </MenuItem>
-                                    )
-                                )}
-                        </Select>
-                    </FormControl>
+                    <TextField
+                        fullWidth
+                        variant="outlined"
+                        label="Especialidad:"
+                        select
+                        value={especialidadSeleccionada}
+                        onChange={handleChangeEspecialidad}
+                        SelectProps={{ MenuProps: { PaperProps: { style: { maxHeight: 300 } } } }}
+                    >
+                        <MenuItem value="">
+                            <em>Todas las especialidades</em>
+                        </MenuItem>
+                        {listaEspecialidades
+                            .sort((a, b) => (a.sNombre > b.sNombre ? 1 : -1))
+                            .map((especialidad) =>
+                                especialidad.iIdEspecialidad === 1 ? null : (
+                                    <MenuItem
+                                        key={especialidad.iIdEspecialidad}
+                                        value={especialidad.iIdEspecialidad.toString()}
+                                    >
+                                        {especialidad.sNombre}
+                                    </MenuItem>
+                                )
+                            )}
+                    </TextField>
                 </Grid>
                 <Grid item xs={12}>
                     {listaColaboradores.map((entColaborador) => (

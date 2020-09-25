@@ -55,7 +55,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Producto
             catch (Exception ex)
             {
                 response.Code = 67823458395637;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al guardar el producto";
 
                 logger.Error(IMDSerialize.Serialize(67823458395637, $"Error en {metodo}(EntProducto entProducto): {ex.Message}", entProducto, ex, response));
             }
@@ -224,7 +224,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Producto
                     .ToList();
 
                 response.Code = 0;
-                response.Message = "Lista de servicios";
+                response.Message = "Lista de servicios consultados";
             }
             catch (Exception ex)
             {
@@ -252,7 +252,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Producto
                     .ToList();
 
                 response.Code = 0;
-                response.Message = "Lista de membrecias";
+                response.Message = "Lista de membresías consultadas";
             }
             catch (Exception ex)
             {

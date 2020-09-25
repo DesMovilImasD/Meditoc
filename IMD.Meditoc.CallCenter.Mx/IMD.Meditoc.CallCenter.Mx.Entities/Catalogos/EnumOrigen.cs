@@ -11,7 +11,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Catalogos
         WEB = 1,
         BaseDeDatos = 2,
         APP = 3,
-        CallCenter = 4,
+        Particular = 4,
         PanelAdministrativo = 5
     }
 }

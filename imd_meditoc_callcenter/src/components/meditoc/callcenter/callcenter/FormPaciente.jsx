@@ -48,7 +48,10 @@ const FormPaciente = (props) => {
             sCorreo: formPaciente.txtCCCorreo,
             sTelefono: formPaciente.txtCCTelefono,
             sTipoSangre: formPaciente.txtCCTipoSangre,
-            dtFechaNacimiento: formPaciente.txtCCFechaNacimiento.toLocaleDateString(),
+            dtFechaNacimiento:
+                formPaciente.txtCCFechaNacimiento === null
+                    ? null
+                    : formPaciente.txtCCFechaNacimiento.toLocaleDateString(),
             iIdSexo: parseInt(formPaciente.txtCCSexo),
             iIdUsuarioMod: usuarioSesion.iIdUsuario,
         };

@@ -5,11 +5,12 @@ import MeditocLoader from './components/utilidades/MeditocLoader'
 import { SnackbarProvider } from 'notistack'
 import MeditocAlert from './components/utilidades/MeditocAlert'
 import MeditocContentMain from './components/MeditocContentMain'
-import { HashRouter } from 'react-router-dom'
+import { BrowserRouter, HashRouter } from 'react-router-dom'
 import MeditocLogin from './components/login/MeditocLogin'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import es from 'date-fns/locale/es'
 import DateFnsUtils from '@date-io/date-fns'
+import { urlBase } from './configurations/urlConfig'
 
 /*************************************************************
  * Descripcion: App del proyecto
@@ -93,7 +94,7 @@ function App() {
         disableWindowBlurListener
       >
         <MuiPickersUtilsProvider utils={DateFnsUtils} locale={es}>
-          <HashRouter>
+          <BrowserRouter basename={urlBase}>
             <MeditocLoader entLoader={entLoader} />
             <MeditocAlert entAlert={entAlert} />
             {usuarioActivo === true ? (
@@ -114,7 +115,7 @@ function App() {
                 funcAlert={funcAlert}
               />
             )}
-          </HashRouter>
+          </BrowserRouter>
         </MuiPickersUtilsProvider>
       </SnackbarProvider>
     </ThemeProvider>

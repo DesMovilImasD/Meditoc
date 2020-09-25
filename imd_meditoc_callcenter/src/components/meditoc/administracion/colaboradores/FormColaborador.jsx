@@ -36,6 +36,7 @@ const FormColaborador = (props) => {
         txtCedulaProfesional: "",
         txtRFC: "",
         txtTelefonoContacto: "",
+        txtWhatsApp: "",
         txtCorreoElectronicoContacto: "",
         txtEspecialidad: "",
         txtNumeroSala: "",
@@ -60,6 +61,7 @@ const FormColaborador = (props) => {
         txtCedulaProfesional: true,
         txtRFC: true,
         txtTelefonoContacto: true,
+        txtWhatsApp: true,
         txtCorreoElectronicoContacto: true,
         txtEspecialidad: true,
         txtNumeroSala: true,
@@ -88,6 +90,7 @@ const FormColaborador = (props) => {
             txtCedulaProfesional: entColaborador.sCedulaProfecional,
             txtRFC: entColaborador.sRFC,
             txtTelefonoContacto: entColaborador.sTelefonoDirectorio,
+            txtWhatsApp: entColaborador.sWhatsApp,
             txtCorreoElectronicoContacto: entColaborador.sCorreoDirectorio,
             txtEspecialidad: entColaborador.iIdEspecialidad,
             txtNumeroSala: entColaborador.iNumSala,
@@ -152,6 +155,14 @@ const FormColaborador = (props) => {
 
             case "txtTelefonoContacto":
                 if (!formColaboradorOK.txtTelefonoContacto) {
+                    const telefonoValidacion = campoValor.replace(/ /g, "");
+                    if (telefonoValidacion !== "" && telefonoValidacion.length === 10) {
+                        setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
+                    }
+                }
+                break;
+            case "txtWhatsApp":
+                if (!formColaboradorOK.txtWhatsApp) {
                     const telefonoValidacion = campoValor.replace(/ /g, "");
                     if (telefonoValidacion !== "" && telefonoValidacion.length === 10) {
                         setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
@@ -321,6 +332,12 @@ const FormColaborador = (props) => {
             errorDatosDoctor = true;
         }
 
+        const telefonoValidacionWhatsApp =
+            formColaborador.txtWhatsApp === null ? "" : formColaborador.txtWhatsApp.replace(/ /g, "");
+        if (telefonoValidacionWhatsApp.length > 0 && telefonoValidacionWhatsApp.length !== 10) {
+            formColaboradorOKValidacion.txtWhatsApp = false;
+            errorDatosDoctor = true;
+        }
         if (
             formColaborador.txtCorreoElectronicoContacto === "" ||
             !rxCorreo.test(formColaborador.txtCorreoElectronicoContacto)
@@ -429,6 +446,7 @@ const FormColaborador = (props) => {
             iNumSala: parseInt(formColaborador.txtNumeroSala),
             sNombreDirectorio: formColaborador.txtNombreDirectorio,
             sCedulaProfecional: formColaborador.txtCedulaProfesional,
+            sWhatsApp: formColaborador.txtWhatsApp,
             sTelefonoDirectorio: formColaborador.txtTelefonoContacto,
             sCorreoDirectorio: formColaborador.txtCorreoElectronicoContacto,
             sDireccionConsultorio: formColaborador.txtDireccionConsultorio,
@@ -574,6 +592,21 @@ const FormColaborador = (props) => {
                                     />
                                 </Grid>
                                 <Grid item sm={6} xs={12}>
+                                    <TextField
+                                        name="txtWhatsApp"
+                                        label="WhatsApp:"
+                                        variant="outlined"
+                                        fullWidth
+                                        InputProps={{
+                                            inputComponent: InputTelefono,
+                                        }}
+                                        value={formColaborador.txtWhatsApp}
+                                        onChange={handleChangeFormColaborador}
+                                        error={!formColaboradorOK.txtWhatsApp}
+                                        helperText={!formColaboradorOK.txtWhatsApp ? "Ingrese un número válido" : ""}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
                                     <TextField
                                         name="txtCorreoElectronicoContacto"
                                         label="Correo electrónico de contacto:"

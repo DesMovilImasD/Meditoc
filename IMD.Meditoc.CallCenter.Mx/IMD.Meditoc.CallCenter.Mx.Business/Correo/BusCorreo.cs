@@ -82,7 +82,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Correo
                 smtp.EnableSsl = oEnvioMail.bSSLMail;
 
                 logger.Info(IMDSerialize.Serialize(66823458253448, $"Inicia Envio de coreos", oEnvioMail));
-                logger.Info(IMDSerialize.Serialize(66823458253447, $"Inicia Envio de coreos", smtp));
+                //logger.Info(IMDSerialize.Serialize(66823458253447, $"Inicia Envio de coreos", smtp));
                 logger.Info(IMDSerialize.Serialize(66823458253445, $"Inicia Envio de coreos", correo));
 
                 smtp.Send(correo);

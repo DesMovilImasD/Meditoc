@@ -6,6 +6,7 @@ using IMD.Meditoc.CallCenter.Mx.Business.Folio;
 using IMD.Meditoc.CallCenter.Mx.Business.Paciente;
 using IMD.Meditoc.CallCenter.Mx.Data.CallCenter;
 using IMD.Meditoc.CallCenter.Mx.Entities.CallCenter;
+using IMD.Meditoc.CallCenter.Mx.Entities.Catalogos;
 using IMD.Meditoc.CallCenter.Mx.Entities.Colaborador;
 using IMD.Meditoc.CallCenter.Mx.Entities.Consultas;
 using IMD.Meditoc.CallCenter.Mx.Entities.Folio;
@@ -154,6 +155,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
 
                 if (entCallCenter.entColaborador.iIdTipoDoctor == (int)EnumTipoDoctor.MedicoCallCenter)
                 {
+                    if (entCallCenter.entFolio.iIdOrigen == (int)EnumOrigen.Particular)
+                    {
+                        response.Code = -19854873834598;
+                        response.Message = "El folio proporcionado solo es válido para consultas programadas con Especialistas";
+                        return response;
+                    }
                     EntConsulta entConsulta = new EntConsulta
                     {
                         iIdColaborador = entCallCenter.entColaborador.iIdColaborador,
@@ -343,7 +350,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
 
                 EntDetalleConsulta consulta = resGetConsulta.Result.First();
 
-                if (consulta.iIdTipoProducto == (int)EnumTipoProducto.Servicio)
+                if (consulta.iIdOrigen == (int)EnumOrigen.Particular)
                 {
                     EntFolioFV entFolio = new EntFolioFV
                     {

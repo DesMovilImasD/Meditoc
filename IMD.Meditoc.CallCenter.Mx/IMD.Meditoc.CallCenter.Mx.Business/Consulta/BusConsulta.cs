@@ -1,8 +1,12 @@
 ﻿using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
+using IMD.Meditoc.CallCenter.Mx.Business.Folio;
 using IMD.Meditoc.CallCenter.Mx.Data.Consulta;
 using IMD.Meditoc.CallCenter.Mx.Entities.CallCenter;
+using IMD.Meditoc.CallCenter.Mx.Entities.Catalogos;
 using IMD.Meditoc.CallCenter.Mx.Entities.Consultas;
+using IMD.Meditoc.CallCenter.Mx.Entities.Folio;
+using IMD.Meditoc.CallCenter.Mx.Entities.Producto;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -25,18 +29,24 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
             datConsulta = new DatConsulta();
         }
 
+        /// <summary>
+        /// Guarda la consulta para un paciente
+        /// </summary>
+        /// <param name="entConsulta"></param>
+        /// <param name="piIdUsuarioMod"></param>
+        /// <returns></returns>
         public IMDResponse<EntConsulta> BSaveConsulta(EntConsulta entConsulta, int piIdUsuarioMod = 1)
         {
             IMDResponse<EntConsulta> response = new IMDResponse<EntConsulta>();
 
             string metodo = nameof(this.BSaveConsulta);
-            logger.Info(IMDSerialize.Serialize(67823458519957, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458519957, $"Inicia {metodo}(EntConsulta entConsulta, int piIdUsuarioMod = 1)", entConsulta, piIdUsuarioMod));
 
             try
             {
                 if (entConsulta == null)
                 {
-                    response.Code = 9837987634567;
+                    response.Code = -8783458839487;
                     response.Message = "No se ingresó información de consulta";
                     return response;
                 }
@@ -58,7 +68,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
 
                 if (resSaveConsulta.Result.Rows.Count != 1)
                 {
-                    response.Code = 9837987634567;
+                    response.Code = -7623486876234;
                     response.Message = "No se pudo generar la consulta";
                     return response;
                 }
@@ -72,19 +82,20 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
             catch (Exception ex)
             {
                 response.Code = 67823458520734;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al guardar la consulta";
 
-                logger.Error(IMDSerialize.Serialize(67823458520734, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458520734, $"Error en {metodo}(EntConsulta entConsulta, int piIdUsuarioMod = 1): {ex.Message}", entConsulta, piIdUsuarioMod, ex, response));
             }
             return response;
         }
 
+        //Obtiene el historial clinico del paciente
         public IMDResponse<List<EntHistorialClinico>> BGetHistorialMedico(int? piIdHistorialClinico = null, int? piIdConsulta = null, int? piIdPaciente = null, int? piIdColaborador = null, int? piIdFolio = null)
         {
             IMDResponse<List<EntHistorialClinico>> response = new IMDResponse<List<EntHistorialClinico>>();
 
             string metodo = nameof(this.BGetHistorialMedico);
-            logger.Info(IMDSerialize.Serialize(67823458524619, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458524619, $"Inicia {metodo}(int? piIdHistorialClinico = null, int? piIdConsulta = null, int? piIdPaciente = null, int? piIdColaborador = null, int? piIdFolio = null)", piIdHistorialClinico, piIdConsulta, piIdPaciente, piIdColaborador, piIdFolio));
 
             try
             {
@@ -135,19 +146,31 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
             catch (Exception ex)
             {
                 response.Code = 67823458525396;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al consultar el historial clínico";
 
-                logger.Error(IMDSerialize.Serialize(67823458525396, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458525396, $"Error en {metodo}(int? piIdHistorialClinico = null, int? piIdConsulta = null, int? piIdPaciente = null, int? piIdColaborador = null, int? piIdFolio = null): {ex.Message}", piIdHistorialClinico, piIdConsulta, piIdPaciente, piIdColaborador, piIdFolio, ex, response));
             }
             return response;
         }
 
+        /// <summary>
+        /// Obtiene la lista de detalles de la consulta solicitada
+        /// </summary>
+        /// <param name="piIdConsulta"></param>
+        /// <param name="piIdPaciente"></param>
+        /// <param name="piIdColaborador"></param>
+        /// <param name="piIdEstatusConsulta"></param>
+        /// <param name="pdtFechaProgramadaInicio"></param>
+        /// <param name="pdtFechaProgramadaFin"></param>
+        /// <param name="pdtFechaConsultaInicio"></param>
+        /// <param name="pdtFechaConsultaFin"></param>
+        /// <returns></returns>
         public IMDResponse<List<EntDetalleConsulta>> BGetDetalleConsulta(int? piIdConsulta = null, int? piIdPaciente = null, int? piIdColaborador = null, int? piIdEstatusConsulta = null, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null, DateTime? pdtFechaConsultaInicio = null, DateTime? pdtFechaConsultaFin = null)
         {
             IMDResponse<List<EntDetalleConsulta>> response = new IMDResponse<List<EntDetalleConsulta>>();
 
             string metodo = nameof(this.BGetDetalleConsulta);
-            logger.Info(IMDSerialize.Serialize(67823458530835, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458530835, $"Inicia {metodo}(int? piIdConsulta = null, int? piIdPaciente = null, int? piIdColaborador = null, int? piIdEstatusConsulta = null, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null, DateTime? pdtFechaConsultaInicio = null, DateTime? pdtFechaConsultaFin = null)", piIdConsulta, piIdPaciente, piIdColaborador, piIdEstatusConsulta, pdtFechaProgramadaInicio, pdtFechaProgramadaFin, pdtFechaConsultaInicio, pdtFechaConsultaFin));
 
             try
             {
@@ -182,6 +205,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
                         iIdEspecialidad = dr.ConvertTo<int?>("iIdEspecialidad"),
                         iIdEstatusConsulta = dr.ConvertTo<int?>("iIdEstatusConsulta"),
                         iIdFolio = dr.ConvertTo<int?>("iIdFolio"),
+                        iIdOrigen = dr.ConvertTo<int?>("iIdOrigen"),
                         iIdPaciente = dr.ConvertTo<int?>("iIdPaciente"),
                         iIdTipoDoctor = dr.ConvertTo<int?>("iIdTipoDoctor"),
                         iIdTipoProducto = dr.ConvertTo<int?>("iIdTipoProducto"),
@@ -234,19 +258,27 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
             catch (Exception ex)
             {
                 response.Code = 67823458531612;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al consultar el detalle de la consulta médica";
 
-                logger.Error(IMDSerialize.Serialize(67823458531612, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458531612, $"Error en {metodo}(int? piIdConsulta = null, int? piIdPaciente = null, int? piIdColaborador = null, int? piIdEstatusConsulta = null, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null, DateTime? pdtFechaConsultaInicio = null, DateTime? pdtFechaConsultaFin = null): {ex.Message}", piIdConsulta, piIdPaciente, piIdColaborador, piIdEstatusConsulta, pdtFechaProgramadaInicio, pdtFechaProgramadaFin, pdtFechaConsultaInicio, pdtFechaConsultaFin, ex, response));
             }
             return response;
         }
 
+        /// <summary>
+        /// Obtiene las consultas programadas en el horario solicitado para una nueva consulta
+        /// </summary>
+        /// <param name="piIdColaborador"></param>
+        /// <param name="piIdConsulta"></param>
+        /// <param name="pdtFechaProgramadaInicio"></param>
+        /// <param name="pdtFechaProgramadaFin"></param>
+        /// <returns></returns>
         public IMDResponse<List<EntDetalleConsulta>> BGetDisponibilidadConsulta(int piIdColaborador, int piIdConsulta, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null)
         {
             IMDResponse<List<EntDetalleConsulta>> response = new IMDResponse<List<EntDetalleConsulta>>();
 
             string metodo = nameof(this.BGetDisponibilidadConsulta);
-            logger.Info(IMDSerialize.Serialize(67823458537051, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458537051, $"Inicia {metodo}(int piIdColaborador, int piIdConsulta, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null)", piIdColaborador, piIdConsulta, pdtFechaProgramadaInicio, pdtFechaProgramadaFin));
 
             try
             {
@@ -302,28 +334,48 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
             catch (Exception ex)
             {
                 response.Code = 67823458537828;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al consultar la disponibilidad del colaborador";
 
-                logger.Error(IMDSerialize.Serialize(67823458537828, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458537828, $"Error en {metodo}(int piIdColaborador, int piIdConsulta, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null): {ex.Message}", piIdColaborador, piIdConsulta, pdtFechaProgramadaInicio, pdtFechaProgramadaFin, ex, response));
             }
             return response;
         }
 
+        /// <summary>
+        /// Cancela la consulta y el folio de un paciente
+        /// </summary>
+        /// <param name="consulta"></param>
+        /// <returns></returns>
         public IMDResponse<bool> BCancelarConsulta(EntNuevaConsulta consulta)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.BCancelarConsulta);
-            logger.Info(IMDSerialize.Serialize(67823458552591, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458552591, $"Inicia {metodo}(EntNuevaConsulta consulta)", consulta));
 
             try
             {
                 if (consulta == null)
                 {
-                    response.Code = 9837987634567;
+                    response.Code = -767234562313709;
                     response.Message = "No se ingresó información de consulta";
                     return response;
                 }
+
+                IMDResponse<List<EntDetalleConsulta>> resGetDetalleConsulta = this.BGetDetalleConsulta(consulta.consulta.iIdConsulta);
+                if (resGetDetalleConsulta.Code != 0)
+                {
+                    return resGetDetalleConsulta.GetResponse<bool>();
+                }
+
+                if (resGetDetalleConsulta.Result.Count != 1)
+                {
+                    response.Code = -5723613487698;
+                    response.Message = "La consulta prporcionada no se encuentra programada";
+                    return response;
+                }
+
+                EntDetalleConsulta detalleConsulta = resGetDetalleConsulta.Result.First();
 
                 consulta.consulta.iIdEstatusConsulta = (int)EnumEstatusConsulta.Cancelado;
 
@@ -333,6 +385,52 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
                     return resDelConsulta;
                 }
 
+                EntFolioFV entFolio = new EntFolioFV
+                {
+                    iIdEmpresa = (int)detalleConsulta.iIdEmpresa,
+                    iIdUsuario = consulta.iIdUsuarioMod,
+                    lstFolios = new List<EntFolioFVItem>
+                        {
+                            new EntFolioFVItem
+                            {
+                                iIdFolio = (int)detalleConsulta.iIdFolio
+                            }
+                        }
+                };
+                BusFolio busFolio = new BusFolio();
+
+
+                if (detalleConsulta.iIdOrigen == (int)EnumOrigen.Particular)
+                {
+                    IMDResponse<bool> resDesactivarFolios = busFolio.BEliminarFoliosEmpresa(entFolio);
+                    if (resDesactivarFolios.Code != 0)
+                    {
+                        return resDesactivarFolios;
+                    }
+                }
+                else
+                {
+                    if (detalleConsulta.iIdTipoProducto == (int)EnumTipoProducto.Servicio)
+                    {
+                        IMDResponse<bool> resDesactivarFolios = busFolio.BEliminarFoliosEmpresa(entFolio);
+                        if (resDesactivarFolios.Code != 0)
+                        {
+                            return resDesactivarFolios;
+                        }
+                    }
+                    else
+                    {
+                        if (DateTime.Now > detalleConsulta.dtFechaVencimiento)
+                        {
+                            IMDResponse<bool> resDesactivarFolios = busFolio.BEliminarFoliosEmpresa(entFolio);
+                            if (resDesactivarFolios.Code != 0)
+                            {
+                                return resDesactivarFolios;
+                            }
+                        }
+                    }
+                }
+
                 response.Code = 0;
                 response.Result = true;
                 response.Message = "Consulta cancelada";
@@ -340,24 +438,30 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
             catch (Exception ex)
             {
                 response.Code = 67823458553368;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al cancelar la consulta del paciente";
 
-                logger.Error(IMDSerialize.Serialize(67823458553368, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458553368, $"Error en {metodo}(EntNuevaConsulta consulta): {ex.Message}", consulta, ex, response));
             }
             return response;
         }
+
+        /// <summary>
+        /// Guarda el hisotirial clinico de un paciente
+        /// </summary>
+        /// <param name="entHistorialClinico"></param>
+        /// <returns></returns>
         public IMDResponse<bool> BSaveHistorialClinico(EntHistorialClinico entHistorialClinico)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.BSaveHistorialClinico);
-            logger.Info(IMDSerialize.Serialize(67823458583671, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458583671, $"Inicia {metodo}(EntHistorialClinico entHistorialClinico)", entHistorialClinico));
 
             try
             {
                 if (entHistorialClinico == null)
                 {
-                    response.Code = 7738476787367234;
+                    response.Code = -65766123898345;
                     response.Message = "No se ingresó información de historial";
                     return response;
                 }
@@ -385,19 +489,25 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
             catch (Exception ex)
             {
                 response.Code = 67823458584448;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al guardar el historial clínico del paciente";
 
-                logger.Error(IMDSerialize.Serialize(67823458584448, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458584448, $"Error en {metodo}(EntHistorialClinico entHistorialClinico): {ex.Message}", entHistorialClinico, ex, response));
             }
             return response;
         }
 
+        /// <summary>
+        /// Obtiene los detalles de la consulta del paciente que debe estar programada en el momento de la solicitud
+        /// </summary>
+        /// <param name="piIdPaciente"></param>
+        /// <param name="piIdColaborador"></param>
+        /// <returns></returns>
         public IMDResponse<List<EntDetalleConsulta>> BGetConsultaMomento(int piIdPaciente, int piIdColaborador)
         {
             IMDResponse<List<EntDetalleConsulta>> response = new IMDResponse<List<EntDetalleConsulta>>();
 
             string metodo = nameof(this.BGetConsultaMomento);
-            logger.Info(IMDSerialize.Serialize(67823458588333, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458588333, $"Inicia {metodo}(int piIdPaciente, int piIdColaborador)", piIdPaciente, piIdColaborador));
 
             try
             {
@@ -439,9 +549,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
             catch (Exception ex)
             {
                 response.Code = 67823458589110;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al verificar el horario de consulta del paciente";
 
-                logger.Error(IMDSerialize.Serialize(67823458589110, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458589110, $"Error en {metodo}(int piIdPaciente, int piIdColaborador): {ex.Message}", piIdPaciente, piIdColaborador, ex, response));
             }
             return response;
         }
