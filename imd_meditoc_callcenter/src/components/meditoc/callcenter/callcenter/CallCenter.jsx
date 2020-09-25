@@ -253,7 +253,9 @@ const CallCenter = (props) => {
             funcReiniciarTemporizador();
             setEntCallCenter(null);
             setFolioEncontrado(null);
+
             localStorage.removeItem("sFolio");
+
             const iframeickelink = document.getElementById("iframeickelink");
             if (iframeickelink !== null) {
                 iframeickelink.contentWindow.CallBack();
