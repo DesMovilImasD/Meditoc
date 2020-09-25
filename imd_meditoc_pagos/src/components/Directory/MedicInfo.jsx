@@ -68,22 +68,24 @@ const MedicInfo = (props) => {
                             <br />
                             <span className="directory-doctor-value">{entColaborador.sCorreo}</span>
                         </Grid>
-                        <Grid item sm={6} xs={12}>
+                        <Grid item sm={entColaborador.sMaps !== null ? 6 : 12} xs={12}>
                             <span className="directory-doctor-label">Dirección</span>
                             <br />
                             <span className="directory-doctor-value">{entColaborador.sDireccionConsultorio}</span>
                         </Grid>
-                        <Grid item sm={6} xs={12}>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                target="_blank"
-                                href={entColaborador.sMaps}
-                                rel="noopener noreferrer"
-                            >
-                                Ver en google maps
-                            </Button>
-                        </Grid>
+                        {entColaborador.sMaps !== null && (
+                            <Grid item sm={6} xs={12}>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    target="_blank"
+                                    href={entColaborador.sMaps}
+                                    rel="noopener noreferrer"
+                                >
+                                    Ver en google maps
+                                </Button>
+                            </Grid>
+                        )}
                         {/* <Grid item xs={12}>
                             <span className="directory-doctor-label">Consultorio</span>
                             <br />

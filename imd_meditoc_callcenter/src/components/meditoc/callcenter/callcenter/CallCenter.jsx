@@ -28,57 +28,6 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-const EstatusSwitch = withStyles((theme) => ({
-    root: {
-        width: 55,
-        height: 35,
-        padding: 4,
-        margin: 5,
-    },
-    switchBase: {
-        padding: 7,
-        "&$checked": {
-            transform: "translateX(16px)",
-            color: "#fff",
-            "& + $track": {
-                backgroundColor: green[500],
-                opacity: 1,
-                border: `2px solid #fff`,
-            },
-        },
-        "&$focusVisible $thumb": {
-            border: "2px solid #fff",
-        },
-    },
-    thumb: {
-        width: 25,
-        height: 25,
-    },
-    track: {
-        borderRadius: 36 / 2,
-        border: `2px solid #fff`,
-        backgroundColor: red[500],
-        opacity: 1,
-    },
-    checked: {},
-    focusVisible: {},
-}))(({ classes, ...props }) => {
-    return (
-        <Switch
-            focusVisibleClassName={classes.focusVisible}
-            disableRipple
-            classes={{
-                root: classes.root,
-                switchBase: classes.switchBase,
-                thumb: classes.thumb,
-                track: classes.track,
-                checked: classes.checked,
-            }}
-            {...props}
-        />
-    );
-});
-
 const CallCenter = (props) => {
     const { usuarioSesion, funcLoader, funcAlert } = props;
 
@@ -305,7 +254,11 @@ const CallCenter = (props) => {
             setEntCallCenter(null);
             setFolioEncontrado(null);
             localStorage.removeItem("sFolio");
-            document.getElementById("iframeickelink").contentWindow.CallBacks.FinalizarConsulta();
+            const iframeickelink = document.getElementById("iframeickelink");
+            if (iframeickelink !== null) {
+                iframeickelink.contentWindow.CallBack();
+                iframeickelink.contentWindow.CallBacks.FinalizarConsulta();
+            }
         } else {
             funcAlert(response.Message);
         }
