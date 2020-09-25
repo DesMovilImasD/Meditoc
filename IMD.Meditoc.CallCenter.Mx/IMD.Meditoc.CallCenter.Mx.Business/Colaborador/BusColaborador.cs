@@ -275,6 +275,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                         sURL = dr.ConvertTo<string>("sURL"),
                         sUsuarioAdministrativo = dr.ConvertTo<string>("sUsuarioAdministrativo"),
                         sUsuarioTitular = dr.ConvertTo<string>("sUsuarioTitular"),
+                        sWhatsApp = dr.ConvertTo<string>("sWhatsApp"),
                     };
 
                     colaborador.sFechaCreacion = colaborador.dtFechaCreacion.ToString("dd/MM/yyyy HH:mm");
@@ -563,6 +564,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                             sNombre = dr.ConvertTo<string>("sNombre"),
                             sRFC = dr.ConvertTo<string>("sRFC"),
                             sTelefono = dr.ConvertTo<string>("sTelefono"),
+                            sWhatsApp = dr.ConvertTo<string>("sWhatsApp"),
                             sURL = dr.ConvertTo<string>("sURL"),
                         };
                         try

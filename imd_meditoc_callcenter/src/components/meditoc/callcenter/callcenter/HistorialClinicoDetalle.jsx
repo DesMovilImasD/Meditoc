@@ -9,7 +9,7 @@ const HistorialClinicoDetalle = (props) => {
     return (
         <MeditocModal title="Detalle de la consulta" size="small" open={open} setOpen={setOpen}>
             <Grid container spacing={3}>
-                <Grid item sm={6} xs={12}>
+                {/* <Grid item sm={6} xs={12}>
                     <TextField
                         variant="outlined"
                         label="Inicio de consulta:"
@@ -108,9 +108,9 @@ const HistorialClinicoDetalle = (props) => {
                         multiline
                         fullWidth
                     />
-                </Grid>
+                </Grid> */}
 
-                {/* <Grid item xs={12}>
+                <Grid item xs={12}>
                     <InfoField label="Peso:" value={historial.fPeso} />
                 </Grid>
                 <Grid item xs={12}>
@@ -140,7 +140,7 @@ const HistorialClinicoDetalle = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                     <InfoField label="Duración de consulta:" value={historial.sDuracionConsulta} />
-                </Grid> */}
+                </Grid>
                 <MeditocModalBotones hideCancel okMessage="Cerrar detalle" open={open} setOpen={setOpen} />
             </Grid>
         </MeditocModal>

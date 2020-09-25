@@ -62,6 +62,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
                     database.AddInParameter(dbCommand, "psNombre", DbType.String, entCreateColaborador.sNombreDirectorio);
                     database.AddInParameter(dbCommand, "psCedulaProfecional", DbType.String, entCreateColaborador.sCedulaProfecional);
                     database.AddInParameter(dbCommand, "psTelefono", DbType.String, entCreateColaborador.sTelefonoDirectorio);
+                    database.AddInParameter(dbCommand, "psWhatsApp", DbType.String, entCreateColaborador.sWhatsApp);
                     database.AddInParameter(dbCommand, "psCorreo", DbType.String, entCreateColaborador.sCorreoDirectorio);
                     database.AddInParameter(dbCommand, "psDireccionConsultorio", DbType.String, entCreateColaborador.sDireccionConsultorio);
                     database.AddInParameter(dbCommand, "psRFC", DbType.String, entCreateColaborador.sRFC);

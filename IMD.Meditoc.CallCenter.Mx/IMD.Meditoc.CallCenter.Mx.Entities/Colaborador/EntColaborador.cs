@@ -20,6 +20,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Colaborador
         public string sNombreDirectorio { get; set; }
         public string sCedulaProfecional { get; set; }
         public string sTelefonoDirectorio { get; set; }
+        public string sWhatsApp { get; set; }
         public string sCorreoDirectorio { get; set; }
         public string sDireccionConsultorio { get; set; }
         public string sRFC { get; set; }

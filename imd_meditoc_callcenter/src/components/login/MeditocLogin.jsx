@@ -231,6 +231,11 @@ const Login = (props) => {
     const handleSubmitFormLogin = (e) => {
         e.preventDefault();
 
+        if (formLogin.txtUsuarioMeditoc === "" || formLogin.txtPasswordMeditoc === "") {
+            funcAlert("Por favor, ingrese todos los datos", "warning");
+            return;
+        }
+
         funcApiLogin(formLogin.txtUsuarioMeditoc, formLogin.txtPasswordMeditoc);
     };
 

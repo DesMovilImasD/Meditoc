@@ -218,13 +218,21 @@ const CallCenter = (props) => {
             await funcOnlineMod(false);
             setPopoverOcupadoInicio(true);
 
-            window.onunload = async () => {
-                await funcOnlineMod(false, false);
+            window.onbeforeunload = (e) => {
+                return "Al salir de esta sección se finalizará la consulta actual. ¿Desea salir de esta sección y finalizar la consulta?";
+            };
+
+            window.onunload = (e) => {
+                funcOnlineMod(false, false);
             };
 
             window.onhashchange = async (e) => {
                 if (e.oldURL.includes(urlSystem.callcenter.consultas.replace("/", ""))) {
                     await funcOnlineMod(false, false);
+
+                    if (consultaIniciada) {
+                        await handleClickFinalizarConsulta(true);
+                    }
                 }
             };
         }
@@ -234,8 +242,8 @@ const CallCenter = (props) => {
         funcPrepararSalaCallCenterInicio();
     }, [usuarioColaborador]);
 
-    const handleClickFinalizarConsulta = async () => {
-        await funcSaveHistorialClinico();
+    const handleClickFinalizarConsulta = async (cerrarVentana = false) => {
+        await funcSaveHistorialClinico(cerrarVentana);
 
         funcLoader(true, "Finalizando consulta...");
 
@@ -246,13 +254,14 @@ const CallCenter = (props) => {
         );
 
         if (response.Code === 0) {
-            setConsultaIniciada(false);
-            //await funcOnlineMod(false);
-            funcAlert(response.Message, "success");
-            funcDetenerTemporizador();
-            funcReiniciarTemporizador();
-            setEntCallCenter(null);
-            setFolioEncontrado(null);
+            if (!cerrarVentana) {
+                setConsultaIniciada(false);
+                //await funcOnlineMod(false);
+                funcDetenerTemporizador();
+                funcReiniciarTemporizador();
+                setEntCallCenter(null);
+                setFolioEncontrado(null);
+            }
 
             localStorage.removeItem("sFolio");
 
@@ -261,13 +270,14 @@ const CallCenter = (props) => {
                 iframeickelink.contentWindow.CallBack();
                 iframeickelink.contentWindow.CallBacks.FinalizarConsulta();
             }
+            funcAlert(response.Message, "success");
         } else {
             funcAlert(response.Message);
         }
         funcLoader();
     };
 
-    const funcSaveHistorialClinico = async () => {
+    const funcSaveHistorialClinico = async (cerrarVentana = false) => {
         const entHistorialClinico = {
             iIdConsulta: entCallCenter.entConsulta.iIdConsulta,
             sSintomas: formDiagnosticoTratamiento.txtCCSintomas,
@@ -290,7 +300,10 @@ const CallCenter = (props) => {
 
         if (response.Code === 0) {
             funcAlert(response.Message, "success");
-            setFormDiagnosticoTratamiento(formularioDiagnosticoYTratamientoVacia);
+
+            if (!cerrarVentana) {
+                setFormDiagnosticoTratamiento(formularioDiagnosticoYTratamientoVacia);
+            }
         } else {
             funcAlert(response.Message);
         }
