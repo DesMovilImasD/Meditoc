@@ -9,6 +9,8 @@ using IMD.Meditoc.CallCenter.Mx.Business.Correo;
 using IMD.Meditoc.CallCenter.Mx.Business.Empresa;
 using IMD.Meditoc.CallCenter.Mx.Business.Paciente;
 using IMD.Meditoc.CallCenter.Mx.Business.Producto;
+using IMD.Meditoc.CallCenter.Mx.Data.CallCenter;
+using IMD.Meditoc.CallCenter.Mx.Data.Consulta;
 using IMD.Meditoc.CallCenter.Mx.Data.Folio;
 using IMD.Meditoc.CallCenter.Mx.Entities;
 using IMD.Meditoc.CallCenter.Mx.Entities.CallCenter;
@@ -1326,6 +1328,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 {
                     IMDDataRow dataRow = new IMDDataRow(item);
 
+                    entFolio.iIdPaciente = dataRow.ConvertTo<int>("iIdPaciente");
                     entFolio.iIdFolio = dataRow.ConvertTo<int>("iIdFolio");
                     entFolio.iIdProducto = dataRow.ConvertTo<int>("iIdTipoProducto");
                     entFolio.sFolio = dataRow.ConvertTo<string>("sFolio");
@@ -1335,11 +1338,23 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     entFolio.bEsAgendada = Convert.ToBoolean(dataRow.ConvertTo<int>("bEsAgendada"));
                 }
 
-                if (entFolio.dtFechaVencimiento < DateTime.Now)
+                IMDResponse<bool> responseConsultasAgendadas = BObtenerConsultasAgendadas(entFolio.iIdPaciente);
+
+                if (responseConsultasAgendadas.Code != 0)
                 {
-                    response.Message = "Su folio a expirado.";
-                    return response;
+                    return responseConsultasAgendadas.GetResponse<EntFolio>();
                 }
+
+
+                if (!responseConsultasAgendadas.Result)
+                {
+                    if (entFolio.dtFechaVencimiento < DateTime.Now)
+                    {
+                        response.Message = "Su folio a expirado.";
+                        return response;
+                    }
+                }
+
 
                 response.Code = 0;
                 response.Message = "Login correcto";
@@ -1624,6 +1639,55 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 response.Message = "Ocurrió un error inesperado al actualizar la contraseña";
 
                 logger.Error(IMDSerialize.Serialize(67823458500532, $"Error en {metodo}: {ex.Message}(string sFolio = null, string sPassword = null)", sFolio, sPassword, ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<bool> BObtenerConsultasAgendadas(int? iIdUsuario = null)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.BObtenerConsultasAgendadas);
+            logger.Info(IMDSerialize.Serialize(67823458594549, $"Inicia {metodo}"));
+
+            try
+            {
+                DatConsulta datConsulta = new DatConsulta();
+                IMDResponse<DataTable> dtConsultasAgendadas = datConsulta.DGetDetalleConsulta(piIdPaciente: iIdUsuario, piIdEstatusConsulta: 1, pdtFechaProgramadaInicio: DateTime.Now, pdtFechaProgramadaFin: DateTime.Now);
+
+                if (dtConsultasAgendadas.Code != 0)
+                {
+                    return dtConsultasAgendadas.GetResponse<bool>();
+                }
+
+                if (dtConsultasAgendadas.Result.Rows.Count == 0)
+                {
+                    dtConsultasAgendadas = datConsulta.DGetDetalleConsulta(piIdPaciente: iIdUsuario, piIdEstatusConsulta: 2, pdtFechaProgramadaInicio: DateTime.Now, pdtFechaProgramadaFin: DateTime.Now);
+
+                    if (dtConsultasAgendadas.Code != 0)
+                    {
+                        return dtConsultasAgendadas.GetResponse<bool>();
+                    }
+
+                    if (dtConsultasAgendadas.Result.Rows.Count == 0)
+                    {
+                        response.Result = false;
+                        response.Message = "No cuenta con consultas agendadas";
+
+                        return response;
+                    }
+                }
+
+                response.Code = 0;
+                response.Message = "el usuario cuenta con consultas asignadas";
+                response.Result = true;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458595326;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458595326, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }
