@@ -61,6 +61,7 @@ namespace IMD.Admin.Conekta.Services
             string metodo = nameof(this.SCreateOrder);
             logger.Info(IMDSerialize.Serialize(67823458103485, $"Inicia {metodo}(EntCreateOrder entCreateOrder, EntCreateUserAgent entUserAgent)", entCreateOrder, entUserAgent));
 
+            string mensajePagoError = "No pudimos procesar el pago de tu pedido, revisa nuevamente los datos ingresados o intenta con otra tarjeta.";
             try
             {
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
@@ -89,7 +90,8 @@ namespace IMD.Admin.Conekta.Services
                     datosCrearOrdenSerializado = JsonConvert.SerializeObject(entCreateOrder);
                 }
 
-                string json = JsonConvert.SerializeObject(entCreateOrder, Formatting.Indented);
+                string json = JsonConvert.SerializeObject(entCreateOrder, Formatting.Indented, new JsonSerializerSettings { ContractResolver = new DynamicContractResolver(pPropiedadesOcultar) });
+
                 byte[] bytesDatosCrearOrden = Encoding.UTF8.GetBytes(datosCrearOrdenSerializado);
                 peticion.ContentLength = bytesDatosCrearOrden.Length;
                 peticion.ContentType = "application/json";
@@ -105,10 +107,40 @@ namespace IMD.Admin.Conekta.Services
                 response.Message = "Respuesta de servicio obtenida";
                 response.Result = body;
             }
+            catch (WebException webex)
+            {
+                if (webex.Status == WebExceptionStatus.ProtocolError)
+                {
+                    HttpWebResponse httpResponse = (HttpWebResponse)webex.Response;
+                    string body = string.Empty;
+                    using (StreamReader content = new StreamReader(httpResponse.GetResponseStream()))
+                    {
+                        body = content.ReadToEnd();
+                    }
+                    int statusCode = (int)httpResponse.StatusCode;
+
+                    if (statusCode == 402)
+                    {
+                        response.Code = -1500000;
+                        response.Message = "No pudimos procesar el pago, la transacción ha sido declinada. Intente con otra tarjeta o comuníquese con su banco emisor.";
+                        response.Result = body;
+                    }
+                    else
+                    {
+                        response.Code = 67823458104262;
+                        response.Message = mensajePagoError;
+                    }
+                }
+                else
+                {
+                    response.Code = 67823458104262;
+                    response.Message = mensajePagoError;
+                }
+            }
             catch (Exception ex)
             {
                 response.Code = 67823458104262;
-                response.Message = "Error al procesar el pago";
+                response.Message = mensajePagoError;
 
                 logger.Error(IMDSerialize.Serialize(67823458104262, $"Error en {metodo}: {ex.Message}(EntCreateOrder entCreateOrder, EntCreateUserAgent entUserAgent)", entCreateOrder, entUserAgent, ex, response));
             }
@@ -153,6 +185,7 @@ namespace IMD.Admin.Conekta.Services
                 response.Message = "Respuesta de servicio obtenida";
                 response.Result = body;
             }
+            
             catch (Exception ex)
             {
                 response.Code = 67823458105816;

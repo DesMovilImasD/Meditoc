@@ -61,7 +61,7 @@ const DirectorioMedicoDetalle = (props) => {
                         <Grid item xs={6}>
                             <span className="directory-doctor-label">Whatsapp</span>
                             <br />
-                            <span className="directory-doctor-value">{entColaborador.sTelefono}</span>
+                            <span className="directory-doctor-value">{entColaborador.sWhatsApp}</span>
                         </Grid>
                         <Grid item xs={12}>
                             <span className="directory-doctor-label">Correo</span>

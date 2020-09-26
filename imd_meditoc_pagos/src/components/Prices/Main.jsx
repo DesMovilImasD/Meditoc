@@ -14,14 +14,27 @@ import Directory from "./Directory";
  * Modificaciones:
  *****************************************************/
 const Main = (props) => {
-    const { funcLoader, appInfo } = props;
+    const {
+        funcLoader,
+        appInfo,
+        lstOrientationProducts,
+        setLstOrientationProducts,
+        lstMembershipProducts,
+        setLstMembershipProducts,
+    } = props;
 
     return (
         <Fragment>
             <Menu />
             {/* <Cover /> */}
             <Header />
-            <Content funcLoader={funcLoader} />
+            <Content
+                funcLoader={funcLoader}
+                lstOrientationProducts={lstOrientationProducts}
+                setLstOrientationProducts={setLstOrientationProducts}
+                lstMembershipProducts={lstMembershipProducts}
+                setLstMembershipProducts={setLstMembershipProducts}
+            />
             <Directory />
             <Footer appInfo={appInfo} />
         </Fragment>

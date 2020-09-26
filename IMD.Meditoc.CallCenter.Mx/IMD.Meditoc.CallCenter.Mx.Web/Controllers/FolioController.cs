@@ -1,4 +1,5 @@
-﻿using IMD.Admin.Utilities.Business;
+﻿using IMD.Admin.Conekta.Entities.Orders;
+using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
 using IMD.Meditoc.CallCenter.Mx.Business.Folio;
 using IMD.Meditoc.CallCenter.Mx.Entities;
@@ -22,17 +23,17 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 
         [HttpPost]
         [Route("Api/Folio/Create/Folio")]
-        public IMDResponse<EntDetalleCompra> CNuevoFolio([FromBody] EntConecktaPago entConecktaPago)
+        public IMDResponse<EntDetalleCompra> CNuevoFolio([FromBody] EntCreateOrder entCreateOrder)
         {
             IMDResponse<EntDetalleCompra> response = new IMDResponse<EntDetalleCompra>();
 
             string metodo = nameof(this.CNuevoFolio);
-            logger.Info(IMDSerialize.Serialize(67823458413508, $"Inicia {metodo}([FromBody]EntConecktaPago entConecktaPago)", entConecktaPago));
+            logger.Info(IMDSerialize.Serialize(67823458413508, $"Inicia {metodo}([FromBody]EntConecktaPago entConecktaPago)", entCreateOrder));
 
             try
             {
                 BusFolio busFolio = new BusFolio();
-                response = busFolio.BNuevoFolioCompra(entConecktaPago);
+                response = busFolio.BNuevoFolioCompra(entCreateOrder);
 
             }
             catch (Exception ex)
@@ -40,7 +41,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
                 response.Code = 67823458414285;
                 response.Message = "Ocurrió un error inesperado";
 
-                logger.Error(IMDSerialize.Serialize(67823458414285, $"Error en {metodo}([FromBody]EntConecktaPago entConecktaPago): {ex.Message}", entConecktaPago, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458414285, $"Error en {metodo}([FromBody]EntConecktaPago entConecktaPago): {ex.Message}", entCreateOrder, ex, response));
             }
             return response;
         }

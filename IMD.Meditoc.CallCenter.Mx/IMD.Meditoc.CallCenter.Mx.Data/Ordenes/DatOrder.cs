@@ -165,19 +165,19 @@ namespace IMD.Admin.Conekta.Data
         /// <param name="piConsecutive">Consecutivo generado del artículo</param>
         /// <param name="entLineItemDetail">Datos del artículo</param>
         /// <returns></returns>
-        public IMDResponse<bool> DSaveLineItem(Guid puId, int piConsecutive, EntLineItemDetail entLineItemDetail)
+        public IMDResponse<bool> DSaveLineItem(Guid puId, EntLineItemDetail entLineItemDetail)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.DSaveLineItem);
-            logger.Info(IMDSerialize.Serialize(67823458100377, $"Inicia {metodo}(Guid puId, int piConsecutive, EntLineItemDetail entLineItemDetail)", puId, piConsecutive, entLineItemDetail));
+            logger.Info(IMDSerialize.Serialize(67823458100377, $"Inicia {metodo}(Guid puId, int piConsecutive, EntLineItemDetail entLineItemDetail)", puId, entLineItemDetail));
 
             try
             {
                 using (DbCommand dbCommand = database.GetStoredProcCommand(spSaveLineItem))
                 {
                     database.AddInParameter(dbCommand, "puId", DbType.Guid, puId);
-                    database.AddInParameter(dbCommand, "piConsecutive", DbType.Int32, piConsecutive);
+                    database.AddInParameter(dbCommand, "piConsecutive", DbType.Int32, entLineItemDetail.consecutive);
                     database.AddInParameter(dbCommand, "psItemId", DbType.String, entLineItemDetail.id?.Trim());
                     database.AddInParameter(dbCommand, "psName", DbType.String, entLineItemDetail.name?.Trim());
                     database.AddInParameter(dbCommand, "pnUnitPrice", DbType.Decimal, entLineItemDetail.unit_price);
@@ -191,7 +191,7 @@ namespace IMD.Admin.Conekta.Data
                 response.Code = 67823458101154;
                 response.Message = "Ocurrió un error inesperado al guardar el detalle del artículo en la base de datos";
 
-                logger.Error(IMDSerialize.Serialize(67823458101154, $"Error en {metodo}(Guid puId, int piConsecutive, EntLineItemDetail entLineItemDetail): {ex.Message}", puId, piConsecutive, entLineItemDetail, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458101154, $"Error en {metodo}(Guid puId, int piConsecutive, EntLineItemDetail entLineItemDetail): {ex.Message}", puId, entLineItemDetail, ex, response));
             }
             return response;
         }

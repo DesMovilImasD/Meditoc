@@ -385,49 +385,25 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
                     return resDelConsulta;
                 }
 
-                EntFolioFV entFolio = new EntFolioFV
+                if (detalleConsulta.iIdOrigen == (int)EnumOrigen.Particular)
                 {
-                    iIdEmpresa = (int)detalleConsulta.iIdEmpresa,
-                    iIdUsuario = consulta.iIdUsuarioMod,
-                    lstFolios = new List<EntFolioFVItem>
+                    EntFolioFV entFolio = new EntFolioFV
+                    {
+                        iIdEmpresa = (int)detalleConsulta.iIdEmpresa,
+                        iIdUsuario = consulta.iIdUsuarioMod,
+                        lstFolios = new List<EntFolioFVItem>
                         {
                             new EntFolioFVItem
                             {
                                 iIdFolio = (int)detalleConsulta.iIdFolio
                             }
                         }
-                };
-                BusFolio busFolio = new BusFolio();
-
-
-                if (detalleConsulta.iIdOrigen == (int)EnumOrigen.Particular)
-                {
+                    };
+                    BusFolio busFolio = new BusFolio();
                     IMDResponse<bool> resDesactivarFolios = busFolio.BEliminarFoliosEmpresa(entFolio);
                     if (resDesactivarFolios.Code != 0)
                     {
                         return resDesactivarFolios;
-                    }
-                }
-                else
-                {
-                    if (detalleConsulta.iIdTipoProducto == (int)EnumTipoProducto.Servicio)
-                    {
-                        IMDResponse<bool> resDesactivarFolios = busFolio.BEliminarFoliosEmpresa(entFolio);
-                        if (resDesactivarFolios.Code != 0)
-                        {
-                            return resDesactivarFolios;
-                        }
-                    }
-                    else
-                    {
-                        if (DateTime.Now > detalleConsulta.dtFechaVencimiento)
-                        {
-                            IMDResponse<bool> resDesactivarFolios = busFolio.BEliminarFoliosEmpresa(entFolio);
-                            if (resDesactivarFolios.Code != 0)
-                            {
-                                return resDesactivarFolios;
-                            }
-                        }
                     }
                 }
 

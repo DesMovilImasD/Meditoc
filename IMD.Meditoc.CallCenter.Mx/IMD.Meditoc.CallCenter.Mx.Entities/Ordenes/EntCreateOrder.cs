@@ -8,6 +8,7 @@ namespace IMD.Admin.Conekta.Entities.Orders
 {
     public class EntCreateOrder
     {
+        public int iIdOrigen { get; set; }
         public string currency { get; set; }
         public int? coupon { get; set; }
         public bool tax { get; set; }

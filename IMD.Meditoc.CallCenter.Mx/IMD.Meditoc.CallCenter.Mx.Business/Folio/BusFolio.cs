@@ -54,12 +54,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
         /// </summary>
         /// <param name="entConecktaPago"></param>
         /// <returns></returns>
-        public IMDResponse<EntDetalleCompra> BNuevoFolioCompra(EntConecktaPago entConecktaPago)
+        public IMDResponse<EntDetalleCompra> BNuevoFolioCompra(EntCreateOrder entCreateOrder)
         {
             IMDResponse<EntDetalleCompra> response = new IMDResponse<EntDetalleCompra>();
 
             string metodo = nameof(this.BNuevoFolioCompra);
-            logger.Info(IMDSerialize.Serialize(67823458415062, $"Inicia {metodo}(EntConecktaPago entConecktaPago)", entConecktaPago));
+            logger.Info(IMDSerialize.Serialize(67823458415062, $"Inicia {metodo}(EntConecktaPago entConecktaPago)", entCreateOrder));
 
             try
             {
@@ -70,10 +70,10 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     return response = lstProductos.GetResponse<EntDetalleCompra>();
                 }
 
-                for (int i = 0; i < entConecktaPago.lstLineItems.Count; i++)
+                for (int i = 0; i < entCreateOrder.line_items.Count; i++)
                 {
                     EntProducto oProducto = lstProductos.Result
-                        .Find(x => x.iIdProducto == entConecktaPago.lstLineItems[i].product_id);
+                        .Find(x => x.iIdProducto == entCreateOrder.line_items[i].product_id);
 
                     if (oProducto == null)
                     {
@@ -82,31 +82,25 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                         return response;
                     }
 
-                    entConecktaPago.lstLineItems[i].monthsExpiration = oProducto.iMesVigencia;
-                    entConecktaPago.lstLineItems[i].name = oProducto.sNombre;
-                    entConecktaPago.lstLineItems[i].unit_price = (int)(oProducto.fCosto * 100);
+                    entCreateOrder.line_items[i].monthsExpiration = oProducto.iMesVigencia;
+                    entCreateOrder.line_items[i].name = oProducto.sNombre;
+                    entCreateOrder.line_items[i].unit_price = (int)(oProducto.fCosto * 100);
                 }
 
                 //Se manda a llamar la creaciión de orden de conekta
                 BusOrder busOrder = new BusOrder("MeditocComercial", "Meditoc1");
-
-                EntCreateOrder entCreateOrder = new EntCreateOrder();
-
-                string datosSerealizados = JsonConvert.SerializeObject(entConecktaPago);
-                entCreateOrder = JsonConvert.DeserializeObject<EntCreateOrder>(datosSerealizados);
-
-                IMDResponse<EntOrder> entOrder = busOrder.BCreateOrder(entCreateOrder);
-                if (entOrder.Code != 0)
+                IMDResponse<EntOrder> resOrder = busOrder.BCreateOrder(entCreateOrder);
+                if (resOrder.Code != 0)
                 {
-                    return response = entOrder.GetResponse<EntDetalleCompra>();
+                    return response = resOrder.GetResponse<EntDetalleCompra>();
                 }
 
-                string f = JsonConvert.SerializeObject(entOrder.Result);
-                IMDResponse<EntRequestOrder> requesOrder = new IMDResponse<EntRequestOrder>();
-                requesOrder.Result = JsonConvert.DeserializeObject<EntRequestOrder>(f);
+                //string f = JsonConvert.SerializeObject(entOrder.Result);
+                //IMDResponse<EntRequestOrder> requesOrder = new IMDResponse<EntRequestOrder>();
+                //requesOrder.Result = JsonConvert.DeserializeObject<EntRequestOrder>(f);
 
 
-                response = BGuardarCompraUnica(requesOrder, entConecktaPago);
+                response = BGuardarCompraUnica(resOrder.Result, entCreateOrder);
 
                 response.Code = 0;
                 response.Message = "Operación exitosa.";
@@ -116,7 +110,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 response.Code = 67823458415839;
                 response.Message = "Ocurrió un error inesperado al crear la orden";
 
-                logger.Error(IMDSerialize.Serialize(67823458415839, $"Error en {metodo}(EntConecktaPago entConecktaPago): {ex.Message}", entConecktaPago, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458415839, $"Error en {metodo}(EntConecktaPago entConecktaPago): {ex.Message}", entCreateOrder, ex, response));
             }
             return response;
         }
@@ -125,15 +119,15 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
         /// Guarda los datos de la orden generada por Conekta
         /// </summary>
         /// <param name="entOrder"></param>
-        /// <param name="entConecktaPago"></param>
+        /// <param name="entCreateOrder"></param>
         /// <returns></returns>
-        public IMDResponse<EntDetalleCompra> BGuardarCompraUnica(IMDResponse<EntRequestOrder> entOrder, EntConecktaPago entConecktaPago)
+        public IMDResponse<EntDetalleCompra> BGuardarCompraUnica(EntOrder entOrder, EntCreateOrder entCreateOrder)
         {
             IMDResponse<EntDetalleCompra> response = new IMDResponse<EntDetalleCompra>();
             EntDetalleCompra entDetalleCompra = new EntDetalleCompra();
 
             string metodo = nameof(this.BGuardarCompraUnica);
-            logger.Info(IMDSerialize.Serialize(67823458416616, $"Inicia {metodo}(EntRequestOrder entOrder, EntConecktaPago entConecktaPago)", entOrder, entConecktaPago));
+            logger.Info(IMDSerialize.Serialize(67823458416616, $"Inicia {metodo}(EntRequestOrder entOrder, EntConecktaPago entConecktaPago)", entOrder, entCreateOrder));
             EntDetalleCompra oDetalleCompra = new EntDetalleCompra();
 
 
@@ -146,7 +140,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 //Se asigna empresa al folio
                 BusEmpresa busEmpresa = new BusEmpresa();
-                IMDResponse<List<EntEmpresa>> respuestaObtenerEmpresas = busEmpresa.BGetEmpresas(null, entConecktaPago.pacienteUnico.sCorreo);
+                IMDResponse<List<EntEmpresa>> respuestaObtenerEmpresas = busEmpresa.BGetEmpresas(null, entOrder.customer_info.email);
 
                 if (respuestaObtenerEmpresas.Code != 0)
                 {
@@ -163,8 +157,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     EntEmpresa entEmpresa = new EntEmpresa()
                     {
                         iIdEmpresa = 0,
-                        sNombre = entConecktaPago.pacienteUnico.sNombre,
-                        sCorreo = entConecktaPago.pacienteUnico.sCorreo,
+                        sNombre = entOrder.customer_info.name,
+                        sCorreo = entOrder.customer_info.email,
                         iIdUsuarioMod = 1,
                         bActivo = true,
                         bBaja = false
@@ -181,23 +175,21 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 }
 
                 //Se crea el folio
-                entFolio.iIdOrigen = entConecktaPago.iIdOrigen;
+                entFolio.iIdOrigen = entCreateOrder.iIdOrigen;
                 entFolio.bTerminosYCondiciones = false;
-                entFolio.sOrdenConekta = entOrder.Result.id;
+                entFolio.sOrdenConekta = entOrder.id;
 
                 //Se crea el paciente
                 EntPaciente entPaciente = new EntPaciente();
 
                 entPaciente.iIdPaciente = 0;
                 entPaciente.iIdFolio = entFolio.iIdFolio;
-                entPaciente.sTelefono = entConecktaPago.pacienteUnico.sTelefono;
-                entPaciente.sCorreo = entConecktaPago.pacienteUnico.sCorreo;
-                entPaciente.sNombre = entConecktaPago.pacienteUnico.sNombre;
+                entPaciente.sTelefono = entOrder.customer_info.phone;
+                entPaciente.sCorreo = entOrder.customer_info.email;
+                entPaciente.sNombre = entOrder.customer_info.name;
 
 
-                entFolio.iConsecutivo = entConecktaPago.lstLineItems.Count;
-
-                foreach (line_items item in entConecktaPago.lstLineItems)
+                foreach (EntLineItemDetail item in entOrder.line_items.data)
                 {
                     for (int i = 0; i < item.quantity; i++)
                     {
@@ -207,22 +199,21 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                             return resGenerarFolio.GetResponse<EntDetalleCompra>();
                         }
                     }
-                    entFolio.iConsecutivo--;
                 }
                 //    scope.Complete();
                 //}
 
                 oDetalleCompra.nTotal = oDetalleCompra.lstArticulos
                     .Sum(x => x.nCantidad * x.nPrecio);
-                oDetalleCompra.nTotalPagado = entOrder.Result.amount_paid / 100d;
-                oDetalleCompra.nTotalDescuento = entOrder.Result.amount_discount / 100d;
-                oDetalleCompra.nTotalIVA = entOrder.Result.amount_tax / 100d;
-                oDetalleCompra.sCodigoCupon = entOrder.Result.coupon_code;
-                oDetalleCompra.sEmail = entConecktaPago.pacienteUnico.sCorreo;
-                oDetalleCompra.sNombre = entConecktaPago.pacienteUnico.sNombre;
-                oDetalleCompra.sOrden = entOrder.Result.id;
-                oDetalleCompra.sTelefono = entConecktaPago.pacienteUnico.sTelefono;
-                oDetalleCompra.bAplicaIVA = entConecktaPago.tax;
+                oDetalleCompra.nTotalPagado = entOrder.amount_paid / 100d;
+                oDetalleCompra.nTotalDescuento = entOrder.amount_discount / 100d;
+                oDetalleCompra.nTotalIVA = entOrder.amount_tax / 100d;
+                oDetalleCompra.sCodigoCupon = entOrder.coupon_code;
+                oDetalleCompra.sEmail = entOrder.customer_info.email;
+                oDetalleCompra.sNombre = entOrder.customer_info.name;
+                oDetalleCompra.sOrden = entOrder.id;
+                oDetalleCompra.sTelefono = entOrder.customer_info.phone;
+                oDetalleCompra.bAplicaIVA = entOrder.amount_tax > 0d;
 
 
                 IMDResponse<bool> responseCorreo = this.BEnvioCorreo(oDetalleCompra);
@@ -235,7 +226,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 response.Code = 67823458417393;
                 response.Message = "Ocurrió un error inesperado durante la creación de la orden";
 
-                logger.Error(IMDSerialize.Serialize(67823458417393, $"Error en {metodo}(EntRequestOrder entOrder, EntConecktaPago entConecktaPago): {ex.Message}", entOrder, entConecktaPago, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458417393, $"Error en {metodo}(EntRequestOrder entOrder, EntConecktaPago entConecktaPago): {ex.Message}", entOrder, entCreateOrder, ex, response));
             }
             return response;
         }
@@ -249,7 +240,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
         /// <param name="oDetalleCompra"></param>
         /// <param name="i"></param>
         /// <returns></returns>
-        public IMDResponse<bool> BGenerarFolioCompra(EntFolio entFolio, EntPaciente entPaciente, line_items item, EntDetalleCompra oDetalleCompra, int i)
+        public IMDResponse<bool> BGenerarFolioCompra(EntFolio entFolio, EntPaciente entPaciente, EntLineItemDetail item, EntDetalleCompra oDetalleCompra, int i)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
@@ -259,15 +250,16 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             try
             {
                 entFolio.iIdProducto = item.product_id;
+                entFolio.iConsecutivo = item.consecutive;
 
-                if (item.monthsExpiration == 0)
+                if (item.months_expiration == 0)
                 {
                     entFolio.dtFechaVencimiento = DateTime.Now.AddDays(Convert.ToInt16(ConfigurationManager.AppSettings["iDiasDespuesVencimiento"]));
                 }
 
-                if (item.monthsExpiration != 0)
+                if (item.months_expiration != 0)
                 {
-                    entFolio.dtFechaVencimiento = DateTime.Now.AddMonths(item.monthsExpiration);
+                    entFolio.dtFechaVencimiento = DateTime.Now.AddMonths(item.months_expiration);
                 }
 
                 BusGeneratePassword busGenerate = new BusGeneratePassword();
@@ -869,10 +861,21 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 if (resGetConsultas.Result.Count != 0)
                 {
-                    EntDetalleConsulta consultaProgramada = resGetConsultas.Result.First();
-                    response.Code = -2346727776123;
-                    response.Message = $"Ya hay una consulta programada de {consultaProgramada.dtFechaProgramadaInicio?.ToString("h:mm tt")} a {consultaProgramada.dtFechaProgramadaFin?.ToString("h:mm tt")} para el folio {consultaProgramada.sFolio}. El tiempo de espera entre consultas es de {ConfigurationManager.AppSettings["iMinToleraciaConsultaFin"]} min";
-                    return response;
+                    bool existeConflictoAgenda = false;
+                    resGetConsultas.Result.ForEach(consulta =>
+                    {
+                        if (consulta.iIdEstatusConsulta != (int)EnumEstatusConsulta.Cancelado && consulta.iIdEstatusConsulta != (int)EnumEstatusConsulta.Finalizado)
+                        {
+                            response.Code = -2346727776123;
+                            response.Message = $"Ya hay una consulta programada de {consulta.dtFechaProgramadaInicio?.ToString("h:mm tt")} a {consulta.dtFechaProgramadaFin?.ToString("h:mm tt")} para el folio {consulta.sFolio}. El tiempo de espera entre consultas es de {ConfigurationManager.AppSettings["iMinToleraciaConsultaFin"]} min";
+                            existeConflictoAgenda = true;
+                        }
+                    });
+
+                    if (existeConflictoAgenda)
+                    {
+                        return response;
+                    }
                 }
 
                 if (entNuevaConsulta.consulta.iIdConsulta == 0)
@@ -930,33 +933,28 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 EntFolioReporte folioExistente = resGetFolioExiste.Result.First();
 
-                EntFolioFV entFolioFV = new EntFolioFV
+                if (folioExistente.iIdOrigen == (int)EnumOrigen.Particular)
                 {
-                    iIdEmpresa = folioExistente.iIdEmpresa,
-                    iIdUsuario = entNuevaConsulta.iIdUsuarioMod,
-                    lstFolios = new List<EntFolioFVItem>
+                    EntFolioFV entFolioFV = new EntFolioFV
+                    {
+                        iIdEmpresa = folioExistente.iIdEmpresa,
+                        iIdUsuario = entNuevaConsulta.iIdUsuarioMod,
+                        lstFolios = new List<EntFolioFVItem>
                         {
                             new EntFolioFVItem
                             {
                                 iIdFolio = folioExistente.iIdFolio
                             }
                         }
-                };
+                    };
 
-                if (folioExistente.iIdOrigen == (int)EnumOrigen.Particular)
-                {
                     entFolioFV.dtFechaVencimiento = (DateTime)entNuevaConsulta?.consulta?.dtFechaProgramadaFin;
-                }
-                else
-                {
-                    entFolioFV.dtFechaVencimiento = (DateTime)folioExistente.dtFechaVencimiento;
-                }
 
-
-                IMDResponse<bool> resUpdVencimiento = this.BUpdFechaVencimiento(entFolioFV);
-                if (resUpdVencimiento.Code != 0)
-                {
-                    return resUpdVencimiento.GetResponse<EntDetalleCompra>();
+                    IMDResponse<bool> resUpdVencimiento = this.BUpdFechaVencimiento(entFolioFV);
+                    if (resUpdVencimiento.Code != 0)
+                    {
+                        return resUpdVencimiento.GetResponse<EntDetalleCompra>();
+                    }
                 }
 
                 entNuevaConsulta.consulta.iIdEstatusConsulta = (int)EnumEstatusConsulta.CreadoProgramado;
@@ -1117,32 +1115,27 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 EntDetalleConsulta consulta = resGetConsulta.Result.First();
 
-                EntFolioFV entFolioFV = new EntFolioFV
-                {
-                    iIdEmpresa = (int)consulta.iIdEmpresa,
-                    iIdUsuario = entModificarConsulta.iIdUsuarioMod,
-                    lstFolios = new List<EntFolioFVItem>
-                    {
-                        new EntFolioFVItem
-                        {
-                            iIdFolio = (int)consulta.iIdFolio
-                        }
-                    }
-                };
-
                 if (consulta.iIdOrigen == (int)EnumOrigen.Particular)
                 {
-                    entFolioFV.dtFechaVencimiento = (DateTime)entModificarConsulta?.consulta?.dtFechaProgramadaFin;
-                }
-                else
-                {
-                    entFolioFV.dtFechaVencimiento = (DateTime)consulta.dtFechaVencimiento;
-                }
+                    EntFolioFV entFolioFV = new EntFolioFV
+                    {
+                        iIdEmpresa = (int)consulta.iIdEmpresa,
+                        iIdUsuario = entModificarConsulta.iIdUsuarioMod,
+                        lstFolios = new List<EntFolioFVItem>
+                        {
+                            new EntFolioFVItem
+                            {
+                                iIdFolio = (int)consulta.iIdFolio
+                            }
+                        }
+                    };
 
-                IMDResponse<bool> resUpdVencimiento = this.BUpdFechaVencimiento(entFolioFV);
-                if (resUpdVencimiento.Code != 0)
-                {
-                    return resUpdVencimiento.GetResponse<EntDetalleCompra>();
+                    entFolioFV.dtFechaVencimiento = (DateTime)entModificarConsulta?.consulta?.dtFechaProgramadaFin;
+                    IMDResponse<bool> resUpdVencimiento = this.BUpdFechaVencimiento(entFolioFV);
+                    if (resUpdVencimiento.Code != 0)
+                    {
+                        return resUpdVencimiento.GetResponse<EntDetalleCompra>();
+                    }
                 }
 
                 entModificarConsulta.consulta.iIdEstatusConsulta = (int)EnumEstatusConsulta.Reprogramado;

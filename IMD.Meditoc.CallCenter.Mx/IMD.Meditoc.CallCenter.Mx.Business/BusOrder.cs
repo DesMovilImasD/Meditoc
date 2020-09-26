@@ -6,6 +6,7 @@ using IMD.Admin.Conekta.Services;
 using IMD.Admin.Conekta.Web.Business;
 using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
+using IMD.Meditoc.CallCenter.Mx.Entities.Ordenes;
 using log4net;
 using Newtonsoft.Json;
 using System;
@@ -266,7 +267,7 @@ namespace IMD.Admin.Conekta.Business
 
                 int[] mesesSinInteresesValidos = { 3, 6, 9, 12, 18 };
 
-                List<string> ocultarPropiedades = new List<string> { "coupon", "tax" };
+                List<string> ocultarPropiedades = new List<string> { "coupon", "tax", "product_id", "monthsExpiration", "iIdOrigen" };
 
                 if (!mesesSinInteresesValidos.Contains(entCreateOrder.charges[0].payment_method.monthly_installments))
                 {
@@ -274,7 +275,7 @@ namespace IMD.Admin.Conekta.Business
                 }
 
                 IMDResponse<string> respuestaServicioCrearOrden = servOrder.SCreateOrder(entCreateOrder, respuestaObtenerAgenteUsuario.Result, ocultarPropiedades.ToArray());
-                if (respuestaServicioCrearOrden.Code != 0)
+                if (respuestaServicioCrearOrden.Code != 0 && respuestaServicioCrearOrden.Code != -1500000)
                 {
                     return respuestaServicioCrearOrden.GetResponse<EntOrder>();
                 }
@@ -286,16 +287,33 @@ namespace IMD.Admin.Conekta.Business
                 EntOrder entOrder = null;
                 try
                 {
-                    entOrder = JsonConvert.DeserializeObject<EntOrder>(respuestaServicioCrearOrden.Result);
-
-                    entOrder.amount = amount;
-                    entOrder.amount_paid = entCreateOrder.charges[0].amount;
-                    entOrder.coupon_code = couponCode;
-                    entOrder.amount_discount = discount;
-                    entOrder.amount_tax = tax;
-                    if (entOrder.customer_info.phone == defaultPhoneNumber)
+                    if (respuestaServicioCrearOrden.Code == 0)
                     {
-                        entOrder.customer_info.phone = null;
+                        entOrder = JsonConvert.DeserializeObject<EntOrder>(respuestaServicioCrearOrden.Result);
+                    }
+                    else
+                    {
+                        EntOrderDeclined entOrderDeclined = JsonConvert.DeserializeObject<EntOrderDeclined>(respuestaServicioCrearOrden.Result);
+                        if (entOrderDeclined != null)
+                        {
+                            entOrder = entOrderDeclined.data;
+                            if(entOrder != null)
+                            {
+                                entOrder.payment_status = entOrder.charges?.data[0]?.status;
+                            }
+                        }
+                    }
+                    if (entOrder != null)
+                    {
+                        entOrder.amount = amount;
+                        entOrder.amount_paid = entCreateOrder.charges[0].amount;
+                        entOrder.coupon_code = couponCode;
+                        entOrder.amount_discount = discount;
+                        entOrder.amount_tax = tax;
+                        if (entOrder.customer_info?.phone == defaultPhoneNumber)
+                        {
+                            entOrder.customer_info.phone = null;
+                        }
                     }
                 }
                 catch (Exception)
@@ -306,26 +324,34 @@ namespace IMD.Admin.Conekta.Business
                 string guardarOrdenEnBD = ConfigurationManager.AppSettings["CONEKTA_SAVE_DB"];
                 if (Convert.ToBoolean(guardarOrdenEnBD) && entOrder != null)
                 {
-                    IMDResponse<bool> respuestaGuardarBD = this.BSaveOrder(entOrder, entCreateOrder.coupon);
+                    IMDResponse<bool> respuestaGuardarBD = this.BSaveOrder(entOrder, entCreateOrder);
                     if (respuestaGuardarBD.Code != 0)
                     {
                         logger.Error(IMDSerialize.Serialize(67823458119802, $"Error en guardado en base de datos de orden Conekta", entOrder, respuestaGuardarBD));
                     }
                 }
-
-                if (aplicaPromocion)
+                if (respuestaServicioCrearOrden.Code == -1500000)
                 {
-                    IMDResponse<bool> respuestaAplicarCupon = busPromociones.BAplicarCupon((int)entCreateOrder.coupon);
-                    if (respuestaAplicarCupon.Code != 0)
-                    {
-                        logger.Error(IMDSerialize.Serialize(67823458119803, $"Error en aplicar promoción", entCreateOrder));
-
-                    }
+                    response.Code = respuestaServicioCrearOrden.Code;
+                    response.Result = entOrder;
+                    response.Message = respuestaServicioCrearOrden.Message;
                 }
+                else
+                {
+                    if (aplicaPromocion)
+                    {
+                        IMDResponse<bool> respuestaAplicarCupon = busPromociones.BAplicarCupon((int)entCreateOrder.coupon);
+                        if (respuestaAplicarCupon.Code != 0)
+                        {
+                            logger.Error(IMDSerialize.Serialize(67823458119803, $"Error en aplicar promoción", entCreateOrder));
 
-                response.Code = 0;
-                response.Result = entOrder;
-                response.Message = "Orden creada";
+                        }
+                    }
+
+                    response.Code = 0;
+                    response.Result = entOrder;
+                    response.Message = "Orden creada";
+                }
             }
             catch (Exception ex)
             {
@@ -407,12 +433,12 @@ namespace IMD.Admin.Conekta.Business
         /// <param name="entOrder">Datos de la orden</param>
         /// <param name="piIdCupon">Cupón si aplicó</param>
         /// <returns>Guardado correcto</returns>
-        private IMDResponse<bool> BSaveOrder(EntOrder entOrder, int? piIdCupon = null)
+        private IMDResponse<bool> BSaveOrder(EntOrder entOrder, EntCreateOrder entCreateOrder)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.BSaveOrder);
-            logger.Info(IMDSerialize.Serialize(67823458111255, $"Inicia {metodo}(EntOrder entOrder, int? piIdCupon = null)", entOrder, piIdCupon));
+            logger.Info(IMDSerialize.Serialize(67823458111255, $"Inicia {metodo}(EntOrder entOrder, int? piIdCupon = null)", entOrder, entCreateOrder));
 
             try
             {
@@ -421,7 +447,7 @@ namespace IMD.Admin.Conekta.Business
                 string origin = "conekta_service";
                 //using (TransactionScope scope = new TransactionScope())
                 //{
-                IMDResponse<bool> respuestaGuardarOrden = datOrder.DSaveConektaOrder(uid, entOrder, origin, piIdCupon);
+                IMDResponse<bool> respuestaGuardarOrden = datOrder.DSaveConektaOrder(uid, entOrder, origin, entCreateOrder.coupon);
                 if (respuestaGuardarOrden.Code != 0)
                 {
                     return respuestaGuardarOrden;
@@ -434,9 +460,13 @@ namespace IMD.Admin.Conekta.Business
                 }
 
                 int consecutivoArticulo = 0;
-                foreach (EntLineItemDetail articulo in entOrder.line_items.data)
+                for (int i = 0; i < entOrder.line_items.data.Count; i++)
                 {
-                    IMDResponse<bool> respuestaGuardarArticulo = datOrder.DSaveLineItem(uid, ++consecutivoArticulo, articulo);
+                    EntCreateLineItem itemRef = entCreateOrder.line_items.Find(x => x.name == entOrder.line_items.data[i].name);
+                    entOrder.line_items.data[i].consecutive = ++consecutivoArticulo;
+                    entOrder.line_items.data[i].product_id = itemRef.product_id;
+                    entOrder.line_items.data[i].months_expiration = itemRef.monthsExpiration;
+                    IMDResponse<bool> respuestaGuardarArticulo = datOrder.DSaveLineItem(uid, entOrder.line_items.data[i]);
                     if (respuestaGuardarArticulo.Code != 0)
                     {
                         return respuestaGuardarArticulo;
@@ -461,7 +491,7 @@ namespace IMD.Admin.Conekta.Business
                 response.Code = 67823458112032;
                 response.Message = "Ocurrió un error inesperado al guardar la información en la base de datos";
 
-                logger.Error(IMDSerialize.Serialize(67823458112032, $"Error en {metodo}(EntOrder entOrder, int? piIdCupon = null): {ex.Message}", entOrder, piIdCupon, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458112032, $"Error en {metodo}(EntOrder entOrder, int? piIdCupon = null): {ex.Message}", entOrder, entCreateOrder, ex, response));
             }
             return response;
         }

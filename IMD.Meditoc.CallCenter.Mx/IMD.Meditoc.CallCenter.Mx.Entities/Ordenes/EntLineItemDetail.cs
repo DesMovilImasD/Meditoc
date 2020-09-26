@@ -13,5 +13,8 @@ namespace IMD.Admin.Conekta.Entities.Orders
         public int quantity { get; set; }
         public string id { get; set; }
         public string parent_id { get; set; }
+        public int consecutive { get; set; }
+        public int product_id { get; set; }
+        public int months_expiration { get; set; }
     }
 }

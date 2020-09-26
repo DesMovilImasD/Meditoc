@@ -13,7 +13,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Reportes.Ventas
         public string sItemName { get; set; }
         public double nUnitPrice { get; set; }
         public int iQuantity { get; set; }
-        public string sNumeroMembresia { get; set; }
+        public string sFolio { get; set; }
         public int iIdTitular { get; set; }
     }
 }

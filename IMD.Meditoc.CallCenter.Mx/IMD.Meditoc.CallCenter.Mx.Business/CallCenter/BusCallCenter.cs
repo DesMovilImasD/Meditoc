@@ -325,7 +325,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                 {
                     iIdConsulta = iIdConsulta,
                     dtFechaConsultaFin = DateTime.Now,
-                    dtFechaProgramadaFin = DateTime.Now,
                     iIdEstatusConsulta = (int)EnumEstatusConsulta.Finalizado
                 };
 
@@ -349,26 +348,36 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                 }
 
                 EntDetalleConsulta consulta = resGetConsulta.Result.First();
-
-                if (consulta.iIdOrigen == (int)EnumOrigen.Particular)
+                EntFolioFV entFolio = new EntFolioFV
                 {
-                    EntFolioFV entFolio = new EntFolioFV
-                    {
-                        iIdEmpresa = (int)consulta.iIdEmpresa,
-                        iIdUsuario = iIdUsuarioMod,
-                        lstFolios = new List<EntFolioFVItem>
+                    iIdEmpresa = (int)consulta.iIdEmpresa,
+                    iIdUsuario = iIdUsuarioMod,
+                    lstFolios = new List<EntFolioFVItem>
                         {
                             new EntFolioFVItem
                             {
                                 iIdFolio = (int)consulta.iIdFolio
                             }
                         }
-                    };
+                };
 
+                if (consulta.iIdOrigen == (int)EnumOrigen.Particular)
+                {
                     IMDResponse<bool> resDesactivarFolios = busFolio.BEliminarFoliosEmpresa(entFolio);
                     if (resDesactivarFolios.Code != 0)
                     {
                         return resDesactivarFolios;
+                    }
+                }
+                else
+                {
+                    if(consulta.iIdTipoProducto == (int)EnumTipoProducto.Servicio)
+                    {
+                        IMDResponse<bool> resDesactivarFolios = busFolio.BEliminarFoliosEmpresa(entFolio);
+                        if (resDesactivarFolios.Code != 0)
+                        {
+                            return resDesactivarFolios;
+                        }
                     }
                 }
 
