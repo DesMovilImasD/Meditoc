@@ -13,11 +13,11 @@ using System.Web.Http;
 
 namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 {
-    [MeditocAuthentication]
     public class EspecialidadController : ApiController
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(EspecialidadController));
 
+        [MeditocAuthentication]
         [HttpPost]
         [Route("Api/Especialidad/Create/Resgistro")]
         public IMDResponse<bool> CSaveEspecialidad(EntEspecialidad entEspecialidad)

@@ -66,7 +66,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
-        [MeditocAuthentication]
+        //[MeditocAuthentication]
         [HttpGet]
         [Route("Api/Producto/Get/ObtenerMembresia")]
         public IMDResponse<List<EntProducto>> CgetMembership()
@@ -93,7 +93,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
-        [MeditocAuthentication]
+        //[MeditocAuthentication]
         [HttpGet]
         [Route("Api/Producto/Get/ObtenerServicio")]
         public IMDResponse<List<EntProducto>> CgetServices()

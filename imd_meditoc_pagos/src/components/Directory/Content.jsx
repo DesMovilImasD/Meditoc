@@ -65,12 +65,13 @@ const Content = (props) => {
         funcLoader(true, "Consultando especialidades...");
 
         try {
-            const apiResponse = await fetch(`${serverMain}${apiGetEspecialidades}`, {
-                headers: {
-                    "AppKey": "qSVBJIQpOqtp0UfwzwX1ER6fNYR8YiPU/bw5CdEqYqk=",
-                    "AppToken": "Xx3ePv63cUTg77QPATmztJ3J8cdO1riA7g+lVRzOzhfnl9FnaVT1O2YIv8YCTVRZ",
-                },
-            });
+            // const apiResponse = await fetch(`${serverMain}${apiGetEspecialidades}`, {
+            //     headers: {
+            //         "AppKey": "qSVBJIQpOqtp0UfwzwX1ER6fNYR8YiPU/bw5CdEqYqk=",
+            //         "AppToken": "Xx3ePv63cUTg77QPATmztJ3J8cdO1riA7g+lVRzOzhfnl9FnaVT1O2YIv8YCTVRZ",
+            //     },
+            // });
+            const apiResponse = await fetch(`${serverMain}${apiGetEspecialidades}`);
 
             const response = await apiResponse.json();
 
