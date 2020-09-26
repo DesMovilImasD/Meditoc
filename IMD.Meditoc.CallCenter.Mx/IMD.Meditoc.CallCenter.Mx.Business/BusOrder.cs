@@ -107,7 +107,7 @@ namespace IMD.Admin.Conekta.Business
                     }
                     else
                     {
-                        entCreateOrder.customer_info.phone = $"+52{entCreateOrder.customer_info.phone}";
+                        entCreateOrder.customer_info.phone = $"{ConfigurationManager.AppSettings["CONEKTA_PHONE_ACCESS"]}{entCreateOrder.customer_info.phone}";
                     }
                 }
 

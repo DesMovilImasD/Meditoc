@@ -102,7 +102,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 //requesOrder.Result = JsonConvert.DeserializeObject<EntRequestOrder>(f);
 
 
-                response = BGuardarCompraUnica(resOrder.Result, entCreateOrder);
+                response = BGuardarCompraUnica(resOrder.Result, entCreateOrder.iIdOrigen);
 
                 response.Code = 0;
                 response.Message = "Operación exitosa.";
@@ -123,19 +123,21 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
         /// <param name="entOrder"></param>
         /// <param name="entCreateOrder"></param>
         /// <returns></returns>
-        public IMDResponse<EntDetalleCompra> BGuardarCompraUnica(EntOrder entOrder, EntCreateOrder entCreateOrder)
+        public IMDResponse<EntDetalleCompra> BGuardarCompraUnica(EntOrder entOrder, int piIdOrigen)
         {
             IMDResponse<EntDetalleCompra> response = new IMDResponse<EntDetalleCompra>();
             EntDetalleCompra entDetalleCompra = new EntDetalleCompra();
 
             string metodo = nameof(this.BGuardarCompraUnica);
-            logger.Info(IMDSerialize.Serialize(67823458416616, $"Inicia {metodo}(EntRequestOrder entOrder, EntConecktaPago entConecktaPago)", entOrder, entCreateOrder));
+            logger.Info(IMDSerialize.Serialize(67823458416616, $"Inicia {metodo}(EntRequestOrder entOrder, EntConecktaPago entConecktaPago)", entOrder, piIdOrigen));
             EntDetalleCompra oDetalleCompra = new EntDetalleCompra();
 
 
             try
             {
                 EntFolio entFolio = new EntFolio();
+
+                entOrder.customer_info.phone = entOrder.customer_info.phone.Replace(" ", "").Replace(ConfigurationManager.AppSettings["CONEKTA_PHONE_ACCESS"], "");
 
                 //using (TransactionScope scope = new TransactionScope())
                 //{
@@ -177,7 +179,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 }
 
                 //Se crea el folio
-                entFolio.iIdOrigen = entCreateOrder.iIdOrigen;
+                entFolio.iIdOrigen = piIdOrigen;
                 entFolio.bTerminosYCondiciones = false;
                 entFolio.sOrdenConekta = entOrder.id;
 
@@ -228,7 +230,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 response.Code = 67823458417393;
                 response.Message = "Ocurrió un error inesperado durante la creación de la orden";
 
-                logger.Error(IMDSerialize.Serialize(67823458417393, $"Error en {metodo}(EntRequestOrder entOrder, EntConecktaPago entConecktaPago): {ex.Message}", entOrder, entCreateOrder, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458417393, $"Error en {metodo}(EntRequestOrder entOrder, EntConecktaPago entConecktaPago): {ex.Message}", entOrder, piIdOrigen, ex, response));
             }
             return response;
         }

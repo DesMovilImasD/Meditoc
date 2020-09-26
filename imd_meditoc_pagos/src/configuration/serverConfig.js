@@ -1,19 +1,9 @@
 //CONFIGURACIONES DEL CORE DE SERVICIOS
 
 //local
-// const serverWa = 'https://localhost:44344/'
-// const serverWs = 'http://localhost:9000/'
+//const serverMain = 'https://localhost:44366/'
 
-const serverMain = 'https://localhost:44366/'
-
-//local2
-// const serverWa = 'http://localhost:8081/'
-// const serverWs = 'http://localhost:9000/'
-
-//locutorios
-// const serverWa = 'http://148.240.238.149/wa/'
-// const serverWs = 'http://148.240.238.149/ws/'
-//const serverMain = 'https://148.240.238.150/MeditocWS/'
+const serverMain = 'https://148.240.238.150/MeditocWS/'
 
 //Producción
 // const serverWa = 'https://201.46.92.51/WA/'
@@ -26,9 +16,5 @@ const serverMain = 'https://localhost:44366/'
 //PRODUCCIÓN BUENO
 // const serverWa = 'https://productos.meditoc.com/WA/'
 // const serverWs = 'https://productos.meditoc.com/WA/'
-
-//Unificado
-// const serverWa = 'http://148.240.238.149/wa/'
-// const serverWs = 'http://148.240.238.149/wa/'
 
 export { serverMain }

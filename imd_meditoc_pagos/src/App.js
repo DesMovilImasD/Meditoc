@@ -100,14 +100,15 @@ function App() {
   const funcGetOrientations = async () => {
     funcLoader(true, 'Consultando servicios disponibles...')
     try {
-      const apiResponse = await fetch(`${serverMain}${apiGetServices}`, {
-        method: 'GET',
-        headers: {
-          AppKey: 'qSVBJIQpOqtp0UfwzwX1ER6fNYR8YiPU/bw5CdEqYqk=',
-          AppToken:
-            'Xx3ePv63cUTg77QPATmztJ3J8cdO1riA7g+lVRzOzhfnl9FnaVT1O2YIv8YCTVRZ',
-        },
-      })
+      // const apiResponse = await fetch(`${serverMain}${apiGetServices}`, {
+      //   method: 'GET',
+      //   headers: {
+      //     AppKey: 'qSVBJIQpOqtp0UfwzwX1ER6fNYR8YiPU/bw5CdEqYqk=',
+      //     AppToken:
+      //       'Xx3ePv63cUTg77QPATmztJ3J8cdO1riA7g+lVRzOzhfnl9FnaVT1O2YIv8YCTVRZ',
+      //   },
+      // })
+      const apiResponse = await fetch(`${serverMain}${apiGetServices}`)
 
       const response = await apiResponse.json()
 
@@ -189,14 +190,15 @@ function App() {
   const funcGetMemberships = async () => {
     funcLoader(true, 'Consultando membresías disponibles...')
     try {
-      const apiResponse = await fetch(`${serverMain}${apiGetMemberships}`, {
-        method: 'GET',
-        headers: {
-          AppKey: 'qSVBJIQpOqtp0UfwzwX1ER6fNYR8YiPU/bw5CdEqYqk=',
-          AppToken:
-            'Xx3ePv63cUTg77QPATmztJ3J8cdO1riA7g+lVRzOzhfnl9FnaVT1O2YIv8YCTVRZ',
-        },
-      })
+      // const apiResponse = await fetch(`${serverMain}${apiGetMemberships}`, {
+      //   method: 'GET',
+      //   headers: {
+      //     AppKey: 'qSVBJIQpOqtp0UfwzwX1ER6fNYR8YiPU/bw5CdEqYqk=',
+      //     AppToken:
+      //       'Xx3ePv63cUTg77QPATmztJ3J8cdO1riA7g+lVRzOzhfnl9FnaVT1O2YIv8YCTVRZ',
+      //   },
+      // })
+      const apiResponse = await fetch(`${serverMain}${apiGetMemberships}`)
 
       const response = await apiResponse.json()
 
