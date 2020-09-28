@@ -12,6 +12,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Reportes.Ventas
         public int iIdFolio { get; set; }
         public string sFolio { get; set; }
         public bool bTerminosYCondiciones { get; set; }
+        public string sTerminosYCondiciones { get; set; }
         public int iIdOrigen { get; set; }
         public string sOrigen { get; set; }
         public string sFechaVencimiento { get; set; }

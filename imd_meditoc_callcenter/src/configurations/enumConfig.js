@@ -86,6 +86,12 @@ const EnumEspecialidadPrincipal = {
   MedicinaGeneral: 1,
 }
 
+const EnumStatusConekta = {
+  Paid: 'paid',
+  Declined: 'declined',
+  OrderCreated: 'order created',
+}
+
 export {
   EnumPerfilesPrincipales,
   EnumTipoCuenta,
@@ -98,4 +104,5 @@ export {
   EnumEstatusConsulta,
   EnumCatSexo,
   EnumEspecialidadPrincipal,
+  EnumStatusConekta,
 }

@@ -163,6 +163,9 @@ const CallCenter = (props) => {
     };
 
     const funcOnlineMod = async (disponible, online = true) => {
+        if (usuarioColaborador === null) {
+            return;
+        }
         if (disponible === true && consultaIniciada === true) {
             funcAlert("No se puede marcar como DISPONIBLE hasta que la consulta haya finalizado", "warning");
             return;
@@ -240,6 +243,10 @@ const CallCenter = (props) => {
 
     useEffect(() => {
         funcPrepararSalaCallCenterInicio();
+
+        return () => {
+            funcOnlineMod(false, false);
+        };
     }, [usuarioColaborador]);
 
     const handleClickFinalizarConsulta = async (cerrarVentana = false) => {

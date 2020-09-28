@@ -107,6 +107,7 @@ namespace IMD.Admin.Conekta.Business
                     }
                     else
                     {
+
                         entCreateOrder.customer_info.phone = $"{ConfigurationManager.AppSettings["CONEKTA_PHONE_ACCESS"]}{entCreateOrder.customer_info.phone}";
                     }
                 }
@@ -447,7 +448,7 @@ namespace IMD.Admin.Conekta.Business
                 string origin = "conekta_service";
                 //using (TransactionScope scope = new TransactionScope())
                 //{
-                IMDResponse<bool> respuestaGuardarOrden = datOrder.DSaveConektaOrder(uid, entOrder, origin, entCreateOrder.coupon);
+                IMDResponse<bool> respuestaGuardarOrden = datOrder.DSaveConektaOrder(uid, entOrder, origin, entCreateOrder);
                 if (respuestaGuardarOrden.Code != 0)
                 {
                     return respuestaGuardarOrden;

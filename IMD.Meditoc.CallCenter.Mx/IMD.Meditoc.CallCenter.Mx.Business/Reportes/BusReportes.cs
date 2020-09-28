@@ -129,17 +129,17 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                 }).ToList();
 
                 EntVentasReporte entVentasReporte = new EntVentasReporte();
-                int iOrdenes = lstFolios.Where(x => x.iIdOrigen == (int)EnumReportes.Origen.WEB || x.iIdOrigen == (int)EnumReportes.Origen.APP).Select(x => x.entOrden).Select(x => x.sOrderId).Distinct().Count();
+                int iOrdenes = lstFolios.Where(x => (x.iIdOrigen == (int)EnumReportes.Origen.WEB || x.iIdOrigen == (int)EnumReportes.Origen.APP) && x.entOrden.sPaymentStatus == "paid").Select(x => x.entOrden).Select(x => x.sOrderId).Distinct().Count();
                 iOrdenes += lstFolios.Where(x => x.iIdOrigen != (int)EnumReportes.Origen.WEB && x.iIdOrigen != (int)EnumReportes.Origen.APP).Count();
 
-                double dTotalPagado = lstFolios.Where(x => x.iIdOrigen == (int)EnumReportes.Origen.WEB || x.iIdOrigen == (int)EnumReportes.Origen.APP).Select(x => x.entOrden).Select(x => new { x.sOrderId, x.nAmountPaid }).Distinct().Sum(x => x.nAmountPaid);
+                double dTotalPagado = lstFolios.Where(x => (x.iIdOrigen == (int)EnumReportes.Origen.WEB || x.iIdOrigen == (int)EnumReportes.Origen.APP) && x.entOrden.sPaymentStatus == "paid").Select(x => x.entOrden).Select(x => new { x.sOrderId, x.nAmountPaid }).Distinct().Sum(x => x.nAmountPaid);
                 dTotalPagado += lstFolios.Where(x => x.iIdOrigen != (int)EnumReportes.Origen.WEB && x.iIdOrigen != (int)EnumReportes.Origen.APP).Select(x => x.entOrden).Sum(x => x.nAmountPaid);
 
-                double dDescuento = lstFolios.Where(x => x.iIdOrigen == (int)EnumReportes.Origen.WEB || x.iIdOrigen == (int)EnumReportes.Origen.APP).Select(x => x.entOrden).Select(x => new { x.sOrderId, x.nAmountDiscount }).Distinct().Sum(x => x.nAmountDiscount);
+                double dDescuento = lstFolios.Where(x => (x.iIdOrigen == (int)EnumReportes.Origen.WEB || x.iIdOrigen == (int)EnumReportes.Origen.APP) && x.entOrden.sPaymentStatus == "paid").Select(x => x.entOrden).Select(x => new { x.sOrderId, x.nAmountDiscount }).Distinct().Sum(x => x.nAmountDiscount);
                 dDescuento += lstFolios.Where(x => x.iIdOrigen != (int)EnumReportes.Origen.WEB && x.iIdOrigen != (int)EnumReportes.Origen.APP).Select(x => x.entOrden).Sum(x => x.nAmountDiscount);
 
                 entVentasReporte.iTotalOrdenes = iOrdenes;
-                entVentasReporte.iTotalCuponesAplicados = lstFolios.Select(x => x.entOrden).Select(x => new { x.sOrderId, x.sCodigo }).Distinct().Where(x => !string.IsNullOrEmpty(x.sCodigo)).Count();
+                entVentasReporte.iTotalCuponesAplicados = lstFolios.Select(x => x.entOrden).Select(x => new { x.sOrderId, x.sCodigo, x.sPaymentStatus }).Distinct().Where(x => !string.IsNullOrEmpty(x.sCodigo)&& x.sPaymentStatus == "paid").Count();
                 entVentasReporte.iTotalFolios = lstFolios.Count;
                 entVentasReporte.dTotalVendido = dTotalPagado;
                 entVentasReporte.dTotalDescontado = dDescuento;
@@ -176,7 +176,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
 
                 double dIVA = ConfigurationManager.AppSettings["nIVA"] != null ? Convert.ToDouble(ConfigurationManager.AppSettings["nIVA"]) : 0.16;
 
-                
+
                 List<EntReporteOrden> ordenes = respuestaObtenerFolios.Result.Where(o => o.iIdOrigen == (int)EnumOrigen.APP || o.iIdOrigen == (int)EnumOrigen.WEB).GroupBy(o => o.sOrderId).Select(o => new EntReporteOrden
                 {
                     sOrderId = o.Key,
@@ -192,7 +192,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                         name = u.name,
                         phone = u.phone
                     }).FirstOrDefault(),
-                    lstProductos = o.GroupBy(p => p.iConsecutivo).Select(p => new EntReporteProducto
+                    lstProductos = o.GroupBy(p => p.iConsecutive).Select(p => new EntReporteProducto
                     {
                         iConsecutivo = p.Key,
                         iIdProducto = p.Select(r => r.iIdProducto).FirstOrDefault(),
@@ -202,14 +202,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                         sItemId = p.Select(r => r.sItemId).FirstOrDefault(),
                         sNombre = p.Select(r => r.sItemName).FirstOrDefault(),
                         sTipoProducto = p.Select(r => r.sTipoProducto).FirstOrDefault(),
-                        lstFolios = p.GroupBy(f => f.iIdFolio).Select(f => new EntReporteFolio
+                        lstFolios = p.Select(x => x.sPaymentStatus).First() == "declined" ? new List<EntReporteFolio>() : p.GroupBy(f => f.iIdFolio).Select(f => new EntReporteFolio
                         {
                             iIdFolio = f.Key,
                             sFolio = f.Select(r => r.sFolio).FirstOrDefault(),
                             bTerminosYCondiciones = f.Select(r => r.bTerminosYCondiciones).FirstOrDefault(),
-                            iIdOrigen = f.Select(r => r.iIdOrigen).FirstOrDefault(),
                             sFechaVencimiento = f.Select(r => r.sFechaVencimiento).FirstOrDefault(),
-                            sOrigen = f.Select(r => r.sOrigen).FirstOrDefault()
+                            sTerminosYCondiciones = f.Select(r => r.bTerminosYCondiciones).FirstOrDefault() ? "SI" : "NO"
                         }).ToList()
                     }).ToList(),
                     iIdCupon = o.Select(r => r.iIdCupon).FirstOrDefault(),
@@ -220,6 +219,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                     sCodigo = o.Select(r => r.sCodigo).FirstOrDefault(),
                     sPaymentStatus = o.Select(r => r.sPaymentStatus).FirstOrDefault(),
                     sRegisterDate = o.Select(r => r.sRegisterDate).FirstOrDefault(),
+                    iIdOrigen = o.Select(r => r.iIdOrigen).FirstOrDefault(),
+                    sOrigen = o.Select(r => r.sOrigen).FirstOrDefault(),
                     uId = o.Select(r => r.uId).FirstOrDefault(),
                 }).ToList();
 
@@ -272,11 +273,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                     ResumenOrdenes = new EntResumenOrdenes
                     {
                         lstOrdenes = ordenes,
-                        dTotalDescontado = ordenes.Sum(x => x.nAmountDiscount),
-                        dTotalVendido = ordenes.Sum(x => x.nAmountPaid),
-                        iTotalCuponesAplicados = ordenes.Where(x => !string.IsNullOrEmpty(x.sCodigo)).Count(),
+                        dTotalDescontado = ordenes.Where(x => x.sPaymentStatus != "declined").Sum(x => x.nAmountDiscount),
+                        dTotalVendido = ordenes.Where(x => x.sPaymentStatus != "declined").Sum(x => x.nAmountPaid),
+                        iTotalCuponesAplicados = ordenes.Where(x => !string.IsNullOrEmpty(x.sCodigo) && x.sPaymentStatus != "declined").Count(),
                         iTotalFolios = ordenes.Sum(x => x.lstProductos.Sum(y => y.lstFolios.Count)),
-                        iTotalOrdenes = ordenes.Count
+                        iTotalOrdenes = ordenes.Where(x => x.sPaymentStatus != "declined").Count(),
+                        iTotalOrdenesRechazadas = ordenes.Where(x => x.sPaymentStatus == "declined").Count()
                     }
                 };
 
@@ -648,7 +650,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                     iNumSala = x.Select(d => d.iNumSala).First(),
                     sDireccionConsultorio = x.Select(d => d.sDireccionConsultorio).First(),
                     sRFC = x.Select(d => d.sRFC).First(),
-                    iTotalConsultas = x.Where(c=>c.iIdConsulta != 0).Count(),
+                    iTotalConsultas = x.Where(c => c.iIdConsulta != 0).Count(),
                     lstPacientes = x.Select(d => d.iIdPaciente).ToList(),
                     lstConsultas = x.Select(c => new EntConsulta
                     {
@@ -671,7 +673,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                             sApellidoPaterno = p.sPaternoPaciente,
                             sApellidoMaterno = p.sMaternoPaciente,
                             sTelefono = p.sTelefonoPaciente,
-                            sCorreo =p.sCorreo
+                            sCorreo = p.sCorreo
                         }).Where(p => p.iIdPaciente == c.iIdPaciente).FirstOrDefault()
                     }).Where(c => c.iIdConsulta != 0).OrderBy(i => i.dtFechaProgramadaInicio).ToList()
                 }).ToList();
@@ -815,10 +817,10 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                         if (!iddoctor.Equals(y.iIdDoctor))
                         {
                             iddoctor = y.iIdDoctor;
-                            
+
                             int rowStart = ++row;
-                            int rowFinish = row + ((y.iTotalConsultas == 0) ?  y.iTotalConsultas:(y.iTotalConsultas - 1));
-                            
+                            int rowFinish = row + ((y.iTotalConsultas == 0) ? y.iTotalConsultas : (y.iTotalConsultas - 1));
+
                             #region Información del doctor
                             sheetDoctores.Cells[rowStart, ++col, rowFinish, col].Merge = true;
                             sheetDoctores.Cells[rowStart, col, rowFinish, col].Value = y.iIdDoctor;
@@ -844,7 +846,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                             sheetDoctores.Cells[rowStart, col, rowFinish, col].Value = y.iTotalConsultas;
                             #endregion
 
-                            row = (y.iTotalConsultas == 0) ? rowStart: (rowStart -1);
+                            row = (y.iTotalConsultas == 0) ? rowStart : (rowStart - 1);
                         }
 
                         #region Información General folio
@@ -919,7 +921,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
         /// <param name="pdtFechaFinal">...a la fecha de creación de la orden</param>
         /// <param name="pdtFechaVencimiento">Fecha de vencimiento del folio</param>
         /// <returns></returns>
-        private IMDResponse<List<EntFolioGeneric>> BObtenerFolios(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null,
+        public IMDResponse<List<EntFolioGeneric>> BObtenerFolios(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null,
             DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)
         {
             IMDResponse<List<EntFolioGeneric>> response = new IMDResponse<List<EntFolioGeneric>>();
@@ -951,7 +953,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                         iConsecutivo = dr.ConvertTo<int>("iConsecutivo"),
                         bTerminosYCondiciones = dr.ConvertTo<bool>("bTerminosYCondiciones"),
                         dtFechaVencimiento = dr.ConvertTo<DateTime>("dtFechaVencimiento"),
-                        sFechaVencimiento = dr.ConvertTo<string>("dtFechaVencimiento"),
+                        //sFechaVencimiento = dr.ConvertTo<string>("dtFechaVencimiento"),
 
                         #region empresa
                         iIdEmpresa = dr.ConvertTo<int>("iIdEmpresa"),
@@ -983,7 +985,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                         nAmountPaid = dr.ConvertTo<double>("nAmountPaid"),
                         sPaymentStatus = dr.ConvertTo<string>("sPaymentStatus"),
                         dtRegisterDate = dr.ConvertTo<DateTime>("dtRegisterDate"),
-                        sRegisterDate = dr.ConvertTo<string>("dtRegisterDate"),
+                        //sRegisterDate = dr.ConvertTo<string>("dtRegisterDate"),
                         #endregion
 
                         #region cupones
@@ -1016,6 +1018,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                         iIdTitular = dr.ConvertTo<int>("iIdTitular")
                         #endregion
                     };
+                    entFolio.sFechaVencimiento = entFolio.dtFechaVencimiento.ToString("dd/MM/yyyy HH:mm");
+                    entFolio.sRegisterDate = entFolio.dtRegisterDate.ToString("dd/MM/yyyy HH:mm");
                     lstFolios.Add(entFolio);
                 }
 

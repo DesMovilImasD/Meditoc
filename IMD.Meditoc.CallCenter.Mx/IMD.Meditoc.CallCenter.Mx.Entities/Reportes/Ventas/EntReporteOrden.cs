@@ -18,6 +18,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Reportes.Ventas
         public string sPaymentStatus { get; set; }
         public int iIdCupon { get; set; }
         public string sCodigo { get; set; }
+        public int iIdOrigen { get; set; }
+        public string sOrigen { get; set; }
         public EntCustomerInfo customer_info { get; set; }
         public List<EntReporteProducto> lstProductos { get; set; }
         public EntChargeReporte charges { get; set; }

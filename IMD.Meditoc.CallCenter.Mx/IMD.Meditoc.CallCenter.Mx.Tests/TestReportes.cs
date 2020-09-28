@@ -17,5 +17,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Tests
 
             string json = JsonConvert.SerializeObject(res, Formatting.Indented);
         }
+        [TestMethod]
+        public void TestMethod2()
+        {
+            BusReportes busReportes = new BusReportes();
+
+            var res = busReportes.BObtenerFolios();
+
+            string json = JsonConvert.SerializeObject(res, Formatting.Indented);
+        }
     }
 }

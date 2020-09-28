@@ -135,10 +135,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
             try
             {
-                EntFolio entFolio = new EntFolio();
-
                 entOrder.customer_info.phone = entOrder.customer_info.phone.Replace(" ", "").Replace(ConfigurationManager.AppSettings["CONEKTA_PHONE_ACCESS"], "");
 
+                EntFolio entFolio = new EntFolio();
                 //using (TransactionScope scope = new TransactionScope())
                 //{
 
