@@ -4,6 +4,8 @@ import { EnumStatusConekta } from "../../../configurations/enumConfig";
 import InfoField from "../../utilidades/InfoField";
 import MeditocModal from "../../utilidades/MeditocModal";
 import MeditocTableSimple from "../../utilidades/MeditocTableSimple";
+import ResumeInfo from "./ResumeInfo";
+import ResumeNumero from "./ResumeNumero";
 
 const ResumenOrdenDetalle = (props) => {
     const { entOrden, open, setOpen } = props;
@@ -15,36 +17,54 @@ const ResumenOrdenDetalle = (props) => {
     ];
 
     return (
-        <MeditocModal title={"Detalle de orden " + entOrden.sOrderId} size="large" open={open} setOpen={setOpen}>
+        <MeditocModal title={"Detalle de orden " + entOrden.sOrderId} size="normal" open={open} setOpen={setOpen}>
             <Grid container spacing={3}>
-                <Grid item md={3} sm={6} xs={12} className="center">
-                    <span className="rob-nor lighter size-50 color-1">
-                        {entOrden.nAmount.toLocaleString("en", { minimumFractionDigits: 2 })}
-                    </span>
-                    <br />
-                    <span className="rob-nor size-13 color-3">SUBTOTAL</span>
+                <Grid item xs={12}>
+                    <ResumeInfo
+                        label="Subtotal"
+                        value={entOrden.nAmount.toLocaleString("en", { minimumFractionDigits: 2 })}
+                    />
+                    <ResumeInfo
+                        label="Descuento"
+                        value={`-${entOrden.nAmountDiscount.toLocaleString("en", { minimumFractionDigits: 2 })}`}
+                    />
+                    <ResumeInfo
+                        label="IVA"
+                        value={`+${entOrden.nAmountTax.toLocaleString("en", { minimumFractionDigits: 2 })}`}
+                    />
+                    <ResumeInfo
+                        label="Total pagado"
+                        value={entOrden.nAmountPaid.toLocaleString("en", { minimumFractionDigits: 2 })}
+                    />
+                </Grid>
+                {/* <Grid item md={3} sm={6} xs={12} className="center">
+                    <ResumeNumero
+                        label="SUBTOTAL"
+                        value={entOrden.nAmount.toLocaleString("en", { minimumFractionDigits: 2 })}
+                        color="color-1"
+                    />
                 </Grid>
                 <Grid item md={3} sm={6} xs={12} className="center">
-                    <span className="rob-nor lighter size-50 color-4">
-                        -{entOrden.nAmountDiscount.toLocaleString("en", { minimumFractionDigits: 2 })}
-                    </span>
-                    <br />
-                    <span className="rob-nor size-13 color-3">DESCUENTO</span>
+                    <ResumeNumero
+                        label="DESCUENTO"
+                        value={`-${entOrden.nAmountDiscount.toLocaleString("en", { minimumFractionDigits: 2 })}`}
+                        color="color-4"
+                    />
                 </Grid>
                 <Grid item md={3} sm={6} xs={12} className="center">
-                    <span className="rob-nor lighter size-50 color-3">
-                        +{entOrden.nAmountTax.toLocaleString("en", { minimumFractionDigits: 2 })}
-                    </span>
-                    <br />
-                    <span className="rob-nor size-13 color-3">IVA</span>
+                    <ResumeNumero
+                        label="IVA"
+                        value={`+${entOrden.nAmountTax.toLocaleString("en", { minimumFractionDigits: 2 })}`}
+                        color="color-3"
+                    />
                 </Grid>
                 <Grid item md={3} sm={6} xs={12} className="center">
-                    <span className="rob-nor size-50 color-2">
-                        {entOrden.nAmountPaid.toLocaleString("en", { minimumFractionDigits: 2 })}
-                    </span>
-                    <br />
-                    <span className="rob-nor size-13 color-3">TOTAL PAGADO</span>
-                </Grid>
+                    <ResumeNumero
+                        label="TOTAL PAGADO"
+                        value={entOrden.nAmountPaid.toLocaleString("en", { minimumFractionDigits: 2 })}
+                        color="color-2"
+                    />
+                </Grid> */}
                 <Grid item xs={12}>
                     <span className="rob-nor bold size-20 color-4">DATOS DEL CLIENTE</span>
                     <Divider />
@@ -84,7 +104,7 @@ const ResumenOrdenDetalle = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                     {entOrden.lstProductos.map((producto, index) => (
-                        <Fragment>
+                        <Fragment key={producto.sItemId}>
                             <div className={"reporte-producto-header " + (index === 0 ? "mar-top-20" : "mar-top-50")}>
                                 {`${index + 1}.- ${producto.sNombre}${
                                     producto.sTipoProducto === null ? "" : " - " + producto.sTipoProducto

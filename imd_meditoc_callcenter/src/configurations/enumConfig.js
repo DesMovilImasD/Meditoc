@@ -92,6 +92,11 @@ const EnumStatusConekta = {
   OrderCreated: 'order created',
 }
 
+const EnumTipoPago = {
+  Credit: 'credit',
+  Debit: 'debit',
+}
+
 export {
   EnumPerfilesPrincipales,
   EnumTipoCuenta,
@@ -105,4 +110,5 @@ export {
   EnumCatSexo,
   EnumEspecialidadPrincipal,
   EnumStatusConekta,
+  EnumTipoPago,
 }

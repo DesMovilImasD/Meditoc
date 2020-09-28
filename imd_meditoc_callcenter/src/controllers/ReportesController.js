@@ -74,6 +74,8 @@ class ReportesController {
     psIdOrigen = '',
     psOrderId = '',
     psStatus = '',
+    psCupon = '',
+    psTipoPago = '',
     pdtFechaInicio = null,
     pdtFechaFinal = null,
     pdtFechaVencimiento = null,
@@ -82,7 +84,7 @@ class ReportesController {
 
     try {
       const apiResponse = await fetch(
-        `${serverMain}${this.apiGetVentas}?psFolio=${psFolio}&psIdEmpresa=${psIdEmpresa}&psIdProducto=${psIdProducto}&psIdTipoProducto=${psIdTipoProducto}&psIdOrigen=${psIdOrigen}&psOrderId=${psOrderId}&psStatus=${psStatus}&pdtFechaInicio=${pdtFechaInicio}&pdtFechaFinal=${pdtFechaFinal}&pdtFechaVencimiento=${pdtFechaVencimiento}`,
+        `${serverMain}${this.apiGetVentas}?psFolio=${psFolio}&psIdEmpresa=${psIdEmpresa}&psIdProducto=${psIdProducto}&psIdTipoProducto=${psIdTipoProducto}&psIdOrigen=${psIdOrigen}&psOrderId=${psOrderId}&psStatus=${psStatus}&psCupon=${psCupon}&psTipoPago=${psTipoPago}&pdtFechaInicio=${pdtFechaInicio}&pdtFechaFinal=${pdtFechaFinal}&pdtFechaVencimiento=${pdtFechaVencimiento}`,
         {
           headers: MeditocHeaders,
         },
@@ -105,6 +107,8 @@ class ReportesController {
     psIdOrigen = '',
     psOrderId = '',
     psStatus = '',
+    psCupon = '',
+    psTipoPago = '',
     pdtFechaInicio = null,
     pdtFechaFinal = null,
     pdtFechaVencimiento = null,
@@ -113,7 +117,7 @@ class ReportesController {
 
     try {
       const apiResponse = await fetch(
-        `${serverMain}${this.apiGetReporteGlobal}?psFolio=${psFolio}&psIdEmpresa=${psIdEmpresa}&psIdProducto=${psIdProducto}&psIdTipoProducto=${psIdTipoProducto}&psIdOrigen=${psIdOrigen}&psOrderId=${psOrderId}&psStatus=${psStatus}&pdtFechaInicio=${pdtFechaInicio}&pdtFechaFinal=${pdtFechaFinal}&pdtFechaVencimiento=${pdtFechaVencimiento}`,
+        `${serverMain}${this.apiGetReporteGlobal}?psFolio=${psFolio}&psIdEmpresa=${psIdEmpresa}&psIdProducto=${psIdProducto}&psIdTipoProducto=${psIdTipoProducto}&psIdOrigen=${psIdOrigen}&psOrderId=${psOrderId}&psStatus=${psStatus}&psCupon=${psCupon}&psTipoPago=${psTipoPago}&pdtFechaInicio=${pdtFechaInicio}&pdtFechaFinal=${pdtFechaFinal}&pdtFechaVencimiento=${pdtFechaVencimiento}`,
         {
           headers: MeditocHeaders,
         },
@@ -136,12 +140,14 @@ class ReportesController {
     psIdOrigen = '',
     psOrderId = '',
     psStatus = '',
+    psCupon = '',
+    psTipoPago = '',
     pdtFechaInicio = null,
     pdtFechaFinal = null,
     pdtFechaVencimiento = null,
   ) {
     const apiResponse = await fetch(
-      `${serverMain}${this.apiDescargarReporteVentas}?psFolio=${psFolio}&psIdEmpresa=${psIdEmpresa}&psIdProducto=${psIdProducto}&psIdTipoProducto=${psIdTipoProducto}&psIdOrigen=${psIdOrigen}&psOrderId=${psOrderId}&psStatus=${psStatus}&pdtFechaInicio=${pdtFechaInicio}&pdtFechaFinal=${pdtFechaFinal}&pdtFechaVencimiento=${pdtFechaVencimiento}`,
+      `${serverMain}${this.apiDescargarReporteVentas}?psFolio=${psFolio}&psIdEmpresa=${psIdEmpresa}&psIdProducto=${psIdProducto}&psIdTipoProducto=${psIdTipoProducto}&psIdOrigen=${psIdOrigen}&psOrderId=${psOrderId}&psStatus=${psStatus}&psCupon=${psCupon}&psTipoPago=${psTipoPago}&pdtFechaInicio=${pdtFechaInicio}&pdtFechaFinal=${pdtFechaFinal}&pdtFechaVencimiento=${pdtFechaVencimiento}`,
       {
         headers: MeditocHeaders,
       },

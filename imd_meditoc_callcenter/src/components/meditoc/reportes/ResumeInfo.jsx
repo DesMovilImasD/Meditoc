@@ -9,7 +9,7 @@ const ResumeInfo = (props) => {
                 <span className="rob-nor bold size-20 color-2">{label}</span>
             </div>
             <div>
-                <span className="rob-nor size-20 color-2">{value}</span>
+                <span className="rob-nor size-20 color-1">{value}</span>
             </div>
         </div>
     );

@@ -51,12 +51,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Reportes
         /// <param name="pdtFechaFinal">...a la fecha de creación de la orden</param>
         /// <param name="pdtFechaVencimiento">Fecha de vencimiento del folio</param>
         /// <returns></returns>
-        public IMDResponse<DataTable> DObtenerReporteVentas(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)
+        public IMDResponse<DataTable> DObtenerReporteVentas(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, string psTipoPago = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)
         {
             IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
             string metodo = nameof(this.DObtenerReporteVentas);
-            logger.Info(IMDSerialize.Serialize(67823458558807, $"Inicia {metodo}(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento));
+            logger.Info(IMDSerialize.Serialize(67823458558807, $"Inicia {metodo}(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, psTipoPago, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento));
 
             try
             {
@@ -70,9 +70,10 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Reportes
                     database.AddInParameter(dbCommand, "psOrderId", DbType.String, psOrderId?.Trim());
                     database.AddInParameter(dbCommand, "psStatus", DbType.String, psStatus?.Trim());
                     database.AddInParameter(dbCommand, "psCupon", DbType.String, psCupon?.Trim());
+                    database.AddInParameter(dbCommand, "psTipoPago", DbType.String, psTipoPago?.Trim());
                     database.AddInParameter(dbCommand, "pdtFechaInicio", DbType.DateTime, pdtFechaInicio);
-                    database.AddInParameter(dbCommand, "pdtFechaFinal", DbType.String, pdtFechaFinal);
-                    database.AddInParameter(dbCommand, "pdtFechaVencimiento", DbType.String, pdtFechaVencimiento);
+                    database.AddInParameter(dbCommand, "pdtFechaFinal", DbType.DateTime, pdtFechaFinal);
+                    database.AddInParameter(dbCommand, "pdtFechaVencimiento", DbType.DateTime, pdtFechaVencimiento);
 
                     response = imdCommonData.DExecuteDT(database, dbCommand);
                 }
@@ -82,7 +83,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Reportes
                 response.Code = 67823458559584;
                 response.Message = "Ocurrió un error inesperado al consultar el detalle de los folios";
 
-                logger.Error(IMDSerialize.Serialize(67823458559584, $"Error en {metodo}: {ex.Message}(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458559584, $"Error en {metodo}: {ex.Message}(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, psTipoPago, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento, ex, response));
             }
             return response;
         }

@@ -261,7 +261,7 @@ const CallCenter = (props) => {
         );
 
         if (response.Code === 0) {
-            if (!cerrarVentana) {
+            if (cerrarVentana === false) {
                 setConsultaIniciada(false);
                 //await funcOnlineMod(false);
                 funcDetenerTemporizador();
@@ -363,7 +363,7 @@ const CallCenter = (props) => {
                             <Button
                                 variant="contained"
                                 className={classes.button}
-                                onClick={handleClickFinalizarConsulta}
+                                onClick={() => handleClickFinalizarConsulta(false)}
                                 disabled={usuarioColaborador === null}
                             >
                                 Finalizar consulta

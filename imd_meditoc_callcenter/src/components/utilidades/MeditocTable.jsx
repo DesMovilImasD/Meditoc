@@ -26,6 +26,7 @@ const MeditocTable = (props) => {
         setRowsSelected,
         cellEditable,
         onCellEditable,
+        search,
     } = props;
 
     //Funcion a ejecutar al dar doble click sobre una fila
@@ -44,6 +45,8 @@ const MeditocTable = (props) => {
     const mtCellEditable = cellEditable === undefined ? false : cellEditable;
 
     const mtOnCellEditable = onCellEditable === undefined ? (newValue, oldValue, row, column) => {} : onCellEditable;
+
+    const mtSearch = search === undefined ? true : search;
 
     const actions = [
         {
@@ -212,7 +215,7 @@ const MeditocTable = (props) => {
                           })
                         : null,
                 selection: mtSelection,
-                search: true,
+                search: mtSearch,
                 searchFieldVariant: "outlined",
                 searchFieldAlignment: "left",
                 // searchFieldStyle: { width: "80%" },

@@ -48,7 +48,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
         /// <param name="pdtFechaFinal">...a la fecha de creación de la orden</param>
         /// <param name="pdtFechaVencimiento">Fecha de vencimiento del folio</param>
         /// <returns></returns>
-        public IMDResponse<EntVentasReporte> BObtenerReporteVentas(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)
+        public IMDResponse<EntVentasReporte> BObtenerReporteVentas(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, string psTipoPago = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)
         {
             IMDResponse<EntVentasReporte> response = new IMDResponse<EntVentasReporte>();
 
@@ -57,7 +57,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
 
             try
             {
-                IMDResponse<List<EntFolioGeneric>> respuestaObtenerFolios = this.BObtenerFolios(psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento);
+                IMDResponse<List<EntFolioGeneric>> respuestaObtenerFolios = this.BObtenerFolios(psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, psTipoPago, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento);
                 if (respuestaObtenerFolios.Code != 0)
                 {
                     return respuestaObtenerFolios.GetResponse<EntVentasReporte>();
@@ -139,7 +139,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                 dDescuento += lstFolios.Where(x => x.iIdOrigen != (int)EnumReportes.Origen.WEB && x.iIdOrigen != (int)EnumReportes.Origen.APP).Select(x => x.entOrden).Sum(x => x.nAmountDiscount);
 
                 entVentasReporte.iTotalOrdenes = iOrdenes;
-                entVentasReporte.iTotalCuponesAplicados = lstFolios.Select(x => x.entOrden).Select(x => new { x.sOrderId, x.sCodigo, x.sPaymentStatus }).Distinct().Where(x => !string.IsNullOrEmpty(x.sCodigo)&& x.sPaymentStatus == "paid").Count();
+                entVentasReporte.iTotalCuponesAplicados = lstFolios.Select(x => x.entOrden).Select(x => new { x.sOrderId, x.sCodigo, x.sPaymentStatus }).Distinct().Where(x => !string.IsNullOrEmpty(x.sCodigo) && x.sPaymentStatus == "paid").Count();
                 entVentasReporte.iTotalFolios = lstFolios.Count;
                 entVentasReporte.dTotalVendido = dTotalPagado;
                 entVentasReporte.dTotalDescontado = dDescuento;
@@ -159,7 +159,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
             return response;
         }
 
-        public IMDResponse<EntReporteVenta> BReporteGlobalVentas(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)
+        public IMDResponse<EntReporteVenta> BReporteGlobalVentas(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, string psTipoPago = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)
         {
             IMDResponse<EntReporteVenta> response = new IMDResponse<EntReporteVenta>();
 
@@ -168,7 +168,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
 
             try
             {
-                IMDResponse<List<EntFolioGeneric>> respuestaObtenerFolios = this.BObtenerFolios(psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento);
+                IMDResponse<List<EntFolioGeneric>> respuestaObtenerFolios = this.BObtenerFolios(psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, psTipoPago, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento);
                 if (respuestaObtenerFolios.Code != 0)
                 {
                     return respuestaObtenerFolios.GetResponse<EntReporteVenta>();
@@ -315,7 +315,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
         /// <param name="pdtFechaFinal">...a la fecha de creación de la orden</param>
         /// <param name="pdtFechaVencimiento">Fecha de vencimiento del folio</param>
         /// <returns></returns>
-        public IMDResponse<MemoryStream> BDescargarReporteVentas(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)
+        public IMDResponse<MemoryStream> BDescargarReporteVentas(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, string psTipoPago = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)
         {
             IMDResponse<MemoryStream> response = new IMDResponse<MemoryStream>();
 
@@ -324,7 +324,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
 
             try
             {
-                IMDResponse<EntVentasReporte> respuestaObtenerOrdenes = this.BObtenerReporteVentas(psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento);
+
+                IMDResponse<EntVentasReporte> respuestaObtenerOrdenes = this.BObtenerReporteVentas(psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, psTipoPago, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento);
                 if (respuestaObtenerOrdenes.Code != 0)
                 {
                     return respuestaObtenerOrdenes.GetResponse<MemoryStream>();
@@ -921,22 +922,19 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
         /// <param name="pdtFechaFinal">...a la fecha de creación de la orden</param>
         /// <param name="pdtFechaVencimiento">Fecha de vencimiento del folio</param>
         /// <returns></returns>
-        public IMDResponse<List<EntFolioGeneric>> BObtenerFolios(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null,
-            DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)
+        public IMDResponse<List<EntFolioGeneric>> BObtenerFolios(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, string psTipoPago = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)
         {
             IMDResponse<List<EntFolioGeneric>> response = new IMDResponse<List<EntFolioGeneric>>();
             DatReportes datReportes = new DatReportes();
 
             string metodo = nameof(this.BObtenerFolios);
-            logger.Info(IMDSerialize.Serialize(67823458568131, $"Inicia {metodo}(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento));
+            logger.Info(IMDSerialize.Serialize(67823458568131, $"Inicia {metodo}(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, string psTipoPago = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, psTipoPago, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento));
 
             try
             {
-                if (pdtFechaFinal != null)
-                {
-                    pdtFechaFinal = Convert.ToDateTime(pdtFechaFinal).AddDays(1);
-                }
-                IMDResponse<DataTable> respuestaObtenerOrdenes = datReportes.DObtenerReporteVentas(psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento);
+                pdtFechaInicio = pdtFechaInicio?.Date;
+                pdtFechaFinal = pdtFechaFinal?.AddDays(1).Date;
+                IMDResponse<DataTable> respuestaObtenerOrdenes = datReportes.DObtenerReporteVentas(psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, psTipoPago, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento);
                 if (respuestaObtenerOrdenes.Code != 0)
                 {
                     return respuestaObtenerOrdenes.GetResponse<List<EntFolioGeneric>>();
@@ -1031,7 +1029,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                 response.Code = 67823458568908;
                 response.Message = "Ocurrió un error inesperado al obtener el reporte de ventas";
 
-                logger.Error(IMDSerialize.Serialize(67823458568908, $"Error en {metodo}(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null): {ex.Message}", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458568908, $"Error en {metodo}(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, string psTipoPago = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null): {ex.Message}", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, psTipoPago, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento, ex, response));
             }
             return response;
         }
@@ -1068,22 +1066,10 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
 
             try
             {
-                if (pdtFechaProgramadaInicio != null)
-                {
-                    pdtFechaProgramadaInicio = Convert.ToDateTime(pdtFechaProgramadaInicio).AddDays(1);
-                }
-                if (pdtFechaProgramadaFinal != null)
-                {
-                    pdtFechaProgramadaFinal = Convert.ToDateTime(pdtFechaProgramadaFinal).AddDays(1);
-                }
-                if (pdtFechaConsultaInicio != null)
-                {
-                    pdtFechaConsultaInicio = Convert.ToDateTime(pdtFechaConsultaInicio).AddDays(1);
-                }
-                if (pdtFechaConsultaFin != null)
-                {
-                    pdtFechaConsultaFin = Convert.ToDateTime(pdtFechaConsultaFin).AddDays(1);
-                }
+                pdtFechaProgramadaInicio = pdtFechaProgramadaInicio?.Date;
+                pdtFechaProgramadaFinal = pdtFechaProgramadaFinal?.AddDays(1).Date;
+                pdtFechaConsultaInicio = pdtFechaConsultaInicio?.Date;
+                pdtFechaConsultaFin = pdtFechaConsultaFin?.AddDays(1).Date;
 
                 IMDResponse<DataTable> respuestaObtenerConsultas = datReportes.DObtenerReporteDoctores(psIdColaborador, psColaborador, psIdTipoDoctor, psIdEspecialidad, psIdConsulta, psIdEstatusConsulta, psRFC, psNumSala, pdtFechaProgramadaInicio, pdtFechaProgramadaFinal, pdtFechaConsultaInicio, pdtFechaConsultaFin);
                 if (respuestaObtenerConsultas.Code != 0)

@@ -5,6 +5,11 @@ import MeditocTable from "../../utilidades/MeditocTable";
 import DateRangeIcon from "@material-ui/icons/DateRange";
 import ResumenOrdenDetalle from "./ResumenOrdenDetalle";
 import ResumeInfo from "./ResumeInfo";
+import { EnumStatusConekta } from "../../../configurations/enumConfig";
+import CloseIcon from "@material-ui/icons/Close";
+import DoneIcon from "@material-ui/icons/Done";
+import { green, red } from "@material-ui/core/colors";
+import ResumeNumero from "./ResumeNumero";
 
 const ResumenOrdenes = (props) => {
     const { entVentas } = props;
@@ -17,7 +22,7 @@ const ResumenOrdenes = (props) => {
         { title: "Origen", field: "sOrigen", align: "center" },
         { title: "Total", field: "nAmountPaid", align: "center" },
         { title: "Cupón", field: "sCodigo", align: "center" },
-        { title: "Estatus", field: "sPaymentStatus", align: "center" },
+        { title: "Estatus", field: "sPaymentStatusWI", align: "center" },
         { title: "Fecha", field: "sRegisterDate", align: "center" },
         { title: "Ver", field: "sDetalle", align: "center" },
     ];
@@ -43,66 +48,44 @@ const ResumenOrdenes = (props) => {
     return (
         <Fragment>
             <Grid container spacing={3}>
-                <Grid item sm={6} xs={12}>
-                    <span className="rob-nor bold size-20 color-4">FILTROS</span>
-                    <Divider />
-                    <br></br>
-                    <Grid container spacing={3}>
-                        <Grid item sm={6} xs={12}>
-                            <DatePicker
-                                variant="inline"
-                                inputVariant="outlined"
-                                label="Fecha inicio:"
-                                fullWidth
-                                helperText=""
-                                format="dd/MM/yyyy"
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <IconButton>
-                                                <DateRangeIcon />
-                                            </IconButton>
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            />
-                        </Grid>
-                        <Grid item sm={6} xs={12}>
-                            <DatePicker
-                                variant="inline"
-                                inputVariant="outlined"
-                                label="Fecha fin:"
-                                fullWidth
-                                helperText=""
-                                format="dd/MM/yyyy"
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <IconButton>
-                                                <DateRangeIcon />
-                                            </IconButton>
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            />
-                        </Grid>
-                        <Grid item sm={6} xs={12}>
-                            <TextField name="txtEstatus" label="Estatus:" variant="outlined" fullWidth></TextField>
-                        </Grid>
-                    </Grid>
-                </Grid>
-                <Grid item sm={6} xs={12}>
+                {/* <Grid item xs={12}>
                     <span className="rob-nor bold size-20 color-4">RESUMÉN DE VENTAS</span>
                     <Divider />
-                    <ResumeInfo
-                        label="Total de venta"
+                </Grid> */}
+                <Grid item md={3} sm={6} xs={12} className="center">
+                    <ResumeNumero
+                        label="TOTAL DE VENTA"
                         value={
                             "$" +
                             entVentas.ResumenOrdenes.dTotalVendido.toLocaleString("en", {
                                 minimumFractionDigits: 2,
                             })
                         }
+                        color="color-1"
                     />
+                </Grid>
+                <Grid item md={3} sm={6} xs={12} className="center">
+                    <ResumeNumero
+                        label="ÓRDENES VENDIDAS"
+                        value={entVentas.ResumenOrdenes.iTotalOrdenes}
+                        color="color-6"
+                    />
+                </Grid>
+                <Grid item md={3} sm={6} xs={12} className="center">
+                    <ResumeNumero
+                        label="ÓRDENES RECHAZADAS"
+                        value={entVentas.ResumenOrdenes.iTotalOrdenesRechazadas}
+                        color="color-5"
+                    />
+                </Grid>
+                <Grid item md={3} sm={6} xs={12} className="center">
+                    <ResumeNumero
+                        label="FOLIOS GENERADOS"
+                        value={entVentas.ResumenOrdenes.iTotalFolios}
+                        color="color-3"
+                    />
+                </Grid>
+                {/* <Grid item xs={12}>
                     <ResumeInfo label="Total de órdenes vendidas" value={entVentas.ResumenOrdenes.iTotalOrdenes} />
                     <ResumeInfo
                         label="Total de órdenes rechazadas"
@@ -122,10 +105,10 @@ const ResumenOrdenes = (props) => {
                             })
                         }
                     />
-                </Grid>
+                </Grid> */}
                 <Grid item xs={12}>
-                    <span className="rob-nor bold size-20 color-4">RESULTADOS</span>
-                    <Divider />
+                    {/* <span className="rob-nor bold size-20 color-4">RESULTADOS</span>
+                    <Divider /> */}
                     <MeditocTable
                         columns={columnas}
                         data={entVentas.ResumenOrdenes.lstOrdenes.map((orden) => ({
@@ -144,10 +127,21 @@ const ResumenOrdenes = (props) => {
                                     Detalle
                                 </Button>
                             ),
+                            sPaymentStatusWI: (
+                                <span>
+                                    {orden.sPaymentStatus}
+                                    {orden.sPaymentStatus === EnumStatusConekta.Declined ? (
+                                        <CloseIcon style={{ color: red[500], verticalAlign: "middle" }} />
+                                    ) : (
+                                        <DoneIcon style={{ color: green[500], verticalAlign: "middle" }} />
+                                    )}
+                                </span>
+                            ),
                         }))}
                         rowSelected={ordenSeleccionada}
                         setRowSelected={setOrdenSeleccionada}
                         mainField="sOrderId"
+                        search={false}
                     />
                 </Grid>
             </Grid>

@@ -605,7 +605,7 @@ namespace IMD.Admin.Conekta.Business
                     lstCodigos.Add(codigo);
                 }
 
-                lstCodigos = lstCodigos.GroupBy(x => x).Select(x => x.Key).ToList();
+                lstCodigos = lstCodigos.GroupBy(x => x).Select(x => x.Key).OrderBy(x => x).ToList();
 
                 response.Code = 0;
                 response.Message = "Códigos obtenidos";

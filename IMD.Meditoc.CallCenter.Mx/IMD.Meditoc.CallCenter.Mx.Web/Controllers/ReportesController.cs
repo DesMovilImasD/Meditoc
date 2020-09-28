@@ -24,29 +24,29 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         #region Ventas
         [HttpGet]
         [Route("api/reportes/ventas")]
-        public IMDResponse<EntVentasReporte> CObtenerReporteVentas([FromUri]string psFolio = null, 
-            [FromUri]string piIdEmpresa = null, [FromUri]string piIdProducto = null, 
-            [FromUri]string piIdTipoProducto = null, [FromUri]string piIdOrigen = null, 
-            [FromUri]string psOrderId = null, [FromUri]string psStatus = null, [FromUri]string psCupon = null,
-            [FromUri]DateTime? pdtFechaInicio = null, [FromUri]DateTime? pdtFechaFinal = null, 
+        public IMDResponse<EntVentasReporte> CObtenerReporteVentas([FromUri]string psFolio = null,
+            [FromUri]string psIdEmpresa = null, [FromUri]string psIdProducto = null,
+            [FromUri]string psIdTipoProducto = null, [FromUri]string psIdOrigen = null,
+            [FromUri]string psOrderId = null, [FromUri]string psStatus = null, [FromUri]string psCupon = null, [FromUri]string psTipoPago = null,
+            [FromUri]DateTime? pdtFechaInicio = null, [FromUri]DateTime? pdtFechaFinal = null,
             [FromUri]DateTime? pdtFechaVencimiento = null)
         {
             IMDResponse<EntVentasReporte> response = new IMDResponse<EntVentasReporte>();
 
             string metodo = nameof(this.CObtenerReporteVentas);
-            logger.Info(IMDSerialize.Serialize(67823458571239, $"Inicia {metodo}([FromUri]string psFolio = null, [FromUri]string piIdEmpresa = null, [FromUri]string piIdProducto = null, [FromUri]string piIdTipoProducto = null, [FromUri]string piIdOrigen = null, [FromUri]string psOrderId = null, [FromUri]string psStatus = null,[FromUri]string psCupon = null, [FromUri]DateTime ? pdtFechaInicio = null, [FromUri]DateTime ? pdtFechaFinal = null, [FromUri]DateTime ? pdtFechaVencimiento = null)",psFolio, piIdEmpresa, piIdProducto, piIdTipoProducto, piIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento));
+            logger.Info(IMDSerialize.Serialize(67823458571239, $"Inicia {metodo}([FromUri]string psFolio = null, [FromUri]string psIdEmpresa = null, [FromUri]string psIdProducto = null, [FromUri]string psIdTipoProducto = null, [FromUri]string psIdOrigen = null, [FromUri]string psOrderId = null, [FromUri]string psStatus = null,[FromUri]string psCupon = null, [FromUri]DateTime ? pdtFechaInicio = null, [FromUri]DateTime ? pdtFechaFinal = null, [FromUri]DateTime ? pdtFechaVencimiento = null)", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento));
 
             try
             {
-                BusReportes busReportes = new BusReportes(); 
-                response = busReportes.BObtenerReporteVentas(psFolio, piIdEmpresa, piIdProducto, piIdTipoProducto, piIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento);
+                BusReportes busReportes = new BusReportes();
+                response = busReportes.BObtenerReporteVentas(psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, psTipoPago, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento);
             }
             catch (Exception ex)
             {
                 response.Code = 67823458572016;
                 response.Message = "Ocurrió un error inesperado al consultar los folios del reporte en la base de datos";
 
-                logger.Error(IMDSerialize.Serialize(67823458572016, $"Error en {metodo}([FromUri]string psFolio = null, [FromUri]string piIdEmpresa = null, [FromUri]string piIdProducto = null, [FromUri]string piIdTipoProducto = null, [FromUri]string piIdOrigen = null, [FromUri]string psOrderId = null, [FromUri]string psStatus = null,[FromUri]string psCupon = null, [FromUri]DateTime ? pdtFechaInicio = null, [FromUri]DateTime ? pdtFechaFinal = null, [FromUri]DateTime ? pdtFechaVencimiento = null): {ex.Message}", psFolio, piIdEmpresa, piIdProducto, piIdTipoProducto, piIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458572016, $"Error en {metodo}([FromUri]string psFolio = null, [FromUri]string psIdEmpresa = null, [FromUri]string psIdProducto = null, [FromUri]string psIdTipoProducto = null, [FromUri]string psIdOrigen = null, [FromUri]string psOrderId = null, [FromUri]string psStatus = null,[FromUri]string psCupon = null, [FromUri]DateTime ? pdtFechaInicio = null, [FromUri]DateTime ? pdtFechaFinal = null, [FromUri]DateTime ? pdtFechaVencimiento = null): {ex.Message}", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento, ex, response));
             }
             return response;
         }
@@ -54,28 +54,28 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         [HttpGet]
         [Route("api/reportes/ventas/meditoc")]
         public IMDResponse<EntReporteVenta> CReporteGlobalVentas([FromUri]string psFolio = null,
-            [FromUri]string piIdEmpresa = null, [FromUri]string piIdProducto = null,
-            [FromUri]string piIdTipoProducto = null, [FromUri]string piIdOrigen = null,
-            [FromUri]string psOrderId = null, [FromUri]string psStatus = null, [FromUri]string psCupon = null,
+            [FromUri]string psIdEmpresa = null, [FromUri]string psIdProducto = null,
+            [FromUri]string psIdTipoProducto = null, [FromUri]string psIdOrigen = null,
+            [FromUri]string psOrderId = null, [FromUri]string psStatus = null, [FromUri]string psCupon = null, [FromUri]string psTipoPago = null,
             [FromUri]DateTime? pdtFechaInicio = null, [FromUri]DateTime? pdtFechaFinal = null,
             [FromUri]DateTime? pdtFechaVencimiento = null)
         {
             IMDResponse<EntReporteVenta> response = new IMDResponse<EntReporteVenta>();
 
             string metodo = nameof(this.CReporteGlobalVentas);
-            logger.Info(IMDSerialize.Serialize(67823458599211, $"Inicia {metodo}([FromUri]string psFolio = null, [FromUri]string piIdEmpresa = null, [FromUri]string piIdProducto = null, [FromUri]string piIdTipoProducto = null, [FromUri]string piIdOrigen = null, [FromUri]string psOrderId = null, [FromUri]string psStatus = null,[FromUri]string psCupon = null, [FromUri]DateTime ? pdtFechaInicio = null, [FromUri]DateTime ? pdtFechaFinal = null, [FromUri]DateTime ? pdtFechaVencimiento = null)", psFolio, piIdEmpresa, piIdProducto, piIdTipoProducto, piIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento));
+            logger.Info(IMDSerialize.Serialize(67823458599211, $"Inicia {metodo}([FromUri]string psFolio = null, [FromUri]string psIdEmpresa = null, [FromUri]string psIdProducto = null, [FromUri]string psIdTipoProducto = null, [FromUri]string psIdOrigen = null, [FromUri]string psOrderId = null, [FromUri]string psStatus = null,[FromUri]string psCupon = null, [FromUri]DateTime ? pdtFechaInicio = null, [FromUri]DateTime ? pdtFechaFinal = null, [FromUri]DateTime ? pdtFechaVencimiento = null)", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento));
 
             try
             {
                 BusReportes busReportes = new BusReportes();
-                response = busReportes.BReporteGlobalVentas(psFolio, piIdEmpresa, piIdProducto, piIdTipoProducto, piIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento);
+                response = busReportes.BReporteGlobalVentas(psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, psTipoPago, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento);
             }
             catch (Exception ex)
             {
                 response.Code = 67823458599988;
                 response.Message = "Ocurrió un error inesperado al consultar los folios del reporte en la base de datos";
 
-                logger.Error(IMDSerialize.Serialize(67823458599988, $"Error en {metodo}([FromUri]string psFolio = null, [FromUri]string piIdEmpresa = null, [FromUri]string piIdProducto = null, [FromUri]string piIdTipoProducto = null, [FromUri]string piIdOrigen = null, [FromUri]string psOrderId = null, [FromUri]string psStatus = null,[FromUri]string psCupon = null, [FromUri]DateTime ? pdtFechaInicio = null, [FromUri]DateTime ? pdtFechaFinal = null, [FromUri]DateTime ? pdtFechaVencimiento = null): {ex.Message}", psFolio, piIdEmpresa, piIdProducto, piIdTipoProducto, piIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458599988, $"Error en {metodo}([FromUri]string psFolio = null, [FromUri]string psIdEmpresa = null, [FromUri]string psIdProducto = null, [FromUri]string psIdTipoProducto = null, [FromUri]string psIdOrigen = null, [FromUri]string psOrderId = null, [FromUri]string psStatus = null,[FromUri]string psCupon = null, [FromUri]DateTime ? pdtFechaInicio = null, [FromUri]DateTime ? pdtFechaFinal = null, [FromUri]DateTime ? pdtFechaVencimiento = null): {ex.Message}", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento, ex, response));
             }
             return response;
         }
@@ -83,21 +83,21 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         [HttpGet]
         [Route("api/reportes/ventas/descargar")]
         public HttpResponseMessage CDescargarReporteVentas([FromUri]string psFolio = null,
-            [FromUri]string piIdEmpresa = null, [FromUri]string piIdProducto = null,
-            [FromUri]string piIdTipoProducto = null, [FromUri]string piIdOrigen = null,
-            [FromUri]string psOrderId = null, [FromUri]string psStatus = null, [FromUri]string psCupon = null,
+            [FromUri]string psIdEmpresa = null, [FromUri]string psIdProducto = null,
+            [FromUri]string psIdTipoProducto = null, [FromUri]string psIdOrigen = null,
+            [FromUri]string psOrderId = null, [FromUri]string psStatus = null, [FromUri]string psCupon = null, [FromUri]string psTipoPago = null,
             [FromUri]DateTime? pdtFechaInicio = null, [FromUri]DateTime? pdtFechaFinal = null,
             [FromUri]DateTime? pdtFechaVencimiento = null)
         {
             HttpResponseMessage response;
 
             string metodo = nameof(this.CDescargarReporteVentas);
-            logger.Info(IMDSerialize.Serialize(67823458572793, $"Inicia {metodo}([FromUri]string psFolio = null, [FromUri]string piIdEmpresa = null, [FromUri]string piIdProducto = null, [FromUri]string piIdTipoProducto = null, [FromUri]string piIdOrigen = null, [FromUri]string psOrderId = null, [FromUri]string psStatus = null,[FromUri]string psCupon = null, [FromUri]DateTime ? pdtFechaInicio = null, [FromUri]DateTime ? pdtFechaFinal = null, [FromUri]DateTime ? pdtFechaVencimiento = null)", psFolio, piIdEmpresa, piIdProducto, piIdTipoProducto, piIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento));
+            logger.Info(IMDSerialize.Serialize(67823458572793, $"Inicia {metodo}([FromUri]string psFolio = null, [FromUri]string psIdEmpresa = null, [FromUri]string psIdProducto = null, [FromUri]string psIdTipoProducto = null, [FromUri]string psIdOrigen = null, [FromUri]string psOrderId = null, [FromUri]string psStatus = null,[FromUri]string psCupon = null, [FromUri]DateTime ? pdtFechaInicio = null, [FromUri]DateTime ? pdtFechaFinal = null, [FromUri]DateTime ? pdtFechaVencimiento = null)", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento));
 
             try
             {
                 BusReportes busReportes = new BusReportes();
-                IMDResponse<MemoryStream> resExcel = busReportes.BDescargarReporteVentas(psFolio, piIdEmpresa, piIdProducto, piIdTipoProducto, piIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento);
+                IMDResponse<MemoryStream> resExcel = busReportes.BDescargarReporteVentas(psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, psTipoPago, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento);
                 if (resExcel.Code != 0)
                 {
                     response = Request.CreateResponse(HttpStatusCode.InternalServerError, resExcel.Message);
@@ -115,7 +115,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             {
                 response = Request.CreateResponse(HttpStatusCode.InternalServerError, "No se pudo generar el reporte de ventas");
 
-                logger.Error(IMDSerialize.Serialize(67823458573570, $"Error en {metodo}([FromUri]string psFolio = null, [FromUri]string piIdEmpresa = null, [FromUri]string piIdProducto = null, [FromUri]string piIdTipoProducto = null, [FromUri]string piIdOrigen = null, [FromUri]string psOrderId = null, [FromUri]string psStatus = null,[FromUri]string psCupon = null, [FromUri]DateTime ? pdtFechaInicio = null, [FromUri]DateTime ? pdtFechaFinal = null, [FromUri]DateTime ? pdtFechaVencimiento = null): {ex.Message}", psFolio, piIdEmpresa, piIdProducto, piIdTipoProducto, piIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458573570, $"Error en {metodo}([FromUri]string psFolio = null, [FromUri]string psIdEmpresa = null, [FromUri]string psIdProducto = null, [FromUri]string psIdTipoProducto = null, [FromUri]string psIdOrigen = null, [FromUri]string psOrderId = null, [FromUri]string psStatus = null,[FromUri]string psCupon = null, [FromUri]DateTime ? pdtFechaInicio = null, [FromUri]DateTime ? pdtFechaFinal = null, [FromUri]DateTime ? pdtFechaVencimiento = null): {ex.Message}", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento, ex, response));
             }
             return response;
         }
@@ -125,7 +125,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         [HttpGet]
         [Route("api/reportes/doctores")]
         public IMDResponse<EntDoctoresReporte> CObtenerReporteDoctores(
-            [FromUri]string psIdColaborador = null, [FromUri]string psColaborador = null, [FromUri]string psIdTipoDoctor = null, [FromUri]string psIdEspecialidad = null, 
+            [FromUri]string psIdColaborador = null, [FromUri]string psColaborador = null, [FromUri]string psIdTipoDoctor = null, [FromUri]string psIdEspecialidad = null,
             [FromUri]string psIdConsulta = null, [FromUri]string psIdEstatusConsulta = null, [FromUri]string psRFC = null, [FromUri]string psNumSala = null,
             [FromUri]DateTime? pdtFechaProgramadaInicio = null, [FromUri]DateTime? pdtFechaProgramadaFinal = null, [FromUri]DateTime? pdtFechaConsultaInicio = null, [FromUri]DateTime? pdtFechaConsultaFin = null)
         {

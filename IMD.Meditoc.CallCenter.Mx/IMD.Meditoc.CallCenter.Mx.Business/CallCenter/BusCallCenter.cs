@@ -192,31 +192,39 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                         return response;
                     }
 
-                    EntDetalleConsulta entDetalleConsulta = resVerificarConsulta.Result.First();
-
-                    if (entDetalleConsulta.iIdEstatusConsulta == (int)EnumEstatusConsulta.Cancelado)
+                    List<EntDetalleConsulta> HayConsultaProgramadaOReprograma = resVerificarConsulta.Result.Where(x => x.iIdEstatusConsulta != (int)EnumEstatusConsulta.Finalizado && x.iIdEstatusConsulta != (int)EnumEstatusConsulta.Cancelado).ToList();
+                    if (HayConsultaProgramadaOReprograma.Count > 0)
                     {
-                        response.Code = -978912879598735;
-                        response.Message = $"La consulta fue cancelada";
-                        return response;
+                        EntDetalleConsulta entDetalleConsulta = HayConsultaProgramadaOReprograma.First();
+
+                        EntConsulta entConsulta = new EntConsulta
+                        {
+                            iIdConsulta = (int)entDetalleConsulta.iIdConsulta,
+                            iIdColaborador = entCallCenter.entColaborador.iIdColaborador,
+                            iIdPaciente = entCallCenter.entPaciente.iIdPaciente,
+                            iIdEstatusConsulta = entDetalleConsulta.iIdEstatusConsulta,
+                        };
+
+                        entCallCenter.entConsulta = entConsulta;
                     }
-
-                    if (entDetalleConsulta.iIdEstatusConsulta == (int)EnumEstatusConsulta.Finalizado)
+                    else
                     {
-                        response.Code = -4498871498234;
-                        response.Message = $"La consulta ya ha finalizado";
-                        return response;
+                        EntDetalleConsulta entDetalleConsulta = resVerificarConsulta.Result.Last();
+
+                        if (entDetalleConsulta.iIdEstatusConsulta == (int)EnumEstatusConsulta.Cancelado)
+                        {
+                            response.Code = -978912879598735;
+                            response.Message = $"La consulta fue cancelada";
+                            return response;
+                        }
+
+                        if (entDetalleConsulta.iIdEstatusConsulta == (int)EnumEstatusConsulta.Finalizado)
+                        {
+                            response.Code = -4498871498234;
+                            response.Message = $"La consulta ya ha finalizado";
+                            return response;
+                        }
                     }
-
-                    EntConsulta entConsulta = new EntConsulta
-                    {
-                        iIdConsulta = (int)entDetalleConsulta.iIdConsulta,
-                        iIdColaborador = entCallCenter.entColaborador.iIdColaborador,
-                        iIdPaciente = entCallCenter.entPaciente.iIdPaciente,
-                        iIdEstatusConsulta = entDetalleConsulta.iIdEstatusConsulta,
-                    };
-
-                    entCallCenter.entConsulta = entConsulta;
                 }
                 else
                 {
@@ -371,7 +379,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                 }
                 else
                 {
-                    if(consulta.iIdTipoProducto == (int)EnumTipoProducto.Servicio)
+                    if (consulta.iIdTipoProducto == (int)EnumTipoProducto.Servicio)
                     {
                         IMDResponse<bool> resDesactivarFolios = busFolio.BEliminarFoliosEmpresa(entFolio);
                         if (resDesactivarFolios.Code != 0)
