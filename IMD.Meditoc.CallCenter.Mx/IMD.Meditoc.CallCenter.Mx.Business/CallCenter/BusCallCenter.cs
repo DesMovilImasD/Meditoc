@@ -114,7 +114,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
 
                 entCallCenter.entColaborador = resGetColaborador.Result.First();
 
-                IMDResponse<List<EntFolioReporte>> resGetFolio = busFolio.BGetFolios(psFolio: sFolio);
+                IMDResponse<List<EntFolioReporte>> resGetFolio = busFolio.BGetFolios(psFolio: sFolio, pbActivo: null, pbBaja: null);
                 if (resGetFolio.Code != 0)
                 {
                     return resGetFolio.GetResponse<EntCallCenter>();
@@ -159,6 +159,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                     {
                         response.Code = -19854873834598;
                         response.Message = "El folio proporcionado solo es válido para consultas programadas con Especialistas";
+                        return response;
+                    }
+
+                    if(!entCallCenter.entFolio.bActivo || entCallCenter.entFolio.bBaja)
+                    {
+                        response.Code = -8634576876234;
+                        response.Message = "El folio ha expirado o ha sido dado de baja";
                         return response;
                     }
                     EntConsulta entConsulta = new EntConsulta
