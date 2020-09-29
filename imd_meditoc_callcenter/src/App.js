@@ -97,7 +97,7 @@ function App() {
           <BrowserRouter basename={urlBase}>
             <MeditocLoader entLoader={entLoader} />
             <MeditocAlert entAlert={entAlert} />
-            {usuarioActivo === true ? (
+            {usuarioActivo === true && usuarioPermisos !== null ? (
               <MeditocContentMain
                 usuarioSesion={usuarioSesion}
                 usuarioPermisos={usuarioPermisos}

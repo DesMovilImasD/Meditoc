@@ -2,6 +2,7 @@ import { Divider, Grid } from "@material-ui/core";
 import React, { Fragment } from "react";
 import InfoField from "../../utilidades/InfoField";
 import MeditocModal from "../../utilidades/MeditocModal";
+import MeditocModalBotones from "../../utilidades/MeditocModalBotones";
 import MeditocTableSimple from "../../utilidades/MeditocTableSimple";
 import ResumeInfo from "./ResumeInfo";
 
@@ -65,6 +66,7 @@ const ResumenEmpresaDetalle = (props) => {
                         }))}
                     />
                 </Grid>
+                <MeditocModalBotones cancelMessage="Cerrar detalle de empresa" setOpen={setOpen} hideOk />
             </Grid>
         </MeditocModal>
     );

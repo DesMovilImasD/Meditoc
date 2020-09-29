@@ -24,13 +24,13 @@ import LocalMallIcon from "@material-ui/icons/LocalMall";
 import LocalHospitalIcon from "@material-ui/icons/LocalHospital";
 
 const useStyles = makeStyles({
-  nested: {
-    paddingLeft: 50,
-  },
-  link: {
-    textDecoration: "none",
-    color: "inherit",
-  },
+    nested: {
+        paddingLeft: 50,
+    },
+    link: {
+        textDecoration: "none",
+        color: "inherit",
+    },
 });
 
 /*************************************************************
@@ -42,13 +42,13 @@ const useStyles = makeStyles({
 const MenuList = (props) => {
     const { toggleDrawer, usuarioPermisos } = props;
 
-  const classes = useStyles();
+    const classes = useStyles();
 
-  const [openConfiguracion, setOpenConfiguracion] = useState(false);
-  const [openAdministracion, setOpenAdministracion] = useState(false);
-  const [openFolios, setOpenFolios] = useState(false);
-  const [openCallCenter, setOpenCallCenter] = useState(false);
-  const [openReportes, setOpenReportes] = useState(false);
+    const [openConfiguracion, setOpenConfiguracion] = useState(false);
+    const [openAdministracion, setOpenAdministracion] = useState(false);
+    const [openFolios, setOpenFolios] = useState(false);
+    const [openCallCenter, setOpenCallCenter] = useState(false);
+    const [openReportes, setOpenReportes] = useState(false);
 
     return (
         <List component="div">
@@ -163,25 +163,31 @@ const MenuList = (props) => {
                 </Fragment>
             )}
 
-            {/* <ListItem button onClick={() => setOpenFolios(!openFolios)}>
-                <ListItemIcon>
-                    <GradeIcon className="color-0" />
-                </ListItemIcon>
-                <ListItemText primary="Folios" />
-                {openFolios ? <ExpandLess /> : <ExpandMore />}
-            </ListItem>
-            <Collapse in={openFolios} unmountOnExit>
-                <List component="div">
-                    <Link to={urlSystem.folios.folios} className={classes.link}>
-                        <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
-                            <ListItemIcon>
-                                <CardMembershipIcon className="color-0" />
-                            </ListItemIcon>
-                            <ListItemText primary="Folios" />
-                        </ListItem>
-                    </Link>
-                </List>
-            </Collapse> */}
+            {usuarioPermisos.folios !== undefined && (
+                <Fragment>
+                    <ListItem button onClick={() => setOpenFolios(!openFolios)}>
+                        <ListItemIcon>
+                            <GradeIcon className="color-0" />
+                        </ListItemIcon>
+                        <ListItemText primary="Folios" />
+                        {openFolios ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse in={openFolios} unmountOnExit>
+                        <List component="div">
+                            {usuarioPermisos.folios.folios !== undefined && (
+                                <Link to={urlSystem.folios.folios} className={classes.link}>
+                                    <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
+                                        <ListItemIcon>
+                                            <CardMembershipIcon className="color-0" />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Folios" />
+                                    </ListItem>
+                                </Link>
+                            )}
+                        </List>
+                    </Collapse>
+                </Fragment>
+            )}
 
             {usuarioPermisos.callcenter !== undefined && (
                 <Fragment>

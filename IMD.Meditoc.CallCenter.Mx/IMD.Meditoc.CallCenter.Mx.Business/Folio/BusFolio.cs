@@ -135,7 +135,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
             try
             {
-                entOrder.customer_info.phone = entOrder.customer_info.phone.Replace(" ", "").Replace(ConfigurationManager.AppSettings["CONEKTA_PHONE_ACCESS"], "");
+                entOrder.customer_info.phone = entOrder.customer_info?.phone?.Replace(" ", "").Replace(ConfigurationManager.AppSettings["CONEKTA_PHONE_ACCESS"], "");
 
                 EntFolio entFolio = new EntFolio();
                 //using (TransactionScope scope = new TransactionScope())
@@ -1435,6 +1435,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                     lstFolios.Add(folio);
                 }
+
+                lstFolios = lstFolios.OrderByDescending(x => x.iIdFolio).ToList();
 
                 response.Code = 0;
                 response.Message = "Folios consultados";

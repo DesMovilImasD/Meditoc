@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, Button } from "@material-ui/core";
 
 const MeditocModalBotones = (props) => {
-    const { okMessage, cancelMessage, okFunc, cancelFunc, align, setOpen, hideCancel, xs, sm } = props;
+    const { okMessage, cancelMessage, okFunc, cancelFunc, align, setOpen, hideCancel, hideOk, xs, sm } = props;
 
     const mtOkMessage = okMessage === undefined ? "Confirmar" : okMessage;
     const mtCancelMessage = cancelMessage === undefined ? "Cancelar" : cancelMessage;
@@ -23,6 +23,7 @@ const MeditocModalBotones = (props) => {
     const mtAlign = align === undefined ? "right" : align;
 
     const mtHideCancel = hideCancel === undefined ? false : hideCancel;
+    const mtHideOk = hideOk === undefined ? false : hideOk;
 
     const mtXs = xs === undefined ? 12 : xs;
     const mtSm = sm === undefined ? 12 : sm;
@@ -34,9 +35,11 @@ const MeditocModalBotones = (props) => {
                     {mtCancelMessage}
                 </Button>
             )}
-            <Button variant="contained" color="primary" onClick={mtOkFunc}>
-                {mtOkMessage}
-            </Button>
+            {!mtHideOk && (
+                <Button variant="contained" color="primary" onClick={mtOkFunc}>
+                    {mtOkMessage}
+                </Button>
+            )}
         </Grid>
     );
 };

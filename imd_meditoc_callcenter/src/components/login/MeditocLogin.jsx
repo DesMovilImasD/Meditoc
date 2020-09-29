@@ -163,6 +163,17 @@ const Login = (props) => {
             }
         }
 
+        const moduloFolios = lstPermisos.find((x) => x.iIdModulo === EnumSistema.Folios); // Folios
+        if (moduloFolios !== undefined) {
+            permisos.folios = {};
+            const submoduloFolios = moduloFolios.lstSubModulo.find(
+                (x) => x.iIdSubModulo === EnumSistema.FoliosSM.Folios
+            ); //Folios > Folios
+            if (submoduloFolios !== undefined) {
+                permisos.folios.folios = true;
+            }
+        }
+
         const moduloCallCenter = lstPermisos.find((x) => x.iIdModulo === EnumSistema.CallCenter); //CallCenter
         if (moduloCallCenter !== undefined) {
             permisos.callcenter = {};

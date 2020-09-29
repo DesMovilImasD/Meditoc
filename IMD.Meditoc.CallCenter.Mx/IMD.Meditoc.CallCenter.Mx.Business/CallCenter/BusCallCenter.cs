@@ -329,18 +329,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                     return response;
                 }
 
-                EntConsulta entConsulta = new EntConsulta
-                {
-                    iIdConsulta = iIdConsulta,
-                    dtFechaConsultaFin = DateTime.Now,
-                    iIdEstatusConsulta = (int)EnumEstatusConsulta.Finalizado
-                };
-
-                IMDResponse<EntConsulta> resSaveConsulta = busConsulta.BSaveConsulta(entConsulta, iIdUsuarioMod);
-                if (resSaveConsulta.Code != 0)
-                {
-                    return resSaveConsulta.GetResponse<bool>();
-                }
 
                 IMDResponse<List<EntDetalleConsulta>> resGetConsulta = busConsulta.BGetDetalleConsulta(piIdConsulta: iIdConsulta);
                 if (resGetConsulta.Code != 0)
@@ -353,6 +341,19 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                     response.Code = -87812314544512;
                     response.Message = "La consulta no existe";
                     return response;
+                }
+
+                EntConsulta entConsulta = new EntConsulta
+                {
+                    iIdConsulta = iIdConsulta,
+                    dtFechaConsultaFin = DateTime.Now,
+                    iIdEstatusConsulta = (int)EnumEstatusConsulta.Finalizado
+                };
+
+                IMDResponse<EntConsulta> resSaveConsulta = busConsulta.BSaveConsulta(entConsulta, iIdUsuarioMod);
+                if (resSaveConsulta.Code != 0)
+                {
+                    return resSaveConsulta.GetResponse<bool>();
                 }
 
                 EntDetalleConsulta consulta = resGetConsulta.Result.First();
@@ -369,17 +370,20 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                         }
                 };
 
-                if (consulta.iIdOrigen == (int)EnumOrigen.Particular)
+                if (consulta.iIdColaborador == (int)EnumTipoDoctor.MedicoCallCenter)
                 {
-                    IMDResponse<bool> resDesactivarFolios = busFolio.BEliminarFoliosEmpresa(entFolio);
-                    if (resDesactivarFolios.Code != 0)
+                    if (consulta.iIdTipoProducto == (int)EnumTipoProducto.Servicio)
                     {
-                        return resDesactivarFolios;
+                        IMDResponse<bool> resDesactivarFolios = busFolio.BEliminarFoliosEmpresa(entFolio);
+                        if (resDesactivarFolios.Code != 0)
+                        {
+                            return resDesactivarFolios;
+                        }
                     }
                 }
                 else
                 {
-                    if (consulta.iIdTipoProducto == (int)EnumTipoProducto.Servicio)
+                    if (consulta.iIdOrigen == (int)EnumOrigen.Particular)
                     {
                         IMDResponse<bool> resDesactivarFolios = busFolio.BEliminarFoliosEmpresa(entFolio);
                         if (resDesactivarFolios.Code != 0)

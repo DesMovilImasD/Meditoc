@@ -16,7 +16,7 @@ using System.Web.Http;
 
 namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 {
-    //[MeditocAuthentication]
+    [MeditocAuthentication]
     public class ReportesController : ApiController
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(ReportesController));

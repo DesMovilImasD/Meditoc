@@ -3,6 +3,7 @@ import React, { Fragment } from "react";
 import { EnumStatusConekta } from "../../../configurations/enumConfig";
 import InfoField from "../../utilidades/InfoField";
 import MeditocModal from "../../utilidades/MeditocModal";
+import MeditocModalBotones from "../../utilidades/MeditocModalBotones";
 import MeditocTableSimple from "../../utilidades/MeditocTableSimple";
 import ResumeInfo from "./ResumeInfo";
 import ResumeNumero from "./ResumeNumero";
@@ -130,6 +131,7 @@ const ResumenOrdenDetalle = (props) => {
                         </Fragment>
                     ))}
                 </Grid>
+                <MeditocModalBotones cancelMessage="Cerrar detalle de órden" setOpen={setOpen} hideOk />
             </Grid>
         </MeditocModal>
     );

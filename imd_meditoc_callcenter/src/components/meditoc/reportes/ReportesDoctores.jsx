@@ -1,4 +1,4 @@
-import { Divider, Grid, IconButton, InputAdornment, MenuItem, TextField, Tooltip } from "@material-ui/core";
+import { Button, Divider, Grid, IconButton, InputAdornment, MenuItem, TextField, Tooltip } from "@material-ui/core";
 import React, { Fragment, useEffect } from "react";
 import MeditocHeader1 from "../../utilidades/MeditocHeader1";
 import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
@@ -30,6 +30,7 @@ const ReportesDoctores = (props) => {
         { title: "Tipo de doctor", field: "sTipoDoctor", align: "center" },
         { title: "Especialidad", field: "sEspecialidad", align: "center" },
         { title: "Total consultas", field: "iTotalConsultas", align: "center" },
+        { title: "Ver", field: "sDetalle", align: "center" },
     ];
 
     const formFiltroVacio = {
@@ -90,13 +91,13 @@ const ReportesDoctores = (props) => {
         funcLoader();
     };
 
-    const funcAbrirDetalle = () => {
-        if (doctorSeleccionado.iIdDoctor === 0) {
-            funcAlert("Seleccione un doctor de la tabla para ver el detalle", "warning");
-            return;
-        }
-        setModalDetalleDoctorOpen(true);
-    };
+    // const funcAbrirDetalle = () => {
+    //     if (doctorSeleccionado.iIdDoctor === 0) {
+    //         funcAlert("Seleccione un doctor de la tabla para ver el detalle", "warning");
+    //         return;
+    //     }
+    //     setModalDetalleDoctorOpen(true);
+    // };
 
     const funcDescargaReporte = async () => {
         funcLoader(true, "Descargando reporte de doctores...");
@@ -142,6 +143,11 @@ const ReportesDoctores = (props) => {
         funcLoader();
     };
 
+    const handleClickDetalle = (iIdDoctor) => {
+        setDoctorSeleccionado(entDoctores.lstDoctores.find((x) => x.iIdDoctor === iIdDoctor));
+        setModalDetalleDoctorOpen(true);
+    };
+
     const getData = async () => {
         await funcGetDoctores(false);
         await funcGetEspecialidades();
@@ -154,11 +160,11 @@ const ReportesDoctores = (props) => {
     return (
         <Fragment>
             <MeditocHeader1 title="REPORTES DOCTORES">
-                <Tooltip title="Ver detalle">
+                {/* <Tooltip title="Ver detalle">
                     <IconButton onClick={funcAbrirDetalle}>
                         <VisibilityIcon className="color-0" />
                     </IconButton>
-                </Tooltip>
+                </Tooltip> */}
                 <Tooltip title="Descargar Reporte">
                     <IconButton onClick={funcDescargaReporte}>
                         <CloudDownloadIcon className="color-0" />
@@ -307,7 +313,18 @@ const ReportesDoctores = (props) => {
                             <Grid item xs={12} className="center">
                                 <MeditocTable
                                     columns={columnas}
-                                    data={entDoctores.lstDoctores}
+                                    data={entDoctores.lstDoctores.map((doctor) => ({
+                                        ...doctor,
+                                        sDetalle: (
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                onClick={() => handleClickDetalle(doctor.iIdDoctor)}
+                                            >
+                                                Detalle
+                                            </Button>
+                                        ),
+                                    }))}
                                     rowSelected={doctorSeleccionado}
                                     setRowSelected={setDoctorSeleccionado}
                                     mainField="iIdDoctor"
