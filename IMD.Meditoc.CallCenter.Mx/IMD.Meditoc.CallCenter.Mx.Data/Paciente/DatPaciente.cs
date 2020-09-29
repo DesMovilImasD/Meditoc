@@ -92,7 +92,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Paciente
             return response;
         }
 
-        public IMDResponse<bool> DUpdPaciente(int piIdPaciente, string psNombre, string psCorreo, string psTelefono, string psTipoSangre, DateTime pdtFechaNacimiento, int piIdSexo, int piIdUsuarioMod)
+        public IMDResponse<bool> DUpdPaciente(int piIdPaciente, string psNombre, string psCorreo, string psTelefono, string psTipoSangre, DateTime? pdtFechaNacimiento, int? piIdSexo, int piIdUsuarioMod)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, IconButton, Fade, Backdrop } from "@material-ui/core";
+import { Modal, IconButton, Fade, Backdrop, Dialog, Paper } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import Draggable from "react-draggable";
 
@@ -10,13 +10,17 @@ import Draggable from "react-draggable";
  * Invocado desde: EliminarBoton, EliminarModulo, EliminarSubmodulo, FormBoton, FormModulo, FormSubmodulo
  *************************************************************/
 
-// function PaperComponent(props) {
-//     return (
-//         <Draggable handle="#draggable-dialog-title" cancel={'[class*="MuiDialogContent-root"]'}>
-//             <Paper {...props} />
-//         </Draggable>
-//     );
-// }
+function PaperComponent(props) {
+    return (
+        <Draggable
+            handle="#draggable-dialog-title"
+            cancel={'[class*="MuiDialogContent-root"]'}
+            //bounds="parent"
+        >
+            <Paper {...props} style={{ borderRadius: 12 }} />
+        </Draggable>
+    );
+}
 
 const MeditocModal = (props) => {
     const { size, title, children, open, setOpen } = props;
@@ -26,32 +30,55 @@ const MeditocModal = (props) => {
     };
 
     return (
-        <Modal
+        // <Modal
+        //     open={open}
+        //     onClose={handleCloseModel}
+        //     closeAfterTransition
+        //     disableBackdropClick
+        //     BackdropComponent={Backdrop}
+        //     BackdropProps={{
+        //         timeout: 300,
+        //         style: { backgroundColor: "rgb(255 255 255 / 0.7)" },
+        //     }}
+        //     style={{ overflowY: "auto" }}
+        // >
+        //     <Fade in={open}>
+        //         <div className={`modal-form modal-${size}`}>
+        //             <div className="modal-form-header ">
+        //                 <div className="flx-grw-1 align-self-center">
+        //                     <span className="rob-nor size-20 pad-left-20 color-0">{title}</span>
+        //                 </div>
+        //                 <IconButton onClick={handleCloseModel}>
+        //                     <CloseIcon className="color-0" />
+        //                 </IconButton>
+        //             </div>
+        //             <div className="modal-from-content">{children}</div>
+        //         </div>
+        //     </Fade>
+        // </Modal>
+        <Dialog
             open={open}
             onClose={handleCloseModel}
-            closeAfterTransition
-            disableBackdropClick
-            BackdropComponent={Backdrop}
+            //BackdropComponent={Backdrop}
             BackdropProps={{
                 timeout: 300,
                 style: { backgroundColor: "rgb(255 255 255 / 0.7)" },
             }}
-            style={{ overflowY: "auto" }}
+            scroll="body"
+            PaperComponent={PaperComponent}
+            disableBackdropClick
+            maxWidth={size == "small" ? "sm" : size === "normal" ? "md" : "lg"}
         >
-            <Fade in={open}>
-                <div className={`modal-form modal-${size}`}>
-                    <div className="modal-form-header ">
-                        <div className="flx-grw-1 align-self-center">
-                            <span className="rob-nor size-20 pad-left-20 color-0">{title}</span>
-                        </div>
-                        <IconButton onClick={handleCloseModel}>
-                            <CloseIcon className="color-0" />
-                        </IconButton>
-                    </div>
-                    <div className="modal-from-content">{children}</div>
+            <div className="modal-form-header " id="draggable-dialog-title">
+                <div className="flx-grw-1 align-self-center">
+                    <span className="rob-nor size-20 pad-left-20 color-0">{title}</span>
                 </div>
-            </Fade>
-        </Modal>
+                <IconButton onClick={handleCloseModel}>
+                    <CloseIcon className="color-0" />
+                </IconButton>
+            </div>
+            <div className="modal-from-content">{children}</div>
+        </Dialog>
     );
 };
 

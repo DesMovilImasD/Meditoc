@@ -270,6 +270,7 @@ code {
     display: flex;
     background-color: var(--color-primary-blue);
     border-radius: 10px 10px 0px 0px;
+    cursor: move;
 }
 
 .modal-from-content {

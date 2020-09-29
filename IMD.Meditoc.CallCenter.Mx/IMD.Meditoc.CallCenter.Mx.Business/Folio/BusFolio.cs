@@ -938,6 +938,21 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 EntFolioReporte folioExistente = resGetFolioExiste.Result.First();
 
+                EntUpdPaciente entPaciente = new EntUpdPaciente
+                {
+                    iIdPaciente = folioExistente.iIdPaciente,
+                    sCorreo = entNuevaConsulta.customerInfo.email,
+                    sNombre = entNuevaConsulta.customerInfo.name,
+                    sTelefono = entNuevaConsulta.customerInfo.phone
+                };
+
+                BusPaciente busPaciente = new BusPaciente();
+                IMDResponse<bool> resUpdPaciente = busPaciente.BUpdPaciente(entPaciente);
+                if(resUpdPaciente.Code != 0)
+                {
+                    return resUpdPaciente.GetResponse<EntDetalleCompra>();
+                }
+
                 if (folioExistente.iIdOrigen == (int)EnumOrigen.Particular)
                 {
                     EntFolioFV entFolioFV = new EntFolioFV

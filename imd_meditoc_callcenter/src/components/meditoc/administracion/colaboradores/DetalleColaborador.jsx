@@ -61,6 +61,9 @@ const DetalleColaborador = (props) => {
                     <InfoField label="Teléfono de contacto:" value={entColaborador.sTelefonoDirectorio} />
                 </Grid>
                 <Grid item xs={6}>
+                    <InfoField label="WhatsApp:" value={entColaborador.sWhatsApp} />
+                </Grid>
+                <Grid item xs={6}>
                     <InfoField label="Correo electrónico:" value={entColaborador.sCorreoDirectorio} />
                 </Grid>
                 <Grid item xs={6}>

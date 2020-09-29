@@ -13,8 +13,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Paciente
         public string sCorreo { get; set; }
         public string sTelefono { get; set; }
         public string sTipoSangre { get; set; }
-        public DateTime dtFechaNacimiento { get; set; }
-        public int iIdSexo { get; set; }
+        public DateTime? dtFechaNacimiento { get; set; }
+        public int? iIdSexo { get; set; }
         public int iIdUsuarioMod { get; set; }
     }
 }

@@ -73,6 +73,7 @@ const MeditocTableSimple = (props) => {
                 grouping: false,
                 columnResizable: false,
                 draggable: false,
+                toolbar: false,
             }}
         />
     );

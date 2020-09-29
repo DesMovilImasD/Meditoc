@@ -15,7 +15,7 @@ import DateRangeIcon from "@material-ui/icons/DateRange";
 import ResumenOrdenes from "./ResumenOrdenes";
 import ResumeNumero from "./ResumeNumero";
 import ResumenEmpresas from "./ResumenEmpresas";
-import { EnumOrigen, EnumStatusConekta, EnumTipoPago } from "../../../configurations/enumConfig";
+import { EnumOrigen, EnumReportesTabs, EnumStatusConekta, EnumTipoPago } from "../../../configurations/enumConfig";
 import PromocionesController from "../../../controllers/PromocionesController";
 import { Autocomplete } from "@material-ui/lab";
 import MeditocModalBotones from "../../utilidades/MeditocModalBotones";
@@ -97,14 +97,14 @@ const ReportesVentas = (props) => {
         funcLoader(true, "Descargando reporte de venta...");
         const response = await reportesController.funcDescargarReporteVentas(
             filtroForm.txtFolio,
-            filtroForm.txtFolioEmpresa,
+            tabIndex === EnumReportesTabs.Conekta ? "" : filtroForm.txtFolioEmpresa,
             "",
             "",
-            filtroForm.txtOrigen,
-            filtroForm.txtOrden,
-            filtroForm.txtEstatus,
-            filtroForm.txtCupon === null ? "" : filtroForm.txtCupon,
-            filtroForm.txtTipoPago,
+            tabIndex === EnumReportesTabs.Administrativo ? "" : filtroForm.txtOrigen,
+            tabIndex === EnumReportesTabs.Administrativo ? "" : filtroForm.txtOrden,
+            tabIndex === EnumReportesTabs.Administrativo ? "" : filtroForm.txtEstatus,
+            tabIndex === EnumReportesTabs.Administrativo ? "" : filtroForm.txtCupon === null ? "" : filtroForm.txtCupon,
+            tabIndex === EnumReportesTabs.Administrativo ? "" : filtroForm.txtTipoPago,
             filtroForm.txtFechaDe === null ? null : filtroForm.txtFechaDe.toISOString(),
             filtroForm.txtFechaA === null ? null : filtroForm.txtFechaA.toISOString()
         );
@@ -204,6 +204,7 @@ const ReportesVentas = (props) => {
                                 variant="outlined"
                                 fullWidth
                                 select
+                                disabled={tabIndex === EnumReportesTabs.Administrativo}
                                 onChange={handleChangeFiltro}
                                 value={filtroForm.txtOrigen}
                             >
@@ -220,6 +221,7 @@ const ReportesVentas = (props) => {
                                 name="txtEstatus"
                                 label="Estatus:"
                                 variant="outlined"
+                                disabled={tabIndex === EnumReportesTabs.Administrativo}
                                 fullWidth
                                 select
                                 onChange={handleChangeFiltro}
@@ -236,6 +238,7 @@ const ReportesVentas = (props) => {
                                 name="txtTipoPago"
                                 label="Tipo de pago:"
                                 variant="outlined"
+                                disabled={tabIndex === EnumReportesTabs.Administrativo}
                                 fullWidth
                                 select
                                 onChange={handleChangeFiltro}
@@ -250,6 +253,7 @@ const ReportesVentas = (props) => {
                             <Autocomplete
                                 id="txtCupon"
                                 options={listaCupones}
+                                disabled={tabIndex === EnumReportesTabs.Administrativo}
                                 //getOptionLabel={(cupon) => cupon}
                                 renderInput={(props) => (
                                     <TextField {...props} name="txtCupon" label="Cupón" variant="outlined" fullWidth />
@@ -267,11 +271,13 @@ const ReportesVentas = (props) => {
                                 fullWidth
                                 onChange={handleChangeFiltro}
                                 value={filtroForm.txtOrden}
+                                disabled={tabIndex === EnumReportesTabs.Administrativo}
                             />
                         </Grid>
                         <Grid item sm={4} xs={12}>
                             <TextField
                                 name="txtFolioEmpresa"
+                                disabled={tabIndex === EnumReportesTabs.Conekta}
                                 label="Folio Empresa:"
                                 variant="outlined"
                                 fullWidth
@@ -303,10 +309,10 @@ const ReportesVentas = (props) => {
                                 setIndex={setTabIndex}
                             />
                             <MeditocTabBody index={tabIndex} setIndex={setTabIndex}>
-                                <MeditocTabPanel id={0} index={tabIndex}>
+                                <MeditocTabPanel id={EnumReportesTabs.Conekta} index={tabIndex}>
                                     <ResumenOrdenes entVentas={entVentas} />
                                 </MeditocTabPanel>
-                                <MeditocTabPanel id={1} index={tabIndex}>
+                                <MeditocTabPanel id={EnumReportesTabs.Administrativo} index={tabIndex}>
                                     <ResumenEmpresas entVentas={entVentas} />
                                 </MeditocTabPanel>
                             </MeditocTabBody>

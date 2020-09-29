@@ -97,6 +97,11 @@ const EnumTipoPago = {
   Debit: 'debit',
 }
 
+const EnumReportesTabs = {
+  Conekta: 0,
+  Administrativo: 1,
+}
+
 export {
   EnumPerfilesPrincipales,
   EnumTipoCuenta,
@@ -111,4 +116,5 @@ export {
   EnumEspecialidadPrincipal,
   EnumStatusConekta,
   EnumTipoPago,
+  EnumReportesTabs,
 }
