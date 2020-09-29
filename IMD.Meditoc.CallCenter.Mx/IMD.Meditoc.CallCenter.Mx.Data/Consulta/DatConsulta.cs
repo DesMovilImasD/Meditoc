@@ -25,6 +25,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
         string delConsulta;
         string saveHistorialClinico;
         string getConsultaMomento;
+        string getConsultaPaciente;
 
         public DatConsulta()
         {
@@ -39,6 +40,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             delConsulta = "sva_meditoc_del_consulta";
             saveHistorialClinico = "sva_meditoc_save_historialclinico";
             getConsultaMomento = "svc_meditoc_consultas_momento";
+            getConsultaPaciente = "svc_ObtenerConsultasByPaciente";
         }
 
         public IMDResponse<DataTable> DSaveConsulta(int piIdConsulta, int piIdUsuarioMod, int? piIdPaciente = null, int? piIdColaborador = null, int? piIdEstatusConsulta = null, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null, DateTime? pdtFechaConsultaInicio = null, DateTime? pdtFechaConsultaFin = null)
@@ -254,6 +256,34 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458587556, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<DataTable> DGetConsultaProgramadaByPaciente(int? piIdPaciente, DateTime dtFechaActual)
+        {
+            IMDResponse<DataTable> response = new IMDResponse<DataTable>();
+
+            string metodo = nameof(this.DGetConsultaProgramada);
+            logger.Info(IMDSerialize.Serialize(67823458586780, $"Inicia {metodo}"));
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(getConsultaPaciente))
+                {
+                    database.AddInParameter(dbCommand, "piIdPaciente", DbType.Int32, piIdPaciente);
+                    database.AddInParameter(dbCommand, "pdtFechaConsulta", DbType.DateTime, dtFechaActual);
+
+
+                    response = imdCommonData.DExecuteDT(database, dbCommand);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458587556;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458587557, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }
