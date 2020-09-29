@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
@@ -226,6 +227,30 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458498978, $"Error en {metodo}(string sFolio = null, string  sPassword = null): {ex.Message}", sFolio, sPassword, ex, response));
+            }
+            return response;
+        }
+
+        [HttpPost]
+        [Route("Api/Folio/Save/Folio/VentaCalle")]
+        public IMDResponse<bool> CGenerarFoliosVentaCalle(int piIdUsuarioMod, string sFolioEmpresa)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.CGenerarFoliosVentaCalle);
+            logger.Info(IMDSerialize.Serialize(67823458600765, $"Inicia {metodo}"));
+
+            try
+            {
+                BusFolio busFolio = new BusFolio();
+                response = busFolio.BGenerarFoliosVentaCalle(piIdUsuarioMod, sFolioEmpresa, HttpContext.Current.Request.InputStream);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458601542;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458601542, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }

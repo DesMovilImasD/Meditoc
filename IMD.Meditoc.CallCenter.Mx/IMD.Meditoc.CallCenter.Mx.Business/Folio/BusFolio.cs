@@ -23,11 +23,13 @@ using IMD.Meditoc.CallCenter.Mx.Entities.Paciente;
 using IMD.Meditoc.CallCenter.Mx.Entities.Producto;
 using log4net;
 using Newtonsoft.Json;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -1409,7 +1411,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                     EntFolioReporte folio = new EntFolioReporte
                     {
-                        bTerminosYCondiciones = dr.ConvertTo<bool>("bTerminosYCondiciones"),
+                        bTerminosYCondiciones = Convert.ToBoolean(dr.ConvertTo<int>("bTerminosYCondiciones")),
+                        bActivo = Convert.ToBoolean(dr.ConvertTo<int>("bActivo")),
+                        bBaja = Convert.ToBoolean(dr.ConvertTo<int>("bBaja")),
                         dtFechaCreacion = dr.ConvertTo<DateTime>("dtFechaCreacion"),
                         dtFechaVencimiento = dr.ConvertTo<DateTime?>("dtFechaVencimiento"),
                         iConsecutivo = dr.ConvertTo<int>("iConsecutivo"),
@@ -1684,6 +1688,41 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458595326, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<bool> BGenerarFoliosVentaCalle(int piIdUsuarioMod, string sFolioEmpresa, Stream foliosExcel)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.BGenerarFoliosVentaCalle);
+            logger.Info(IMDSerialize.Serialize(67823458602319, $"Inicia {metodo}"));
+
+            try
+            {
+                if (string.IsNullOrEmpty(sFolioEmpresa))
+                {
+                    response.Code = -87687673456;
+                    response.Message = "No se ingresó el folio de la empresa par asignar los folios";
+                    return response;
+                }
+
+                using(MemoryStream ms = new MemoryStream())
+                {
+                    foliosExcel.CopyTo(ms);
+                    using(ExcelPackage excelPackage = new ExcelPackage(foliosExcel))
+                    {
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458603096;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458603096, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }

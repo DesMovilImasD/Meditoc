@@ -33,5 +33,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Folio
         public string sFechaVencimiento { get; set; }
         public DateTime dtFechaCreacion { get; set; }
         public string sFechaCreacion { get; set; }
+        public bool bActivo { get; set; }
+        public bool bBaja { get; set; }
     }
 }

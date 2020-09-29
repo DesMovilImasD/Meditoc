@@ -43,21 +43,41 @@ const FotoColaborador = (props) => {
                 return;
             }
 
-            funcLoader(true, "Guardando foto de colaborador...");
+            let img = new Image();
+            img.onload = async function () {
+                const imgW = this.width.toFixed(0);
+                const imgH = this.height.toFixed(0);
+                console.log(imgW, imgH);
 
-            const response = await colaboradorController.funcSaveColaboradorFoto(
-                entColaborador.iIdColaborador,
-                usuarioSesion.iIdUsuario,
-                archivo
-            );
+                //proporcion ideal = 9 / 16
+                const proporcionMAX = 9 / 17;
+                const proporcionMIN = 9 / 12;
+                const proporcionImg = imgW / imgH;
 
-            if (response.Code === 0) {
-                await funcGetColaboradorFoto();
-                funcAlert(response.Message, "success");
-            } else {
-                funcAlert(response.Message);
-            }
-            funcLoader();
+                if (proporcionImg < proporcionMAX || proporcionImg > proporcionMIN) {
+                    funcAlert(
+                        "Las proporciones de la imagen deben ser entre 9:12 (ancho:altura) y 9:16 (ancho:altura). Ejemplo: 600px x 900px (ancho x altura)."
+                    );
+                    return;
+                }
+
+                funcLoader(true, "Guardando foto de colaborador...");
+
+                const response = await colaboradorController.funcSaveColaboradorFoto(
+                    entColaborador.iIdColaborador,
+                    usuarioSesion.iIdUsuario,
+                    archivo
+                );
+
+                if (response.Code === 0) {
+                    await funcGetColaboradorFoto();
+                    funcAlert(response.Message, "success");
+                } else {
+                    funcAlert(response.Message);
+                }
+                funcLoader();
+            };
+            img.src = URL.createObjectURL(archivo);
         });
         input.click();
         input.remove();
