@@ -370,7 +370,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                         }
                 };
 
-                if (consulta.iIdColaborador == (int)EnumTipoDoctor.MedicoCallCenter)
+                if (consulta.iIdTipoDoctor == (int)EnumTipoDoctor.MedicoCallCenter)
                 {
                     if (consulta.iIdTipoProducto == (int)EnumTipoProducto.Servicio)
                     {
