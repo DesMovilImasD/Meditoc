@@ -28,7 +28,7 @@ const Folios = (props) => {
     const funcGetFolios = async () => {
         funcLoader(true, "Consultando folios...");
 
-        const response = await foliosController.funcGetFolios(null, null, null, null, "", "", null, null, null);
+        const response = await foliosController.funcGetFolios(null, null, null, null, "", "", null, "", "");
 
         if (response.Code === 0) {
             setListaFolios(response.Result);

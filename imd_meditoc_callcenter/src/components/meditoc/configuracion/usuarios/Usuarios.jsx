@@ -12,6 +12,7 @@ import CGUController from "../../../../controllers/CGUController";
 import { useEffect } from "react";
 import FormUsuario from "./FormUsuario";
 import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
+import { EnumPerfilesPrincipales } from "../../../../configurations/enumConfig";
 
 /*************************************************************
  * Descripcion: Submódulo para vista principal "USUARIOS" del portal Meditoc
@@ -86,6 +87,17 @@ const Usuarios = (props) => {
             funcAlert("Seleccione un usuario para continuar");
             return;
         }
+        if (
+            usuarioSeleccionado.iIdPerfil === EnumPerfilesPrincipales.DoctorCallCenter ||
+            usuarioSeleccionado.iIdPerfil == EnumPerfilesPrincipales.DoctorEspecialista ||
+            usuarioSeleccionado.iIdPerfil === EnumPerfilesPrincipales.AdministradorEspecialiesta
+        ) {
+            funcAlert(
+                "Los usuarios con cuenta de colaborador o doctor solo se pueden editar en la sección de Colaboradores del menú Administración",
+                "warning"
+            );
+            return;
+        }
         setUsuarioParaModalForm(usuarioSeleccionado);
         setModalFormUsuarioNuevoOpen(true);
     };
@@ -98,7 +110,19 @@ const Usuarios = (props) => {
         }
 
         if (usuarioSeleccionado.iIdUsuario === 1) {
-            funcAlert("Este usuario no se puede eliminar", "info");
+            funcAlert("El usuario sysadmin no se puede eliminar", "warning");
+            return;
+        }
+
+        if (
+            usuarioSeleccionado.iIdPerfil === EnumPerfilesPrincipales.DoctorCallCenter ||
+            usuarioSeleccionado.iIdPerfil == EnumPerfilesPrincipales.DoctorEspecialista ||
+            usuarioSeleccionado.iIdPerfil === EnumPerfilesPrincipales.AdministradorEspecialiesta
+        ) {
+            funcAlert(
+                "Los usuarios con cuenta de colaborador o doctor solo se pueden dar de baja en la sección de Colaboradores del menú Administración",
+                "warning"
+            );
             return;
         }
         setModalFormUsuarioEliminarOpen(true);
