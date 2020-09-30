@@ -1712,7 +1712,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.BSaveFolioVC);
-            logger.Info(IMDSerialize.Serialize(67823458605427, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458605427, $"Inicia {metodo}(EntFolioVentaCalle entFolioVentaCalle)", entFolioVentaCalle));
 
             try
             {
@@ -1760,7 +1760,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 response.Code = 67823458606204;
                 response.Message = "Ocurrió un error inesperado";
 
-                logger.Error(IMDSerialize.Serialize(67823458606204, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458606204, $"Error en {metodo}(EntFolioVentaCalle entFolioVentaCalle): {ex.Message}", entFolioVentaCalle, ex, response));
             }
             return response;
         }
@@ -1770,7 +1770,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             IMDResponse<List<EntFolioVerificarCarga>> response = new IMDResponse<List<EntFolioVerificarCarga>>();
 
             string metodo = nameof(this.BVerificarFoliosVentaCalle);
-            logger.Info(IMDSerialize.Serialize(67823458608535, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458608535, $"Inicia {metodo}(Stream foliosExcel)"));
 
             try
             {
@@ -1864,7 +1864,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 response.Code = 67823458609312;
                 response.Message = "Ocurrió un error inesperado";
 
-                logger.Error(IMDSerialize.Serialize(67823458609312, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458609312, $"Error en {metodo}(Stream foliosExcel): {ex.Message}", ex, response));
             }
             return response;
         }
@@ -1874,7 +1874,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.BGenerarFoliosVentaCalle);
-            logger.Info(IMDSerialize.Serialize(67823458602319, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458602319, $"Inicia {metodo}(int piIdUsuarioMod, string sFolioEmpresa, Stream foliosExcel)", piIdUsuarioMod, sFolioEmpresa));
 
             try
             {
@@ -2002,7 +2002,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 response.Code = 67823458603096;
                 response.Message = "Ocurrió un error inesperado";
 
-                logger.Error(IMDSerialize.Serialize(67823458603096, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458603096, $"Error en {metodo}(int piIdUsuarioMod, string sFolioEmpresa, Stream foliosExcel): {ex.Message}", piIdUsuarioMod, sFolioEmpresa, ex, response));
             }
             return response;
         }

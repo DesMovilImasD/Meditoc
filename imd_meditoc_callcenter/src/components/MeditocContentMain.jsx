@@ -18,6 +18,7 @@ import CallCenter from "./meditoc/callcenter/callcenter/CallCenter";
 import ReportesDoctores from "./meditoc/reportes/ReportesDoctores";
 import ReportesVentas from "./meditoc/reportes/ReportesVentas";
 import Folios from "./meditoc/folios/Folios";
+import MeditocFooter from "./MeditocFooter";
 
 /*************************************************************
  * Descripcion: Contiene las secciones y vistas de todo el portal de Meditoc
@@ -40,61 +41,88 @@ const ContentMain = (props) => {
 
     return (
         <Fragment>
-            <MeditocNavBar
-                toggleDrawer={toggleDrawer}
-                setUsuarioSesion={setUsuarioSesion}
-                setUsuarioActivo={setUsuarioActivo}
-                usuarioSesion={usuarioSesion}
-                funcLoader={funcLoader}
-                funcAlert={funcAlert}
-            />
-            <MeditocDrawerLeft drawerOpen={drawerOpen} usuarioPermisos={usuarioPermisos} toggleDrawer={toggleDrawer} />
-            <div>
-                <Switch>
-                    <Route exact path="/">
-                        <MeditocPortada />
-                    </Route>
-                    <Route exact path={urlSystem.configuracion.sistema}>
-                        <Sistema usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
-                    </Route>
-                    <Route exact path={urlSystem.configuracion.perfiles}>
-                        <Perfiles usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
-                    </Route>
-                    <Route exact path={urlSystem.configuracion.usuarios}>
-                        <Usuarios usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
-                    </Route>
-                    <Route exact path={urlSystem.administracion.productos}>
-                        <Productos usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
-                    </Route>
-                    <Route exact path={urlSystem.administracion.institucion}>
-                        <Empresa usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
-                    </Route>
-                    <Route exact path={urlSystem.administracion.cupones}>
-                        <Cupones usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
-                    </Route>
-                    <Route exact path={urlSystem.administracion.colaboradores}>
-                        <Colaboradores usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
-                    </Route>
-                    <Route exact path={urlSystem.administracion.especialidades}>
-                        <Especialidades usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
-                    </Route>
-                    <Route exact path={urlSystem.folios.folios}>
-                        <Folios usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
-                    </Route>
-                    <Route exact path={urlSystem.callcenter.administrarConsultas}>
-                        <Administrador usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
-                    </Route>
-                    <Route exact path={urlSystem.callcenter.consultas}>
-                        <CallCenter usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
-                    </Route>
-                    <Route exact path={urlSystem.reportes.doctores}>
-                        <ReportesDoctores usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
-                    </Route>
-                    <Route exact path={urlSystem.reportes.ventas}>
-                        <ReportesVentas usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
-                    </Route>
-                </Switch>
+            <div className="flx-grw-1">
+                <MeditocNavBar
+                    toggleDrawer={toggleDrawer}
+                    setUsuarioSesion={setUsuarioSesion}
+                    setUsuarioActivo={setUsuarioActivo}
+                    usuarioSesion={usuarioSesion}
+                    funcLoader={funcLoader}
+                    funcAlert={funcAlert}
+                />
+                <MeditocDrawerLeft
+                    drawerOpen={drawerOpen}
+                    usuarioPermisos={usuarioPermisos}
+                    toggleDrawer={toggleDrawer}
+                />
+                <div>
+                    <Switch>
+                        <Route exact path="/">
+                            <MeditocPortada />
+                        </Route>
+                        <Route exact path={urlSystem.configuracion.sistema}>
+                            <Sistema usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
+                        </Route>
+                        <Route exact path={urlSystem.configuracion.perfiles}>
+                            <Perfiles usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
+                        </Route>
+                        <Route exact path={urlSystem.configuracion.usuarios}>
+                            <Usuarios usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
+                        </Route>
+                        <Route exact path={urlSystem.administracion.productos}>
+                            <Productos usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
+                        </Route>
+                        <Route exact path={urlSystem.administracion.institucion}>
+                            <Empresa usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
+                        </Route>
+                        <Route exact path={urlSystem.administracion.cupones}>
+                            <Cupones usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
+                        </Route>
+                        <Route exact path={urlSystem.administracion.colaboradores}>
+                            <Colaboradores
+                                usuarioSesion={usuarioSesion}
+                                funcLoader={funcLoader}
+                                funcAlert={funcAlert}
+                            />
+                        </Route>
+                        <Route exact path={urlSystem.administracion.especialidades}>
+                            <Especialidades
+                                usuarioSesion={usuarioSesion}
+                                funcLoader={funcLoader}
+                                funcAlert={funcAlert}
+                            />
+                        </Route>
+                        <Route exact path={urlSystem.folios.folios}>
+                            <Folios usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
+                        </Route>
+                        <Route exact path={urlSystem.callcenter.administrarConsultas}>
+                            <Administrador
+                                usuarioSesion={usuarioSesion}
+                                funcLoader={funcLoader}
+                                funcAlert={funcAlert}
+                            />
+                        </Route>
+                        <Route exact path={urlSystem.callcenter.consultas}>
+                            <CallCenter usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
+                        </Route>
+                        <Route exact path={urlSystem.reportes.doctores}>
+                            <ReportesDoctores
+                                usuarioSesion={usuarioSesion}
+                                funcLoader={funcLoader}
+                                funcAlert={funcAlert}
+                            />
+                        </Route>
+                        <Route exact path={urlSystem.reportes.ventas}>
+                            <ReportesVentas
+                                usuarioSesion={usuarioSesion}
+                                funcLoader={funcLoader}
+                                funcAlert={funcAlert}
+                            />
+                        </Route>
+                    </Switch>
+                </div>
             </div>
+            <MeditocFooter />
         </Fragment>
     );
 };

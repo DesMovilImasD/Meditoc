@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, IconButton, Fade, Backdrop, Dialog, Paper } from "@material-ui/core";
+import { Modal, IconButton, Fade, Backdrop, Dialog, Paper, makeStyles } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import Draggable from "react-draggable";
 
@@ -33,8 +33,16 @@ function PaperComponent2(propsPaper) {
     );
 }
 
+const useStyles = makeStyles({
+    paperScrollBody: {
+        verticalAlign: "top", // default center
+    },
+});
+
 const MeditocModal = (props) => {
     const { size, title, children, open, setOpen, level } = props;
+
+    const classes = useStyles();
 
     const handleCloseModel = () => {
         setOpen(false);
@@ -82,6 +90,7 @@ const MeditocModal = (props) => {
             PaperComponent={mmLevel === 2 ? PaperComponent2 : PaperComponent}
             disableBackdropClick
             maxWidth={size == "small" ? "sm" : size === "normal" ? "md" : "lg"}
+            classes={{ paperScrollBody: classes.paperScrollBody }}
         >
             <div className="modal-form-header " id={mmLevel === 2 ? "meditoc-drag-2" : "meditoc-drag-1"}>
                 <div className="flx-grw-1 align-self-center">

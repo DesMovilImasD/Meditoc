@@ -164,7 +164,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
             IMDResponse<EntReporteVenta> response = new IMDResponse<EntReporteVenta>();
 
             string metodo = nameof(this.BReporteGlobalVentas);
-            logger.Info(IMDSerialize.Serialize(67823458597657, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458597657, $"Inicia {metodo}(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, string psTipoPago = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, psTipoPago, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento));
 
             try
             {
@@ -291,7 +291,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                 response.Code = 67823458598434;
                 response.Message = "Ocurrió un error inesperado";
 
-                logger.Error(IMDSerialize.Serialize(67823458598434, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458598434, $"Error en {metodo}(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, string psTipoPago = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null): {ex.Message}", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, psTipoPago, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento, ex, response));
             }
             return response;
         }

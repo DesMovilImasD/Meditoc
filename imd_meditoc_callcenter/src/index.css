@@ -500,3 +500,36 @@ code {
     display: flex;
     border-bottom: 1px solid #eee;
 }
+
+.price-footer-container {
+    background-color: var(--color-default-gray);
+    height: auto;
+    color: var(--color-unset);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-top: 60px;
+}
+.price-footer {
+    width: 80%;
+    margin: auto;
+    text-align: right;
+}
+.price-footer-contact {
+    font-family: var(--font-secondary);
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 25px;
+    color: var(--color-secondary-gray);
+}
+
+#root {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}

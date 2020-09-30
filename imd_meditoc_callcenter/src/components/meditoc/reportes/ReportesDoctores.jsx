@@ -298,14 +298,14 @@ const ReportesDoctores = (props) => {
                             </Grid>
                             <Grid item md={4} sm={6} xs={12} className="center">
                                 <ResumeNumero
-                                    label="TOTAL DE CONSULTAS REALIZADAS"
+                                    label="TOTAL DE CONSULTAS"
                                     value={entDoctores.iTotalConsultas}
                                     color="color-1"
                                 />
                             </Grid>
                             <Grid item md={4} sm={6} xs={12} className="center">
                                 <ResumeNumero
-                                    label="TOTAL DE PACIENTES ATENDIDOS"
+                                    label="TOTAL DE PACIENTES"
                                     value={entDoctores.iTotalPacientes}
                                     color="color-3"
                                 />
