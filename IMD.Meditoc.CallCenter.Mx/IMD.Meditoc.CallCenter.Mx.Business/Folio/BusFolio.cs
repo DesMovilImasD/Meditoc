@@ -1353,7 +1353,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     entFolio.sPassword = dataRow.ConvertTo<string>("sPassword");
                     entFolio.dtFechaVencimiento = dataRow.ConvertTo<DateTime>("dtFechaVencimiento");
                     entFolio.bTerminosYCondiciones = Convert.ToBoolean(dataRow.ConvertTo<int>("bTerminosYCondiciones"));
-                    entFolio.bEsAgendada = Convert.ToBoolean(dataRow.ConvertTo<int>("bEsAgendada"));
+                    entFolio.bActivo = Convert.ToBoolean(dataRow.ConvertTo<int>("bActivo"));
+                    entFolio.bBaja = Convert.ToBoolean(dataRow.ConvertTo<int>("bBaja"));
+                    entFolio.bTerminosYCondiciones = Convert.ToBoolean(dataRow.ConvertTo<int>("bTerminosYCondiciones"));
                 }
 
                 IMDResponse<bool> responseConsultasAgendadas = BObtenerConsultasAgendadas(entFolio.iIdPaciente);
@@ -1363,12 +1365,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     return responseConsultasAgendadas.GetResponse<EntFolio>();
                 }
 
-
+                entFolio.bEsAgendada = responseConsultasAgendadas.Result;
                 if (!responseConsultasAgendadas.Result)
                 {
-                    if (entFolio.dtFechaVencimiento < DateTime.Now)
+                    
+                    if (entFolio.dtFechaVencimiento < DateTime.Now || (!entFolio.bActivo && entFolio.bBaja))
                     {
-                        response.Message = "Su folio a expirado.";
+                        response.Message = "Su folio ha expirado";
                         return response;
                     }
                 }
@@ -1675,7 +1678,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             try
             {
                 DatConsulta datConsulta = new DatConsulta();
-                IMDResponse<DataTable> dtConsultasAgendadas = datConsulta.DGetDetalleConsulta(piIdPaciente: iIdUsuario, piIdEstatusConsulta: 1, pdtFechaProgramadaInicio: DateTime.Now, pdtFechaProgramadaFin: DateTime.Now);
+                IMDResponse<DataTable> dtConsultasAgendadas = datConsulta.DGetConsultaProgramadaByPaciente(iIdUsuario, DateTime.Now);
 
                 if (dtConsultasAgendadas.Code != 0)
                 {
@@ -1684,20 +1687,10 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 if (dtConsultasAgendadas.Result.Rows.Count == 0)
                 {
-                    dtConsultasAgendadas = datConsulta.DGetDetalleConsulta(piIdPaciente: iIdUsuario, piIdEstatusConsulta: 2, pdtFechaProgramadaInicio: DateTime.Now, pdtFechaProgramadaFin: DateTime.Now);
+                    response.Result = false;
+                    response.Message = "No cuenta con consultas agendadas";
 
-                    if (dtConsultasAgendadas.Code != 0)
-                    {
-                        return dtConsultasAgendadas.GetResponse<bool>();
-                    }
-
-                    if (dtConsultasAgendadas.Result.Rows.Count == 0)
-                    {
-                        response.Result = false;
-                        response.Message = "No cuenta con consultas agendadas";
-
-                        return response;
-                    }
+                    return response;
                 }
 
                 response.Code = 0;
