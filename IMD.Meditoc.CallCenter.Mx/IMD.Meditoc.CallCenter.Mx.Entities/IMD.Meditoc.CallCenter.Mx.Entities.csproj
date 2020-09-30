@@ -89,6 +89,9 @@
     <Compile Include="Folio\EntFolio.cs" />
     <Compile Include="Folio\EntFolioFV.cs" />
     <Compile Include="Folio\EntFolioReporte.cs" />
+    <Compile Include="Folio\EntFolioUser.cs" />
+    <Compile Include="Folio\EntFolioVentaCalle.cs" />
+    <Compile Include="Folio\EntFolioVerificarCarga.cs" />
     <Compile Include="Folio\EntFolioxEmpresa.cs" />
     <Compile Include="Ordenes\EntCharge.cs" />
     <Compile Include="Ordenes\EntChargeDetail.cs" />

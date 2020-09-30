@@ -89,7 +89,7 @@ const Usuarios = (props) => {
         }
         if (
             usuarioSeleccionado.iIdPerfil === EnumPerfilesPrincipales.DoctorCallCenter ||
-            usuarioSeleccionado.iIdPerfil == EnumPerfilesPrincipales.DoctorEspecialista ||
+            usuarioSeleccionado.iIdPerfil === EnumPerfilesPrincipales.DoctorEspecialista ||
             usuarioSeleccionado.iIdPerfil === EnumPerfilesPrincipales.AdministradorEspecialiesta
         ) {
             funcAlert(
@@ -116,7 +116,7 @@ const Usuarios = (props) => {
 
         if (
             usuarioSeleccionado.iIdPerfil === EnumPerfilesPrincipales.DoctorCallCenter ||
-            usuarioSeleccionado.iIdPerfil == EnumPerfilesPrincipales.DoctorEspecialista ||
+            usuarioSeleccionado.iIdPerfil === EnumPerfilesPrincipales.DoctorEspecialista ||
             usuarioSeleccionado.iIdPerfil === EnumPerfilesPrincipales.AdministradorEspecialiesta
         ) {
             funcAlert(

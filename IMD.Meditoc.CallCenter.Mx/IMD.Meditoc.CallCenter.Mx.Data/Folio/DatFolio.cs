@@ -26,6 +26,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
         string delFolioEmpresa;
         string updTerminosYCondiciones;
         string updPassword;
+        string saveFolioVC;
 
         public DatFolio()
         {
@@ -40,6 +41,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             delFolioEmpresa = "sva_meditoc_del_folioempresa";
             updTerminosYCondiciones = "svc_meditoc_upd_terminosyCondiciones";
             updPassword = "svc_meditoc_upd_updPassword";
+            saveFolioVC = "sva_meditoc_save_foliovc";
+
         }
 
 
@@ -250,6 +253,37 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458503640, $"Error en {metodo}(string sFolio = null, string sPassword = null): {ex.Message}", sFolio, sPassword, ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<bool> DSaveFolioVC(int piIdEmpresa, int piIdProducto, int piIdOrigen, string psFolio, string psPassword, int piIdUsuarioMod)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.DSaveFolioVC);
+            logger.Info(IMDSerialize.Serialize(67823458603873, $"Inicia {metodo}"));
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(saveFolioVC))
+                {
+                    database.AddInParameter(dbCommand, "piIdEmpresa", DbType.Int32, piIdEmpresa);
+                    database.AddInParameter(dbCommand, "piIdProducto", DbType.Int32, piIdProducto);
+                    database.AddInParameter(dbCommand, "piIdOrigen", DbType.Int32, piIdOrigen);
+                    database.AddInParameter(dbCommand, "psFolio", DbType.String, psFolio);
+                    database.AddInParameter(dbCommand, "psPassword", DbType.String, psPassword);
+                    database.AddInParameter(dbCommand, "piIdUsuarioMod", DbType.Int32, piIdUsuarioMod);
+
+                    response = imdCommonData.DExecute(database, dbCommand);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458604650;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458604650, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }

@@ -139,7 +139,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Empresa
         /// <param name="iIdEmpresa"></param>
         /// <param name="psCorreo"></param>
         /// <returns></returns>
-        public IMDResponse<List<EntEmpresa>> BGetEmpresas(int? iIdEmpresa, string psCorreo = null)
+        public IMDResponse<List<EntEmpresa>> BGetEmpresas(int? iIdEmpresa = null, string psCorreo = null, string psFolioEmpresa = null)
         {
             IMDResponse<List<EntEmpresa>> response = new IMDResponse<List<EntEmpresa>>();
 
@@ -148,7 +148,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Empresa
 
             try
             {
-                IMDResponse<DataTable> dtEmpresa = datEmpresa.DGetEmpresas(iIdEmpresa, psCorreo);
+                IMDResponse<DataTable> dtEmpresa = datEmpresa.DGetEmpresas(iIdEmpresa, psCorreo, psFolioEmpresa);
                 List<EntEmpresa> lstEmpresa = new List<EntEmpresa>();
                 EntEmpresa entEmpresa;
 

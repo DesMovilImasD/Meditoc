@@ -9,9 +9,12 @@ using IMD.Meditoc.CallCenter.Mx.Web.Tokens;
 using log4net;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
 
@@ -231,6 +234,32 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
+        [MeditocAuthentication]
+        [HttpPost]
+        [Route("Api/Folio/Verificar/Folio/VentaCalle")]
+        public IMDResponse<List<EntFolioVerificarCarga>> CVerificarFoliosVentaCalle()
+        {
+            IMDResponse<List<EntFolioVerificarCarga>> response = new IMDResponse<List<EntFolioVerificarCarga>>();
+
+            string metodo = nameof(this.CVerificarFoliosVentaCalle);
+            logger.Info(IMDSerialize.Serialize(67823458606981, $"Inicia {metodo}"));
+
+            try
+            {
+                BusFolio busFolio = new BusFolio();
+                response = busFolio.BVerificarFoliosVentaCalle(HttpContext.Current.Request.InputStream);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458607758;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458607758, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        [MeditocAuthentication]
         [HttpPost]
         [Route("Api/Folio/Save/Folio/VentaCalle")]
         public IMDResponse<bool> CGenerarFoliosVentaCalle(int piIdUsuarioMod, string sFolioEmpresa)
@@ -251,6 +280,42 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
                 response.Message = "Ocurrió un error inesperado";
 
                 logger.Error(IMDSerialize.Serialize(67823458601542, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        [MeditocAuthentication]
+        [HttpGet]
+        [Route("Api/Folio/Get/Folio/VentaCalle/Plantilla")]
+        public HttpResponseMessage CGetPlantillaFolioVC()
+        {
+            HttpResponseMessage response;
+
+            string metodo = nameof(this.CGetPlantillaFolioVC);
+            logger.Info(IMDSerialize.Serialize(67823458611643, $"Inicia {metodo}"));
+
+            try
+            {
+                BusFolio busFolio = new BusFolio();
+                IMDResponse<MemoryStream> resGetPlantilla = busFolio.BGetPlantillaFolioVC();
+                if (resGetPlantilla.Code != 0)
+                {
+                    response = Request.CreateResponse(HttpStatusCode.InternalServerError, resGetPlantilla.Message);
+                }
+                else
+                {
+                    response = Request.CreateResponse(HttpStatusCode.OK);
+                    response.Content = new StreamContent(resGetPlantilla.Result);
+                    response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+                    response.Content.Headers.ContentDisposition.FileName = ConfigurationManager.AppSettings["sNombrePlantillaFoliosVC"];
+                    response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                }
+            }
+            catch (Exception ex)
+            {
+                response = Request.CreateResponse(HttpStatusCode.InternalServerError, "Ocurrió un error al obtener la plantilla de carga de folios");
+
+                logger.Error(IMDSerialize.Serialize(67823458612420, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }

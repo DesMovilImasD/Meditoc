@@ -11,6 +11,9 @@ class FolioController {
     this.apiObtenerFolios = 'Api/Folios/Get/Report'
     this.apiUpdFechaVencimiento = 'Api/Folio/Update/FechaVencimiento'
     this.apiDelFoliosEmpresa = 'Api/Folio/Delete/FoliosEmpresa'
+    this.apiSaveVentaCalle = 'Api/Folio/Save/Folio/VentaCalle'
+    this.apiVerificarVentaCalle = 'Api/Folio/Verificar/Folio/VentaCalle'
+    this.apiDescargarPlantilla = 'Api/Folio/Get/Folio/VentaCalle/Plantilla'
   }
 
   async funcCrearFoliosEmpresa(entFolioEmpresa) {
@@ -99,6 +102,77 @@ class FolioController {
     } catch (error) {
       response.Code = -1
       response.Message = 'Ocurrió un error al intentar eliminar los folios'
+    }
+    return response
+  }
+
+  async funcVerificarVentaCalle(archivoFolios) {
+    let response = { Code: 0, Message: '', Result: [] }
+    try {
+      const apiResponse = await fetch(
+        `${serverMain}${this.apiVerificarVentaCalle}`,
+        {
+          method: 'POST',
+          body: archivoFolios,
+          headers: MeditocHeaders,
+        },
+      )
+
+      response = await apiResponse.json()
+    } catch (error) {
+      response.Code = -1
+      response.Message = 'Ocurrió un error al intentar verificar los folios'
+    }
+    return response
+  }
+
+  async funcSaveVentaCalle(piIdUsuarioMod, sFolioEmpresa, archivoFolios) {
+    let response = { Code: 0, Message: '', Result: false }
+    try {
+      const apiResponse = await fetch(
+        `${serverMain}${this.apiSaveVentaCalle}?piIdUsuarioMod=${piIdUsuarioMod}&sFolioEmpresa=${sFolioEmpresa}`,
+        {
+          method: 'POST',
+          body: archivoFolios,
+          headers: MeditocHeaders,
+        },
+      )
+
+      response = await apiResponse.json()
+    } catch (error) {
+      response.Code = -1
+      response.Message = 'Ocurrió un error al intentar guardar los folios'
+    }
+    return response
+  }
+
+  async funcDescargarPlantilla() {
+    let response = { Code: 0, Message: '', Result: false }
+    const errorMessage = 'Ocurrió un error al intentar descargar la plantilla'
+    try {
+      const apiResponse = await fetch(
+        `${serverMain}${this.apiDescargarPlantilla}`,
+        {
+          method: 'GET',
+          headers: MeditocHeaders,
+        },
+      )
+
+      if (apiResponse.ok) {
+        let file = await apiResponse.blob()
+        let link = document.createElement('a')
+        link.href = window.URL.createObjectURL(file)
+        link.download = 'plantilla-folios-venta-calle.xlsx'
+        link.click()
+        link.remove()
+        response.Message = 'La plantilla se ha descargado correctamente'
+      } else {
+        response.Code = -1
+        response.Message = errorMessage
+      }
+    } catch (error) {
+      response.Code = -1
+      response.Message = errorMessage
     }
     return response
   }

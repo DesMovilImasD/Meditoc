@@ -5,7 +5,7 @@
   "cifrado": "61Cb4qdXrbIPL8az9svQS9NpHT6a0CjLrB3waEkXKz6zqKiBv+K6dlRiIKlTACBBl9ESxHsDpvAo138vwBQwTbWioAY4D1QXqA+m1lPwTW0=",
   "SemillaPassword": "M3diT0cPassword1",
   "VectorPassword": "Evector1",
-  "Headers" {
+  "Headers": {
     "AppKey": {
       "String": "MeditocAppKeyAuthenticacion2020WebOK",
       "Key": "M3dit0cAppKeyV4l",
@@ -19,7 +19,7 @@
       "Result": "Xx3ePv63cUTg77QPATmztJ/VXHuXkjCBBECfy54028VGoN5SZ2tUNrc42dYQZPXvfpbk3YT5PTwLDXxc4yeUNRoeb4QoX6UywCDFIH5U2+Q="
     }
   },
-  "HeadersV2" {
+  "HeadersV2": {
     "AppKey": {
       "String": "MeditocAppKeyAuthenti0WebOK",
       "Key": "M3dit0cAppKeyV4l",
@@ -31,6 +31,18 @@
       "Key": "M3dit0cAppToken8",
       "Vector": "MeditocT",
       "Result": "Xx3ePv63cUTg77QPATmztJ3J8cdO1riA7g+lVRzOzhfnl9FnaVT1O2YIv8YCTVRZ"
+    }
+  },
+  "FilePlantillaCargaFolioVentaCalle": {
+    "Key": "nhca7JFS73ygs6A3",
+    "Vector": "bc7DKb3M",
+    "localCris": {
+      "ruta": "C:\\IMD\\Repos\\Meditoc\\IMD.Meditoc.CallCenter.Mx\\IMD.Meditoc.CallCenter.Mx.Web\\Files\\Cargar_folios_plantilla.xlsx",
+      "encr": "+jenmOXbi1YqsXEMIvgp9dYR8L9Uf6+VYW7W8wzBZA8prkzjBNKL83C9kq8mcRMgd9wgTpe9B3mC2mcTI+qClkR0fRSHjySvTGKZ7+V3bBBr5sR9pPLFsCsmj22F57qjzCYoLclvY8CyLlqkzQ2mk3oMmot+I4t73gkrPWxFWdg="
+    },
+    "172.16.0.76": {
+      "ruta": "C:\\SrvWeb\\Callcenter20\\MeditocWS\\Files\\Cargar_folios_plantilla.xlsx",
+      "encr": "+jenmOXbi1YqsXEMIvgp9dYR8L9Uf6+VYW7W8wzBZA8prkzjBNKL83C9kq8mcRMgd9wgTpe9B3mC2mcTI+qClkR0fRSHjySvTGKZ7+V3bBBr5sR9pPLFsCsmj22F57qjzCYoLclvY8CyLlqkzQ2mk3oMmot+I4t73gkrPWxFWdg="
     }
   }
 }

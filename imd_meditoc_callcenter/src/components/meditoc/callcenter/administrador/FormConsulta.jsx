@@ -195,9 +195,11 @@ const Consulta = (props) => {
             }
         }
         //} else {
-        if (formConsulta.txtFolio === "") {
-            formConsultaOKValidacion.txtFolio = false;
-            formError = true;
+        if (yaCuentoConFolio) {
+            if (formConsulta.txtFolio === "") {
+                formConsultaOKValidacion.txtFolio = false;
+                formError = true;
+            }
         }
         //}
 

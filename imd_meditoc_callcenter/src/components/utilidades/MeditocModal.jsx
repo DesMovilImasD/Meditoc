@@ -9,25 +9,38 @@ import Draggable from "react-draggable";
  * Fecha: 26/08/2020
  * Invocado desde: EliminarBoton, EliminarModulo, EliminarSubmodulo, FormBoton, FormModulo, FormSubmodulo
  *************************************************************/
-
-function PaperComponent(props) {
+function PaperComponent(propsPaper) {
     return (
         <Draggable
-            handle="#draggable-dialog-title"
+            handle="#meditoc-drag-1"
             cancel={'[class*="MuiDialogContent-root"]'}
             //bounds="parent"
         >
-            <Paper {...props} style={{ borderRadius: 12 }} />
+            <Paper {...propsPaper} style={{ borderRadius: 12 }} />
+        </Draggable>
+    );
+}
+
+function PaperComponent2(propsPaper) {
+    return (
+        <Draggable
+            handle="#meditoc-drag-2"
+            cancel={'[class*="MuiDialogContent-root"]'}
+            //bounds="parent"
+        >
+            <Paper {...propsPaper} style={{ borderRadius: 12 }} />
         </Draggable>
     );
 }
 
 const MeditocModal = (props) => {
-    const { size, title, children, open, setOpen } = props;
+    const { size, title, children, open, setOpen, level } = props;
 
     const handleCloseModel = () => {
         setOpen(false);
     };
+
+    const mmLevel = level === undefined ? 1 : level;
 
     return (
         // <Modal
@@ -65,11 +78,12 @@ const MeditocModal = (props) => {
                 style: { backgroundColor: "rgb(255 255 255 / 0.7)" },
             }}
             scroll="body"
-            PaperComponent={PaperComponent}
+            //PaperComponent={(props) => <PaperComponent {...props} id="draggable-dialog-title" />}
+            PaperComponent={mmLevel === 2 ? PaperComponent2 : PaperComponent}
             disableBackdropClick
             maxWidth={size == "small" ? "sm" : size === "normal" ? "md" : "lg"}
         >
-            <div className="modal-form-header " id="draggable-dialog-title">
+            <div className="modal-form-header " id={mmLevel === 2 ? "meditoc-drag-2" : "meditoc-drag-1"}>
                 <div className="flx-grw-1 align-self-center">
                     <span className="rob-nor size-20 pad-left-20 color-0">{title}</span>
                 </div>

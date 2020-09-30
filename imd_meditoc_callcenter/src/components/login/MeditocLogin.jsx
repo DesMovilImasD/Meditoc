@@ -235,7 +235,6 @@ const Login = (props) => {
                 break;
         }
 
-        console.log(permisos);
         setUsuarioPermisos(permisos);
     };
 
