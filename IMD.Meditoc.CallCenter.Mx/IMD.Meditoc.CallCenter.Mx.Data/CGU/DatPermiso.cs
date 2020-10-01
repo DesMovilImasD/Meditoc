@@ -56,7 +56,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             catch (Exception ex)
             {
                 response.Code = 67823458346686;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al guardar el permiso";
 
                 logger.Error(IMDSerialize.Serialize(67823458346686, $"Error en {metodo}(EntPermiso entPermiso): {ex.Message}", entPermiso, ex, response));
             }
@@ -83,7 +83,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             catch (Exception ex)
             {
                 response.Code = 67823458352125;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al consultar los permisos";
 
                 logger.Error(IMDSerialize.Serialize(67823458352125, $"Error en {metodo}: {ex.Message}(int iIdPerfil)", ex, iIdPerfil, response));
             }

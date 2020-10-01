@@ -37,6 +37,9 @@ const useStyles = makeStyles({
     paperScrollBody: {
         verticalAlign: "top", // default center
     },
+    dialogRoot: {
+        zIndex: 100,
+    },
 });
 
 const MeditocModal = (props) => {
@@ -90,7 +93,7 @@ const MeditocModal = (props) => {
             PaperComponent={mmLevel === 2 ? PaperComponent2 : PaperComponent}
             disableBackdropClick
             maxWidth={size == "small" ? "sm" : size === "normal" ? "md" : "lg"}
-            classes={{ paperScrollBody: classes.paperScrollBody }}
+            classes={{ paperScrollBody: classes.paperScrollBody, root: classes.dialogRoot }}
         >
             <div className="modal-form-header " id={mmLevel === 2 ? "meditoc-drag-2" : "meditoc-drag-1"}>
                 <div className="flx-grw-1 align-self-center">

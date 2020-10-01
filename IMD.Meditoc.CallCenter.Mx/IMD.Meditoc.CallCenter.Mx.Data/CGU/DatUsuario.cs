@@ -67,7 +67,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             catch (Exception ex)
             {
                 response.Code = 67823458343578;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al guardar el usuario";
 
                 logger.Error(IMDSerialize.Serialize(67823458343578, $"Error en {metodo}(EntUsuario entUsuario): {ex.Message}", entUsuario, ex, response));
             }
@@ -99,7 +99,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             catch (Exception ex)
             {
                 response.Code = 67823458361449;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al consultar los usuarios";
 
                 logger.Error(IMDSerialize.Serialize(67823458361449, $"Error en {metodo}(int? iIdUsuario, int? iIdTipoCuenta, int? iIdPerfil, string sUsuario, string sPassword, bool bActivo, bool bBaja): {ex.Message}", iIdUsuario, iIdTipoCuenta, iIdPerfil, sUsuario, sPassword, bActivo, bBaja, ex, response));
             }
@@ -111,7 +111,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.DCambiarContrasenia);
-            logger.Info(IMDSerialize.Serialize(67823458365334, $"Inicia {metodo}(int iIdUsuario, string sPassword)", iIdUsuario, sPassword));
+            logger.Info(IMDSerialize.Serialize(67823458365334, $"Inicia {metodo}(int iIdUsuario, string sPassword, int iIdUsuarioUltMod)", iIdUsuario, sPassword, iIdUsuarioUltMod));
 
             try
             {
@@ -127,9 +127,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             catch (Exception ex)
             {
                 response.Code = 67823458366111;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al cambiar la contraseña";
 
-                logger.Error(IMDSerialize.Serialize(67823458366111, $"Error en {metodo}(int iIdUsuario, string sPassword): {ex.Message}", iIdUsuario, sPassword, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458366111, $"Error en {metodo}(int iIdUsuario, string sPassword, int iIdUsuarioUltMod): {ex.Message}", iIdUsuario, sPassword, iIdUsuarioUltMod, ex, response));
             }
             return response;
         }
@@ -155,7 +155,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             catch (Exception ex)
             {
                 response.Code = 67823458373881;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al iniciar la sesión";
 
                 logger.Error(IMDSerialize.Serialize(67823458373881, $"Error en {metodo}(string sUsuario, string sPassword): {ex.Message}", sUsuario, sPassword, ex, response));
             }
@@ -167,7 +167,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.DValidaUsuarioYCorreo);
-            logger.Info(IMDSerialize.Serialize(67823458377766, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458377766, $"Inicia {metodo}(string sUsuario, string sCorreo, bool bValida)", sUsuario, sCorreo, bValida));
 
             try
             {
@@ -192,9 +192,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             catch (Exception ex)
             {
                 response.Code = 67823458378543;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al validar los datos de usuario";
 
-                logger.Error(IMDSerialize.Serialize(67823458378543, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458378543, $"Error en {metodo}(string sUsuario, string sCorreo, bool bValida): {ex.Message}", sUsuario, sCorreo, bValida, ex, response));
             }
             return response;
         }

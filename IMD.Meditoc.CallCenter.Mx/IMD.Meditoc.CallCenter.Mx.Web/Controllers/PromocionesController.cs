@@ -146,7 +146,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.CGetCuponUsed);
-            logger.Info(IMDSerialize.Serialize(67823458216150, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458216150, $"Inicia {metodo}([FromUri]int piIdCupon, [FromUri]string psEmail)", piIdCupon, psEmail));
 
             try
             {
@@ -155,9 +155,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458216927;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio a validar el código de descuento.";
 
-                logger.Error(IMDSerialize.Serialize(67823458216927, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458216927, $"Error en {metodo}([FromUri]int piIdCupon, [FromUri]string psEmail): {ex.Message}", piIdCupon, psEmail, ex, response));
             }
             return response;
         }
@@ -179,7 +179,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458238683;
-                response.Message = "Ocurrió un error inesperado al consultar los códigos";
+                response.Message = "Ocurrió un error inesperado al consultar los códigos de descuento";
 
                 logger.Error(IMDSerialize.Serialize(67823458238683, $"Error en {metodo}(): {ex.Message}", ex, response));
             }

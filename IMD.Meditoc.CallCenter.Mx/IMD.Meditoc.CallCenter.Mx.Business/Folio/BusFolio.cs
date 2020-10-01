@@ -1700,7 +1700,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             catch (Exception ex)
             {
                 response.Code = 67823458595326;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al obtener las consultas agendadas.";
 
                 logger.Error(IMDSerialize.Serialize(67823458595326, $"Error en {metodo}: {ex.Message}", ex, response));
             }
@@ -1758,7 +1758,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             catch (Exception ex)
             {
                 response.Code = 67823458606204;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al guardar el folio de venta calle.";
 
                 logger.Error(IMDSerialize.Serialize(67823458606204, $"Error en {metodo}(EntFolioVentaCalle entFolioVentaCalle): {ex.Message}", entFolioVentaCalle, ex, response));
             }
@@ -1862,7 +1862,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             catch (Exception ex)
             {
                 response.Code = 67823458609312;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al validar los folios solicitados.";
 
                 logger.Error(IMDSerialize.Serialize(67823458609312, $"Error en {metodo}(Stream foliosExcel): {ex.Message}", ex, response));
             }
@@ -2000,7 +2000,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             catch (Exception ex)
             {
                 response.Code = 67823458603096;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al guardar los folios de venta calle solicitados.";
 
                 logger.Error(IMDSerialize.Serialize(67823458603096, $"Error en {metodo}(int piIdUsuarioMod, string sFolioEmpresa, Stream foliosExcel): {ex.Message}", piIdUsuarioMod, sFolioEmpresa, ex, response));
             }
@@ -2012,7 +2012,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             IMDResponse<MemoryStream> response = new IMDResponse<MemoryStream>();
 
             string metodo = nameof(this.BGetPlantillaFolioVC);
-            logger.Info(IMDSerialize.Serialize(67823458610089, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458610089, $"Inicia {metodo}()"));
 
             try
             {
@@ -2027,14 +2027,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     return response;
                 }
 
-
                 byte[] plantillaByte = File.ReadAllBytes(resDesencriptarRuta.Result);
                 MemoryStream memoryStream = new MemoryStream(plantillaByte);
-
-                //using (FileStream fileStream = File.Open(resDesencriptarRuta.Result, FileMode.Open))
-                //{
-                //    fileStream.CopyTo(memoryStream);
-                //}
 
                 response.Code = 0;
                 response.Message = "Plantilla descargada";
@@ -2043,9 +2037,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             catch (Exception ex)
             {
                 response.Code = 67823458610866;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al descargar la plantilla.";
 
-                logger.Error(IMDSerialize.Serialize(67823458610866, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458610866, $"Error en {metodo}(): {ex.Message}", ex, response));
             }
             return response;
         }

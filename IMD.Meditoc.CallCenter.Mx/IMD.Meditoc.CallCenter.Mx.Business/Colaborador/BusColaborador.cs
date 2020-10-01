@@ -154,16 +154,20 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                         sUsuario = entCreateColaborador.sUsuarioAdministrativo
                     };
 
-                    IMDResponse<bool> resValidacionTitular = busUsuario.BValidaDatos(entUsuarioTitular);
-                    if (resValidacionTitular.Code != 0)
-                    {
-                        return resValidacionTitular;
-                    }
 
-                    IMDResponse<bool> resValidacionAdministrativo = busUsuario.BValidaDatos(entUsuarioAdministrativo);
-                    if (resValidacionAdministrativo.Code != 0)
+                    if (entCreateColaborador.bActivo && !entCreateColaborador.bBaja)
                     {
-                        return resValidacionAdministrativo;
+                        IMDResponse<bool> resValidacionTitular = busUsuario.BValidaDatos(entUsuarioTitular);
+                        if (resValidacionTitular.Code != 0)
+                        {
+                            return resValidacionTitular;
+                        }
+
+                        IMDResponse<bool> resValidacionAdministrativo = busUsuario.BValidaDatos(entUsuarioAdministrativo);
+                        if (resValidacionAdministrativo.Code != 0)
+                        {
+                            return resValidacionAdministrativo;
+                        }
                     }
 
                     IMDResponse<EntUsuario> respuestaGuardarUsuarioCGU = busUsuario.BSaveUsuario(entUsuarioTitular);
@@ -646,7 +650,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
             catch (Exception ex)
             {
                 response.Code = 67823458592218;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al obtener la sala del colaborador.";
 
                 logger.Error(IMDSerialize.Serialize(67823458592218, $"Error en {metodo}(int? iIdTipoProducto = null, int? iIdUsuario = null, DateTime? dtFechaConsulta = null): {ex.Message}", ex, response));
             }

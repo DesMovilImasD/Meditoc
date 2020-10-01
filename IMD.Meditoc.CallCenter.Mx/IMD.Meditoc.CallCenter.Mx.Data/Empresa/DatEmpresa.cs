@@ -52,7 +52,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Empresa
             catch (Exception ex)
             {
                 response.Code = 67823458383205;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al guardar la empresa";
 
                 logger.Error(IMDSerialize.Serialize(67823458383205, $"Error en {metodo}(EntEmpresa entEmpresa): {ex.Message}", entEmpresa, ex, response));
             }
@@ -65,7 +65,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Empresa
             IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
             string metodo = nameof(this.DGetEmpresas);
-            logger.Info(IMDSerialize.Serialize(67823458390198, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458390198, $"Inicia {metodo}(int? iIdEmpresa, string psCorreo = null, string psFolioEmpresa = null)", iIdEmpresa, psCorreo, psFolioEmpresa));
 
             try
             {
@@ -81,9 +81,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Empresa
             catch (Exception ex)
             {
                 response.Code = 67823458390975;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al consutar las empresas";
 
-                logger.Error(IMDSerialize.Serialize(67823458390975, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458390975, $"Error en {metodo}(int? iIdEmpresa, string psCorreo = null, string psFolioEmpresa = null): {ex.Message}", iIdEmpresa, psCorreo, psFolioEmpresa, ex, response));
             }
             return response;
         }

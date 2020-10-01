@@ -6,7 +6,7 @@ import theme from "../../configurations/themeConfig";
 
 const useStyles = makeStyles(() => ({
     backdrop: {
-        zIndex: theme.zIndex.drawer + 1000,
+        zIndex: theme.zIndex.drawer + 100000,
         color: "#fff",
     },
 }));

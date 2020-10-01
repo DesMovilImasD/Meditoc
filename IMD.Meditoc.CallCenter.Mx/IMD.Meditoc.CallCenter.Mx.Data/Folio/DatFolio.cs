@@ -74,7 +74,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             catch (Exception ex)
             {
                 response.Code = 67823458418947;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al guardar el folio.";
 
                 logger.Error(IMDSerialize.Serialize(67823458418947, $"Error en {metodo}(EntFolio entFolio): {ex.Message}", entFolio, ex, response));
             }
@@ -102,7 +102,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             {
 
                 response.Code = 67823458429048;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al validar los datos de usuario.";
 
                 logger.Error(IMDSerialize.Serialize(67823458429048, $"Error en {metodo}(string sUsuario, string sPassword): {ex.Message}", sUsuario, sPassword, ex, response));
             }
@@ -138,7 +138,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             {
 
                 response.Code = 67823458433710;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al consultar los folios.";
 
                 logger.Error(IMDSerialize.Serialize(67823458433710, $"Error en {metodo}(int? piIdFolio = null, int? piIdEmpresa = null, int? piIdProducto= null, int? piIdOrigen = null, string psFolio = null, string psOrdenConekta = null, bool? pbTerminosYCondiciones = null, bool? pbActivo = true, bool? pbBaja = false): {ex.Message}", piIdFolio, piIdEmpresa, piIdProducto, piIdOrigen, psFolio, psOrdenConekta, pbTerminosYCondiciones, pbActivo, pbBaja, ex, response));
             }
@@ -150,7 +150,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.DUpdFechaVencimiento);
-            logger.Info(IMDSerialize.Serialize(67823458437595, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458437595, $"Inicia {metodo}(int piIdEmpresa, int piIdFolio, DateTime pdtFechaVencimiento, int piIdUsuario)", piIdEmpresa, piIdFolio, pdtFechaVencimiento, piIdUsuario));
 
             try
             {
@@ -167,9 +167,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             catch (Exception ex)
             {
                 response.Code = 67823458438372;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al actualizar la vigencia de los folios.";
 
-                logger.Error(IMDSerialize.Serialize(67823458438372, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458438372, $"Error en {metodo}(int piIdEmpresa, int piIdFolio, DateTime pdtFechaVencimiento, int piIdUsuario): {ex.Message}", piIdEmpresa, piIdFolio, pdtFechaVencimiento, piIdUsuario, ex, response));
             }
             return response;
         }
@@ -179,7 +179,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.DEliminarFoliosEmpresa);
-            logger.Info(IMDSerialize.Serialize(67823458442257, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458442257, $"Inicia {metodo}(int piIdEmpresa, int piIdFolio, int piIdUsuario)", piIdEmpresa, piIdFolio, piIdUsuario));
 
             try
             {
@@ -195,9 +195,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             catch (Exception ex)
             {
                 response.Code = 67823458443034;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al eliminar los folios solicitados.";
 
-                logger.Error(IMDSerialize.Serialize(67823458443034, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458443034, $"Error en {metodo}(int piIdEmpresa, int piIdFolio, int piIdUsuario): {ex.Message}", piIdEmpresa, piIdFolio, piIdUsuario, ex, response));
             }
             return response;
         }
@@ -221,7 +221,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             catch (Exception ex)
             {
                 response.Code = 67823458461682;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al aceptar los términos y condiciones de la cuenta.";
 
                 logger.Error(IMDSerialize.Serialize(67823458461682, $"Error en {metodo}(string sFolio = null): {ex.Message}", sFolio, ex, response));
             }
@@ -250,7 +250,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             catch (Exception ex)
             {
                 response.Code = 67823458503640;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al actualizar la contraseña de la cuenta";
 
                 logger.Error(IMDSerialize.Serialize(67823458503640, $"Error en {metodo}(string sFolio = null, string sPassword = null): {ex.Message}", sFolio, sPassword, ex, response));
             }
@@ -262,7 +262,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.DSaveFolioVC);
-            logger.Info(IMDSerialize.Serialize(67823458603873, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458603873, $"Inicia {metodo}(int piIdEmpresa, int piIdProducto, int piIdOrigen, string psFolio, string psPassword, int piIdUsuarioMod)", piIdEmpresa, piIdProducto, piIdOrigen, psFolio, psPassword, piIdUsuarioMod));
 
             try
             {
@@ -281,9 +281,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             catch (Exception ex)
             {
                 response.Code = 67823458604650;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al guardar el folio de venta calle";
 
-                logger.Error(IMDSerialize.Serialize(67823458604650, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458604650, $"Error en {metodo}(int piIdEmpresa, int piIdProducto, int piIdOrigen, string psFolio, string psPassword, int piIdUsuarioMod): {ex.Message}", piIdEmpresa, piIdProducto, piIdOrigen, psFolio, psPassword, piIdUsuarioMod, ex, response));
             }
             return response;
         }

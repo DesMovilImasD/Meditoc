@@ -48,7 +48,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
             string metodo = nameof(this.DSaveConsulta);
-            logger.Info(IMDSerialize.Serialize(67823458518403, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458518403, $"Inicia {metodo}(int piIdConsulta, int piIdUsuarioMod, int? piIdPaciente = null, int? piIdColaborador = null, int? piIdEstatusConsulta = null, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null, DateTime? pdtFechaConsultaInicio = null, DateTime? pdtFechaConsultaFin = null)", piIdConsulta, piIdUsuarioMod, piIdPaciente, piIdColaborador, piIdEstatusConsulta, pdtFechaProgramadaInicio, pdtFechaProgramadaFin, pdtFechaConsultaInicio, pdtFechaConsultaFin));
 
             try
             {
@@ -70,9 +70,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             catch (Exception ex)
             {
                 response.Code = 67823458519180;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al guardar la consulta";
 
-                logger.Error(IMDSerialize.Serialize(67823458519180, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458519180, $"Error en {metodo}(int piIdConsulta, int piIdUsuarioMod, int? piIdPaciente = null, int? piIdColaborador = null, int? piIdEstatusConsulta = null, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null, DateTime? pdtFechaConsultaInicio = null, DateTime? pdtFechaConsultaFin = null): {ex.Message}", piIdConsulta, piIdUsuarioMod, piIdPaciente, piIdColaborador, piIdEstatusConsulta, pdtFechaProgramadaInicio, pdtFechaProgramadaFin, pdtFechaConsultaInicio, pdtFechaConsultaFin, ex, response));
             }
             return response;
         }
@@ -82,7 +82,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
             string metodo = nameof(this.DGetHistorialMedico);
-            logger.Info(IMDSerialize.Serialize(67823458523065, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458523065, $"Inicia {metodo}(int? piIdHistorialClinico = null, int? piIdConsulta = null, int? piIdPaciente = null, int? piIdColaborador = null, int? piIdFolio = null)", piIdHistorialClinico, piIdConsulta, piIdPaciente, piIdColaborador, piIdFolio));
 
             try
             {
@@ -100,9 +100,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             catch (Exception ex)
             {
                 response.Code = 67823458523842;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al consultar el historial médico.";
 
-                logger.Error(IMDSerialize.Serialize(67823458523842, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458523842, $"Error en {metodo}(int? piIdHistorialClinico = null, int? piIdConsulta = null, int? piIdPaciente = null, int? piIdColaborador = null, int? piIdFolio = null): {ex.Message}", piIdHistorialClinico, piIdConsulta, piIdPaciente, piIdColaborador, piIdFolio, ex, response));
             }
             return response;
         }
@@ -112,7 +112,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
             string metodo = nameof(this.DGetDetalleConsulta);
-            logger.Info(IMDSerialize.Serialize(67823458529281, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458529281, $"Inicia {metodo}(int? piIdConsulta = null, int? piIdPaciente = null, int? piIdColaborador = null, int? piIdEstatusConsulta = null, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null, DateTime? pdtFechaConsultaInicio = null, DateTime? pdtFechaConsultaFin = null)", piIdConsulta, piIdPaciente, piIdColaborador, piIdEstatusConsulta, pdtFechaProgramadaInicio, pdtFechaProgramadaFin, pdtFechaConsultaInicio, pdtFechaConsultaFin));
 
             try
             {
@@ -133,9 +133,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             catch (Exception ex)
             {
                 response.Code = 67823458530058;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al obtener el detalle de la consulta";
 
-                logger.Error(IMDSerialize.Serialize(67823458530058, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458530058, $"Error en {metodo}(int? piIdConsulta = null, int? piIdPaciente = null, int? piIdColaborador = null, int? piIdEstatusConsulta = null, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null, DateTime? pdtFechaConsultaInicio = null, DateTime? pdtFechaConsultaFin = null): {ex.Message}", piIdConsulta, piIdPaciente, piIdColaborador, piIdEstatusConsulta, pdtFechaProgramadaInicio, pdtFechaProgramadaFin, pdtFechaConsultaInicio, pdtFechaConsultaFin, ex, response));
             }
             return response;
         }
@@ -145,7 +145,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
             string metodo = nameof(this.DGetDisponibilidadConsulta);
-            logger.Info(IMDSerialize.Serialize(67823458535497, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458535497, $"Inicia {metodo}(int piIdColaborador, int piIdConsulta, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null)", piIdColaborador, piIdConsulta, pdtFechaProgramadaInicio, pdtFechaProgramadaFin));
 
             try
             {
@@ -162,9 +162,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             catch (Exception ex)
             {
                 response.Code = 67823458536274;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al consultar la disponibilidad del doctor";
 
-                logger.Error(IMDSerialize.Serialize(67823458536274, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458536274, $"Error en {metodo}(int piIdColaborador, int piIdConsulta, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null): {ex.Message}", piIdColaborador, piIdConsulta, pdtFechaProgramadaInicio, pdtFechaProgramadaFin, ex, response));
             }
             return response;
         }
@@ -174,7 +174,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.DCancelarConsulta);
-            logger.Info(IMDSerialize.Serialize(67823458551037, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458551037, $"Inicia {metodo}(int piIdConsulta, int piIdUsuarioMod, int piIdEstatusConsulta)", piIdConsulta, piIdUsuarioMod, piIdEstatusConsulta));
 
             try
             {
@@ -190,9 +190,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             catch (Exception ex)
             {
                 response.Code = 67823458551814;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al cancelar la consulta";
 
-                logger.Error(IMDSerialize.Serialize(67823458551814, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458551814, $"Error en {metodo}(int piIdConsulta, int piIdUsuarioMod, int piIdEstatusConsulta): {ex.Message}", piIdConsulta, piIdUsuarioMod, piIdEstatusConsulta, ex, response));
             }
             return response;
         }
@@ -202,7 +202,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.DSaveHistorialMedico);
-            logger.Info(IMDSerialize.Serialize(67823458582117, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458582117, $"Inicia {metodo}(int piIdConsulta, int piIdUsuarioMod, string psSintomas = null, string psDiagnostico = null, string psTratamiento = null, double? pfPeso = null, double? pfAltura = null, string psAlergias = null, string psComentarios = null)", piIdConsulta, piIdUsuarioMod, psSintomas, psDiagnostico, psTratamiento, pfPeso, pfAltura, psAlergias, psComentarios));
 
             try
             {
@@ -224,9 +224,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             catch (Exception ex)
             {
                 response.Code = 67823458582894;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al guardar el historial médico";
 
-                logger.Error(IMDSerialize.Serialize(67823458582894, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458582894, $"Error en {metodo}(int piIdConsulta, int piIdUsuarioMod, string psSintomas = null, string psDiagnostico = null, string psTratamiento = null, double? pfPeso = null, double? pfAltura = null, string psAlergias = null, string psComentarios = null): {ex.Message}", piIdConsulta, piIdUsuarioMod, psSintomas, psDiagnostico, psTratamiento, pfPeso, pfAltura, psAlergias, psComentarios, ex, response));
             }
             return response;
         }
@@ -236,7 +236,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
             string metodo = nameof(this.DGetConsultaProgramada);
-            logger.Info(IMDSerialize.Serialize(67823458586779, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458586779, $"Inicia {metodo}(int piIdPaciente, int piIdColaborador, int piMinutosAntes, int piMinutosDespues)", piIdPaciente, piIdColaborador, piMinutosAntes, piMinutosDespues));
 
             try
             {
@@ -253,9 +253,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             catch (Exception ex)
             {
                 response.Code = 67823458587556;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al obtener el detalle de la consulta programada";
 
-                logger.Error(IMDSerialize.Serialize(67823458587556, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458587556, $"Error en {metodo}(int piIdPaciente, int piIdColaborador, int piMinutosAntes, int piMinutosDespues): {ex.Message}", piIdPaciente, piIdColaborador, piMinutosAntes, piMinutosDespues, ex, response));
             }
             return response;
         }
@@ -265,7 +265,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
             string metodo = nameof(this.DGetConsultaProgramada);
-            logger.Info(IMDSerialize.Serialize(67823458586780, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458586780, $"Inicia {metodo}(int? piIdPaciente, DateTime dtFechaActual)", piIdPaciente, dtFechaActual));
 
             try
             {
@@ -281,9 +281,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             catch (Exception ex)
             {
                 response.Code = 67823458587556;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al obtener el detalle de la consulta";
 
-                logger.Error(IMDSerialize.Serialize(67823458587557, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458587557, $"Error en {metodo}(int? piIdPaciente, DateTime dtFechaActual): {ex.Message}", piIdPaciente, dtFechaActual, ex, response));
             }
             return response;
         }

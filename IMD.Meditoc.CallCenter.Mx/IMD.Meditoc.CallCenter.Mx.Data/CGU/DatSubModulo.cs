@@ -51,7 +51,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             catch (Exception ex)
             {
                 response.Code = 67823458184293;
-                response.Message = "Ocurrió un error al intentar guardar el submódulo.";
+                response.Message = "Ocurrió un error inesperado en la base de datos al intentar guardar el submódulo.";
 
                 logger.Error(IMDSerialize.Serialize(67823458332700, $"Error en {metodo}(EntSubModulo entSubModulo): {ex.Message}", entSubModulo, ex, response));
             }

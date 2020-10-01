@@ -33,7 +33,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458122133;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al guardar el módulo.";
 
                 logger.Error(IMDSerialize.Serialize(67823458338139, $"Error en {metodo}([FromBody]EntCreateModulo entCreateModulo): {ex.Message}", entCreateModulo, ex, response));
             }
@@ -61,7 +61,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458122133;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al guardar el submódulo.";
 
                 logger.Error(IMDSerialize.Serialize(67823458338139, $"Error en {metodo}([FromBody]EntSubModulo entCreateSubModulo): {ex.Message}", entCreateSubModulo, ex, response));
             }
@@ -89,7 +89,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458122133;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al guardar el botón.";
 
                 logger.Error(IMDSerialize.Serialize(67823458338139, $"Error en {metodo}([FromBody]EntBoton entBoton): {ex.Message}", entBoton, ex, response));
             }
@@ -118,7 +118,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458122133;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al guardar el perfil.";
 
                 logger.Error(IMDSerialize.Serialize(67823458338139, $"Error en {metodo}([FromBody]EntPerfil entPerfil): {ex.Message}", entPerfil, ex, response));
             }
@@ -149,7 +149,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458122133;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al guardar el usuario.";
 
                 logger.Error(IMDSerialize.Serialize(67823458338139, $"Error en {metodo}([FromBody]EntUsuario entUsuario): {ex.Message}", entUsuario, ex, response));
             }
@@ -177,7 +177,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458364557;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al consultar los usuarios del sistema.";
 
                 logger.Error(IMDSerialize.Serialize(67823458364557, $"Error en {metodo}([FromUri] int? iIdUsuario = null, int? iIdTipoCuenta = null, int? iIdPerfil = null, string sUsuario = null, string sPassword = null, bool? bActivo = null, bool? bBaja = null): {ex.Message}", iIdUsuario, iIdTipoCuenta, iIdPerfil, sUsuario, sPassword, bActivo, bBaja, ex, response));
             }
@@ -187,12 +187,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         [MeditocAuthentication]
         [HttpPost]
         [Route("Api/CGU/Create/CambiarContrasenia")]
-        public IMDResponse<bool> CCambiarContrasenia([FromUri] int iIdUsuario, string sPassword, int iIdUsuarioUltMod)
+        public IMDResponse<bool> CCambiarContrasenia([FromUri] int iIdUsuario, [FromUri]string sPassword, [FromUri]int iIdUsuarioUltMod)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.CCambiarContrasenia);
-            logger.Info(IMDSerialize.Serialize(67823458371550, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458371550, $"Inicia {metodo}([FromUri] int iIdUsuario, [FromUri]string sPassword, [FromUri]int iIdUsuarioUltMod)", iIdUsuario, iIdUsuarioUltMod));
 
             try
             {
@@ -203,9 +203,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458372327;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al cambiar la contraseña.";
 
-                logger.Error(IMDSerialize.Serialize(67823458372327, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458372327, $"Error en {metodo}([FromUri] int iIdUsuario, [FromUri]string sPassword, [FromUri]int iIdUsuarioUltMod): {ex.Message}", iIdUsuario, iIdUsuarioUltMod, ex, response));
             }
             return response;
         }
@@ -228,7 +228,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458376989;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al validar los datos de la cuenta.";
 
                 logger.Error(IMDSerialize.Serialize(67823458376989, $"Error en {metodo}([FromUri] string sUsuario, string sPassword): {ex.Message}", sUsuario, sPassword, ex, response));
             }
@@ -257,7 +257,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458122133;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al consultar los perfiles del sistema.";
 
                 logger.Error(IMDSerialize.Serialize(67823458352902, $"Error en {metodo}([FromBody] int? iIdPerfil): {ex.Message}", iIdPerfil, ex, response));
             }
@@ -283,7 +283,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458122133;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al guardar los permisos solicitados.";
 
                 logger.Error(IMDSerialize.Serialize(67823458338139, $"Error en {metodo}([FromBody]EntPermiso entPermiso): {ex.Message}", entPermisos, ex, response));
             }
@@ -294,7 +294,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         [MeditocAuthentication]
         [HttpGet]
         [Route("Api/CGU/Get/Perfiles")]
-        public IMDResponse<List<EntPerfil>> CObtenerPerfil([FromUri] int? iIdPerfil, bool bActivo, bool bBaja)
+        public IMDResponse<List<EntPerfil>> CObtenerPerfil([FromUri] int? iIdPerfil, [FromUri]bool bActivo, [FromUri]bool bBaja)
         {
             IMDResponse<List<EntPerfil>> response = new IMDResponse<List<EntPerfil>>();
 
@@ -311,7 +311,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458359895;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al obtener los perfiles del sistema.";
 
                 logger.Error(IMDSerialize.Serialize(67823458359895, $"Error en {metodo}([FromBody] int? iIdPerfil, bool bActivo, bool bBaja): {ex.Message}", iIdPerfil, bActivo, bBaja, ex, response));
             }

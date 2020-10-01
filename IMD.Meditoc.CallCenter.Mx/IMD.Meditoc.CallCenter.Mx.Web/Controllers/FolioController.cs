@@ -43,7 +43,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458414285;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al generar los folios del cliente";
 
                 logger.Error(IMDSerialize.Serialize(67823458414285, $"Error en {metodo}([FromBody]EntConecktaPago entConecktaPago): {ex.Message}", entCreateOrder, ex, response));
             }
@@ -58,7 +58,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.CNuevoFolioEmpresa);
-            logger.Info(IMDSerialize.Serialize(67823458425163, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458425163, $"Inicia {metodo}([FromBody] EntFolioxEmpresa entFolioxEmpresa)", entFolioxEmpresa));
 
             try
             {
@@ -69,9 +69,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458425940;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al generar los folios de la empresa.";
 
-                logger.Error(IMDSerialize.Serialize(67823458425940, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458425940, $"Error en {metodo}([FromBody] EntFolioxEmpresa entFolioxEmpresa): {ex.Message}", entFolioxEmpresa, ex, response));
             }
             return response;
         }
@@ -79,12 +79,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         [MeditocAuthentication]
         [HttpPost]
         [Route("Api/Folio/Get/LoginApp")]
-        public IMDResponse<EntFolio> CLoginApp([FromUri] string sUsuario, string sPassword)
+        public IMDResponse<EntFolio> CLoginApp([FromUri] string sUsuario, [FromUri]string sPassword)
         {
             IMDResponse<EntFolio> response = new IMDResponse<EntFolio>();
 
             string metodo = nameof(this.CLoginApp);
-            logger.Info(IMDSerialize.Serialize(67823458431379, $"Inicia {metodo}([FromUri] string sUsuario, string sPassword)", sUsuario, sPassword));
+            logger.Info(IMDSerialize.Serialize(67823458431379, $"Inicia {metodo}([FromUri] string sUsuario, [FromUri]string sPassword)", sUsuario, sPassword));
 
 
             try
@@ -96,9 +96,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458432156;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al validar los datos de la cuenta.";
 
-                logger.Error(IMDSerialize.Serialize(67823458432156, $"Error en {metodo}([FromUri] string sUsuario, string sPassword): {ex.Message}", sUsuario, sPassword, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458432156, $"Error en {metodo}([FromUri] string sUsuario, [FromUri]string sPassword): {ex.Message}", sUsuario, sPassword, ex, response));
             }
             return response;
         }
@@ -106,12 +106,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         [MeditocAuthentication]
         [HttpGet]
         [Route("Api/Folios/Get/Report")]
-        public IMDResponse<List<EntFolioReporte>> CGetFolios(int? piIdFolio = null, int? piIdEmpresa = null, int? piIdProducto = null, int? piIdOrigen = null, string psFolio = null, string psOrdenConekta = null, bool? pbTerminosYCondiciones = null, bool? pbActivo = true, bool? pbBaja = false)
+        public IMDResponse<List<EntFolioReporte>> CGetFolios([FromUri]int? piIdFolio = null, [FromUri]int? piIdEmpresa = null, [FromUri]int? piIdProducto = null, [FromUri]int? piIdOrigen = null, [FromUri]string psFolio = null, [FromUri]string psOrdenConekta = null, [FromUri]bool? pbTerminosYCondiciones = null, [FromUri]bool? pbActivo = true, [FromUri]bool? pbBaja = false)
         {
             IMDResponse<List<EntFolioReporte>> response = new IMDResponse<List<EntFolioReporte>>();
 
             string metodo = nameof(this.CGetFolios);
-            logger.Info(IMDSerialize.Serialize(67823458436041, $"Inicia {metodo}", piIdFolio, piIdEmpresa, piIdProducto, piIdOrigen, psFolio, psOrdenConekta, pbTerminosYCondiciones, pbActivo, pbBaja));
+            logger.Info(IMDSerialize.Serialize(67823458436041, $"Inicia {metodo}([FromUri]int? piIdFolio = null, [FromUri]int? piIdEmpresa = null, [FromUri]int? piIdProducto = null, [FromUri]int? piIdOrigen = null, [FromUri]string psFolio = null, [FromUri]string psOrdenConekta = null, [FromUri]bool? pbTerminosYCondiciones = null, [FromUri]bool? pbActivo = true, [FromUri]bool? pbBaja = false)", piIdFolio, piIdEmpresa, piIdProducto, piIdOrigen, psFolio, psOrdenConekta, pbTerminosYCondiciones, pbActivo, pbBaja));
 
             try
             {
@@ -121,9 +121,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458436818;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al consultar los folios del sistema.";
 
-                logger.Error(IMDSerialize.Serialize(67823458436818, $"Error en {metodo}: {ex.Message}", piIdFolio, piIdEmpresa, piIdProducto, piIdOrigen, psFolio, psOrdenConekta, pbTerminosYCondiciones, pbActivo, pbBaja, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458436818, $"Error en {metodo}([FromUri]int? piIdFolio = null, [FromUri]int? piIdEmpresa = null, [FromUri]int? piIdProducto = null, [FromUri]int? piIdOrigen = null, [FromUri]string psFolio = null, [FromUri]string psOrdenConekta = null, [FromUri]bool? pbTerminosYCondiciones = null, [FromUri]bool? pbActivo = true, [FromUri]bool? pbBaja = false): {ex.Message}", piIdFolio, piIdEmpresa, piIdProducto, piIdOrigen, psFolio, psOrdenConekta, pbTerminosYCondiciones, pbActivo, pbBaja, ex, response));
             }
             return response;
         }
@@ -131,12 +131,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         [MeditocAuthentication]
         [HttpPost]
         [Route("Api/Folio/Update/FechaVencimiento")]
-        public IMDResponse<bool> CUpdFechaVencimiento(EntFolioFV entFolioFV)
+        public IMDResponse<bool> CUpdFechaVencimiento([FromBody]EntFolioFV entFolioFV)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.CUpdFechaVencimiento);
-            logger.Info(IMDSerialize.Serialize(67823458440703, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458440703, $"Inicia {metodo}([FromBody]EntFolioFV entFolioFV)", entFolioFV));
 
             try
             {
@@ -146,9 +146,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458441480;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al actualizar el vencimiento de los folios";
 
-                logger.Error(IMDSerialize.Serialize(67823458441480, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458441480, $"Error en {metodo}([FromBody]EntFolioFV entFolioFV): {ex.Message}", entFolioFV, ex, response));
             }
             return response;
         }
@@ -156,12 +156,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         [MeditocAuthentication]
         [HttpPost]
         [Route("Api/Folio/Delete/FoliosEmpresa")]
-        public IMDResponse<bool> CEliminarFoliosEmpresa(EntFolioFV entFolioFV)
+        public IMDResponse<bool> CEliminarFoliosEmpresa([FromBody]EntFolioFV entFolioFV)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.CEliminarFoliosEmpresa);
-            logger.Info(IMDSerialize.Serialize(67823458445365, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458445365, $"Inicia {metodo}([FromBody]EntFolioFV entFolioFV)", entFolioFV));
 
 
             try
@@ -173,9 +173,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458446142;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al eliminar los folios";
 
-                logger.Error(IMDSerialize.Serialize(67823458446142, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458446142, $"Error en {metodo}([FromBody]EntFolioFV entFolioFV): {ex.Message}", entFolioFV, ex, response));
             }
             return response;
         }
@@ -183,12 +183,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         [MeditocAuthentication]
         [HttpGet]
         [Route("Api/Folio/Update/TerminosYCondiciones")]
-        public IMDResponse<bool> CTerminosYCondiciones(string sFolio = null)
+        public IMDResponse<bool> CTerminosYCondiciones([FromUri]string sFolio = null)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.CTerminosYCondiciones);
-            logger.Info(IMDSerialize.Serialize(67823458464013, $"Inicia {metodo}(string sFolio = null)", sFolio));
+            logger.Info(IMDSerialize.Serialize(67823458464013, $"Inicia {metodo}([FromUri]string sFolio = null)", sFolio));
 
             try
             {
@@ -199,9 +199,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458464790;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al aceptar los términos y condiciones.";
 
-                logger.Error(IMDSerialize.Serialize(67823458464790, $"Error en {metodo}(string sFolio = null): {ex.Message}", sFolio, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458464790, $"Error en {metodo}([FromUri]string sFolio = null): {ex.Message}", sFolio, ex, response));
             }
             return response;
         }
@@ -209,27 +209,25 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         [MeditocAuthentication]
         [HttpGet]
         [Route("Api/Folio/Update/FolioPassword")]
-        public IMDResponse<bool> CUpdPassword(string sFolio = null, string sPassword = null)
+        public IMDResponse<bool> CUpdPassword([FromUri]string sFolio = null, [FromUri]string sPassword = null)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.CUpdPassword);
-            logger.Info(IMDSerialize.Serialize(67823458498201, $"Inicia {metodo}(string sFolio = null, string  sPassword = null)", sFolio, sPassword));
+            logger.Info(IMDSerialize.Serialize(67823458498201, $"Inicia {metodo}([FromUri]string sFolio = null, [FromUri]string sPassword = null)", sFolio, sPassword));
 
             try
             {
 
                 BusFolio busFolio = new BusFolio();
                 response = busFolio.BUpdPassword(sFolio, sPassword);
-
-
             }
             catch (Exception ex)
             {
                 response.Code = 67823458498978;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al actualizar la contraseña de la cuenta.";
 
-                logger.Error(IMDSerialize.Serialize(67823458498978, $"Error en {metodo}(string sFolio = null, string  sPassword = null): {ex.Message}", sFolio, sPassword, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458498978, $"Error en {metodo}([FromUri]string sFolio = null, [FromUri]string sPassword = null): {ex.Message}", sFolio, sPassword, ex, response));
             }
             return response;
         }
@@ -242,7 +240,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             IMDResponse<List<EntFolioVerificarCarga>> response = new IMDResponse<List<EntFolioVerificarCarga>>();
 
             string metodo = nameof(this.CVerificarFoliosVentaCalle);
-            logger.Info(IMDSerialize.Serialize(67823458606981, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458606981, $"Inicia {metodo}()"));
 
             try
             {
@@ -252,9 +250,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458607758;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al verificar los folios del archivo.";
 
-                logger.Error(IMDSerialize.Serialize(67823458607758, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458607758, $"Error en {metodo}(): {ex.Message}", ex, response));
             }
             return response;
         }
@@ -262,12 +260,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         [MeditocAuthentication]
         [HttpPost]
         [Route("Api/Folio/Save/Folio/VentaCalle")]
-        public IMDResponse<bool> CGenerarFoliosVentaCalle(int piIdUsuarioMod, string sFolioEmpresa)
+        public IMDResponse<bool> CGenerarFoliosVentaCalle([FromUri]int piIdUsuarioMod, [FromUri]string sFolioEmpresa)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.CGenerarFoliosVentaCalle);
-            logger.Info(IMDSerialize.Serialize(67823458600765, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458600765, $"Inicia {metodo}([FromUri]int piIdUsuarioMod, [FromUri]string sFolioEmpresa)", piIdUsuarioMod, sFolioEmpresa));
 
             try
             {
@@ -277,9 +275,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458601542;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al guardar los folios de venta calle.";
 
-                logger.Error(IMDSerialize.Serialize(67823458601542, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458601542, $"Error en {metodo}([FromUri]int piIdUsuarioMod, [FromUri]string sFolioEmpresa): {ex.Message}", piIdUsuarioMod, sFolioEmpresa, ex, response));
             }
             return response;
         }
@@ -292,7 +290,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             HttpResponseMessage response;
 
             string metodo = nameof(this.CGetPlantillaFolioVC);
-            logger.Info(IMDSerialize.Serialize(67823458611643, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458611643, $"Inicia {metodo}()"));
 
             try
             {
@@ -315,7 +313,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             {
                 response = Request.CreateResponse(HttpStatusCode.InternalServerError, "Ocurrió un error al obtener la plantilla de carga de folios");
 
-                logger.Error(IMDSerialize.Serialize(67823458612420, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458612420, $"Error en {metodo}(): {ex.Message}", ex, response));
             }
             return response;
         }

@@ -36,7 +36,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Catalogos
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.DSaveEspecialidad);
-            logger.Info(IMDSerialize.Serialize(67823458446919, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458446919, $"Inicia {metodo}(int piIdEspecialidad, string psNombre, int piIdUsuarioMod, bool pbActivo, bool pbBaja)", piIdEspecialidad, psNombre, piIdUsuarioMod, pbActivo, pbBaja));
 
             try
             {
@@ -54,9 +54,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Catalogos
             catch (Exception ex)
             {
                 response.Code = 67823458447696;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al guardar la especialidad";
 
-                logger.Error(IMDSerialize.Serialize(67823458447696, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458447696, $"Error en {metodo}(int piIdEspecialidad, string psNombre, int piIdUsuarioMod, bool pbActivo, bool pbBaja): {ex.Message}", piIdEspecialidad, psNombre, piIdUsuarioMod, pbActivo, pbBaja, ex, response));
             }
             return response;
         }
@@ -67,7 +67,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Catalogos
             IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
             string metodo = nameof(this.DGetEspecialidad);
-            logger.Info(IMDSerialize.Serialize(67823458448473, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458448473, $"Inicia {metodo}(int? piIdEspecialidad = null)", piIdEspecialidad));
 
             try
             {
@@ -81,9 +81,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Catalogos
             catch (Exception ex)
             {
                 response.Code = 67823458449250;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al consultar las especialidades";
 
-                logger.Error(IMDSerialize.Serialize(67823458449250, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458449250, $"Error en {metodo}(int? piIdEspecialidad = null): {ex.Message}", piIdEspecialidad, ex, response));
             }
             return response;
         }

@@ -54,7 +54,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             catch (Exception ex)
             {
                 response.Code = 67823458184293;
-                response.Message = "Ocurrió un error al intentar guardar el perfil.";
+                response.Message = "Ocurrió un error inesperado en la base de datos al intentar guardar el perfil.";
 
                 logger.Error(IMDSerialize.Serialize(67823458332700, $"Error en {metodo}(EntPerfil entPerfil): {ex.Message}", entPerfil, ex, response));
             }
@@ -82,7 +82,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             catch (Exception ex)
             {
                 response.Code = 67823458356787;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al consultar los perfiles";
 
                 logger.Error(IMDSerialize.Serialize(67823458356787, $"Error en {metodo}(int? iIdPerfil, bool bActivo, bool bBaja): {ex.Message}", iIdPerfil, bActivo, bBaja, ex, response));
             }

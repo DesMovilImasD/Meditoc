@@ -33,7 +33,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458404961;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al guardar el producto.";
 
                 logger.Error(IMDSerialize.Serialize(67823458404961, $"Error en {metodo}([FromBody] EntProducto entProducto): {ex.Message}", entProducto, ex, response));
             }
@@ -59,7 +59,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458400299;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al consultar los productos.";
 
                 logger.Error(IMDSerialize.Serialize(67823458400299, $"Error en {metodo}([FromUri] int iIdProducto): {ex.Message}", iIdProducto, ex, response));
             }
@@ -74,7 +74,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             IMDResponse<List<EntProducto>> response = new IMDResponse<List<EntProducto>>();
 
             string metodo = nameof(this.CgetMembership);
-            logger.Info(IMDSerialize.Serialize(67823458471783, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458471783, $"Inicia {metodo}()"));
 
             try
             {
@@ -86,9 +86,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458472560;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al obtener las membresías";
 
-                logger.Error(IMDSerialize.Serialize(67823458472560, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458472560, $"Error en {metodo}(): {ex.Message}", ex, response));
             }
             return response;
         }
@@ -101,7 +101,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             IMDResponse<List<EntProducto>> response = new IMDResponse<List<EntProducto>>();
 
             string metodo = nameof(this.CgetServices);
-            logger.Info(IMDSerialize.Serialize(67823458473337, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458473337, $"Inicia {metodo}()"));
 
             try
             {
@@ -112,9 +112,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458474114;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al obtener los servicios de orientación.";
 
-                logger.Error(IMDSerialize.Serialize(67823458474114, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458474114, $"Error en {metodo}(): {ex.Message}", ex, response));
             }
             return response;
         }

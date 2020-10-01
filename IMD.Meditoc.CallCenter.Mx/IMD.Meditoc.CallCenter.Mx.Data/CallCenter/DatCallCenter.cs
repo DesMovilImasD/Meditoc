@@ -34,7 +34,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CallCenter
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.DCallCenterOnline);
-            logger.Info(IMDSerialize.Serialize(67823458507525, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458507525, $"Inicia {metodo}(int piIdColaborador, bool pbOnline, bool pbOcupado, int piIdUsuarioMod)", piIdColaborador, pbOnline, pbOcupado, piIdUsuarioMod));
 
             try
             {
@@ -51,9 +51,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CallCenter
             catch (Exception ex)
             {
                 response.Code = 67823458508302;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al actualizar el estatus.";
 
-                logger.Error(IMDSerialize.Serialize(67823458508302, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458508302, $"Error en {metodo}(int piIdColaborador, bool pbOnline, bool pbOcupado, int piIdUsuarioMod): {ex.Message}", piIdColaborador, pbOnline, pbOcupado, piIdUsuarioMod, ex, response));
             }
             return response;
         }

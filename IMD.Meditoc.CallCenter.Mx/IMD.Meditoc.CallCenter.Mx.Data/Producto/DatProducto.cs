@@ -16,7 +16,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Producto
         private Database database;
         IMDCommonData imdCommonData;
         string saveProducto;
-        string ObtenerProductos;        
+        string ObtenerProductos;
 
         public DatProducto()
         {
@@ -61,7 +61,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Producto
             catch (Exception ex)
             {
                 response.Code = 67823458406515;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al guardar el producto";
 
                 logger.Error(IMDSerialize.Serialize(67823458406515, $"Error en {metodo}(EntProducto entProducto): {ex.Message}", entProducto, ex, response));
             }
@@ -87,7 +87,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Producto
             catch (Exception ex)
             {
                 response.Code = 67823458408069;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en la base de datos al consultar los productos";
 
                 logger.Error(IMDSerialize.Serialize(67823458408069, $"Error en {metodo}(int? iIdProducto): {ex.Message}", iIdProducto, ex, response));
             }

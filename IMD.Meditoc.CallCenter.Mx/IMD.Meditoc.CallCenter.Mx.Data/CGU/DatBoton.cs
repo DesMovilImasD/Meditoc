@@ -51,7 +51,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             catch (Exception ex)
             {
                 response.Code = 67823458184293;
-                response.Message = "Ocurrió un error al intentar guardar el botón.";
+                response.Message = "Ocurrió un error inesperado en la base de datos al intentar guardar el botón.";
 
                 logger.Error(IMDSerialize.Serialize(67823458338916, $"Error en {metodo}(EntBoton entBoton): {ex.Message}", entBoton, ex, response));
             }

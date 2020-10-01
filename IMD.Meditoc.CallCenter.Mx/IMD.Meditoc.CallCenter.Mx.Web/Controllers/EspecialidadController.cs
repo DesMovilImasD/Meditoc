@@ -20,12 +20,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         [MeditocAuthentication]
         [HttpPost]
         [Route("Api/Especialidad/Create/Resgistro")]
-        public IMDResponse<bool> CSaveEspecialidad(EntEspecialidad entEspecialidad)
+        public IMDResponse<bool> CSaveEspecialidad([FromBody]EntEspecialidad entEspecialidad)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.CSaveEspecialidad);
-            logger.Info(IMDSerialize.Serialize(67823458454689, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458454689, $"Inicia {metodo}([FromBody]EntEspecialidad entEspecialidad)", entEspecialidad));
 
             try
             {
@@ -35,9 +35,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458455466;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al guardar la especialidad.";
 
-                logger.Error(IMDSerialize.Serialize(67823458455466, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458455466, $"Error en {metodo}([FromBody]EntEspecialidad entEspecialidad): {ex.Message}", entEspecialidad, ex, response));
             }
             return response;
         }
@@ -49,7 +49,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             IMDResponse<List<EntEspecialidad>> response = new IMDResponse<List<EntEspecialidad>>();
 
             string metodo = nameof(this.CGetEspecialidad);
-            logger.Info(IMDSerialize.Serialize(67823458453135, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458453135, $"Inicia {metodo}([FromUri]int? piIdEspecialidad = null)", piIdEspecialidad));
 
             try
             {
@@ -59,9 +59,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458453912;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al consultar las especialidades médicas";
 
-                logger.Error(IMDSerialize.Serialize(67823458453912, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458453912, $"Error en {metodo}([FromUri]int? piIdEspecialidad = null): {ex.Message}", piIdEspecialidad, ex, response));
             }
             return response;
         }

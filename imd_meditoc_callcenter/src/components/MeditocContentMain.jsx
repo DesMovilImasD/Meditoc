@@ -41,7 +41,7 @@ const ContentMain = (props) => {
 
     return (
         <Fragment>
-            <div className="flx-grw-1">
+            <div className="flx-grw-1 pos-rel">
                 <MeditocNavBar
                     toggleDrawer={toggleDrawer}
                     setUsuarioSesion={setUsuarioSesion}

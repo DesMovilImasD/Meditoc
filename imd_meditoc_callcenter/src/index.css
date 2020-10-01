@@ -73,7 +73,7 @@ code {
 }
 
 .loader-back {
-    z-index: 12000 !important;
+    z-index: 120000 !important;
     color: var(--color-unset);
 }
 
@@ -204,6 +204,10 @@ code {
 
 .flx-grw-1 {
     flex-grow: 1;
+}
+
+.pos-rel {
+    position: relative;
 }
 
 .pad-right-10 {
@@ -524,7 +528,7 @@ code {
 }
 
 #root {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;

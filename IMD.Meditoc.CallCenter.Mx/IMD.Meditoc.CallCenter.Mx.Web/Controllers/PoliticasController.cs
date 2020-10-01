@@ -19,7 +19,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             IMDResponse<EntPoliticas> response = new IMDResponse<EntPoliticas>();
 
             string metodo = nameof(this.GetPoliticas);
-            logger.Info(IMDSerialize.Serialize(67823458379320, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458379320, $"Inicia {metodo}()"));
 
             try
             {
@@ -30,9 +30,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458380097;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al obtener la información pública del sistema.";
 
-                logger.Error(IMDSerialize.Serialize(67823458380097, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458380097, $"Error en {metodo}(): {ex.Message}", ex, response));
             }
             return response;
         }

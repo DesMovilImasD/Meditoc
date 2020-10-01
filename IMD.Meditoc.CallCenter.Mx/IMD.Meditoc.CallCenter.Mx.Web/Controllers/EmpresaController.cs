@@ -22,20 +22,19 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             IMDResponse<EntEmpresa> response = new IMDResponse<EntEmpresa>();
 
             string metodo = nameof(this.CSaveEmpresa);
-            logger.Info(IMDSerialize.Serialize(67823458388644, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458388644, $"Inicia {metodo}([FromBody] EntEmpresa entEmpresa)", entEmpresa));
 
             try
             {
                 BusEmpresa busEmpresa = new BusEmpresa();
-
                 response = busEmpresa.BSaveEmpresa(entEmpresa);
             }
             catch (Exception ex)
             {
                 response.Code = 67823458389421;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al guardar la empresa.";
 
-                logger.Error(IMDSerialize.Serialize(67823458389421, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458389421, $"Error en {metodo}([FromBody] EntEmpresa entEmpresa): {ex.Message}", entEmpresa, ex, response));
             }
             return response;
         }
@@ -48,7 +47,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             IMDResponse<List<EntEmpresa>> response = new IMDResponse<List<EntEmpresa>>();
 
             string metodo = nameof(this.BGetEmpresas);
-            logger.Info(IMDSerialize.Serialize(67823458411954, $"Inicia {metodo}"));
+            logger.Info(IMDSerialize.Serialize(67823458411954, $"Inicia {metodo}([FromUri] int? iIdEmpresa = null)", iIdEmpresa));
 
             try
             {
@@ -59,9 +58,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458412731;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado en el servicio al consultar las empresas.";
 
-                logger.Error(IMDSerialize.Serialize(67823458412731, $"Error en {metodo}: {ex.Message}", ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458412731, $"Error en {metodo}([FromUri] int? iIdEmpresa = null): {ex.Message}", iIdEmpresa, ex, response));
             }
             return response;
         }
