@@ -317,5 +317,49 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             }
             return response;
         }
+
+        public IMDResponse<EntFolioVerificarCarga> CVerificarFoliosArchivo([FromUri]int piIdEmpresa, [FromUri]int piIdProducto)
+        {
+            IMDResponse<EntFolioVerificarCarga> response = new IMDResponse<EntFolioVerificarCarga>();
+
+            string metodo = nameof(this.CVerificarFoliosArchivo);
+            logger.Info(IMDSerialize.Serialize(67823458616305, $"Inicia {metodo}([FromUri]int piIdEmpresa, [FromUri]int piIdProducto)", piIdEmpresa, piIdProducto));
+
+            try
+            {
+                BusFolio busFolio = new BusFolio();
+                response = busFolio.BVerificarFoliosArchivo(piIdEmpresa, piIdProducto, HttpContext.Current.Request.InputStream);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458617082;
+                response.Message = "Ocurrió un error inesperado en el servicio al verificar los folios del archivo.";
+
+                logger.Error(IMDSerialize.Serialize(67823458617082, $"Error en {metodo}([FromUri]int piIdEmpresa, [FromUri]int piIdProducto): {ex.Message}", piIdEmpresa, piIdProducto, ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<bool> CGenerarFoliosArchivo([FromUri]int piIdEmpresa, [FromUri]int piIdProducto, [FromUri]int piIdUsuarioMod)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.CGenerarFoliosArchivo);
+            logger.Info(IMDSerialize.Serialize(67823458619413, $"Inicia {metodo}([FromUri]int piIdEmpresa, [FromUri]int piIdProducto, [FromUri]int piIdUsuarioMod)", piIdEmpresa, piIdProducto, piIdUsuarioMod));
+
+            try
+            {
+                BusFolio busFolio = new BusFolio();
+                response = busFolio.BGenerarFoliosArchivo(piIdEmpresa, piIdProducto, HttpContext.Current.Request.InputStream, piIdUsuarioMod);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458620190;
+                response.Message = "Ocurrió un error inesperado en el servicio al generar los folios solicitados.";
+
+                logger.Error(IMDSerialize.Serialize(67823458620190, $"Error en {metodo}([FromUri]int piIdEmpresa, [FromUri]int piIdProducto, [FromUri]int piIdUsuarioMod): {ex.Message}", piIdEmpresa, piIdProducto, piIdUsuarioMod, ex, response));
+            }
+            return response;
+        }
     }
 }

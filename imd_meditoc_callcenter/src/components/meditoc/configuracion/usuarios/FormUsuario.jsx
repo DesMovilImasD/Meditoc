@@ -11,6 +11,7 @@ import {
     Button,
     Tooltip,
     IconButton,
+    InputAdornment,
 } from "@material-ui/core";
 import { DatePicker } from "@material-ui/pickers";
 import { useState } from "react";
@@ -22,6 +23,7 @@ import { rxCorreo } from "../../../../configurations/regexConfig";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import { EnumPerfilesPrincipales } from "../../../../configurations/enumConfig";
+import DateRangeIcon from "@material-ui/icons/DateRange";
 
 /*************************************************************
  * Descripcion: Formulario para registrar o editar un usuario
@@ -399,7 +401,15 @@ const FormUsuario = (props) => {
                         openTo="year"
                         format="dd/MM/yyyy"
                         views={["year", "month", "date"]}
-                        InputAdornmentProps={{ position: "end" }}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton>
+                                        <DateRangeIcon />
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
                         fullWidth
                         clearable
                         clearLabel="Limpiar"

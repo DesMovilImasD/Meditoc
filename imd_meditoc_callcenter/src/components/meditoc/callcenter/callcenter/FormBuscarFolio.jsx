@@ -6,6 +6,7 @@ import CallCenterController from "../../../../controllers/CallCenterController";
 import FolioController from "../../../../controllers/FolioController";
 import MeditocModal from "../../../utilidades/MeditocModal";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
+import MeditocSubtitulo from "../../../utilidades/MeditocSubtitulo";
 
 const FormBuscarFolio = (props) => {
     const {
@@ -165,8 +166,7 @@ const FormBuscarFolio = (props) => {
         <MeditocModal title="Confirmar folio" open={open} setOpen={setOpen} size="small">
             <Grid container spacing={3}>
                 <Grid item xs={12}>
-                    <span className="rob-nor bold size-15 color-4">CONFIRMAR FOLIO PARA INICIAR CONSULTA</span>
-                    <Divider />
+                    <MeditocSubtitulo title="CONFIRMAR FOLIO PARA INICIAR CONSULTA" />
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
@@ -192,8 +192,7 @@ const FormBuscarFolio = (props) => {
                 {folioEncontrado !== null ? (
                     <Fragment>
                         <Grid item xs={12}>
-                            <span className="rob-nor bold size-15 color-4">CONFIRMAR DATOS DEL PACIENTE</span>
-                            <Divider />
+                            <MeditocSubtitulo title="CONFIRMAR DATOS DEL PACIENTE" />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField

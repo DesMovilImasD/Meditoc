@@ -81,12 +81,12 @@ namespace IMD.Admin.Conekta.Data
         /// <param name="psOrigin">Origen de status</param>
         /// <param name="piIdCupon">ID del cupón si aplica</param>
         /// <returns></returns>
-        public IMDResponse<bool> DSaveConektaOrder(Guid puId, EntOrder entOrder, string psOrigin, EntCreateOrder entCreateOrder = null)
+        public IMDResponse<bool> DSaveConektaOrder(Guid puId, EntOrder entOrder, string psOrigin, int? piIdOrigen = null, int? coupon = null)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             string metodo = nameof(this.DSaveConektaOrder);
-            logger.Info(IMDSerialize.Serialize(67823458097269, $"Inicia {metodo}(Guid puId, EntOrder entOrder, string psOrigin, int? piIdCupon = null)", puId, entOrder, psOrigin, entCreateOrder));
+            logger.Info(IMDSerialize.Serialize(67823458097269, $"Inicia {metodo}(Guid puId, EntOrder entOrder, string psOrigin, int? piIdCupon = null)", puId, entOrder, psOrigin));
 
             try
             {
@@ -94,7 +94,7 @@ namespace IMD.Admin.Conekta.Data
                 {
                     database.AddInParameter(dbCommand, "puId", DbType.Guid, puId);
                     database.AddInParameter(dbCommand, "psOrderId", DbType.String, entOrder.id?.Trim());
-                    database.AddInParameter(dbCommand, "piOrigin", DbType.Int32, entCreateOrder?.iIdOrigen);
+                    database.AddInParameter(dbCommand, "piOrigin", DbType.Int32, piIdOrigen);
                     database.AddInParameter(dbCommand, "pnAmount", DbType.Decimal, entOrder.amount);
                     database.AddInParameter(dbCommand, "pnAmountDiscount", DbType.Decimal, entOrder.amount_discount);
                     database.AddInParameter(dbCommand, "pnAmountTax", DbType.Decimal, entOrder.amount_tax);
@@ -103,7 +103,7 @@ namespace IMD.Admin.Conekta.Data
                     database.AddInParameter(dbCommand, "psCurrency", DbType.String, entOrder.currency?.Trim());
                     database.AddInParameter(dbCommand, "psPaymentStatus", DbType.String, entOrder.payment_status?.Trim());
                     database.AddInParameter(dbCommand, "psOrigin", DbType.String, psOrigin?.Trim());
-                    database.AddInParameter(dbCommand, "piIdCupon", DbType.Int32, entCreateOrder?.coupon);
+                    database.AddInParameter(dbCommand, "piIdCupon", DbType.Int32, coupon);
                     database.AddInParameter(dbCommand, "piCreated", DbType.Int64, entOrder.created_at);
                     database.AddInParameter(dbCommand, "piUpdated", DbType.Int64, entOrder.updated_at);
 
@@ -115,7 +115,7 @@ namespace IMD.Admin.Conekta.Data
                 response.Code = 67823458098046;
                 response.Message = "Ocurrió un error inesperado al guardar el detalle de la orden en la base de datos";
 
-                logger.Error(IMDSerialize.Serialize(67823458098046, $"Error en {metodo}(Guid puId, EntOrder entOrder, string psOrigin, int? piIdCupon = null): {ex.Message}", puId, entOrder, psOrigin, entCreateOrder, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458098046, $"Error en {metodo}(Guid puId, EntOrder entOrder, string psOrigin, int? piIdCupon = null): {ex.Message}", puId, entOrder, psOrigin, ex, response));
             }
             return response;
         }

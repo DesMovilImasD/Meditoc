@@ -30,6 +30,8 @@ const ContentMain = (props) => {
     const { usuarioSesion, usuarioPermisos, setUsuarioSesion, setUsuarioActivo, funcLoader, funcAlert } = props;
     const [drawerOpen, setDrawerOpen] = useState(false);
 
+    const [funcCerrarTodo, setFuncCerrarTodo] = useState(null);
+
     //Desplegar/Ocultar menu lateral izquerdo
     const toggleDrawer = (open) => (event) => {
         if (event.type === "keydown" && (event.key === "Tab" || event.key === "Shift")) {
@@ -47,6 +49,7 @@ const ContentMain = (props) => {
                     setUsuarioSesion={setUsuarioSesion}
                     setUsuarioActivo={setUsuarioActivo}
                     usuarioSesion={usuarioSesion}
+                    funcCerrarTodo={funcCerrarTodo}
                     funcLoader={funcLoader}
                     funcAlert={funcAlert}
                 />
@@ -103,7 +106,12 @@ const ContentMain = (props) => {
                             />
                         </Route>
                         <Route exact path={urlSystem.callcenter.consultas}>
-                            <CallCenter usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
+                            <CallCenter
+                                usuarioSesion={usuarioSesion}
+                                funcLoader={funcLoader}
+                                funcAlert={funcAlert}
+                                setFuncCerrarTodo={setFuncCerrarTodo}
+                            />
                         </Route>
                         <Route exact path={urlSystem.reportes.doctores}>
                             <ReportesDoctores

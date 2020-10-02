@@ -16,6 +16,8 @@ import { green, red } from "@material-ui/core/colors";
 import InfoIcon from "@material-ui/icons/Info";
 import DirectotioMedico from "./DirectotioMedico";
 import MeditocSwitch from "../../../utilidades/MeditocSwitch";
+import CallCenterStatusHelper from "./CallCenterStatusHelper";
+import { TrendingUpTwoTone } from "@material-ui/icons";
 
 const useStyles = makeStyles(() => ({
     button: {
@@ -29,7 +31,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const CallCenter = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert } = props;
+    const { usuarioSesion, funcLoader, funcAlert, setFuncCerrarTodo } = props;
 
     const classes = useStyles();
 
@@ -128,7 +130,6 @@ const CallCenter = (props) => {
             };
             setTemporizadorState(temporizador);
         }, 1000);
-        console.log("interTemporizador", intervalID);
         setInterTemporizador(intervalID);
     };
 
@@ -162,7 +163,7 @@ const CallCenter = (props) => {
         funcLoader();
     };
 
-    const funcOnlineMod = async (disponible, online = true) => {
+    const funcOnlineMod = async (disponible, online = true, state = true) => {
         if (usuarioColaborador === null) {
             return;
         }
@@ -183,7 +184,9 @@ const CallCenter = (props) => {
 
         if (response.Code === 0) {
             if (online === true) {
-                setColaboradorDisponible(disponible);
+                if (state === true) {
+                    setColaboradorDisponible(disponible);
+                }
             }
             funcAlert(response.Message, "success");
         } else {
@@ -200,6 +203,10 @@ const CallCenter = (props) => {
         localStorage.removeItem("sessionId");
         localStorage.removeItem("DisplayName");
         funcGetColaboradorUser();
+
+        // return () => {
+        //     funcCerrarTodo();
+        // };
     }, []);
 
     const funcPrepararSalaCallCenterInicio = async () => {
@@ -226,32 +233,33 @@ const CallCenter = (props) => {
             };
 
             window.onunload = (e) => {
-                funcOnlineMod(false, false);
+                funcCerrarTodo();
             };
 
-            window.onhashchange = async (e) => {
+            window.onhashchange = (e) => {
                 if (e.oldURL.includes(urlSystem.callcenter.consultas.replace("/", ""))) {
-                    await funcOnlineMod(false, false);
-
-                    if (consultaIniciada) {
-                        await handleClickFinalizarConsulta(true);
-                    }
+                    funcCerrarTodo();
                 }
             };
         }
     };
 
-    useEffect(() => {
-        funcPrepararSalaCallCenterInicio();
+    const funcLimpiarChat = () => {
+        localStorage.removeItem("sFolio");
 
-        return () => {
-            funcOnlineMod(false, false);
-        };
-    }, [usuarioColaborador]);
+        const iframeickelink = document.getElementById("iframeickelink");
+        if (iframeickelink !== null) {
+            if (typeof iframeickelink.contentWindow.CallBack === "function") {
+                iframeickelink.contentWindow.CallBack();
+            }
+            if (typeof iframeickelink.contentWindow.CallBacks.FinalizarConsulta === "function") {
+                iframeickelink.contentWindow.CallBacks.FinalizarConsulta();
+            }
+        }
+    };
 
     const handleClickFinalizarConsulta = async (cerrarVentana = false) => {
         await funcSaveHistorialClinico(cerrarVentana);
-
         funcLoader(true, "Finalizando consulta...");
 
         const response = await callcenterController.funcFinalizarConsulta(
@@ -270,13 +278,7 @@ const CallCenter = (props) => {
                 setFolioEncontrado(null);
             }
 
-            localStorage.removeItem("sFolio");
-
-            const iframeickelink = document.getElementById("iframeickelink");
-            if (iframeickelink !== null) {
-                iframeickelink.contentWindow.CallBack();
-                iframeickelink.contentWindow.CallBacks.FinalizarConsulta();
-            }
+            funcLimpiarChat();
             funcAlert(response.Message, "success");
         } else {
             funcAlert(response.Message);
@@ -340,6 +342,29 @@ const CallCenter = (props) => {
         setModalDirectorioOpen(true);
     };
 
+    const funcCerrarTodo = async () => {
+        //console.log("Cerrando todo", consultaIniciada, entCallCenter, usuarioColaborador, usuarioSesion.iIdUsuario);
+        await funcOnlineMod(false, false, false);
+        if (consultaIniciada) {
+            await handleClickFinalizarConsulta(true);
+        }
+        if (localStorage.getItem("sFolio") !== null) {
+            funcLimpiarChat();
+        }
+    };
+
+    useEffect(() => {
+        setFuncCerrarTodo(() => funcCerrarTodo);
+    }, [entCallCenter, consultaIniciada, usuarioSesion, usuarioColaborador]);
+
+    useEffect(() => {
+        funcPrepararSalaCallCenterInicio();
+
+        // return () => {
+        //     funcCerrarTodo();
+        // };
+    }, [usuarioColaborador]);
+
     return (
         <Fragment>
             <MeditocHeader1
@@ -369,6 +394,14 @@ const CallCenter = (props) => {
                                 Finalizar consulta
                             </Button>
                         )}
+                        <Button
+                            variant="contained"
+                            className={classes.button}
+                            onClick={funcLimpiarChat}
+                            disabled={usuarioColaborador === null || consultaIniciada === true}
+                        >
+                            Reiniciar Chat
+                        </Button>
                         <Button variant="contained" className={classes.button} onClick={handleClickDirectorio}>
                             Directorio médico
                         </Button>
@@ -383,49 +416,18 @@ const CallCenter = (props) => {
                     disabled={usuarioColaborador === null}
                 />
             </MeditocHeader1>
-            <Popover
-                anchorReference="anchorPosition"
-                anchorPosition={{ top: 140, left: 20 }}
-                anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "left",
-                }}
-                transformOrigin={{
-                    vertical: "top",
-                    horizontal: "left",
-                }}
-                open={popoverOcupadoInicio}
-                onClose={handleClosePopoverOcupado}
-            >
-                <div style={{ padding: 30, textAlign: "center" }}>
-                    <div>
-                        <InfoIcon style={{ fontSize: 80, color: theme.palette.primary.main }} />
-                    </div>
-                    <div>
-                        <Typography variant="body2" paragraph>
-                            TU ESTATUS ACTUAL ES OCUPADO.
-                        </Typography>
-                        <Typography variant="body2" paragraph>
-                            Cambia tu estatus a DISPONIBLE para comenzar a
-                            <br />
-                            recibir videollamadas y chats de tus pacientes
-                        </Typography>
-                        <Button color="default" style={{ color: "#888" }} onClick={handleClosePopoverOcupado}>
-                            <Typography variant="body2">CONTINUAR OCUPADO</Typography>
-                        </Button>
-                        <Button color="primary" onClick={handleClickPopoverDisponible}>
-                            <Typography variant="body2">CAMBIAR A DISPONIBLE</Typography>
-                        </Button>
-                    </div>
-                </div>
-            </Popover>
+            <CallCenterStatusHelper
+                popoverOcupadoInicio={popoverOcupadoInicio}
+                handleClosePopoverOcupado={handleClosePopoverOcupado}
+                handleClickPopoverDisponible={handleClickPopoverDisponible}
+            />
             <MeditocBody>
                 <Grid container spacing={3}>
-                    <Grid item sm={5}>
+                    <Grid item sm={5} xs={12}>
                         {salaIceLink}
                     </Grid>
                     {consultaIniciada === true && entCallCenter !== null ? (
-                        <Grid item sm={7}>
+                        <Grid item sm={7} xs={12}>
                             <FormCallCenter
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}

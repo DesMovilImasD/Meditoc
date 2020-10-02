@@ -6,7 +6,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Folio
     public class EntFolioxEmpresa
     {        
         public int iIdEmpresa { get; set; }
-        public int iIdOrigen { get; set; }                        
+        public int iIdOrigen { get; set; }
+        public string uid { get; set; }
 
         [JsonProperty(PropertyName = "line_items")]
         public List<line_items> lstLineItems;               

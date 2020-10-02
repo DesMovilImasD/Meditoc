@@ -214,10 +214,12 @@ const Login = (props) => {
 
         switch (iIdPerfil) {
             case EnumPerfilesPrincipales.Superadministrador:
-                history.push(urlSystem.configuracion.perfiles);
+                //history.push(urlSystem.configuracion.perfiles);
+                history.push("/");
                 break;
             case EnumPerfilesPrincipales.Administrador:
-                history.push(urlSystem.configuracion.usuarios);
+                //history.push(urlSystem.configuracion.usuarios);
+                history.push("/");
                 break;
 
             case EnumPerfilesPrincipales.DoctorCallCenter:

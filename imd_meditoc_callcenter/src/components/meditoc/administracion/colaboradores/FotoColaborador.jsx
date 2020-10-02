@@ -9,6 +9,7 @@ import ColaboradorController from "../../../../controllers/ColaboradorController
 import { useState } from "react";
 import { useEffect } from "react";
 import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
+import InfoIcon from "@material-ui/icons/Info";
 
 const FotoColaborador = (props) => {
     const { entColaborador, open, setOpen, usuarioSesion, funcLoader, funcAlert } = props;
@@ -124,13 +125,21 @@ const FotoColaborador = (props) => {
     return (
         <Fragment>
             <MeditocModal title="Foto de colaborador" size="small" open={open} setOpen={setOpen}>
-                <MeditocHeader3 title="Foto del directorio médico">
-                    <Tooltip title="Agregar o cambiar foto">
+                <MeditocHeader3 title={entColaborador.sNombreDirectorio}>
+                    <Tooltip
+                        arrow
+                        title="Las proporciones de la imagen permitidas se encuentran entre 9:12 (ancho:altura) y 9:16 (ancho:altura). Ejemplo: 600px(ancho) por 900px(altura)."
+                    >
+                        <IconButton>
+                            <InfoIcon className="color-1" />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip arrow title="Agregar o cambiar foto">
                         <IconButton onClick={funcSaveColaboradorFoto}>
                             <InsertPhotoIcon className="color-1" />
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title="Eliminar foto">
+                    <Tooltip arrow title="Eliminar foto">
                         <IconButton onClick={handleClickLEiminarFoto}>
                             <DeleteIcon className="color-1" />
                         </IconButton>

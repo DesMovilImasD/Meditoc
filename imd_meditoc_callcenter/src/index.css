@@ -390,7 +390,7 @@ code {
 }
 
 .foto-colaborador {
-    width: 100%;
+    max-width: 350px;
     border-radius: 20px;
     /* border: 3px solid var(--color-primary-blue);
     border-bottom: 40px solid var(--color-primary-blue); */

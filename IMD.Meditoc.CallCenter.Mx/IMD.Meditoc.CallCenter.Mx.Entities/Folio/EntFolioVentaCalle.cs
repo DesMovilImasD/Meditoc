@@ -13,6 +13,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Folio
         public int iIdOrigen { get; set; }
         public string sFolio { get; set; }
         public string sPassword { get; set; }
+        public DateTime? dtFechaVencimiento { get; set; }
         public int iIdUsuarioMod { get; set; }
+        public string sOrdenConekta { get; set; }
     }
 }

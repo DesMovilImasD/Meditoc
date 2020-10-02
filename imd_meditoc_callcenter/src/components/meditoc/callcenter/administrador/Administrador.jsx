@@ -18,6 +18,7 @@ import DateRangeIcon from "@material-ui/icons/DateRange";
 import { SignalCellularNullSharp } from "@material-ui/icons";
 import { EnumEstatusConsulta } from "../../../../configurations/enumConfig";
 import UpdateIcon from "@material-ui/icons/Update";
+import MeditocSubtitulo from "../../../utilidades/MeditocSubtitulo";
 
 const Administrador = (props) => {
     const { usuarioSesion, funcLoader, funcAlert } = props;
@@ -209,8 +210,7 @@ const Administrador = (props) => {
             <MeditocBody>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <span className="rob-nor bold size-15 color-4">FILTRAR CONSULTAS</span>
-                        <Divider />
+                        <MeditocSubtitulo title="FILTRAR CONSULTAS" />
                     </Grid>
                     <Grid item sm={6} xs={12}>
                         <DatePicker

@@ -107,8 +107,10 @@ const DirectotioMedico = (props) => {
     };
 
     useEffect(() => {
-        funcGetData();
-    }, []);
+        if (open === true) {
+            funcGetData();
+        }
+    }, [open]);
 
     return (
         <MeditocModal title="Directorio médico de especialistas" size="large" open={open} setOpen={setOpen}>

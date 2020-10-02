@@ -1,4 +1,5 @@
 ﻿using IMD.Admin.Conekta.Business;
+using IMD.Admin.Conekta.Data;
 using IMD.Admin.Conekta.Entities;
 using IMD.Admin.Conekta.Entities.Orders;
 using IMD.Admin.Utilities.Business;
@@ -40,10 +41,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
     public class BusFolio
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(BusFolio));
-        DatFolio datFolio;
-        BusUsuario busUsuario;
-        BusConsulta busConsulta;
-        BusProducto busProducto;
+        private readonly DatFolio datFolio;
+        private readonly BusUsuario busUsuario;
+        private readonly BusConsulta busConsulta;
+        private readonly BusProducto busProducto;
+        private readonly BusEmpresa busEmpresa;
 
         public BusFolio()
         {
@@ -51,6 +53,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             busUsuario = new BusUsuario();
             busConsulta = new BusConsulta();
             busProducto = new BusProducto();
+            busEmpresa = new BusEmpresa();
         }
 
         /// <summary>
@@ -405,7 +408,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     if (foliosMostrar.Count == 1)
                     {
                         string plantillaFolio = "<tr><td><table class=\"table-detail\"><tr class=\"group-detail font-unset bold small center\"><td colspan=\"3\">item.sDataGroup</td></tr><tr><td><table class=\"table-detail\"><thead><tr class=\"font-table bold small font-secondary\"><th>Usuario</th><th>Contraseña</th></tr></thead><tbody><tr class=\"font-table bold small center table-border-b\"><td><small>1 -</small>&nbsp;item.sFolio</td><td>item.sPass</td></tr></tbody></table></td></tr></table></td></tr>";
-                        plantillaFolio = plantillaFolio.Replace("item.sDataGroup", $"{itemGroup.sDescripcion} - Vigencia: {itemGroup.dtFechaVencimiento:dd/MM/yyyy - h:mm tt}");
+                        string vigencia = " - Vigencia:" + itemGroup.dtFechaVencimiento == null ? "" : itemGroup.dtFechaVencimiento?.ToString("dd/MM/yyyy - h:mm tt");
+                        plantillaFolio = plantillaFolio.Replace("item.sDataGroup", $"{itemGroup.sDescripcion}{vigencia}");
                         plantillaFolio = plantillaFolio.Replace("item.sFolio", foliosMostrar.First().sFolio);
                         plantillaFolio = plantillaFolio.Replace("item.sPass", foliosMostrar.First().sPass);
 
@@ -437,7 +441,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                         }
 
                         string plantillaFolios = "<tr><td><table class=\"table-detail\"><tr class=\"group-detail font-unset bold small center\"><td colspan=\"3\">item.sDataGroup</td></tr><tr><td><table class=\"table-detail\"><thead><tr class=\"font-table bold small font-secondary\"><th>Usuario</th><th>Contraseña</th></tr></thead><tbody>oDetalleCompra.FoliosIzquierda</tbody></table></td><td width=\"5%\"></td><td><table class=\"table-detail\"><thead><tr class=\"font-table bold small font-secondary\"><th>Usuario</th><th>Contraseña</th></tr></thead><tbody>oDetalleCompra.FoliosDerecha</tbody></table></td></tr></table></td></tr>";
-                        plantillaFolios = plantillaFolios.Replace("item.sDataGroup", $"{itemGroup.sDescripcion} - Vigencia: {itemGroup.dtFechaVencimiento:dd/MM/yyyy - h:mm tt}");
+                        string vigencia = " - Vigencia:" + itemGroup.dtFechaVencimiento == null ? "" : itemGroup.dtFechaVencimiento?.ToString("dd/MM/yyyy - h:mm tt");
+                        plantillaFolios = plantillaFolios.Replace("item.sDataGroup", $"{itemGroup.sDescripcion}{vigencia}");
                         plantillaFolios = plantillaFolios.Replace("oDetalleCompra.FoliosIzquierda", htmlIzquierda);
                         plantillaFolios = plantillaFolios.Replace("oDetalleCompra.FoliosDerecha", htmlDerecha);
                         htmlFolios += plantillaFolios;
@@ -566,6 +571,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 //using (TransactionScope scope = new TransactionScope())
                 //{
+                this.BSaveOrderEmpresa(entFolioxEmpresa, oEmpresa);
+
+                entFolio.sOrdenConekta = entFolioxEmpresa.uid;
 
                 foreach (line_items item in entFolioxEmpresa.lstLineItems)
                 {
@@ -578,6 +586,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                         }
                     }
                 }
+
                 //    scope.Complete();
                 //}
                 oDetalleFolioempresa.Result.lstArticulos = lstArticulosDetalle;
@@ -603,6 +612,130 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             return response;
         }
 
+        public IMDResponse<bool> BSaveOrderEmpresa(EntFolioxEmpresa entFolioxEmpresa, EntEmpresa entEmpresa, Guid? puid = null)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.BSaveOrderEmpresa);
+            logger.Info(IMDSerialize.Serialize(67823458613197, $"Inicia {metodo}(EntFolioxEmpresa entFolioxEmpresa, EntEmpresa entEmpresa)", entFolioxEmpresa, entEmpresa));
+
+            try
+            {
+                Guid uid = puid == null ? Guid.NewGuid() : (Guid)puid;
+                string sUid = uid.ToString();
+                string origin = "meditoc_enterprise";
+
+                double subtotal = entFolioxEmpresa.lstLineItems.Sum(x => x.unit_price * x.quantity);
+                double taxIVA = Convert.ToDouble(ConfigurationManager.AppSettings["CONEKTA_IMPUESTO"]);
+                double iva = subtotal * taxIVA;
+
+                long created = (long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+
+                List<EntLineItemDetail> entLineItemDetails = new List<EntLineItemDetail>();
+
+                int consecutive = 0;
+
+                for (int i = 0; i < entFolioxEmpresa.lstLineItems.Count; i++)
+                {
+                    EntLineItemDetail entLineItemDetail = new EntLineItemDetail
+                    {
+                        consecutive = ++consecutive,
+                        name = entFolioxEmpresa.lstLineItems[i].name,
+                        quantity = entFolioxEmpresa.lstLineItems[i].quantity,
+                        unit_price = entFolioxEmpresa.lstLineItems[i].unit_price * 100,
+                    };
+                    entFolioxEmpresa.lstLineItems[i].consecutive = consecutive;
+                    entLineItemDetails.Add(entLineItemDetail);
+                }
+
+                EntOrder entOrder = new EntOrder
+                {
+                    amount = (long)subtotal,
+                    amount_paid = (long)(subtotal + iva),
+                    amount_tax = (long)iva,
+                    charges = new EntCharge
+                    {
+                        data = new List<EntChargeDetail>
+                        {
+                            new EntChargeDetail
+                            {
+                                amount = (long)(subtotal + iva),
+                                created_at = created,
+                                currency = "MXN",
+                                status = "paid",
+                                payment_method = new EntPaymentMehod
+                                {
+                                    country="MX",
+                                    type="meditoc_enterprise",
+                                    name = entEmpresa.sNombre,
+                                    account_type = entEmpresa.sFolioEmpresa
+                                },
+                                id = sUid
+                            }
+                        }
+                    },
+                    created_at = created,
+                    updated_at = created,
+                    currency = "MXN",
+                    payment_status = "paid",
+                    customer_info = new EntCustomerInfo
+                    {
+                        email = entEmpresa.sCorreo,
+                        name = entEmpresa.sNombre,
+                        phone = entEmpresa.sFolioEmpresa
+                    },
+                    line_items = new EntLineItem
+                    {
+                        data = entLineItemDetails
+                    },
+                    id = sUid
+                };
+
+                entFolioxEmpresa.uid = sUid;
+
+                DatOrder datOrder = new DatOrder("MeditocComercial", "Meditoc1");
+
+                IMDResponse<bool> respuestaGuardarOrden = datOrder.DSaveConektaOrder(uid, entOrder, origin, entFolioxEmpresa.iIdOrigen);
+                if (respuestaGuardarOrden.Code != 0)
+                {
+                    return respuestaGuardarOrden;
+                }
+
+                IMDResponse<bool> respuestaGuardarCliente = datOrder.DSaveCustomerInfo(uid, entOrder.customer_info);
+                if (respuestaGuardarCliente.Code != 0)
+                {
+                    return respuestaGuardarCliente;
+                }
+
+                for (int i = 0; i < entOrder.line_items.data.Count; i++)
+                {
+                    IMDResponse<bool> respuestaGuardarArticulo = datOrder.DSaveLineItem(uid, entOrder.line_items.data[i]);
+                    if (respuestaGuardarArticulo.Code != 0)
+                    {
+                        return respuestaGuardarArticulo;
+                    }
+                }
+
+                IMDResponse<bool> respuestaGuardarDatosPago = datOrder.DSaveCharge(uid, entOrder.charges.data.First(), origin);
+                if (respuestaGuardarDatosPago.Code != 0)
+                {
+                    return respuestaGuardarOrden;
+                }
+
+                response.Code = 0;
+                response.Result = true;
+                response.Message = "Guardado correcto";
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458613974;
+                response.Message = "Ocurrió un error inesperado al guardar la orden de la empresa.";
+
+                logger.Error(IMDSerialize.Serialize(67823458613974, $"Error en {metodo}(EntFolioxEmpresa entFolioxEmpresa, EntEmpresa entEmpresa): {ex.Message}", entFolioxEmpresa, entEmpresa, ex, response));
+            }
+            return response;
+        }
+
         /// <summary>
         /// Genera un unico folio con los datos de la empresa y paciente
         /// </summary>
@@ -622,15 +755,23 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             try
             {
                 entFolio.iIdProducto = item.product_id;
+                entFolio.iConsecutivo = item.consecutive;
 
-                if (item.monthsExpiration == 0)
+                if (Enum.IsDefined(typeof(EnumProductos), entFolio.iIdProducto))
                 {
-                    entFolio.dtFechaVencimiento = DateTime.Now.AddDays(Convert.ToInt16(ConfigurationManager.AppSettings["iDiasDespuesVencimiento"]));
+                    entFolio.dtFechaVencimiento = null;
                 }
-
-                if (item.monthsExpiration != 0)
+                else
                 {
-                    entFolio.dtFechaVencimiento = DateTime.Now.AddMonths(item.monthsExpiration);
+                    if (item.monthsExpiration == 0)
+                    {
+                        entFolio.dtFechaVencimiento = DateTime.Now.AddDays(Convert.ToInt16(ConfigurationManager.AppSettings["iDiasDespuesVencimiento"]));
+                    }
+
+                    if (item.monthsExpiration != 0)
+                    {
+                        entFolio.dtFechaVencimiento = DateTime.Now.AddMonths(item.monthsExpiration);
+                    }
                 }
 
                 BusGeneratePassword busGenerate = new BusGeneratePassword();
@@ -732,7 +873,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     if (foliosMostrar.Count == 1)
                     {
                         string plantillaFolio = "<tr><td><table class=\"table-detail\"><tr class=\"group-detail font-unset bold small center\"><td colspan=\"3\">item.sDataGroup</td></tr><tr><td><table class=\"table-detail\"><thead><tr class=\"font-table bold small font-secondary\"><th>Usuario</th><th>Contraseña</th></tr></thead><tbody><tr class=\"font-table bold small center table-border-b\"><td><small>1 -</small>&nbsp;item.sFolio</td><td>item.sPass</td></tr></tbody></table></td></tr></table></td></tr>";
-                        plantillaFolio = plantillaFolio.Replace("item.sDataGroup", $"{itemGroup.sDescripcion} - Vigencia: {itemGroup.dtFechaVencimiento:dd/MM/yyyy - h:mm tt}");
+                        string vigencia = " - Vigencia:" + itemGroup.dtFechaVencimiento == null ? "" : itemGroup.dtFechaVencimiento?.ToString("dd/MM/yyyy - h:mm tt");
+                        plantillaFolio = plantillaFolio.Replace("item.sDataGroup", $"{itemGroup.sDescripcion}{vigencia}");
                         plantillaFolio = plantillaFolio.Replace("item.sFolio", foliosMostrar.First().sFolio);
                         plantillaFolio = plantillaFolio.Replace("item.sPass", foliosMostrar.First().sPass);
 
@@ -1834,19 +1976,19 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                         switch (i)
                         {
                             case 0:
-                                entFolioVerificarCarga.producto = "Membresía 1 Mes de Venta Calle";
+                                entFolioVerificarCarga.entProducto.sNombre = "Membresía 1 Mes de Venta Calle";
                                 break;
                             case 1:
-                                entFolioVerificarCarga.producto = "Membresía 3 Meses de Venta Calle";
+                                entFolioVerificarCarga.entProducto.sNombre = "Membresía 3 Meses de Venta Calle";
                                 break;
                             case 2:
-                                entFolioVerificarCarga.producto = "Membresía 6 Meses de Venta Calle";
+                                entFolioVerificarCarga.entProducto.sNombre = "Membresía 6 Meses de Venta Calle";
                                 break;
                             case 3:
-                                entFolioVerificarCarga.producto = "Membresía 9 Meses de Venta Calle";
+                                entFolioVerificarCarga.entProducto.sNombre = "Membresía 9 Meses de Venta Calle";
                                 break;
                             case 4:
-                                entFolioVerificarCarga.producto = "Membresía 12 Meses de Venta Calle";
+                                entFolioVerificarCarga.entProducto.sNombre = "Membresía 12 Meses de Venta Calle";
                                 break;
                             default:
                                 break;
@@ -1869,6 +2011,202 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             return response;
         }
 
+        public IMDResponse<EntFolioVerificarCarga> BVerificarFoliosArchivo(int piIdEmpresa, int piIdProducto, Stream foliosExcel)
+        {
+            IMDResponse<EntFolioVerificarCarga> response = new IMDResponse<EntFolioVerificarCarga>();
+
+            string metodo = nameof(this.BVerificarFoliosArchivo);
+            logger.Info(IMDSerialize.Serialize(67823458614751, $"Inicia {metodo}(int piIdEmpresa, int piIdProducto, Stream foliosExcel)", piIdEmpresa, piIdProducto));
+
+            try
+            {
+                IMDResponse<List<EntProducto>> resGetProducto = busProducto.BObtenerProductos(piIdProducto);
+                if (resGetProducto.Code != 0)
+                {
+                    return resGetProducto.GetResponse<EntFolioVerificarCarga>();
+                }
+
+                if (resGetProducto.Result.Count != 1)
+                {
+                    response.Code = -234768767234;
+                    response.Message = "El producto solicitado no existe";
+                    return response;
+                }
+
+                IMDResponse<List<EntEmpresa>> resGetEmpresas = busEmpresa.BGetEmpresas(iIdEmpresa: piIdEmpresa);
+                if (resGetEmpresas.Code != 0)
+                {
+                    return resGetEmpresas.GetResponse<EntFolioVerificarCarga>();
+                }
+
+                if (resGetEmpresas.Result.Count != 1)
+                {
+                    response.Code = -89787345234;
+                    response.Message = "No se encontró la empresa seleccionada";
+                    return response;
+                }
+
+                EntProducto entProducto = resGetProducto.Result.First();
+                EntEmpresa entEmpresa = resGetEmpresas.Result.First();
+
+                using (ExcelPackage excelPackage = new ExcelPackage(foliosExcel))
+                {
+                    if (excelPackage == null)
+                    {
+                        response.Code = -87687673456;
+                        response.Message = "No ha sido posible leer el archivo cargado";
+                        return response;
+                    }
+
+                    ExcelWorksheets excelPaginas = excelPackage.Workbook.Worksheets;
+
+                    if (excelPaginas.Count < 1)
+                    {
+                        response.Code = -87687673456;
+                        response.Message = "Se ha cargado un archivo que no coincide con la plantilla de carga de folios";
+                        return response;
+                    }
+
+                    ExcelWorksheet hojaFolios = excelPaginas.First();
+                    List<EntFolioUser> lstFolios = new List<EntFolioUser>();
+
+                    object[,] values = (object[,])hojaFolios.Cells.Value;
+
+                    int columns = values.GetLength(1);
+                    if (columns != 38)
+                    {
+                        response.Code = -823782734234;
+                        response.Message = "Se ha cargado un archivo que no coincide con la plantilla de carga de folios";
+                        return response;
+                    }
+
+                    int rows = values.GetLength(0);
+                    for (int i = 1; i < rows; i++)
+                    {
+                        //1, 2 // 9, 10 // 17, 18 // 25, 26 // 33, 34
+                        for (int j = 0; j < 5; j++)
+                        {
+                            string folio = values[i, j * 8 + 1].ToString();
+                            string passw = values[i, j * 8 + 2].ToString();
+
+                            if (!string.IsNullOrWhiteSpace(folio) && string.IsNullOrWhiteSpace(passw))
+                            {
+                                response.Code = -678273678234234;
+                                response.Message = $"El folio {folio} de la fila {i} de la sección {j + 1} no tiene una contraseña definida";
+                                return response;
+                            }
+
+                            EntFolioUser entFolioUser = new EntFolioUser
+                            {
+                                sFolio = folio,
+                                sPassword = passw
+                            };
+                            lstFolios.Add(entFolioUser);
+                        }
+                    }
+                    EntFolioVerificarCarga entFolioVerificarCarga = new EntFolioVerificarCarga()
+                    {
+                        lstFolios = lstFolios,
+                        totalFolios = lstFolios.Count,
+                        entProducto = entProducto,
+                        entEmpresa = entEmpresa
+                    };
+
+                    response.Code = 0;
+                    response.Message = "Archivo verificado";
+                    response.Result = entFolioVerificarCarga;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458615528;
+                response.Message = "Ocurrió un error inesperado al verificar los folios del archivo.";
+
+                logger.Error(IMDSerialize.Serialize(67823458615528, $"Error en {metodo}(int piIdEmpresa, int piIdProducto, Stream foliosExcel): {ex.Message}", piIdEmpresa, piIdProducto, ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<bool> BGenerarFoliosArchivo(int piIdEmpresa, int piIdProducto, Stream foliosExcel, int piIdUsuarioMod)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.BGenerarFoliosArchivo);
+            logger.Info(IMDSerialize.Serialize(67823458617859, $"Inicia {metodo}(int piIdEmpresa, int piIdProducto, Stream foliosExcel, int piIdUsuarioMod)", piIdEmpresa, piIdProducto, piIdUsuarioMod));
+
+            try
+            {
+                IMDResponse<EntFolioVerificarCarga> resGetFolios = this.BVerificarFoliosArchivo(piIdEmpresa, piIdProducto, foliosExcel);
+                if (resGetFolios.Code != 0)
+                {
+                    return resGetFolios.GetResponse<bool>();
+                }
+
+                EntFolioVerificarCarga data = resGetFolios.Result;
+
+                EntFolioxEmpresa entFolioxEmpresa = new EntFolioxEmpresa
+                {
+                    iIdEmpresa = resGetFolios.Result.entEmpresa.iIdEmpresa,
+                    iIdOrigen = (int)EnumOrigen.BaseDeDatos,
+                    lstLineItems = new List<line_items>
+                    {
+                        new line_items
+                        {
+                            monthsExpiration = data.entProducto.iMesVigencia,
+                            name = data.entProducto.sNombre,
+                            product_id = data.entProducto.iIdProducto,
+                            quantity = data.lstFolios.Count,
+                            unit_price = (int)data.entProducto.fCosto * 100
+                        }
+                    }
+                };
+
+                Guid tempOrderUID = new Guid();
+
+                foreach (EntFolioUser folio in data.lstFolios)
+                {
+                    EntFolioVentaCalle entFolioVentaCalle = new EntFolioVentaCalle
+                    {
+                        iIdEmpresa = data.entEmpresa.iIdEmpresa,
+                        iIdOrigen = entFolioxEmpresa.iIdOrigen,
+                        iIdProducto = data.entProducto.iIdProducto,
+                        iIdUsuarioMod = piIdUsuarioMod,
+                        sFolio = folio.sFolio,
+                        sPassword = folio.sPassword,
+                        dtFechaVencimiento = Enum.IsDefined(typeof(EnumProductos), data.entProducto.iIdProducto) ? (DateTime?)null : data.entProducto.iMesVigencia == 0 ? DateTime.Now.AddDays(Convert.ToInt16(ConfigurationManager.AppSettings["iDiasDespuesVencimiento"])) : DateTime.Now.AddMonths(data.entProducto.iMesVigencia),
+                        sOrdenConekta = tempOrderUID.ToString()
+                    };
+
+                    IMDResponse<bool> resSaveFolio = this.BSaveFolioVC(entFolioVentaCalle);
+                    if (resSaveFolio.Code != 0)
+                    {
+                        resSaveFolio.Message = $"El folio {entFolioVentaCalle.sFolio} con contraseña {entFolioVentaCalle.sPassword} no se pudo guardar. Verifique los datos y cargue el archivo nuevamente. El proceso de guardado se ha detenido";
+                        return resSaveFolio;
+                    }
+                }
+
+                IMDResponse<bool> resSaveOrder = this.BSaveOrderEmpresa(entFolioxEmpresa, data.entEmpresa, tempOrderUID);
+                if (resSaveOrder.Code != 0)
+                {
+                    return resSaveOrder;
+                }
+
+                response.Code = 0;
+                response.Message = "Los folios se guardaron correctamente";
+                response.Result = true;
+
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458618636;
+                response.Message = "Ocurrió un error inesperado al generar los folios solicitados";
+
+                logger.Error(IMDSerialize.Serialize(67823458618636, $"Error en {metodo}(int piIdEmpresa, int piIdProducto, Stream foliosExcel, int piIdUsuarioMod): {ex.Message}", piIdEmpresa, piIdProducto, piIdUsuarioMod, ex, response));
+            }
+            return response;
+        }
+
         public IMDResponse<bool> BGenerarFoliosVentaCalle(int piIdUsuarioMod, string sFolioEmpresa, Stream foliosExcel)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
@@ -1885,7 +2223,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     return response;
                 }
 
-                BusEmpresa busEmpresa = new BusEmpresa();
                 IMDResponse<List<EntEmpresa>> resGetEmpresas = busEmpresa.BGetEmpresas(psFolioEmpresa: sFolioEmpresa);
                 if (resGetEmpresas.Code != 0)
                 {

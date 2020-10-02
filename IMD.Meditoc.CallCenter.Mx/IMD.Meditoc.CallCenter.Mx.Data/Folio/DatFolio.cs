@@ -257,7 +257,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             return response;
         }
 
-        public IMDResponse<bool> DSaveFolioVC(int piIdEmpresa, int piIdProducto, int piIdOrigen, string psFolio, string psPassword, int piIdUsuarioMod)
+        public IMDResponse<bool> DSaveFolioVC(int piIdEmpresa, int piIdProducto, int piIdOrigen, string psFolio, string psPassword, int piIdUsuarioMod, DateTime? pdtFechaVencimiento = null, string psOrdenConekta = null)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
@@ -272,7 +272,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
                     database.AddInParameter(dbCommand, "piIdProducto", DbType.Int32, piIdProducto);
                     database.AddInParameter(dbCommand, "piIdOrigen", DbType.Int32, piIdOrigen);
                     database.AddInParameter(dbCommand, "psFolio", DbType.String, psFolio);
+                    database.AddInParameter(dbCommand, "psOrdenConekta", DbType.String, psOrdenConekta);
                     database.AddInParameter(dbCommand, "psPassword", DbType.String, psPassword);
+                    database.AddInParameter(dbCommand, "pdtFechaVencimiento", DbType.DateTime, pdtFechaVencimiento);
                     database.AddInParameter(dbCommand, "piIdUsuarioMod", DbType.Int32, piIdUsuarioMod);
 
                     response = imdCommonData.DExecute(database, dbCommand);

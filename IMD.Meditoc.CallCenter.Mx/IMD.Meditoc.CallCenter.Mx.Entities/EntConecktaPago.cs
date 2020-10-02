@@ -40,6 +40,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities
         public int quantity { get; set; }
         public int product_id { get; set; }
         public int monthsExpiration { get; set; }
+        public int consecutive { get; set; }
     }
 
     public class charges

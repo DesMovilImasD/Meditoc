@@ -19,6 +19,7 @@ import DateRangeIcon from "@material-ui/icons/DateRange";
 import CallCenterController from "../../../../controllers/CallCenterController";
 import { CheckBox, SignalCellularNull, TramRounded } from "@material-ui/icons";
 import FolioController from "../../../../controllers/FolioController";
+import MeditocSubtitulo from "../../../utilidades/MeditocSubtitulo";
 
 const Consulta = (props) => {
     const {
@@ -350,15 +351,7 @@ const Consulta = (props) => {
                     <Collapse in={yaCuentoConFolio}>
                         <Grid container spacing={3}>
                             <Grid item xs={12}>
-                                <span className="rob-nor bold size-15 color-4">FOLIO DEL PACIENTE</span>
-                                {/* <br />
-                                {entConsulta.iIdConsulta === 0 ? (
-                                    <span className="rob-con size-15 color-4">
-                                        Ingresar solamente si el paciente YA cuenta con un folio
-                                    </span>
-                                ) : null} */}
-
-                                <Divider />
+                                <MeditocSubtitulo title="FOLIO DEL PACIENTE" />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
@@ -387,15 +380,7 @@ const Consulta = (props) => {
                     <Collapse in={!yaCuentoConFolio || folioValidado}>
                         <Grid container spacing={3}>
                             <Grid item xs={12}>
-                                <span className="rob-nor bold size-15 color-4">DATOS DEL PACIENTE</span>
-                                {/* <br />
-                                {entConsulta.iIdConsulta === 0 ? (
-                                    <span className="rob-con size-15 color-4">
-                                        Ingresar solamente si el paciente NO cuenta con un folio
-                                    </span>
-                                ) : null} */}
-
-                                <Divider />
+                                <MeditocSubtitulo title="DATOS DEL PACIENTE" />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
@@ -447,10 +432,8 @@ const Consulta = (props) => {
                         </Grid>
                     </Collapse>
                 </Grid>
-
                 <Grid item xs={12}>
-                    <span className="rob-nor bold size-15 color-4">HORARIO DE CONSULTA</span>
-                    <Divider />
+                    <MeditocSubtitulo title="HORARIO DE CONSULTA" />
                 </Grid>
                 <Grid item sm={6} xs={12}>
                     <DateTimePicker

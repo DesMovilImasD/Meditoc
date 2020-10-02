@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import MeditocModal from "../../../utilidades/MeditocModal";
-import { Grid, TextField, MenuItem, IconButton, Tooltip, Divider, Typography } from "@material-ui/core";
+import { Grid, TextField, MenuItem, IconButton, Tooltip, Divider, Typography, InputAdornment } from "@material-ui/core";
 import { useState } from "react";
 import MeditocTabHeader from "../../../utilidades/MeditocTabHeader";
 import MeditocTabBody from "../../../utilidades/MeditocTabBody";
@@ -14,10 +14,12 @@ import { rxCorreo } from "../../../../configurations/regexConfig";
 import ColaboradorController from "../../../../controllers/ColaboradorController";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import DateRangeIcon from "@material-ui/icons/DateRange";
 
 import { useEffect } from "react";
 import { FormatListBulleted } from "@material-ui/icons";
 import { EnumEspecialidadPrincipal, EnumTipoDoctor } from "../../../../configurations/enumConfig";
+import MeditocSubtitulo from "../../../utilidades/MeditocSubtitulo";
 
 const FormColaborador = (props) => {
     const {
@@ -785,7 +787,15 @@ const FormColaborador = (props) => {
                                         openTo="year"
                                         format="dd/MM/yyyy"
                                         views={["year", "month", "date"]}
-                                        InputAdornmentProps={{ position: "end" }}
+                                        InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <IconButton>
+                                                        <DateRangeIcon />
+                                                    </IconButton>
+                                                </InputAdornment>
+                                            ),
+                                        }}
                                         fullWidth
                                         required
                                         value={formColaborador.txtFechaNacimiento}
@@ -867,8 +877,7 @@ const FormColaborador = (props) => {
                                     </TextField>
                                 </Grid> */}
                                 <Grid item xs={12}>
-                                    <span className="rob-nor bold size-15 color-4">USUARIO TITULAR</span>
-                                    <Divider />
+                                    <MeditocSubtitulo title="USUARIO TITULAR" />
                                 </Grid>
                                 <Grid item sm={6} xs={12}>
                                     <TextField
@@ -930,8 +939,7 @@ const FormColaborador = (props) => {
                                 {entColaborador.iIdTipoDoctor === EnumTipoDoctor.Especialista ? (
                                     <Fragment>
                                         <Grid item xs={12}>
-                                            <span className="rob-nor bold size-15 color-4">USUARIO ADMINISTRATIVO</span>
-                                            <Divider />
+                                            <MeditocSubtitulo title="USUARIO ADMINISTRATIVO" />
                                         </Grid>
                                         <Grid item sm={6} xs={12}>
                                             <TextField

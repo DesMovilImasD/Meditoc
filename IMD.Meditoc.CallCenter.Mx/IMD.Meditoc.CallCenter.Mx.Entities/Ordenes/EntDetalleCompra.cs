@@ -31,7 +31,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Ordenes
         public string sDescripcion { get; set; }
         public double nPrecio { get; set; }
         public double nCantidad { get; set; }
-        public DateTime dtFechaVencimiento { get; set; }
+        public DateTime? dtFechaVencimiento { get; set; }
         public int iIdProducto { get; set; }
         public int iIndex { get; set; }
     }

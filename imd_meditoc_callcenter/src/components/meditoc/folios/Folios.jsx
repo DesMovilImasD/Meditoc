@@ -22,6 +22,7 @@ const Folios = (props) => {
         { title: "Origen", field: "sOrigen", align: "center" },
         { title: "Empresa", field: "sFolioEmpresa", align: "center" },
         { title: "Paciente", field: "sNombrePaciente", align: "center" },
+        { title: "Correo", field: "sCorreoPaciente", align: "center" },
         { title: "Creado", field: "sFechaCreacion", align: "center" },
         { title: "Vencimiento", field: "sFechaVencimiento", align: "center" },
     ];

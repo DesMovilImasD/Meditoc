@@ -448,7 +448,7 @@ namespace IMD.Admin.Conekta.Business
                 string origin = "conekta_service";
                 //using (TransactionScope scope = new TransactionScope())
                 //{
-                IMDResponse<bool> respuestaGuardarOrden = datOrder.DSaveConektaOrder(uid, entOrder, origin, entCreateOrder);
+                IMDResponse<bool> respuestaGuardarOrden = datOrder.DSaveConektaOrder(uid, entOrder, origin, entCreateOrder.iIdOrigen, entCreateOrder.coupon);
                 if (respuestaGuardarOrden.Code != 0)
                 {
                     return respuestaGuardarOrden;

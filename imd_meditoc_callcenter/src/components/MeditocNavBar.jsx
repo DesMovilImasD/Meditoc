@@ -23,7 +23,15 @@ const useStyles = makeStyles({
  * Invocado desde: ContentMain
  *************************************************************/
 const NavBar = (props) => {
-    const { toggleDrawer, setUsuarioSesion, setUsuarioActivo, usuarioSesion, funcLoader, funcAlert } = props;
+    const {
+        toggleDrawer,
+        setUsuarioSesion,
+        setUsuarioActivo,
+        usuarioSesion,
+        funcCerrarTodo,
+        funcLoader,
+        funcAlert,
+    } = props;
     const classes = useStyles();
 
     const history = useHistory();
@@ -49,6 +57,9 @@ const NavBar = (props) => {
         sessionStorage.removeItem("MeditocTkn");
         sessionStorage.removeItem("MeditocKey");
 
+        if (typeof funcCerrarTodo === "function") {
+            funcCerrarTodo();
+        }
         history.push("/");
 
         setUsuarioSesion({});

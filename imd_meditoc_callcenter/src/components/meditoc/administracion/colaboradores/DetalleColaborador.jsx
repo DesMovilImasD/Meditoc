@@ -3,6 +3,7 @@ import React from "react";
 import InfoField from "../../../utilidades/InfoField";
 import MeditocModal from "../../../utilidades/MeditocModal";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
+import MeditocSubtitulo from "../../../utilidades/MeditocSubtitulo";
 
 const DetalleColaborador = (props) => {
     const { entColaborador, open, setOpen } = props;
@@ -42,11 +43,10 @@ const DetalleColaborador = (props) => {
     // sUsuarioAdministrativo: "aortiz1";
     // sUsuarioTitular: "agongora";
     return (
-        <MeditocModal title="Detalle de colaborador" size="normal" open={open} setOpen={setOpen}>
+        <MeditocModal title="Detalle de colaborador" size="small" open={open} setOpen={setOpen}>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
-                    <span className="rob-nor bold size-15 color-4">DATOS DEL DIRECTORIO MÉDICO</span>
-                    <Divider />
+                    <MeditocSubtitulo title="DATOS DEL DIRECTORIO MÉDICO" />
                 </Grid>
                 <Grid item xs={6}>
                     <InfoField label="Nombre:" value={entColaborador.sNombreDirectorio} />
@@ -82,8 +82,7 @@ const DetalleColaborador = (props) => {
                     <InfoField label="Mapa:" value={entColaborador.sMaps} />
                 </Grid>
                 <Grid item xs={12}>
-                    <span className="rob-nor bold size-15 color-4">DATOS DE CUENTA</span>
-                    <Divider />
+                    <MeditocSubtitulo title="DATOS DE CUENTA" />
                 </Grid>
                 <Grid item xs={6}>
                     <InfoField label="Nombres:" value={entColaborador.sNombresDoctor} />
@@ -107,8 +106,7 @@ const DetalleColaborador = (props) => {
                     <InfoField label="Domicilio particular:" value={entColaborador.sDomicilioDoctor} />
                 </Grid>
                 <Grid item xs={12}>
-                    <span className="rob-nor bold size-15 color-4">USUARIOS</span>
-                    <Divider />
+                    <MeditocSubtitulo title="USUARIOS" />
                 </Grid>
                 <Grid item xs={6}>
                     <InfoField label="Titular:" value={entColaborador.sUsuarioTitular} />
