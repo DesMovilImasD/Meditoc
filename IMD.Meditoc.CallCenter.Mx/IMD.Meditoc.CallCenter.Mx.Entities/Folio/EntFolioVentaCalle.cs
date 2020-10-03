@@ -16,5 +16,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Folio
         public DateTime? dtFechaVencimiento { get; set; }
         public int iIdUsuarioMod { get; set; }
         public string sOrdenConekta { get; set; }
+        public bool bConfirmado { get; set; }
     }
 }

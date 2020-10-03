@@ -64,28 +64,59 @@ const ContentMain = (props) => {
                             <MeditocPortada />
                         </Route>
                         <Route exact path={urlSystem.configuracion.sistema}>
-                            <Sistema usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
+                            <Sistema
+                                usuarioSesion={usuarioSesion}
+                                funcLoader={funcLoader}
+                                funcAlert={funcAlert}
+                                title={usuarioPermisos.configuracion.sistema.name}
+                            />
                         </Route>
                         <Route exact path={urlSystem.configuracion.perfiles}>
-                            <Perfiles usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
+                            <Perfiles
+                                usuarioSesion={usuarioSesion}
+                                funcLoader={funcLoader}
+                                funcAlert={funcAlert}
+                                title={usuarioPermisos.configuracion.perfiles.name}
+                            />
                         </Route>
                         <Route exact path={urlSystem.configuracion.usuarios}>
-                            <Usuarios usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
+                            <Usuarios
+                                usuarioSesion={usuarioSesion}
+                                funcLoader={funcLoader}
+                                funcAlert={funcAlert}
+                                title={usuarioPermisos.configuracion.usuarios.name}
+                            />
                         </Route>
                         <Route exact path={urlSystem.administracion.productos}>
-                            <Productos usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
+                            <Productos
+                                usuarioSesion={usuarioSesion}
+                                funcLoader={funcLoader}
+                                funcAlert={funcAlert}
+                                title={usuarioPermisos.administracion.productos.name}
+                            />
                         </Route>
                         <Route exact path={urlSystem.administracion.institucion}>
-                            <Empresa usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
+                            <Empresa
+                                usuarioSesion={usuarioSesion}
+                                funcLoader={funcLoader}
+                                funcAlert={funcAlert}
+                                title={usuarioPermisos.administracion.empresa.name}
+                            />
                         </Route>
                         <Route exact path={urlSystem.administracion.cupones}>
-                            <Cupones usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
+                            <Cupones
+                                usuarioSesion={usuarioSesion}
+                                funcLoader={funcLoader}
+                                funcAlert={funcAlert}
+                                title={usuarioPermisos.administracion.cupones.name}
+                            />
                         </Route>
                         <Route exact path={urlSystem.administracion.colaboradores}>
                             <Colaboradores
                                 usuarioSesion={usuarioSesion}
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}
+                                title={usuarioPermisos.administracion.colaboradores.name}
                             />
                         </Route>
                         <Route exact path={urlSystem.administracion.especialidades}>
@@ -93,16 +124,23 @@ const ContentMain = (props) => {
                                 usuarioSesion={usuarioSesion}
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}
+                                title={usuarioPermisos.administracion.especialidades.name}
                             />
                         </Route>
                         <Route exact path={urlSystem.folios.folios}>
-                            <Folios usuarioSesion={usuarioSesion} funcLoader={funcLoader} funcAlert={funcAlert} />
+                            <Folios
+                                usuarioSesion={usuarioSesion}
+                                funcLoader={funcLoader}
+                                funcAlert={funcAlert}
+                                title={usuarioPermisos.folios.folios.name}
+                            />
                         </Route>
                         <Route exact path={urlSystem.callcenter.administrarConsultas}>
                             <Administrador
                                 usuarioSesion={usuarioSesion}
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}
+                                title={usuarioPermisos.callcenter.administrarconsultas.name}
                             />
                         </Route>
                         <Route exact path={urlSystem.callcenter.consultas}>
@@ -111,6 +149,7 @@ const ContentMain = (props) => {
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}
                                 setFuncCerrarTodo={setFuncCerrarTodo}
+                                title={usuarioPermisos.callcenter.consultas.name}
                             />
                         </Route>
                         <Route exact path={urlSystem.reportes.doctores}>
@@ -118,6 +157,7 @@ const ContentMain = (props) => {
                                 usuarioSesion={usuarioSesion}
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}
+                                title={usuarioPermisos.reportes.doctores.name}
                             />
                         </Route>
                         <Route exact path={urlSystem.reportes.ventas}>
@@ -125,6 +165,7 @@ const ContentMain = (props) => {
                                 usuarioSesion={usuarioSesion}
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}
+                                title={usuarioPermisos.reportes.ventas.name}
                             />
                         </Route>
                     </Switch>

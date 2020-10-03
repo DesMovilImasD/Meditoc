@@ -23,7 +23,7 @@ import { EnumTipoProducto } from "../../../../configurations/enumConfig";
  * Invocado desde: ContentMain
  *************************************************************/
 const Productos = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert } = props;
+    const { usuarioSesion, funcLoader, funcAlert, title } = props;
 
     const productoController = new ProductoController();
 
@@ -134,7 +134,7 @@ const Productos = (props) => {
 
     return (
         <Fragment>
-            <MeditocHeader1 title="PRODUCTOS">
+            <MeditocHeader1 title={title}>
                 <Tooltip title="Nuevo producto" arrow>
                     <IconButton onClick={handleClickNuevoProducto}>
                         <AddIcon className="color-0" />

@@ -21,7 +21,7 @@ import DetalleColaborador from "./DetalleColaborador";
 import { EnumTipoDoctor } from "../../../../configurations/enumConfig";
 
 const Colaboradores = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert } = props;
+    const { usuarioSesion, funcLoader, funcAlert, title } = props;
 
     const especialidadController = new EspecialidadController();
     const colaboradorController = new ColaboradorController();
@@ -202,7 +202,7 @@ const Colaboradores = (props) => {
 
     return (
         <Fragment>
-            <MeditocHeader1 title="COLABORADORES">
+            <MeditocHeader1 title={title}>
                 <Tooltip title="Nuevo Colaborador CallCenter" arrow>
                     <IconButton onClick={handleClickNuevoColaboradorCallCenter}>
                         <PersonAddIcon className="color-0" />

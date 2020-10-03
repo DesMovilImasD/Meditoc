@@ -52,44 +52,44 @@ const MenuList = (props) => {
 
     return (
         <List component="div">
-            {usuarioPermisos.configuracion !== undefined && (
+            {usuarioPermisos.configuracion.set === true && (
                 <Fragment>
                     <ListItem button onClick={() => setOpenConfiguracion(!openConfiguracion)}>
                         <ListItemIcon>
                             <SettingsIcon className="color-0" />
                         </ListItemIcon>
-                        <ListItemText primary="Configuración" />
+                        <ListItemText primary={usuarioPermisos.configuracion.name} />
                         {openConfiguracion ? <ExpandLess /> : <ExpandMore />}
                     </ListItem>
                     <Collapse in={openConfiguracion} unmountOnExit>
                         <List component="div">
-                            {usuarioPermisos.configuracion.usuarios !== undefined && (
+                            {usuarioPermisos.configuracion.usuarios.set === true && (
                                 <Link to={urlSystem.configuracion.usuarios} className={classes.link}>
                                     <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
                                         <ListItemIcon>
                                             <GroupIcon className="color-0" />
                                         </ListItemIcon>
-                                        <ListItemText primary="Usuarios" />
+                                        <ListItemText primary={usuarioPermisos.configuracion.usuarios.name} />
                                     </ListItem>
                                 </Link>
                             )}
-                            {usuarioPermisos.configuracion.perfiles !== undefined && (
+                            {usuarioPermisos.configuracion.perfiles.set === true && (
                                 <Link to={urlSystem.configuracion.perfiles} className={classes.link}>
                                     <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
                                         <ListItemIcon>
                                             <VerifiedUserIcon className="color-0" />
                                         </ListItemIcon>
-                                        <ListItemText primary="Perfiles" />
+                                        <ListItemText primary={usuarioPermisos.configuracion.perfiles.name} />
                                     </ListItem>
                                 </Link>
                             )}
-                            {usuarioPermisos.configuracion.sistema !== undefined && (
+                            {usuarioPermisos.configuracion.sistema.set === true && (
                                 <Link to={urlSystem.configuracion.sistema} className={classes.link}>
                                     <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
                                         <ListItemIcon>
                                             <AccountTreeIcon className="color-0" />
                                         </ListItemIcon>
-                                        <ListItemText primary="Sistema" />
+                                        <ListItemText primary={usuarioPermisos.configuracion.sistema.name} />
                                     </ListItem>
                                 </Link>
                             )}
@@ -97,64 +97,64 @@ const MenuList = (props) => {
                     </Collapse>
                 </Fragment>
             )}
-            {usuarioPermisos.administracion !== undefined && (
+            {usuarioPermisos.administracion.set === true && (
                 <Fragment>
                     <ListItem button onClick={() => setOpenAdministracion(!openAdministracion)}>
                         <ListItemIcon>
                             <WorkIcon className="color-0" />
                         </ListItemIcon>
-                        <ListItemText primary="Administración" />
+                        <ListItemText primary={usuarioPermisos.administracion.name} />
                         {openAdministracion ? <ExpandLess /> : <ExpandMore />}
                     </ListItem>
                     <Collapse in={openAdministracion} unmountOnExit>
                         <List component="div">
-                            {usuarioPermisos.administracion.colaboradores !== undefined && (
+                            {usuarioPermisos.administracion.colaboradores.set === true && (
                                 <Link to={urlSystem.administracion.colaboradores} className={classes.link}>
                                     <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
                                         <ListItemIcon>
                                             <AssignmentIndIcon className="color-0" />
                                         </ListItemIcon>
-                                        <ListItemText primary="Colaboradores" />
+                                        <ListItemText primary={usuarioPermisos.administracion.colaboradores.name} />
                                     </ListItem>
                                 </Link>
                             )}
-                            {usuarioPermisos.administracion.empresa !== undefined && (
+                            {usuarioPermisos.administracion.empresa.set === true && (
                                 <Link to={urlSystem.administracion.institucion} className={classes.link}>
                                     <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
                                         <ListItemIcon>
                                             <BusinessIcon className="color-0" />
                                         </ListItemIcon>
-                                        <ListItemText primary="Empresas" />
+                                        <ListItemText primary={usuarioPermisos.administracion.empresa.name} />
                                     </ListItem>
                                 </Link>
                             )}
-                            {usuarioPermisos.administracion.productos !== undefined && (
+                            {usuarioPermisos.administracion.productos.set === true && (
                                 <Link to={urlSystem.administracion.productos} className={classes.link}>
                                     <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
                                         <ListItemIcon>
                                             <ShoppingCartIcon className="color-0" />
                                         </ListItemIcon>
-                                        <ListItemText primary="Productos" />
+                                        <ListItemText primary={usuarioPermisos.administracion.productos.name} />
                                     </ListItem>
                                 </Link>
                             )}
-                            {usuarioPermisos.administracion.cupones !== undefined && (
+                            {usuarioPermisos.administracion.cupones.set === true && (
                                 <Link to={urlSystem.administracion.cupones} className={classes.link}>
                                     <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
                                         <ListItemIcon>
                                             <LoyaltyIcon className="color-0" />
                                         </ListItemIcon>
-                                        <ListItemText primary="Cupones" />
+                                        <ListItemText primary={usuarioPermisos.administracion.cupones.name} />
                                     </ListItem>
                                 </Link>
                             )}
-                            {usuarioPermisos.administracion.especialidades !== undefined && (
+                            {usuarioPermisos.administracion.especialidades.set === true && (
                                 <Link to={urlSystem.administracion.especialidades} className={classes.link}>
                                     <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
                                         <ListItemIcon>
                                             <EmojiObjectsIcon className="color-0" />
                                         </ListItemIcon>
-                                        <ListItemText primary="Especialidades médicas" />
+                                        <ListItemText primary={usuarioPermisos.administracion.especialidades.name} />
                                     </ListItem>
                                 </Link>
                             )}
@@ -163,24 +163,24 @@ const MenuList = (props) => {
                 </Fragment>
             )}
 
-            {usuarioPermisos.folios !== undefined && (
+            {usuarioPermisos.folios.set === true && (
                 <Fragment>
                     <ListItem button onClick={() => setOpenFolios(!openFolios)}>
                         <ListItemIcon>
                             <GradeIcon className="color-0" />
                         </ListItemIcon>
-                        <ListItemText primary="Folios" />
+                        <ListItemText primary={usuarioPermisos.folios.name} />
                         {openFolios ? <ExpandLess /> : <ExpandMore />}
                     </ListItem>
                     <Collapse in={openFolios} unmountOnExit>
                         <List component="div">
-                            {usuarioPermisos.folios.folios !== undefined && (
+                            {usuarioPermisos.folios.folios.set === true && (
                                 <Link to={urlSystem.folios.folios} className={classes.link}>
                                     <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
                                         <ListItemIcon>
                                             <CardMembershipIcon className="color-0" />
                                         </ListItemIcon>
-                                        <ListItemText primary="Folios" />
+                                        <ListItemText primary={usuarioPermisos.folios.folios.name} />
                                     </ListItem>
                                 </Link>
                             )}
@@ -189,35 +189,35 @@ const MenuList = (props) => {
                 </Fragment>
             )}
 
-            {usuarioPermisos.callcenter !== undefined && (
+            {usuarioPermisos.callcenter.set === true && (
                 <Fragment>
                     <ListItem button onClick={() => setOpenCallCenter(!openCallCenter)}>
                         <ListItemIcon>
                             <CallIcon className="color-0" />
                         </ListItemIcon>
-                        <ListItemText primary="CallCenter" />
+                        <ListItemText primary={usuarioPermisos.callcenter.name} />
                         {openCallCenter ? <ExpandLess /> : <ExpandMore />}
                     </ListItem>
                     <Collapse in={openCallCenter} unmountOnExit>
                         <List component="div">
-                            {usuarioPermisos.callcenter.consultas !== undefined && (
+                            {usuarioPermisos.callcenter.consultas.set === true && (
                                 <Link to={urlSystem.callcenter.consultas} className={classes.link}>
                                     <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
                                         <ListItemIcon>
                                             <ContactPhoneIcon className="color-0" />
                                         </ListItemIcon>
-                                        <ListItemText primary="Consultas" />
+                                        <ListItemText primary={usuarioPermisos.callcenter.consultas.name} />
                                     </ListItem>
                                 </Link>
                             )}
 
-                            {usuarioPermisos.callcenter.administrarconsultas !== undefined && (
+                            {usuarioPermisos.callcenter.administrarconsultas.set === true && (
                                 <Link to={urlSystem.callcenter.administrarConsultas} className={classes.link}>
                                     <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
                                         <ListItemIcon>
                                             <AddIcCallIcon className="color-0" />
                                         </ListItemIcon>
-                                        <ListItemText primary="Administrar consultas" />
+                                        <ListItemText primary={usuarioPermisos.callcenter.administrarconsultas.name} />
                                     </ListItem>
                                 </Link>
                             )}
@@ -226,35 +226,35 @@ const MenuList = (props) => {
                 </Fragment>
             )}
 
-            {usuarioPermisos.reportes !== undefined && (
+            {usuarioPermisos.reportes.set === true && (
                 <Fragment>
                     <ListItem button onClick={() => setOpenReportes(!openReportes)}>
                         <ListItemIcon>
                             <PrintIcon className="color-0" />
                         </ListItemIcon>
-                        <ListItemText primary="Reportes" />
+                        <ListItemText primary={usuarioPermisos.reportes.name} />
                         {openReportes ? <ExpandLess /> : <ExpandMore />}
                     </ListItem>
                     <Collapse in={openReportes} unmountOnExit>
                         <List component="div">
-                            {usuarioPermisos.reportes.ventas !== undefined && (
+                            {usuarioPermisos.reportes.ventas.set === true && (
                                 <Link to={urlSystem.reportes.ordenes} className={classes.link}>
                                     <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
                                         <ListItemIcon>
                                             <LocalMallIcon className="color-0" />
                                         </ListItemIcon>
-                                        <ListItemText primary="Ventas" />
+                                        <ListItemText primary={usuarioPermisos.reportes.ventas.name} />
                                     </ListItem>
                                 </Link>
                             )}
 
-                            {usuarioPermisos.reportes.doctores !== undefined && (
+                            {usuarioPermisos.reportes.doctores.set === true && (
                                 <Link to={urlSystem.reportes.doctores} className={classes.link}>
                                     <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
                                         <ListItemIcon>
                                             <LocalHospitalIcon className="color-0" />
                                         </ListItemIcon>
-                                        <ListItemText primary="Doctores" />
+                                        <ListItemText primary={usuarioPermisos.reportes.doctores.name} />
                                     </ListItem>
                                 </Link>
                             )}

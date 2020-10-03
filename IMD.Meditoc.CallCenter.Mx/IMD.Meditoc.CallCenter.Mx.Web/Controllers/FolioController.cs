@@ -318,6 +318,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
+        [MeditocAuthentication]
+        [HttpPost]
+        [Route("Api/Folio/Verificar/Archivo")]
         public IMDResponse<EntFolioVerificarCarga> CVerificarFoliosArchivo([FromUri]int piIdEmpresa, [FromUri]int piIdProducto)
         {
             IMDResponse<EntFolioVerificarCarga> response = new IMDResponse<EntFolioVerificarCarga>();
@@ -340,6 +343,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
+        [MeditocAuthentication]
+        [HttpPost]
+        [Route("Api/Folio/Generar/Folio/Archivo")]
         public IMDResponse<bool> CGenerarFoliosArchivo([FromUri]int piIdEmpresa, [FromUri]int piIdProducto, [FromUri]int piIdUsuarioMod)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();

@@ -21,5 +21,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Folio
             entProducto = new EntProducto();
             entEmpresa = new EntEmpresa();
         }
+
+        //private iceServers: fm.icelink.IceServer[] = [
+        //    new fm.icelink.IceServer("stun:turn.frozenmountain.com:3478?transport=udp"),
+        //    // NB: The URL "turn:turn.icelink.fm:443" implies that the TURN server supports both UDP and TCP.
+        //    // If you want to restrict the network protocol, append "?transport=udp" or "?transport=tcp" to
+        //    // the URL, per RFC 7065: https://tools.ietf.org/html/rfc7065#section-3.1.
+        //    new fm.icelink.IceServer("turn:turn.frozenmountain.com:80?transport=udp", "test", "pa55w0rd!"),
+        //];
     }
 }

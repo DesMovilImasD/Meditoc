@@ -20,7 +20,7 @@ const theme = createMuiTheme({
   overrides: {
     MuiTooltip: {
       tooltip: {
-        fontSize: 13,
+        fontSize: 14,
       },
     },
   },

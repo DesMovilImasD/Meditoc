@@ -257,9 +257,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             return response;
         }
 
-        public IMDResponse<bool> DSaveFolioVC(int piIdEmpresa, int piIdProducto, int piIdOrigen, string psFolio, string psPassword, int piIdUsuarioMod, DateTime? pdtFechaVencimiento = null, string psOrdenConekta = null)
+        public IMDResponse<DataTable> DSaveFolioVC(int piIdEmpresa, int piIdProducto, int piIdOrigen, string psFolio, string psPassword, int piIdUsuarioMod, DateTime? pdtFechaVencimiento = null, string psOrdenConekta = null, bool? pbConfirmado = false)
         {
-            IMDResponse<bool> response = new IMDResponse<bool>();
+            IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
             string metodo = nameof(this.DSaveFolioVC);
             logger.Info(IMDSerialize.Serialize(67823458603873, $"Inicia {metodo}(int piIdEmpresa, int piIdProducto, int piIdOrigen, string psFolio, string psPassword, int piIdUsuarioMod)", piIdEmpresa, piIdProducto, piIdOrigen, psFolio, psPassword, piIdUsuarioMod));
@@ -274,10 +274,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
                     database.AddInParameter(dbCommand, "psFolio", DbType.String, psFolio);
                     database.AddInParameter(dbCommand, "psOrdenConekta", DbType.String, psOrdenConekta);
                     database.AddInParameter(dbCommand, "psPassword", DbType.String, psPassword);
+                    database.AddInParameter(dbCommand, "pbConfirmado", DbType.Boolean, pbConfirmado);
                     database.AddInParameter(dbCommand, "pdtFechaVencimiento", DbType.DateTime, pdtFechaVencimiento);
                     database.AddInParameter(dbCommand, "piIdUsuarioMod", DbType.Int32, piIdUsuarioMod);
 
-                    response = imdCommonData.DExecute(database, dbCommand);
+                    response = imdCommonData.DExecuteDT(database, dbCommand);
                 }
             }
             catch (Exception ex)

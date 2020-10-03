@@ -15,7 +15,7 @@ import EmpresaController from "../../../../controllers/EmpresaController";
 import ProductoController from "../../../../controllers/ProductoController";
 
 const Empresa = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert } = props;
+    const { usuarioSesion, funcLoader, funcAlert, title } = props;
 
     const empresaController = new EmpresaController();
     const productoController = new ProductoController();
@@ -107,7 +107,7 @@ const Empresa = (props) => {
 
     return (
         <Fragment>
-            <MeditocHeader1 title="EMPRESAS">
+            <MeditocHeader1 title={title}>
                 <Tooltip title="Nueva empresa" arrow>
                     <IconButton onClick={handleClickNuevaEmpresa}>
                         <AddRoundedIcon className="color-0" />

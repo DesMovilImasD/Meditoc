@@ -21,7 +21,7 @@ import UpdateIcon from "@material-ui/icons/Update";
 import MeditocSubtitulo from "../../../utilidades/MeditocSubtitulo";
 
 const Administrador = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert } = props;
+    const { usuarioSesion, funcLoader, funcAlert, title } = props;
 
     const colaboradorController = new ColaboradorController();
     const callcenterController = new CallCenterController();
@@ -177,7 +177,7 @@ const Administrador = (props) => {
 
     return (
         <Fragment>
-            <MeditocHeader1 title="ADMINISTRADOR CONSULTAS">
+            <MeditocHeader1 title={title}>
                 <Tooltip title="Nueva consulta" arrow>
                     <span>
                         <IconButton onClick={handleClickNuevaConsulta} disabled={usuarioColaborador === null}>

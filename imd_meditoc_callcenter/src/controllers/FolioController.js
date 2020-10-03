@@ -14,6 +14,8 @@ class FolioController {
     this.apiSaveVentaCalle = 'Api/Folio/Save/Folio/VentaCalle'
     this.apiVerificarVentaCalle = 'Api/Folio/Verificar/Folio/VentaCalle'
     this.apiDescargarPlantilla = 'Api/Folio/Get/Folio/VentaCalle/Plantilla'
+    this.apiVerificarArchivo = 'Api/Folio/Verificar/Archivo'
+    this.apiGenerarFolioArchivo = 'Api/Folio/Generar/Folio/Archivo'
   }
 
   async funcCrearFoliosEmpresa(entFolioEmpresa) {
@@ -122,6 +124,54 @@ class FolioController {
     } catch (error) {
       response.Code = -1
       response.Message = 'Ocurrió un error al intentar verificar los folios'
+    }
+    return response
+  }
+
+  async funcVerificarArchivo(
+    piIdEmpresa = 0,
+    piIdProducto = 0,
+    archivoFolios = new File(),
+  ) {
+    let response = { Code: 0, Message: '', Result: {} }
+    try {
+      const apiResponse = await fetch(
+        `${serverMain}${this.apiVerificarArchivo}?piIdEmpresa=${piIdEmpresa}&piIdProducto=${piIdProducto}`,
+        {
+          method: 'POST',
+          body: archivoFolios,
+          headers: MeditocHeaders,
+        },
+      )
+      response = await apiResponse.json()
+    } catch (error) {
+      response.Code = -1
+      response.Message = 'Ocurrió un error al intentar verificar el archivo'
+    }
+    return response
+  }
+
+  async funcGenerarFolioArchivo(
+    piIdEmpresa = 0,
+    piIdProducto = 0,
+    piIdUsuarioMod = 0,
+    archivoFolios = new File(),
+  ) {
+    let response = { Code: 0, Message: '', Result: false }
+    try {
+      const apiResponse = await fetch(
+        `${serverMain}${this.apiGenerarFolioArchivo}?piIdEmpresa=${piIdEmpresa}&piIdProducto=${piIdProducto}&piIdUsuarioMod=${piIdUsuarioMod}`,
+        {
+          method: 'POST',
+          body: archivoFolios,
+          headers: MeditocHeaders,
+        },
+      )
+      response = await apiResponse.json()
+    } catch (error) {
+      response.Code = -1
+      response.Message =
+        'Ocurrió un error al generar los folios desde el archivo'
     }
     return response
   }

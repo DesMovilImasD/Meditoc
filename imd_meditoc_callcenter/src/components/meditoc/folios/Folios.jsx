@@ -13,7 +13,7 @@ import PublishIcon from "@material-ui/icons/Publish";
 import CreateNewFolderIcon from "@material-ui/icons/CreateNewFolder";
 
 const Folios = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert } = props;
+    const { usuarioSesion, funcLoader, funcAlert, title } = props;
 
     const foliosController = new FolioController();
 
@@ -69,7 +69,7 @@ const Folios = (props) => {
 
     return (
         <Fragment>
-            <MeditocHeader1 title="FOLIOS">
+            <MeditocHeader1 title={title}>
                 <Tooltip title="Cargar folios de Venta Calle desde archivo" arrow>
                     <IconButton onClick={handleClickSubirArchivo}>
                         <CreateNewFolderIcon className="color-0" />

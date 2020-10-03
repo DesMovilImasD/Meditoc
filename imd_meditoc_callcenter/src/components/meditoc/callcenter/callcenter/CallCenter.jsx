@@ -109,6 +109,8 @@ const CallCenter = (props) => {
             }
 
             funcLoader();
+        } else {
+            setFolioEncontrado(null);
         }
         setModalBuscarFolioOpen(true);
     };
@@ -171,6 +173,26 @@ const CallCenter = (props) => {
             funcAlert("No se puede marcar como DISPONIBLE hasta que la consulta haya finalizado", "warning");
             return;
         }
+
+        const messageError = "No se puede marcar como DISPONIBLE hasta que la sala se haya cargado por completo";
+
+        if (disponible === true && online === true) {
+            const iframeickelink = document.getElementById("iframeickelink");
+            if (iframeickelink !== null) {
+                if (typeof iframeickelink.contentWindow.CallBack !== "function") {
+                    funcAlert(messageError, "warning");
+                    return;
+                }
+                if (typeof iframeickelink.contentWindow.CallBacks.FinalizarConsulta !== "function") {
+                    funcAlert(messageError, "warning");
+                    return;
+                }
+            } else {
+                funcAlert(messageError, "warning");
+                return;
+            }
+        }
+
         funcLoader(true, "Actualizando estatus...");
 
         const entOnlineMod = {
@@ -224,7 +246,16 @@ const CallCenter = (props) => {
             };
 
             const url = `${urlBase}/IceLink/index.html?var=${getUIID()}`;
-            setSalaIceLink(<iframe id="iframeickelink" src={url} width="100%" height="600px" scrolling="no"></iframe>);
+            setSalaIceLink(
+                <iframe
+                    id="iframeickelink"
+                    src={url}
+                    width="100%"
+                    height="600px"
+                    style={{ border: "none" }}
+                    scrolling="no"
+                ></iframe>
+            );
             await funcOnlineMod(false);
             setPopoverOcupadoInicio(true);
 
@@ -244,9 +275,7 @@ const CallCenter = (props) => {
         }
     };
 
-    const funcLimpiarChat = () => {
-        localStorage.removeItem("sFolio");
-
+    const funcLimpiarChat = async (finalizandoSesion = false) => {
         const iframeickelink = document.getElementById("iframeickelink");
         if (iframeickelink !== null) {
             if (typeof iframeickelink.contentWindow.CallBack === "function") {
@@ -256,6 +285,12 @@ const CallCenter = (props) => {
                 iframeickelink.contentWindow.CallBacks.FinalizarConsulta();
             }
         }
+
+        if (finalizandoSesion === false) {
+            await funcOnlineMod(true, true);
+        }
+
+        localStorage.removeItem("sFolio");
     };
 
     const handleClickFinalizarConsulta = async (cerrarVentana = false) => {
@@ -278,7 +313,7 @@ const CallCenter = (props) => {
                 setFolioEncontrado(null);
             }
 
-            funcLimpiarChat();
+            funcLimpiarChat(true);
             funcAlert(response.Message, "success");
         } else {
             funcAlert(response.Message);
@@ -397,7 +432,7 @@ const CallCenter = (props) => {
                         <Button
                             variant="contained"
                             className={classes.button}
-                            onClick={funcLimpiarChat}
+                            onClick={() => funcLimpiarChat()}
                             disabled={usuarioColaborador === null || consultaIniciada === true}
                         >
                             Reiniciar Chat
@@ -423,11 +458,11 @@ const CallCenter = (props) => {
             />
             <MeditocBody>
                 <Grid container spacing={3}>
-                    <Grid item sm={5} xs={12}>
+                    <Grid item md={5} xs={12}>
                         {salaIceLink}
                     </Grid>
                     {consultaIniciada === true && entCallCenter !== null ? (
-                        <Grid item sm={7} xs={12}>
+                        <Grid item md={7} xs={12}>
                             <FormCallCenter
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}

@@ -21,7 +21,7 @@ import { EnumPerfilesPrincipales } from "../../../../configurations/enumConfig";
  * Invocado desde: ContentMain
  *************************************************************/
 const Perfiles = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert } = props;
+    const { usuarioSesion, funcLoader, funcAlert, title } = props;
 
     //Servicios API
     const cguController = new CGUController();
@@ -174,7 +174,7 @@ const Perfiles = (props) => {
 
     return (
         <Fragment>
-            <MeditocHeader1 title="PERFILES">
+            <MeditocHeader1 title={title}>
                 <Tooltip title="Nuevo perfil" arrow>
                     <IconButton onClick={handleClickNuevoPerfil}>
                         <AddRoundedIcon className="color-0" />

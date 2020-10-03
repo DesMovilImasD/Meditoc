@@ -9,6 +9,7 @@ import CGUController from "../../controllers/CGUController";
 import { EnumPerfilesPrincipales, EnumSistema } from "../../configurations/enumConfig";
 import { useHistory } from "react-router-dom";
 import { urlSystem } from "../../configurations/urlConfig";
+import permisosSistema from "../../configurations/systemConfig";
 
 const useStyles = makeStyles(() => ({
     button: {
@@ -97,118 +98,175 @@ const Login = (props) => {
     const funcSetPermisos = (iIdPerfil = 0, lstPermisos = []) => {
         let permisos = {};
 
+        let usuarioPermisos = { ...permisosSistema };
+
         const moduloConfiguracion = lstPermisos.find((x) => x.iIdModulo === EnumSistema.Configuracion); //Configuraciones
         if (moduloConfiguracion !== undefined) {
-            permisos.configuracion = {};
+            // usuarioPermisos.configuracion = {};
+            // usuarioPermisos.configuracion.Name = moduloConfiguracion.sNombre;
+            usuarioPermisos.configuracion.set = true;
+            usuarioPermisos.configuracion.name = moduloConfiguracion.sNombre;
 
             const submoduloUsuarios = moduloConfiguracion.lstSubModulo.find(
                 (x) => x.iIdSubModulo === EnumSistema.ConfiguracionSM.Usuarios
             ); //Configuraciones > Usuarios
             if (submoduloUsuarios !== undefined) {
-                permisos.configuracion.usuarios = true;
+                // permisos.configuracion.usuarios = {};
+                // permisos.configuracion.usuarios.Name = submoduloUsuarios.sNombre;
+                usuarioPermisos.configuracion.usuarios.set = true;
+                usuarioPermisos.configuracion.usuarios.name = submoduloUsuarios.sNombre;
             }
 
             const submoduloPerfiles = moduloConfiguracion.lstSubModulo.find(
                 (x) => x.iIdSubModulo === EnumSistema.ConfiguracionSM.Perfiles
             ); //Configuraciones > Perfiles
             if (submoduloPerfiles !== undefined) {
-                permisos.configuracion.perfiles = true;
+                // permisos.configuracion.perfiles = {};
+                // permisos.configuracion.perfiles.Name = submoduloPerfiles.sNombre;
+                usuarioPermisos.configuracion.perfiles.set = true;
+                usuarioPermisos.configuracion.perfiles.name = submoduloPerfiles.sNombre;
             }
 
             const submoduloSistema = moduloConfiguracion.lstSubModulo.find(
                 (x) => x.iIdSubModulo === EnumSistema.ConfiguracionSM.Sistema
             ); //Configuraciones > Perfiles
             if (submoduloSistema !== undefined) {
-                permisos.configuracion.sistema = true;
+                // permisos.configuracion.sistema = {};
+                // permisos.configuracion.sistema.Name = submoduloSistema.sNombre;
+                usuarioPermisos.configuracion.sistema.set = true;
+                usuarioPermisos.configuracion.sistema.name = submoduloSistema.sNombre;
             }
         }
 
         const moduloAdministracion = lstPermisos.find((x) => x.iIdModulo === EnumSistema.Administracion); //Administracion
         if (moduloAdministracion !== undefined) {
-            permisos.administracion = {};
+            // permisos.administracion = {};
+            // permisos.administracion.Name = moduloAdministracion.sNombre;
+            usuarioPermisos.administracion.set = true;
+            usuarioPermisos.administracion.name = moduloAdministracion.sNombre;
 
             const submoduloColaboradores = moduloAdministracion.lstSubModulo.find(
                 (x) => x.iIdSubModulo === EnumSistema.AdministracionSM.Colaboradores
             ); //Administracion > Colaboradores
             if (submoduloColaboradores !== undefined) {
-                permisos.administracion.colaboradores = true;
+                // permisos.administracion.colaboradores = {};
+                // permisos.administracion.colaboradores.Name = submoduloColaboradores.sNombre;
+                usuarioPermisos.administracion.colaboradores.set = true;
+                usuarioPermisos.administracion.colaboradores.name = submoduloColaboradores.sNombre;
             }
 
             const submoduloEmpresa = moduloAdministracion.lstSubModulo.find(
                 (x) => x.iIdSubModulo === EnumSistema.AdministracionSM.Empresa
             ); //Administracion > Empresa
             if (submoduloEmpresa !== undefined) {
-                permisos.administracion.empresa = true;
+                // permisos.administracion.empresa = {};
+                // permisos.administracion.empresa.Name = submoduloEmpresa.sNombre;
+                usuarioPermisos.administracion.empresa.set = true;
+                usuarioPermisos.administracion.empresa.name = submoduloEmpresa.sNombre;
             }
 
             const submoduloProductos = moduloAdministracion.lstSubModulo.find(
                 (x) => x.iIdSubModulo === EnumSistema.AdministracionSM.Productos
             ); //Administracion > Productos
             if (submoduloProductos !== undefined) {
-                permisos.administracion.productos = true;
+                // permisos.administracion.productos = {};
+                // permisos.administracion.productos.Name = submoduloProductos.sNombre;
+                usuarioPermisos.administracion.productos.set = true;
+                usuarioPermisos.administracion.productos.name = submoduloProductos.sNombre;
             }
 
             const submoduloCupones = moduloAdministracion.lstSubModulo.find(
                 (x) => x.iIdSubModulo === EnumSistema.AdministracionSM.Cupones
             ); //Administracion > Cupones
             if (submoduloCupones !== undefined) {
-                permisos.administracion.cupones = true;
+                // permisos.administracion.cupones = {};
+                // permisos.administracion.cupones.Name = submoduloCupones.sNombre;
+                usuarioPermisos.administracion.cupones.set = true;
+                usuarioPermisos.administracion.cupones.name = submoduloCupones.sNombre;
             }
 
             const submoduloEspecialidades = moduloAdministracion.lstSubModulo.find(
                 (x) => x.iIdSubModulo === EnumSistema.AdministracionSM.Especialidades
             ); //Administracion > Especialidades
             if (submoduloEspecialidades !== undefined) {
-                permisos.administracion.especialidades = true;
+                // permisos.administracion.especialidades = {};
+                // permisos.administracion.especialidades.Name = submoduloEspecialidades.sNombre;
+                usuarioPermisos.administracion.especialidades.set = true;
+                usuarioPermisos.administracion.especialidades.name = submoduloEspecialidades.sNombre;
             }
         }
 
         const moduloFolios = lstPermisos.find((x) => x.iIdModulo === EnumSistema.Folios); // Folios
         if (moduloFolios !== undefined) {
-            permisos.folios = {};
+            // permisos.folios = {};
+            // permisos.folios.Name = moduloFolios.sNombre;
+            usuarioPermisos.folios.set = true;
+            usuarioPermisos.folios.name = moduloFolios.sNombre;
+
             const submoduloFolios = moduloFolios.lstSubModulo.find(
                 (x) => x.iIdSubModulo === EnumSistema.FoliosSM.Folios
             ); //Folios > Folios
             if (submoduloFolios !== undefined) {
-                permisos.folios.folios = true;
+                // permisos.folios.folios = {};
+                // permisos.folios.folios.Name = submoduloFolios.sNombre;
+                usuarioPermisos.folios.folios.set = true;
+                usuarioPermisos.folios.folios.name = submoduloFolios.sNombre;
             }
         }
 
         const moduloCallCenter = lstPermisos.find((x) => x.iIdModulo === EnumSistema.CallCenter); //CallCenter
         if (moduloCallCenter !== undefined) {
-            permisos.callcenter = {};
+            // permisos.callcenter = {};
+            // permisos.callcenter.Name = moduloCallCenter.sNombre;
+            usuarioPermisos.callcenter.set = true;
+            usuarioPermisos.callcenter.name = moduloCallCenter.sNombre;
 
             const submoduloConsultas = moduloCallCenter.lstSubModulo.find(
                 (x) => x.iIdSubModulo === EnumSistema.CallCenterSM.Consultas
             ); //CallCenter > Consultas
             if (submoduloConsultas !== undefined) {
-                permisos.callcenter.consultas = true;
+                // permisos.callcenter.consultas = {};
+                // permisos.callcenter.consultas.Name = submoduloConsultas.sNombre;
+                usuarioPermisos.callcenter.consultas.set = true;
+                usuarioPermisos.callcenter.consultas.name = submoduloConsultas.sNombre;
             }
 
             const submoduloAdministrarConsultas = moduloCallCenter.lstSubModulo.find(
                 (x) => x.iIdSubModulo === EnumSistema.CallCenterSM.AdministrarConsultas
             ); //CallCenter > Administrar consultas
             if (submoduloAdministrarConsultas !== undefined) {
-                permisos.callcenter.administrarconsultas = true;
+                // permisos.callcenter.administrarconsultas = {};
+                // permisos.callcenter.administrarconsultas.Name = submoduloAdministrarConsultas.sNombre;
+                usuarioPermisos.callcenter.administrarconsultas.set = true;
+                usuarioPermisos.callcenter.administrarconsultas.name = submoduloAdministrarConsultas.sNombre;
             }
         }
 
         const moduloReportes = lstPermisos.find((x) => x.iIdModulo === EnumSistema.Reportes); //Reportes
         if (moduloReportes !== undefined) {
-            permisos.reportes = {};
+            // permisos.reportes = {};
+            // permisos.reportes.Name = moduloReportes.sNombre;
+            usuarioPermisos.reportes.set = true;
+            usuarioPermisos.reportes.name = moduloReportes.sNombre;
 
             const submoduloVentas = moduloReportes.lstSubModulo.find(
                 (x) => x.iIdSubModulo === EnumSistema.ReportesSM.Ventas
             ); //Reportes > Ventas
             if (submoduloVentas !== undefined) {
-                permisos.reportes.ventas = true;
+                // permisos.reportes.ventas = {};
+                // permisos.reportes.ventas.Name = submoduloVentas.sNombre;
+                usuarioPermisos.reportes.ventas.set = true;
+                usuarioPermisos.reportes.ventas.name = submoduloVentas.sNombre;
             }
 
             const submoduloDoctores = moduloReportes.lstSubModulo.find(
                 (x) => x.iIdSubModulo === EnumSistema.ReportesSM.Doctores
             ); //Reportes > Doctores
             if (submoduloDoctores !== undefined) {
-                permisos.reportes.doctores = true;
+                // permisos.reportes.doctores = {};
+                // permisos.reportes.doctores.Name = submoduloDoctores.sNombre;
+                usuarioPermisos.reportes.doctores.set = true;
+                usuarioPermisos.reportes.doctores.name = submoduloDoctores.sNombre;
             }
         }
 
@@ -237,7 +295,7 @@ const Login = (props) => {
                 break;
         }
 
-        setUsuarioPermisos(permisos);
+        setUsuarioPermisos(usuarioPermisos);
     };
 
     const handleSubmitFormLogin = (e) => {

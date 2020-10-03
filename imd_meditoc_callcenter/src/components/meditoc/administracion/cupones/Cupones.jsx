@@ -14,7 +14,7 @@ import { useEffect } from "react";
 import { EnumCuponCategoria } from "../../../../configurations/enumConfig";
 
 const Cupones = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert } = props;
+    const { usuarioSesion, funcLoader, funcAlert, title } = props;
 
     const promocionesController = new PromocionesController();
 
@@ -110,7 +110,7 @@ const Cupones = (props) => {
 
     return (
         <Fragment>
-            <MeditocHeader1 title="CUPONES">
+            <MeditocHeader1 title={title}>
                 <Tooltip title="Crear un cupón" arrow>
                     <IconButton onClick={handleClickCrearCupon}>
                         <AddRoundedIcon className="color-0" />

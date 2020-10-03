@@ -1881,21 +1881,26 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 entFolioVentaCalle.sPassword = busUsuario.BEncodePassword(entFolioVentaCalle.sPassword);
 
-                IMDResponse<bool> resSaveFolio = datFolio.DSaveFolioVC(
+                IMDResponse<DataTable> resSaveFolio = datFolio.DSaveFolioVC(
                     entFolioVentaCalle.iIdEmpresa,
                     entFolioVentaCalle.iIdProducto,
                     entFolioVentaCalle.iIdOrigen,
                     entFolioVentaCalle.sFolio,
                     entFolioVentaCalle.sPassword,
-                    entFolioVentaCalle.iIdUsuarioMod);
+                    entFolioVentaCalle.iIdUsuarioMod,
+                    entFolioVentaCalle.dtFechaVencimiento,
+                    entFolioVentaCalle.sOrdenConekta,
+                    entFolioVentaCalle.bConfirmado);
                 if (resSaveFolio.Code != 0)
                 {
-                    return resSaveFolio;
+                    return resSaveFolio.GetResponse<bool>();
                 }
+
+                bool bIsNew = Convert.ToBoolean(Convert.ToInt32(resSaveFolio.Result.Rows[0]["bIsNew"].ToString()));
 
                 response.Code = 0;
                 response.Message = "El folio se guardó correctamente";
-                response.Result = true;
+                response.Result = bIsNew;
             }
             catch (Exception ex)
             {
@@ -2073,7 +2078,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     object[,] values = (object[,])hojaFolios.Cells.Value;
 
                     int columns = values.GetLength(1);
-                    if (columns != 38)
+                    if (columns != 39)
                     {
                         response.Code = -823782734234;
                         response.Message = "Se ha cargado un archivo que no coincide con la plantilla de carga de folios";
@@ -2086,8 +2091,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                         //1, 2 // 9, 10 // 17, 18 // 25, 26 // 33, 34
                         for (int j = 0; j < 5; j++)
                         {
-                            string folio = values[i, j * 8 + 1].ToString();
-                            string passw = values[i, j * 8 + 2].ToString();
+                            string folio = values[i, j * 8 + 1]?.ToString();
+                            if (string.IsNullOrWhiteSpace(folio))
+                            {
+                                continue;
+                            }
+                            string passw = values[i, j * 8 + 2]?.ToString();
 
                             if (!string.IsNullOrWhiteSpace(folio) && string.IsNullOrWhiteSpace(passw))
                             {
@@ -2162,34 +2171,51 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     }
                 };
 
-                Guid tempOrderUID = new Guid();
+                Guid tempOrderUID = Guid.NewGuid();
+                int qty = 0;
 
-                foreach (EntFolioUser folio in data.lstFolios)
+                using (TransactionScope scope = new TransactionScope())
                 {
-                    EntFolioVentaCalle entFolioVentaCalle = new EntFolioVentaCalle
+                    foreach (EntFolioUser folio in data.lstFolios)
                     {
-                        iIdEmpresa = data.entEmpresa.iIdEmpresa,
-                        iIdOrigen = entFolioxEmpresa.iIdOrigen,
-                        iIdProducto = data.entProducto.iIdProducto,
-                        iIdUsuarioMod = piIdUsuarioMod,
-                        sFolio = folio.sFolio,
-                        sPassword = folio.sPassword,
-                        dtFechaVencimiento = Enum.IsDefined(typeof(EnumProductos), data.entProducto.iIdProducto) ? (DateTime?)null : data.entProducto.iMesVigencia == 0 ? DateTime.Now.AddDays(Convert.ToInt16(ConfigurationManager.AppSettings["iDiasDespuesVencimiento"])) : DateTime.Now.AddMonths(data.entProducto.iMesVigencia),
-                        sOrdenConekta = tempOrderUID.ToString()
-                    };
+                        EntFolioVentaCalle entFolioVentaCalle = new EntFolioVentaCalle
+                        {
+                            iIdEmpresa = data.entEmpresa.iIdEmpresa,
+                            iIdOrigen = entFolioxEmpresa.iIdOrigen,
+                            iIdProducto = data.entProducto.iIdProducto,
+                            iIdUsuarioMod = piIdUsuarioMod,
+                            sFolio = folio.sFolio,
+                            sPassword = folio.sPassword,
+                            dtFechaVencimiento = Enum.IsDefined(typeof(EnumProductos), data.entProducto.iIdProducto) ? (DateTime?)null : data.entProducto.iMesVigencia == 0 ? DateTime.Now.AddDays(Convert.ToInt16(ConfigurationManager.AppSettings["iDiasDespuesVencimiento"])) : DateTime.Now.AddMonths(data.entProducto.iMesVigencia),
+                            sOrdenConekta = tempOrderUID.ToString(),
+                            bConfirmado = Enum.IsDefined(typeof(EnumProductos), data.entProducto.iIdProducto) && data.entProducto.iIdProducto != (int)EnumProductos.OrientacionEspecialistaID ? false : true
+                        };
 
-                    IMDResponse<bool> resSaveFolio = this.BSaveFolioVC(entFolioVentaCalle);
-                    if (resSaveFolio.Code != 0)
-                    {
-                        resSaveFolio.Message = $"El folio {entFolioVentaCalle.sFolio} con contraseña {entFolioVentaCalle.sPassword} no se pudo guardar. Verifique los datos y cargue el archivo nuevamente. El proceso de guardado se ha detenido";
-                        return resSaveFolio;
+                        IMDResponse<bool> resSaveFolio = this.BSaveFolioVC(entFolioVentaCalle);
+                        if (resSaveFolio.Code != 0)
+                        {
+                            resSaveFolio.Message = $"El folio {entFolioVentaCalle.sFolio} con contraseña {entFolioVentaCalle.sPassword} no se pudo guardar. Verifique los datos y cargue el archivo nuevamente. El proceso de guardado se ha detenido";
+                            return resSaveFolio;
+                        }
+                        if (resSaveFolio.Result)
+                        {
+                            qty++;
+                        }
                     }
+
+                    scope.Complete();
                 }
 
-                IMDResponse<bool> resSaveOrder = this.BSaveOrderEmpresa(entFolioxEmpresa, data.entEmpresa, tempOrderUID);
-                if (resSaveOrder.Code != 0)
+
+                if (qty > 0)
                 {
-                    return resSaveOrder;
+                    entFolioxEmpresa.lstLineItems[0].quantity = qty;
+
+                    IMDResponse<bool> resSaveOrder = this.BSaveOrderEmpresa(entFolioxEmpresa, data.entEmpresa, tempOrderUID);
+                    if (resSaveOrder.Code != 0)
+                    {
+                        return resSaveOrder;
+                    }
                 }
 
                 response.Code = 0;

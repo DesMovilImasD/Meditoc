@@ -14,7 +14,7 @@ import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 import { EnumEspecialidadPrincipal } from "../../../../configurations/enumConfig";
 
 const Especialidades = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert } = props;
+    const { usuarioSesion, funcLoader, funcAlert, title } = props;
     const especialidadController = new EspecialidadController();
     const especialidadEntidadVacia = { iIdEspecialidad: 0, sNombre: "" };
 
@@ -100,7 +100,7 @@ const Especialidades = (props) => {
     }, []);
     return (
         <Fragment>
-            <MeditocHeader1 title="ESPECIALIDADES">
+            <MeditocHeader1 title={title}>
                 <Tooltip title="Añadir nueva especialidad" arrow>
                     <IconButton onClick={handleClickNuevaEspecialidad}>
                         <AddRoundedIcon className="color-0" />

@@ -17,7 +17,7 @@ import MeditocModalBotones from "../../utilidades/MeditocModalBotones";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 
 const ReportesDoctores = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert } = props;
+    const { usuarioSesion, funcLoader, funcAlert, title } = props;
 
     const reportesController = new ReportesController();
     const especialidadController = new EspecialidadController();
@@ -159,7 +159,7 @@ const ReportesDoctores = (props) => {
 
     return (
         <Fragment>
-            <MeditocHeader1 title="REPORTES DOCTORES">
+            <MeditocHeader1 title={title}>
                 {/* <Tooltip title="Ver detalle">
                     <IconButton onClick={funcAbrirDetalle}>
                         <VisibilityIcon className="color-0" />

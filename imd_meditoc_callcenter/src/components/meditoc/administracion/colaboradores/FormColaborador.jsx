@@ -10,12 +10,12 @@ import BackupIcon from "@material-ui/icons/Backup";
 import InputTelefono from "../../../utilidades/InputTelefono";
 import { DatePicker } from "@material-ui/pickers";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
-import { rxCorreo } from "../../../../configurations/regexConfig";
+import { rxCorreo, rxUrl } from "../../../../configurations/regexConfig";
 import ColaboradorController from "../../../../controllers/ColaboradorController";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import DateRangeIcon from "@material-ui/icons/DateRange";
-
+import InfoIcon from "@material-ui/icons/Info";
 import { useEffect } from "react";
 import { FormatListBulleted } from "@material-ui/icons";
 import { EnumEspecialidadPrincipal, EnumTipoDoctor } from "../../../../configurations/enumConfig";
@@ -166,7 +166,7 @@ const FormColaborador = (props) => {
             case "txtWhatsApp":
                 if (!formColaboradorOK.txtWhatsApp) {
                     const telefonoValidacion = campoValor.replace(/ /g, "");
-                    if (telefonoValidacion !== "" && telefonoValidacion.length === 10) {
+                    if (telefonoValidacion === "" || telefonoValidacion.length === 10) {
                         setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
                     }
                 }
@@ -194,6 +194,22 @@ const FormColaborador = (props) => {
             case "txtNumeroSala":
                 if (!formColaboradorOK.txtNumeroSala) {
                     if (campoValor !== "") {
+                        setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
+                    }
+                }
+                break;
+
+            case "txtUrlDoctor":
+                if (!formColaboradorOK.txtUrlDoctor) {
+                    if (campoValor === "" || rxUrl.test(campoValor)) {
+                        setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
+                    }
+                }
+                break;
+
+            case "txtMapsDoctor":
+                if (!formColaboradorOK.txtMapsDoctor) {
+                    if (campoValor === "" || rxUrl.test(campoValor)) {
                         setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
                     }
                 }
@@ -359,6 +375,20 @@ const FormColaborador = (props) => {
         if (formColaborador.txtNumeroSala === "") {
             formColaboradorOKValidacion.txtNumeroSala = false;
             errorDatosDoctor = true;
+        }
+
+        if (formColaborador.txtUrlDoctor !== "") {
+            if (!rxUrl.test(formColaborador.txtUrlDoctor)) {
+                formColaboradorOKValidacion.txtUrlDoctor = false;
+                errorDatosDoctor = true;
+            }
+        }
+
+        if (formColaborador.txtMapsDoctor !== "") {
+            if (!rxUrl.test(formColaborador.txtMapsDoctor)) {
+                formColaboradorOKValidacion.txtMapsDoctor = false;
+                errorDatosDoctor = true;
+            }
         }
 
         if (formColaborador.txtNombreDoctor === "") {
@@ -699,16 +729,54 @@ const FormColaborador = (props) => {
                                         fullWidth
                                         value={formColaborador.txtUrlDoctor}
                                         onChange={handleChangeFormColaborador}
+                                        error={!formColaboradorOK.txtUrlDoctor}
+                                        helperText={
+                                            !formColaboradorOK.txtUrlDoctor
+                                                ? "Ingrese una URL válida. Debe comenzar con http o https."
+                                                : ""
+                                        }
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
                                         name="txtMapsDoctor"
-                                        label="Ubicación en maps:"
+                                        label="Ubicación en Google Maps:"
                                         variant="outlined"
+                                        placeholder="Ejemplo: https://goo.gl/maps/oD3FDomx7WVGRHN39"
                                         fullWidth
                                         value={formColaborador.txtMapsDoctor}
                                         onChange={handleChangeFormColaborador}
+                                        error={!formColaboradorOK.txtMapsDoctor}
+                                        helperText={
+                                            !formColaboradorOK.txtMapsDoctor
+                                                ? "Ingrese una URL de Google Maps válida. Debe comenzar con http o https."
+                                                : ""
+                                        }
+                                        InputProps={{
+                                            endAdornment: (
+                                                <Tooltip
+                                                    title={
+                                                        <Fragment>
+                                                            Para obtener su enlace de ubicación
+                                                            <br />
+                                                            1. Ingrese a maps.google.com.mx
+                                                            <br />
+                                                            2. Localice la ubicación de su consultorio
+                                                            <br />
+                                                            3. Seleccione Compartir del ménu lateral izquierdo
+                                                            <br />
+                                                            4. Seleccione en Copiar Vínculo
+                                                        </Fragment>
+                                                    }
+                                                    placement="top"
+                                                    arrow
+                                                >
+                                                    <IconButton>
+                                                        <InfoIcon />
+                                                    </IconButton>
+                                                </Tooltip>
+                                            ),
+                                        }}
                                     />
                                 </Grid>
                                 {/* <Grid item xs={12}>

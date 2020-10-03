@@ -261,7 +261,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                         sCedulaProfecional = dr.ConvertTo<string>("sCedulaProfecional"),
                         sCorreoDirectorio = dr.ConvertTo<string>("sCorreo"),
                         sCorreoDoctor = dr.ConvertTo<string>("sCorreoDoctor"),
-                        sDireccionConsultorio = dr.ConvertTo<string>("sCorreoDoctor"),
+                        sDireccionConsultorio = dr.ConvertTo<string>("sDireccionConsultorio"),
                         sDomicilioDoctor = dr.ConvertTo<string>("sDomicilioDoctor"),
                         sEspecialidad = dr.ConvertTo<string>("sEspecialidad"),
                         sFechaCreacion = string.Empty,

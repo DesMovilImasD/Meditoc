@@ -21,7 +21,7 @@ import { Autocomplete } from "@material-ui/lab";
 import MeditocModalBotones from "../../utilidades/MeditocModalBotones";
 
 const ReportesVentas = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert } = props;
+    const { usuarioSesion, funcLoader, funcAlert, title } = props;
 
     const reportesController = new ReportesController();
     const promocionesController = new PromocionesController();
@@ -133,7 +133,7 @@ const ReportesVentas = (props) => {
 
     return (
         <Fragment>
-            <MeditocHeader1 title="REPORTES VENTAS">
+            <MeditocHeader1 title={title}>
                 {/* <Tooltip title="Ver detalle">
                     <IconButton>
                         <FormatListBulletedIcon className="color-0" />

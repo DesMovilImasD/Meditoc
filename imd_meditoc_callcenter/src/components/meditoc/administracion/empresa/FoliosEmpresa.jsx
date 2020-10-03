@@ -14,7 +14,10 @@ import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 import MeditocHeader2 from "../../../utilidades/MeditocHeader2";
 import MeditocHeader3 from "../../../utilidades/MeditocHeader3";
 import FolioController from "../../../../controllers/FolioController";
+import CreateNewFolderIcon from "@material-ui/icons/CreateNewFolder";
 import { useEffect } from "react";
+import FormCargarArchivo from "./FormCargarArchivo";
+import GetAppIcon from "@material-ui/icons/GetApp";
 
 const FoliosEmpresa = (props) => {
     const { entEmpresa, open, setOpen, listaProductos, usuarioSesion, funcLoader, funcAlert } = props;
@@ -36,6 +39,11 @@ const FoliosEmpresa = (props) => {
     const [modalAgregarFoliosOpen, setModalAgregarFoliosOpen] = useState(false);
     const [modalAgregarVigenciaOpen, setModalAgregarVigenciaOpen] = useState(false);
     const [modalEliminarFoliosOpen, setModalEliminarFoliosOpen] = useState(false);
+
+    const [formSubirArchivoOpen, setFormSubirArchivoOpen] = useState(false);
+    const handleClickSubirArchivo = () => {
+        setFormSubirArchivoOpen(true);
+    };
 
     const handleClickAgregarFolios = () => {
         setModalAgregarFoliosOpen(true);
@@ -93,6 +101,19 @@ const FoliosEmpresa = (props) => {
         funcLoader();
     };
 
+    const handleClickDescargarPlantilla = async () => {
+        funcLoader(true, "Descargando plantilla...");
+
+        const response = await folioController.funcDescargarPlantilla();
+
+        if (response.Code === 0) {
+            funcAlert(response.Message, "success");
+        } else {
+            funcAlert(response.Message);
+        }
+        funcLoader();
+    };
+
     useEffect(() => {
         if (open === true) {
             funcGetFoliosEmpresa();
@@ -116,6 +137,16 @@ const FoliosEmpresa = (props) => {
                         <Tooltip title="Modificar vigencia a folios seleccionados" arrow>
                             <IconButton onClick={handleClickModificarVigencia}>
                                 <EventAvailableRoundedIcon className="color-1" />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Cargar folios desde archivo" arrow>
+                            <IconButton onClick={handleClickSubirArchivo}>
+                                <CreateNewFolderIcon className="color-1" />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Descargar plantilla para cargar folios desde archivo" arrow>
+                            <IconButton onClick={handleClickDescargarPlantilla}>
+                                <GetAppIcon className="color-1" />
                             </IconButton>
                         </Tooltip>
                         <Tooltip title="Eliminar folios seleccionados" arrow>
@@ -148,6 +179,16 @@ const FoliosEmpresa = (props) => {
                 open={modalAgregarVigenciaOpen}
                 setOpen={setModalAgregarVigenciaOpen}
                 foliosEmpresaSeleccionado={foliosEmpresaSeleccionado}
+                funcGetFoliosEmpresa={funcGetFoliosEmpresa}
+                usuarioSesion={usuarioSesion}
+                funcLoader={funcLoader}
+                funcAlert={funcAlert}
+            />
+            <FormCargarArchivo
+                entEmpresa={entEmpresa}
+                listaProductos={listaProductos}
+                open={formSubirArchivoOpen}
+                setOpen={setFormSubirArchivoOpen}
                 funcGetFoliosEmpresa={funcGetFoliosEmpresa}
                 usuarioSesion={usuarioSesion}
                 funcLoader={funcLoader}

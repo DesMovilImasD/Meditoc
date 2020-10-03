@@ -16,7 +16,7 @@ import CGUController from "../../../../controllers/CGUController";
  * Invocado desde: ContentMain
  *************************************************************/
 const Sistema = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert } = props;
+    const { usuarioSesion, funcLoader, funcAlert, title } = props;
 
     //Servicios API
     const cguController = new CGUController();
@@ -61,7 +61,7 @@ const Sistema = (props) => {
 
     return (
         <Fragment>
-            <MeditocHeader1 title="SISTEMA">
+            <MeditocHeader1 title={title}>
                 <Tooltip title="Agregar un nuevo módulo" arrow>
                     <IconButton onClick={handleAgregarModuloOpen}>
                         <AddRoundedIcon className="color-0" />
