@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useState, useEffect } from "react";
 import MeditocModal from "../../../utilidades/MeditocModal";
-import { Grid, List, ListItem, ListItemIcon, Checkbox, Button, ListItemText } from "@material-ui/core";
+import { Grid, List, ListItem, ListItemIcon, Checkbox, ListItemText } from "@material-ui/core";
 import CGUController from "../../../../controllers/CGUController";
 import WebIcon from "@material-ui/icons/Web";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
@@ -41,11 +41,6 @@ const SeleccionarSubmodulo = (props) => {
 
         // eslint-disable-next-line
     }, [lstSubmodulosPerfil]);
-
-    //Funcion para cerrar este modal
-    const handleClose = () => {
-        setOpen(false);
-    };
 
     //Funcion para capturar los submodulos que el usuario seleccione
     const handleChangeSubmoduloCheckbox = (submoduloSeleccionado) => {

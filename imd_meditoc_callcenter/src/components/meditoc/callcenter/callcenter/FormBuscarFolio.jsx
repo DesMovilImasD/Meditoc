@@ -1,4 +1,5 @@
-import { Divider, Grid, TextField } from "@material-ui/core";
+import PropTypes from "prop-types";
+import { Grid, TextField } from "@material-ui/core";
 import React, { Fragment } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -108,6 +109,7 @@ const FormBuscarFolio = (props) => {
                 txtBuscarCorreoPaciente: "",
             });
         }
+        // eslint-disable-next-line
     }, [folioEncontrado]);
 
     const handleClickLimpiar = () => {
@@ -236,6 +238,31 @@ const FormBuscarFolio = (props) => {
             </Grid>
         </MeditocModal>
     );
+};
+
+FormBuscarFolio.propTypes = {
+    folioEncontrado: PropTypes.shape({
+        sCorreoPaciente: PropTypes.any,
+        sFolio: PropTypes.any,
+        sNombrePaciente: PropTypes.any,
+        sTelefonoPaciente: PropTypes.any,
+    }),
+    funcAlert: PropTypes.func,
+    funcIniciarTemporizador: PropTypes.func,
+    funcLoader: PropTypes.func,
+    funcOnlineMod: PropTypes.func,
+    funcReiniciarTemporizador: PropTypes.func,
+    open: PropTypes.any,
+    setConsultaIniciada: PropTypes.func,
+    setEntCallCenter: PropTypes.func,
+    setFolioEncontrado: PropTypes.func,
+    setOpen: PropTypes.func,
+    usuarioColaborador: PropTypes.shape({
+        iIdColaborador: PropTypes.any,
+    }),
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.any,
+    }),
 };
 
 export default FormBuscarFolio;

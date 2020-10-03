@@ -1,4 +1,4 @@
-import { Divider, Grid } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import React from "react";
 import InfoField from "../../../utilidades/InfoField";
 import MeditocModal from "../../../utilidades/MeditocModal";
@@ -7,41 +7,7 @@ import MeditocSubtitulo from "../../../utilidades/MeditocSubtitulo";
 
 const DetalleColaborador = (props) => {
     const { entColaborador, open, setOpen } = props;
-    // bActivo: true;
-    // bBaja: false;
-    // bOcupado: false;
-    // bOnline: false;
-    // dtFechaCreacion: "2020-09-21T11:51:10";
-    // dtFechaNacimientoDoctor: "1986-05-23T00:00:00";
-    // iIdColaborador: 5;
-    // iIdEspecialidad: 14;
-    // iIdTipoCuenta: 1;
-    // iIdTipoDoctor: 2;
-    // iIdUsuarioCGU: 6;
-    // iNumSala: 214;
-    // sApellidoMaternoDoctor: "Sosa";
-    // sApellidoPaternoDoctor: "Gongora";
-    // sCedulaProfecional: "8375823";
-    // sCorreoDirectorio: "alberto@correo.com";
-    // sCorreoDoctor: "carlosg@correo.com";
-    // sDireccionConsultorio: "carlosg@correo.com";
-    // sDomicilioDoctor: "Calle 24 #91 entre 30 y 32, Residencial pensiones.";
-    // sEspecialidad: "Pediatría";
-    // sFechaCreacion: "21/09/2020 11:51";
-    // sFechaNacimientoDoctor: "23/05/1986";
-    // sMaps: "https://goo.gl/maps/1L4oDyNv5FHCntMT9";
-    // sNombreDirectorio: "Alberto Gongora Sosa";
-    // sNombresDoctor: "Alberto Gabriel";
-    // sPasswordAdministrativo: "wmtn5Wt7Dx74gZWIjDbTJQ==";
-    // sPasswordTitular: "wmtn5Wt7Dx74gZWIjDbTJQ==";
-    // sRFC: "JASFO325129";
-    // sTelefonoDirectorio: "991 391 8419";
-    // sTelefonoDoctor: "999 102 5825";
-    // sTipoCuenta: "Titular";
-    // sTipoDoctor: "Médico Especialista";
-    // sURL: "www.prueba.com.mx";
-    // sUsuarioAdministrativo: "aortiz1";
-    // sUsuarioTitular: "agongora";
+
     return (
         <MeditocModal title="Detalle de colaborador" size="small" open={open} setOpen={setOpen}>
             <Grid container spacing={3}>
@@ -114,7 +80,7 @@ const DetalleColaborador = (props) => {
                 <Grid item xs={6}>
                     <InfoField label="Administrativo:" value={entColaborador.sUsuarioAdministrativo} />
                 </Grid>
-                <MeditocModalBotones okMessage="Aceptar" hideCancel setOpen={setOpen} />
+                <MeditocModalBotones okMessage="Cerrar detalle" hideCancel setOpen={setOpen} />
             </Grid>
         </MeditocModal>
     );

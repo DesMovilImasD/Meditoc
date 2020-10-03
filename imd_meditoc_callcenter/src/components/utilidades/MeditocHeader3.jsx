@@ -1,5 +1,5 @@
+import PropTypes from "prop-types";
 import React from "react";
-import { Paper } from "@material-ui/core";
 
 const MeditocHeader3 = (props) => {
     const { title, children } = props;
@@ -9,6 +9,11 @@ const MeditocHeader3 = (props) => {
             <div>{children}</div>
         </div>
     );
+};
+
+MeditocHeader3.propTypes = {
+    children: PropTypes.any,
+    title: PropTypes.any,
 };
 
 export default MeditocHeader3;

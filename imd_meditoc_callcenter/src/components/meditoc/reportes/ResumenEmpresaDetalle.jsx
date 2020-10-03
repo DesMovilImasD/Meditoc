@@ -1,5 +1,6 @@
+import PropTypes from "prop-types";
 import { Divider, Grid } from "@material-ui/core";
-import React, { Fragment } from "react";
+import React from "react";
 import InfoField from "../../utilidades/InfoField";
 import MeditocModal from "../../utilidades/MeditocModal";
 import MeditocModalBotones from "../../utilidades/MeditocModalBotones";
@@ -11,7 +12,6 @@ const ResumenEmpresaDetalle = (props) => {
 
     const columnas = [
         { title: "Folio", field: "sFolio", align: "center" },
-        //{ title: "Origen", field: "sOrigen", align: "center" },
         { title: "Producto", field: "sNombre", align: "center" },
         { title: "Precio", field: "nUnitPrice", align: "center" },
         { title: "Tipo", field: "sTipoProducto", align: "center" },
@@ -70,6 +70,29 @@ const ResumenEmpresaDetalle = (props) => {
             </Grid>
         </MeditocModal>
     );
+};
+
+ResumenEmpresaDetalle.propTypes = {
+    entEmpresa: PropTypes.shape({
+        dTotal: PropTypes.shape({
+            toLocaleString: PropTypes.func,
+        }),
+        dTotalIva: PropTypes.shape({
+            toLocaleString: PropTypes.func,
+        }),
+        dTotalSinIva: PropTypes.shape({
+            toLocaleString: PropTypes.func,
+        }),
+        iTotalFolios: PropTypes.any,
+        lstProductos: PropTypes.shape({
+            map: PropTypes.func,
+        }),
+        sCorreo: PropTypes.any,
+        sFolioEmpresa: PropTypes.any,
+        sNombre: PropTypes.any,
+    }),
+    open: PropTypes.any,
+    setOpen: PropTypes.any,
 };
 
 export default ResumenEmpresaDetalle;

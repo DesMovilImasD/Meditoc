@@ -1,9 +1,9 @@
+import PropTypes from "prop-types";
 import React, { Fragment } from "react";
 import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
 import MeditocBody from "../../../utilidades/MeditocBody";
 import { Tooltip, IconButton } from "@material-ui/core";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
-import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useState } from "react";
 import MeditocTable from "../../../utilidades/MeditocTable";
@@ -12,6 +12,8 @@ import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 import PromocionesController from "../../../../controllers/PromocionesController";
 import { useEffect } from "react";
 import { EnumCuponCategoria } from "../../../../configurations/enumConfig";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import DetalleCupon from "./DetalleCupon";
 
 const Cupones = (props) => {
     const { usuarioSesion, funcLoader, funcAlert, title } = props;
@@ -47,20 +49,28 @@ const Cupones = (props) => {
 
     const [modalFormCuponOpen, setModalFormCuponOpen] = useState(false);
     const [modalEliminarCuponOpen, setModalEliminarCuponOpen] = useState(false);
+    const [modalDetalleCuponOpen, setModalDetalleCuponOpen] = useState(false);
 
     const handleClickCrearCupon = () => {
         setCuponParaModalForm(cuponEntidadVacia);
         setModalFormCuponOpen(true);
     };
-
-    const handleEditarCupon = () => {
+    const handleClickDetalleCupon = () => {
         if (cuponSeleccionado.fiIdCupon === 0) {
             funcAlert("Seleccione un cupón para continuar");
             return;
         }
-        setCuponParaModalForm(cuponSeleccionado);
-        setModalFormCuponOpen(true);
+        setModalDetalleCuponOpen(true);
     };
+
+    // const handleEditarCupon = () => {
+    //     if (cuponSeleccionado.fiIdCupon === 0) {
+    //         funcAlert("Seleccione un cupón para continuar");
+    //         return;
+    //     }
+    //     setCuponParaModalForm(cuponSeleccionado);
+    //     setModalFormCuponOpen(true);
+    // };
 
     const handleClickEliminarCupon = () => {
         if (cuponSeleccionado.fiIdCupon === 0) {
@@ -106,6 +116,7 @@ const Cupones = (props) => {
 
     useEffect(() => {
         funcObtenerCupones();
+        // eslint-disable-next-line
     }, []);
 
     return (
@@ -116,11 +127,11 @@ const Cupones = (props) => {
                         <AddRoundedIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
-                {/* <Tooltip title="Editar cupón" arrow>
-                    <IconButton onClick={handleEditarCupon}>
-                        <EditIcon className="color-0" />
+                <Tooltip title="Detalle de cupón" arrow>
+                    <IconButton onClick={handleClickDetalleCupon}>
+                        <VisibilityIcon className="color-0" />
                     </IconButton>
-                </Tooltip> */}
+                </Tooltip>
                 <Tooltip title="Eliminar cupón" arrow>
                     <IconButton onClick={handleClickEliminarCupon}>
                         <DeleteIcon className="color-0" />
@@ -134,6 +145,7 @@ const Cupones = (props) => {
                     rowSelected={cuponSeleccionado}
                     setRowSelected={setCuponSeleccionado}
                     mainField="fiIdCupon"
+                    doubleClick={handleClickDetalleCupon}
                 />
             </MeditocBody>
             <FormCupon
@@ -145,6 +157,11 @@ const Cupones = (props) => {
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
             />
+            <DetalleCupon
+                entCupon={cuponSeleccionado}
+                open={modalDetalleCuponOpen}
+                setOpen={setModalDetalleCuponOpen}
+            />
             <MeditocConfirmacion
                 title="Eliminar cupón"
                 open={modalEliminarCuponOpen}
@@ -155,6 +172,15 @@ const Cupones = (props) => {
             </MeditocConfirmacion>
         </Fragment>
     );
+};
+
+Cupones.propTypes = {
+    funcAlert: PropTypes.func,
+    funcLoader: PropTypes.func,
+    title: PropTypes.any,
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.any,
+    }),
 };
 
 export default Cupones;

@@ -1,11 +1,10 @@
+import PropTypes from "prop-types";
 import { IconButton, Tooltip, Grid, Divider, InputAdornment, TextField, MenuItem } from "@material-ui/core";
 import React, { Fragment, useEffect } from "react";
 import { useState } from "react";
 import MeditocHeader1 from "../../utilidades/MeditocHeader1";
-import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import MeditocBody from "../../utilidades/MeditocBody";
-import MeditocTable from "../../utilidades/MeditocTable";
 import ReportesController from "../../../controllers/ReportesController";
 import MeditocTabHeader from "../../utilidades/MeditocTabHeader";
 import MeditocTabBody from "../../utilidades/MeditocTabBody";
@@ -13,7 +12,6 @@ import MeditocTabPanel from "../../utilidades/MeditocTabPanel";
 import { DatePicker } from "@material-ui/pickers";
 import DateRangeIcon from "@material-ui/icons/DateRange";
 import ResumenOrdenes from "./ResumenOrdenes";
-import ResumeNumero from "./ResumeNumero";
 import ResumenEmpresas from "./ResumenEmpresas";
 import { EnumOrigen, EnumReportesTabs, EnumStatusConekta, EnumTipoPago } from "../../../configurations/enumConfig";
 import PromocionesController from "../../../controllers/PromocionesController";
@@ -21,7 +19,7 @@ import { Autocomplete } from "@material-ui/lab";
 import MeditocModalBotones from "../../utilidades/MeditocModalBotones";
 
 const ReportesVentas = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert, title } = props;
+    const { funcLoader, funcAlert, title } = props;
 
     const reportesController = new ReportesController();
     const promocionesController = new PromocionesController();
@@ -129,16 +127,12 @@ const ReportesVentas = (props) => {
     };
     useEffect(() => {
         getData();
+        // eslint-disable-next-line
     }, []);
 
     return (
         <Fragment>
             <MeditocHeader1 title={title}>
-                {/* <Tooltip title="Ver detalle">
-                    <IconButton>
-                        <FormatListBulletedIcon className="color-0" />
-                    </IconButton>
-                </Tooltip> */}
                 <Tooltip title="Descargar Reporte">
                     <IconButton onClick={funcDescargaReporte}>
                         <CloudDownloadIcon className="color-0" />
@@ -322,6 +316,12 @@ const ReportesVentas = (props) => {
             )}
         </Fragment>
     );
+};
+
+ReportesVentas.propTypes = {
+    funcAlert: PropTypes.func,
+    funcLoader: PropTypes.func,
+    title: PropTypes.any,
 };
 
 export default ReportesVentas;

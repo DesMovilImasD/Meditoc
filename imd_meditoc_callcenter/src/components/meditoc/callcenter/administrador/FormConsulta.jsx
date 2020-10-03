@@ -1,14 +1,5 @@
-import {
-    Button,
-    Checkbox,
-    Collapse,
-    Divider,
-    FormControlLabel,
-    Grid,
-    IconButton,
-    InputAdornment,
-    TextField,
-} from "@material-ui/core";
+import PropTypes from "prop-types";
+import { Checkbox, Collapse, FormControlLabel, Grid, IconButton, InputAdornment, TextField } from "@material-ui/core";
 import { DateTimePicker } from "@material-ui/pickers";
 import React, { useEffect, useState } from "react";
 import { rxCorreo } from "../../../../configurations/regexConfig";
@@ -17,7 +8,6 @@ import MeditocModal from "../../../utilidades/MeditocModal";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import DateRangeIcon from "@material-ui/icons/DateRange";
 import CallCenterController from "../../../../controllers/CallCenterController";
-import { CheckBox, SignalCellularNull, TramRounded } from "@material-ui/icons";
 import FolioController from "../../../../controllers/FolioController";
 import MeditocSubtitulo from "../../../utilidades/MeditocSubtitulo";
 
@@ -58,7 +48,7 @@ const Consulta = (props) => {
     const [yaCuentoConFolio, setYaCuentoConFolio] = useState(false);
     const [folioValidado, setFolioValidado] = useState(false);
 
-    const [entFolioValidado, setEntFolioValidado] = useState(null);
+    const [, setEntFolioValidado] = useState(null);
 
     useEffect(() => {
         setFormConsulta({
@@ -74,6 +64,7 @@ const Consulta = (props) => {
                 entConsulta.dtFechaProgramadaFin === undefined ? null : new Date(entConsulta.dtFechaProgramadaFin),
         });
         setFormConsultaOK(validacionFormulario);
+        // eslint-disable-next-line
     }, [entConsulta]);
 
     const handleChangeFormulario = (e) => {
@@ -500,6 +491,31 @@ const Consulta = (props) => {
             </Grid>
         </MeditocModal>
     );
+};
+
+Consulta.propTypes = {
+    consultaEntidadVacia: PropTypes.any,
+    entConsulta: PropTypes.shape({
+        dtFechaProgramadaFin: PropTypes.any,
+        dtFechaProgramadaInicio: PropTypes.any,
+        iIdConsulta: PropTypes.number,
+        sCorreoPaciente: PropTypes.any,
+        sFolio: PropTypes.any,
+        sNombrePaciente: PropTypes.any,
+        sTelefonoPaciente: PropTypes.any,
+    }),
+    funcAlert: PropTypes.func,
+    funcGetConsultas: PropTypes.func,
+    funcLoader: PropTypes.func,
+    open: PropTypes.any,
+    setConsultaSeleccionada: PropTypes.func,
+    setOpen: PropTypes.func,
+    usuarioColaborador: PropTypes.shape({
+        iIdColaborador: PropTypes.any,
+    }),
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.any,
+    }),
 };
 
 export default Consulta;

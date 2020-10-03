@@ -1,9 +1,10 @@
+import PropTypes from "prop-types";
 import React, { Fragment, useState } from "react";
 import { List, ListItem, ListItemText, Collapse, makeStyles, ListItemIcon } from "@material-ui/core";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import { Link } from "react-router-dom";
-import { urlSystem } from "../configurations/urlConfig";
+import { urlSystem } from "../../configurations/urlConfig";
 import SettingsIcon from "@material-ui/icons/Settings";
 import GroupIcon from "@material-ui/icons/Group";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
@@ -264,6 +265,84 @@ const MenuList = (props) => {
             )}
         </List>
     );
+};
+
+MenuList.propTypes = {
+    toggleDrawer: PropTypes.func,
+    usuarioPermisos: PropTypes.shape({
+        administracion: PropTypes.shape({
+            colaboradores: PropTypes.shape({
+                name: PropTypes.any,
+                set: PropTypes.bool,
+            }),
+            cupones: PropTypes.shape({
+                name: PropTypes.any,
+                set: PropTypes.bool,
+            }),
+            empresa: PropTypes.shape({
+                name: PropTypes.any,
+                set: PropTypes.bool,
+            }),
+            especialidades: PropTypes.shape({
+                name: PropTypes.any,
+                set: PropTypes.bool,
+            }),
+            name: PropTypes.any,
+            productos: PropTypes.shape({
+                name: PropTypes.any,
+                set: PropTypes.bool,
+            }),
+            set: PropTypes.bool,
+        }),
+        callcenter: PropTypes.shape({
+            administrarconsultas: PropTypes.shape({
+                name: PropTypes.any,
+                set: PropTypes.bool,
+            }),
+            consultas: PropTypes.shape({
+                name: PropTypes.any,
+                set: PropTypes.bool,
+            }),
+            name: PropTypes.any,
+            set: PropTypes.bool,
+        }),
+        configuracion: PropTypes.shape({
+            name: PropTypes.any,
+            perfiles: PropTypes.shape({
+                name: PropTypes.any,
+                set: PropTypes.bool,
+            }),
+            set: PropTypes.bool,
+            sistema: PropTypes.shape({
+                name: PropTypes.any,
+                set: PropTypes.bool,
+            }),
+            usuarios: PropTypes.shape({
+                name: PropTypes.any,
+                set: PropTypes.bool,
+            }),
+        }),
+        folios: PropTypes.shape({
+            folios: PropTypes.shape({
+                name: PropTypes.any,
+                set: PropTypes.bool,
+            }),
+            name: PropTypes.any,
+            set: PropTypes.bool,
+        }),
+        reportes: PropTypes.shape({
+            doctores: PropTypes.shape({
+                name: PropTypes.any,
+                set: PropTypes.bool,
+            }),
+            name: PropTypes.any,
+            set: PropTypes.bool,
+            ventas: PropTypes.shape({
+                name: PropTypes.any,
+                set: PropTypes.bool,
+            }),
+        }),
+    }),
 };
 
 export default MenuList;

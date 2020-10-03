@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 import MeditocModal from "../../../utilidades/MeditocModal";
 import {
@@ -10,7 +11,6 @@ import {
     Radio,
     FormGroup,
     Checkbox,
-    Button,
     MenuItem,
 } from "@material-ui/core";
 import { useState } from "react";
@@ -60,6 +60,7 @@ const FormProducto = (props) => {
             txtPrefijoFolio: entProducto.sPrefijoFolio,
         });
         setFormProductoOK(validacionFormulario);
+        // eslint-disable-next-line
     }, [entProducto]);
 
     const handleChangeFormProducto = (e) => {
@@ -390,6 +391,31 @@ const FormProducto = (props) => {
             </Grid>
         </MeditocModal>
     );
+};
+
+FormProducto.propTypes = {
+    entProducto: PropTypes.shape({
+        bComercial: PropTypes.any,
+        fCosto: PropTypes.number,
+        iIdProducto: PropTypes.number,
+        iIdTipoProducto: PropTypes.shape({
+            toString: PropTypes.func,
+        }),
+        iMesVigencia: PropTypes.number,
+        sDescripcion: PropTypes.any,
+        sIcon: PropTypes.any,
+        sNombre: PropTypes.any,
+        sNombreCorto: PropTypes.any,
+        sPrefijoFolio: PropTypes.any,
+    }),
+    funcAlert: PropTypes.func,
+    funcConsultarProductos: PropTypes.func,
+    funcLoader: PropTypes.func,
+    open: PropTypes.any,
+    setOpen: PropTypes.func,
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.any,
+    }),
 };
 
 export default FormProducto;

@@ -1,18 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import MeditocModal from "../../../utilidades/MeditocModal";
-import {
-    Grid,
-    TextField,
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-    Button,
-    Tooltip,
-    IconButton,
-    InputAdornment,
-} from "@material-ui/core";
+import { Grid, TextField, MenuItem, Tooltip, IconButton, InputAdornment } from "@material-ui/core";
 import { DatePicker } from "@material-ui/pickers";
 import { useState } from "react";
 import CGUController from "../../../../controllers/CGUController";
@@ -204,11 +193,6 @@ const FormUsuario = (props) => {
             formError = true;
         }
 
-        // if (parseInt(formUsuario.txtTipoCuenta) <= 0) {
-        //     formUsuarioOKValidacion.txtPerfil = false;
-        //     formError = true;
-        // }
-
         if (formUsuario.txtFechaNacimiento === "" || formUsuario.txtFechaNacimiento === null) {
             formUsuarioOKValidacion.txtFechaNacimiento = false;
             formError = true;
@@ -297,6 +281,7 @@ const FormUsuario = (props) => {
             txtPassword: "",
         });
         setFormUsuarioOK(validacionFormulario);
+        // eslint-disable-next-line
     }, [entUsuario]);
 
     const [verPassword, setVerPassword] = useState(false);
@@ -376,22 +361,6 @@ const FormUsuario = (props) => {
                             ))}
                     </TextField>
                 </Grid>
-                {/* <Grid item sm={6} xs={12}>
-                    <FormControl fullWidth variant="outlined" disabled>
-                        <InputLabel id="lblTipoCuenta">Tipo de cuenta:</InputLabel>
-                        <Select
-                            id="slcTipoCuenta"
-                            labelId="lblTipoCuenta"
-                            label="Tipo de cuenta:"
-                            name="txtTipoCuenta"
-                            value={formUsuario.txtTipoCuenta}
-                            onChange={handleChangeFormulario}
-                        >
-                            <MenuItem value={1}>Titular</MenuItem>
-                            <MenuItem value={2}>Subcuenta</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Grid> */}
                 <Grid item sm={6} xs={12}>
                     <DatePicker
                         disableFuture
@@ -511,16 +480,6 @@ const FormUsuario = (props) => {
                     />
                 </Grid>
                 <MeditocModalBotones open={open} setOpen={setOpen} okMessage="Guardar" okFunc={funcSaveUsuario} />
-                {/* <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="primary" fullWidth onClick={funcSaveUsuario}>
-                        Guardar
-                    </Button>
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <Button variant="contained" color="secondary" fullWidth onClick={handleClose}>
-                        Cancelar
-                    </Button>
-                </Grid> */}
             </Grid>
         </MeditocModal>
     );

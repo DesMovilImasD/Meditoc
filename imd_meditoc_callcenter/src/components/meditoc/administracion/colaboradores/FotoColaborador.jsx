@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React, { Fragment } from "react";
 import MeditocModal from "../../../utilidades/MeditocModal";
 import MeditocHeader3 from "../../../utilidades/MeditocHeader3";
@@ -120,6 +121,7 @@ const FotoColaborador = (props) => {
         if (open === true) {
             funcGetColaboradorFoto();
         }
+        // eslint-disable-next-line
     }, [entColaborador]);
 
     return (
@@ -169,6 +171,20 @@ const FotoColaborador = (props) => {
             </MeditocConfirmacion>
         </Fragment>
     );
+};
+
+FotoColaborador.propTypes = {
+    entColaborador: PropTypes.shape({
+        iIdColaborador: PropTypes.any,
+        sNombreDirectorio: PropTypes.any,
+    }),
+    funcAlert: PropTypes.func,
+    funcLoader: PropTypes.func,
+    open: PropTypes.bool,
+    setOpen: PropTypes.any,
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.any,
+    }),
 };
 
 export default FotoColaborador;

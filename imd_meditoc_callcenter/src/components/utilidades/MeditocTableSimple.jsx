@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import MaterialTable from "material-table";
 import React from "react";
 import tableIcons from "../../configurations/dataTableIconsConfig";
@@ -15,7 +16,6 @@ const MeditocTableSimple = (props) => {
             components={{
                 Container: (props) => <div {...props}></div>,
             }}
-            // detailPanel={(row) => null}
             localization={{
                 body: {
                     emptyDataSourceMessage: "Sin datos para mostrar",
@@ -77,6 +77,11 @@ const MeditocTableSimple = (props) => {
             }}
         />
     );
+};
+
+MeditocTableSimple.propTypes = {
+    columns: PropTypes.any,
+    data: PropTypes.any,
 };
 
 export default MeditocTableSimple;

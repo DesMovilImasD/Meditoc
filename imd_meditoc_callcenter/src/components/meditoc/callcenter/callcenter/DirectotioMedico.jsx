@@ -1,17 +1,7 @@
+import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import MeditocModal from "../../../utilidades/MeditocModal";
-import {
-    Grid,
-    TextField,
-    InputAdornment,
-    IconButton,
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-    makeStyles,
-    Tooltip,
-} from "@material-ui/core";
+import { Grid, TextField, InputAdornment, IconButton, MenuItem, makeStyles, Tooltip } from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
 import SearchIcon from "@material-ui/icons/Search";
 import FindInPageIcon from "@material-ui/icons/FindInPage";
@@ -110,6 +100,7 @@ const DirectotioMedico = (props) => {
         if (open === true) {
             funcGetData();
         }
+        // eslint-disable-next-line
     }, [open]);
 
     return (
@@ -197,6 +188,13 @@ const DirectotioMedico = (props) => {
             </Grid>
         </MeditocModal>
     );
+};
+
+DirectotioMedico.propTypes = {
+    funcAlert: PropTypes.func,
+    funcLoader: PropTypes.func,
+    open: PropTypes.bool,
+    setOpen: PropTypes.any,
 };
 
 export default DirectotioMedico;

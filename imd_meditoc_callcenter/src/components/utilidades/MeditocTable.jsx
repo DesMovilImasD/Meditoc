@@ -1,11 +1,8 @@
-import React, { useEffect } from "react";
+import PropTypes from "prop-types";
+import React from "react";
 import MaterialTable, { MTableBodyRow } from "material-table";
 import tableIcons from "../../configurations/dataTableIconsConfig";
 import theme from "../../configurations/themeConfig";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
-import { TextField, useForkRef, Paper } from "@material-ui/core";
-import { useState } from "react";
 
 /*************************************************************
  * Descripcion: Contiene la estructura de una tabla para desplegar datos en las secciones del portal que lo requiera
@@ -22,11 +19,11 @@ const MeditocTable = (props) => {
         mainField,
         doubleClick,
         selection,
-        rowsSelected,
         setRowsSelected,
         cellEditable,
         onCellEditable,
         search,
+        rowClick,
     } = props;
 
     //Funcion a ejecutar al dar doble click sobre una fila
@@ -36,34 +33,17 @@ const MeditocTable = (props) => {
 
     const mtRowSelected = mtSelection === false ? rowSelected : null;
 
-    const mtSetRowSelected = mtSelection === false ? setRowSelected : (prop) => {};
+    const mtSetRowSelected = mtSelection === false ? setRowSelected : () => {};
 
-    const mtRowsSelected = mtSelection === true ? rowsSelected : null;
-
-    const mtSetRowsSelected = mtSelection === true ? setRowsSelected : (prop) => {};
+    const mtSetRowsSelected = mtSelection === true ? setRowsSelected : () => {};
 
     const mtCellEditable = cellEditable === undefined ? false : cellEditable;
 
-    const mtOnCellEditable = onCellEditable === undefined ? (newValue, oldValue, row, column) => {} : onCellEditable;
+    const mtOnCellEditable = onCellEditable === undefined ? () => {} : onCellEditable;
 
     const mtSearch = search === undefined ? true : search;
 
-    const actions = [
-        {
-            icon: EditIcon,
-            tooltip: "Editar",
-            onClick: (event, data) => alert(JSON.stringify(data)),
-        },
-        {
-            icon: DeleteIcon,
-            tooltip: "Eliminar",
-            onClick: (event, data) => alert(JSON.stringify(data)),
-        },
-    ];
-
-    // const tableColumns = [...columns];
-    // tableColumns.unshift({ title: "#", field: "iIndex", align: "center" });
-    // const tableData = [...data].map((row, index) => ({ ...row, iIndex: index + 1 }));
+    const mtRowClick = rowClick === undefined ? true : rowClick;
 
     return (
         <MaterialTable
@@ -73,11 +53,11 @@ const MeditocTable = (props) => {
             title=""
             //actions={actions}
             onRowClick={
-                mtSelection === false
+                mtSelection === false && mtRowClick === true
                     ? (e, rowData) => {
                           mtSetRowSelected(rowData);
                       }
-                    : () => {}
+                    : null
             }
             onSelectionChange={
                 mtSelection === true
@@ -101,55 +81,53 @@ const MeditocTable = (props) => {
             //         });
             //     }
             // }}
-            components={
-                {
-                    //Container: (props) => <Paper {...props} elevation={0} />,
-                    //Container: (props) => <div {...props}></div>,
-                    // FilterRow: (props) => (
-                    //     <tr>
-                    //         {mtSelection === true ? <td></td> : null}
-                    //         {props.columns.map((column, index) => (
-                    //             <td key={index}>
-                    //                 <TextField
-                    //                     variant="outlined"
-                    //                     onChange={(e) => {
-                    //                         props.onFilterChanged(columns.indexOf(column), e.target.value);
-                    //                     }}
-                    //                     style={{
-                    //                         margin: 10,
-                    //                         width: "90%",
-                    //                     }}
-                    //                     placeholder={`Buscar en ${column.title}...`}
-                    //                     inputProps={{
-                    //                         style: {
-                    //                             textAlign: column.align,
-                    //                         },
-                    //                     }}
-                    //                 />
-                    //             </td>
-                    //         ))}
-                    //     </tr>
-                    // ),
-                    // Row: (props) => (
-                    //     <MTableBodyRow
-                    //         {...props}
-                    //         onDoubleClick={
-                    //             mtSelection === false
-                    //                 ? (e) => {
-                    //                       mtSetRowSelected(props.data);
-                    //                       funcDoubleClick();
-                    //                   }
-                    //                 : () => {}
-                    //         }
-                    //     />
-                    // ),
-                }
-            }
+            components={{
+                //Container: (props) => <Paper {...props} elevation={0} />,
+                //Container: (props) => <div {...props}></div>,
+                // FilterRow: (props) => (
+                //     <tr>
+                //         {mtSelection === true ? <td></td> : null}
+                //         {props.columns.map((column, index) => (
+                //             <td key={index}>
+                //                 <TextField
+                //                     variant="outlined"
+                //                     onChange={(e) => {
+                //                         props.onFilterChanged(columns.indexOf(column), e.target.value);
+                //                     }}
+                //                     style={{
+                //                         margin: 10,
+                //                         width: "90%",
+                //                     }}
+                //                     placeholder={`Buscar en ${column.title}...`}
+                //                     inputProps={{
+                //                         style: {
+                //                             textAlign: column.align,
+                //                         },
+                //                     }}
+                //                 />
+                //             </td>
+                //         ))}
+                //     </tr>
+                // ),
+                Row: (props) => (
+                    <MTableBodyRow
+                        {...props}
+                        onDoubleClick={
+                            mtSelection === false
+                                ? () => {
+                                      mtSetRowSelected(props.data);
+                                      funcDoubleClick();
+                                  }
+                                : () => {}
+                        }
+                    />
+                ),
+            }}
             cellEditable={
                 mtCellEditable === true
                     ? {
                           onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
-                              return new Promise((resolve, reject) => {
+                              return new Promise((resolve) => {
                                   mtOnCellEditable(newValue, oldValue, rowData, columnDef.field);
                                   resolve(() => {});
                               });
@@ -199,7 +177,7 @@ const MeditocTable = (props) => {
             }}
             options={{
                 rowStyle:
-                    mtSelection === false
+                    mtSelection === false && mtRowClick === true
                         ? (rowData) => ({
                               //linear-gradient(0deg, rgb(17 92 138 / 76%) 0%, rgba(18,182,203,1) 100%); op.1
                               //linear-gradient(239deg, rgba(17,92,138,1) 0%, rgba(18,182,203,1) 100%); op.2
@@ -223,7 +201,7 @@ const MeditocTable = (props) => {
                 //     color: theme.palette.secondary.main,
                 // },
                 //actionsColumnIndex: -1,
-                searchAutoFocus: true,
+                searchAutoFocus: false,
                 columnsButton: true,
                 paginationType: "normal",
                 pageSizeOptions: [20, 50, 100, 500],
@@ -244,6 +222,20 @@ const MeditocTable = (props) => {
             }}
         />
     );
+};
+
+MeditocTable.propTypes = {
+    cellEditable: PropTypes.any,
+    columns: PropTypes.any,
+    data: PropTypes.any,
+    doubleClick: PropTypes.any,
+    mainField: PropTypes.any,
+    onCellEditable: PropTypes.any,
+    rowSelected: PropTypes.any,
+    search: PropTypes.any,
+    selection: PropTypes.any,
+    setRowSelected: PropTypes.any,
+    setRowsSelected: PropTypes.any,
 };
 
 export default MeditocTable;

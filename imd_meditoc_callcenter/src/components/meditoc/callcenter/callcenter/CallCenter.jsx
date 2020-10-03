@@ -1,8 +1,9 @@
+import PropTypes from "prop-types";
 import React, { Fragment } from "react";
 import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import theme from "../../../../configurations/themeConfig";
-import { Button, FormControlLabel, Grid, Popover, Switch, Typography } from "@material-ui/core";
+import { Button, Grid } from "@material-ui/core";
 import { useState } from "react";
 import ColaboradorController from "../../../../controllers/ColaboradorController";
 import { useEffect } from "react";
@@ -12,12 +13,9 @@ import CallCenterController from "../../../../controllers/CallCenterController";
 import FormBuscarFolio from "./FormBuscarFolio";
 import FormCallCenter from "./FormCallCenter";
 import FolioController from "../../../../controllers/FolioController";
-import { green, red } from "@material-ui/core/colors";
-import InfoIcon from "@material-ui/icons/Info";
 import DirectotioMedico from "./DirectotioMedico";
 import MeditocSwitch from "../../../utilidades/MeditocSwitch";
 import CallCenterStatusHelper from "./CallCenterStatusHelper";
-import { TrendingUpTwoTone } from "@material-ui/icons";
 
 const useStyles = makeStyles(() => ({
     button: {
@@ -226,9 +224,7 @@ const CallCenter = (props) => {
         localStorage.removeItem("DisplayName");
         funcGetColaboradorUser();
 
-        // return () => {
-        //     funcCerrarTodo();
-        // };
+        // eslint-disable-next-line
     }, []);
 
     const funcPrepararSalaCallCenterInicio = async () => {
@@ -249,21 +245,22 @@ const CallCenter = (props) => {
             setSalaIceLink(
                 <iframe
                     id="iframeickelink"
+                    title="iframeickelink"
                     src={url}
                     width="100%"
                     height="600px"
                     style={{ border: "none" }}
                     scrolling="no"
-                ></iframe>
+                />
             );
             await funcOnlineMod(false);
             setPopoverOcupadoInicio(true);
 
-            window.onbeforeunload = (e) => {
+            window.onbeforeunload = () => {
                 return "Al salir de esta sección se finalizará la consulta actual. ¿Desea salir de esta sección y finalizar la consulta?";
             };
 
-            window.onunload = (e) => {
+            window.onunload = () => {
                 funcCerrarTodo();
             };
 
@@ -371,6 +368,7 @@ const CallCenter = (props) => {
                 }
             }
         }
+        // eslint-disable-next-line
     }, [entCallCenter]);
 
     const handleClickDirectorio = () => {
@@ -378,7 +376,6 @@ const CallCenter = (props) => {
     };
 
     const funcCerrarTodo = async () => {
-        //console.log("Cerrando todo", consultaIniciada, entCallCenter, usuarioColaborador, usuarioSesion.iIdUsuario);
         await funcOnlineMod(false, false, false);
         if (consultaIniciada) {
             await handleClickFinalizarConsulta(true);
@@ -390,14 +387,13 @@ const CallCenter = (props) => {
 
     useEffect(() => {
         setFuncCerrarTodo(() => funcCerrarTodo);
+        // eslint-disable-next-line
     }, [entCallCenter, consultaIniciada, usuarioSesion, usuarioColaborador]);
 
     useEffect(() => {
         funcPrepararSalaCallCenterInicio();
 
-        // return () => {
-        //     funcCerrarTodo();
-        // };
+        // eslint-disable-next-line
     }, [usuarioColaborador]);
 
     return (
@@ -500,6 +496,16 @@ const CallCenter = (props) => {
             />
         </Fragment>
     );
+};
+
+CallCenter.propTypes = {
+    funcAlert: PropTypes.func,
+    funcLoader: PropTypes.func,
+    setFuncCerrarTodo: PropTypes.func,
+    usuarioSesion: PropTypes.shape({
+        iIdConsulta: PropTypes.any,
+        iIdUsuario: PropTypes.any,
+    }),
 };
 
 export default CallCenter;

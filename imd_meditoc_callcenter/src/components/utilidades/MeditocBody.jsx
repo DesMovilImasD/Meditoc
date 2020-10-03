@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 
 /*************************************************************
@@ -9,6 +10,10 @@ import React from "react";
 const MeditocBody = (props) => {
     const { children } = props;
     return <div className="bar-content">{children}</div>;
+};
+
+MeditocBody.propTypes = {
+    children: PropTypes.any,
 };
 
 export default MeditocBody;

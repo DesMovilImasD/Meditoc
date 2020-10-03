@@ -1,19 +1,17 @@
+import PropTypes from "prop-types";
 import { IconButton, Tooltip } from "@material-ui/core";
 import React, { Fragment } from "react";
 import MeditocHeader1 from "../../utilidades/MeditocHeader1";
-import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import MeditocBody from "../../utilidades/MeditocBody";
 import { useState } from "react";
 import FolioController from "../../../controllers/FolioController";
 import { useEffect } from "react";
 import MeditocTable from "../../utilidades/MeditocTable";
-import FolioCargarArchivo from "./FolioCargarArchivo";
-import GetAppIcon from "@material-ui/icons/GetApp";
-import PublishIcon from "@material-ui/icons/Publish";
-import CreateNewFolderIcon from "@material-ui/icons/CreateNewFolder";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import DetalleFolio from "./DetalleFolio";
 
 const Folios = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert, title } = props;
+    const { funcLoader, funcAlert, title } = props;
 
     const foliosController = new FolioController();
 
@@ -28,12 +26,16 @@ const Folios = (props) => {
     ];
 
     const [listaFolios, setListaFolios] = useState([]);
-    const [folioSeleccionado, setFolioSeleccionado] = useState({});
+    const [folioSeleccionado, setFolioSeleccionado] = useState({ iIdFolio: 0 });
 
-    const [formSubirArchivoOpen, setFormSubirArchivoOpen] = useState(false);
+    const [modalDetalleFolioOpen, setModalDetalleFolioOpen] = useState(false);
 
-    const handleClickSubirArchivo = () => {
-        setFormSubirArchivoOpen(true);
+    const handleClickDetalleFolio = () => {
+        if (folioSeleccionado.iIdFolio === 0) {
+            funcAlert("Seleccione un folio para continuar");
+            return;
+        }
+        setModalDetalleFolioOpen(true);
     };
 
     const funcGetFolios = async () => {
@@ -50,34 +52,17 @@ const Folios = (props) => {
         funcLoader();
     };
 
-    const handleClickDescargarPlantilla = async () => {
-        funcLoader(true, "Descargando plantilla...");
-
-        const response = await foliosController.funcDescargarPlantilla();
-
-        if (response.Code === 0) {
-            funcAlert(response.Message, "success");
-        } else {
-            funcAlert(response.Message);
-        }
-        funcLoader();
-    };
-
     useEffect(() => {
         funcGetFolios();
+        // eslint-disable-next-line
     }, []);
 
     return (
         <Fragment>
             <MeditocHeader1 title={title}>
-                <Tooltip title="Cargar folios de Venta Calle desde archivo" arrow>
-                    <IconButton onClick={handleClickSubirArchivo}>
-                        <CreateNewFolderIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Descargar plantilla para cargar folios de Venta Calle" arrow>
-                    <IconButton onClick={handleClickDescargarPlantilla}>
-                        <GetAppIcon className="color-0" />
+                <Tooltip title="Detalle de folio" arrow>
+                    <IconButton onClick={handleClickDetalleFolio}>
+                        <VisibilityIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
             </MeditocHeader1>
@@ -88,18 +73,22 @@ const Folios = (props) => {
                     rowSelected={folioSeleccionado}
                     setRowSelected={setFolioSeleccionado}
                     mainField="sFolio"
+                    doubleClick={handleClickDetalleFolio}
                 />
             </MeditocBody>
-            <FolioCargarArchivo
-                open={formSubirArchivoOpen}
-                setOpen={setFormSubirArchivoOpen}
-                funcGetFolios={funcGetFolios}
-                usuarioSesion={usuarioSesion}
-                funcLoader={funcLoader}
-                funcAlert={funcAlert}
+            <DetalleFolio
+                entFolio={folioSeleccionado}
+                open={modalDetalleFolioOpen}
+                setOpen={setModalDetalleFolioOpen}
             />
         </Fragment>
     );
+};
+
+Folios.propTypes = {
+    funcAlert: PropTypes.func,
+    funcLoader: PropTypes.func,
+    title: PropTypes.any,
 };
 
 export default Folios;

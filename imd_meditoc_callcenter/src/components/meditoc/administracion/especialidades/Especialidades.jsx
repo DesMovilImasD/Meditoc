@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React, { Fragment } from "react";
 import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
 import { Tooltip, IconButton } from "@material-ui/core";
@@ -97,6 +98,7 @@ const Especialidades = (props) => {
 
     useEffect(() => {
         funcGetEspecialidades();
+        // eslint-disable-next-line
     }, []);
     return (
         <Fragment>
@@ -124,6 +126,7 @@ const Especialidades = (props) => {
                     rowSelected={especialidadSeleccionada}
                     setRowSelected={setEspecialidadSeleccionada}
                     mainField="iIdEspecialidad"
+                    doubleClick={handleClickEditarEspecialidad}
                 />
             </MeditocBody>
             <FormEspecialidad
@@ -145,6 +148,15 @@ const Especialidades = (props) => {
             </MeditocConfirmacion>
         </Fragment>
     );
+};
+
+Especialidades.propTypes = {
+    funcAlert: PropTypes.func,
+    funcLoader: PropTypes.func,
+    title: PropTypes.any,
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.any,
+    }),
 };
 
 export default Especialidades;

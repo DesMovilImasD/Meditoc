@@ -1,5 +1,6 @@
+import PropTypes from "prop-types";
 import React from "react";
-import { Modal, IconButton, Fade, Backdrop, Dialog, Paper, makeStyles } from "@material-ui/core";
+import { IconButton, Dialog, Paper, makeStyles } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import Draggable from "react-draggable";
 
@@ -92,7 +93,7 @@ const MeditocModal = (props) => {
             //PaperComponent={(props) => <PaperComponent {...props} id="draggable-dialog-title" />}
             PaperComponent={mmLevel === 2 ? PaperComponent2 : PaperComponent}
             disableBackdropClick
-            maxWidth={size == "small" ? "sm" : size === "normal" ? "md" : "lg"}
+            maxWidth={size === "small" ? "sm" : size === "normal" ? "md" : "lg"}
             classes={{ paperScrollBody: classes.paperScrollBody, root: classes.dialogRoot }}
         >
             <div className="modal-form-header " id={mmLevel === 2 ? "meditoc-drag-2" : "meditoc-drag-1"}>
@@ -106,6 +107,15 @@ const MeditocModal = (props) => {
             <div className="modal-from-content">{children}</div>
         </Dialog>
     );
+};
+
+MeditocModal.propTypes = {
+    children: PropTypes.any,
+    level: PropTypes.any,
+    open: PropTypes.any,
+    setOpen: PropTypes.func,
+    size: PropTypes.string,
+    title: PropTypes.any,
 };
 
 export default MeditocModal;

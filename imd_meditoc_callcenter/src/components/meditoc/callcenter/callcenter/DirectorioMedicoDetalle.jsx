@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { Button, Grid, Hidden } from "@material-ui/core";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import React from "react";
@@ -86,12 +87,6 @@ const DirectorioMedicoDetalle = (props) => {
                                 </Button>
                             </Grid>
                         )}
-
-                        {/* <Grid item xs={12}>
-                            <span className="directory-doctor-label">Consultorio</span>
-                            <br />
-                            <span className="directory-doctor-value">Hospital Faro del Mayab - Consultorio 241</span>
-                        </Grid> */}
                         <Grid item xs={12}>
                             <span className="directory-doctor-label">URL</span>
                             <br />
@@ -100,7 +95,7 @@ const DirectorioMedicoDetalle = (props) => {
                                     href={"//" + entColaborador.sURL}
                                     className="directory-link"
                                     target="_blank"
-                                    rel="external"
+                                    rel="noopener noreferrer"
                                 >
                                     {entColaborador.sURL}
                                 </a>
@@ -111,6 +106,21 @@ const DirectorioMedicoDetalle = (props) => {
             </Grid>
         </Grid>
     );
+};
+
+DirectorioMedicoDetalle.propTypes = {
+    entColaborador: PropTypes.shape({
+        sCedulaProfecional: PropTypes.any,
+        sCorreo: PropTypes.any,
+        sDireccionConsultorio: PropTypes.any,
+        sEspecialidad: PropTypes.any,
+        sFoto: PropTypes.string,
+        sMaps: PropTypes.any,
+        sNombre: PropTypes.any,
+        sTelefono: PropTypes.any,
+        sURL: PropTypes.any,
+        sWhatsApp: PropTypes.any,
+    }),
 };
 
 export default DirectorioMedicoDetalle;

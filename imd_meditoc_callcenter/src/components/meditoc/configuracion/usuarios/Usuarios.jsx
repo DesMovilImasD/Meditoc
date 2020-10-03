@@ -13,6 +13,8 @@ import { useEffect } from "react";
 import FormUsuario from "./FormUsuario";
 import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 import { EnumPerfilesPrincipales } from "../../../../configurations/enumConfig";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import DetalleUsuario from "./DetalleUsuario";
 
 /*************************************************************
  * Descripcion: Submódulo para vista principal "USUARIOS" del portal Meditoc
@@ -75,10 +77,20 @@ const Usuarios = (props) => {
     //State para mostrar/ocultar la alerta de confirmación para dar de baja un usuario
     const [modalFormUsuarioEliminarOpen, setModalFormUsuarioEliminarOpen] = useState(false);
 
+    const [modalDetalleUsuarioOpen, setModalDetalleUsuarioOpen] = useState(false);
+
     //Función para abrir el formulario para crear un usuario
     const handleClickNuevoUsuario = () => {
         setUsuarioParaModalForm(usuarioEntidadVacia);
         setModalFormUsuarioNuevoOpen(true);
+    };
+
+    const handleClickDetalleUsuario = () => {
+        if (usuarioSeleccionado.iIdUsuario === 0) {
+            funcAlert("Seleccione un usuario para continuar");
+            return;
+        }
+        setModalDetalleUsuarioOpen(true);
     };
 
     //Función para abrir el formulario para editar un usuario
@@ -213,6 +225,11 @@ const Usuarios = (props) => {
                         <PersonAddIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
+                <Tooltip title="Detalle de usuario" arrow>
+                    <IconButton onClick={handleClickDetalleUsuario}>
+                        <VisibilityIcon className="color-0" />
+                    </IconButton>
+                </Tooltip>
                 <Tooltip title="Editar usuario" arrow>
                     <IconButton onClick={handleClickEditarUsuario}>
                         <EditIcon className="color-0" />
@@ -231,7 +248,7 @@ const Usuarios = (props) => {
                     rowSelected={usuarioSeleccionado}
                     setRowSelected={setUsuarioSeleccionado}
                     mainField="iIdUsuario"
-                    doubleClick={handleClickEditarUsuario}
+                    doubleClick={handleClickDetalleUsuario}
                 />
             </MeditocBody>
             <FormUsuario
@@ -244,6 +261,11 @@ const Usuarios = (props) => {
                 usuarioSesion={usuarioSesion}
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
+            />
+            <DetalleUsuario
+                entUsuario={usuarioSeleccionado}
+                open={modalDetalleUsuarioOpen}
+                setOpen={setModalDetalleUsuarioOpen}
             />
             <MeditocConfirmacion
                 title="Eliminar usuario"
@@ -260,6 +282,7 @@ const Usuarios = (props) => {
 Usuarios.propTypes = {
     funcAlert: PropTypes.func,
     funcLoader: PropTypes.func,
+    title: PropTypes.string,
     usuarioSesion: PropTypes.shape({
         iIdUsuario: PropTypes.number,
     }),

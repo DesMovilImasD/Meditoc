@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import MeditocModal from "../../../utilidades/MeditocModal";
-import { Grid, TextField, Button } from "@material-ui/core";
+import { Grid, TextField } from "@material-ui/core";
 import CGUController from "../../../../controllers/CGUController";
 import { useEffect } from "react";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";

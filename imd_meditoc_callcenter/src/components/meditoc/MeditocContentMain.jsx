@@ -3,21 +3,21 @@ import React, { Fragment, useState } from "react";
 import MeditocNavBar from "./MeditocNavBar";
 import MeditocDrawerLeft from "./MeditocDrawerLeft";
 import { Switch, Route } from "react-router-dom";
-import { urlSystem } from "../configurations/urlConfig";
-import Sistema from "./meditoc/configuracion/sistema/Sistema";
-import Perfiles from "./meditoc/configuracion/perfiles/Perfiles";
-import Usuarios from "./meditoc/configuracion/usuarios/Usuarios";
-import Productos from "./meditoc/administracion/productos/Productos";
-import Empresa from "./meditoc/administracion/empresa/Empresa";
-import Cupones from "./meditoc/administracion/cupones/Cupones";
+import { urlSystem } from "../../configurations/urlConfig";
+import Sistema from "./configuracion/sistema/Sistema";
+import Perfiles from "./configuracion/perfiles/Perfiles";
+import Usuarios from "./configuracion/usuarios/Usuarios";
+import Productos from "./administracion/productos/Productos";
+import Empresa from "./administracion/empresa/Empresa";
+import Cupones from "./administracion/cupones/Cupones";
 import MeditocPortada from "./MeditocPortada";
-import Colaboradores from "./meditoc/administracion/colaboradores/Colaboradores";
-import Especialidades from "./meditoc/administracion/especialidades/Especialidades";
-import Administrador from "./meditoc/callcenter/administrador/Administrador";
-import CallCenter from "./meditoc/callcenter/callcenter/CallCenter";
-import ReportesDoctores from "./meditoc/reportes/ReportesDoctores";
-import ReportesVentas from "./meditoc/reportes/ReportesVentas";
-import Folios from "./meditoc/folios/Folios";
+import Colaboradores from "./administracion/colaboradores/Colaboradores";
+import Especialidades from "./administracion/especialidades/Especialidades";
+import Administrador from "./callcenter/administrador/Administrador";
+import CallCenter from "./callcenter/callcenter/CallCenter";
+import ReportesDoctores from "./reportes/ReportesDoctores";
+import ReportesVentas from "./reportes/ReportesVentas";
+import Folios from "./folios/Folios";
 import MeditocFooter from "./MeditocFooter";
 
 /*************************************************************
@@ -179,6 +179,59 @@ const ContentMain = (props) => {
 ContentMain.propTypes = {
     funcAlert: PropTypes.func,
     funcLoader: PropTypes.func,
+    setUsuarioActivo: PropTypes.any,
+    setUsuarioSesion: PropTypes.any,
+    usuarioPermisos: PropTypes.shape({
+        administracion: PropTypes.shape({
+            colaboradores: PropTypes.shape({
+                name: PropTypes.any,
+            }),
+            cupones: PropTypes.shape({
+                name: PropTypes.any,
+            }),
+            empresa: PropTypes.shape({
+                name: PropTypes.any,
+            }),
+            especialidades: PropTypes.shape({
+                name: PropTypes.any,
+            }),
+            productos: PropTypes.shape({
+                name: PropTypes.any,
+            }),
+        }),
+        callcenter: PropTypes.shape({
+            administrarconsultas: PropTypes.shape({
+                name: PropTypes.any,
+            }),
+            consultas: PropTypes.shape({
+                name: PropTypes.any,
+            }),
+        }),
+        configuracion: PropTypes.shape({
+            perfiles: PropTypes.shape({
+                name: PropTypes.any,
+            }),
+            sistema: PropTypes.shape({
+                name: PropTypes.any,
+            }),
+            usuarios: PropTypes.shape({
+                name: PropTypes.any,
+            }),
+        }),
+        folios: PropTypes.shape({
+            folios: PropTypes.shape({
+                name: PropTypes.any,
+            }),
+        }),
+        reportes: PropTypes.shape({
+            doctores: PropTypes.shape({
+                name: PropTypes.any,
+            }),
+            ventas: PropTypes.shape({
+                name: PropTypes.any,
+            }),
+        }),
+    }),
     usuarioSesion: PropTypes.object,
 };
 

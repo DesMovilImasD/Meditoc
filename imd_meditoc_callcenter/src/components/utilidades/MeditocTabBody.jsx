@@ -1,6 +1,6 @@
+import PropTypes from "prop-types";
 import React from "react";
 import SwipeableViews from "react-swipeable-views";
-import theme from "../../configurations/themeConfig";
 
 const MeditocTabBody = (props) => {
     const { index, setIndex, children } = props;
@@ -14,6 +14,12 @@ const MeditocTabBody = (props) => {
             {children}
         </SwipeableViews>
     );
+};
+
+MeditocTabBody.propTypes = {
+    children: PropTypes.any,
+    index: PropTypes.any,
+    setIndex: PropTypes.func,
 };
 
 export default MeditocTabBody;

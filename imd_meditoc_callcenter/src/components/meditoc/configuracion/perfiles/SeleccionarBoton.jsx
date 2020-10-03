@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React, { useState, useEffect } from "react";
 import CGUController from "../../../../controllers/CGUController";
 import MeditocModal from "../../../utilidades/MeditocModal";
-import { Grid, List, ListItem, ListItemIcon, ListItemText, Button, Checkbox } from "@material-ui/core";
+import { Grid, List, ListItem, ListItemIcon, ListItemText, Checkbox } from "@material-ui/core";
 import ExtensionIcon from "@material-ui/icons/Extension";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 

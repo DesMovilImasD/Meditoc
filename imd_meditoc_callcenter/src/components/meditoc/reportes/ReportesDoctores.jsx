@@ -1,7 +1,7 @@
+import PropTypes from "prop-types";
 import { Button, Divider, Grid, IconButton, InputAdornment, MenuItem, TextField, Tooltip } from "@material-ui/core";
 import React, { Fragment, useEffect } from "react";
 import MeditocHeader1 from "../../utilidades/MeditocHeader1";
-import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import ReportesController from "../../../controllers/ReportesController";
 import { useState } from "react";
@@ -14,10 +14,9 @@ import { EnumEstatusConsulta, EnumTipoDoctor } from "../../../configurations/enu
 import EspecialidadController from "../../../controllers/EspecialidadController";
 import ResumeNumero from "./ResumeNumero";
 import MeditocModalBotones from "../../utilidades/MeditocModalBotones";
-import VisibilityIcon from "@material-ui/icons/Visibility";
 
 const ReportesDoctores = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert, title } = props;
+    const { funcLoader, funcAlert, title } = props;
 
     const reportesController = new ReportesController();
     const especialidadController = new EspecialidadController();
@@ -91,14 +90,6 @@ const ReportesDoctores = (props) => {
         funcLoader();
     };
 
-    // const funcAbrirDetalle = () => {
-    //     if (doctorSeleccionado.iIdDoctor === 0) {
-    //         funcAlert("Seleccione un doctor de la tabla para ver el detalle", "warning");
-    //         return;
-    //     }
-    //     setModalDetalleDoctorOpen(true);
-    // };
-
     const funcDescargaReporte = async () => {
         funcLoader(true, "Descargando reporte de doctores...");
         const response = await reportesController.funcDescargarReporteDoctores(
@@ -155,16 +146,12 @@ const ReportesDoctores = (props) => {
 
     useEffect(() => {
         getData();
+        // eslint-disable-next-line
     }, []);
 
     return (
         <Fragment>
             <MeditocHeader1 title={title}>
-                {/* <Tooltip title="Ver detalle">
-                    <IconButton onClick={funcAbrirDetalle}>
-                        <VisibilityIcon className="color-0" />
-                    </IconButton>
-                </Tooltip> */}
                 <Tooltip title="Descargar Reporte">
                     <IconButton onClick={funcDescargaReporte}>
                         <CloudDownloadIcon className="color-0" />
@@ -325,8 +312,7 @@ const ReportesDoctores = (props) => {
                                             </Button>
                                         ),
                                     }))}
-                                    rowSelected={doctorSeleccionado}
-                                    setRowSelected={setDoctorSeleccionado}
+                                    rowClick={false}
                                     mainField="iIdDoctor"
                                 />
                             </Grid>
@@ -336,11 +322,19 @@ const ReportesDoctores = (props) => {
                         entDoctor={doctorSeleccionado}
                         open={modalDetalleDoctorOpen}
                         setOpen={setModalDetalleDoctorOpen}
+                        funcLoader={funcLoader}
+                        funcAlert={funcAlert}
                     />
                 </Fragment>
             )}
         </Fragment>
     );
+};
+
+ReportesDoctores.propTypes = {
+    funcAlert: PropTypes.func,
+    funcLoader: PropTypes.func,
+    title: PropTypes.any,
 };
 
 export default ReportesDoctores;

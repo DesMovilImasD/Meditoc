@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { Divider } from "@material-ui/core";
 import React, { Fragment } from "react";
 
@@ -10,6 +11,10 @@ const MeditocSubtitulo = (props) => {
             <Divider />
         </Fragment>
     );
+};
+
+MeditocSubtitulo.propTypes = {
+    title: PropTypes.any,
 };
 
 export default MeditocSubtitulo;

@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 import { Grid, Button } from "@material-ui/core";
 
@@ -56,6 +57,20 @@ const MeditocModalBotones = (props) => {
             )}
         </Grid>
     );
+};
+
+MeditocModalBotones.propTypes = {
+    align: PropTypes.any,
+    cancelFunc: PropTypes.any,
+    cancelMessage: PropTypes.any,
+    hideCancel: PropTypes.any,
+    hideOk: PropTypes.any,
+    okDisabled: PropTypes.any,
+    okFunc: PropTypes.any,
+    okMessage: PropTypes.any,
+    setOpen: PropTypes.func,
+    sm: PropTypes.any,
+    xs: PropTypes.any,
 };
 
 export default MeditocModalBotones;

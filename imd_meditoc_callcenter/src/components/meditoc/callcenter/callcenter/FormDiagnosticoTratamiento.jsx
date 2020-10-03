@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { Grid, TextField } from "@material-ui/core";
 import React from "react";
 
@@ -117,13 +118,21 @@ const FormDiagnosticoTratamiento = (props) => {
                     onChange={handleChangeFormDYT}
                 />
             </Grid>
-            {/* <MeditocModalBotones
-                            hideCancel
-                            okMessage="Guardar diagnóstico en historial"
-                            okFunc={() => {}}
-                        /> */}
         </Grid>
     );
+};
+
+FormDiagnosticoTratamiento.propTypes = {
+    formDiagnosticoTratamiento: PropTypes.shape({
+        txtCCAlergias: PropTypes.any,
+        txtCCAltura: PropTypes.any,
+        txtCCComentarios: PropTypes.any,
+        txtCCDiagnostico: PropTypes.any,
+        txtCCPeso: PropTypes.any,
+        txtCCSintomas: PropTypes.any,
+        txtCCTratamiento: PropTypes.any,
+    }),
+    setFormDiagnosticoTratamiento: PropTypes.func,
 };
 
 export default FormDiagnosticoTratamiento;

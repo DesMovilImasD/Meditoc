@@ -1,12 +1,13 @@
+import PropTypes from "prop-types";
 import React, { useState, Fragment } from "react";
 import MenuIcon from "@material-ui/icons/Menu";
 import PersonIcon from "@material-ui/icons/Person";
 import { Button, AppBar, Toolbar, IconButton, Menu, MenuItem, makeStyles, ListItemIcon } from "@material-ui/core";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import theme from "../configurations/themeConfig";
-import { imgLogoMeditoc } from "../configurations/imgConfig";
-import FormCambiarPassword from "./meditoc/configuracion/usuarios/FormCambiarPassword";
+import theme from "../../configurations/themeConfig";
+import { imgLogoMeditoc } from "../../configurations/imgConfig";
+import FormCambiarPassword from "./configuracion/usuarios/FormCambiarPassword";
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
@@ -116,6 +117,19 @@ const NavBar = (props) => {
             />
         </Fragment>
     );
+};
+
+NavBar.propTypes = {
+    funcAlert: PropTypes.any,
+    funcCerrarTodo: PropTypes.func,
+    funcLoader: PropTypes.any,
+    setUsuarioActivo: PropTypes.func,
+    setUsuarioSesion: PropTypes.func,
+    toggleDrawer: PropTypes.func,
+    usuarioSesion: PropTypes.shape({
+        sApellidoPaterno: PropTypes.any,
+        sNombres: PropTypes.string,
+    }),
 };
 
 export default NavBar;

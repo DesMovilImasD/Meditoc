@@ -1,23 +1,18 @@
-import { Button, Grid, IconButton } from "@material-ui/core";
+import PropTypes from "prop-types";
+import { Button, Grid } from "@material-ui/core";
 import React, { Fragment } from "react";
 import { useState } from "react";
 import MeditocTable from "../../../utilidades/MeditocTable";
-import VisibilityIcon from "@material-ui/icons/Visibility";
 import HistorialClinicoDetalle from "./HistorialClinicoDetalle";
 
 const HistorialClinico = (props) => {
     const { entCallCenter } = props;
     const columns = [
         { title: "ID", field: "iIdHistorialClinico", align: "center", hidden: true },
-        // { title: "Síntomas", field: "sSintomas", align: "center" },
-        // { title: "Diagnótico", field: "sDiagnostico", align: "center" },
-        // { title: "Tratamiento", field: "sTratamiento", align: "center" },
         { title: "Fecha", field: "sFechaCreacion", align: "center" },
         { title: "Duración", field: "sDuracionConsulta", align: "center" },
         { title: "Detalle", field: "sDetalle", align: "center" },
     ];
-
-    const [historialSeleccionado, setHistorialSeleccionado] = useState({ iIdHistorialClinico: 0 });
 
     const [historialClinicoDetalle, setHistorialClinicoDetalle] = useState({ iIdHistorialClinico: 0 });
 
@@ -46,13 +41,9 @@ const HistorialClinico = (props) => {
                                 >
                                     Ver detalle
                                 </Button>
-                                // <IconButton onClick={() => handleClickDetalle(historia.iIdHistorialClinico)}>
-                                //     <VisibilityIcon className="color-2" />
-                                // </IconButton>
                             ),
                         }))}
-                        rowSelected={historialSeleccionado}
-                        setRowSelected={setHistorialSeleccionado}
+                        rowClick={false}
                         mainField="iIdHistorialClinico"
                     />
                 </Grid>
@@ -64,6 +55,15 @@ const HistorialClinico = (props) => {
             />
         </Fragment>
     );
+};
+
+HistorialClinico.propTypes = {
+    entCallCenter: PropTypes.shape({
+        lstHistorialClinico: PropTypes.shape({
+            find: PropTypes.func,
+            map: PropTypes.func,
+        }),
+    }),
 };
 
 export default HistorialClinico;

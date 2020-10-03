@@ -49,11 +49,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 }
 
                 response = datPerfil.DSavePerfil(entPerfil); //Se hace el guardado del perfil
-
                 if (response.Code != 0)
                 {
-                    response.Message = "Hubo un error al guardar el perfil.";
-                    response.Result = false;
                     return response;
                 }
 
@@ -136,13 +133,16 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             logger.Info(IMDSerialize.Serialize(67823458342024, $"Inicia {metodo}(EntPerfil entPerfil)", entPerfil));
             try
             {
-                if (string.IsNullOrWhiteSpace(entPerfil.sNombre))
+                if (entPerfil.bActivo && !entPerfil.bBaja)
                 {
-                    response.Code = -51256872819328;
-                    response.Message = "El nombre del perfil no puede ser vacio.";
-                    response.Result = false;
+                    if (string.IsNullOrWhiteSpace(entPerfil.sNombre))
+                    {
+                        response.Code = -51256872819328;
+                        response.Message = "El nombre del perfil no puede ser vacio.";
+                        response.Result = false;
 
-                    return response;
+                        return response;
+                    }
                 }
 
                 response.Code = 0;

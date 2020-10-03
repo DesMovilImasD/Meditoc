@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import {
     Button,
     Grid,
@@ -59,13 +60,6 @@ const FormCargarArchivo = (props) => {
     };
 
     const [formCargarArchivoOK, setFormCargarArchivoOK] = useState(validacionFormulario);
-
-    const entArchivoVerificadoEntidadVacia = {
-        totalFolios: 0,
-        entProducto: {},
-        entEmpresa: {},
-        lstFolios: [],
-    };
 
     const [entArchivoVerificado, setEntArchivoVerificado] = useState(null);
     const [modalDetalleArchivoVerificado, setModalDetalleArchivoVerificado] = useState(false);
@@ -210,6 +204,7 @@ const FormCargarArchivo = (props) => {
             setArchivoCargado(null);
             setEntArchivoVerificado(null);
         }
+        // eslint-disable-next-line
     }, [open]);
 
     return (
@@ -226,7 +221,16 @@ const FormCargarArchivo = (props) => {
                         fullWidth
                         required
                         select
-                        SelectProps={{ MenuProps: { classes: { paper: classes.root } } }}
+                        SelectProps={{
+                            MenuProps: {
+                                classes: {
+                                    paper: classes.root,
+                                },
+                                PaperProps: {
+                                    style: { maxHeight: 400 },
+                                },
+                            },
+                        }}
                         value={formCargarArchivo.txtProducto}
                         onChange={handleChangeProducto}
                         error={!formCargarArchivoOK.txtProducto}
@@ -332,6 +336,23 @@ const FormCargarArchivo = (props) => {
             )}
         </MeditocModal>
     );
+};
+
+FormCargarArchivo.propTypes = {
+    entEmpresa: PropTypes.shape({
+        iIdEmpresa: PropTypes.any,
+    }),
+    funcAlert: PropTypes.func,
+    funcGetFoliosEmpresa: PropTypes.func,
+    funcLoader: PropTypes.func,
+    listaProductos: PropTypes.shape({
+        map: PropTypes.func,
+    }),
+    open: PropTypes.bool,
+    setOpen: PropTypes.func,
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.any,
+    }),
 };
 
 export default FormCargarArchivo;

@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 import { forwardRef } from "react";
 import { Slide, Dialog } from "@material-ui/core";
@@ -19,6 +20,12 @@ const MeditocFullModal = (props) => {
             {children}
         </Dialog>
     );
+};
+
+MeditocFullModal.propTypes = {
+    children: PropTypes.any,
+    open: PropTypes.any,
+    setOpen: PropTypes.func,
 };
 
 export default MeditocFullModal;

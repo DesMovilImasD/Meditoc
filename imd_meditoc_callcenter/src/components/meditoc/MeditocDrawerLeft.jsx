@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Drawer } from "@material-ui/core";
-import theme from "../configurations/themeConfig";
+import theme from "../../configurations/themeConfig";
 import MeditocMenuList from "./MeditocMenuList";
 
 const useStyles = makeStyles({
@@ -51,6 +51,7 @@ const DrawerMenu = (props) => {
 DrawerMenu.propTypes = {
     drawerOpen: PropTypes.bool,
     toggleDrawer: PropTypes.func,
+    usuarioPermisos: PropTypes.any,
 };
 
 export default DrawerMenu;

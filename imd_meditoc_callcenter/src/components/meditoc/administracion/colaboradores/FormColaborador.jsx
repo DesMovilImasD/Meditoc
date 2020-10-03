@@ -1,12 +1,11 @@
+import PropTypes from "prop-types";
 import React, { Fragment } from "react";
 import MeditocModal from "../../../utilidades/MeditocModal";
-import { Grid, TextField, MenuItem, IconButton, Tooltip, Divider, Typography, InputAdornment } from "@material-ui/core";
+import { Grid, TextField, MenuItem, IconButton, Tooltip, Typography, InputAdornment } from "@material-ui/core";
 import { useState } from "react";
 import MeditocTabHeader from "../../../utilidades/MeditocTabHeader";
 import MeditocTabBody from "../../../utilidades/MeditocTabBody";
 import MeditocTabPanel from "../../../utilidades/MeditocTabPanel";
-import theme from "../../../../configurations/themeConfig";
-import BackupIcon from "@material-ui/icons/Backup";
 import InputTelefono from "../../../utilidades/InputTelefono";
 import { DatePicker } from "@material-ui/pickers";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
@@ -17,7 +16,6 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 import DateRangeIcon from "@material-ui/icons/DateRange";
 import InfoIcon from "@material-ui/icons/Info";
 import { useEffect } from "react";
-import { FormatListBulleted } from "@material-ui/icons";
 import { EnumEspecialidadPrincipal, EnumTipoDoctor } from "../../../../configurations/enumConfig";
 import MeditocSubtitulo from "../../../utilidades/MeditocSubtitulo";
 
@@ -113,6 +111,7 @@ const FormColaborador = (props) => {
             txtUsuarioAdministrativo: entColaborador.sUsuarioAdministrativo,
         });
         setFormColaboradorOK(validacionesFormulario);
+        // eslint-disable-next-line
     }, [entColaborador]);
 
     const [tabIndex, setTabIndex] = useState(0);
@@ -779,24 +778,6 @@ const FormColaborador = (props) => {
                                         }}
                                     />
                                 </Grid>
-                                {/* <Grid item xs={12}>
-                                    <TextField
-                                        name="txtFoto"
-                                        label="Foto para mostrar en directorio:"
-                                        variant="outlined"
-                                        fullWidth
-                                        InputProps={{
-                                            readOnly: true,
-                                            endAdornment: (
-                                                <Tooltip title="Subir foto" arrow placement="top">
-                                                    <IconButton edge="end">
-                                                        <BackupIcon />
-                                                    </IconButton>
-                                                </Tooltip>
-                                            ),
-                                        }}
-                                    />
-                                </Grid> */}
                             </Grid>
                         </MeditocTabPanel>
                         <MeditocTabPanel id={1} index={tabIndex}>
@@ -925,25 +906,6 @@ const FormColaborador = (props) => {
                         </MeditocTabPanel>
                         <MeditocTabPanel id={2} index={tabIndex}>
                             <Grid container spacing={3}>
-                                {/* <Grid item xs={12}>
-                                    <TextField
-                                        name="txtTipoColaborador"
-                                        label="Tipo de colaborador:"
-                                        variant="outlined"
-                                        fullWidth
-                                        select
-                                        required
-                                        value={sclTipoColaborador}
-                                        onChange={handleChangeTipoColaborador}
-                                        error={sclTipoColaborador === ""}
-                                        helperText={
-                                            sclTipoColaborador === "" ? "El tipo de colaborador es requerido" : ""
-                                        }
-                                    >
-                                        <MenuItem value="1">Médico CallCenter</MenuItem>
-                                        <MenuItem value="2">Médico Especialista</MenuItem>
-                                    </TextField>
-                                </Grid> */}
                                 <Grid item xs={12}>
                                     <MeditocSubtitulo title="USUARIO TITULAR" />
                                 </Grid>
@@ -1080,6 +1042,45 @@ const FormColaborador = (props) => {
             </Grid>
         </MeditocModal>
     );
+};
+
+FormColaborador.propTypes = {
+    entColaborador: PropTypes.shape({
+        dtFechaNacimientoDoctor: PropTypes.any,
+        iIdColaborador: PropTypes.number,
+        iIdEspecialidad: PropTypes.any,
+        iIdTipoDoctor: PropTypes.any,
+        iIdUsuarioCGU: PropTypes.any,
+        iNumSala: PropTypes.any,
+        sApellidoMaternoDoctor: PropTypes.any,
+        sApellidoPaternoDoctor: PropTypes.any,
+        sCedulaProfecional: PropTypes.any,
+        sCorreoDirectorio: PropTypes.any,
+        sCorreoDoctor: PropTypes.any,
+        sDireccionConsultorio: PropTypes.any,
+        sDomicilioDoctor: PropTypes.any,
+        sMaps: PropTypes.any,
+        sNombreDirectorio: PropTypes.any,
+        sNombresDoctor: PropTypes.any,
+        sRFC: PropTypes.any,
+        sTelefonoDirectorio: PropTypes.any,
+        sTelefonoDoctor: PropTypes.any,
+        sURL: PropTypes.any,
+        sUsuarioAdministrativo: PropTypes.any,
+        sUsuarioTitular: PropTypes.any,
+        sWhatsApp: PropTypes.any,
+    }),
+    funcAlert: PropTypes.func,
+    funcGetColaboradores: PropTypes.func,
+    funcLoader: PropTypes.func,
+    listaEspecialidades: PropTypes.shape({
+        filter: PropTypes.func,
+    }),
+    open: PropTypes.any,
+    setOpen: PropTypes.func,
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.any,
+    }),
 };
 
 export default FormColaborador;

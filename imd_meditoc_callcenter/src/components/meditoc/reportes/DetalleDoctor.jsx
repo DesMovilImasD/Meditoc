@@ -1,14 +1,14 @@
-import { Grid } from "@material-ui/core";
-import React from "react"; //imr
-import { useState } from "react";
+import PropTypes from "prop-types";
+import { Button, Grid } from "@material-ui/core";
+import React, { useState } from "react";
 import MeditocModal from "../../utilidades/MeditocModal";
 import MeditocTable from "../../utilidades/MeditocTable";
 import InfoField from "../../utilidades/InfoField";
 import MeditocModalBotones from "../../utilidades/MeditocModalBotones";
+import DetalleDoctorConsulta from "./DetalleDoctorConsulta";
 
 const DetalleDoctor = (props) => {
-    //sfc
-    const { entDoctor, open, setOpen } = props;
+    const { entDoctor, open, setOpen, funcLoader, funcAlert } = props;
 
     const columnas = [
         { title: "ID", field: "iIdConsulta", align: "center" },
@@ -24,9 +24,16 @@ const DetalleDoctor = (props) => {
             field: "sEstatusConsulta",
             align: "center",
         },
+        { title: "Detalle", field: "sDetalle", align: "center" },
     ];
 
-    const [consultaSeleccionada, setConsultaSeleccionada] = useState({});
+    const [modalDetalleConsultaOpen, setModalDetalleConsultaOpen] = useState(false);
+    const [iIdConsulta, setIIdConsulta] = useState(0);
+
+    const handleClickDetalleConsulta = (id) => {
+        setIIdConsulta(id);
+        setModalDetalleConsultaOpen(true);
+    };
 
     return (
         <MeditocModal title="Detalle de doctor" size="large" open={open} setOpen={setOpen}>
@@ -73,16 +80,51 @@ const DetalleDoctor = (props) => {
                                     : consulta.sEstatusConsulta === "En consulta"
                                     ? "Consultando"
                                     : consulta.sFechaConsultaFin,
+                            sDetalle: (
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={() => handleClickDetalleConsulta(consulta.iIdConsulta)}
+                                >
+                                    DETALLE
+                                </Button>
+                            ),
                         }))}
-                        rowSelected={consultaSeleccionada}
-                        setRowSelected={setConsultaSeleccionada}
+                        rowClick={false}
                         mainField="iIdConsulta"
                     />
                 </Grid>
                 <MeditocModalBotones cancelMessage="Cerrar detalle de doctor" setOpen={setOpen} hideOk />
             </Grid>
+            <DetalleDoctorConsulta
+                iIdConsulta={iIdConsulta}
+                open={modalDetalleConsultaOpen}
+                setOpen={setModalDetalleConsultaOpen}
+                funcLoader={funcLoader}
+                funcAlert={funcAlert}
+            />
         </MeditocModal>
     );
+};
+
+DetalleDoctor.propTypes = {
+    entDoctor: PropTypes.shape({
+        iNumSala: PropTypes.any,
+        iTotalConsultas: PropTypes.any,
+        lstConsultas: PropTypes.shape({
+            map: PropTypes.func,
+        }),
+        sCorreo: PropTypes.any,
+        sDireccionConsultorio: PropTypes.any,
+        sEspecialidad: PropTypes.any,
+        sNombre: PropTypes.any,
+        sTelefono: PropTypes.any,
+        sTipoDoctor: PropTypes.any,
+    }),
+    funcAlert: PropTypes.any,
+    funcLoader: PropTypes.any,
+    open: PropTypes.any,
+    setOpen: PropTypes.any,
 };
 
 export default DetalleDoctor;

@@ -1,10 +1,9 @@
 import PropTypes from "prop-types";
 import React, { useState, useEffect } from "react";
 import MeditocModal from "../../../utilidades/MeditocModal";
-import { Grid, TextField, Button } from "@material-ui/core";
+import { Grid, TextField } from "@material-ui/core";
 import CGUController from "../../../../controllers/CGUController";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
-import { TramRounded } from "@material-ui/icons";
 
 /*************************************************************
  * Descripcion: Formulario para Agregar/Modificar un perfil
@@ -26,6 +25,7 @@ const FormPerfil = (props) => {
             txtIdPerfil: entPerfil.iIdPerfil,
             txtNombre: entPerfil.sNombre,
         });
+        // eslint-disable-next-line
     }, [entPerfil]);
 
     //Funcion para capturar los valores de los inputs

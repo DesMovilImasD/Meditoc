@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 import MeditocModal from "../../../utilidades/MeditocModal";
 import { Grid, Typography, Table, TableBody, TableRow, TableCell, TableContainer } from "@material-ui/core";
@@ -9,16 +10,7 @@ import FolioController from "../../../../controllers/FolioController";
 import { EnumIVA, EnumOrigen } from "../../../../configurations/enumConfig";
 
 const CrearFolios = (props) => {
-    const {
-        entEmpresa,
-        open,
-        setOpen,
-        listaProductos,
-        funcGetFoliosEmpresa,
-        usuarioSesion,
-        funcLoader,
-        funcAlert,
-    } = props;
+    const { entEmpresa, open, setOpen, listaProductos, funcGetFoliosEmpresa, funcLoader, funcAlert } = props;
 
     const columns = [
         { title: "ID", field: "iIdProducto", align: "left", editable: "never", hidden: true },
@@ -118,6 +110,7 @@ const CrearFolios = (props) => {
 
         setSubtotal(calcSubtotal);
         setMontoIva(calcMontoIva);
+        // eslint-disable-next-line
     }, [listaProductosEmpresa, listaProductosSeleccionados]);
 
     return (
@@ -190,6 +183,22 @@ const CrearFolios = (props) => {
             </Grid>
         </MeditocModal>
     );
+};
+
+CrearFolios.propTypes = {
+    entEmpresa: PropTypes.shape({
+        iIdEmpresa: PropTypes.any,
+        sFolioEmpresa: PropTypes.any,
+        sNombre: PropTypes.any,
+    }),
+    funcAlert: PropTypes.func,
+    funcGetFoliosEmpresa: PropTypes.func,
+    funcLoader: PropTypes.func,
+    listaProductos: PropTypes.shape({
+        map: PropTypes.func,
+    }),
+    open: PropTypes.any,
+    setOpen: PropTypes.func,
 };
 
 export default CrearFolios;

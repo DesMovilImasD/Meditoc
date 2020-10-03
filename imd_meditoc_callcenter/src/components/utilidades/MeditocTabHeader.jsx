@@ -1,6 +1,6 @@
+import PropTypes from "prop-types";
 import React from "react";
 import { AppBar, Tabs, Tab } from "@material-ui/core";
-import theme from "../../configurations/themeConfig";
 
 const MeditocTabHeader = (props) => {
     const { index, setIndex, tabs } = props;
@@ -31,6 +31,12 @@ const MeditocTabHeader = (props) => {
             </Tabs>
         </AppBar>
     );
+};
+
+MeditocTabHeader.propTypes = {
+    index: PropTypes.any,
+    setIndex: PropTypes.func,
+    tabs: PropTypes.any,
 };
 
 export default MeditocTabHeader;

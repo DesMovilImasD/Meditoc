@@ -1,4 +1,5 @@
-import { Button, Divider, Grid, IconButton, InputAdornment, Tooltip } from "@material-ui/core";
+import PropTypes from "prop-types";
+import { Button, Grid, IconButton, InputAdornment, Tooltip } from "@material-ui/core";
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -15,7 +16,6 @@ import FormConsulta from "./FormConsulta";
 import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 import { DatePicker } from "@material-ui/pickers";
 import DateRangeIcon from "@material-ui/icons/DateRange";
-import { SignalCellularNullSharp } from "@material-ui/icons";
 import { EnumEstatusConsulta } from "../../../../configurations/enumConfig";
 import UpdateIcon from "@material-ui/icons/Update";
 import MeditocSubtitulo from "../../../utilidades/MeditocSubtitulo";
@@ -73,6 +73,7 @@ const Administrador = (props) => {
 
     useEffect(() => {
         funcGetColaboradorUser();
+        // eslint-disable-next-line
     }, []);
 
     const funcGetConsultas = async () => {
@@ -102,6 +103,7 @@ const Administrador = (props) => {
         if (usuarioColaborador !== null) {
             funcGetConsultas();
         }
+        // eslint-disable-next-line
     }, [usuarioColaborador]);
 
     const handleClickNuevaConsulta = () => {
@@ -297,6 +299,7 @@ const Administrador = (props) => {
                             rowSelected={consultaSeleccionada}
                             setRowSelected={setConsultaSeleccionada}
                             mainField="iIdConsulta"
+                            doubleClick={handleEditarConsulta}
                         />
                     </Grid>
                 </Grid>
@@ -326,6 +329,15 @@ const Administrador = (props) => {
             </MeditocConfirmacion>
         </Fragment>
     );
+};
+
+Administrador.propTypes = {
+    funcAlert: PropTypes.func,
+    funcLoader: PropTypes.func,
+    title: PropTypes.any,
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.any,
+    }),
 };
 
 export default Administrador;

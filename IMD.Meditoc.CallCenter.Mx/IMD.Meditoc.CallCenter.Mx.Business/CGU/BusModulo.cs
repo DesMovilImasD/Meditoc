@@ -43,15 +43,17 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     return response;
                 }
 
-                if (string.IsNullOrWhiteSpace(entModulo.sNombre))
+                if (entModulo.bActivo && !entModulo.bBaja)
                 {
-                    response.Code = -59928366733867;
-                    response.Message = "El nombre no puede ser vacio.";
-                    return response;
+                    if (string.IsNullOrWhiteSpace(entModulo.sNombre))
+                    {
+                        response.Code = -59928366733867;
+                        response.Message = "El nombre no puede ser vacio.";
+                        return response;
+                    }
                 }
 
                 response = datModulo.DSaveModulo(entModulo);
-
                 if (response.Code != 0)
                 {
                     return response;

@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 import { Paper } from "@material-ui/core";
 
@@ -15,11 +16,16 @@ const MeditocHeader1 = (props) => {
             <div className="bar-main">
                 <div className="flx-grw-1 align-self-center">{children}</div>
                 <div className="ops-nor bold size-25 align-self-center">
-                    {typeof title === "string" ? title.toUpperCase() : ""}
+                    {typeof title === "string" ? title.toUpperCase() : title}
                 </div>
             </div>
         </Paper>
     );
+};
+
+MeditocHeader1.propTypes = {
+    children: PropTypes.any,
+    title: PropTypes.any,
 };
 
 export default MeditocHeader1;

@@ -47,11 +47,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 }
 
                 response = datSubModulo.DSaveSubModulo(entSubModulo);
-
                 if (response.Code != 0)
                 {
-                    response.Message = "Hubo un error al guardar el submódulo.";
-                    response.Result = false;
                     return response;
                 }
 
@@ -90,13 +87,16 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     return response;
                 }
 
-                if (string.IsNullOrWhiteSpace(entSubModulo.sNombre))
+                if (entSubModulo.bActivo && !entSubModulo.bBaja)
                 {
-                    response.Code = -227619869874;
-                    response.Message = "El nombre del submodulo no puede ser vacío";
-                    response.Result = false;
+                    if (string.IsNullOrWhiteSpace(entSubModulo.sNombre))
+                    {
+                        response.Code = -227619869874;
+                        response.Message = "El nombre del submodulo no puede ser vacío";
+                        response.Result = false;
 
-                    return response;
+                        return response;
+                    }
                 }
 
                 response.Code = 0;

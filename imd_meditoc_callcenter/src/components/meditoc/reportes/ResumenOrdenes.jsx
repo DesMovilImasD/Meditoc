@@ -1,10 +1,8 @@
-import { Button, Divider, Grid, IconButton, InputAdornment, TextField, Typography } from "@material-ui/core";
-import { DatePicker } from "@material-ui/pickers";
+import PropTypes from "prop-types";
+import { Button, Grid } from "@material-ui/core";
 import React, { Fragment, useState } from "react";
 import MeditocTable from "../../utilidades/MeditocTable";
-import DateRangeIcon from "@material-ui/icons/DateRange";
 import ResumenOrdenDetalle from "./ResumenOrdenDetalle";
-import ResumeInfo from "./ResumeInfo";
 import { EnumStatusConekta } from "../../../configurations/enumConfig";
 import CloseIcon from "@material-ui/icons/Close";
 import DoneIcon from "@material-ui/icons/Done";
@@ -16,9 +14,6 @@ const ResumenOrdenes = (props) => {
 
     const columnas = [
         { title: "Orden", field: "sOrderId", align: "center" },
-        // { title: "Subtotal", field: "nAmount", align: "center" },
-        // { title: "Descuento", field: "nAmountDiscount", align: "center" },
-        // { title: "IVA", field: "nAmountTax", align: "center" },
         { title: "Origen", field: "sOrigen", align: "center" },
         { title: "Total", field: "nAmountPaid", align: "center" },
         { title: "Cupón", field: "sCodigo", align: "center" },
@@ -48,10 +43,6 @@ const ResumenOrdenes = (props) => {
     return (
         <Fragment>
             <Grid container spacing={3}>
-                {/* <Grid item xs={12}>
-                    <span className="rob-nor bold size-20 color-4">RESUMÉN DE VENTAS</span>
-                    <Divider />
-                </Grid> */}
                 <Grid item md={3} sm={6} xs={12} className="center">
                     <ResumeNumero
                         label="TOTAL DE VENTA"
@@ -85,30 +76,7 @@ const ResumenOrdenes = (props) => {
                         color="color-3"
                     />
                 </Grid>
-                {/* <Grid item xs={12}>
-                    <ResumeInfo label="Total de órdenes vendidas" value={entVentas.ResumenOrdenes.iTotalOrdenes} />
-                    <ResumeInfo
-                        label="Total de órdenes rechazadas"
-                        value={entVentas.ResumenOrdenes.iTotalOrdenesRechazadas}
-                    />
-                    <ResumeInfo label="Total de folios generados" value={entVentas.ResumenOrdenes.iTotalFolios} />
-                    <ResumeInfo
-                        label="Total de cupones aplicados"
-                        value={entVentas.ResumenOrdenes.iTotalCuponesAplicados}
-                    />
-                    <ResumeInfo
-                        label="Total de descuento"
-                        value={
-                            "$" +
-                            entVentas.ResumenOrdenes.dTotalDescontado.toLocaleString("en", {
-                                minimumFractionDigits: 2,
-                            })
-                        }
-                    />
-                </Grid> */}
                 <Grid item xs={12}>
-                    {/* <span className="rob-nor bold size-20 color-4">RESULTADOS</span>
-                    <Divider /> */}
                     <MeditocTable
                         columns={columnas}
                         data={entVentas.ResumenOrdenes.lstOrdenes.map((orden) => ({
@@ -138,8 +106,7 @@ const ResumenOrdenes = (props) => {
                                 </span>
                             ),
                         }))}
-                        rowSelected={ordenSeleccionada}
-                        setRowSelected={setOrdenSeleccionada}
+                        rowClick={false}
                         mainField="sOrderId"
                         search={false}
                     />
@@ -152,6 +119,23 @@ const ResumenOrdenes = (props) => {
             />
         </Fragment>
     );
+};
+
+ResumenOrdenes.propTypes = {
+    entVentas: PropTypes.shape({
+        ResumenOrdenes: PropTypes.shape({
+            dTotalVendido: PropTypes.shape({
+                toLocaleString: PropTypes.func,
+            }),
+            iTotalFolios: PropTypes.any,
+            iTotalOrdenes: PropTypes.any,
+            iTotalOrdenesRechazadas: PropTypes.any,
+            lstOrdenes: PropTypes.shape({
+                find: PropTypes.func,
+                map: PropTypes.func,
+            }),
+        }),
+    }),
 };
 
 export default ResumenOrdenes;

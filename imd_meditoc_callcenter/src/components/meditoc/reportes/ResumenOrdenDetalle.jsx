@@ -1,4 +1,5 @@
-import { Divider, Grid, Typography } from "@material-ui/core";
+import PropTypes from "prop-types";
+import { Divider, Grid } from "@material-ui/core";
 import React, { Fragment } from "react";
 import { EnumStatusConekta } from "../../../configurations/enumConfig";
 import InfoField from "../../utilidades/InfoField";
@@ -6,14 +7,12 @@ import MeditocModal from "../../utilidades/MeditocModal";
 import MeditocModalBotones from "../../utilidades/MeditocModalBotones";
 import MeditocTableSimple from "../../utilidades/MeditocTableSimple";
 import ResumeInfo from "./ResumeInfo";
-import ResumeNumero from "./ResumeNumero";
 
 const ResumenOrdenDetalle = (props) => {
     const { entOrden, open, setOpen } = props;
 
     const columnas = [
         { title: "Folio", field: "sFolio", align: "center" },
-        //{ title: "Origen", field: "sOrigen", align: "center" },
         { title: "Vencimiento", field: "sFechaVencimiento", align: "center" },
     ];
 
@@ -38,34 +37,6 @@ const ResumenOrdenDetalle = (props) => {
                         value={entOrden.nAmountPaid.toLocaleString("en", { minimumFractionDigits: 2 })}
                     />
                 </Grid>
-                {/* <Grid item md={3} sm={6} xs={12} className="center">
-                    <ResumeNumero
-                        label="SUBTOTAL"
-                        value={entOrden.nAmount.toLocaleString("en", { minimumFractionDigits: 2 })}
-                        color="color-1"
-                    />
-                </Grid>
-                <Grid item md={3} sm={6} xs={12} className="center">
-                    <ResumeNumero
-                        label="DESCUENTO"
-                        value={`-${entOrden.nAmountDiscount.toLocaleString("en", { minimumFractionDigits: 2 })}`}
-                        color="color-4"
-                    />
-                </Grid>
-                <Grid item md={3} sm={6} xs={12} className="center">
-                    <ResumeNumero
-                        label="IVA"
-                        value={`+${entOrden.nAmountTax.toLocaleString("en", { minimumFractionDigits: 2 })}`}
-                        color="color-3"
-                    />
-                </Grid>
-                <Grid item md={3} sm={6} xs={12} className="center">
-                    <ResumeNumero
-                        label="TOTAL PAGADO"
-                        value={entOrden.nAmountPaid.toLocaleString("en", { minimumFractionDigits: 2 })}
-                        color="color-2"
-                    />
-                </Grid> */}
                 <Grid item xs={12}>
                     <span className="rob-nor bold size-20 color-4">DATOS DEL CLIENTE</span>
                     <Divider />
@@ -135,6 +106,41 @@ const ResumenOrdenDetalle = (props) => {
             </Grid>
         </MeditocModal>
     );
+};
+
+ResumenOrdenDetalle.propTypes = {
+    entOrden: PropTypes.shape({
+        charges: PropTypes.shape({
+            sAuthCode: PropTypes.any,
+            sChargeId: PropTypes.any,
+            sType: PropTypes.any,
+        }),
+        customer_info: PropTypes.shape({
+            email: PropTypes.any,
+            name: PropTypes.any,
+            phone: PropTypes.any,
+        }),
+        lstProductos: PropTypes.shape({
+            map: PropTypes.func,
+        }),
+        nAmount: PropTypes.shape({
+            toLocaleString: PropTypes.func,
+        }),
+        nAmountDiscount: PropTypes.shape({
+            toLocaleString: PropTypes.func,
+        }),
+        nAmountPaid: PropTypes.shape({
+            toLocaleString: PropTypes.func,
+        }),
+        nAmountTax: PropTypes.shape({
+            toLocaleString: PropTypes.func,
+        }),
+        sOrderId: PropTypes.any,
+        sPaymentStatus: PropTypes.any,
+        uId: PropTypes.any,
+    }),
+    open: PropTypes.any,
+    setOpen: PropTypes.any,
 };
 
 export default ResumenOrdenDetalle;

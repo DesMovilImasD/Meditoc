@@ -1,16 +1,7 @@
+import PropTypes from "prop-types";
 import React, { useState } from "react";
 import MeditocModal from "../../../utilidades/MeditocModal";
-import {
-    Grid,
-    FormControl,
-    FormLabel,
-    RadioGroup,
-    FormControlLabel,
-    Radio,
-    TextField,
-    MenuItem,
-    Divider,
-} from "@material-ui/core";
+import { Grid, RadioGroup, FormControlLabel, Radio, TextField, MenuItem, Divider } from "@material-ui/core";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import PromocionesController from "../../../../controllers/PromocionesController";
 import { useEffect } from "react";
@@ -64,6 +55,7 @@ const FormCupon = (props) => {
             txtDescripcion: entCupon.fsDescripcion,
         });
         setFormCuponOK(validacionFormulario);
+        // eslint-disable-next-line
     }, [entCupon]);
 
     const handleChangeFormCupon = (e) => {
@@ -366,6 +358,29 @@ const FormCupon = (props) => {
             </Grid>
         </MeditocModal>
     );
+};
+
+FormCupon.propTypes = {
+    entCupon: PropTypes.shape({
+        fiDiasActivo: PropTypes.number,
+        fiIdCuponCategoria: PropTypes.shape({
+            toString: PropTypes.func,
+        }),
+        fiLongitudCodigo: PropTypes.number,
+        fiTotalLanzamiento: PropTypes.number,
+        fnMontoDescuento: PropTypes.number,
+        fnPorcentajeDescuento: PropTypes.number,
+        fsCodigo: PropTypes.any,
+        fsDescripcion: PropTypes.any,
+    }),
+    funcAlert: PropTypes.func,
+    funcLoader: PropTypes.func,
+    funcObtenerCupones: PropTypes.func,
+    open: PropTypes.any,
+    setOpen: PropTypes.func,
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.any,
+    }),
 };
 
 export default FormCupon;

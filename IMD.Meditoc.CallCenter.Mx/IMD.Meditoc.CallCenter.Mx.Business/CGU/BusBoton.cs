@@ -52,18 +52,21 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     return response;
                 }
 
-                if (string.IsNullOrWhiteSpace(entBoton.sNombre))
+                if (entBoton.bActivo && !entBoton.bBaja)
                 {
-                    response.Code = -66723454387234;
-                    response.Message = "El nombre no puede ser vacio.";
-                    return response;
+                    if (string.IsNullOrWhiteSpace(entBoton.sNombre))
+                    {
+
+                        response.Code = -66723454387234;
+                        response.Message = "El nombre no puede ser vacio.";
+                        return response;
+                    }
                 }
 
                 response = datBoton.DSaveBoton(entBoton);
-
                 if (response.Code != 0)
                 {
-                    response.Message = "Hubo un error al guardar el botón.";
+                    return response;
                 }
 
                 response.Code = 0;

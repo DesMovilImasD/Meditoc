@@ -1,5 +1,3 @@
-import { LiveTv } from '@material-ui/icons'
-
 const { MeditocHeaders } = require('../configurations/headersConfig')
 const { serverMain } = require('../configurations/serverConfig')
 

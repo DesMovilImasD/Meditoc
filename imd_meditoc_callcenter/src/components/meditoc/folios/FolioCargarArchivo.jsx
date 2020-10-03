@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import {
     Button,
     Grid,
@@ -267,6 +268,17 @@ const FolioCargarArchivo = (props) => {
             />
         </MeditocModal>
     );
+};
+
+FolioCargarArchivo.propTypes = {
+    funcAlert: PropTypes.func,
+    funcGetFolios: PropTypes.func,
+    funcLoader: PropTypes.func,
+    open: PropTypes.any,
+    setOpen: PropTypes.func,
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.any,
+    }),
 };
 
 export default FolioCargarArchivo;

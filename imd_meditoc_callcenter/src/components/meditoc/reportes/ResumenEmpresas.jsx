@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { Button, Grid } from "@material-ui/core";
 import React, { Fragment, useState } from "react";
 import MeditocTable from "../../utilidades/MeditocTable";
@@ -77,8 +78,7 @@ const ResumenEmpresas = (props) => {
                                 </Button>
                             ),
                         }))}
-                        rowSelected={empresaSeleccionada}
-                        setRowSelected={setEmpresaSeleccionada}
+                        rowClick={false}
                         mainField="sFolioEmpresa"
                         search={false}
                     />
@@ -91,6 +91,22 @@ const ResumenEmpresas = (props) => {
             />
         </Fragment>
     );
+};
+
+ResumenEmpresas.propTypes = {
+    entVentas: PropTypes.shape({
+        ResumenEmpresas: PropTypes.shape({
+            dTotalVendido: PropTypes.shape({
+                toLocaleString: PropTypes.func,
+            }),
+            iTotalEmpresas: PropTypes.any,
+            iTotalFolios: PropTypes.any,
+            lstEmpresas: PropTypes.shape({
+                find: PropTypes.func,
+                map: PropTypes.func,
+            }),
+        }),
+    }),
 };
 
 export default ResumenEmpresas;

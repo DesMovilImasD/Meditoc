@@ -1,9 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useState, useEffect, Fragment } from "react";
-import { Dialog, IconButton, Tooltip, Slide } from "@material-ui/core";
-import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
+import { IconButton, Tooltip } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
-import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
 import CGUController from "../../../../controllers/CGUController";
 import MeditocBody from "../../../utilidades/MeditocBody";
 import SeleccionarModulos from "./SeleccionarModulo";

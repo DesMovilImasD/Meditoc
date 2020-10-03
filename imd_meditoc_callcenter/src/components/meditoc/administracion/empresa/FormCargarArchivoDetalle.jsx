@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { Grid, Typography } from "@material-ui/core";
 import React, { useState } from "react";
 import MeditocModal from "../../../utilidades/MeditocModal";
@@ -41,6 +42,18 @@ const FormCargarArchivoDetalle = (props) => {
             </Grid>
         </MeditocModal>
     );
+};
+
+FormCargarArchivoDetalle.propTypes = {
+    entArchivoVerificado: PropTypes.shape({
+        entProducto: PropTypes.shape({
+            sNombre: PropTypes.any,
+        }),
+        lstFolios: PropTypes.any,
+        totalFolios: PropTypes.any,
+    }),
+    open: PropTypes.any,
+    setOpen: PropTypes.any,
 };
 
 export default FormCargarArchivoDetalle;

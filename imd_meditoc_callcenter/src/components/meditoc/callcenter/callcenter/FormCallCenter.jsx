@@ -1,23 +1,9 @@
-import {
-    FormControl,
-    FormControlLabel,
-    FormLabel,
-    Grid,
-    IconButton,
-    InputAdornment,
-    MenuItem,
-    Radio,
-    RadioGroup,
-    TextField,
-} from "@material-ui/core";
-import { DatePicker } from "@material-ui/pickers";
+import PropTypes from "prop-types";
 import React, { Fragment } from "react";
 import { useState } from "react";
 import MeditocTabBody from "../../../utilidades/MeditocTabBody";
 import MeditocTabHeader from "../../../utilidades/MeditocTabHeader";
 import MeditocTabPanel from "../../../utilidades/MeditocTabPanel";
-import DateRangeIcon from "@material-ui/icons/DateRange";
-import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import FormPaciente from "./FormPaciente";
 import FormDiagnosticoTratamiento from "./FormDiagnosticoTratamiento";
 import HistorialClinico from "./HistorialClinico";
@@ -66,6 +52,17 @@ const FormCallCenter = (props) => {
             </MeditocTabBody>
         </Fragment>
     );
+};
+
+FormCallCenter.propTypes = {
+    entCallCenter: PropTypes.any,
+    formDiagnosticoTratamiento: PropTypes.any,
+    funcAlert: PropTypes.any,
+    funcLoader: PropTypes.any,
+    setEntCallCenter: PropTypes.any,
+    setFormDiagnosticoTratamiento: PropTypes.any,
+    usuarioColaborador: PropTypes.any,
+    usuarioSesion: PropTypes.any,
 };
 
 export default FormCallCenter;

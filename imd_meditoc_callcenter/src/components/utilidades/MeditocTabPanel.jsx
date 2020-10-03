@@ -1,6 +1,5 @@
+import PropTypes from "prop-types";
 import React from "react";
-import { Grid } from "@material-ui/core";
-
 const MeditocTabPanel = (props) => {
     const { id, index, children } = props;
 
@@ -9,6 +8,12 @@ const MeditocTabPanel = (props) => {
             {id === index && children}
         </div>
     );
+};
+
+MeditocTabPanel.propTypes = {
+    children: PropTypes.any,
+    id: PropTypes.any,
+    index: PropTypes.any,
 };
 
 export default MeditocTabPanel;

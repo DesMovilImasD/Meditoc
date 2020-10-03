@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 
 const InfoField = (props) => {
@@ -9,6 +10,11 @@ const InfoField = (props) => {
             <span className="ops-nor color-4 size-15">{value}</span>
         </div>
     );
+};
+
+InfoField.propTypes = {
+    label: PropTypes.any,
+    value: PropTypes.any,
 };
 
 export default InfoField;

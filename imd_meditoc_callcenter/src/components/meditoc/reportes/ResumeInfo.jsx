@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 
 const ResumeInfo = (props) => {
@@ -13,6 +14,11 @@ const ResumeInfo = (props) => {
             </div>
         </div>
     );
+};
+
+ResumeInfo.propTypes = {
+    label: PropTypes.any,
+    value: PropTypes.any,
 };
 
 export default ResumeInfo;

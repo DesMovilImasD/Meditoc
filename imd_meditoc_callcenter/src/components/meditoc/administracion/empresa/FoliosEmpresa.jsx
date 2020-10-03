@@ -1,8 +1,8 @@
+import PropTypes from "prop-types";
 import React from "react";
 import MeditocFullModal from "../../../utilidades/MeditocFullModal";
 import { Tooltip, IconButton } from "@material-ui/core";
 import NoteAddRoundedIcon from "@material-ui/icons/NoteAddRounded";
-import CloseRoundedIcon from "@material-ui/icons/CloseRounded";
 import EventAvailableRoundedIcon from "@material-ui/icons/EventAvailableRounded";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useState } from "react";
@@ -118,6 +118,7 @@ const FoliosEmpresa = (props) => {
         if (open === true) {
             funcGetFoliosEmpresa();
         }
+        // eslint-disable-next-line
     }, [entEmpresa]);
 
     return (
@@ -204,6 +205,22 @@ const FoliosEmpresa = (props) => {
             </MeditocConfirmacion>
         </MeditocFullModal>
     );
+};
+
+FoliosEmpresa.propTypes = {
+    entEmpresa: PropTypes.shape({
+        iIdEmpresa: PropTypes.any,
+        sFolioEmpresa: PropTypes.any,
+        sNombre: PropTypes.any,
+    }),
+    funcAlert: PropTypes.func,
+    funcLoader: PropTypes.func,
+    listaProductos: PropTypes.any,
+    open: PropTypes.bool,
+    setOpen: PropTypes.any,
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.any,
+    }),
 };
 
 export default FoliosEmpresa;

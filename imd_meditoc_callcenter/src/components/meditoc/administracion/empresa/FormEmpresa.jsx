@@ -1,6 +1,7 @@
+import PropTypes from "prop-types";
 import React from "react";
 import MeditocModal from "../../../utilidades/MeditocModal";
-import { Grid, TextField, Button, TextareaAutosize } from "@material-ui/core";
+import { Grid, TextField } from "@material-ui/core";
 import { useState } from "react";
 import { useEffect } from "react";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
@@ -31,6 +32,7 @@ const FormEmpresa = (props) => {
             txtCorreoEmpresa: entEmpresa.sCorreo,
         });
         setFormEmpresaOK(formularioValidacion);
+        // eslint-disable-next-line
     }, [entEmpresa]);
 
     const handleChangeFormEmpresa = (e) => {
@@ -152,6 +154,23 @@ const FormEmpresa = (props) => {
             </Grid>
         </MeditocModal>
     );
+};
+
+FormEmpresa.propTypes = {
+    entEmpresa: PropTypes.shape({
+        iIdEmpresa: PropTypes.number,
+        sCorreo: PropTypes.any,
+        sFolioEmpresa: PropTypes.any,
+        sNombre: PropTypes.any,
+    }),
+    funcAlert: PropTypes.func,
+    funcGetEmpresas: PropTypes.func,
+    funcLoader: PropTypes.func,
+    open: PropTypes.any,
+    setOpen: PropTypes.func,
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.any,
+    }),
 };
 
 export default FormEmpresa;

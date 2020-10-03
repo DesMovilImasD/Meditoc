@@ -393,7 +393,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             IMDResponse<string> response = new IMDResponse<string>();
 
             string metodo = nameof(this.BDeCodePassWord);
-            logger.Info(IMDSerialize.Serialize(67823458366888, $"Inicia {metodo}(string sPassWord)", sPassWord));
+            //logger.Info(IMDSerialize.Serialize(67823458366888, $"Inicia {metodo}(string sPassWord)", sPassWord));
 
             try
             {
@@ -418,7 +418,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             IMDResponse<string> response = new IMDResponse<string>();
 
             string metodo = nameof(this.BDeCodePassWord);
-            logger.Info(IMDSerialize.Serialize(67823458366888, $"Inicia {metodo}(string sCadena, string sKey, string sVector)", sCadena, sKey, sVector));
+            //logger.Info(IMDSerialize.Serialize(67823458366888, $"Inicia {metodo}(string sCadena, string sKey, string sVector)", sCadena, sKey, sVector));
 
             try
             {

@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import {
     FormControl,
     FormControlLabel,
@@ -19,7 +20,7 @@ import InputTelefono from "../../../utilidades/InputTelefono";
 import { EnumCatSexo } from "../../../../configurations/enumConfig";
 
 const FormPaciente = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert, usuarioColaborador, entCallCenter, setEntCallCenter } = props;
+    const { usuarioSesion, funcLoader, funcAlert, entCallCenter, setEntCallCenter } = props;
 
     const [formPaciente, setFormPaciente] = useState({
         txtCCFolio: entCallCenter.entFolio.sFolio,
@@ -194,6 +195,32 @@ const FormPaciente = (props) => {
             />
         </Grid>
     );
+};
+
+FormPaciente.propTypes = {
+    entCallCenter: PropTypes.shape({
+        entFolio: PropTypes.shape({
+            sFolio: PropTypes.any,
+        }),
+        entPaciente: PropTypes.shape({
+            dtFechaNacimiento: PropTypes.any,
+            email: PropTypes.any,
+            iIdPaciente: PropTypes.any,
+            iIdSexo: PropTypes.shape({
+                toString: PropTypes.func,
+            }),
+            name: PropTypes.any,
+            phone: PropTypes.any,
+            sTipoSangre: PropTypes.any,
+        }),
+    }),
+    funcAlert: PropTypes.func,
+    funcLoader: PropTypes.func,
+    setEntCallCenter: PropTypes.func,
+    usuarioColaborador: PropTypes.any,
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.any,
+    }),
 };
 
 export default FormPaciente;

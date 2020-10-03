@@ -4,8 +4,8 @@ import theme from './configurations/themeConfig'
 import MeditocLoader from './components/utilidades/MeditocLoader'
 import { SnackbarProvider } from 'notistack'
 import MeditocAlert from './components/utilidades/MeditocAlert'
-import MeditocContentMain from './components/MeditocContentMain'
-import { BrowserRouter, HashRouter } from 'react-router-dom'
+import MeditocContentMain from './components/meditoc/MeditocContentMain'
+import { BrowserRouter } from 'react-router-dom'
 import MeditocLogin from './components/login/MeditocLogin'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import es from 'date-fns/locale/es'
@@ -19,25 +19,7 @@ import { urlBase } from './configurations/urlConfig'
  * Invocado desde:  ---------Elemento Raíz----------
  *************************************************************/
 function App() {
-  const [usuarioSesion, setUsuarioSesion] = useState({
-    iIdUsuario: 4,
-    iIdTipoCuenta: 1,
-    iIdPerfil: 1,
-    sTipoCuenta: null,
-    sPerfil: null,
-    sUsuario: 'jperez',
-    sPassword: null,
-    sNombres: 'Juanito',
-    sApellidoPaterno: 'Perez',
-    sApellidoMaterno: null,
-    dtFechaNacimiento: '1982-06-04T01:38:00',
-    sTelefono: '9994450694',
-    sCorreo: 'g098@live.com.mx',
-    sDomicilio: '12',
-    iIdUsuarioMod: 0,
-    bActivo: false,
-    bBaja: false,
-  })
+  const [usuarioSesion, setUsuarioSesion] = useState(null)
 
   const [usuarioPermisos, setUsuarioPermisos] = useState(null)
   const [usuarioActivo, setUsuarioActivo] = useState(false)
@@ -97,7 +79,9 @@ function App() {
           <BrowserRouter basename={urlBase}>
             <MeditocLoader entLoader={entLoader} />
             <MeditocAlert entAlert={entAlert} />
-            {usuarioActivo === true && usuarioPermisos !== null ? (
+            {usuarioActivo === true &&
+            usuarioSesion !== null &&
+            usuarioPermisos !== null ? (
               <MeditocContentMain
                 usuarioSesion={usuarioSesion}
                 usuarioPermisos={usuarioPermisos}

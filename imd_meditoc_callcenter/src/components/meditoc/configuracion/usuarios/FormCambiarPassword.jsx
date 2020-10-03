@@ -1,6 +1,7 @@
+import PropTypes from "prop-types";
 import React from "react";
 import MeditocModal from "../../../utilidades/MeditocModal";
-import { Grid, TextField, Button, Tooltip, IconButton } from "@material-ui/core";
+import { Grid, TextField, Tooltip, IconButton } from "@material-ui/core";
 import { useState } from "react";
 import CGUController from "../../../../controllers/CGUController";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
@@ -100,6 +101,16 @@ const FormCambiarPassword = (props) => {
             </Grid>
         </MeditocModal>
     );
+};
+
+FormCambiarPassword.propTypes = {
+    funcAlert: PropTypes.func,
+    funcLoader: PropTypes.func,
+    open: PropTypes.any,
+    setOpen: PropTypes.func,
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.any,
+    }),
 };
 
 export default FormCambiarPassword;

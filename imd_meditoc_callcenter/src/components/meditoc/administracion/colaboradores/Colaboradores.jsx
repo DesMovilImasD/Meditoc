@@ -2,7 +2,6 @@ import React, { Fragment } from "react";
 import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
 import MeditocBody from "../../../utilidades/MeditocBody";
 import { Tooltip, IconButton, Typography } from "@material-ui/core";
-import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useState } from "react";
@@ -198,6 +197,7 @@ const Colaboradores = (props) => {
 
     useEffect(() => {
         funcGetData();
+        // eslint-disable-next-line
     }, []);
 
     return (
@@ -241,6 +241,7 @@ const Colaboradores = (props) => {
                     rowSelected={colaboradorSeleccionado}
                     setRowSelected={setColaboradorSeleccionado}
                     mainField="iIdColaborador"
+                    doubleClick={handleClickDetalleColaborador}
                 />
             </MeditocBody>
             <FormColaborador

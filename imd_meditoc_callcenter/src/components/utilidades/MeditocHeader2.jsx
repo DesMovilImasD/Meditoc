@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 import { Paper, Tooltip, IconButton } from "@material-ui/core";
 import CloseRoundedIcon from "@material-ui/icons/CloseRounded";
@@ -24,6 +25,11 @@ const MeditocHeader2 = (props) => {
             </div>
         </Paper>
     );
+};
+
+MeditocHeader2.propTypes = {
+    setOpen: PropTypes.func,
+    title: PropTypes.any,
 };
 
 export default MeditocHeader2;

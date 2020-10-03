@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 import MeditocModal from "../../../utilidades/MeditocModal";
 import { Grid, TextField } from "@material-ui/core";
@@ -25,6 +26,7 @@ const FormEspecialidad = (props) => {
             txtNombreEspecialidad: entEspecialidad.sNombre,
         });
         setFormEspecialidadOK(validacionFormulario);
+        // eslint-disable-next-line
     }, [entEspecialidad]);
 
     const handleChangeFormEspecialidad = (e) => {
@@ -126,6 +128,21 @@ const FormEspecialidad = (props) => {
             </Grid>
         </MeditocModal>
     );
+};
+
+FormEspecialidad.propTypes = {
+    entEspecialidad: PropTypes.shape({
+        iIdEspecialidad: PropTypes.number,
+        sNombre: PropTypes.any,
+    }),
+    funcAlert: PropTypes.func,
+    funcGetEspecialidades: PropTypes.func,
+    funcLoader: PropTypes.func,
+    open: PropTypes.any,
+    setOpen: PropTypes.func,
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.any,
+    }),
 };
 
 export default FormEspecialidad;

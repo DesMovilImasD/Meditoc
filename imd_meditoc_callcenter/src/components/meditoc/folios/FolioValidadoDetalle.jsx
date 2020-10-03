@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { Grid, Typography } from "@material-ui/core";
 import React from "react";
 import { useState } from "react";
@@ -36,6 +37,16 @@ const FolioValidadoDetalle = (props) => {
             <MeditocModalBotones okMessage="Aceptar" hideCancel setOpen={setOpen} />
         </MeditocModal>
     );
+};
+
+FolioValidadoDetalle.propTypes = {
+    entVentaCalle: PropTypes.shape({
+        lstFolios: PropTypes.any,
+        producto: PropTypes.any,
+        totalFolios: PropTypes.any,
+    }),
+    open: PropTypes.any,
+    setOpen: PropTypes.any,
 };
 
 export default FolioValidadoDetalle;

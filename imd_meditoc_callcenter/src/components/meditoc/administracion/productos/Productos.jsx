@@ -1,6 +1,6 @@
+import PropTypes from "prop-types";
 import React, { Fragment } from "react";
 import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
-import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -130,6 +130,7 @@ const Productos = (props) => {
 
     useEffect(() => {
         funcConsultarProductos();
+        // eslint-disable-next-line
     }, []);
 
     return (
@@ -190,6 +191,15 @@ const Productos = (props) => {
             />
         </Fragment>
     );
+};
+
+Productos.propTypes = {
+    funcAlert: PropTypes.func,
+    funcLoader: PropTypes.func,
+    title: PropTypes.any,
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.any,
+    }),
 };
 
 export default Productos;

@@ -96,8 +96,6 @@ const Login = (props) => {
     };
 
     const funcSetPermisos = (iIdPerfil = 0, lstPermisos = []) => {
-        let permisos = {};
-
         let usuarioPermisos = { ...permisosSistema };
 
         const moduloConfiguracion = lstPermisos.find((x) => x.iIdModulo === EnumSistema.Configuracion); //Configuraciones

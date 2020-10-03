@@ -1,6 +1,7 @@
+import PropTypes from "prop-types";
 import React from "react";
 import MeditocModal from "../../../utilidades/MeditocModal";
-import { Grid, Button } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import InfoField from "../../../utilidades/InfoField";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 
@@ -44,6 +45,23 @@ const DetalleProducto = (props) => {
             </Grid>
         </MeditocModal>
     );
+};
+
+DetalleProducto.propTypes = {
+    entProducto: PropTypes.shape({
+        iIdProducto: PropTypes.any,
+        iMesVigencia: PropTypes.any,
+        sComercial: PropTypes.any,
+        sCosto: PropTypes.any,
+        sDescripcion: PropTypes.any,
+        sIcon: PropTypes.any,
+        sNombre: PropTypes.any,
+        sNombreCorto: PropTypes.any,
+        sPrefijoFolio: PropTypes.any,
+        sTipoProducto: PropTypes.any,
+    }),
+    open: PropTypes.any,
+    setOpen: PropTypes.any,
 };
 
 export default DetalleProducto;

@@ -1,6 +1,7 @@
+import PropTypes from "prop-types";
 import React from "react";
 import MeditocModal from "../../../utilidades/MeditocModal";
-import { Grid, Button, InputAdornment, IconButton } from "@material-ui/core";
+import { Grid, InputAdornment, IconButton } from "@material-ui/core";
 import { DateTimePicker } from "@material-ui/pickers";
 import { useState } from "react";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
@@ -92,6 +93,23 @@ const ModificarVigencia = (props) => {
             </Grid>
         </MeditocModal>
     );
+};
+
+ModificarVigencia.propTypes = {
+    entEmpresa: PropTypes.shape({
+        iIdEmpresa: PropTypes.any,
+    }),
+    foliosEmpresaSeleccionado: PropTypes.shape({
+        map: PropTypes.func,
+    }),
+    funcAlert: PropTypes.func,
+    funcGetFoliosEmpresa: PropTypes.func,
+    funcLoader: PropTypes.func,
+    open: PropTypes.any,
+    setOpen: PropTypes.func,
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.any,
+    }),
 };
 
 export default ModificarVigencia;

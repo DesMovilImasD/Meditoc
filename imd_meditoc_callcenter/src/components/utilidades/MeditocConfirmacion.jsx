@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import MeditocModal from "./MeditocModal";
-import { Grid, Button } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import MeditocModalBotones from "./MeditocModalBotones";
 
 /*************************************************************
