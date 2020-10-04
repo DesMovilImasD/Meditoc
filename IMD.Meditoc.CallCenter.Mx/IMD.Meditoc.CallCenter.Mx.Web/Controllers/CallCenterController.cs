@@ -263,5 +263,29 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             }
             return response;
         }
+
+        [HttpGet]
+        [Route("Api/CallCenter/Get/Historial/Clinico")]
+        public IMDResponse<List<EntHistorialClinico>> CGetHistorialMedico([FromUri]int? piIdHistorialClinico = null, [FromUri]int? piIdConsulta = null, [FromUri]int? piIdPaciente = null, [FromUri]int? piIdColaborador = null, [FromUri]int? piIdFolio = null)
+        {
+            IMDResponse<List<EntHistorialClinico>> response = new IMDResponse<List<EntHistorialClinico>>();
+
+            string metodo = nameof(this.CGetHistorialMedico);
+            logger.Info(IMDSerialize.Serialize(67823458620967, $"Inicia {metodo}([FromUri]int? piIdHistorialClinico = null, [FromUri]int? piIdConsulta = null, [FromUri]int? piIdPaciente = null, [FromUri]int? piIdColaborador = null, [FromUri]int? piIdFolio = null)", piIdHistorialClinico, piIdConsulta, piIdPaciente, piIdColaborador, piIdFolio));
+
+            try
+            {
+                BusConsulta busConsulta = new BusConsulta();
+                response = busConsulta.BGetHistorialMedico(piIdHistorialClinico, piIdConsulta, piIdPaciente, piIdColaborador, piIdFolio);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458621744;
+                response.Message = "Ocurrió un error inesperado en el servicio al consultar el historial clínico.";
+
+                logger.Error(IMDSerialize.Serialize(67823458621744, $"Error en {metodo}([FromUri]int? piIdHistorialClinico = null, [FromUri]int? piIdConsulta = null, [FromUri]int? piIdPaciente = null, [FromUri]int? piIdColaborador = null, [FromUri]int? piIdFolio = null): {ex.Message}", piIdHistorialClinico, piIdConsulta, piIdPaciente, piIdColaborador, piIdFolio, ex, response));
+            }
+            return response;
+        }
     }
 }

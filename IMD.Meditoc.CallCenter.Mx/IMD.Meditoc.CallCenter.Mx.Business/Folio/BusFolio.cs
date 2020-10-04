@@ -1493,7 +1493,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     entFolio.iIdProducto = dataRow.ConvertTo<int>("iIdTipoProducto");
                     entFolio.sFolio = dataRow.ConvertTo<string>("sFolio");
                     entFolio.sPassword = dataRow.ConvertTo<string>("sPassword");
-                    entFolio.dtFechaVencimiento = dataRow.ConvertTo<DateTime>("dtFechaVencimiento");
+                    entFolio.dtFechaVencimiento = dataRow.ConvertTo<DateTime?>("dtFechaVencimiento");
                     entFolio.bTerminosYCondiciones = Convert.ToBoolean(dataRow.ConvertTo<int>("bTerminosYCondiciones"));
                     entFolio.bActivo = Convert.ToBoolean(dataRow.ConvertTo<int>("bActivo"));
                     entFolio.bBaja = Convert.ToBoolean(dataRow.ConvertTo<int>("bBaja"));
@@ -1510,14 +1510,23 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 entFolio.bEsAgendada = responseConsultasAgendadas.Result;
                 if (!responseConsultasAgendadas.Result)
                 {
-
-                    if (entFolio.dtFechaVencimiento < DateTime.Now || (!entFolio.bActivo && entFolio.bBaja))
+                    if (entFolio.dtFechaVencimiento != null)
                     {
-                        response.Message = "Su folio ha expirado";
-                        return response;
+                        if (entFolio.dtFechaVencimiento < DateTime.Now || (!entFolio.bActivo && entFolio.bBaja))
+                        {
+                            response.Message = "Su folio ha expirado";
+                            return response;
+                        }
+                    }
+                    else
+                    {
+                        IMDResponse<bool> resSetVigencia = this.BLoginAppUpdVigencia(entFolio.iIdFolio);
+                        if (resSetVigencia.Code != 0)
+                        {
+                            return resSetVigencia.GetResponse<EntFolio>();
+                        }
                     }
                 }
-
 
                 response.Code = 0;
                 response.Message = "Login correcto";
@@ -1529,6 +1538,73 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 response.Message = "Su usuario o contraseña es inválida";
 
                 logger.Error(IMDSerialize.Serialize(67823458430602, $"Error en {metodo}(string sUsuario, string sPassword): {ex.Message}", sUsuario, sPassword, ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<bool> BLoginAppUpdVigencia(int piIdFolio)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.BLoginAppUpdVigencia);
+            logger.Info(IMDSerialize.Serialize(67823458622521, $"Inicia {metodo}"));
+
+            try
+            {
+                IMDResponse<List<EntFolioReporte>> resGetData = this.BGetFolios(piIdFolio);
+                if (resGetData.Code != 0)
+                {
+                    return resGetData.GetResponse<bool>();
+                }
+
+                if (resGetData.Result.Count != 1)
+                {
+                    response.Code = -37465876768234;
+                    response.Message = "Error al validar la información de la compra";
+                    return response;
+                }
+                EntFolioReporte folio = resGetData.Result.First();
+
+                if (Enum.IsDefined(typeof(EnumProductos), folio.iIdProducto) && folio.iIdProducto != (int)EnumProductos.OrientacionEspecialistaID)
+                {
+                    DateTime nuevaFechaVencimiento;
+                    if (folio.iMesVigenciaProducto == 0)
+                    {
+                        nuevaFechaVencimiento = DateTime.Now.AddDays(Convert.ToInt16(ConfigurationManager.AppSettings["iDiasDespuesVencimiento"]));
+                    }
+                    else
+                    {
+                        nuevaFechaVencimiento = DateTime.Now.AddMonths(folio.iMesVigenciaProducto);
+                    }
+                    EntFolioFV entFolioFV = new EntFolioFV
+                    {
+                        dtFechaVencimiento = nuevaFechaVencimiento,
+                        iIdEmpresa = folio.iIdEmpresa,
+                        lstFolios = new List<EntFolioFVItem>
+                        {
+                            new EntFolioFVItem
+                            {
+                                iIdFolio = piIdFolio
+                            }
+                        }
+                    };
+                    IMDResponse<bool> resUpdVigencia = this.BUpdFechaVencimiento(entFolioFV);
+                    if (resUpdVigencia.Code != 0)
+                    {
+                        return resUpdVigencia;
+                    }
+
+                    response.Code = 0;
+                    response.Message = "Se actualizó la vigencia del folio";
+                    response.Result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458623298;
+                response.Message = "Ocurrió un error inesperado al verificar la información de la compra";
+
+                logger.Error(IMDSerialize.Serialize(67823458623298, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }
@@ -1580,6 +1656,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                         iIdOrigen = dr.ConvertTo<int>("iIdOrigen"),
                         iIdProducto = dr.ConvertTo<int>("iIdProducto"),
                         iIdTipoProducto = dr.ConvertTo<int>("iIdTipoProducto"),
+                        iMesVigenciaProducto = dr.ConvertTo<int>("iMesVigenciaProducto"),
                         sCorreoEmpresa = dr.ConvertTo<string>("sCorreoEmpresa"),
                         sFolio = dr.ConvertTo<string>("sFolio"),
                         sCorreoPaciente = dr.ConvertTo<string>("sCorreoPaciente"),
@@ -2174,37 +2251,37 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 Guid tempOrderUID = Guid.NewGuid();
                 int qty = 0;
 
-                using (TransactionScope scope = new TransactionScope())
+                //using (TransactionScope scope = new TransactionScope())
+                //{
+                foreach (EntFolioUser folio in data.lstFolios)
                 {
-                    foreach (EntFolioUser folio in data.lstFolios)
+                    EntFolioVentaCalle entFolioVentaCalle = new EntFolioVentaCalle
                     {
-                        EntFolioVentaCalle entFolioVentaCalle = new EntFolioVentaCalle
-                        {
-                            iIdEmpresa = data.entEmpresa.iIdEmpresa,
-                            iIdOrigen = entFolioxEmpresa.iIdOrigen,
-                            iIdProducto = data.entProducto.iIdProducto,
-                            iIdUsuarioMod = piIdUsuarioMod,
-                            sFolio = folio.sFolio,
-                            sPassword = folio.sPassword,
-                            dtFechaVencimiento = Enum.IsDefined(typeof(EnumProductos), data.entProducto.iIdProducto) ? (DateTime?)null : data.entProducto.iMesVigencia == 0 ? DateTime.Now.AddDays(Convert.ToInt16(ConfigurationManager.AppSettings["iDiasDespuesVencimiento"])) : DateTime.Now.AddMonths(data.entProducto.iMesVigencia),
-                            sOrdenConekta = tempOrderUID.ToString(),
-                            bConfirmado = Enum.IsDefined(typeof(EnumProductos), data.entProducto.iIdProducto) && data.entProducto.iIdProducto != (int)EnumProductos.OrientacionEspecialistaID ? false : true
-                        };
+                        iIdEmpresa = data.entEmpresa.iIdEmpresa,
+                        iIdOrigen = entFolioxEmpresa.iIdOrigen,
+                        iIdProducto = data.entProducto.iIdProducto,
+                        iIdUsuarioMod = piIdUsuarioMod,
+                        sFolio = folio.sFolio,
+                        sPassword = folio.sPassword,
+                        dtFechaVencimiento = Enum.IsDefined(typeof(EnumProductos), data.entProducto.iIdProducto) ? (DateTime?)null : data.entProducto.iMesVigencia == 0 ? DateTime.Now.AddDays(Convert.ToInt16(ConfigurationManager.AppSettings["iDiasDespuesVencimiento"])) : DateTime.Now.AddMonths(data.entProducto.iMesVigencia),
+                        sOrdenConekta = tempOrderUID.ToString(),
+                        bConfirmado = Enum.IsDefined(typeof(EnumProductos), data.entProducto.iIdProducto) && data.entProducto.iIdProducto != (int)EnumProductos.OrientacionEspecialistaID ? false : true
+                    };
 
-                        IMDResponse<bool> resSaveFolio = this.BSaveFolioVC(entFolioVentaCalle);
-                        if (resSaveFolio.Code != 0)
-                        {
-                            resSaveFolio.Message = $"El folio {entFolioVentaCalle.sFolio} con contraseña {entFolioVentaCalle.sPassword} no se pudo guardar. Verifique los datos y cargue el archivo nuevamente. El proceso de guardado se ha detenido";
-                            return resSaveFolio;
-                        }
-                        if (resSaveFolio.Result)
-                        {
-                            qty++;
-                        }
+                    IMDResponse<bool> resSaveFolio = this.BSaveFolioVC(entFolioVentaCalle);
+                    if (resSaveFolio.Code != 0)
+                    {
+                        resSaveFolio.Message = $"El folio {entFolioVentaCalle.sFolio} con contraseña {entFolioVentaCalle.sPassword} no se pudo guardar. Verifique los datos y cargue el archivo nuevamente. El proceso de guardado se ha detenido";
+                        return resSaveFolio;
                     }
-
-                    scope.Complete();
+                    if (resSaveFolio.Result)
+                    {
+                        qty++;
+                    }
                 }
+
+                //    scope.Complete();
+                //}
 
 
                 if (qty > 0)

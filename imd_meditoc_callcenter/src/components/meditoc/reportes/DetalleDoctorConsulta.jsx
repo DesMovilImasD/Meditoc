@@ -9,7 +9,7 @@ const DetalleDoctorConsulta = (props) => {
 
     const callcenterController = new CallCenterController();
 
-    const [entCallCenter, setEntCallCenter] = useState(null);
+    const [entConsulta, setEntConsulta] = useState(null);
 
     const funcGetDetalle = async () => {
         funcLoader(true, "Consultando detalles...");
@@ -17,7 +17,7 @@ const DetalleDoctorConsulta = (props) => {
         const response = await callcenterController.funcGetConsulta(iIdConsulta);
 
         if (response.Code === 0) {
-            setEntCallCenter(response.Result);
+            setEntConsulta(response.Result[0]);
         } else {
             funcAlert(response.Message);
         }
@@ -34,7 +34,7 @@ const DetalleDoctorConsulta = (props) => {
 
     return (
         <MeditocModal title="Detalle de consulta" size="normal" open={open} setOpen={setOpen}>
-            {entCallCenter !== null && (
+            {entConsulta !== null && (
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         HOLA
