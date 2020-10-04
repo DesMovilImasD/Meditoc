@@ -9,7 +9,7 @@ const HistorialClinicoDetalle = (props) => {
     const { open, setOpen, historial } = props;
 
     return (
-        <MeditocModal title="Detalle de la consulta" size="small" open={open} setOpen={setOpen}>
+        <MeditocModal title="Detalle de la consulta" size="small" open={open} setOpen={setOpen} level={3}>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <InfoField label="Peso:" value={historial.fPeso} />

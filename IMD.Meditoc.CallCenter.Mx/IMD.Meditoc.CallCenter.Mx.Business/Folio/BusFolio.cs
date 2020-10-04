@@ -642,7 +642,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                         consecutive = ++consecutive,
                         name = entFolioxEmpresa.lstLineItems[i].name,
                         quantity = entFolioxEmpresa.lstLineItems[i].quantity,
-                        unit_price = entFolioxEmpresa.lstLineItems[i].unit_price * 100,
+                        unit_price = entFolioxEmpresa.lstLineItems[i].unit_price,
+                        id = Guid.NewGuid().ToString()
                     };
                     entFolioxEmpresa.lstLineItems[i].consecutive = consecutive;
                     entLineItemDetails.Add(entLineItemDetail);

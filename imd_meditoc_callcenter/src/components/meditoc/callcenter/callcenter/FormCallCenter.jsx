@@ -47,7 +47,7 @@ const FormCallCenter = (props) => {
                     />
                 </MeditocTabPanel>
                 <MeditocTabPanel id={2} index={tabIndex}>
-                    <HistorialClinico entCallCenter={entCallCenter} />
+                    <HistorialClinico lstHistorialClinico={entCallCenter.lstHistorialClinico} />
                 </MeditocTabPanel>
             </MeditocTabBody>
         </Fragment>

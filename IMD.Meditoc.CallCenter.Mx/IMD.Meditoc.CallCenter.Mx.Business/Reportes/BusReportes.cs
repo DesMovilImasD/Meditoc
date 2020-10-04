@@ -224,51 +224,104 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                     uId = o.Select(r => r.uId).FirstOrDefault(),
                 }).ToList();
 
-
-                List<EntReporteEmpresa> empresas = respuestaObtenerFolios.Result.Where(x => x.iIdOrigen == (int)EnumOrigen.PanelAdministrativo).GroupBy(x => x.iIdEmpresa).Select(e => new EntReporteEmpresa
+                List<EntReporteOrden> ordenesAdmin = respuestaObtenerFolios.Result.Where(x => x.iIdOrigen == (int)EnumOrigen.PanelAdministrativo).GroupBy(o => o.sOrderId).Select(o => new EntReporteOrden
                 {
-                    iIdEmpresa = e.Key,
-                    sCorreo = e.Select(r => r.sCorreo).FirstOrDefault(),
-                    sFolioEmpresa = e.Select(r => r.sFolioEmpresa).FirstOrDefault(),
-                    sNombre = e.Select(r => r.sEmpresa).FirstOrDefault(),
-                    lstProductos = e.GroupBy(f => f.iIdFolio).Select(p => new EntReporteProductoEmpresa
+                    sOrderId = o.Key,
+                    iIdEmpresa = o.Select(r => r.iIdEmpresa).FirstOrDefault(),
+                    sCorreo = o.Select(r => r.sCorreo).FirstOrDefault(),
+                    sFolioEmpresa = o.Select(r => r.sFolioEmpresa).FirstOrDefault(),
+                    sNombre = o.Select(r => r.sEmpresa).FirstOrDefault(),
+                    charges = o.Select(c => new EntChargeReporte
                     {
-                        iConsecutivo = 1,
+                        sAuthCode = c.sAuthCode,
+                        sChargeId = c.sChargeId,
+                        sType = c.sType
+                    }).FirstOrDefault(),
+                    customer_info = o.Select(u => new EntCustomerInfo
+                    {
+                        email = u.email,
+                        name = u.name,
+                        phone = u.phone
+                    }).FirstOrDefault(),
+                    lstProductos = o.GroupBy(p => p.iConsecutive).Select(p => new EntReporteProducto
+                    {
+                        iConsecutivo = p.Key,
                         iIdProducto = p.Select(r => r.iIdProducto).FirstOrDefault(),
                         iIdTipoProducto = p.Select(r => r.iIdTipoProducto).FirstOrDefault(),
-                        iQuantity = 1,
-                        nUnitPrice = p.Select(r => r.fCosto).FirstOrDefault(),
-                        sNombre = p.Select(r => r.sProducto).FirstOrDefault(),
+                        iQuantity = p.Select(r => r.iQuantity).FirstOrDefault(),
+                        nUnitPrice = p.Select(r => r.nUnitPrice / 100).FirstOrDefault(),
+                        sItemId = p.Select(r => r.sItemId).FirstOrDefault(),
+                        sNombre = p.Select(r => r.sItemName).FirstOrDefault(),
                         sTipoProducto = p.Select(r => r.sTipoProducto).FirstOrDefault(),
-                        entFolio = p.Select(c => new EntReporteFolio
+                        lstFolios = p.Select(x => x.sPaymentStatus).First() == "declined" ? new List<EntReporteFolio>() : p.GroupBy(f => f.iIdFolio).Select(f => new EntReporteFolio
                         {
-                            iIdFolio = c.iIdFolio,
-                            sFolio = c.sFolio,
-                            bTerminosYCondiciones = c.bTerminosYCondiciones,
-                            iIdOrigen = c.iIdOrigen,
-                            sFechaVencimiento = c.sFechaVencimiento,
-                            sOrigen = c.sOrigen
-                        }).FirstOrDefault()
+                            iIdFolio = f.Key,
+                            sFolio = f.Select(r => r.sFolio).FirstOrDefault(),
+                            bTerminosYCondiciones = f.Select(r => r.bTerminosYCondiciones).FirstOrDefault(),
+                            sFechaVencimiento = f.Select(r => r.sFechaVencimiento).FirstOrDefault(),
+                            sTerminosYCondiciones = f.Select(r => r.bTerminosYCondiciones).FirstOrDefault() ? "SI" : "NO"
+                        }).ToList()
                     }).ToList(),
+                    iIdCupon = o.Select(r => r.iIdCupon).FirstOrDefault(),
+                    nAmount = o.Select(r => r.nAmount / 100).FirstOrDefault(),
+                    nAmountDiscount = o.Select(r => r.nAmountDiscount / 100).FirstOrDefault(),
+                    nAmountPaid = o.Select(r => r.nAmountPaid / 100).FirstOrDefault(),
+                    nAmountTax = o.Select(r => r.nAmountTax / 100).FirstOrDefault(),
+                    sCodigo = o.Select(r => r.sCodigo).FirstOrDefault(),
+                    sPaymentStatus = o.Select(r => r.sPaymentStatus).FirstOrDefault(),
+                    sRegisterDate = o.Select(r => r.sRegisterDate).FirstOrDefault(),
+                    iIdOrigen = o.Select(r => r.iIdOrigen).FirstOrDefault(),
+                    sOrigen = o.Select(r => r.sOrigen).FirstOrDefault(),
+                    uId = o.Select(r => r.uId).FirstOrDefault(),
                 }).ToList();
 
-                for (int i = 0; i < empresas.Count; i++)
-                {
-                    empresas[i].dTotalSinIva = empresas[i].lstProductos.Sum(x => x.nUnitPrice);
-                    empresas[i].dTotalIva = empresas[i].dTotalSinIva * dIVA;
-                    empresas[i].dTotal = empresas[i].dTotalSinIva + empresas[i].dTotalIva;
-                    empresas[i].iTotalFolios = empresas[i].lstProductos.Count;
-                }
+                //List<EntReporteEmpresa> empresas = respuestaObtenerFolios.Result.Where(x => x.iIdOrigen == (int)EnumOrigen.PanelAdministrativo).GroupBy(x => x.iIdEmpresa).Select(e => new EntReporteEmpresa
+                //{
+                //    iIdEmpresa = e.Key,
+                //    sCorreo = e.Select(r => r.sCorreo).FirstOrDefault(),
+                //    sFolioEmpresa = e.Select(r => r.sFolioEmpresa).FirstOrDefault(),
+                //    sNombre = e.Select(r => r.sEmpresa).FirstOrDefault(),
+                //    lstProductos = e.GroupBy(f => f.iIdFolio).Select(p => new EntReporteProductoEmpresa
+                //    {
+                //        iConsecutivo = 1,
+                //        iIdProducto = p.Select(r => r.iIdProducto).FirstOrDefault(),
+                //        iIdTipoProducto = p.Select(r => r.iIdTipoProducto).FirstOrDefault(),
+                //        iQuantity = 1,
+                //        nUnitPrice = p.Select(r => r.fCosto).FirstOrDefault(),
+                //        sNombre = p.Select(r => r.sProducto).FirstOrDefault(),
+                //        sTipoProducto = p.Select(r => r.sTipoProducto).FirstOrDefault(),
+                //        entFolio = p.Select(c => new EntReporteFolio
+                //        {
+                //            iIdFolio = c.iIdFolio,
+                //            sFolio = c.sFolio,
+                //            bTerminosYCondiciones = c.bTerminosYCondiciones,
+                //            iIdOrigen = c.iIdOrigen,
+                //            sFechaVencimiento = c.sFechaVencimiento,
+                //            sOrigen = c.sOrigen
+                //        }).FirstOrDefault()
+                //    }).ToList(),
+                //}).ToList();
+
+                //for (int i = 0; i < empresas.Count; i++)
+                //{
+                //    empresas[i].dTotalSinIva = empresas[i].lstProductos.Sum(x => x.nUnitPrice);
+                //    empresas[i].dTotalIva = empresas[i].dTotalSinIva * dIVA;
+                //    empresas[i].dTotal = empresas[i].dTotalSinIva + empresas[i].dTotalIva;
+                //    empresas[i].iTotalFolios = empresas[i].lstProductos.Count;
+                //}
 
 
                 EntReporteVenta entReporteVenta = new EntReporteVenta
                 {
-                    ResumenEmpresas = new EntResumenEmpresas
+                    ResumenOrdenesAdmin = new EntResumenOrdenes
                     {
-                        lstEmpresas = empresas,
-                        dTotalVendido = empresas.Sum(x => x.dTotal),
-                        iTotalFolios = empresas.Sum(x => x.iTotalFolios),
-                        iTotalEmpresas = empresas.Count,
+                        lstOrdenes = ordenesAdmin,
+                        dTotalDescontado = ordenesAdmin.Where(x => x.sPaymentStatus != "declined").Sum(x => x.nAmountDiscount),
+                        dTotalVendido = ordenesAdmin.Where(x => x.sPaymentStatus != "declined").Sum(x => x.nAmountPaid),
+                        iTotalCuponesAplicados = ordenesAdmin.Where(x => !string.IsNullOrEmpty(x.sCodigo) && x.sPaymentStatus != "declined").Count(),
+                        iTotalFolios = ordenesAdmin.Sum(x => x.lstProductos.Sum(y => y.lstFolios.Count)),
+                        iTotalOrdenes = ordenesAdmin.Where(x => x.sPaymentStatus != "declined").Count(),
+                        iTotalOrdenesRechazadas = ordenesAdmin.Where(x => x.sPaymentStatus == "declined").Count()
                     },
                     ResumenOrdenes = new EntResumenOrdenes
                     {

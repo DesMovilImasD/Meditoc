@@ -22,7 +22,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Tests
         {
             BusReportes busReportes = new BusReportes();
 
-            var res = busReportes.BObtenerFolios();
+            var res = busReportes.BObtenerFolios(psIdOrigen: "2");
 
             string json = JsonConvert.SerializeObject(res, Formatting.Indented);
         }

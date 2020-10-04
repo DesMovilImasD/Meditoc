@@ -22,19 +22,19 @@ const ResumenOrdenDetalle = (props) => {
                 <Grid item xs={12}>
                     <ResumeInfo
                         label="Subtotal"
-                        value={entOrden.nAmount.toLocaleString("en", { minimumFractionDigits: 2 })}
+                        value={"$" + entOrden.nAmount.toLocaleString("en", { minimumFractionDigits: 2 })}
                     />
                     <ResumeInfo
                         label="Descuento"
-                        value={`-${entOrden.nAmountDiscount.toLocaleString("en", { minimumFractionDigits: 2 })}`}
+                        value={"- $" + entOrden.nAmountDiscount.toLocaleString("en", { minimumFractionDigits: 2 })}
                     />
                     <ResumeInfo
                         label="IVA"
-                        value={`+${entOrden.nAmountTax.toLocaleString("en", { minimumFractionDigits: 2 })}`}
+                        value={"+ $" + entOrden.nAmountTax.toLocaleString("en", { minimumFractionDigits: 2 })}
                     />
                     <ResumeInfo
                         label="Total pagado"
-                        value={entOrden.nAmountPaid.toLocaleString("en", { minimumFractionDigits: 2 })}
+                        value={"$" + entOrden.nAmountPaid.toLocaleString("en", { minimumFractionDigits: 2 })}
                     />
                 </Grid>
                 <Grid item xs={12}>

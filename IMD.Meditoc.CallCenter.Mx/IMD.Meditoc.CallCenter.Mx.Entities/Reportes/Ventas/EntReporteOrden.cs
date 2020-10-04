@@ -11,6 +11,10 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Reportes.Ventas
     {
         public string uId { get; set; }
         public string sOrderId { get; set; }
+        public int iIdEmpresa { get; set; }
+        public string sNombre { get; set; }
+        public string sCorreo { get; set; }
+        public string sFolioEmpresa { get; set; }
         public double nAmount { get; set; }
         public double nAmountDiscount { get; set; }
         public double nAmountTax { get; set; }

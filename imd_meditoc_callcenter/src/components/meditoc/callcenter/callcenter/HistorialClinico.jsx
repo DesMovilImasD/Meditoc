@@ -6,7 +6,7 @@ import MeditocTable from "../../../utilidades/MeditocTable";
 import HistorialClinicoDetalle from "./HistorialClinicoDetalle";
 
 const HistorialClinico = (props) => {
-    const { entCallCenter } = props;
+    const { lstHistorialClinico } = props;
     const columns = [
         { title: "ID", field: "iIdHistorialClinico", align: "center", hidden: true },
         { title: "Fecha", field: "sFechaCreacion", align: "center" },
@@ -19,9 +19,7 @@ const HistorialClinico = (props) => {
     const [modalHistorialDetalleOpen, setModalHistorialDetalleOpen] = useState(false);
 
     const handleClickDetalle = (iIdHistorialClinico) => {
-        setHistorialClinicoDetalle(
-            entCallCenter.lstHistorialClinico.find((x) => x.iIdHistorialClinico === iIdHistorialClinico)
-        );
+        setHistorialClinicoDetalle(lstHistorialClinico.find((x) => x.iIdHistorialClinico === iIdHistorialClinico));
         setModalHistorialDetalleOpen(true);
     };
 
@@ -31,7 +29,7 @@ const HistorialClinico = (props) => {
                 <Grid item xs={12}>
                     <MeditocTable
                         columns={columns}
-                        data={entCallCenter.lstHistorialClinico.map((historia) => ({
+                        data={lstHistorialClinico.map((historia) => ({
                             ...historia,
                             sDetalle: (
                                 <Button
@@ -58,11 +56,9 @@ const HistorialClinico = (props) => {
 };
 
 HistorialClinico.propTypes = {
-    entCallCenter: PropTypes.shape({
-        lstHistorialClinico: PropTypes.shape({
-            find: PropTypes.func,
-            map: PropTypes.func,
-        }),
+    lstHistorialClinico: PropTypes.shape({
+        find: PropTypes.func,
+        map: PropTypes.func,
     }),
 };
 

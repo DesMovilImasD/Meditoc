@@ -17,6 +17,7 @@ class CallCenterController {
     this.apiFinalizarConsulta = 'Api/CallCenter/Finalizar/Consulta'
     this.apiSavePaciente = 'Api/CallCenter/Guardar/Datos/Paciente'
     this.apiSaveHistorial = 'Api/CallCenter/Guardar/Historial/Clinico'
+    this.apiGetHistorial = 'Api/CallCenter/Get/Historial/Clinico'
   }
 
   async funcGetConsulta(
@@ -202,6 +203,30 @@ class CallCenterController {
       response.Code = -1
       response.Message =
         'Ocurrió un error al intentar guardar el historial clinico'
+    }
+    return response
+  }
+
+  async funcGetHistorial(
+    piIdHistorialClinico = null,
+    piIdConsulta = null,
+    piIdPaciente = null,
+    piIdColaborador = null,
+    piIdFolio = null,
+  ) {
+    let response = { Code: 0, Message: '', Result: [] }
+    try {
+      const apiResponse = await fetch(
+        `${serverMain}${this.apiGetHistorial}?piIdHistorialClinico=${piIdHistorialClinico}&piIdConsulta=${piIdConsulta}&piIdPaciente=${piIdPaciente}&piIdColaborador=${piIdColaborador}&piIdFolio=${piIdFolio}`,
+        {
+          headers: MeditocHeaders,
+        },
+      )
+
+      response = await apiResponse.json()
+    } catch (error) {
+      response.Code = -1
+      response.Message = 'Ocurrió un error al intentar obtener el historial'
     }
     return response
   }

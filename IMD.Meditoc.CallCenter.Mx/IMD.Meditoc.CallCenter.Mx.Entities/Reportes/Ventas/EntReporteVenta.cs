@@ -9,12 +9,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Reportes.Ventas
     public class EntReporteVenta
     {
         public EntResumenOrdenes ResumenOrdenes { get; set; }
+        public EntResumenOrdenes ResumenOrdenesAdmin { get; set; }
         public EntResumenEmpresas ResumenEmpresas { get; set; }
 
         public EntReporteVenta()
         {
             ResumenOrdenes = new EntResumenOrdenes();
             ResumenEmpresas = new EntResumenEmpresas();
+            ResumenOrdenesAdmin = new EntResumenOrdenes();
         }
     }
 }
