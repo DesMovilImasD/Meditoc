@@ -1,10 +1,8 @@
-import PropTypes from "prop-types";
 import {
     Button,
     Grid,
     IconButton,
     InputAdornment,
-    makeStyles,
     MenuItem,
     Table,
     TableBody,
@@ -14,15 +12,18 @@ import {
     TableRow,
     TextField,
     Tooltip,
+    makeStyles,
 } from "@material-ui/core";
 import React, { Fragment, useEffect, useState } from "react";
-import FolioController from "../../../../controllers/FolioController";
+
+import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
 import AttachFileIcon from "@material-ui/icons/AttachFile";
 import DeleteIcon from "@material-ui/icons/Delete";
-import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
-import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
+import DetalleArchivoCargado from "./DetalleArchivoCargado";
+import FolioController from "../../../../controllers/FolioController";
 import MeditocModal from "../../../utilidades/MeditocModal";
-import FormCargarArchivoDetalle from "./FormCargarArchivoDetalle";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
+import PropTypes from "prop-types";
 import theme from "../../../../configurations/themeConfig";
 
 const useStyles = makeStyles({
@@ -328,7 +329,7 @@ const FormCargarArchivo = (props) => {
                 />
             </Grid>
             {entArchivoVerificado !== null && (
-                <FormCargarArchivoDetalle
+                <DetalleArchivoCargado
                     entArchivoVerificado={entArchivoVerificado}
                     open={modalDetalleArchivoVerificado}
                     setOpen={setModalDetalleArchivoVerificado}

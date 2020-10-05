@@ -1,20 +1,22 @@
-import PropTypes from "prop-types";
+import { IconButton, Tooltip } from "@material-ui/core";
 import React, { Fragment } from "react";
-import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
-import { Tooltip, IconButton } from "@material-ui/core";
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
-import MeditocBody from "../../../utilidades/MeditocBody";
-import { useState } from "react";
-import MeditocTable from "../../../utilidades/MeditocTable";
+
 import CGUController from "../../../../controllers/CGUController";
-import { useEffect } from "react";
-import FormUsuario from "./FormUsuario";
-import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
-import { EnumPerfilesPrincipales } from "../../../../configurations/enumConfig";
-import VisibilityIcon from "@material-ui/icons/Visibility";
+import DeleteIcon from "@material-ui/icons/Delete";
 import DetalleUsuario from "./DetalleUsuario";
+import EditIcon from "@material-ui/icons/Edit";
+import { EnumPerfilesPrincipales } from "../../../../configurations/enumConfig";
+import FormUsuario from "./FormUsuario";
+import MeditocBody from "../../../utilidades/MeditocBody";
+import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
+import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
+import MeditocTable from "../../../utilidades/MeditocTable";
+import PersonAddIcon from "@material-ui/icons/PersonAdd";
+import PropTypes from "prop-types";
+import ReplayIcon from "@material-ui/icons/Replay";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import { useEffect } from "react";
+import { useState } from "react";
 
 /*************************************************************
  * Descripcion: Submódulo para vista principal "USUARIOS" del portal Meditoc
@@ -238,6 +240,11 @@ const Usuarios = (props) => {
                 <Tooltip title="Eliminar usuario" arrow>
                     <IconButton onClick={handleClickEliminarUsuario}>
                         <DeleteIcon className="color-0" />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Actualizar tabla" arrow>
+                    <IconButton onClick={getData}>
+                        <ReplayIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
             </MeditocHeader1>

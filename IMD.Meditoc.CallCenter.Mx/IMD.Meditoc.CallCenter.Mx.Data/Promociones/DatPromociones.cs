@@ -46,33 +46,39 @@ namespace IMD.Admin.Conekta.Data
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         string spGetCuponAutocomplete;
 #endif
-        public DatPromociones(string appToken, string appKey)
+        public DatPromociones()
         {
             imdCommonData = new IMDCommonData();
-            string FsConnectionString = "cnxConekta";
-            database = imdCommonData.DGetDatabase(FsConnectionString, appToken, appKey);
+            string FsConnectionString = "cnxMeditoc";
+            database = imdCommonData.DGetDatabase(FsConnectionString, "MeditocComercial", "Meditoc1");
+            spSaveCupon = "sva_meditoc_save_cupon";
+            spGetCupones = "svc_meditoc_cupones";
+            spUnsubscribeCupon = "sva_meditoc_cupon_unsubscribe";
+            spGetNewIdCupon = "svc_meditoc_cupones_newid";
+            spGetCuponUsed = "svc_meditoc_cupones_used";
+            spGetCuponAutocomplete = "svc_meditoc_cupones_autocomplete";
 
-            switch (ConfigurationManager.ConnectionStrings[FsConnectionString].ProviderName)
-            {
-                case "System.Data.SqlClient":
-                    spSaveCupon = "Orders.svaSaveConektaOrder";
-                    spGetCupones = "Orders.svaSaveCustomerInfo";
-                    spUnsubscribeCupon = "sve_unsubscribe_cupon";
-                    spGetNewIdCupon = "";
-                    spGetCuponUsed = "";
-                    spGetCuponAutocomplete = "";
-                    break;
-                case "MySql.Data.MySqlClient":
-                    spSaveCupon = "sva_save_cupon";
-                    spGetCupones = "svc_get_cupones";
-                    spUnsubscribeCupon = "sve_unsubscribe_cupon";
-                    spGetNewIdCupon = "svc_get_new_id_cupon";
-                    spGetCuponUsed = "svc_get_cupon_used";
-                    spGetCuponAutocomplete = "svc_get_cupones_autocomplete";
-                    break;
-                default:
-                    throw new Exception("No se ha especificado el motor de base de datos");
-            }
+            //switch (ConfigurationManager.ConnectionStrings[FsConnectionString].ProviderName)
+            //{
+            //    case "System.Data.SqlClient":
+            //        spSaveCupon = "Orders.svaSaveConektaOrder";
+            //        spGetCupones = "Orders.svaSaveCustomerInfo";
+            //        spUnsubscribeCupon = "sve_unsubscribe_cupon";
+            //        spGetNewIdCupon = "";
+            //        spGetCuponUsed = "";
+            //        spGetCuponAutocomplete = "";
+            //        break;
+            //    case "MySql.Data.MySqlClient":
+            //        spSaveCupon = "sva_save_cupon";
+            //        spGetCupones = "svc_get_cupones";
+            //        spUnsubscribeCupon = "sve_unsubscribe_cupon";
+            //        spGetNewIdCupon = "svc_get_new_id_cupon";
+            //        spGetCuponUsed = "svc_get_cupon_used";
+            //        spGetCuponAutocomplete = "svc_get_cupones_autocomplete";
+            //        break;
+            //    default:
+            //        throw new Exception("No se ha especificado el motor de base de datos");
+            //}
         }
 
         /// <summary>

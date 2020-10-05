@@ -1,19 +1,22 @@
-import PropTypes from "prop-types";
-import { Button, Divider, Grid, IconButton, InputAdornment, MenuItem, TextField, Tooltip } from "@material-ui/core";
+import { Button, Grid, IconButton, InputAdornment, MenuItem, TextField, Tooltip } from "@material-ui/core";
+import { EnumEstatusConsulta, EnumTipoDoctor } from "../../../../configurations/enumConfig";
 import React, { Fragment, useEffect } from "react";
-import MeditocHeader1 from "../../utilidades/MeditocHeader1";
+
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
-import ReportesController from "../../../controllers/ReportesController";
-import { useState } from "react";
-import MeditocBody from "../../utilidades/MeditocBody";
-import MeditocTable from "../../utilidades/MeditocTable";
-import DetalleDoctor from "./DetalleDoctor";
 import { DatePicker } from "@material-ui/pickers";
 import DateRangeIcon from "@material-ui/icons/DateRange";
-import { EnumEstatusConsulta, EnumTipoDoctor } from "../../../configurations/enumConfig";
-import EspecialidadController from "../../../controllers/EspecialidadController";
-import ResumeNumero from "./ResumeNumero";
-import MeditocModalBotones from "../../utilidades/MeditocModalBotones";
+import DetalleDoctor from "./DetalleDoctor";
+import EspecialidadController from "../../../../controllers/EspecialidadController";
+import MeditocBody from "../../../utilidades/MeditocBody";
+import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
+import MeditocInfoNumber from "../../../utilidades/MeditocInfoNumber";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
+import MeditocSubtitulo from "../../../utilidades/MeditocSubtitulo";
+import MeditocTable from "../../../utilidades/MeditocTable";
+import PropTypes from "prop-types";
+import ReplayIcon from "@material-ui/icons/Replay";
+import ReportesController from "../../../../controllers/ReportesController";
+import { useState } from "react";
 
 const ReportesDoctores = (props) => {
     const { funcLoader, funcAlert, title } = props;
@@ -157,15 +160,18 @@ const ReportesDoctores = (props) => {
                         <CloudDownloadIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
+                <Tooltip title="Actualizar todos los datos">
+                    <IconButton onClick={getData}>
+                        <ReplayIcon className="color-0" />
+                    </IconButton>
+                </Tooltip>
             </MeditocHeader1>
             {entDoctores !== null && (
                 <Fragment>
                     <MeditocBody>
                         <Grid container spacing={3}>
                             <Grid item xs={12}>
-                                <span className="rob-nor bold size-20 color-4">FILTROS</span>
-                                <Divider />
-                                <br></br>
+                                <MeditocSubtitulo title="FOLIOS" />
                             </Grid>
                             <Grid item sm={6} xs={12}>
                                 <DatePicker
@@ -277,21 +283,21 @@ const ReportesDoctores = (props) => {
                                 cancelFunc={() => funcGetDoctores(true)}
                             />
                             <Grid item md={4} sm={6} xs={12} className="center">
-                                <ResumeNumero
+                                <MeditocInfoNumber
                                     label="TOTAL DE DOCTORES"
                                     value={entDoctores.iTotalDoctores}
                                     color="color-2"
                                 />
                             </Grid>
                             <Grid item md={4} sm={6} xs={12} className="center">
-                                <ResumeNumero
+                                <MeditocInfoNumber
                                     label="TOTAL DE CONSULTAS"
                                     value={entDoctores.iTotalConsultas}
                                     color="color-1"
                                 />
                             </Grid>
                             <Grid item md={4} sm={6} xs={12} className="center">
-                                <ResumeNumero
+                                <MeditocInfoNumber
                                     label="TOTAL DE PACIENTES"
                                     value={entDoctores.iTotalPacientes}
                                     color="color-3"

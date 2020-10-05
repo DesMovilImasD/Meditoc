@@ -1,7 +1,8 @@
-import PropTypes from "prop-types";
 import React, { Fragment } from "react";
 
-const ResumeNumero = (props) => {
+import PropTypes from "prop-types";
+
+const MeditocInfoNumber = (props) => {
     const { label, value, color } = props;
 
     return (
@@ -13,10 +14,10 @@ const ResumeNumero = (props) => {
     );
 };
 
-ResumeNumero.propTypes = {
+MeditocInfoNumber.propTypes = {
     color: PropTypes.any,
     label: PropTypes.any,
     value: PropTypes.any,
 };
 
-export default ResumeNumero;
+export default MeditocInfoNumber;

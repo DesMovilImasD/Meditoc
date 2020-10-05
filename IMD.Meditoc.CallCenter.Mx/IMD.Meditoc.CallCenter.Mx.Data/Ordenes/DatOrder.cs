@@ -44,31 +44,36 @@ namespace IMD.Admin.Conekta.Data
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         string spGetConektaOrder;
 #endif
-        public DatOrder(string appToken, string appKey)
+        public DatOrder()
         {
             imdCommonData = new IMDCommonData();
-            string FsConnectionString = "cnxConekta";
-            database = imdCommonData.DGetDatabase(FsConnectionString, appToken, appKey);
+            string FsConnectionString = "cnxMeditoc";
+            database = imdCommonData.DGetDatabase(FsConnectionString, "MeditocComercial", "Meditoc1");
+            spSaveConektaOrder = "sva_conekta_save_order";
+            spSaveCustomerInfo = "sva_conekta_save_customerinfo";
+            spSaveLineItem = "sva_conekta_save_lineitem";
+            spSaveCharge = "sva_conekta_save_charge";
+            spGetConektaOrder = "svc_conekta_get_order";
 
-            switch (ConfigurationManager.ConnectionStrings[FsConnectionString].ProviderName)
-            {
-                case "System.Data.SqlClient":
-                    spSaveConektaOrder = "Orders.svaSaveConektaOrder";
-                    spSaveCustomerInfo = "Orders.svaSaveCustomerInfo";
-                    spSaveLineItem = "Orders.svaSaveLineItem";
-                    spSaveCharge = "Payments.svaSaveCharge";
-                    spGetConektaOrder = "Orders.svcGetConektaOrder";
-                    break;
-                case "MySql.Data.MySqlClient":
-                    spSaveConektaOrder = "sva_save_conekta_order";
-                    spSaveCustomerInfo = "sva_save_customer_info";
-                    spSaveLineItem = "sva_save_line_item";
-                    spSaveCharge = "sva_save_charge";
-                    spGetConektaOrder = "svc_get_conekta_order";
-                    break;
-                default:
-                    throw new Exception("No se ha especificado el motor de base de datos");
-            }
+            //switch (ConfigurationManager.ConnectionStrings[FsConnectionString].ProviderName)
+            //{
+            //    case "System.Data.SqlClient":
+            //        spSaveConektaOrder = "Orders.svaSaveConektaOrder";
+            //        spSaveCustomerInfo = "Orders.svaSaveCustomerInfo";
+            //        spSaveLineItem = "Orders.svaSaveLineItem";
+            //        spSaveCharge = "Payments.svaSaveCharge";
+            //        spGetConektaOrder = "Orders.svcGetConektaOrder";
+            //        break;
+            //    case "MySql.Data.MySqlClient":
+            //        spSaveConektaOrder = "sva_save_conekta_order";
+            //        spSaveCustomerInfo = "sva_save_customer_info";
+            //        spSaveLineItem = "sva_save_line_item";
+            //        spSaveCharge = "sva_save_charge";
+            //        spGetConektaOrder = "svc_get_conekta_order";
+            //        break;
+            //    default:
+            //        throw new Exception("No se ha especificado el motor de base de datos");
+            //}
         }
 
         /// <summary>

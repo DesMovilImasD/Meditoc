@@ -1,4 +1,5 @@
 import React from "react";
+
 const MeditocFooter = () => {
     return (
         <div className="price-footer-container">

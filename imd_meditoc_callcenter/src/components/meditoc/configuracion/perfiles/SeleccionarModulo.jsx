@@ -1,10 +1,11 @@
-import PropTypes from "prop-types";
-import React, { useState, useEffect } from "react";
-import MeditocModal from "../../../utilidades/MeditocModal";
-import { Grid, List, ListItem, ListItemIcon, Checkbox, ListItemText } from "@material-ui/core";
-import CGUController from "../../../../controllers/CGUController";
+import { Checkbox, Grid, List, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
+import CGUController from "../../../../controllers/CGUController";
+import MeditocModal from "../../../utilidades/MeditocModal";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
+import PropTypes from "prop-types";
 
 /*************************************************************
  * Descripcion: Representa un modal con la lista de modulos disponibles para dar permisos al perfil

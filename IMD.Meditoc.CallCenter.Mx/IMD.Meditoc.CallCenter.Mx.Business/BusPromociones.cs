@@ -19,9 +19,9 @@ namespace IMD.Admin.Conekta.Business
 
         DatPromociones datPromociones;
 
-        public BusPromociones(string appToken, string appKey)
+        public BusPromociones()
         {
-            datPromociones = new DatPromociones(appToken, appKey);
+            datPromociones = new DatPromociones();
         }
 
         /// <summary>

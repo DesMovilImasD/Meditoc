@@ -1,5 +1,5 @@
-import PropTypes from "prop-types";
 import MaterialTable from "material-table";
+import PropTypes from "prop-types";
 import React from "react";
 import tableIcons from "../../configurations/dataTableIconsConfig";
 import theme from "../../configurations/themeConfig";

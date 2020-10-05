@@ -1,10 +1,11 @@
-import PropTypes from "prop-types";
-import React, { useState, useEffect } from "react";
-import MeditocModal from "../../../utilidades/MeditocModal";
-import { Grid, List, ListItem, ListItemIcon, Checkbox, ListItemText } from "@material-ui/core";
+import { Checkbox, Grid, List, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+
 import CGUController from "../../../../controllers/CGUController";
-import WebIcon from "@material-ui/icons/Web";
+import MeditocModal from "../../../utilidades/MeditocModal";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
+import PropTypes from "prop-types";
+import WebIcon from "@material-ui/icons/Web";
 
 /*************************************************************
  * Descripcion: Representa un modal con la lista de submódulos disponibles para dar permisos al perfil en el módulo previamente seleccionado

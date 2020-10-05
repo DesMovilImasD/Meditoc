@@ -19,8 +19,8 @@ namespace IMD.Admin.Conekta.Web.Controllers
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(ConektaController));
 
-        private readonly BusOrder busOrder = new BusOrder("MeditocComercial", "Meditoc1");
-        private readonly BusWebHook busWebHook = new BusWebHook("MeditocComercial", "Meditoc1");
+        private readonly BusOrder busOrder = new BusOrder();
+        private readonly BusWebHook busWebHook = new BusWebHook();
 
         [HttpPost]
         [Route("Api/Conekta/Create/Order")]

@@ -1,10 +1,12 @@
-import PropTypes from "prop-types";
-import React, { useState } from "react";
-import MeditocModal from "../../../utilidades/MeditocModal";
 import { Grid, TextField } from "@material-ui/core";
+import React, { useState } from "react";
+import { blurPrevent, funcPrevent } from "../../../../configurations/preventConfig";
+
 import CGUController from "../../../../controllers/CGUController";
-import { useEffect } from "react";
+import MeditocModal from "../../../utilidades/MeditocModal";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
+import PropTypes from "prop-types";
+import { useEffect } from "react";
 
 /*************************************************************
  * Descripcion: Modal del formulario para Agregar/Modificar un módulo
@@ -29,7 +31,8 @@ const FormModulo = (props) => {
     });
 
     //Consumir servicio para guardar el modulo en la base
-    const funcSaveModulo = async () => {
+    const funcSaveModulo = async (e) => {
+        funcPrevent(e);
         let formModuloOKValidacion = {
             txtNombre: true,
         };
@@ -68,6 +71,7 @@ const FormModulo = (props) => {
         }
 
         funcLoader();
+        blurPrevent();
     };
 
     //Funcion para capturar los valores de los inputs
@@ -113,38 +117,38 @@ const FormModulo = (props) => {
             open={open}
             setOpen={setOpen}
         >
-            <Grid container spacing={3}>
-                {entModulo.iIdModulo > 0 ? (
+            <form id="form-modulo" onSubmit={funcSaveModulo} noValidate>
+                <Grid container spacing={3}>
+                    {entModulo.iIdModulo > 0 ? (
+                        <Grid item xs={12}>
+                            <TextField
+                                name="txtIdModulo"
+                                label="ID de módulo:"
+                                variant="outlined"
+                                fullWidth
+                                value={formModulo.txtIdModulo}
+                                disabled
+                            />
+                        </Grid>
+                    ) : null}
+
                     <Grid item xs={12}>
                         <TextField
-                            name="txtIdModulo"
-                            label="ID de módulo:"
+                            name="txtNombre"
+                            label="Nombre de módulo:"
                             variant="outlined"
-                            color="secondary"
+                            autoComplete="off"
                             fullWidth
-                            value={formModulo.txtIdModulo}
-                            disabled
+                            autoFocus
+                            value={formModulo.txtNombre}
+                            onChange={handleChangeForm}
+                            error={!formModuloOK.txtNombre}
+                            helperText={!formModuloOK.txtNombre ? "El nombre del módulo es requerido" : ""}
                         />
                     </Grid>
-                ) : null}
-
-                <Grid item xs={12}>
-                    <TextField
-                        name="txtNombre"
-                        label="Nombre de módulo:"
-                        variant="outlined"
-                        color="secondary"
-                        autoComplete="off"
-                        fullWidth
-                        autoFocus
-                        value={formModulo.txtNombre}
-                        onChange={handleChangeForm}
-                        error={!formModuloOK.txtNombre}
-                        helperText={!formModuloOK.txtNombre ? "El nombre del módulo es requerido" : ""}
-                    />
+                    <MeditocModalBotones setOpen={setOpen} okMessage="Guardar módulo" okFunc={funcSaveModulo} />
                 </Grid>
-                <MeditocModalBotones setOpen={setOpen} okMessage="Guardar módulo" okFunc={funcSaveModulo} />
-            </Grid>
+            </form>
         </MeditocModal>
     );
 };

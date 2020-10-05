@@ -17,7 +17,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
     public class DatFolio
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(DatFolio));
-        private Database database;
+        public Database database;
         IMDCommonData imdCommonData;
         string saveFolio;
         string loginApp;

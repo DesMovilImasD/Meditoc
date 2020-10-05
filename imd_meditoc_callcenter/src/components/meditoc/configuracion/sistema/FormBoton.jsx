@@ -1,10 +1,12 @@
-import PropTypes from "prop-types";
-import React, { useState } from "react";
-import MeditocModal from "../../../utilidades/MeditocModal";
 import { Grid, TextField } from "@material-ui/core";
+import React, { useState } from "react";
+import { blurPrevent, funcPrevent } from "../../../../configurations/preventConfig";
+
 import CGUController from "../../../../controllers/CGUController";
-import { useEffect } from "react";
+import MeditocModal from "../../../utilidades/MeditocModal";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
+import PropTypes from "prop-types";
+import { useEffect } from "react";
 
 /*************************************************************
  * Descripcion: Modal del formulario para Agregar/Modificar un botón
@@ -31,7 +33,8 @@ const FormBoton = (props) => {
     });
 
     //Consumir servicio para guardar boton en la base
-    const funcSaveBoton = async () => {
+    const funcSaveBoton = async (e) => {
+        funcPrevent(e);
         let formBotonOKValidacion = {
             txtNombre: true,
         };
@@ -72,6 +75,7 @@ const FormBoton = (props) => {
         }
 
         funcLoader();
+        blurPrevent();
     };
 
     //Funcion para capturar los valores de los inputs
@@ -118,66 +122,64 @@ const FormBoton = (props) => {
             open={open}
             setOpen={setOpen}
         >
-            <Grid container spacing={3}>
-                {entBoton.iIdModulo > 0 ? (
+            <form id="form-boton" onSubmit={funcSaveBoton} noValidate>
+                <Grid container spacing={3}>
+                    {entBoton.iIdModulo > 0 ? (
+                        <Grid item xs={12}>
+                            <TextField
+                                name="txtIdModulo"
+                                label="ID de módulo:"
+                                variant="outlined"
+                                fullWidth
+                                value={formBoton.txtIdModulo}
+                                disabled
+                            />
+                        </Grid>
+                    ) : null}
+
+                    {entBoton.iIdSubModulo > 0 ? (
+                        <Grid item xs={12}>
+                            <TextField
+                                name="txtIdSubmodulo"
+                                label="ID de submódulo:"
+                                variant="outlined"
+                                fullWidth
+                                value={formBoton.txtIdSubmodulo}
+                                disabled
+                            />
+                        </Grid>
+                    ) : null}
+
+                    {entBoton.iIdBoton > 0 ? (
+                        <Grid item xs={12}>
+                            <TextField
+                                name="txtIdBoton"
+                                label="ID de botón:"
+                                variant="outlined"
+                                fullWidth
+                                value={formBoton.txtIdBoton}
+                                disabled
+                            />
+                        </Grid>
+                    ) : null}
+
                     <Grid item xs={12}>
                         <TextField
-                            name="txtIdModulo"
-                            label="ID de módulo:"
+                            name="txtNombre"
+                            label="Nombre de botón:"
                             variant="outlined"
-                            color="secondary"
+                            autoComplete="off"
                             fullWidth
-                            value={formBoton.txtIdModulo}
-                            disabled
+                            autoFocus
+                            value={formBoton.txtNombre}
+                            onChange={handleChangeForm}
+                            error={!formBotonOK.txtNombre}
+                            helperText={!formBotonOK.txtNombre ? "El nombre del botón el requerido" : ""}
                         />
                     </Grid>
-                ) : null}
-
-                {entBoton.iIdSubModulo > 0 ? (
-                    <Grid item xs={12}>
-                        <TextField
-                            name="txtIdSubmodulo"
-                            label="ID de submódulo:"
-                            variant="outlined"
-                            color="secondary"
-                            fullWidth
-                            value={formBoton.txtIdSubmodulo}
-                            disabled
-                        />
-                    </Grid>
-                ) : null}
-
-                {entBoton.iIdBoton > 0 ? (
-                    <Grid item xs={12}>
-                        <TextField
-                            name="txtIdBoton"
-                            label="ID de botón:"
-                            variant="outlined"
-                            color="secondary"
-                            fullWidth
-                            value={formBoton.txtIdBoton}
-                            disabled
-                        />
-                    </Grid>
-                ) : null}
-
-                <Grid item xs={12}>
-                    <TextField
-                        name="txtNombre"
-                        label="Nombre de botón:"
-                        variant="outlined"
-                        color="secondary"
-                        autoComplete="off"
-                        fullWidth
-                        autoFocus
-                        value={formBoton.txtNombre}
-                        onChange={handleChangeForm}
-                        error={!formBotonOK.txtNombre}
-                        helperText={!formBotonOK.txtNombre ? "El nombre del botón el requerido" : ""}
-                    />
+                    <MeditocModalBotones okMessage="Guardar botón" okFunc={funcSaveBoton} setOpen={setOpen} />
                 </Grid>
-                <MeditocModalBotones okMessage="Guardar botón" okFunc={funcSaveBoton} setOpen={setOpen} />
-            </Grid>
+            </form>
         </MeditocModal>
     );
 };

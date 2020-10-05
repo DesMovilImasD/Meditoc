@@ -1,5 +1,6 @@
-import PropTypes from "prop-types";
 import { Grid, TextField } from "@material-ui/core";
+
+import PropTypes from "prop-types";
 import React from "react";
 
 const FormDiagnosticoTratamiento = (props) => {

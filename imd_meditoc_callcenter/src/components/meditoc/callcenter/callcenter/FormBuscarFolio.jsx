@@ -1,13 +1,14 @@
-import PropTypes from "prop-types";
 import { Grid, TextField } from "@material-ui/core";
 import React, { Fragment } from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+
 import CallCenterController from "../../../../controllers/CallCenterController";
 import FolioController from "../../../../controllers/FolioController";
 import MeditocModal from "../../../utilidades/MeditocModal";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import MeditocSubtitulo from "../../../utilidades/MeditocSubtitulo";
+import PropTypes from "prop-types";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const FormBuscarFolio = (props) => {
     const {

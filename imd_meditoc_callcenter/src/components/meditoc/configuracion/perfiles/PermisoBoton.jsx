@@ -1,11 +1,12 @@
-import PropTypes from "prop-types";
+import { IconButton, TableCell, TableRow, Tooltip } from "@material-ui/core";
 import React, { Fragment, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { TableRow, TableCell, Tooltip, IconButton } from "@material-ui/core";
-import ExtensionIcon from "@material-ui/icons/Extension";
+
 import BlockIcon from "@material-ui/icons/Block";
 import CGUController from "../../../../controllers/CGUController";
+import ExtensionIcon from "@material-ui/icons/Extension";
 import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
     cell: {

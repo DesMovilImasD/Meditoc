@@ -1,16 +1,16 @@
-import PropTypes from "prop-types";
 import { Button, Grid } from "@material-ui/core";
 import React, { Fragment, useState } from "react";
-import MeditocTable from "../../utilidades/MeditocTable";
-import ResumenEmpresaDetalle from "./ResumenEmpresaDetalle";
-import ResumeNumero from "./ResumeNumero";
-import DoneIcon from "@material-ui/icons/Done";
-import CloseIcon from "@material-ui/icons/Close";
 import { green, red } from "@material-ui/core/colors";
-import ResumenOrdenDetalle from "./ResumenOrdenDetalle";
-import { EnumStatusConekta } from "../../../configurations/enumConfig";
 
-const ResumenEmpresas = (props) => {
+import CloseIcon from "@material-ui/icons/Close";
+import DetalleConekta from "./DetalleConekta";
+import DoneIcon from "@material-ui/icons/Done";
+import { EnumStatusConekta } from "../../../../configurations/enumConfig";
+import MeditocInfoNumber from "../../../utilidades/MeditocInfoNumber";
+import MeditocTable from "../../../utilidades/MeditocTable";
+import PropTypes from "prop-types";
+
+const ResumenAdmin = (props) => {
     const { entVentas } = props;
 
     const columnas = [
@@ -88,7 +88,7 @@ const ResumenEmpresas = (props) => {
                     />
                 </Grid> */}
                 <Grid sm={4} xs={12} className="center">
-                    <ResumeNumero
+                    <MeditocInfoNumber
                         label="TOTAL DE VENTA"
                         value={
                             "$" +
@@ -100,14 +100,14 @@ const ResumenEmpresas = (props) => {
                     />
                 </Grid>
                 <Grid sm={4} xs={12} className="center">
-                    <ResumeNumero
+                    <MeditocInfoNumber
                         label="ÓRDENES VENDIDAS"
                         value={entVentas.ResumenOrdenesAdmin.iTotalOrdenes}
                         color="color-6"
                     />
                 </Grid>
                 <Grid sm={4} xs={12} className="center">
-                    <ResumeNumero
+                    <MeditocInfoNumber
                         label="FOLIOS GENERADOS"
                         value={entVentas.ResumenOrdenesAdmin.iTotalFolios}
                         color="color-3"
@@ -169,7 +169,7 @@ const ResumenEmpresas = (props) => {
                 open={modalDetalleEmpresaOpen}
                 setOpen={setModalDetalleEmpresaOpen}
             /> */}
-            <ResumenOrdenDetalle
+            <DetalleConekta
                 entOrden={ordenSeleccionada}
                 open={modalDetalleOrdenOpen}
                 setOpen={setModalDetalleOrdenOpen}
@@ -178,7 +178,7 @@ const ResumenEmpresas = (props) => {
     );
 };
 
-ResumenEmpresas.propTypes = {
+ResumenAdmin.propTypes = {
     entVentas: PropTypes.shape({
         ResumenOrdenesAdmin: PropTypes.shape({
             dTotalVendido: PropTypes.shape({
@@ -194,4 +194,4 @@ ResumenEmpresas.propTypes = {
     }),
 };
 
-export default ResumenEmpresas;
+export default ResumenAdmin;

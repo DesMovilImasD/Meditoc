@@ -1,9 +1,6 @@
-import {
-  MeditocHeadersCT,
-  MeditocHeaders,
-} from '../configurations/headersConfig'
+import { MeditocHeaders, MeditocHeadersCT } from "../configurations/headersConfig";
 
-const { serverMain } = require('../configurations/serverConfig')
+const { serverMain } = require("../configurations/serverConfig");
 
 /*************************************************************
  * Descripcion: Contiene las llamadas a los servicios del CGU
@@ -11,217 +8,204 @@ const { serverMain } = require('../configurations/serverConfig')
  * Fecha: 26/08/2020
  *************************************************************/
 class CGUController {
-  constructor() {
-    this.apiSaveModulo = 'Api/CGU/Create/Modulo'
-    this.apiSaveSubmodulo = 'Api/CGU/Create/SubModulo'
-    this.apiSaveBoton = 'Api/CGU/Create/Boton'
-    this.apiSavePerfil = 'Api/CGU/Create/Perfil'
-    this.apiSaveUsuario = 'Api/CGU/Create/Usuario'
-    this.apiSavePermiso = 'Api/CGU/Create/Permiso'
-    this.apiGetPermisosXPerfil = 'Api/CGU/GET/PermisoXPerfil'
-    this.apiGetPerfiles = 'Api/CGU/Get/Perfiles'
-    this.apiGetUsuarios = 'Api/CGU/Get/Usuarios'
-    this.apiCambiarPassword = 'Api/CGU/Create/CambiarContrasenia'
-    this.apiGetLogin = 'Api/CGU/Get/Login'
-  }
-
-  async funcSaveModulo(entCreateModulo) {
-    let response = { Code: 0, Message: '', Result: false }
-    try {
-      const apiResponse = await fetch(`${serverMain}${this.apiSaveModulo}`, {
-        method: 'POST',
-        body: JSON.stringify(entCreateModulo),
-        headers: MeditocHeadersCT,
-      })
-
-      response = await apiResponse.json()
-    } catch (error) {
-      response.Code = -1
-      response.Message = 'Ocurrió un error al intentar guardar el módulo'
+    constructor() {
+        this.apiSaveModulo = "Api/CGU/Create/Modulo";
+        this.apiSaveSubmodulo = "Api/CGU/Create/SubModulo";
+        this.apiSaveBoton = "Api/CGU/Create/Boton";
+        this.apiSavePerfil = "Api/CGU/Create/Perfil";
+        this.apiSaveUsuario = "Api/CGU/Create/Usuario";
+        this.apiSavePermiso = "Api/CGU/Create/Permiso";
+        this.apiGetPermisosXPerfil = "Api/CGU/GET/PermisoXPerfil";
+        this.apiGetPerfiles = "Api/CGU/Get/Perfiles";
+        this.apiGetUsuarios = "Api/CGU/Get/Usuarios";
+        this.apiCambiarPassword = "Api/CGU/Create/CambiarContrasenia";
+        this.apiGetLogin = "Api/CGU/Get/Login";
     }
-    return response
-  }
 
-  async funcSaveSubmodulo(entCreateSubmodulo) {
-    let response = { Code: 0, Message: '', Result: false }
-    try {
-      const apiResponse = await fetch(`${serverMain}${this.apiSaveSubmodulo}`, {
-        method: 'POST',
-        body: JSON.stringify(entCreateSubmodulo),
-        headers: MeditocHeadersCT,
-      })
+    async funcSaveModulo(entCreateModulo) {
+        let response = { Code: 0, Message: "", Result: false };
+        try {
+            const apiResponse = await fetch(`${serverMain}${this.apiSaveModulo}`, {
+                method: "POST",
+                body: JSON.stringify(entCreateModulo),
+                headers: MeditocHeadersCT,
+            });
 
-      response = await apiResponse.json()
-    } catch (error) {
-      response.Code = -1
-      response.Message = 'Ocurrió un error al intentar guardar el submódulo'
+            response = await apiResponse.json();
+        } catch (error) {
+            response.Code = -1;
+            response.Message = "Ocurrió un error al intentar guardar el módulo";
+        }
+        return response;
     }
-    return response
-  }
 
-  async funcSaveBoton(entBoton) {
-    let response = { Code: 0, Message: '', Result: false }
-    try {
-      const apiResponse = await fetch(`${serverMain}${this.apiSaveBoton}`, {
-        method: 'POST',
-        body: JSON.stringify(entBoton),
-        headers: MeditocHeadersCT,
-      })
+    async funcSaveSubmodulo(entCreateSubmodulo) {
+        let response = { Code: 0, Message: "", Result: false };
+        try {
+            const apiResponse = await fetch(`${serverMain}${this.apiSaveSubmodulo}`, {
+                method: "POST",
+                body: JSON.stringify(entCreateSubmodulo),
+                headers: MeditocHeadersCT,
+            });
 
-      response = await apiResponse.json()
-    } catch (error) {
-      response.Code = -1
-      response.Message = 'Ocurrió un error al intentar guardar el botón'
+            response = await apiResponse.json();
+        } catch (error) {
+            response.Code = -1;
+            response.Message = "Ocurrió un error al intentar guardar el submódulo";
+        }
+        return response;
     }
-    return response
-  }
 
-  async funcSavePerfil(entPerfil) {
-    let response = { Code: 0, Message: '', Result: false }
-    try {
-      const apiResponse = await fetch(`${serverMain}${this.apiSavePerfil}`, {
-        method: 'POST',
-        body: JSON.stringify(entPerfil),
-        headers: MeditocHeadersCT,
-      })
+    async funcSaveBoton(entBoton) {
+        let response = { Code: 0, Message: "", Result: false };
+        try {
+            const apiResponse = await fetch(`${serverMain}${this.apiSaveBoton}`, {
+                method: "POST",
+                body: JSON.stringify(entBoton),
+                headers: MeditocHeadersCT,
+            });
 
-      response = await apiResponse.json()
-    } catch (error) {
-      response.Code = -1
-      response.Message = 'Ocurrió un error al intentar guardar el perfil'
+            response = await apiResponse.json();
+        } catch (error) {
+            response.Code = -1;
+            response.Message = "Ocurrió un error al intentar guardar el botón";
+        }
+        return response;
     }
-    return response
-  }
 
-  async funcSaveUsuario(entUsuario) {
-    let response = { Code: 0, Message: '', Result: false }
-    try {
-      const apiResponse = await fetch(`${serverMain}${this.apiSaveUsuario}`, {
-        method: 'POST',
-        body: JSON.stringify(entUsuario),
-        headers: MeditocHeadersCT,
-      })
+    async funcSavePerfil(entPerfil) {
+        let response = { Code: 0, Message: "", Result: false };
+        try {
+            const apiResponse = await fetch(`${serverMain}${this.apiSavePerfil}`, {
+                method: "POST",
+                body: JSON.stringify(entPerfil),
+                headers: MeditocHeadersCT,
+            });
 
-      response = await apiResponse.json()
-    } catch (error) {
-      response.Code = -1
-      response.Message = 'Ocurrió un error al intentar guardar el usuario'
+            response = await apiResponse.json();
+        } catch (error) {
+            response.Code = -1;
+            response.Message = "Ocurrió un error al intentar guardar el perfil";
+        }
+        return response;
     }
-    return response
-  }
 
-  async funcSavePermiso(entPermisos) {
-    let response = { Code: 0, Message: '', Result: false }
-    try {
-      const apiResponse = await fetch(`${serverMain}${this.apiSavePermiso}`, {
-        method: 'POST',
-        body: JSON.stringify(entPermisos),
-        headers: MeditocHeadersCT,
-      })
+    async funcSaveUsuario(entUsuario) {
+        let response = { Code: 0, Message: "", Result: false };
+        try {
+            const apiResponse = await fetch(`${serverMain}${this.apiSaveUsuario}`, {
+                method: "POST",
+                body: JSON.stringify(entUsuario),
+                headers: MeditocHeadersCT,
+            });
 
-      response = await apiResponse.json()
-    } catch (error) {
-      response.Code = -1
-      response.Message = 'Ocurrió un error al intentar guardar el permiso'
+            response = await apiResponse.json();
+        } catch (error) {
+            response.Code = -1;
+            response.Message = "Ocurrió un error al intentar guardar el usuario";
+        }
+        return response;
     }
-    return response
-  }
 
-  async funcGetPermisosXPeril(iIdPerfil = null) {
-    let response = { Code: 0, Message: '', Result: [] }
-    try {
-      const apiResponse = await fetch(
-        `${serverMain}${this.apiGetPermisosXPerfil}?iIdPerfil=${iIdPerfil}`,
-        {
-          headers: MeditocHeaders,
-        },
-      )
+    async funcSavePermiso(entPermisos) {
+        let response = { Code: 0, Message: "", Result: false };
+        try {
+            const apiResponse = await fetch(`${serverMain}${this.apiSavePermiso}`, {
+                method: "POST",
+                body: JSON.stringify(entPermisos),
+                headers: MeditocHeadersCT,
+            });
 
-      response = await apiResponse.json()
-    } catch (error) {
-      response.Code = -1
-      response.Message = 'Ocurrió un error al intentar obtener los permisos'
+            response = await apiResponse.json();
+        } catch (error) {
+            response.Code = -1;
+            response.Message = "Ocurrió un error al intentar guardar el permiso";
+        }
+        return response;
     }
-    return response
-  }
 
-  async funcGetPerfiles(iIdPerfil = null, bActivo = true, bBaja = false) {
-    let response = { Code: 0, Message: '', Result: [] }
-    try {
-      const apiResponse = await fetch(
-        `${serverMain}${this.apiGetPerfiles}?iIdPerfil=${iIdPerfil}&bActivo=${bActivo}&bBaja=${bBaja}`,
-        {
-          headers: MeditocHeaders,
-        },
-      )
+    async funcGetPermisosXPeril(iIdPerfil = null) {
+        let response = { Code: 0, Message: "", Result: [] };
+        try {
+            const apiResponse = await fetch(`${serverMain}${this.apiGetPermisosXPerfil}?iIdPerfil=${iIdPerfil}`, {
+                headers: MeditocHeaders,
+            });
 
-      response = await apiResponse.json()
-    } catch (error) {
-      response.Code = -1
-      response.Message = 'Ocurrió un error al intentar obtener los perfiles'
+            response = await apiResponse.json();
+        } catch (error) {
+            response.Code = -1;
+            response.Message = "Ocurrió un error al intentar obtener los permisos";
+        }
+        return response;
     }
-    return response
-  }
 
-  async funcGetUsuarios(
-    iIdUsuario = null,
-    iIdTipoCuenta = null,
-    iIdPerfil = null,
-    bActivo = true,
-    bBaja = false,
-  ) {
-    let response = { Code: 0, Message: '', Result: [] }
-    try {
-      const apiResponse = await fetch(
-        `${serverMain}${this.apiGetUsuarios}?iIdUsuario=${iIdUsuario}&iIdTipoCuenta=${iIdTipoCuenta}&iIdPerfil=${iIdPerfil}&bActivo=${bActivo}&bBaja=${bBaja}`,
-        {
-          headers: MeditocHeaders,
-        },
-      )
+    async funcGetPerfiles(iIdPerfil = null, bActivo = true, bBaja = false) {
+        let response = { Code: 0, Message: "", Result: [] };
+        try {
+            const apiResponse = await fetch(
+                `${serverMain}${this.apiGetPerfiles}?iIdPerfil=${iIdPerfil}&bActivo=${bActivo}&bBaja=${bBaja}`,
+                {
+                    headers: MeditocHeaders,
+                }
+            );
 
-      response = await apiResponse.json()
-    } catch (error) {
-      response.Code = -1
-      response.Message = 'Ocurrió un error al intentar obtener los usuarios'
+            response = await apiResponse.json();
+        } catch (error) {
+            response.Code = -1;
+            response.Message = "Ocurrió un error al intentar obtener los perfiles";
+        }
+        return response;
     }
-    return response
-  }
 
-  async funcCambiarPassword(
-    iIdUsuario = 0,
-    sPassword = '',
-    iIdUsuarioUltMod = 0,
-  ) {
-    let response = { Code: 0, Message: '', Result: false }
-    try {
-      const apiResponse = await fetch(
-        `${serverMain}${this.apiCambiarPassword}?iIdUsuario=${iIdUsuario}&sPassword=${sPassword}&iIdUsuarioUltMod=${iIdUsuarioUltMod}`,
-        { method: 'POST', headers: MeditocHeaders },
-      )
+    async funcGetUsuarios(iIdUsuario = null, iIdTipoCuenta = null, iIdPerfil = null, bActivo = true, bBaja = false) {
+        let response = { Code: 0, Message: "", Result: [] };
+        try {
+            const apiResponse = await fetch(
+                `${serverMain}${this.apiGetUsuarios}?iIdUsuario=${iIdUsuario}&iIdTipoCuenta=${iIdTipoCuenta}&iIdPerfil=${iIdPerfil}&bActivo=${bActivo}&bBaja=${bBaja}`,
+                {
+                    headers: MeditocHeaders,
+                }
+            );
 
-      response = await apiResponse.json()
-    } catch (error) {
-      response.Code = -1
-      response.Message = 'Ocurrió un error al intentar cambiar la contraseña'
+            response = await apiResponse.json();
+        } catch (error) {
+            response.Code = -1;
+            response.Message = "Ocurrió un error al intentar obtener los usuarios";
+        }
+        return response;
     }
-    return response
-  }
 
-  async funcGetLogin(sUsuario = '', sPassword = '') {
-    let response = { Code: 0, Message: '', Result: {} }
-    try {
-      const apiResponse = await fetch(
-        `${serverMain}${this.apiGetLogin}?sUsuario=${sUsuario}&sPassword=${sPassword}`,
-        { method: 'POST' },
-      )
+    async funcCambiarPassword(iIdUsuario = 0, sPassword = "", iIdUsuarioUltMod = 0) {
+        let response = { Code: 0, Message: "", Result: false };
+        try {
+            const apiResponse = await fetch(
+                `${serverMain}${this.apiCambiarPassword}?iIdUsuario=${iIdUsuario}&sPassword=${sPassword}&iIdUsuarioUltMod=${iIdUsuarioUltMod}`,
+                { method: "POST", headers: MeditocHeaders }
+            );
 
-      response = await apiResponse.json()
-    } catch (error) {
-      response.Code = -1
-      response.Message = 'Ocurrió un error al validar los datos de sesión'
+            response = await apiResponse.json();
+        } catch (error) {
+            response.Code = -1;
+            response.Message = "Ocurrió un error al intentar cambiar la contraseña";
+        }
+        return response;
     }
-    return response
-  }
+
+    async funcGetLogin(sUsuario = "", sPassword = "") {
+        let response = { Code: 0, Message: "", Result: {} };
+        try {
+            const apiResponse = await fetch(
+                `${serverMain}${this.apiGetLogin}?sUsuario=${sUsuario}&sPassword=${sPassword}`,
+                { method: "POST" }
+            );
+
+            response = await apiResponse.json();
+        } catch (error) {
+            response.Code = -1;
+            response.Message = "Ocurrió un error al validar los datos de sesión";
+        }
+        return response;
+    }
 }
 
-export default CGUController
+export default CGUController;

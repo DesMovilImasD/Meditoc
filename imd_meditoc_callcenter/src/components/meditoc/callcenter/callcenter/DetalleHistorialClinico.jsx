@@ -1,45 +1,45 @@
-import PropTypes from "prop-types";
 import { Grid } from "@material-ui/core";
-import React from "react";
-import InfoField from "../../../utilidades/InfoField";
+import MeditocInfoField from "../../../utilidades/MeditocInfoField";
 import MeditocModal from "../../../utilidades/MeditocModal";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
+import PropTypes from "prop-types";
+import React from "react";
 
-const HistorialClinicoDetalle = (props) => {
+const DetalleHistorialClinico = (props) => {
     const { open, setOpen, historial } = props;
 
     return (
         <MeditocModal title="Detalle de la consulta" size="small" open={open} setOpen={setOpen} level={3}>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
-                    <InfoField label="Peso:" value={historial.fPeso} />
+                    <MeditocInfoField label="Peso:" value={historial.fPeso} />
                 </Grid>
                 <Grid item xs={12}>
-                    <InfoField label="Altura:" value={historial.fAltura} />
+                    <MeditocInfoField label="Altura:" value={historial.fAltura} />
                 </Grid>
                 <Grid item xs={12}>
-                    <InfoField label="Alergias:" value={historial.sAlergias} />
+                    <MeditocInfoField label="Alergias:" value={historial.sAlergias} />
                 </Grid>
                 <Grid item xs={12}>
-                    <InfoField label="Síntomas:" value={historial.sSintomas} />
+                    <MeditocInfoField label="Síntomas:" value={historial.sSintomas} />
                 </Grid>
                 <Grid item xs={12}>
-                    <InfoField label="Diagnóstico:" value={historial.sDiagnostico} />
+                    <MeditocInfoField label="Diagnóstico:" value={historial.sDiagnostico} />
                 </Grid>
                 <Grid item xs={12}>
-                    <InfoField label="Tratamiento:" value={historial.sTratamiento} />
+                    <MeditocInfoField label="Tratamiento:" value={historial.sTratamiento} />
                 </Grid>
                 <Grid item xs={12}>
-                    <InfoField label="Observaciones y comentarios:" value={historial.sComentarios} />
+                    <MeditocInfoField label="Observaciones y comentarios:" value={historial.sComentarios} />
                 </Grid>
                 <Grid item xs={12}>
-                    <InfoField label="Inicio de consulta:" value={historial.sFechaConsultaInicio} />
+                    <MeditocInfoField label="Inicio de consulta:" value={historial.sFechaConsultaInicio} />
                 </Grid>
                 <Grid item xs={12}>
-                    <InfoField label="Fin de consulta:" value={historial.sFechaConsultaFin} />
+                    <MeditocInfoField label="Fin de consulta:" value={historial.sFechaConsultaFin} />
                 </Grid>
                 <Grid item xs={12}>
-                    <InfoField label="Duración de consulta:" value={historial.sDuracionConsulta} />
+                    <MeditocInfoField label="Duración de consulta:" value={historial.sDuracionConsulta} />
                 </Grid>
                 <MeditocModalBotones hideCancel okMessage="Cerrar detalle" open={open} setOpen={setOpen} />
             </Grid>
@@ -47,7 +47,7 @@ const HistorialClinicoDetalle = (props) => {
     );
 };
 
-HistorialClinicoDetalle.propTypes = {
+DetalleHistorialClinico.propTypes = {
     historial: PropTypes.shape({
         fAltura: PropTypes.any,
         fPeso: PropTypes.any,
@@ -64,4 +64,4 @@ HistorialClinicoDetalle.propTypes = {
     setOpen: PropTypes.any,
 };
 
-export default HistorialClinicoDetalle;
+export default DetalleHistorialClinico;

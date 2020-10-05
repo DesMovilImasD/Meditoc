@@ -1,10 +1,11 @@
-import PropTypes from "prop-types";
 import { Grid, Typography } from "@material-ui/core";
-import React from "react";
-import { useState } from "react";
+
 import MeditocModal from "../../utilidades/MeditocModal";
 import MeditocModalBotones from "../../utilidades/MeditocModalBotones";
 import MeditocTable from "../../utilidades/MeditocTable";
+import PropTypes from "prop-types";
+import React from "react";
+import { useState } from "react";
 
 const FolioValidadoDetalle = (props) => {
     const { entVentaCalle, open, setOpen } = props;

@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import {
     Button,
     Grid,
@@ -14,13 +13,15 @@ import {
     Tooltip,
 } from "@material-ui/core";
 import React, { Fragment, useState } from "react";
-import MeditocModal from "../../utilidades/MeditocModal";
+
+import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
 import AttachFileIcon from "@material-ui/icons/AttachFile";
 import DeleteIcon from "@material-ui/icons/Delete";
-import MeditocModalBotones from "../../utilidades/MeditocModalBotones";
 import FolioController from "../../../controllers/FolioController";
-import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
 import FolioValidadoDetalle from "./FolioValidadoDetalle";
+import MeditocModal from "../../utilidades/MeditocModal";
+import MeditocModalBotones from "../../utilidades/MeditocModalBotones";
+import PropTypes from "prop-types";
 
 const FolioCargarArchivo = (props) => {
     const { open, setOpen, funcGetFolios, usuarioSesion, funcLoader, funcAlert } = props;

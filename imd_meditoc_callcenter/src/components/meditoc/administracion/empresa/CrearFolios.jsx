@@ -1,13 +1,14 @@
+import { EnumIVA, EnumOrigen } from "../../../../configurations/enumConfig";
+import { Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@material-ui/core";
+
+import FolioController from "../../../../controllers/FolioController";
+import MeditocModal from "../../../utilidades/MeditocModal";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
+import MeditocTable from "../../../utilidades/MeditocTable";
 import PropTypes from "prop-types";
 import React from "react";
-import MeditocModal from "../../../utilidades/MeditocModal";
-import { Grid, Typography, Table, TableBody, TableRow, TableCell, TableContainer } from "@material-ui/core";
-import { useState } from "react";
-import MeditocTable from "../../../utilidades/MeditocTable";
 import { useEffect } from "react";
-import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
-import FolioController from "../../../../controllers/FolioController";
-import { EnumIVA, EnumOrigen } from "../../../../configurations/enumConfig";
+import { useState } from "react";
 
 const CrearFolios = (props) => {
     const { entEmpresa, open, setOpen, listaProductos, funcGetFoliosEmpresa, funcLoader, funcAlert } = props;

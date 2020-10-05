@@ -65,7 +65,80 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
 
                 double dIVA = ConfigurationManager.AppSettings["nIVA"] != null ? Convert.ToDouble(ConfigurationManager.AppSettings["nIVA"]) : 0.16;
 
-                List<EntFolio> lstFolios = respuestaObtenerFolios.Result.GroupBy(x => x.iIdFolio).Select(x => new EntFolio
+                //List<EntFolio> lstFolios = respuestaObtenerFolios.Result.GroupBy(x => x.iIdFolio).Select(x => new EntFolio
+                //{
+                //    iIdFolio = x.Key,
+                //    sFolio = x.Select(y => y.sFolio).First(),
+                //    bTerminosYCondiciones = x.Select(y => y.bTerminosYCondiciones).First(),
+                //    iConsecutivo = x.Select(y => y.iConsecutivo).First(),
+                //    iIdOrigen = x.Select(y => y.iIdOrigen).First(),
+                //    sOrigen = x.Select(y => y.sOrigen).First(),
+                //    sFechaVencimiento = x.Select(y => y.sFechaVencimiento).First(),
+                //    dtFechaVencimiento = x.Select(y => y.dtFechaVencimiento).First(),
+                //    entEmpresa = x.Select(e => new EntEmpresa
+                //    {
+                //        iIdEmpresa = e.iIdEmpresa,
+                //        sNombre = e.sEmpresa,
+                //        sFolioEmpresa = e.sFolioEmpresa,
+                //        sCorreo = e.sCorreo
+                //    }).FirstOrDefault(),
+                //    entProducto = x.Select(p => new EntProducto
+                //    {
+                //        iIdProducto = p.iIdProducto,
+                //        fCosto = p.fCosto,
+                //        sNombre = p.sProducto,
+                //        iMesVigencia = p.iMesVigencia,
+                //        iIdTipoProducto = p.iIdTipoProducto,
+                //        sTipoProducto = p.sTipoProducto
+                //    }).FirstOrDefault(),
+                //    entOrden = x.Select(o => new EntOrden
+                //    {
+                //        sOrderId = o.sOrderId,
+                //        nAmount = o.nAmount / 100,
+                //        nAmountDiscount = o.nAmountDiscount / 100,
+                //        nAmountTax = o.nAmountTax / 100,
+                //        nAmountPaid = (x.Select(y => y.iIdOrigen).First() == (int)EnumReportes.Origen.WEB || x.Select(y => y.iIdOrigen).First() == (int)EnumReportes.Origen.APP) ? o.nAmountPaid / 100 : o.fCosto + (o.fCosto * dIVA),
+                //        sPaymentStatus = o.sPaymentStatus,
+                //        sCodigo = o.sCodigo,
+                //        iIdCupon = o.iIdCupon,
+                //        dtRegisterDate = o.dtRegisterDate,
+                //        sRegisterDate = o.dtRegisterDate.ToString("dd/MM/yyy HH:mm:ss"),
+                //        customer_info = x.Select(c => new EntCustomerInfo
+                //        {
+                //            email = c.email,
+                //            name = c.name,
+                //            phone = c.phone,
+                //        }).FirstOrDefault(),
+                //        charges = x.Select(ch => new EntChargeReporte
+                //        {
+                //            sAuthCode = ch.sAuthCode,
+                //            sChargeId = ch.sChargeId,
+                //            sType = ch.sType
+                //        }).FirstOrDefault(),
+                //        lstItems = x.Select(i => new EntLineItemReporte
+                //        {
+                //            iConsecutive = i.iConsecutive,
+                //            iQuantity = i.iQuantity,
+                //            nUnitPrice = i.nUnitPrice / 100,
+                //            sItemId = i.sItemId,
+                //            sItemName = i.sItemName,
+                //            iIdTitular = i.iIdTitular,
+                //            sFolio = i.sNumeroMembresia,
+                //        }).OrderBy(i => i.sFolio).ToList()
+                //    }).FirstOrDefault()
+                //}).ToList();
+
+                //EntVentasReporte entVentasReporte = new EntVentasReporte();
+                //int iOrdenes = lstFolios.Where(x => (x.iIdOrigen == (int)EnumReportes.Origen.WEB || x.iIdOrigen == (int)EnumReportes.Origen.APP) && x.entOrden.sPaymentStatus == "paid").Select(x => x.entOrden).Select(x => x.sOrderId).Distinct().Count();
+                //iOrdenes += lstFolios.Where(x => x.iIdOrigen != (int)EnumReportes.Origen.WEB && x.iIdOrigen != (int)EnumReportes.Origen.APP).Count();
+
+                //double dTotalPagado = lstFolios.Where(x => (x.iIdOrigen == (int)EnumReportes.Origen.WEB || x.iIdOrigen == (int)EnumReportes.Origen.APP) && x.entOrden.sPaymentStatus == "paid").Select(x => x.entOrden).Select(x => new { x.sOrderId, x.nAmountPaid }).Distinct().Sum(x => x.nAmountPaid);
+                //dTotalPagado += lstFolios.Where(x => x.iIdOrigen != (int)EnumReportes.Origen.WEB && x.iIdOrigen != (int)EnumReportes.Origen.APP).Select(x => x.entOrden).Sum(x => x.nAmountPaid);
+
+                //double dDescuento = lstFolios.Where(x => (x.iIdOrigen == (int)EnumReportes.Origen.WEB || x.iIdOrigen == (int)EnumReportes.Origen.APP) && x.entOrden.sPaymentStatus == "paid").Select(x => x.entOrden).Select(x => new { x.sOrderId, x.nAmountDiscount }).Distinct().Sum(x => x.nAmountDiscount);
+                //dDescuento += lstFolios.Where(x => x.iIdOrigen != (int)EnumReportes.Origen.WEB && x.iIdOrigen != (int)EnumReportes.Origen.APP).Select(x => x.entOrden).Sum(x => x.nAmountDiscount);
+
+                List<EntFolio> lstFolios = respuestaObtenerFolios.Result.Where(x => x.iIdOrigen == (int)EnumOrigen.APP || x.iIdOrigen == (int)EnumOrigen.WEB || x.iIdOrigen == (int)EnumOrigen.PanelAdministrativo).GroupBy(x => x.iIdFolio).Select(x => new EntFolio
                 {
                     iIdFolio = x.Key,
                     sFolio = x.Select(y => y.sFolio).First(),
@@ -97,7 +170,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                         nAmount = o.nAmount / 100,
                         nAmountDiscount = o.nAmountDiscount / 100,
                         nAmountTax = o.nAmountTax / 100,
-                        nAmountPaid = (x.Select(y => y.iIdOrigen).First() == (int)EnumReportes.Origen.WEB || x.Select(y => y.iIdOrigen).First() == (int)EnumReportes.Origen.APP) ? o.nAmountPaid / 100 : o.fCosto + (o.fCosto * dIVA),
+                        nAmountPaid = o.nAmountPaid / 100,
                         sPaymentStatus = o.sPaymentStatus,
                         sCodigo = o.sCodigo,
                         iIdCupon = o.iIdCupon,
@@ -129,14 +202,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                 }).ToList();
 
                 EntVentasReporte entVentasReporte = new EntVentasReporte();
-                int iOrdenes = lstFolios.Where(x => (x.iIdOrigen == (int)EnumReportes.Origen.WEB || x.iIdOrigen == (int)EnumReportes.Origen.APP) && x.entOrden.sPaymentStatus == "paid").Select(x => x.entOrden).Select(x => x.sOrderId).Distinct().Count();
-                iOrdenes += lstFolios.Where(x => x.iIdOrigen != (int)EnumReportes.Origen.WEB && x.iIdOrigen != (int)EnumReportes.Origen.APP).Count();
+                int iOrdenes = lstFolios.Where(x => x.entOrden.sPaymentStatus == "paid").Select(x => x.entOrden).Select(x => x.sOrderId).Distinct().Count();
 
-                double dTotalPagado = lstFolios.Where(x => (x.iIdOrigen == (int)EnumReportes.Origen.WEB || x.iIdOrigen == (int)EnumReportes.Origen.APP) && x.entOrden.sPaymentStatus == "paid").Select(x => x.entOrden).Select(x => new { x.sOrderId, x.nAmountPaid }).Distinct().Sum(x => x.nAmountPaid);
-                dTotalPagado += lstFolios.Where(x => x.iIdOrigen != (int)EnumReportes.Origen.WEB && x.iIdOrigen != (int)EnumReportes.Origen.APP).Select(x => x.entOrden).Sum(x => x.nAmountPaid);
+                double dTotalPagado = lstFolios.Where(x => x.entOrden.sPaymentStatus == "paid").Select(x => x.entOrden).Select(x => new { x.sOrderId, x.nAmountPaid }).Distinct().Sum(x => x.nAmountPaid);
 
-                double dDescuento = lstFolios.Where(x => (x.iIdOrigen == (int)EnumReportes.Origen.WEB || x.iIdOrigen == (int)EnumReportes.Origen.APP) && x.entOrden.sPaymentStatus == "paid").Select(x => x.entOrden).Select(x => new { x.sOrderId, x.nAmountDiscount }).Distinct().Sum(x => x.nAmountDiscount);
-                dDescuento += lstFolios.Where(x => x.iIdOrigen != (int)EnumReportes.Origen.WEB && x.iIdOrigen != (int)EnumReportes.Origen.APP).Select(x => x.entOrden).Sum(x => x.nAmountDiscount);
+                double dDescuento = lstFolios.Where(x => x.entOrden.sPaymentStatus == "paid").Select(x => x.entOrden).Select(x => new { x.sOrderId, x.nAmountDiscount }).Distinct().Sum(x => x.nAmountDiscount);
 
                 entVentasReporte.iTotalOrdenes = iOrdenes;
                 entVentasReporte.iTotalCuponesAplicados = lstFolios.Select(x => x.entOrden).Select(x => new { x.sOrderId, x.sCodigo, x.sPaymentStatus }).Distinct().Where(x => !string.IsNullOrEmpty(x.sCodigo) && x.sPaymentStatus == "paid").Count();

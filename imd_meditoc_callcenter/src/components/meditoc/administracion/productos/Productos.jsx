@@ -1,20 +1,22 @@
-import PropTypes from "prop-types";
+import { IconButton, Tooltip } from "@material-ui/core";
 import React, { Fragment } from "react";
-import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
+
 import AddIcon from "@material-ui/icons/Add";
-import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import { Tooltip, IconButton } from "@material-ui/core";
-import MeditocBody from "../../../utilidades/MeditocBody";
-import { useState } from "react";
-import MeditocTable from "../../../utilidades/MeditocTable";
-import FormProducto from "./FormProducto";
-import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 import DetalleProducto from "./DetalleProducto";
-import ProductoController from "../../../../controllers/ProductoController";
-import { useEffect } from "react";
+import EditIcon from "@material-ui/icons/Edit";
 import { EnumTipoProducto } from "../../../../configurations/enumConfig";
+import FormProducto from "./FormProducto";
+import MeditocBody from "../../../utilidades/MeditocBody";
+import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
+import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
+import MeditocTable from "../../../utilidades/MeditocTable";
+import ProductoController from "../../../../controllers/ProductoController";
+import PropTypes from "prop-types";
+import ReplayIcon from "@material-ui/icons/Replay";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import { useEffect } from "react";
+import { useState } from "react";
 
 /*************************************************************
  * Descripcion: Submódulo para vista principal "PRODUCTOS" del portal Meditoc
@@ -154,6 +156,11 @@ const Productos = (props) => {
                 <Tooltip title="Eliminar producto" arrow>
                     <IconButton onClick={handleClickEliminarProducto}>
                         <DeleteIcon className="color-0" />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Actualizar tabla" arrow>
+                    <IconButton onClick={funcConsultarProductos}>
+                        <ReplayIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
             </MeditocHeader1>

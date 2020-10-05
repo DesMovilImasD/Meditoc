@@ -1,11 +1,12 @@
-import PropTypes from "prop-types";
 import { Button, Grid } from "@material-ui/core";
 import React, { useState } from "react";
-import MeditocModal from "../../utilidades/MeditocModal";
-import MeditocTable from "../../utilidades/MeditocTable";
-import InfoField from "../../utilidades/InfoField";
-import MeditocModalBotones from "../../utilidades/MeditocModalBotones";
-import DetalleDoctorConsulta from "./DetalleDoctorConsulta";
+
+import DetalleConsulta from "./DetalleConsulta";
+import MeditocInfoField from "../../../utilidades/MeditocInfoField";
+import MeditocModal from "../../../utilidades/MeditocModal";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
+import MeditocTable from "../../../utilidades/MeditocTable";
+import PropTypes from "prop-types";
 
 const DetalleDoctor = (props) => {
     const { entDoctor, open, setOpen, funcLoader, funcAlert } = props;
@@ -39,28 +40,28 @@ const DetalleDoctor = (props) => {
         <MeditocModal title="Detalle de doctor" size="large" open={open} setOpen={setOpen}>
             <Grid container spacing={3}>
                 <Grid item sm={4} xs={12}>
-                    <InfoField label="Nombre del Doctor:" value={entDoctor.sNombre} />
+                    <MeditocInfoField label="Nombre del Doctor:" value={entDoctor.sNombre} />
                 </Grid>
                 <Grid item sm={4} xs={12}>
-                    <InfoField label="Tipo de Doctor:" value={entDoctor.sTipoDoctor} />
+                    <MeditocInfoField label="Tipo de Doctor:" value={entDoctor.sTipoDoctor} />
                 </Grid>
                 <Grid item sm={4} xs={12}>
-                    <InfoField label="Especialidad:" value={entDoctor.sEspecialidad} />
+                    <MeditocInfoField label="Especialidad:" value={entDoctor.sEspecialidad} />
                 </Grid>
                 <Grid item sm={4} xs={12}>
-                    <InfoField label="Teléfono:" value={entDoctor.sTelefono} />
+                    <MeditocInfoField label="Teléfono:" value={entDoctor.sTelefono} />
                 </Grid>
                 <Grid item sm={4} xs={12}>
-                    <InfoField label="Correo Electrónico:" value={entDoctor.sCorreo} />
+                    <MeditocInfoField label="Correo Electrónico:" value={entDoctor.sCorreo} />
                 </Grid>
                 <Grid item sm={4} xs={12}>
-                    <InfoField label="Dirección de Consultorio:" value={entDoctor.sDireccionConsultorio} />
+                    <MeditocInfoField label="Dirección de Consultorio:" value={entDoctor.sDireccionConsultorio} />
                 </Grid>
                 <Grid item sm={4} xs={12}>
-                    <InfoField label="Número de Sala Icelink:" value={entDoctor.iNumSala} />
+                    <MeditocInfoField label="Número de Sala Icelink:" value={entDoctor.iNumSala} />
                 </Grid>
                 <Grid item sm={4} xs={12}>
-                    <InfoField label="Total de consultas:" value={entDoctor.iTotalConsultas} />
+                    <MeditocInfoField label="Total de consultas:" value={entDoctor.iTotalConsultas} />
                 </Grid>
                 <Grid item xs={12}>
                     <MeditocTable
@@ -96,7 +97,7 @@ const DetalleDoctor = (props) => {
                 </Grid>
                 <MeditocModalBotones cancelMessage="Cerrar detalle de doctor" setOpen={setOpen} hideOk />
             </Grid>
-            <DetalleDoctorConsulta
+            <DetalleConsulta
                 iIdConsulta={iIdConsulta}
                 open={modalDetalleConsultaOpen}
                 setOpen={setModalDetalleConsultaOpen}

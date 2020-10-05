@@ -1,10 +1,13 @@
+import { IconButton, Paper, Tooltip } from "@material-ui/core";
+
+import CloseRoundedIcon from "@material-ui/icons/CloseRounded";
 import PropTypes from "prop-types";
 import React from "react";
-import { Paper, Tooltip, IconButton } from "@material-ui/core";
-import CloseRoundedIcon from "@material-ui/icons/CloseRounded";
 
 const MeditocHeader2 = (props) => {
-    const { setOpen, title } = props;
+    const { setOpen, title, actions } = props;
+
+    const mtButtons = actions === undefined ? null : actions;
 
     //Funcion para cerrar este modal
     const handleClose = () => {
@@ -16,6 +19,7 @@ const MeditocHeader2 = (props) => {
             <div className="bar-main">
                 <div className="ops-nor bold size-20 align-self-center flx-grw-1">{title}</div>
                 <div>
+                    {mtButtons}
                     <Tooltip title="Cerrar ventana" arrow>
                         <IconButton onClick={handleClose}>
                             <CloseRoundedIcon className="color-0" />

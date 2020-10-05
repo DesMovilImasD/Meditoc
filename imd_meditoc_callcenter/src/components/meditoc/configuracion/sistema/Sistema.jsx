@@ -1,13 +1,15 @@
-import PropTypes from "prop-types";
-import React, { useState, Fragment, useEffect } from "react";
 import { IconButton, Tooltip } from "@material-ui/core";
+import React, { Fragment, useEffect, useState } from "react";
+
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
-import SistemaModulo from "./SistemaModulo";
-import FormModulo from "./FormModulo";
-import Simbologia from "./Simbologia";
-import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
-import MeditocBody from "../../../utilidades/MeditocBody";
 import CGUController from "../../../../controllers/CGUController";
+import FormModulo from "./FormModulo";
+import MeditocBody from "../../../utilidades/MeditocBody";
+import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
+import PropTypes from "prop-types";
+import ReplayIcon from "@material-ui/icons/Replay";
+import Simbologia from "./Simbologia";
+import SistemaModulo from "./SistemaModulo";
 
 /*************************************************************
  * Descripcion: Submódulo para la vista principal "SISTEMA" del portal Meditoc
@@ -65,6 +67,11 @@ const Sistema = (props) => {
                 <Tooltip title="Agregar un nuevo módulo" arrow>
                     <IconButton onClick={handleAgregarModuloOpen}>
                         <AddRoundedIcon className="color-0" />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Actualizar información del sistema" arrow>
+                    <IconButton onClick={funcGetPermisosXPerfil}>
+                        <ReplayIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
             </MeditocHeader1>

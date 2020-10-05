@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import {
     FormControl,
     FormControlLabel,
@@ -11,13 +10,15 @@ import {
     RadioGroup,
     TextField,
 } from "@material-ui/core";
-import { DatePicker } from "@material-ui/pickers";
 import React, { useState } from "react";
-import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
-import DateRangeIcon from "@material-ui/icons/DateRange";
+
 import CallCenterController from "../../../../controllers/CallCenterController";
-import InputTelefono from "../../../utilidades/InputTelefono";
+import { DatePicker } from "@material-ui/pickers";
+import DateRangeIcon from "@material-ui/icons/DateRange";
 import { EnumCatSexo } from "../../../../configurations/enumConfig";
+import MeditocInputPhone from "../../../utilidades/MeditocInputPhone";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
+import PropTypes from "prop-types";
 
 const FormPaciente = (props) => {
     const { usuarioSesion, funcLoader, funcAlert, entCallCenter, setEntCallCenter } = props;
@@ -112,7 +113,7 @@ const FormPaciente = (props) => {
                     label="Teléfono:"
                     variant="outlined"
                     InputProps={{
-                        inputComponent: InputTelefono,
+                        inputComponent: MeditocInputPhone,
                     }}
                     fullWidth
                     value={formPaciente.txtCCTelefono}

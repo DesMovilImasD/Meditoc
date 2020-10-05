@@ -1,15 +1,17 @@
-import PropTypes from "prop-types";
-import React, { useState, useEffect, Fragment } from "react";
 import { IconButton, Tooltip } from "@material-ui/core";
+import React, { Fragment, useEffect, useState } from "react";
+
 import AddIcon from "@material-ui/icons/Add";
 import CGUController from "../../../../controllers/CGUController";
 import MeditocBody from "../../../utilidades/MeditocBody";
-import SeleccionarModulos from "./SeleccionarModulo";
-import PermisoModulo from "./PermisoModulo";
-import Simbologia from "../sistema/Simbologia";
 import MeditocFullModal from "../../../utilidades/MeditocFullModal";
 import MeditocHeader2 from "../../../utilidades/MeditocHeader2";
 import MeditocHeader3 from "../../../utilidades/MeditocHeader3";
+import PermisoModulo from "./PermisoModulo";
+import PropTypes from "prop-types";
+import ReplayIcon from "@material-ui/icons/Replay";
+import SeleccionarModulos from "./SeleccionarModulo";
+import Simbologia from "../sistema/Simbologia";
 
 /*************************************************************
  * Descripcion: Representa la ventana de administración de los permisos para el perfil previamente seleccionado
@@ -70,6 +72,11 @@ const Permisos = (props) => {
                             <Tooltip title="Agregar permisos a módulos de Meditoc CallCenter" arrow>
                                 <IconButton onClick={handleClickSeleccionarModulos}>
                                     <AddIcon className="color-1" />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Actualizar información" arrow>
+                                <IconButton onClick={getData}>
+                                    <ReplayIcon className="color-1" />
                                 </IconButton>
                             </Tooltip>
                         </MeditocHeader3>

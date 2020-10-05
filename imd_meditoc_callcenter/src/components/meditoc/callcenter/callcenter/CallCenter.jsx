@@ -1,21 +1,22 @@
-import PropTypes from "prop-types";
-import React, { Fragment } from "react";
-import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
-import { makeStyles } from "@material-ui/core/styles";
-import theme from "../../../../configurations/themeConfig";
 import { Button, Grid } from "@material-ui/core";
-import { useState } from "react";
-import ColaboradorController from "../../../../controllers/ColaboradorController";
-import { useEffect } from "react";
-import MeditocBody from "../../../utilidades/MeditocBody";
+import React, { Fragment } from "react";
 import { urlBase, urlSystem } from "../../../../configurations/urlConfig";
+
 import CallCenterController from "../../../../controllers/CallCenterController";
+import ColaboradorController from "../../../../controllers/ColaboradorController";
+import DirectorioMedico from "./DirectorioMedico";
+import FolioController from "../../../../controllers/FolioController";
 import FormBuscarFolio from "./FormBuscarFolio";
 import FormCallCenter from "./FormCallCenter";
-import FolioController from "../../../../controllers/FolioController";
-import DirectotioMedico from "./DirectotioMedico";
+import HelperStatus from "./HelperStatus";
+import MeditocBody from "../../../utilidades/MeditocBody";
+import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
 import MeditocSwitch from "../../../utilidades/MeditocSwitch";
-import CallCenterStatusHelper from "./CallCenterStatusHelper";
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
+import theme from "../../../../configurations/themeConfig";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const useStyles = makeStyles(() => ({
     button: {
@@ -447,7 +448,7 @@ const CallCenter = (props) => {
                     disabled={usuarioColaborador === null}
                 />
             </MeditocHeader1>
-            <CallCenterStatusHelper
+            <HelperStatus
                 popoverOcupadoInicio={popoverOcupadoInicio}
                 handleClosePopoverOcupado={handleClosePopoverOcupado}
                 handleClickPopoverDisponible={handleClickPopoverDisponible}
@@ -488,7 +489,7 @@ const CallCenter = (props) => {
                 folioEncontrado={folioEncontrado}
                 setFolioEncontrado={setFolioEncontrado}
             />
-            <DirectotioMedico
+            <DirectorioMedico
                 open={modalDirectorioOpen}
                 setOpen={setModalDirectorioOpen}
                 funcLoader={funcLoader}

@@ -1,27 +1,28 @@
-import PropTypes from "prop-types";
-import React, { useState, Fragment } from "react";
 import {
     Accordion,
-    AccordionSummary,
     AccordionDetails,
+    AccordionSummary,
     IconButton,
-    Tooltip,
+    Paper,
     Table,
     TableBody,
-    Paper,
+    Tooltip,
 } from "@material-ui/core";
+import React, { Fragment, useState } from "react";
+
 import AddIcon from "@material-ui/icons/Add";
-import ExpandMore from "@material-ui/icons/ExpandMore";
+import CGUController from "../../../../controllers/CGUController";
 import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+import FormBoton from "./FormBoton";
+import FormSubmodulo from "./FormSubmodulo";
+import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
+import PropTypes from "prop-types";
+import SistemaBoton from "./SistemaBoton";
 import WebIcon from "@material-ui/icons/Web";
 import { makeStyles } from "@material-ui/core/styles";
 import theme from "../../../../configurations/themeConfig";
-import SistemaBoton from "./SistemaBoton";
-import EditIcon from "@material-ui/icons/Edit";
-import FormSubmodulo from "./FormSubmodulo";
-import FormBoton from "./FormBoton";
-import CGUController from "../../../../controllers/CGUController";
-import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 
 const useStyles = makeStyles({
     backColor: {

@@ -1,16 +1,17 @@
-import PropTypes from "prop-types";
+import { Grid, IconButton, Tooltip } from "@material-ui/core";
 import React, { Fragment } from "react";
-import MeditocModal from "../../../utilidades/MeditocModal";
-import MeditocHeader3 from "../../../utilidades/MeditocHeader3";
-import { Tooltip, IconButton, Grid } from "@material-ui/core";
-import InsertPhotoIcon from "@material-ui/icons/InsertPhoto";
-import DeleteIcon from "@material-ui/icons/Delete";
+
 import BrokenImageIcon from "@material-ui/icons/BrokenImage";
 import ColaboradorController from "../../../../controllers/ColaboradorController";
-import { useState } from "react";
-import { useEffect } from "react";
-import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
+import DeleteIcon from "@material-ui/icons/Delete";
 import InfoIcon from "@material-ui/icons/Info";
+import InsertPhotoIcon from "@material-ui/icons/InsertPhoto";
+import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
+import MeditocHeader3 from "../../../utilidades/MeditocHeader3";
+import MeditocModal from "../../../utilidades/MeditocModal";
+import PropTypes from "prop-types";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const FotoColaborador = (props) => {
     const { entColaborador, open, setOpen, usuarioSesion, funcLoader, funcAlert } = props;

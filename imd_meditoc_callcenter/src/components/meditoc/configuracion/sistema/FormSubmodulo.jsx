@@ -1,10 +1,12 @@
-import PropTypes from "prop-types";
-import React, { useState } from "react";
-import MeditocModal from "../../../utilidades/MeditocModal";
 import { Grid, TextField } from "@material-ui/core";
+import React, { useState } from "react";
+import { blurPrevent, funcPrevent } from "../../../../configurations/preventConfig";
+
 import CGUController from "../../../../controllers/CGUController";
-import { useEffect } from "react";
+import MeditocModal from "../../../utilidades/MeditocModal";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
+import PropTypes from "prop-types";
+import { useEffect } from "react";
 
 /*************************************************************
  * Descripcion: Modal del formulario para Agregar/Modificar un submódulo
@@ -30,7 +32,8 @@ const FormSubmodulo = (props) => {
     });
 
     //Consumir servicio para guardar el submodulo en la base
-    const funcSaveSubmodulo = async () => {
+    const funcSaveSubmodulo = async (e) => {
+        funcPrevent(e);
         let formSubmoduloOKValidacion = {
             txtNombre: true,
         };
@@ -70,6 +73,7 @@ const FormSubmodulo = (props) => {
         }
 
         funcLoader();
+        blurPrevent();
     };
 
     //Funcion para capturar los valores de los inputs
@@ -116,52 +120,51 @@ const FormSubmodulo = (props) => {
             open={open}
             setOpen={setOpen}
         >
-            <Grid container spacing={3}>
-                {entSubmodulo.iIdModulo > 0 ? (
+            <form id="form-submodulo" onSubmit={funcSaveSubmodulo} noValidate>
+                <Grid container spacing={3}>
+                    {entSubmodulo.iIdModulo > 0 ? (
+                        <Grid item xs={12}>
+                            <TextField
+                                name="txtIdModulo"
+                                label="ID de módulo:"
+                                variant="outlined"
+                                fullWidth
+                                value={formSubmodulo.txtIdModulo}
+                                disabled
+                            />
+                        </Grid>
+                    ) : null}
+
+                    {entSubmodulo.iIdSubModulo > 0 ? (
+                        <Grid item xs={12}>
+                            <TextField
+                                name="txtIdSubmodulo"
+                                label="ID de submódulo:"
+                                variant="outlined"
+                                fullWidth
+                                value={formSubmodulo.txtIdSubmodulo}
+                                disabled
+                            />
+                        </Grid>
+                    ) : null}
+
                     <Grid item xs={12}>
                         <TextField
-                            name="txtIdModulo"
-                            label="ID de módulo:"
+                            name="txtNombre"
+                            label="Nombre de submódulo:"
                             variant="outlined"
-                            color="secondary"
+                            autoComplete="off"
                             fullWidth
-                            value={formSubmodulo.txtIdModulo}
-                            disabled
+                            autoFocus
+                            value={formSubmodulo.txtNombre}
+                            onChange={handleChangeForm}
+                            error={!formSubmoduloOK.txtNombre}
+                            helperText={!formSubmoduloOK.txtNombre ? "El nombre del submódulo es requerido" : ""}
                         />
                     </Grid>
-                ) : null}
-
-                {entSubmodulo.iIdSubModulo > 0 ? (
-                    <Grid item xs={12}>
-                        <TextField
-                            name="txtIdSubmodulo"
-                            label="ID de submódulo:"
-                            variant="outlined"
-                            color="secondary"
-                            fullWidth
-                            value={formSubmodulo.txtIdSubmodulo}
-                            disabled
-                        />
-                    </Grid>
-                ) : null}
-
-                <Grid item xs={12}>
-                    <TextField
-                        name="txtNombre"
-                        label="Nombre de submódulo:"
-                        variant="outlined"
-                        color="secondary"
-                        autoComplete="off"
-                        fullWidth
-                        autoFocus
-                        value={formSubmodulo.txtNombre}
-                        onChange={handleChangeForm}
-                        error={!formSubmoduloOK.txtNombre}
-                        helperText={!formSubmoduloOK.txtNombre ? "El nombre del submódulo es requerido" : ""}
-                    />
+                    <MeditocModalBotones setOpen={setOpen} okMessage="Guardar submódulo" okFunc={funcSaveSubmodulo} />
                 </Grid>
-                <MeditocModalBotones setOpen={setOpen} okMessage="Guardar submódulo" okFunc={funcSaveSubmodulo} />
-            </Grid>
+            </form>
         </MeditocModal>
     );
 };

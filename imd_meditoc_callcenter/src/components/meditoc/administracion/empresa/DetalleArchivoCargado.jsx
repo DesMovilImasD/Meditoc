@@ -1,11 +1,12 @@
-import PropTypes from "prop-types";
 import { Grid, Typography } from "@material-ui/core";
 import React, { useState } from "react";
+
 import MeditocModal from "../../../utilidades/MeditocModal";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import MeditocTable from "../../../utilidades/MeditocTable";
+import PropTypes from "prop-types";
 
-const FormCargarArchivoDetalle = (props) => {
+const DetalleArchivoCargado = (props) => {
     const { entArchivoVerificado, open, setOpen } = props;
 
     const columns = [
@@ -44,7 +45,7 @@ const FormCargarArchivoDetalle = (props) => {
     );
 };
 
-FormCargarArchivoDetalle.propTypes = {
+DetalleArchivoCargado.propTypes = {
     entArchivoVerificado: PropTypes.shape({
         entProducto: PropTypes.shape({
             sNombre: PropTypes.any,
@@ -56,4 +57,4 @@ FormCargarArchivoDetalle.propTypes = {
     setOpen: PropTypes.any,
 };
 
-export default FormCargarArchivoDetalle;
+export default DetalleArchivoCargado;

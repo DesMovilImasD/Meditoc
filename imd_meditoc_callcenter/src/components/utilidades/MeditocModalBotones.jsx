@@ -1,6 +1,7 @@
+import { Button, Grid } from "@material-ui/core";
+
 import PropTypes from "prop-types";
 import React from "react";
-import { Grid, Button } from "@material-ui/core";
 
 const MeditocModalBotones = (props) => {
     const {
@@ -46,15 +47,23 @@ const MeditocModalBotones = (props) => {
     return (
         <Grid item sm={mtSm} xs={mtXs} className={mtAlign}>
             {!mtHideCancel && (
-                <Button variant="contained" style={{ color: "#555", marginRight: "10px" }} onClick={mtCancelFunc}>
+                <Button
+                    variant="contained"
+                    type="button"
+                    style={{ color: "#555", marginRight: "10px" }}
+                    onClick={mtCancelFunc}
+                >
                     {mtCancelMessage}
                 </Button>
             )}
             {!mtHideOk && (
-                <Button variant="contained" disabled={mtOkDisabled} color="primary" onClick={mtOkFunc}>
+                <Button variant="contained" type="button" disabled={mtOkDisabled} color="primary" onClick={mtOkFunc}>
                     {mtOkMessage}
                 </Button>
             )}
+            <button type="submit" hidden>
+                SUBMIT
+            </button>
         </Grid>
     );
 };

@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Data.Common;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -95,7 +96,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 }
 
                 //Se manda a llamar la creaciión de orden de conekta
-                BusOrder busOrder = new BusOrder("MeditocComercial", "Meditoc1");
+                BusOrder busOrder = new BusOrder();
                 IMDResponse<EntOrder> resOrder = busOrder.BCreateOrder(entCreateOrder);
                 if (resOrder.Code != 0)
                 {
@@ -694,7 +695,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 entFolioxEmpresa.uid = sUid;
 
-                DatOrder datOrder = new DatOrder("MeditocComercial", "Meditoc1");
+                DatOrder datOrder = new DatOrder();
 
                 IMDResponse<bool> respuestaGuardarOrden = datOrder.DSaveConektaOrder(uid, entOrder, origin, entFolioxEmpresa.iIdOrigen);
                 if (respuestaGuardarOrden.Code != 0)
@@ -1722,18 +1723,22 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     return response;
                 }
 
-                //using (TransactionScope scope = new TransactionScope())
-                //{
-                foreach (EntFolioFVItem folio in entFolioFV.lstFolios)
+                using (DbConnection dbConnection = datFolio.database.CreateConnection())
                 {
-                    IMDResponse<bool> respuestaUpdFecha = datFolio.DUpdFechaVencimiento(entFolioFV.iIdEmpresa, folio.iIdFolio, entFolioFV.dtFechaVencimiento, entFolioFV.iIdUsuario);
-                    if (respuestaUpdFecha.Code != 0)
+                    dbConnection.Open();
+                    using (DbTransaction dbTransaction = dbConnection.BeginTransaction())
                     {
-                        return respuestaUpdFecha;
+                        foreach (EntFolioFVItem folio in entFolioFV.lstFolios)
+                        {
+                            IMDResponse<bool> respuestaUpdFecha = datFolio.DUpdFechaVencimiento(entFolioFV.iIdEmpresa, folio.iIdFolio, entFolioFV.dtFechaVencimiento, entFolioFV.iIdUsuario);
+                            if (respuestaUpdFecha.Code != 0)
+                            {
+                                return respuestaUpdFecha;
+                            }
+                        }
+                        dbTransaction.Commit();
                     }
                 }
-                //scope.Complete();
-                //}
 
                 response.Code = 0;
                 response.Message = "Folios actualizados";
@@ -1777,18 +1782,22 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     return response;
                 }
 
-                //using (TransactionScope scope = new TransactionScope())
-                //{
-                foreach (EntFolioFVItem folio in entFolioFV.lstFolios)
+                using (DbConnection dbConnection = datFolio.database.CreateConnection())
                 {
-                    IMDResponse<bool> respuestaUpdFecha = datFolio.DEliminarFoliosEmpresa(entFolioFV.iIdEmpresa, folio.iIdFolio, entFolioFV.iIdUsuario);
-                    if (respuestaUpdFecha.Code != 0)
+                    dbConnection.Open();
+                    using (DbTransaction dbTransaction = dbConnection.BeginTransaction())
                     {
-                        return respuestaUpdFecha;
+                        foreach (EntFolioFVItem folio in entFolioFV.lstFolios)
+                        {
+                            IMDResponse<bool> respuestaUpdFecha = datFolio.DEliminarFoliosEmpresa(entFolioFV.iIdEmpresa, folio.iIdFolio, entFolioFV.iIdUsuario);
+                            if (respuestaUpdFecha.Code != 0)
+                            {
+                                return respuestaUpdFecha;
+                            }
+                        }
+                        dbTransaction.Commit();
                     }
                 }
-                //    scope.Complete();
-                //}
 
                 response.Code = 0;
                 response.Message = "Folios actualizados";
@@ -2251,38 +2260,41 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 Guid tempOrderUID = Guid.NewGuid();
                 int qty = 0;
-
-                //using (TransactionScope scope = new TransactionScope())
-                //{
-                foreach (EntFolioUser folio in data.lstFolios)
+                using (DbConnection dbConnection = datFolio.database.CreateConnection())
                 {
-                    EntFolioVentaCalle entFolioVentaCalle = new EntFolioVentaCalle
+                    dbConnection.Open();
+                    using (DbTransaction dbTransaction = dbConnection.BeginTransaction())
                     {
-                        iIdEmpresa = data.entEmpresa.iIdEmpresa,
-                        iIdOrigen = entFolioxEmpresa.iIdOrigen,
-                        iIdProducto = data.entProducto.iIdProducto,
-                        iIdUsuarioMod = piIdUsuarioMod,
-                        sFolio = folio.sFolio,
-                        sPassword = folio.sPassword,
-                        dtFechaVencimiento = Enum.IsDefined(typeof(EnumProductos), data.entProducto.iIdProducto) ? (DateTime?)null : data.entProducto.iMesVigencia == 0 ? DateTime.Now.AddDays(Convert.ToInt16(ConfigurationManager.AppSettings["iDiasDespuesVencimiento"])) : DateTime.Now.AddMonths(data.entProducto.iMesVigencia),
-                        sOrdenConekta = tempOrderUID.ToString(),
-                        bConfirmado = Enum.IsDefined(typeof(EnumProductos), data.entProducto.iIdProducto) && data.entProducto.iIdProducto != (int)EnumProductos.OrientacionEspecialistaID ? false : true
-                    };
 
-                    IMDResponse<bool> resSaveFolio = this.BSaveFolioVC(entFolioVentaCalle);
-                    if (resSaveFolio.Code != 0)
-                    {
-                        resSaveFolio.Message = $"El folio {entFolioVentaCalle.sFolio} con contraseña {entFolioVentaCalle.sPassword} no se pudo guardar. Verifique los datos y cargue el archivo nuevamente. El proceso de guardado se ha detenido";
-                        return resSaveFolio;
-                    }
-                    if (resSaveFolio.Result)
-                    {
-                        qty++;
+                        foreach (EntFolioUser folio in data.lstFolios)
+                        {
+                            EntFolioVentaCalle entFolioVentaCalle = new EntFolioVentaCalle
+                            {
+                                iIdEmpresa = data.entEmpresa.iIdEmpresa,
+                                iIdOrigen = entFolioxEmpresa.iIdOrigen,
+                                iIdProducto = data.entProducto.iIdProducto,
+                                iIdUsuarioMod = piIdUsuarioMod,
+                                sFolio = folio.sFolio,
+                                sPassword = folio.sPassword,
+                                dtFechaVencimiento = Enum.IsDefined(typeof(EnumProductos), data.entProducto.iIdProducto) ? (DateTime?)null : data.entProducto.iMesVigencia == 0 ? DateTime.Now.AddDays(Convert.ToInt16(ConfigurationManager.AppSettings["iDiasDespuesVencimiento"])) : DateTime.Now.AddMonths(data.entProducto.iMesVigencia),
+                                sOrdenConekta = tempOrderUID.ToString(),
+                                bConfirmado = Enum.IsDefined(typeof(EnumProductos), data.entProducto.iIdProducto) && data.entProducto.iIdProducto != (int)EnumProductos.OrientacionEspecialistaID ? false : true
+                            };
+
+                            IMDResponse<bool> resSaveFolio = this.BSaveFolioVC(entFolioVentaCalle);
+                            if (resSaveFolio.Code != 0)
+                            {
+                                resSaveFolio.Message = $"El folio {entFolioVentaCalle.sFolio} con contraseña {entFolioVentaCalle.sPassword} no se pudo guardar. Verifique los datos y cargue el archivo nuevamente. El proceso de guardado se ha detenido";
+                                return resSaveFolio;
+                            }
+                            if (resSaveFolio.Result)
+                            {
+                                qty++;
+                            }
+                        }
+                        dbTransaction.Commit();
                     }
                 }
-
-                //    scope.Complete();
-                //}
 
 
                 if (qty > 0)
@@ -2341,10 +2353,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 }
 
                 EntEmpresa entEmpresa = resGetEmpresas.Result.First();
-
-                //using (MemoryStream ms = new MemoryStream())
-                //{
-                //    foliosExcel.CopyTo(ms);
                 using (ExcelPackage excelPackage = new ExcelPackage(foliosExcel))
                 {
                     if (excelPackage == null)
@@ -2432,7 +2440,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                         }
                     }
                 }
-                //}
 
                 response.Code = 0;
                 response.Message = "Los folios se han guardado correctamente";

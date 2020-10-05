@@ -1,9 +1,10 @@
-import PropTypes from "prop-types";
 import { Button, Grid, Hidden } from "@material-ui/core";
+
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
+import PropTypes from "prop-types";
 import React from "react";
 
-const DirectorioMedicoDetalle = (props) => {
+const DetalleDirectorioMeditoc = (props) => {
     const { entColaborador } = props;
 
     return (
@@ -108,7 +109,7 @@ const DirectorioMedicoDetalle = (props) => {
     );
 };
 
-DirectorioMedicoDetalle.propTypes = {
+DetalleDirectorioMeditoc.propTypes = {
     entColaborador: PropTypes.shape({
         sCedulaProfecional: PropTypes.any,
         sCorreo: PropTypes.any,
@@ -123,4 +124,4 @@ DirectorioMedicoDetalle.propTypes = {
     }),
 };
 
-export default DirectorioMedicoDetalle;
+export default DetalleDirectorioMeditoc;

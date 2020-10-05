@@ -1,6 +1,6 @@
+import MaskedInput from "react-text-mask";
 import PropTypes from "prop-types";
 import React from "react";
-import MaskedInput from "react-text-mask";
 
 /*****************************************************
  * Descripción: Mascara de validación para teléfono
@@ -8,7 +8,7 @@ import MaskedInput from "react-text-mask";
  * Fecha: 28/08/2020
  * Invocado desde: --
  *****************************************************/
-const InputTelefono = (props) => {
+const MeditocInputPhone = (props) => {
     const { inputRef, ...other } = props;
 
     return (
@@ -23,8 +23,8 @@ const InputTelefono = (props) => {
     );
 };
 
-InputTelefono.propTypes = {
+MeditocInputPhone.propTypes = {
     inputRef: PropTypes.func,
 };
 
-export default InputTelefono;
+export default MeditocInputPhone;

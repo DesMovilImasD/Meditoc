@@ -1,23 +1,26 @@
+import { IconButton, Tooltip, Typography } from "@material-ui/core";
 import React, { Fragment } from "react";
-import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
-import MeditocBody from "../../../utilidades/MeditocBody";
-import { Tooltip, IconButton, Typography } from "@material-ui/core";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
-import { useState } from "react";
-import FormColaborador from "./FormColaborador";
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
-import GroupAddIcon from "@material-ui/icons/GroupAdd";
-import EspecialidadController from "../../../../controllers/EspecialidadController";
-import { useEffect } from "react";
+
 import ColaboradorController from "../../../../controllers/ColaboradorController";
-import MeditocTable from "../../../utilidades/MeditocTable";
-import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
-import InsertPhotoIcon from "@material-ui/icons/InsertPhoto";
-import FotoColaborador from "./FotoColaborador";
-import VisibilityIcon from "@material-ui/icons/Visibility";
+import DeleteIcon from "@material-ui/icons/Delete";
 import DetalleColaborador from "./DetalleColaborador";
+import EditIcon from "@material-ui/icons/Edit";
 import { EnumTipoDoctor } from "../../../../configurations/enumConfig";
+import EspecialidadController from "../../../../controllers/EspecialidadController";
+import FormColaborador from "./FormColaborador";
+import FotoColaborador from "./FotoColaborador";
+import GroupAddIcon from "@material-ui/icons/GroupAdd";
+import InsertPhotoIcon from "@material-ui/icons/InsertPhoto";
+import MeditocBody from "../../../utilidades/MeditocBody";
+import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
+import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
+import MeditocTable from "../../../utilidades/MeditocTable";
+import PersonAddIcon from "@material-ui/icons/PersonAdd";
+import PropTypes from "prop-types";
+import ReplayIcon from "@material-ui/icons/Replay";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const Colaboradores = (props) => {
     const { usuarioSesion, funcLoader, funcAlert, title } = props;
@@ -233,6 +236,11 @@ const Colaboradores = (props) => {
                         <DeleteIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
+                <Tooltip title="Actualizar tabla" arrow>
+                    <IconButton onClick={funcGetData}>
+                        <ReplayIcon className="color-0" />
+                    </IconButton>
+                </Tooltip>
             </MeditocHeader1>
             <MeditocBody>
                 <MeditocTable
@@ -280,6 +288,15 @@ const Colaboradores = (props) => {
             </MeditocConfirmacion>
         </Fragment>
     );
+};
+
+Colaboradores.propTypes = {
+    funcAlert: PropTypes.func,
+    funcLoader: PropTypes.func,
+    title: PropTypes.any,
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.any,
+    }),
 };
 
 export default Colaboradores;

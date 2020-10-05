@@ -4,27 +4,27 @@
  * Fecha: 26/08/2020
  *************************************************************/
 
-import { createMuiTheme } from '@material-ui/core/styles'
+import { createMuiTheme } from "@material-ui/core/styles";
 
 const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#12B6CB',
-      contrastText: '#FFFFFF',
+    palette: {
+        primary: {
+            main: "#12B6CB",
+            contrastText: "#FFFFFF",
+        },
+        secondary: {
+            main: "#115C8A",
+            contrastText: "#FFFFFF",
+        },
     },
-    secondary: {
-      main: '#115C8A',
-      contrastText: '#FFFFFF',
+    overrides: {
+        MuiTooltip: {
+            tooltip: {
+                fontSize: 15,
+                fontWeight: "normal",
+            },
+        },
     },
-  },
-  overrides: {
-    MuiTooltip: {
-      tooltip: {
-        fontSize: 15,
-        fontWeight: 'normal',
-      },
-    },
-  },
-})
+});
 
-export default theme
+export default theme;

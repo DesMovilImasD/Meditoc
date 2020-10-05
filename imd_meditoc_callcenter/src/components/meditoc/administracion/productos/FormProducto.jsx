@@ -1,24 +1,26 @@
+import {
+    Checkbox,
+    FormControl,
+    FormControlLabel,
+    FormGroup,
+    FormLabel,
+    Grid,
+    MenuItem,
+    Radio,
+    RadioGroup,
+    TextField,
+} from "@material-ui/core";
+import { blurPrevent, funcPrevent } from "../../../../configurations/preventConfig";
+
+import { EnumTipoProducto } from "../../../../configurations/enumConfig";
+import MeditocModal from "../../../utilidades/MeditocModal";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
+import ProductoController from "../../../../controllers/ProductoController";
 import PropTypes from "prop-types";
 import React from "react";
-import MeditocModal from "../../../utilidades/MeditocModal";
-import {
-    Grid,
-    TextField,
-    FormControl,
-    FormLabel,
-    RadioGroup,
-    FormControlLabel,
-    Radio,
-    FormGroup,
-    Checkbox,
-    MenuItem,
-} from "@material-ui/core";
-import { useState } from "react";
-import { useEffect } from "react";
-import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import { listIconsMedicalProducts } from "../../../../configurations/iconProductConfig";
-import ProductoController from "../../../../controllers/ProductoController";
-import { EnumTipoProducto } from "../../../../configurations/enumConfig";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const FormProducto = (props) => {
     const { entProducto, open, setOpen, funcConsultarProductos, usuarioSesion, funcLoader, funcAlert } = props;
@@ -138,7 +140,8 @@ const FormProducto = (props) => {
         });
     };
 
-    const handleClickGuardarProducto = async () => {
+    const handleClickGuardarProducto = async (e) => {
+        funcPrevent(e);
         let formProductoOKValidacion = { ...validacionFormulario };
         let bFormError = false;
 
@@ -222,173 +225,179 @@ const FormProducto = (props) => {
         }
 
         funcLoader();
+        blurPrevent();
     };
 
     return (
         <MeditocModal
             title={entProducto.iIdProducto === 0 ? "Nuevo producto" : "Editar producto"}
-            size="normal"
+            size="small"
             open={open}
             setOpen={setOpen}
         >
-            <Grid container spacing={3}>
-                <Grid item sm={6} xs={12}>
-                    <TextField
-                        name="txtNombreProducto"
-                        label="Nombre del producto:"
-                        fullWidth
-                        variant="outlined"
-                        placeholder="Ej. Membresía 6 meses"
-                        value={formProducto.txtNombreProducto}
-                        onChange={handleChangeFormProducto}
-                        required
-                        error={!formProductoOK.txtNombreProducto}
-                        helperText={!formProductoOK.txtNombreProducto ? "El nombre del producto es requerido" : ""}
-                    />
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <TextField
-                        name="txtNombreCorto"
-                        label="Nombre corto del producto:"
-                        fullWidth
-                        variant="outlined"
-                        placeholder="Ej. 6 meses"
-                        value={formProducto.txtNombreCorto}
-                        onChange={handleChangeFormProducto}
-                        required
-                        error={!formProductoOK.txtNombreCorto}
-                        helperText={
-                            !formProductoOK.txtNombreCorto ? "El nombre corto para el producto es requerido" : ""
-                        }
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        name="txtDescripcion"
-                        label="Descripción:"
-                        fullWidth
-                        variant="outlined"
-                        multiline
-                        placeholder="Ej. Un médico contigo, siempre, en donde sea."
-                        value={formProducto.txtDescripcion}
-                        onChange={handleChangeFormProducto}
-                        required
-                        error={!formProductoOK.txtDescripcion}
-                        helperText={!formProductoOK.txtDescripcion ? "La descripción del producto es requerido" : ""}
-                    />
-                </Grid>
-
-                <Grid item sm={6} xs={12}>
-                    <FormControl componet="fieldset">
-                        <FormLabel component="legend">Tipo de producto:</FormLabel>
-                        <RadioGroup
-                            row
-                            name="rdTipoProducto"
-                            value={formProducto.rdTipoProducto}
-                            onChange={handleChangeFormProducto}
-                        >
-                            <FormControlLabel
-                                value={EnumTipoProducto.Membresia.toString()}
-                                control={<Radio />}
-                                label="Membresía"
-                            />
-                            <FormControlLabel
-                                value={EnumTipoProducto.Servicio.toString()}
-                                control={<Radio />}
-                                label="Servicio"
-                            />
-                        </RadioGroup>
-                    </FormControl>
-                </Grid>
-
-                <Grid item sm={6} xs={12}>
-                    {formProducto.rdTipoProducto === EnumTipoProducto.Membresia.toString() ? (
+            <form onSubmit={handleClickGuardarProducto} id="form-producto" noValidate>
+                <Grid container spacing={3}>
+                    <Grid item sm={6} xs={12}>
                         <TextField
-                            name="txtMesesVigencia"
-                            label="Meses de vigencia de folio:"
+                            name="txtNombreProducto"
+                            label="Nombre del producto:"
                             fullWidth
                             variant="outlined"
-                            placeholder="Ej. 6"
-                            value={formProducto.txtMesesVigencia}
+                            placeholder="Ej. Membresía 6 meses"
+                            value={formProducto.txtNombreProducto}
+                            onChange={handleChangeFormProducto}
+                            autoFocus
+                            required
+                            error={!formProductoOK.txtNombreProducto}
+                            helperText={!formProductoOK.txtNombreProducto ? "El nombre del producto es requerido" : ""}
+                        />
+                    </Grid>
+                    <Grid item sm={6} xs={12}>
+                        <TextField
+                            name="txtNombreCorto"
+                            label="Nombre corto del producto:"
+                            fullWidth
+                            variant="outlined"
+                            placeholder="Ej. 6 meses"
+                            value={formProducto.txtNombreCorto}
                             onChange={handleChangeFormProducto}
                             required
-                            error={!formProductoOK.txtMesesVigencia}
+                            error={!formProductoOK.txtNombreCorto}
                             helperText={
-                                !formProductoOK.txtMesesVigencia
-                                    ? "Ingrese un número válido para los meses de vigencia"
-                                    : ""
+                                !formProductoOK.txtNombreCorto ? "El nombre corto para el producto es requerido" : ""
                             }
                         />
-                    ) : null}
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <FormGroup row>
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    name="chkComercial"
-                                    checked={formProducto.chkComercial}
-                                    onChange={handleChangeFormProducto}
-                                />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            name="txtDescripcion"
+                            label="Descripción:"
+                            fullWidth
+                            variant="outlined"
+                            multiline
+                            placeholder="Ej. Un médico contigo, siempre, en donde sea."
+                            value={formProducto.txtDescripcion}
+                            onChange={handleChangeFormProducto}
+                            required
+                            error={!formProductoOK.txtDescripcion}
+                            helperText={
+                                !formProductoOK.txtDescripcion ? "La descripción del producto es requerido" : ""
                             }
-                            label="Es producto comercial"
                         />
-                    </FormGroup>
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <TextField
-                        name="txtCosto"
-                        label="Costo del producto (en MXN sin IVA):"
-                        fullWidth
-                        variant="outlined"
-                        placeholder="Ej. 600.00"
-                        value={formProducto.txtCosto}
-                        onChange={handleChangeFormProducto}
-                        required
-                        error={!formProductoOK.txtCosto}
-                        helperText={!formProductoOK.txtCosto ? "Ingrese un monto válido para el producto" : ""}
-                    />
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <TextField
-                        name="txtIcono"
-                        label="Ícono:"
-                        fullWidth
-                        variant="outlined"
-                        select
-                        SelectProps={{ MenuProps: { PaperProps: { style: { maxHeight: 300 } } } }}
-                        value={formProducto.txtIcono}
-                        onChange={handleChangeFormProducto}
-                        required
-                        error={!formProductoOK.txtIcono}
-                        helperText={!formProductoOK.txtIcono ? "Seleccione un ícono para el producto" : ""}
-                    >
-                        {listIconsMedicalProducts.map((icon) => (
-                            <MenuItem key={icon.key} value={icon.key}>
-                                <i
-                                    className="icon size-20 color-2"
-                                    dangerouslySetInnerHTML={{ __html: icon.htmlIcon }}
+                    </Grid>
+
+                    <Grid item sm={6} xs={12}>
+                        <FormControl componet="fieldset">
+                            <FormLabel component="legend">Tipo de producto:</FormLabel>
+                            <RadioGroup
+                                row
+                                name="rdTipoProducto"
+                                value={formProducto.rdTipoProducto}
+                                onChange={handleChangeFormProducto}
+                            >
+                                <FormControlLabel
+                                    value={EnumTipoProducto.Membresia.toString()}
+                                    control={<Radio />}
+                                    label="Membresía"
                                 />
-                            </MenuItem>
-                        ))}
-                    </TextField>
+                                <FormControlLabel
+                                    value={EnumTipoProducto.Servicio.toString()}
+                                    control={<Radio />}
+                                    label="Servicio"
+                                />
+                            </RadioGroup>
+                        </FormControl>
+                    </Grid>
+
+                    <Grid item sm={6} xs={12}>
+                        {formProducto.rdTipoProducto === EnumTipoProducto.Membresia.toString() ? (
+                            <TextField
+                                name="txtMesesVigencia"
+                                label="Meses de vigencia de folio:"
+                                fullWidth
+                                variant="outlined"
+                                placeholder="Ej. 6"
+                                value={formProducto.txtMesesVigencia}
+                                onChange={handleChangeFormProducto}
+                                required
+                                error={!formProductoOK.txtMesesVigencia}
+                                helperText={
+                                    !formProductoOK.txtMesesVigencia
+                                        ? "Ingrese un número válido para los meses de vigencia"
+                                        : ""
+                                }
+                            />
+                        ) : null}
+                    </Grid>
+                    <Grid item sm={6} xs={12}>
+                        <FormGroup row>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        name="chkComercial"
+                                        checked={formProducto.chkComercial}
+                                        onChange={handleChangeFormProducto}
+                                    />
+                                }
+                                label="Es producto comercial"
+                            />
+                        </FormGroup>
+                    </Grid>
+                    <Grid item sm={6} xs={12}>
+                        <TextField
+                            name="txtCosto"
+                            label="Costo del producto (en MXN sin IVA):"
+                            fullWidth
+                            variant="outlined"
+                            placeholder="Ej. 600.00"
+                            value={formProducto.txtCosto}
+                            onChange={handleChangeFormProducto}
+                            required
+                            error={!formProductoOK.txtCosto}
+                            helperText={!formProductoOK.txtCosto ? "Ingrese un monto válido para el producto" : ""}
+                        />
+                    </Grid>
+                    <Grid item sm={6} xs={12}>
+                        <TextField
+                            name="txtIcono"
+                            label="Ícono:"
+                            fullWidth
+                            variant="outlined"
+                            select
+                            SelectProps={{ MenuProps: { PaperProps: { style: { maxHeight: 300 } } } }}
+                            value={formProducto.txtIcono}
+                            onChange={handleChangeFormProducto}
+                            required
+                            error={!formProductoOK.txtIcono}
+                            helperText={!formProductoOK.txtIcono ? "Seleccione un ícono para el producto" : ""}
+                        >
+                            {listIconsMedicalProducts.map((icon) => (
+                                <MenuItem key={icon.key} value={icon.key}>
+                                    <i
+                                        className="icon size-20 color-2"
+                                        dangerouslySetInnerHTML={{ __html: icon.htmlIcon }}
+                                    />
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                    </Grid>
+                    <Grid item sm={6} xs={12}>
+                        <TextField
+                            name="txtPrefijoFolio"
+                            label="Prefijo para los folios:"
+                            fullWidth
+                            variant="outlined"
+                            placeholder="Ej. VS"
+                            value={formProducto.txtPrefijoFolio}
+                            onChange={handleChangeFormProducto}
+                            required
+                            error={!formProductoOK.txtPrefijoFolio}
+                            helperText={!formProductoOK.txtPrefijoFolio ? "El prefijo para el folio es requerido" : ""}
+                        />
+                    </Grid>
+                    <MeditocModalBotones okMessage="Guardar" okFunc={handleClickGuardarProducto} setOpen={setOpen} />
                 </Grid>
-                <Grid item sm={6} xs={12}>
-                    <TextField
-                        name="txtPrefijoFolio"
-                        label="Prefijo para los folios:"
-                        fullWidth
-                        variant="outlined"
-                        placeholder="Ej. VS"
-                        value={formProducto.txtPrefijoFolio}
-                        onChange={handleChangeFormProducto}
-                        required
-                        error={!formProductoOK.txtPrefijoFolio}
-                        helperText={!formProductoOK.txtPrefijoFolio ? "El prefijo para el folio es requerido" : ""}
-                    />
-                </Grid>
-                <MeditocModalBotones okMessage="Guardar" okFunc={handleClickGuardarProducto} setOpen={setOpen} />
-            </Grid>
+            </form>
         </MeditocModal>
     );
 };

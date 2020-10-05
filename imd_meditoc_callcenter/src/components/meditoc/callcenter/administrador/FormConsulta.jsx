@@ -1,15 +1,16 @@
-import PropTypes from "prop-types";
 import { Checkbox, Collapse, FormControlLabel, Grid, IconButton, InputAdornment, TextField } from "@material-ui/core";
-import { DateTimePicker } from "@material-ui/pickers";
 import React, { useEffect, useState } from "react";
-import { rxCorreo } from "../../../../configurations/regexConfig";
-import InputTelefono from "../../../utilidades/InputTelefono";
+
+import CallCenterController from "../../../../controllers/CallCenterController";
+import DateRangeIcon from "@material-ui/icons/DateRange";
+import { DateTimePicker } from "@material-ui/pickers";
+import FolioController from "../../../../controllers/FolioController";
+import MeditocInputPhone from "../../../utilidades/MeditocInputPhone";
 import MeditocModal from "../../../utilidades/MeditocModal";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
-import DateRangeIcon from "@material-ui/icons/DateRange";
-import CallCenterController from "../../../../controllers/CallCenterController";
-import FolioController from "../../../../controllers/FolioController";
 import MeditocSubtitulo from "../../../utilidades/MeditocSubtitulo";
+import PropTypes from "prop-types";
+import { rxCorreo } from "../../../../configurations/regexConfig";
 
 const Consulta = (props) => {
     const {
@@ -396,7 +397,7 @@ const Consulta = (props) => {
                                     required
                                     disabled={entConsulta.iIdConsulta !== 0}
                                     InputProps={{
-                                        inputComponent: InputTelefono,
+                                        inputComponent: MeditocInputPhone,
                                     }}
                                     value={formConsulta.txtTelefonoPaciente}
                                     onChange={handleChangeFormulario}

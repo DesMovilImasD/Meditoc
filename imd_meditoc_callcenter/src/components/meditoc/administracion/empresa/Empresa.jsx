@@ -1,16 +1,18 @@
-import PropTypes from "prop-types";
-import React, { Fragment, useState, useEffect } from "react";
-import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
-import { Tooltip, IconButton } from "@material-ui/core";
-import EditIcon from "@material-ui/icons/Edit";
+import { IconButton, Tooltip } from "@material-ui/core";
+import React, { Fragment, useEffect, useState } from "react";
+
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
-import WorkRoundedIcon from "@material-ui/icons/WorkRounded";
-import MeditocBody from "../../../utilidades/MeditocBody";
-import MeditocTable from "../../../utilidades/MeditocTable";
-import FormEmpresa from "./FormEmpresa";
-import FoliosEmpresa from "./FoliosEmpresa";
+import AdministrarFolios from "./AdministrarFolios";
+import EditIcon from "@material-ui/icons/Edit";
 import EmpresaController from "../../../../controllers/EmpresaController";
+import FormEmpresa from "./FormEmpresa";
+import MeditocBody from "../../../utilidades/MeditocBody";
+import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
+import MeditocTable from "../../../utilidades/MeditocTable";
 import ProductoController from "../../../../controllers/ProductoController";
+import PropTypes from "prop-types";
+import ReplayIcon from "@material-ui/icons/Replay";
+import WorkRoundedIcon from "@material-ui/icons/WorkRounded";
 
 const Empresa = (props) => {
     const { usuarioSesion, funcLoader, funcAlert, title } = props;
@@ -120,6 +122,11 @@ const Empresa = (props) => {
                         <WorkRoundedIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
+                <Tooltip title="Actualizar tabla" arrow>
+                    <IconButton onClick={funcGetData}>
+                        <ReplayIcon className="color-0" />
+                    </IconButton>
+                </Tooltip>
             </MeditocHeader1>
             <MeditocBody>
                 <MeditocTable
@@ -140,7 +147,7 @@ const Empresa = (props) => {
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
             />
-            <FoliosEmpresa
+            <AdministrarFolios
                 entEmpresa={empresaParaModalForm}
                 open={modalFoliosEmpresaOpen}
                 setOpen={setModalFoliosEmpresaOpen}

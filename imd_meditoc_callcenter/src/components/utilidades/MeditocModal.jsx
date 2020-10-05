@@ -1,8 +1,9 @@
-import PropTypes from "prop-types";
-import React from "react";
-import { IconButton, Dialog, Paper, makeStyles } from "@material-ui/core";
+import { Dialog, IconButton, Paper, makeStyles } from "@material-ui/core";
+
 import CloseIcon from "@material-ui/icons/Close";
 import Draggable from "react-draggable";
+import PropTypes from "prop-types";
+import React from "react";
 
 /*************************************************************
  * Descripcion: Contiene la estructura y diseño para los modales del portal Meditoc
@@ -56,7 +57,7 @@ const useStyles = makeStyles({
 });
 
 const MeditocModal = (props) => {
-    const { size, title, children, open, setOpen, level, id } = props;
+    const { size, title, children, open, setOpen, level } = props;
 
     const classes = useStyles();
 
@@ -66,7 +67,7 @@ const MeditocModal = (props) => {
 
     const mmLevel = level === undefined ? 1 : level;
 
-    const mtId = id === undefined ? "meditoc-drag-1" : id;
+    //const mtId = id === undefined ? "meditoc-drag-1" : id;
 
     return (
         <Dialog

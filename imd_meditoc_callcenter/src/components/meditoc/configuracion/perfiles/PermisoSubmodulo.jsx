@@ -1,25 +1,26 @@
-import PropTypes from "prop-types";
-import React, { Fragment, useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import {
     Accordion,
-    AccordionSummary,
-    Tooltip,
-    IconButton,
     AccordionDetails,
+    AccordionSummary,
+    IconButton,
     Paper,
     Table,
     TableBody,
+    Tooltip,
 } from "@material-ui/core";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import WebIcon from "@material-ui/icons/Web";
+import React, { Fragment, useEffect, useState } from "react";
+
 import AddIcon from "@material-ui/icons/Add";
 import BlockIcon from "@material-ui/icons/Block";
-import theme from "../../../../configurations/themeConfig";
-import SeleccionarBoton from "./SeleccionarBoton";
-import PermisoBoton from "./PermisoBoton";
 import CGUController from "../../../../controllers/CGUController";
+import ExpandMore from "@material-ui/icons/ExpandMore";
 import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
+import PermisoBoton from "./PermisoBoton";
+import PropTypes from "prop-types";
+import SeleccionarBoton from "./SeleccionarBoton";
+import WebIcon from "@material-ui/icons/Web";
+import { makeStyles } from "@material-ui/core/styles";
+import theme from "../../../../configurations/themeConfig";
 
 const useStyles = makeStyles({
     backColor: {

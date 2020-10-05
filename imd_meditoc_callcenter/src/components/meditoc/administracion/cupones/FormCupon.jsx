@@ -1,11 +1,13 @@
-import PropTypes from "prop-types";
+import { Divider, FormControlLabel, Grid, MenuItem, Radio, RadioGroup, TextField } from "@material-ui/core";
 import React, { useState } from "react";
+import { blurPrevent, funcPrevent } from "../../../../configurations/preventConfig";
+
+import { EnumCuponCategoria } from "../../../../configurations/enumConfig";
 import MeditocModal from "../../../utilidades/MeditocModal";
-import { Grid, RadioGroup, FormControlLabel, Radio, TextField, MenuItem, Divider } from "@material-ui/core";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import PromocionesController from "../../../../controllers/PromocionesController";
+import PropTypes from "prop-types";
 import { useEffect } from "react";
-import { EnumCuponCategoria } from "../../../../configurations/enumConfig";
 
 const FormCupon = (props) => {
     const { entCupon, open, setOpen, funcObtenerCupones, usuarioSesion, funcLoader, funcAlert } = props;
@@ -146,7 +148,9 @@ const FormCupon = (props) => {
         });
     };
 
-    const handleClickGuardarCupon = async () => {
+    const handleClickGuardarCupon = async (e) => {
+        funcPrevent(e);
+
         let formCuponOKValidacion = { ...validacionFormulario };
 
         let bFormError = false;
@@ -222,140 +226,146 @@ const FormCupon = (props) => {
         }
 
         funcLoader();
+        blurPrevent();
     };
 
     return (
         <MeditocModal title="Crear cupón" size="normal" open={open} setOpen={setOpen}>
-            <Grid container spacing={3}>
-                <Grid item sm={6} xs={12}>
-                    <RadioGroup
-                        row
-                        name="rdCuponCodigo"
-                        value={rdCuponCodigoValue}
-                        onChange={handleChandeRdCuponCodigo}
-                    >
-                        <FormControlLabel control={<Radio />} label="Código personalizado" value={personalizado} />
-                        <FormControlLabel control={<Radio />} label="Código aleatorio" value={aleatorio} />
-                    </RadioGroup>
-                </Grid>
-                <Grid item sm={6} xs={12} className="align-self-center">
-                    {rdCuponCodigoValue === personalizado ? (
+            <form id="form-cupon" onSubmit={handleClickGuardarCupon} noValidate>
+                <Grid container spacing={3}>
+                    <Grid item sm={6} xs={12}>
+                        <RadioGroup
+                            row
+                            name="rdCuponCodigo"
+                            value={rdCuponCodigoValue}
+                            onChange={handleChandeRdCuponCodigo}
+                        >
+                            <FormControlLabel control={<Radio />} label="Código personalizado" value={personalizado} />
+                            <FormControlLabel control={<Radio />} label="Código aleatorio" value={aleatorio} />
+                        </RadioGroup>
+                    </Grid>
+                    <Grid item sm={6} xs={12} className="align-self-center">
+                        {rdCuponCodigoValue === personalizado ? (
+                            <TextField
+                                name="txtCodigoCupon"
+                                label="Código personalizado:"
+                                variant="outlined"
+                                fullWidth
+                                autoFocus
+                                required={rdCuponCodigoValue === personalizado}
+                                value={formCupon.txtCodigoCupon}
+                                onChange={handleChangeFormCupon}
+                                error={!formCuponOK.txtCodigoCupon}
+                                helperText={!formCuponOK.txtCodigoCupon ? "El código nuevo es requerido" : ""}
+                            />
+                        ) : (
+                            <TextField
+                                name="txtLongitudCupon"
+                                label="Total de caracteres:"
+                                variant="outlined"
+                                fullWidth
+                                required={rdCuponCodigoValue === aleatorio}
+                                value={formCupon.txtLongitudCupon}
+                                onChange={handleChangeFormCupon}
+                                error={!formCuponOK.txtLongitudCupon}
+                                helperText={
+                                    !formCuponOK.txtLongitudCupon ? "Ingrese un número entero válido mayor a 0" : ""
+                                }
+                            />
+                        )}
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Divider />
+                    </Grid>
+                    <Grid item sm={6} xs={12}>
                         <TextField
-                            name="txtCodigoCupon"
-                            label="Código personalizado:"
+                            name="txtTipoCupon"
+                            label="Tipo de cupón"
                             variant="outlined"
                             fullWidth
-                            required={rdCuponCodigoValue === personalizado}
-                            value={formCupon.txtCodigoCupon}
+                            required
+                            select
+                            value={formCupon.txtTipoCupon}
                             onChange={handleChangeFormCupon}
-                            error={!formCuponOK.txtCodigoCupon}
-                            helperText={!formCuponOK.txtCodigoCupon ? "El código nuevo es requerido" : ""}
-                        />
-                    ) : (
+                            error={!formCuponOK.txtTipoCupon}
+                            helperText={!formCuponOK.txtTipoCupon ? "Seleccione el tipo de cupón" : ""}
+                        >
+                            <MenuItem value="1">Descuento por monto</MenuItem>
+                            <MenuItem value="2">Descuento por porcentaje</MenuItem>
+                        </TextField>
+                    </Grid>
+                    <Grid item sm={6} xs={12}>
+                        {formCupon.txtTipoCupon === "1" ? (
+                            <TextField
+                                name="txtMontoDescuento"
+                                label="Monto de descuento:"
+                                variant="outlined"
+                                fullWidth
+                                required={formCupon.txtTipoCupon === "1"}
+                                value={formCupon.txtMontoDescuento}
+                                onChange={handleChangeFormCupon}
+                                error={!formCuponOK.txtMontoDescuento}
+                                helperText={
+                                    !formCuponOK.txtMontoDescuento ? "Ingrese un monto válido mayor a 0.00 pesos" : ""
+                                }
+                            />
+                        ) : (
+                            <TextField
+                                name="txtPorcentajeDescuento"
+                                label="Porcentaje de descuento"
+                                variant="outlined"
+                                fullWidth
+                                required={formCupon.txtTipoCupon === "2"}
+                                value={formCupon.txtPorcentajeDescuento}
+                                onChange={handleChangeFormCupon}
+                                error={!formCuponOK.txtPorcentajeDescuento}
+                                helperText={
+                                    !formCuponOK.txtPorcentajeDescuento
+                                        ? "Ingrese un porcentaje válido entre 1 y 100"
+                                        : ""
+                                }
+                            />
+                        )}
+                    </Grid>
+                    <Grid item sm={6} xs={12}>
                         <TextField
-                            name="txtLongitudCupon"
-                            label="Total de caracteres:"
+                            name="txtTotalCupones"
+                            label="Total de códigos:"
                             variant="outlined"
                             fullWidth
-                            required={rdCuponCodigoValue === aleatorio}
-                            value={formCupon.txtLongitudCupon}
+                            required
+                            value={formCupon.txtTotalCupones}
                             onChange={handleChangeFormCupon}
-                            error={!formCuponOK.txtLongitudCupon}
-                            helperText={
-                                !formCuponOK.txtLongitudCupon ? "Ingrese un número entero válido mayor a 0" : ""
-                            }
+                            error={!formCuponOK.txtTotalCupones}
+                            helperText={!formCuponOK.txtTotalCupones ? "Ingrese un número entero válido mayor a 0" : ""}
                         />
-                    )}
-                </Grid>
-                <Grid item xs={12}>
-                    <Divider />
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <TextField
-                        name="txtTipoCupon"
-                        label="Tipo de cupón"
-                        variant="outlined"
-                        fullWidth
-                        required
-                        select
-                        value={formCupon.txtTipoCupon}
-                        onChange={handleChangeFormCupon}
-                        error={!formCuponOK.txtTipoCupon}
-                        helperText={!formCuponOK.txtTipoCupon ? "Seleccione el tipo de cupón" : ""}
-                    >
-                        <MenuItem value="1">Descuento por monto</MenuItem>
-                        <MenuItem value="2">Descuento por porcentaje</MenuItem>
-                    </TextField>
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    {formCupon.txtTipoCupon === "1" ? (
+                    </Grid>
+                    <Grid item sm={6} xs={12}>
                         <TextField
-                            name="txtMontoDescuento"
-                            label="Monto de descuento:"
+                            name="txtDiasActivos"
+                            label="Días activos:"
                             variant="outlined"
                             fullWidth
-                            required={formCupon.txtTipoCupon === "1"}
-                            value={formCupon.txtMontoDescuento}
+                            value={formCupon.txtDiasActivos}
                             onChange={handleChangeFormCupon}
-                            error={!formCuponOK.txtMontoDescuento}
-                            helperText={
-                                !formCuponOK.txtMontoDescuento ? "Ingrese un monto válido mayor a 0.00 pesos" : ""
-                            }
+                            error={!formCuponOK.txtDiasActivos}
+                            helperText={!formCuponOK.txtDiasActivos ? "Ingrese un número entero válido mayor a 0" : ""}
                         />
-                    ) : (
+                    </Grid>
+                    <Grid item xs={12}>
                         <TextField
-                            name="txtPorcentajeDescuento"
-                            label="Porcentaje de descuento"
+                            name="txtDescripcion"
+                            multiline
+                            label="Descripción:"
                             variant="outlined"
                             fullWidth
-                            required={formCupon.txtTipoCupon === "2"}
-                            value={formCupon.txtPorcentajeDescuento}
+                            value={formCupon.txtDescripcion}
                             onChange={handleChangeFormCupon}
-                            error={!formCuponOK.txtPorcentajeDescuento}
-                            helperText={
-                                !formCuponOK.txtPorcentajeDescuento ? "Ingrese un porcentaje válido entre 1 y 100" : ""
-                            }
                         />
-                    )}
+                    </Grid>
+                    <MeditocModalBotones okMessage="Guardar" okFunc={handleClickGuardarCupon} setOpen={setOpen} />
                 </Grid>
-                <Grid item sm={6} xs={12}>
-                    <TextField
-                        name="txtTotalCupones"
-                        label="Total de códigos:"
-                        variant="outlined"
-                        fullWidth
-                        required
-                        value={formCupon.txtTotalCupones}
-                        onChange={handleChangeFormCupon}
-                        error={!formCuponOK.txtTotalCupones}
-                        helperText={!formCuponOK.txtTotalCupones ? "Ingrese un número entero válido mayor a 0" : ""}
-                    />
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <TextField
-                        name="txtDiasActivos"
-                        label="Días activos:"
-                        variant="outlined"
-                        fullWidth
-                        value={formCupon.txtDiasActivos}
-                        onChange={handleChangeFormCupon}
-                        error={!formCuponOK.txtDiasActivos}
-                        helperText={!formCuponOK.txtDiasActivos ? "Ingrese un número entero válido mayor a 0" : ""}
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        name="txtDescripcion"
-                        multiline
-                        label="Descripción:"
-                        variant="outlined"
-                        fullWidth
-                        value={formCupon.txtDescripcion}
-                        onChange={handleChangeFormCupon}
-                    />
-                </Grid>
-                <MeditocModalBotones okMessage="Guardar" okFunc={handleClickGuardarCupon} setOpen={setOpen} />
-            </Grid>
+            </form>
         </MeditocModal>
     );
 };

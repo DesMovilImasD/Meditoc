@@ -1,11 +1,13 @@
+import { Grid, TextField } from "@material-ui/core";
+import { blurPrevent, funcPrevent } from "../../../../configurations/preventConfig";
+
+import EspecialidadController from "../../../../controllers/EspecialidadController";
+import MeditocModal from "../../../utilidades/MeditocModal";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import PropTypes from "prop-types";
 import React from "react";
-import MeditocModal from "../../../utilidades/MeditocModal";
-import { Grid, TextField } from "@material-ui/core";
-import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
-import { useState } from "react";
-import EspecialidadController from "../../../../controllers/EspecialidadController";
 import { useEffect } from "react";
+import { useState } from "react";
 
 const FormEspecialidad = (props) => {
     const { entEspecialidad, open, setOpen, funcGetEspecialidades, usuarioSesion, funcLoader, funcAlert } = props;
@@ -55,7 +57,9 @@ const FormEspecialidad = (props) => {
         });
     };
 
-    const handleClickSaveEspecialidad = async () => {
+    const handleClickSaveEspecialidad = async (e) => {
+        funcPrevent(e);
+
         let formEspecialidadOKValidacion = { ...validacionFormulario };
 
         let formError = false;
@@ -91,6 +95,7 @@ const FormEspecialidad = (props) => {
             funcAlert(response.Message);
         }
         funcLoader();
+        blurPrevent();
     };
 
     return (
@@ -100,32 +105,34 @@ const FormEspecialidad = (props) => {
             open={open}
             setOpen={setOpen}
         >
-            <Grid container spacing={3}>
-                <Grid item xs={12}>
-                    <TextField
-                        name="txtNombreEspecialidad"
-                        label="Nombre de especialidad:"
-                        variant="outlined"
-                        fullWidth
-                        required
-                        autoFocus
-                        value={formEspecialidad.txtNombreEspecialidad}
-                        onChange={handleChangeFormEspecialidad}
-                        error={formEspecialidadOK.txtNombreEspecialidad === false}
-                        helperText={
-                            formEspecialidadOK.txtNombreEspecialidad === true
-                                ? ""
-                                : "El nombre de la especialidad es requerido"
-                        }
+            <form id="form-especialidad" onSubmit={handleClickSaveEspecialidad} noValidate>
+                <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                        <TextField
+                            name="txtNombreEspecialidad"
+                            label="Nombre de especialidad:"
+                            variant="outlined"
+                            fullWidth
+                            required
+                            autoFocus
+                            value={formEspecialidad.txtNombreEspecialidad}
+                            onChange={handleChangeFormEspecialidad}
+                            error={formEspecialidadOK.txtNombreEspecialidad === false}
+                            helperText={
+                                formEspecialidadOK.txtNombreEspecialidad === true
+                                    ? ""
+                                    : "El nombre de la especialidad es requerido"
+                            }
+                        />
+                    </Grid>
+                    <MeditocModalBotones
+                        okMessage="Guardar"
+                        okFunc={handleClickSaveEspecialidad}
+                        open={open}
+                        setOpen={setOpen}
                     />
                 </Grid>
-                <MeditocModalBotones
-                    okMessage="Guardar"
-                    okFunc={handleClickSaveEspecialidad}
-                    open={open}
-                    setOpen={setOpen}
-                />
-            </Grid>
+            </form>
         </MeditocModal>
     );
 };

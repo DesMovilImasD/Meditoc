@@ -26,10 +26,10 @@ namespace IMD.Admin.Conekta.Business
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private DatOrder datOrder;
 #endif
-        public BusWebHook(string appToken, string appKey)
+        public BusWebHook()
         {
-            busOrder = new BusOrder(appToken, appKey);
-            datOrder = new DatOrder(appToken, appKey);
+            busOrder = new BusOrder();
+            datOrder = new DatOrder();
         }
 
         /// <summary>

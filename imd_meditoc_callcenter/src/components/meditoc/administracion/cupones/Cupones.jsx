@@ -1,19 +1,21 @@
-import PropTypes from "prop-types";
+import { IconButton, Tooltip } from "@material-ui/core";
 import React, { Fragment } from "react";
-import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
-import MeditocBody from "../../../utilidades/MeditocBody";
-import { Tooltip, IconButton } from "@material-ui/core";
+
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { useState } from "react";
-import MeditocTable from "../../../utilidades/MeditocTable";
-import FormCupon from "./FormCupon";
-import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
-import PromocionesController from "../../../../controllers/PromocionesController";
-import { useEffect } from "react";
-import { EnumCuponCategoria } from "../../../../configurations/enumConfig";
-import VisibilityIcon from "@material-ui/icons/Visibility";
 import DetalleCupon from "./DetalleCupon";
+import { EnumCuponCategoria } from "../../../../configurations/enumConfig";
+import FormCupon from "./FormCupon";
+import MeditocBody from "../../../utilidades/MeditocBody";
+import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
+import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
+import MeditocTable from "../../../utilidades/MeditocTable";
+import PromocionesController from "../../../../controllers/PromocionesController";
+import PropTypes from "prop-types";
+import ReplayIcon from "@material-ui/icons/Replay";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const Cupones = (props) => {
     const { usuarioSesion, funcLoader, funcAlert, title } = props;
@@ -135,6 +137,11 @@ const Cupones = (props) => {
                 <Tooltip title="Eliminar cupón" arrow>
                     <IconButton onClick={handleClickEliminarCupon}>
                         <DeleteIcon className="color-0" />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Actualizar tabla" arrow>
+                    <IconButton onClick={funcObtenerCupones}>
+                        <ReplayIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
             </MeditocHeader1>

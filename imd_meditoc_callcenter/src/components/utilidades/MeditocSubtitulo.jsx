@@ -1,13 +1,14 @@
-import PropTypes from "prop-types";
-import { Divider } from "@material-ui/core";
 import React, { Fragment } from "react";
+
+import { Divider } from "@material-ui/core";
+import PropTypes from "prop-types";
 
 const MeditocSubtitulo = (props) => {
     const { title } = props;
 
     return (
         <Fragment>
-            <span className="rob-nor bold size-20 color-4">{title}</span>
+            <span className="rob-nor bold size-20 color-2">{title}</span>
             <Divider />
         </Fragment>
     );

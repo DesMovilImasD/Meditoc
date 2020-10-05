@@ -1,9 +1,10 @@
-import PropTypes from "prop-types";
 import { Button, Grid } from "@material-ui/core";
 import React, { Fragment } from "react";
-import { useState } from "react";
+
+import DetalleHistorialClinico from "./DetalleHistorialClinico";
 import MeditocTable from "../../../utilidades/MeditocTable";
-import HistorialClinicoDetalle from "./HistorialClinicoDetalle";
+import PropTypes from "prop-types";
+import { useState } from "react";
 
 const HistorialClinico = (props) => {
     const { lstHistorialClinico } = props;
@@ -46,7 +47,7 @@ const HistorialClinico = (props) => {
                     />
                 </Grid>
             </Grid>
-            <HistorialClinicoDetalle
+            <DetalleHistorialClinico
                 open={modalHistorialDetalleOpen}
                 setOpen={setModalHistorialDetalleOpen}
                 historial={historialClinicoDetalle}

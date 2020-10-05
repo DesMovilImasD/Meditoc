@@ -1,6 +1,7 @@
+import MaterialTable, { MTableBodyRow } from "material-table";
+
 import PropTypes from "prop-types";
 import React from "react";
-import MaterialTable, { MTableBodyRow } from "material-table";
 import tableIcons from "../../configurations/dataTableIconsConfig";
 import theme from "../../configurations/themeConfig";
 

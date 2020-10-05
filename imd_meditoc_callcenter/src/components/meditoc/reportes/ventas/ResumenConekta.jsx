@@ -1,15 +1,16 @@
-import PropTypes from "prop-types";
 import { Button, Grid } from "@material-ui/core";
 import React, { Fragment, useState } from "react";
-import MeditocTable from "../../utilidades/MeditocTable";
-import ResumenOrdenDetalle from "./ResumenOrdenDetalle";
-import { EnumStatusConekta } from "../../../configurations/enumConfig";
-import CloseIcon from "@material-ui/icons/Close";
-import DoneIcon from "@material-ui/icons/Done";
 import { green, red } from "@material-ui/core/colors";
-import ResumeNumero from "./ResumeNumero";
 
-const ResumenOrdenes = (props) => {
+import CloseIcon from "@material-ui/icons/Close";
+import DetalleConekta from "./DetalleConekta";
+import DoneIcon from "@material-ui/icons/Done";
+import { EnumStatusConekta } from "../../../../configurations/enumConfig";
+import MeditocInfoNumber from "../../../utilidades/MeditocInfoNumber";
+import MeditocTable from "../../../utilidades/MeditocTable";
+import PropTypes from "prop-types";
+
+const ResumenConekta = (props) => {
     const { entVentas } = props;
 
     const columnas = [
@@ -44,7 +45,7 @@ const ResumenOrdenes = (props) => {
         <Fragment>
             <Grid container spacing={3}>
                 <Grid item md={3} sm={6} xs={12} className="center">
-                    <ResumeNumero
+                    <MeditocInfoNumber
                         label="TOTAL DE VENTA"
                         value={
                             "$" +
@@ -56,21 +57,21 @@ const ResumenOrdenes = (props) => {
                     />
                 </Grid>
                 <Grid item md={3} sm={6} xs={12} className="center">
-                    <ResumeNumero
+                    <MeditocInfoNumber
                         label="ÓRDENES VENDIDAS"
                         value={entVentas.ResumenOrdenes.iTotalOrdenes}
                         color="color-6"
                     />
                 </Grid>
                 <Grid item md={3} sm={6} xs={12} className="center">
-                    <ResumeNumero
+                    <MeditocInfoNumber
                         label="ÓRDENES RECHAZADAS"
                         value={entVentas.ResumenOrdenes.iTotalOrdenesRechazadas}
                         color="color-5"
                     />
                 </Grid>
                 <Grid item md={3} sm={6} xs={12} className="center">
-                    <ResumeNumero
+                    <MeditocInfoNumber
                         label="FOLIOS GENERADOS"
                         value={entVentas.ResumenOrdenes.iTotalFolios}
                         color="color-3"
@@ -112,7 +113,7 @@ const ResumenOrdenes = (props) => {
                     />
                 </Grid>
             </Grid>
-            <ResumenOrdenDetalle
+            <DetalleConekta
                 entOrden={ordenSeleccionada}
                 open={modalDetalleOrdenOpen}
                 setOpen={setModalDetalleOrdenOpen}
@@ -121,7 +122,7 @@ const ResumenOrdenes = (props) => {
     );
 };
 
-ResumenOrdenes.propTypes = {
+ResumenConekta.propTypes = {
     entVentas: PropTypes.shape({
         ResumenOrdenes: PropTypes.shape({
             dTotalVendido: PropTypes.shape({
@@ -138,4 +139,4 @@ ResumenOrdenes.propTypes = {
     }),
 };
 
-export default ResumenOrdenes;
+export default ResumenConekta;

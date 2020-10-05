@@ -1,14 +1,15 @@
-import PropTypes from "prop-types";
+import { Grid, IconButton, InputAdornment, MenuItem, TextField, Tooltip, makeStyles } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import MeditocModal from "../../../utilidades/MeditocModal";
-import { Grid, TextField, InputAdornment, IconButton, MenuItem, makeStyles, Tooltip } from "@material-ui/core";
-import Pagination from "@material-ui/lab/Pagination";
-import SearchIcon from "@material-ui/icons/Search";
-import FindInPageIcon from "@material-ui/icons/FindInPage";
+
 import CloseIcon from "@material-ui/icons/Close";
 import ColaboradorController from "../../../../controllers/ColaboradorController";
+import DetalleDirectorioMeditoc from "./DetalleDirectorioMeditoc";
 import EspecialidadController from "../../../../controllers/EspecialidadController";
-import DirectorioMedicoDetalle from "./DirectorioMedicoDetalle";
+import FindInPageIcon from "@material-ui/icons/FindInPage";
+import MeditocModal from "../../../utilidades/MeditocModal";
+import Pagination from "@material-ui/lab/Pagination";
+import PropTypes from "prop-types";
+import SearchIcon from "@material-ui/icons/Search";
 
 const useStyles = makeStyles({
     ul: {
@@ -17,7 +18,7 @@ const useStyles = makeStyles({
     },
 });
 
-const DirectotioMedico = (props) => {
+const DirectorioMedico = (props) => {
     const { open, setOpen, funcLoader, funcAlert } = props;
 
     const classes = useStyles();
@@ -162,7 +163,7 @@ const DirectotioMedico = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                     {listaColaboradores.map((entColaborador) => (
-                        <DirectorioMedicoDetalle key={entColaborador.iIdColaborador} entColaborador={entColaborador} />
+                        <DetalleDirectorioMeditoc key={entColaborador.iIdColaborador} entColaborador={entColaborador} />
                     ))}
                     {paginasTotales > 0 ? (
                         <div className="directory-pagination-container">
@@ -190,11 +191,11 @@ const DirectotioMedico = (props) => {
     );
 };
 
-DirectotioMedico.propTypes = {
+DirectorioMedico.propTypes = {
     funcAlert: PropTypes.func,
     funcLoader: PropTypes.func,
     open: PropTypes.bool,
     setOpen: PropTypes.any,
 };
 
-export default DirectotioMedico;
+export default DirectorioMedico;

@@ -1,5 +1,6 @@
+import { Fade, Grid } from "@material-ui/core";
+
 import React from "react";
-import { Grid, Fade } from "@material-ui/core";
 import { imgLogoLogin } from "../../configurations/imgConfig";
 
 const MeditocPortada = () => {

@@ -1,10 +1,11 @@
+import { Button, Popover, Typography } from "@material-ui/core";
+
+import InfoIcon from "@material-ui/icons/Info";
 import PropTypes from "prop-types";
 import React from "react";
 import theme from "../../../../configurations/themeConfig";
-import { Button, Popover, Typography } from "@material-ui/core";
-import InfoIcon from "@material-ui/icons/Info";
 
-const CallCenterStatusHelper = (props) => {
+const HelperStatus = (props) => {
     const { popoverOcupadoInicio, handleClosePopoverOcupado, handleClickPopoverDisponible } = props;
 
     return (
@@ -47,10 +48,10 @@ const CallCenterStatusHelper = (props) => {
     );
 };
 
-CallCenterStatusHelper.propTypes = {
+HelperStatus.propTypes = {
     handleClickPopoverDisponible: PropTypes.any,
     handleClosePopoverOcupado: PropTypes.any,
     popoverOcupadoInicio: PropTypes.any,
 };
 
-export default CallCenterStatusHelper;
+export default HelperStatus;

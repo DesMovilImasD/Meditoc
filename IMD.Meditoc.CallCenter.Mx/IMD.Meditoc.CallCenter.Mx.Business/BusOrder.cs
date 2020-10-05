@@ -39,12 +39,12 @@ namespace IMD.Admin.Conekta.Business
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private BusPromociones busPromociones;
 #endif
-        public BusOrder(string appToken, string appKey)
+        public BusOrder()
         {
             servOrder = new ServOrder();
-            datOrder = new DatOrder(appToken, appKey);
+            datOrder = new DatOrder();
             busAgent = new BusAgent();
-            busPromociones = new BusPromociones(appToken, appKey);
+            busPromociones = new BusPromociones();
         }
 
         /// <summary>

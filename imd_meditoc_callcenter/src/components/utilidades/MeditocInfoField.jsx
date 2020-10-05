@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-const InfoField = (props) => {
+const MeditocInfoField = (props) => {
     const { label, value } = props;
     return (
         <div>
@@ -12,9 +12,9 @@ const InfoField = (props) => {
     );
 };
 
-InfoField.propTypes = {
+MeditocInfoField.propTypes = {
     label: PropTypes.any,
     value: PropTypes.any,
 };
 
-export default InfoField;
+export default MeditocInfoField;

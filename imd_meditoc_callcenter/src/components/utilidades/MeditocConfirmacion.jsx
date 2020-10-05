@@ -1,8 +1,8 @@
+import { Grid } from "@material-ui/core";
+import MeditocModal from "./MeditocModal";
+import MeditocModalBotones from "./MeditocModalBotones";
 import PropTypes from "prop-types";
 import React from "react";
-import MeditocModal from "./MeditocModal";
-import { Grid } from "@material-ui/core";
-import MeditocModalBotones from "./MeditocModalBotones";
 
 /*************************************************************
  * Descripcion: Representa una alerta de confirmación genérica

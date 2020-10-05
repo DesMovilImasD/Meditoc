@@ -1,9 +1,11 @@
-import PropTypes from "prop-types";
-import React, { useState, useEffect } from "react";
-import MeditocModal from "../../../utilidades/MeditocModal";
 import { Grid, TextField } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { blurPrevent, funcPrevent } from "../../../../configurations/preventConfig";
+
 import CGUController from "../../../../controllers/CGUController";
+import MeditocModal from "../../../utilidades/MeditocModal";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
+import PropTypes from "prop-types";
 
 /*************************************************************
  * Descripcion: Formulario para Agregar/Modificar un perfil
@@ -52,7 +54,8 @@ const FormPerfil = (props) => {
     };
 
     //Consumir servicio para guardar el perfil nuevo en la base
-    const funcSavePerfil = async () => {
+    const funcSavePerfil = async (e) => {
+        funcPrevent(e);
         let formPerfilOKValidacion = { txtIdPerfil: true, txtNombre: true };
 
         let formError = false;
@@ -91,6 +94,7 @@ const FormPerfil = (props) => {
         }
 
         funcLoader();
+        blurPrevent();
     };
 
     return (
@@ -100,35 +104,37 @@ const FormPerfil = (props) => {
             open={open}
             setOpen={setOpen}
         >
-            <Grid container spacing={3}>
-                {entPerfil.iIdPerfil > 0 ? (
+            <form id="form-perfil" onSubmit={funcSavePerfil} noValidate>
+                <Grid container spacing={3}>
+                    {entPerfil.iIdPerfil > 0 ? (
+                        <Grid item xs={12}>
+                            <TextField
+                                name="txtIdPerfil"
+                                label="ID de perfil:"
+                                variant="outlined"
+                                fullWidth
+                                value={formPerfil.txtIdPerfil}
+                                disabled
+                            />
+                        </Grid>
+                    ) : null}
+
                     <Grid item xs={12}>
                         <TextField
-                            name="txtIdPerfil"
-                            label="ID de perfil:"
+                            name="txtNombre"
+                            label="Nombre de perfil:"
                             variant="outlined"
                             fullWidth
-                            value={formPerfil.txtIdPerfil}
-                            disabled
+                            autoFocus
+                            value={formPerfil.txtNombre}
+                            onChange={handleChangeForm}
+                            error={!formPerfilOK.txtNombre}
+                            helperText={!formPerfilOK.txtNombre ? "Ingrese un nombre para el perfil" : ""}
                         />
                     </Grid>
-                ) : null}
-
-                <Grid item xs={12}>
-                    <TextField
-                        name="txtNombre"
-                        label="Nombre de perfil:"
-                        variant="outlined"
-                        fullWidth
-                        autoFocus
-                        value={formPerfil.txtNombre}
-                        onChange={handleChangeForm}
-                        error={!formPerfilOK.txtNombre}
-                        helperText={!formPerfilOK.txtNombre ? "Ingrese un nombre para el perfil" : ""}
-                    />
+                    <MeditocModalBotones okMessage="Guardar" okFunc={funcSavePerfil} setOpen={setOpen} />
                 </Grid>
-                <MeditocModalBotones okMessage="Guardar" okFunc={funcSavePerfil} setOpen={setOpen} />
-            </Grid>
+            </form>
         </MeditocModal>
     );
 };

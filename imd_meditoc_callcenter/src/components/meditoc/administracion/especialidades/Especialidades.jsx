@@ -1,18 +1,20 @@
-import PropTypes from "prop-types";
+import { IconButton, Tooltip } from "@material-ui/core";
 import React, { Fragment } from "react";
-import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
-import { Tooltip, IconButton } from "@material-ui/core";
+
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
-import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import MeditocBody from "../../../utilidades/MeditocBody";
-import { useState } from "react";
-import EspecialidadController from "../../../../controllers/EspecialidadController";
-import { useEffect } from "react";
-import MeditocTable from "../../../utilidades/MeditocTable";
-import FormEspecialidad from "./FormEspecialidad";
-import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
+import EditIcon from "@material-ui/icons/Edit";
 import { EnumEspecialidadPrincipal } from "../../../../configurations/enumConfig";
+import EspecialidadController from "../../../../controllers/EspecialidadController";
+import FormEspecialidad from "./FormEspecialidad";
+import MeditocBody from "../../../utilidades/MeditocBody";
+import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
+import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
+import MeditocTable from "../../../utilidades/MeditocTable";
+import PropTypes from "prop-types";
+import ReplayIcon from "@material-ui/icons/Replay";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const Especialidades = (props) => {
     const { usuarioSesion, funcLoader, funcAlert, title } = props;
@@ -116,6 +118,11 @@ const Especialidades = (props) => {
                 <Tooltip title="Eliminar especialidad" arrow>
                     <IconButton onClick={handleClickEliminarEspecialidad}>
                         <DeleteIcon className="color-0" />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Actualizar tabla" arrow>
+                    <IconButton onClick={funcGetEspecialidades}>
+                        <ReplayIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
             </MeditocHeader1>

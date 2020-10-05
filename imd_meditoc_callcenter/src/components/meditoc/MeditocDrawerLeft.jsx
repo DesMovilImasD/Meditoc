@@ -1,9 +1,9 @@
+import { Drawer } from "@material-ui/core";
+import MeditocMenuList from "./MeditocMenuList";
 import PropTypes from "prop-types";
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Drawer } from "@material-ui/core";
 import theme from "../../configurations/themeConfig";
-import MeditocMenuList from "./MeditocMenuList";
 
 const useStyles = makeStyles({
     drawerColor: {

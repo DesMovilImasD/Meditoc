@@ -1,13 +1,14 @@
+import { Grid } from "@material-ui/core";
+import MeditocInfoField from "../../../utilidades/MeditocInfoField";
+import MeditocInfoResumen from "../../../utilidades/MeditocInfoResumen";
+import MeditocModal from "../../../utilidades/MeditocModal";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
+import MeditocSubtitulo from "../../../utilidades/MeditocSubtitulo";
+import MeditocTableSimple from "../../../utilidades/MeditocTableSimple";
 import PropTypes from "prop-types";
-import { Divider, Grid } from "@material-ui/core";
 import React from "react";
-import InfoField from "../../utilidades/InfoField";
-import MeditocModal from "../../utilidades/MeditocModal";
-import MeditocModalBotones from "../../utilidades/MeditocModalBotones";
-import MeditocTableSimple from "../../utilidades/MeditocTableSimple";
-import ResumeInfo from "./ResumeInfo";
 
-const ResumenEmpresaDetalle = (props) => {
+const DetalleAdmin = (props) => {
     const { entEmpresa, open, setOpen } = props;
 
     const columnas = [
@@ -22,38 +23,36 @@ const ResumenEmpresaDetalle = (props) => {
         <MeditocModal title={"Detalle de orden " + entEmpresa.sFolioEmpresa} size="large" open={open} setOpen={setOpen}>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
-                    <ResumeInfo
+                    <MeditocInfoResumen
                         label="Subtotal"
                         value={"$" + entEmpresa.dTotalSinIva.toLocaleString("en", { minimumFractionDigits: 2 })}
                     />
-                    <ResumeInfo
+                    <MeditocInfoResumen
                         label="IVA"
                         value={"+$" + entEmpresa.dTotalIva.toLocaleString("en", { minimumFractionDigits: 2 })}
                     />
-                    <ResumeInfo
+                    <MeditocInfoResumen
                         label="Total pagado"
                         value={entEmpresa.dTotal.toLocaleString("en", { minimumFractionDigits: 2 })}
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <span className="rob-nor bold size-20 color-4">DATOS DE EMPRESA</span>
-                    <Divider />
+                    <MeditocSubtitulo title="DATOS DE EMPRESA" />
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <InfoField label="Folio:" value={entEmpresa.sFolioEmpresa} />
+                    <MeditocInfoField label="Folio:" value={entEmpresa.sFolioEmpresa} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <InfoField label="Nombre:" value={entEmpresa.sNombre} />
+                    <MeditocInfoField label="Nombre:" value={entEmpresa.sNombre} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <InfoField label="Correo:" value={entEmpresa.sCorreo} />
+                    <MeditocInfoField label="Correo:" value={entEmpresa.sCorreo} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <InfoField label="Folios generados:" value={entEmpresa.iTotalFolios} />
+                    <MeditocInfoField label="Folios generados:" value={entEmpresa.iTotalFolios} />
                 </Grid>
                 <Grid item xs={12}>
-                    <span className="rob-nor bold size-20 color-4">FOLIOS</span>
-                    <Divider />
+                    <MeditocSubtitulo title="FOLIOS" />
                 </Grid>
                 <Grid item xs={12}>
                     <MeditocTableSimple
@@ -72,7 +71,7 @@ const ResumenEmpresaDetalle = (props) => {
     );
 };
 
-ResumenEmpresaDetalle.propTypes = {
+DetalleAdmin.propTypes = {
     entEmpresa: PropTypes.shape({
         dTotal: PropTypes.shape({
             toLocaleString: PropTypes.func,
@@ -95,4 +94,4 @@ ResumenEmpresaDetalle.propTypes = {
     setOpen: PropTypes.any,
 };
 
-export default ResumenEmpresaDetalle;
+export default DetalleAdmin;

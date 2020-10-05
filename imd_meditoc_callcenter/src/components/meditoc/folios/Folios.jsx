@@ -1,14 +1,16 @@
-import PropTypes from "prop-types";
 import { IconButton, Tooltip } from "@material-ui/core";
 import React, { Fragment } from "react";
-import MeditocHeader1 from "../../utilidades/MeditocHeader1";
-import MeditocBody from "../../utilidades/MeditocBody";
-import { useState } from "react";
-import FolioController from "../../../controllers/FolioController";
-import { useEffect } from "react";
-import MeditocTable from "../../utilidades/MeditocTable";
-import VisibilityIcon from "@material-ui/icons/Visibility";
+
 import DetalleFolio from "./DetalleFolio";
+import FolioController from "../../../controllers/FolioController";
+import MeditocBody from "../../utilidades/MeditocBody";
+import MeditocHeader1 from "../../utilidades/MeditocHeader1";
+import MeditocTable from "../../utilidades/MeditocTable";
+import PropTypes from "prop-types";
+import ReplayIcon from "@material-ui/icons/Replay";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const Folios = (props) => {
     const { funcLoader, funcAlert, title } = props;
@@ -63,6 +65,11 @@ const Folios = (props) => {
                 <Tooltip title="Detalle de folio" arrow>
                     <IconButton onClick={handleClickDetalleFolio}>
                         <VisibilityIcon className="color-0" />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Actualizar tabla" arrow>
+                    <IconButton onClick={funcGetFolios}>
+                        <ReplayIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
             </MeditocHeader1>

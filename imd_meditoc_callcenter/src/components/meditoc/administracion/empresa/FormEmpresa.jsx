@@ -1,12 +1,14 @@
+import { Grid, TextField } from "@material-ui/core";
+import { blurPrevent, funcPrevent } from "../../../../configurations/preventConfig";
+
+import EmpresaController from "../../../../controllers/EmpresaController";
+import MeditocModal from "../../../utilidades/MeditocModal";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import PropTypes from "prop-types";
 import React from "react";
-import MeditocModal from "../../../utilidades/MeditocModal";
-import { Grid, TextField } from "@material-ui/core";
-import { useState } from "react";
-import { useEffect } from "react";
-import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import { rxCorreo } from "../../../../configurations/regexConfig";
-import EmpresaController from "../../../../controllers/EmpresaController";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const FormEmpresa = (props) => {
     const { entEmpresa, open, setOpen, funcGetEmpresas, usuarioSesion, funcLoader, funcAlert } = props;
@@ -62,7 +64,9 @@ const FormEmpresa = (props) => {
         });
     };
 
-    const handleClickGuardarEmpresa = async () => {
+    const handleClickGuardarEmpresa = async (e) => {
+        funcPrevent(e);
+
         let bFormError = false;
         let formEmpresaOKValidacion = { ...formularioValidacion };
         if (formEmpresa.txtNombreEmpresa === "") {
@@ -101,6 +105,7 @@ const FormEmpresa = (props) => {
         }
 
         funcLoader();
+        blurPrevent();
     };
 
     return (
@@ -110,48 +115,50 @@ const FormEmpresa = (props) => {
             open={open}
             setOpen={setOpen}
         >
-            <Grid container spacing={3}>
-                <Grid item xs={12}>
-                    {entEmpresa.iIdEmpresa > 0 ? (
+            <form id="form-empresa" onSubmit={handleClickGuardarEmpresa} noValidate>
+                <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                        {entEmpresa.iIdEmpresa > 0 ? (
+                            <TextField
+                                name="txtFolioEmpresa"
+                                label="Folio de empresa:"
+                                variant="outlined"
+                                disabled
+                                fullWidth
+                                value={formEmpresa.txtFolioEmpresa}
+                            />
+                        ) : null}
+                    </Grid>
+                    <Grid item xs={12}>
                         <TextField
-                            name="txtFolioEmpresa"
-                            label="Folio de empresa:"
+                            name="txtNombreEmpresa"
+                            label="Nombre de empresa:"
+                            autoFocus
                             variant="outlined"
-                            disabled
                             fullWidth
-                            value={formEmpresa.txtFolioEmpresa}
+                            required
+                            value={formEmpresa.txtNombreEmpresa}
+                            onChange={handleChangeFormEmpresa}
+                            error={!formEmpresaOK.txtNombreEmpresa}
+                            helperText={!formEmpresaOK.txtNombreEmpresa ? "El nombre de la empresa es requerido" : ""}
                         />
-                    ) : null}
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            name="txtCorreoEmpresa"
+                            label="Correo de empresa:"
+                            variant="outlined"
+                            fullWidth
+                            required
+                            value={formEmpresa.txtCorreoEmpresa}
+                            onChange={handleChangeFormEmpresa}
+                            error={!formEmpresaOK.txtCorreoEmpresa}
+                            helperText={!formEmpresaOK.txtCorreoEmpresa ? "Ingrese un correo electrónico válido" : ""}
+                        />
+                    </Grid>
+                    <MeditocModalBotones okMessage="Guardar" okFunc={handleClickGuardarEmpresa} setOpen={setOpen} />
                 </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        name="txtNombreEmpresa"
-                        label="Nombre de empresa:"
-                        autoFocus
-                        variant="outlined"
-                        fullWidth
-                        required
-                        value={formEmpresa.txtNombreEmpresa}
-                        onChange={handleChangeFormEmpresa}
-                        error={!formEmpresaOK.txtNombreEmpresa}
-                        helperText={!formEmpresaOK.txtNombreEmpresa ? "El nombre de la empresa es requerido" : ""}
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        name="txtCorreoEmpresa"
-                        label="Correo de empresa:"
-                        variant="outlined"
-                        fullWidth
-                        required
-                        value={formEmpresa.txtCorreoEmpresa}
-                        onChange={handleChangeFormEmpresa}
-                        error={!formEmpresaOK.txtCorreoEmpresa}
-                        helperText={!formEmpresaOK.txtCorreoEmpresa ? "Ingrese un correo electrónico válido" : ""}
-                    />
-                </Grid>
-                <MeditocModalBotones okMessage="Guardar" okFunc={handleClickGuardarEmpresa} setOpen={setOpen} />
-            </Grid>
+            </form>
         </MeditocModal>
     );
 };

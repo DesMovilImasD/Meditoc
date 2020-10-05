@@ -1,24 +1,25 @@
-import PropTypes from "prop-types";
 import React, { Fragment, useState } from "react";
-import MeditocNavBar from "./MeditocNavBar";
-import MeditocDrawerLeft from "./MeditocDrawerLeft";
-import { Switch, Route } from "react-router-dom";
-import { urlSystem } from "../../configurations/urlConfig";
-import Sistema from "./configuracion/sistema/Sistema";
-import Perfiles from "./configuracion/perfiles/Perfiles";
-import Usuarios from "./configuracion/usuarios/Usuarios";
-import Productos from "./administracion/productos/Productos";
-import Empresa from "./administracion/empresa/Empresa";
-import Cupones from "./administracion/cupones/Cupones";
-import MeditocPortada from "./MeditocPortada";
-import Colaboradores from "./administracion/colaboradores/Colaboradores";
-import Especialidades from "./administracion/especialidades/Especialidades";
+import { Route, Switch } from "react-router-dom";
+
 import Administrador from "./callcenter/administrador/Administrador";
 import CallCenter from "./callcenter/callcenter/CallCenter";
-import ReportesDoctores from "./reportes/ReportesDoctores";
-import ReportesVentas from "./reportes/ReportesVentas";
+import Colaboradores from "./administracion/colaboradores/Colaboradores";
+import Cupones from "./administracion/cupones/Cupones";
+import Empresa from "./administracion/empresa/Empresa";
+import Especialidades from "./administracion/especialidades/Especialidades";
 import Folios from "./folios/Folios";
+import MeditocDrawerLeft from "./MeditocDrawerLeft";
 import MeditocFooter from "./MeditocFooter";
+import MeditocNavBar from "./MeditocNavBar";
+import MeditocPortada from "./MeditocPortada";
+import Perfiles from "./configuracion/perfiles/Perfiles";
+import Productos from "./administracion/productos/Productos";
+import PropTypes from "prop-types";
+import ReportesDoctores from "./reportes/doctores/ReportesDoctores";
+import ReportesVentas from "./reportes/ventas/ReportesVentas";
+import Sistema from "./configuracion/sistema/Sistema";
+import Usuarios from "./configuracion/usuarios/Usuarios";
+import { urlSystem } from "../../configurations/urlConfig";
 
 /*************************************************************
  * Descripcion: Contiene las secciones y vistas de todo el portal de Meditoc

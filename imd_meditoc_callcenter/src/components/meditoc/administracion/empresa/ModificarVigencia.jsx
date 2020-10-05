@@ -1,12 +1,13 @@
+import { Grid, IconButton, InputAdornment } from "@material-ui/core";
+
+import DateRangeIcon from "@material-ui/icons/DateRange";
+import { DateTimePicker } from "@material-ui/pickers";
+import FolioController from "../../../../controllers/FolioController";
+import MeditocModal from "../../../utilidades/MeditocModal";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import PropTypes from "prop-types";
 import React from "react";
-import MeditocModal from "../../../utilidades/MeditocModal";
-import { Grid, InputAdornment, IconButton } from "@material-ui/core";
-import { DateTimePicker } from "@material-ui/pickers";
 import { useState } from "react";
-import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
-import FolioController from "../../../../controllers/FolioController";
-import DateRangeIcon from "@material-ui/icons/DateRange";
 
 const ModificarVigencia = (props) => {
     const {

@@ -1,24 +1,25 @@
-import PropTypes from "prop-types";
 import { Button, Grid, IconButton, InputAdornment, Tooltip } from "@material-ui/core";
-import React from "react";
-import { useState } from "react";
-import { useEffect } from "react";
-import { Fragment } from "react";
+
 import AddIcon from "@material-ui/icons/Add";
-import EditIcon from "@material-ui/icons/Edit";
 import BlockIcon from "@material-ui/icons/Block";
-import ColaboradorController from "../../../../controllers/ColaboradorController";
-import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
 import CallCenterController from "../../../../controllers/CallCenterController";
-import MeditocBody from "../../../utilidades/MeditocBody";
-import MeditocTable from "../../../utilidades/MeditocTable";
-import FormConsulta from "./FormConsulta";
-import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
+import ColaboradorController from "../../../../controllers/ColaboradorController";
 import { DatePicker } from "@material-ui/pickers";
 import DateRangeIcon from "@material-ui/icons/DateRange";
+import EditIcon from "@material-ui/icons/Edit";
 import { EnumEstatusConsulta } from "../../../../configurations/enumConfig";
-import UpdateIcon from "@material-ui/icons/Update";
+import FormConsulta from "./FormConsulta";
+import { Fragment } from "react";
+import MeditocBody from "../../../utilidades/MeditocBody";
+import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
+import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
 import MeditocSubtitulo from "../../../utilidades/MeditocSubtitulo";
+import MeditocTable from "../../../utilidades/MeditocTable";
+import PropTypes from "prop-types";
+import React from "react";
+import ReplayIcon from "@material-ui/icons/Replay";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const Administrador = (props) => {
     const { usuarioSesion, funcLoader, funcAlert, title } = props;
@@ -204,7 +205,7 @@ const Administrador = (props) => {
                 <Tooltip title="Actualizar tabla de consultas" arrow>
                     <span>
                         <IconButton onClick={funcGetConsultas} disabled={usuarioColaborador === null}>
-                            <UpdateIcon className="color-0" />
+                            <ReplayIcon className="color-0" />
                         </IconButton>
                     </span>
                 </Tooltip>

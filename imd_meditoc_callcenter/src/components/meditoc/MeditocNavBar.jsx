@@ -1,13 +1,14 @@
-import PropTypes from "prop-types";
-import React, { useState, Fragment } from "react";
+import { AppBar, Button, IconButton, ListItemIcon, Menu, MenuItem, Toolbar, makeStyles } from "@material-ui/core";
+import React, { Fragment, useState } from "react";
+
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import FormCambiarPassword from "./configuracion/usuarios/FormCambiarPassword";
 import MenuIcon from "@material-ui/icons/Menu";
 import PersonIcon from "@material-ui/icons/Person";
-import { Button, AppBar, Toolbar, IconButton, Menu, MenuItem, makeStyles, ListItemIcon } from "@material-ui/core";
+import PropTypes from "prop-types";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import theme from "../../configurations/themeConfig";
 import { imgLogoMeditoc } from "../../configurations/imgConfig";
-import FormCambiarPassword from "./configuracion/usuarios/FormCambiarPassword";
+import theme from "../../configurations/themeConfig";
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
@@ -112,6 +113,7 @@ const NavBar = (props) => {
                 open={modalCambiarPasswordOpen}
                 setOpen={setModalCambiarPasswordOpen}
                 usuarioSesion={usuarioSesion}
+                setAnchorEl={setAnchorEl}
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
             />

@@ -1,18 +1,20 @@
-import PropTypes from "prop-types";
-import React, { Fragment, useState, useEffect } from "react";
-import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
-import { Tooltip, IconButton } from "@material-ui/core";
+import { IconButton, Tooltip } from "@material-ui/core";
+import React, { Fragment, useEffect, useState } from "react";
+
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
-import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
-import MeditocBody from "../../../utilidades/MeditocBody";
-import MeditocTable from "../../../utilidades/MeditocTable";
 import CGUController from "../../../../controllers/CGUController";
-import FormPerfil from "./FormPerfil";
-import Permisos from "./Permisos";
-import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 import { EnumPerfilesPrincipales } from "../../../../configurations/enumConfig";
+import FormPerfil from "./FormPerfil";
+import MeditocBody from "../../../utilidades/MeditocBody";
+import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
+import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
+import MeditocTable from "../../../utilidades/MeditocTable";
+import Permisos from "./Permisos";
+import PropTypes from "prop-types";
+import ReplayIcon from "@material-ui/icons/Replay";
+import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 
 /*************************************************************
  * Descripcion: Submódulo para la vista principal "PERFILES" del portal Meditoc
@@ -195,6 +197,11 @@ const Perfiles = (props) => {
                         <VerifiedUserIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
+                <Tooltip title="Actualizar tabla" arrow>
+                    <IconButton onClick={getData}>
+                        <ReplayIcon className="color-0" />
+                    </IconButton>
+                </Tooltip>
             </MeditocHeader1>
             <MeditocBody>
                 <MeditocTable
@@ -204,7 +211,7 @@ const Perfiles = (props) => {
                     setRowSelected={setPerfilSeleccionado}
                     mainField="iIdPerfil"
                     isLoading={false}
-                    doubleClick={handleClickEditarPerfil}
+                    doubleClick={handleClickPermisosPerfil}
                 />
             </MeditocBody>
             <FormPerfil

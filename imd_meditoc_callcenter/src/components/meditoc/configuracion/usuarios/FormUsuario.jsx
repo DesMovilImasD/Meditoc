@@ -1,18 +1,20 @@
+import { Grid, IconButton, InputAdornment, MenuItem, TextField, Tooltip } from "@material-ui/core";
+import { blurPrevent, funcPrevent } from "../../../../configurations/preventConfig";
+
+import CGUController from "../../../../controllers/CGUController";
+import { DatePicker } from "@material-ui/pickers";
+import DateRangeIcon from "@material-ui/icons/DateRange";
+import { EnumPerfilesPrincipales } from "../../../../configurations/enumConfig";
+import MeditocInputPhone from "../../../utilidades/MeditocInputPhone";
+import MeditocModal from "../../../utilidades/MeditocModal";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import PropTypes from "prop-types";
 import React from "react";
-import MeditocModal from "../../../utilidades/MeditocModal";
-import { Grid, TextField, MenuItem, Tooltip, IconButton, InputAdornment } from "@material-ui/core";
-import { DatePicker } from "@material-ui/pickers";
-import { useState } from "react";
-import CGUController from "../../../../controllers/CGUController";
-import { useEffect } from "react";
-import InputTelefono from "../../../utilidades/InputTelefono";
-import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
-import { rxCorreo } from "../../../../configurations/regexConfig";
-import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import VisibilityIcon from "@material-ui/icons/Visibility";
-import { EnumPerfilesPrincipales } from "../../../../configurations/enumConfig";
-import DateRangeIcon from "@material-ui/icons/DateRange";
+import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+import { rxCorreo } from "../../../../configurations/regexConfig";
+import { useEffect } from "react";
+import { useState } from "react";
 
 /*************************************************************
  * Descripcion: Formulario para registrar o editar un usuario
@@ -173,7 +175,8 @@ const FormUsuario = (props) => {
     };
 
     //Consumir servicio para registrar/editar los datos del usuario en le base
-    const funcSaveUsuario = async () => {
+    const funcSaveUsuario = async (e) => {
+        funcPrevent(e);
         let formUsuarioOKValidacion = { ...validacionFormulario };
 
         let formError = false;
@@ -264,6 +267,7 @@ const FormUsuario = (props) => {
         }
 
         funcLoader();
+        blurPrevent();
     };
 
     useEffect(() => {
@@ -293,194 +297,201 @@ const FormUsuario = (props) => {
             open={open}
             setOpen={setOpen}
         >
-            <Grid container spacing={3}>
-                <Grid item sm={12} xs={12}>
-                    <TextField
-                        variant="outlined"
-                        label="Nombres:"
-                        fullWidth
-                        name="txtNombres"
-                        value={formUsuario.txtNombres}
-                        onChange={handleChangeFormulario}
-                        required
-                        error={!formUsuarioOK.txtNombres}
-                        helperText={!formUsuarioOK.txtNombres ? "El nombre del usuario es requerido" : null}
-                    />
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <TextField
-                        variant="outlined"
-                        label="Apellido Paterno:"
-                        fullWidth
-                        name="txtApellidoPaterno"
-                        value={formUsuario.txtApellidoPaterno}
-                        onChange={handleChangeFormulario}
-                        required
-                        error={!formUsuarioOK.txtApellidoPaterno}
-                        helperText={
-                            !formUsuarioOK.txtApellidoPaterno ? "El apellido paterno del usuario es requerido" : null
-                        }
-                    />
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <TextField
-                        variant="outlined"
-                        label="Apellido Materno:"
-                        fullWidth
-                        name="txtApellidoMaterno"
-                        value={formUsuario.txtApellidoMaterno}
-                        onChange={handleChangeFormulario}
-                    />
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <TextField
-                        id="slcPerfil"
-                        labelId="lblPerfil"
-                        label="Perfil:"
-                        name="txtPerfil"
-                        variant="outlined"
-                        select
-                        fullWidth
-                        value={formUsuario.txtPerfil}
-                        onChange={handleChangeFormulario}
-                        required
-                        error={!formUsuarioOK.txtPerfil}
-                        helperText={!formUsuarioOK.txtPerfil ? "Seleccione un perfil para el usuario" : null}
-                    >
-                        {listaPerfiles
-                            .filter(
-                                (x) =>
-                                    x.iIdPerfil !== EnumPerfilesPrincipales.DoctorCallCenter &&
-                                    x.iIdPerfil !== EnumPerfilesPrincipales.DoctorEspecialista &&
-                                    x.iIdPerfil !== EnumPerfilesPrincipales.AdministradorEspecialiesta
-                            )
-                            .map((perfil) => (
-                                <MenuItem key={perfil.iIdPerfil} value={perfil.iIdPerfil}>
-                                    {perfil.sNombre}
-                                </MenuItem>
-                            ))}
-                    </TextField>
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <DatePicker
-                        disableFuture
-                        variant="inline"
-                        label="Fecha de nacimiento"
-                        inputVariant="outlined"
-                        openTo="year"
-                        format="dd/MM/yyyy"
-                        views={["year", "month", "date"]}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton>
-                                        <DateRangeIcon />
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                        }}
-                        fullWidth
-                        clearable
-                        clearLabel="Limpiar"
-                        cancelLabel="Cancelar"
-                        name="txtFechaNacimiento"
-                        value={formUsuario.txtFechaNacimiento}
-                        onChange={handleChangeDate}
-                        required
-                        error={!formUsuarioOK.txtFechaNacimiento}
-                        helperText={!formUsuarioOK.txtFechaNacimiento ? "La fecha de nacimiento es requerido" : null}
-                    />
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <TextField
-                        variant="outlined"
-                        label="Teléfono:"
-                        fullWidth
-                        name="txtTelefono"
-                        value={formUsuario.txtTelefono}
-                        InputProps={{
-                            inputComponent: InputTelefono,
-                        }}
-                        onChange={handleChangeFormulario}
-                        required
-                        error={!formUsuarioOK.txtTelefono}
-                        helperText={!formUsuarioOK.txtTelefono ? "El teléfono del usuario es requerido" : null}
-                    />
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <TextField
-                        variant="outlined"
-                        label="Correo electrónico:"
-                        fullWidth
-                        name="txtCorreoElectronico"
-                        value={formUsuario.txtCorreoElectronico}
-                        onChange={handleChangeFormulario}
-                        required
-                        error={!formUsuarioOK.txtCorreoElectronico}
-                        helperText={
-                            !formUsuarioOK.txtCorreoElectronico
-                                ? "El correo electrónico del usuario es requerido"
-                                : null
-                        }
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        variant="outlined"
-                        label="Domicilio:"
-                        fullWidth
-                        name="txtDomicilio"
-                        value={formUsuario.txtDomicilio}
-                        onChange={handleChangeFormulario}
-                    />
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <TextField
-                        variant="outlined"
-                        label="Usuario:"
-                        autoComplete="new-password"
-                        fullWidth
-                        name="txtUsuario"
-                        value={formUsuario.txtUsuario}
-                        onChange={handleChangeFormulario}
-                        required
-                        error={!formUsuarioOK.txtUsuario}
-                        helperText={!formUsuarioOK.txtUsuario ? "El nombre usuario es requerido" : null}
-                    />
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <TextField
-                        variant="outlined"
-                        label="Contraseña:"
-                        type={verPassword ? "text" : "password"}
-                        autoComplete="new-password"
-                        fullWidth
-                        name="txtPassword"
-                        value={formUsuario.txtPassword}
-                        onChange={handleChangeFormulario}
-                        required
-                        error={!formUsuarioOK.txtPassword}
-                        helperText={!formUsuarioOK.txtPassword ? "La contrasañe de usuario es requerido" : null}
-                        InputProps={{
-                            endAdornment: (
-                                <Tooltip
-                                    title={verPassword ? "Ocultar contraseña" : "Ver contraseña"}
-                                    arrow
-                                    placement="top"
-                                >
-                                    <IconButton
-                                        onMouseDown={() => setVerPassword(true)}
-                                        onMouseUp={() => setVerPassword(false)}
+            <form id="form-usuario" onSubmit={funcSaveUsuario} noValidate>
+                <Grid container spacing={3}>
+                    <Grid item sm={12} xs={12}>
+                        <TextField
+                            variant="outlined"
+                            label="Nombres:"
+                            fullWidth
+                            autoFocus
+                            name="txtNombres"
+                            value={formUsuario.txtNombres}
+                            onChange={handleChangeFormulario}
+                            required
+                            error={!formUsuarioOK.txtNombres}
+                            helperText={!formUsuarioOK.txtNombres ? "El nombre del usuario es requerido" : null}
+                        />
+                    </Grid>
+                    <Grid item sm={6} xs={12}>
+                        <TextField
+                            variant="outlined"
+                            label="Apellido Paterno:"
+                            fullWidth
+                            name="txtApellidoPaterno"
+                            value={formUsuario.txtApellidoPaterno}
+                            onChange={handleChangeFormulario}
+                            required
+                            error={!formUsuarioOK.txtApellidoPaterno}
+                            helperText={
+                                !formUsuarioOK.txtApellidoPaterno
+                                    ? "El apellido paterno del usuario es requerido"
+                                    : null
+                            }
+                        />
+                    </Grid>
+                    <Grid item sm={6} xs={12}>
+                        <TextField
+                            variant="outlined"
+                            label="Apellido Materno:"
+                            fullWidth
+                            name="txtApellidoMaterno"
+                            value={formUsuario.txtApellidoMaterno}
+                            onChange={handleChangeFormulario}
+                        />
+                    </Grid>
+                    <Grid item sm={6} xs={12}>
+                        <TextField
+                            id="slcPerfil"
+                            labelId="lblPerfil"
+                            label="Perfil:"
+                            name="txtPerfil"
+                            variant="outlined"
+                            select
+                            fullWidth
+                            value={formUsuario.txtPerfil}
+                            onChange={handleChangeFormulario}
+                            required
+                            error={!formUsuarioOK.txtPerfil}
+                            helperText={!formUsuarioOK.txtPerfil ? "Seleccione un perfil para el usuario" : null}
+                        >
+                            {listaPerfiles
+                                .filter(
+                                    (x) =>
+                                        x.iIdPerfil !== EnumPerfilesPrincipales.DoctorCallCenter &&
+                                        x.iIdPerfil !== EnumPerfilesPrincipales.DoctorEspecialista &&
+                                        x.iIdPerfil !== EnumPerfilesPrincipales.AdministradorEspecialiesta
+                                )
+                                .map((perfil) => (
+                                    <MenuItem key={perfil.iIdPerfil} value={perfil.iIdPerfil}>
+                                        {perfil.sNombre}
+                                    </MenuItem>
+                                ))}
+                        </TextField>
+                    </Grid>
+                    <Grid item sm={6} xs={12}>
+                        <DatePicker
+                            disableFuture
+                            variant="inline"
+                            label="Fecha de nacimiento"
+                            inputVariant="outlined"
+                            openTo="year"
+                            format="dd/MM/yyyy"
+                            views={["year", "month", "date"]}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton>
+                                            <DateRangeIcon />
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
+                            fullWidth
+                            clearable
+                            clearLabel="Limpiar"
+                            cancelLabel="Cancelar"
+                            name="txtFechaNacimiento"
+                            value={formUsuario.txtFechaNacimiento}
+                            onChange={handleChangeDate}
+                            required
+                            error={!formUsuarioOK.txtFechaNacimiento}
+                            helperText={
+                                !formUsuarioOK.txtFechaNacimiento ? "La fecha de nacimiento es requerido" : null
+                            }
+                        />
+                    </Grid>
+                    <Grid item sm={6} xs={12}>
+                        <TextField
+                            variant="outlined"
+                            label="Teléfono:"
+                            fullWidth
+                            name="txtTelefono"
+                            value={formUsuario.txtTelefono}
+                            InputProps={{
+                                inputComponent: MeditocInputPhone,
+                            }}
+                            onChange={handleChangeFormulario}
+                            required
+                            error={!formUsuarioOK.txtTelefono}
+                            helperText={!formUsuarioOK.txtTelefono ? "El teléfono del usuario es requerido" : null}
+                        />
+                    </Grid>
+                    <Grid item sm={6} xs={12}>
+                        <TextField
+                            variant="outlined"
+                            label="Correo electrónico:"
+                            fullWidth
+                            name="txtCorreoElectronico"
+                            value={formUsuario.txtCorreoElectronico}
+                            onChange={handleChangeFormulario}
+                            required
+                            error={!formUsuarioOK.txtCorreoElectronico}
+                            helperText={
+                                !formUsuarioOK.txtCorreoElectronico
+                                    ? "El correo electrónico del usuario es requerido"
+                                    : null
+                            }
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            variant="outlined"
+                            label="Domicilio:"
+                            fullWidth
+                            name="txtDomicilio"
+                            value={formUsuario.txtDomicilio}
+                            onChange={handleChangeFormulario}
+                        />
+                    </Grid>
+                    <Grid item sm={6} xs={12}>
+                        <TextField
+                            variant="outlined"
+                            label="Usuario:"
+                            autoComplete="new-password"
+                            fullWidth
+                            name="txtUsuario"
+                            value={formUsuario.txtUsuario}
+                            onChange={handleChangeFormulario}
+                            required
+                            error={!formUsuarioOK.txtUsuario}
+                            helperText={!formUsuarioOK.txtUsuario ? "El nombre usuario es requerido" : null}
+                        />
+                    </Grid>
+                    <Grid item sm={6} xs={12}>
+                        <TextField
+                            variant="outlined"
+                            label="Contraseña:"
+                            type={verPassword ? "text" : "password"}
+                            autoComplete="new-password"
+                            fullWidth
+                            name="txtPassword"
+                            value={formUsuario.txtPassword}
+                            onChange={handleChangeFormulario}
+                            required
+                            error={!formUsuarioOK.txtPassword}
+                            helperText={!formUsuarioOK.txtPassword ? "La contrasañe de usuario es requerido" : null}
+                            InputProps={{
+                                endAdornment: (
+                                    <Tooltip
+                                        title={verPassword ? "Ocultar contraseña" : "Ver contraseña"}
+                                        arrow
+                                        placement="top"
                                     >
-                                        {verPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                                    </IconButton>
-                                </Tooltip>
-                            ),
-                        }}
-                    />
+                                        <IconButton
+                                            onMouseDown={() => setVerPassword(true)}
+                                            onMouseUp={() => setVerPassword(false)}
+                                        >
+                                            {verPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                        </IconButton>
+                                    </Tooltip>
+                                ),
+                            }}
+                        />
+                    </Grid>
+                    <MeditocModalBotones open={open} setOpen={setOpen} okMessage="Guardar" okFunc={funcSaveUsuario} />
                 </Grid>
-                <MeditocModalBotones open={open} setOpen={setOpen} okMessage="Guardar" okFunc={funcSaveUsuario} />
-            </Grid>
+            </form>
         </MeditocModal>
     );
 };

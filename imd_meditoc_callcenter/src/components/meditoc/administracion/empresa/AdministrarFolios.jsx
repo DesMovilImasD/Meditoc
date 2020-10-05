@@ -1,25 +1,27 @@
-import PropTypes from "prop-types";
-import React from "react";
-import MeditocFullModal from "../../../utilidades/MeditocFullModal";
-import { Tooltip, IconButton } from "@material-ui/core";
-import NoteAddRoundedIcon from "@material-ui/icons/NoteAddRounded";
-import EventAvailableRoundedIcon from "@material-ui/icons/EventAvailableRounded";
-import DeleteIcon from "@material-ui/icons/Delete";
-import { useState } from "react";
-import MeditocBody from "../../../utilidades/MeditocBody";
-import MeditocTable from "../../../utilidades/MeditocTable";
+import { IconButton, Tooltip } from "@material-ui/core";
+
 import CrearFolios from "./CrearFolios";
-import ModificarVigencia from "./ModificarVigencia";
-import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
-import MeditocHeader2 from "../../../utilidades/MeditocHeader2";
-import MeditocHeader3 from "../../../utilidades/MeditocHeader3";
-import FolioController from "../../../../controllers/FolioController";
 import CreateNewFolderIcon from "@material-ui/icons/CreateNewFolder";
-import { useEffect } from "react";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EventAvailableRoundedIcon from "@material-ui/icons/EventAvailableRounded";
+import FolioController from "../../../../controllers/FolioController";
 import FormCargarArchivo from "./FormCargarArchivo";
 import GetAppIcon from "@material-ui/icons/GetApp";
+import MeditocBody from "../../../utilidades/MeditocBody";
+import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
+import MeditocFullModal from "../../../utilidades/MeditocFullModal";
+import MeditocHeader2 from "../../../utilidades/MeditocHeader2";
+import MeditocHeader3 from "../../../utilidades/MeditocHeader3";
+import MeditocTable from "../../../utilidades/MeditocTable";
+import ModificarVigencia from "./ModificarVigencia";
+import NoteAddRoundedIcon from "@material-ui/icons/NoteAddRounded";
+import PropTypes from "prop-types";
+import React from "react";
+import ReplayIcon from "@material-ui/icons/Replay";
+import { useEffect } from "react";
+import { useState } from "react";
 
-const FoliosEmpresa = (props) => {
+const AdministrarFolios = (props) => {
     const { entEmpresa, open, setOpen, listaProductos, usuarioSesion, funcLoader, funcAlert } = props;
 
     const folioController = new FolioController();
@@ -155,6 +157,11 @@ const FoliosEmpresa = (props) => {
                                 <DeleteIcon className="color-1" />
                             </IconButton>
                         </Tooltip>
+                        <Tooltip title="Actualizar tabla" arrow>
+                            <IconButton onClick={funcGetFoliosEmpresa}>
+                                <ReplayIcon className="color-1" />
+                            </IconButton>
+                        </Tooltip>
                     </MeditocHeader3>
                     <MeditocTable
                         columns={columns}
@@ -207,7 +214,7 @@ const FoliosEmpresa = (props) => {
     );
 };
 
-FoliosEmpresa.propTypes = {
+AdministrarFolios.propTypes = {
     entEmpresa: PropTypes.shape({
         iIdEmpresa: PropTypes.any,
         sFolioEmpresa: PropTypes.any,
@@ -223,4 +230,4 @@ FoliosEmpresa.propTypes = {
     }),
 };
 
-export default FoliosEmpresa;
+export default AdministrarFolios;

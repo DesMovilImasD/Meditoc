@@ -1,22 +1,25 @@
-import PropTypes from "prop-types";
-import { IconButton, Tooltip, Grid, Divider, InputAdornment, TextField, MenuItem } from "@material-ui/core";
+import { EnumOrigen, EnumReportesTabs, EnumStatusConekta, EnumTipoPago } from "../../../../configurations/enumConfig";
+import { Grid, IconButton, InputAdornment, MenuItem, TextField, Tooltip } from "@material-ui/core";
 import React, { Fragment, useEffect } from "react";
-import { useState } from "react";
-import MeditocHeader1 from "../../utilidades/MeditocHeader1";
+
+import { Autocomplete } from "@material-ui/lab";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
-import MeditocBody from "../../utilidades/MeditocBody";
-import ReportesController from "../../../controllers/ReportesController";
-import MeditocTabHeader from "../../utilidades/MeditocTabHeader";
-import MeditocTabBody from "../../utilidades/MeditocTabBody";
-import MeditocTabPanel from "../../utilidades/MeditocTabPanel";
 import { DatePicker } from "@material-ui/pickers";
 import DateRangeIcon from "@material-ui/icons/DateRange";
-import ResumenOrdenes from "./ResumenOrdenes";
-import ResumenEmpresas from "./ResumenEmpresas";
-import { EnumOrigen, EnumReportesTabs, EnumStatusConekta, EnumTipoPago } from "../../../configurations/enumConfig";
-import PromocionesController from "../../../controllers/PromocionesController";
-import { Autocomplete } from "@material-ui/lab";
-import MeditocModalBotones from "../../utilidades/MeditocModalBotones";
+import MeditocBody from "../../../utilidades/MeditocBody";
+import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
+import MeditocSubtitulo from "../../../utilidades/MeditocSubtitulo";
+import MeditocTabBody from "../../../utilidades/MeditocTabBody";
+import MeditocTabHeader from "../../../utilidades/MeditocTabHeader";
+import MeditocTabPanel from "../../../utilidades/MeditocTabPanel";
+import PromocionesController from "../../../../controllers/PromocionesController";
+import PropTypes from "prop-types";
+import ReplayIcon from "@material-ui/icons/Replay";
+import ReportesController from "../../../../controllers/ReportesController";
+import ResumenAdmin from "./ResumenAdmin";
+import ResumenConekta from "./ResumenConekta";
+import { useState } from "react";
 
 const ReportesVentas = (props) => {
     const { funcLoader, funcAlert, title } = props;
@@ -138,14 +141,17 @@ const ReportesVentas = (props) => {
                         <CloudDownloadIcon className="color-0" />
                     </IconButton>
                 </Tooltip>
+                <Tooltip title="Actualizar todos los datos">
+                    <IconButton onClick={getData}>
+                        <ReplayIcon className="color-0" />
+                    </IconButton>
+                </Tooltip>
             </MeditocHeader1>
             {entVentas !== null && (
                 <MeditocBody>
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
-                            <span className="rob-nor bold size-20 color-4">FILTROS</span>
-                            <Divider />
-                            <br></br>
+                            <MeditocSubtitulo title="FILTROS" />
                         </Grid>
                         <Grid item sm={4} xs={12}>
                             <DatePicker
@@ -304,10 +310,10 @@ const ReportesVentas = (props) => {
                             />
                             <MeditocTabBody index={tabIndex} setIndex={setTabIndex}>
                                 <MeditocTabPanel id={EnumReportesTabs.Conekta} index={tabIndex}>
-                                    <ResumenOrdenes entVentas={entVentas} />
+                                    <ResumenConekta entVentas={entVentas} />
                                 </MeditocTabPanel>
                                 <MeditocTabPanel id={EnumReportesTabs.Administrativo} index={tabIndex}>
-                                    <ResumenEmpresas entVentas={entVentas} />
+                                    <ResumenAdmin entVentas={entVentas} />
                                 </MeditocTabPanel>
                             </MeditocTabBody>
                         </Grid>

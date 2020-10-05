@@ -1,6 +1,6 @@
+import { Paper } from "@material-ui/core";
 import PropTypes from "prop-types";
 import React from "react";
-import { Paper } from "@material-ui/core";
 
 /*************************************************************
  * Descripcion: Contiene la estructura y diseño de la Barra de herramientas y trabajo del portal Meditoc (debajo de la Barra principal)

@@ -1,7 +1,8 @@
-import React from "react";
-import { withStyles } from "@material-ui/core/styles";
-import { Switch } from "@material-ui/core";
 import { green, red } from "@material-ui/core/colors";
+
+import React from "react";
+import { Switch } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 
 const MeditocSwitch = withStyles(() => ({
     root: {

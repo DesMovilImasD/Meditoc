@@ -1,9 +1,9 @@
-import PropTypes from "prop-types";
 import { Grid } from "@material-ui/core";
-import React from "react";
-import InfoField from "../../../utilidades/InfoField";
+import MeditocInfoField from "../../../utilidades/MeditocInfoField";
 import MeditocModal from "../../../utilidades/MeditocModal";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
+import PropTypes from "prop-types";
+import React from "react";
 
 const DetalleCupon = (props) => {
     const { entCupon, open, setOpen } = props;
@@ -12,34 +12,34 @@ const DetalleCupon = (props) => {
         <MeditocModal title="Detalle de cupón" size="small" open={open} setOpen={setOpen}>
             <Grid container spacing={3}>
                 <Grid item sm={6} xs={12}>
-                    <InfoField label="ID de cupón" value={entCupon.fiIdCupon} />
+                    <MeditocInfoField label="ID de cupón" value={entCupon.fiIdCupon} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <InfoField label="Código de cupón:" value={entCupon.fsCodigo} />
+                    <MeditocInfoField label="Código de cupón:" value={entCupon.fsCodigo} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <InfoField label="Descripción:" value={entCupon.fsDescripcion} />
+                    <MeditocInfoField label="Descripción:" value={entCupon.fsDescripcion} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <InfoField label="Tipo de cupón:" value={entCupon.fsDescripcionCategoria} />
+                    <MeditocInfoField label="Tipo de cupón:" value={entCupon.fsDescripcionCategoria} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <InfoField label="Monto de descuento:" value={entCupon.sMontoDescuento} />
+                    <MeditocInfoField label="Monto de descuento:" value={entCupon.sMontoDescuento} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <InfoField label="Porcentaje de descuento:" value={entCupon.sPorcentajeDescuento} />
+                    <MeditocInfoField label="Porcentaje de descuento:" value={entCupon.sPorcentajeDescuento} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
                     <Grid item sm={6} xs={12}>
-                        <InfoField label="Total de cupones:" value={entCupon.fiTotalLanzamiento} />
+                        <MeditocInfoField label="Total de cupones:" value={entCupon.fiTotalLanzamiento} />
                     </Grid>
                     <Grid item sm={6} xs={12}>
-                        <InfoField label="Total canjeado:" value={entCupon.fiTotalCanjeado} />
+                        <MeditocInfoField label="Total canjeado:" value={entCupon.fiTotalCanjeado} />
                     </Grid>
-                    <InfoField label="Fecha de creación:" value={entCupon.sFechaCreacion} />
+                    <MeditocInfoField label="Fecha de creación:" value={entCupon.sFechaCreacion} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <InfoField label="Fecha de vencimiento:" value={entCupon.sFechaVencimiento} />
+                    <MeditocInfoField label="Fecha de vencimiento:" value={entCupon.sFechaVencimiento} />
                 </Grid>
                 <MeditocModalBotones hideCancel okMessage="Cerrar detalle" setOpen={setOpen} />
             </Grid>

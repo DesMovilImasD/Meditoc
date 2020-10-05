@@ -1,12 +1,13 @@
-import PropTypes from "prop-types";
 import React, { Fragment } from "react";
-import { useState } from "react";
+
+import FormDiagnosticoTratamiento from "./FormDiagnosticoTratamiento";
+import FormPaciente from "./FormPaciente";
+import HistorialClinico from "./HistorialClinico";
 import MeditocTabBody from "../../../utilidades/MeditocTabBody";
 import MeditocTabHeader from "../../../utilidades/MeditocTabHeader";
 import MeditocTabPanel from "../../../utilidades/MeditocTabPanel";
-import FormPaciente from "./FormPaciente";
-import FormDiagnosticoTratamiento from "./FormDiagnosticoTratamiento";
-import HistorialClinico from "./HistorialClinico";
+import PropTypes from "prop-types";
+import { useState } from "react";
 
 const FormCallCenter = (props) => {
     const {

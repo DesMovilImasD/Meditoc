@@ -1,13 +1,14 @@
-import PropTypes from "prop-types";
-import React, { useState, Fragment } from "react";
-import { TableRow, TableCell, Tooltip, IconButton } from "@material-ui/core";
-import ExtensionIcon from "@material-ui/icons/Extension";
-import DeleteIcon from "@material-ui/icons/Delete";
-import { makeStyles } from "@material-ui/core/styles";
-import EditIcon from "@material-ui/icons/Edit";
-import FormBoton from "./FormBoton";
+import { IconButton, TableCell, TableRow, Tooltip } from "@material-ui/core";
+import React, { Fragment, useState } from "react";
+
 import CGUController from "../../../../controllers/CGUController";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
+import ExtensionIcon from "@material-ui/icons/Extension";
+import FormBoton from "./FormBoton";
 import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
     cell: {

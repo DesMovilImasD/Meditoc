@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
+
 const MeditocTabPanel = (props) => {
     const { id, index, children } = props;
 

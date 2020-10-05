@@ -1,14 +1,16 @@
-import PropTypes from "prop-types";
-import { Divider, Grid } from "@material-ui/core";
 import React, { Fragment } from "react";
-import { EnumStatusConekta } from "../../../configurations/enumConfig";
-import InfoField from "../../utilidades/InfoField";
-import MeditocModal from "../../utilidades/MeditocModal";
-import MeditocModalBotones from "../../utilidades/MeditocModalBotones";
-import MeditocTableSimple from "../../utilidades/MeditocTableSimple";
-import ResumeInfo from "./ResumeInfo";
 
-const ResumenOrdenDetalle = (props) => {
+import { EnumStatusConekta } from "../../../../configurations/enumConfig";
+import { Grid } from "@material-ui/core";
+import MeditocInfoField from "../../../utilidades/MeditocInfoField";
+import MeditocInfoResumen from "../../../utilidades/MeditocInfoResumen";
+import MeditocModal from "../../../utilidades/MeditocModal";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
+import MeditocSubtitulo from "../../../utilidades/MeditocSubtitulo";
+import MeditocTableSimple from "../../../utilidades/MeditocTableSimple";
+import PropTypes from "prop-types";
+
+const DetalleConekta = (props) => {
     const { entOrden, open, setOpen } = props;
 
     const columnas = [
@@ -20,59 +22,58 @@ const ResumenOrdenDetalle = (props) => {
         <MeditocModal title={"Detalle de orden " + entOrden.sOrderId} size="normal" open={open} setOpen={setOpen}>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
-                    <ResumeInfo
+                    <MeditocInfoResumen
                         label="Subtotal"
                         value={"$" + entOrden.nAmount.toLocaleString("en", { minimumFractionDigits: 2 })}
                     />
-                    <ResumeInfo
+                    <MeditocInfoResumen
                         label="Descuento"
                         value={"- $" + entOrden.nAmountDiscount.toLocaleString("en", { minimumFractionDigits: 2 })}
                     />
-                    <ResumeInfo
+                    <MeditocInfoResumen
                         label="IVA"
                         value={"+ $" + entOrden.nAmountTax.toLocaleString("en", { minimumFractionDigits: 2 })}
                     />
-                    <ResumeInfo
+                    <MeditocInfoResumen
                         label="Total pagado"
                         value={"$" + entOrden.nAmountPaid.toLocaleString("en", { minimumFractionDigits: 2 })}
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <span className="rob-nor bold size-20 color-4">DATOS DEL CLIENTE</span>
-                    <Divider />
+                    <MeditocSubtitulo title="DATOS DE CLIENTE" />
                 </Grid>
                 <Grid item xs={12}>
-                    <InfoField label="Nombre:" value={entOrden.customer_info.name} />
+                    <MeditocInfoField label="Nombre:" value={entOrden.customer_info.name} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <InfoField label="Correo:" value={entOrden.customer_info.email} />
+                    <MeditocInfoField label="Correo:" value={entOrden.customer_info.email} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <InfoField label="Teléfono:" value={entOrden.customer_info.phone} />
+                    <MeditocInfoField label="Teléfono:" value={entOrden.customer_info.phone} />
                 </Grid>
                 <Grid item xs={12}>
-                    <span className="rob-nor bold size-20 color-4">DATOS DE PAGO</span>
-                    <Divider />
+                    <MeditocSubtitulo title="DATOS DE PAGO" />
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <InfoField label="Tipo de pago:" value={entOrden.charges.sType} />
+                    <MeditocInfoField label="Tipo de pago:" value={entOrden.charges.sType} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <InfoField label="No. de autorización del banco:" value={entOrden.charges.sAuthCode} />
+                    <MeditocInfoField label="No. de autorización del banco:" value={entOrden.charges.sAuthCode} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <InfoField label="ID de cargo Conekta:" value={entOrden.charges.sChargeId} />
+                    <MeditocInfoField label="ID de cargo Conekta:" value={entOrden.charges.sChargeId} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <InfoField label="ID de control de compra:" value={entOrden.uId} />
+                    <MeditocInfoField label="ID de control de compra:" value={entOrden.uId} />
                 </Grid>
                 <Grid item xs={12}>
-                    <span className="rob-nor bold size-20 color-4">
-                        {entOrden.sPaymentStatus === EnumStatusConekta.Declined
-                            ? "PRODUCTOS RECHAZADOS"
-                            : "PRODUCTOS ADQUIRIDOS"}
-                    </span>
-                    <Divider />
+                    <MeditocSubtitulo
+                        title={
+                            entOrden.sPaymentStatus === EnumStatusConekta.Declined
+                                ? "PRODUCTOS RECHAZADOS"
+                                : "PRODUCTOS ADQUIRIDOS"
+                        }
+                    />
                 </Grid>
                 <Grid item xs={12}>
                     {entOrden.lstProductos.map((producto, index) => (
@@ -108,7 +109,7 @@ const ResumenOrdenDetalle = (props) => {
     );
 };
 
-ResumenOrdenDetalle.propTypes = {
+DetalleConekta.propTypes = {
     entOrden: PropTypes.shape({
         charges: PropTypes.shape({
             sAuthCode: PropTypes.any,
@@ -143,4 +144,4 @@ ResumenOrdenDetalle.propTypes = {
     setOpen: PropTypes.any,
 };
 
-export default ResumenOrdenDetalle;
+export default DetalleConekta;

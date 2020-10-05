@@ -18,7 +18,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(PromocionesController));
 
-        private readonly BusPromociones busPromociones = new BusPromociones("MeditocComercial", "Meditoc1");
+        private readonly BusPromociones busPromociones = new BusPromociones();
 
         [MeditocAuthentication]
         [HttpPost]

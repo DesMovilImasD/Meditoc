@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-const ResumeInfo = (props) => {
+const MeditocInfoResumen = (props) => {
     const { label, value } = props;
 
     return (
@@ -16,9 +16,9 @@ const ResumeInfo = (props) => {
     );
 };
 
-ResumeInfo.propTypes = {
+MeditocInfoResumen.propTypes = {
     label: PropTypes.any,
     value: PropTypes.any,
 };
 
-export default ResumeInfo;
+export default MeditocInfoResumen;
