@@ -8,6 +8,7 @@ using IMD.Meditoc.CallCenter.Mx.Entities.Colaborador;
 using log4net;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -555,24 +556,25 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
 
                     if (iIdColaborador != 0)
                     {
-
+                        string sinInformacion = ConfigurationManager.AppSettings["sLeyendaSinInformacion"];
                         EntColaboradorDirectorio entColaborador = new EntColaboradorDirectorio
                         {
                             iIdColaborador = iIdColaborador,
                             iIdEspecialidad = dr.ConvertTo<int>("iIdEspecialidad"),
-                            sCedulaProfecional = dr.ConvertTo<string>("sCedulaProfecional"),
-                            sCorreo = dr.ConvertTo<string>("sCorreo"),
-                            sDireccionConsultorio = dr.ConvertTo<string>("sDireccionConsultorio"),
-                            sEspecialidad = dr.ConvertTo<string>("sEspecialidad"),
+                            sCedulaProfecional = dr.FDataRow["sCedulaProfecional"] == DBNull.Value ? sinInformacion : dr.ConvertTo<string>("sCedulaProfecional"),
+                            sCorreo = dr.FDataRow["sCorreo"] == DBNull.Value ? sinInformacion : dr.ConvertTo<string>("sCorreo"),
+                            sDireccionConsultorio = dr.FDataRow["sDireccionConsultorio"] == DBNull.Value ? sinInformacion : dr.ConvertTo<string>("sDireccionConsultorio"),
+                            sEspecialidad = dr.FDataRow["sEspecialidad"] == DBNull.Value ? sinInformacion : dr.ConvertTo<string>("sEspecialidad"),
                             sFoto = string.Empty,
                             sMaps = dr.ConvertTo<string>("sMaps"),
-                            sNombre = dr.ConvertTo<string>("sNombre"),
-                            sNombreConsultorio = dr.ConvertTo<string>("sNombreConsultorio"),
-                            sRFC = dr.ConvertTo<string>("sRFC"),
-                            sTelefono = dr.ConvertTo<string>("sTelefono"),
-                            sWhatsApp = dr.ConvertTo<string>("sWhatsApp"),
-                            sURL = dr.ConvertTo<string>("sURL"),
+                            sNombre = dr.FDataRow["sNombre"] == DBNull.Value ? sinInformacion : dr.ConvertTo<string>("sNombre"),
+                            sNombreConsultorio = dr.FDataRow["sNombreConsultorio"] == DBNull.Value ? sinInformacion : dr.ConvertTo<string>("sNombreConsultorio"),
+                            sRFC = dr.FDataRow["sRFC"] == DBNull.Value ? sinInformacion : dr.ConvertTo<string>("sRFC"),
+                            sTelefono = dr.FDataRow["sTelefono"] == DBNull.Value ? sinInformacion : dr.ConvertTo<string>("sTelefono"),
+                            sWhatsApp = dr.FDataRow["sWhatsApp"] == DBNull.Value ? sinInformacion : dr.ConvertTo<string>("sWhatsApp"),
+                            sURL = dr.FDataRow["sURL"] == DBNull.Value ? sinInformacion : dr.ConvertTo<string>("sURL"),
                         };
+
                         try
                         {
                             byte[] foto = drItem["sFoto"] is DBNull ? new byte[0] : (byte[])drItem["sFoto"];
