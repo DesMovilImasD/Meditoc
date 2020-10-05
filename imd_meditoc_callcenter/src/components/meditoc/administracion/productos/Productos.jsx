@@ -1,3 +1,4 @@
+import { EnumTipoProducto, ListProductos } from "../../../../configurations/enumConfig";
 import { IconButton, Tooltip } from "@material-ui/core";
 import React, { Fragment } from "react";
 
@@ -5,7 +6,6 @@ import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
 import DetalleProducto from "./DetalleProducto";
 import EditIcon from "@material-ui/icons/Edit";
-import { EnumTipoProducto } from "../../../../configurations/enumConfig";
 import FormProducto from "./FormProducto";
 import MeditocBody from "../../../utilidades/MeditocBody";
 import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
@@ -79,6 +79,10 @@ const Productos = (props) => {
     const handleClickEliminarProducto = () => {
         if (productoSeleccionado.iIdProducto === 0) {
             funcAlert("Seleccione un producto de la tabla para continuar");
+            return;
+        }
+        if (ListProductos.includes(productoSeleccionado.iIdProducto)) {
+            funcAlert("El producto seleccionado no puede eliminarse", "warning");
             return;
         }
         setModalEliminarProductoOpen(true);

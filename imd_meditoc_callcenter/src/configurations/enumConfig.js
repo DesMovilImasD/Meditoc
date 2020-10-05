@@ -102,6 +102,24 @@ const EnumReportesTabs = {
     Administrativo: 1,
 };
 
+const EnumProductos = {
+    OrientacionEspecialistaID: 1,
+    MembresiaVentaCalle1Mes: 2,
+    MembresiaVentaCalle3Meses: 3,
+    MembresiaVentaCalle6Meses: 4,
+    MembresiaVentaCalle9Meses: 5,
+    MembresiaVentaCalle12Meses: 6,
+};
+
+const ListProductos = [
+    EnumProductos.OrientacionEspecialistaID,
+    EnumProductos.MembresiaVentaCalle1Mes,
+    EnumProductos.MembresiaVentaCalle3Meses,
+    EnumProductos.MembresiaVentaCalle6Meses,
+    EnumProductos.MembresiaVentaCalle9Meses,
+    EnumProductos.MembresiaVentaCalle12Meses,
+];
+
 export {
     EnumPerfilesPrincipales,
     EnumTipoCuenta,
@@ -117,4 +135,6 @@ export {
     EnumStatusConekta,
     EnumTipoPago,
     EnumReportesTabs,
+    EnumProductos,
+    ListProductos,
 };

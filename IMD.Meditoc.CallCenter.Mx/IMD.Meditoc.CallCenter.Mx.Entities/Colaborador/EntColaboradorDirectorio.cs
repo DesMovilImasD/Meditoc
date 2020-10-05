@@ -12,6 +12,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Colaborador
         public int iIdEspecialidad { get; set; }
         public string sEspecialidad { get; set; }
         public string sNombre { get; set; }
+        public string sNombreConsultorio { get; set; }
         public string sCedulaProfecional { get; set; }
         public string sTelefono { get; set; }
         public string sWhatsApp { get; set; }

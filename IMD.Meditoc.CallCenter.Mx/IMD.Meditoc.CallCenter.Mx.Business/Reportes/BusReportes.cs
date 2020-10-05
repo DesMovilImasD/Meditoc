@@ -138,7 +138,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                 //double dDescuento = lstFolios.Where(x => (x.iIdOrigen == (int)EnumReportes.Origen.WEB || x.iIdOrigen == (int)EnumReportes.Origen.APP) && x.entOrden.sPaymentStatus == "paid").Select(x => x.entOrden).Select(x => new { x.sOrderId, x.nAmountDiscount }).Distinct().Sum(x => x.nAmountDiscount);
                 //dDescuento += lstFolios.Where(x => x.iIdOrigen != (int)EnumReportes.Origen.WEB && x.iIdOrigen != (int)EnumReportes.Origen.APP).Select(x => x.entOrden).Sum(x => x.nAmountDiscount);
 
-                List<EntFolio> lstFolios = respuestaObtenerFolios.Result.Where(x => x.iIdOrigen == (int)EnumOrigen.APP || x.iIdOrigen == (int)EnumOrigen.WEB || x.iIdOrigen == (int)EnumOrigen.PanelAdministrativo).GroupBy(x => x.iIdFolio).Select(x => new EntFolio
+                List<EntFolio> lstFolios = respuestaObtenerFolios.Result.Where(x => x.iIdOrigen != (int)EnumOrigen.Particular).GroupBy(x => x.iIdFolio).Select(x => new EntFolio
                 {
                     iIdFolio = x.Key,
                     sFolio = x.Select(y => y.sFolio).First(),
@@ -294,7 +294,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                     uId = o.Select(r => r.uId).FirstOrDefault(),
                 }).ToList();
 
-                List<EntReporteOrden> ordenesAdmin = respuestaObtenerFolios.Result.Where(x => x.iIdOrigen == (int)EnumOrigen.PanelAdministrativo).GroupBy(o => o.sOrderId).Select(o => new EntReporteOrden
+                List<EntReporteOrden> ordenesAdmin = respuestaObtenerFolios.Result.Where(x => x.iIdOrigen == (int)EnumOrigen.PanelAdministrativo || x.iIdOrigen == (int)EnumOrigen.BaseDeDatos).GroupBy(o => o.sOrderId).Select(o => new EntReporteOrden
                 {
                     sOrderId = o.Key,
                     iIdEmpresa = o.Select(r => r.iIdEmpresa).FirstOrDefault(),
@@ -569,8 +569,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                         if (!orden.Equals(y.entOrden.sOrderId))
                         {
                             orden = y.entOrden.sOrderId;
-                            int iFolios = respuestaObtenerOrdenes.Result.lstFolios.Where(x => x.iIdOrigen == (int)EnumReportes.Origen.WEB || x.iIdOrigen == (int)EnumReportes.Origen.APP)
-                                                                    .Select(x => x.entOrden).Where(x => x.sOrderId == orden).Count();
+                            int iFolios = respuestaObtenerOrdenes.Result.lstFolios.Select(x => x.entOrden).Where(x => x.sOrderId == orden).Count();
                             int rowStart = row;
                             int rowFinish = row + (iFolios - 1);
                             #region Orden
@@ -613,54 +612,54 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                     });
                     #endregion
 
-                    #region Folios sin ordenes en conekta
-                    respuestaObtenerOrdenes.Result.lstFolios.Where(x => x.iIdOrigen != (int)EnumReportes.Origen.WEB && x.iIdOrigen != (int)EnumReportes.Origen.APP).ToList().ForEach(y =>
-                    {
-                        int col = 0;
-                        #region Información General folio
-                        sheetFolios.Cells[++row, ++col].Value = y.sFolio;
-                        sheetFolios.Cells[row, ++col].Value = y.iConsecutivo;
-                        sheetFolios.Cells[row, ++col].Value = y.bTerminosYCondiciones ? "SI" : "NO";
-                        sheetFolios.Cells[row, ++col].Value = y.sFechaVencimiento;
+                    //#region Folios sin ordenes en conekta
+                    //respuestaObtenerOrdenes.Result.lstFolios.Where(x => x.iIdOrigen != (int)EnumReportes.Origen.WEB && x.iIdOrigen != (int)EnumReportes.Origen.APP).ToList().ForEach(y =>
+                    //{
+                    //    int col = 0;
+                    //    #region Información General folio
+                    //    sheetFolios.Cells[++row, ++col].Value = y.sFolio;
+                    //    sheetFolios.Cells[row, ++col].Value = y.iConsecutivo;
+                    //    sheetFolios.Cells[row, ++col].Value = y.bTerminosYCondiciones ? "SI" : "NO";
+                    //    sheetFolios.Cells[row, ++col].Value = y.sFechaVencimiento;
 
-                        #endregion
+                    //    #endregion
 
-                        #region Empresa
-                        sheetFolios.Cells[row, ++col].Value = y.entEmpresa.sNombre;
-                        sheetFolios.Cells[row, ++col].Value = y.entEmpresa.sCorreo;
-                        #endregion
+                    //    #region Empresa
+                    //    sheetFolios.Cells[row, ++col].Value = y.entEmpresa.sNombre;
+                    //    sheetFolios.Cells[row, ++col].Value = y.entEmpresa.sCorreo;
+                    //    #endregion
 
-                        #region Producto
-                        sheetFolios.Cells[row, ++col].Value = y.entProducto.sNombre;
-                        sheetFolios.Cells[row, ++col].Value = y.entProducto.fCosto;
-                        sheetFolios.Cells[row, ++col].Value = y.entProducto.iMesVigencia;
-                        sheetFolios.Cells[row, ++col].Value = y.entProducto.sTipoProducto;
-                        #endregion
+                    //    #region Producto
+                    //    sheetFolios.Cells[row, ++col].Value = y.entProducto.sNombre;
+                    //    sheetFolios.Cells[row, ++col].Value = y.entProducto.fCosto;
+                    //    sheetFolios.Cells[row, ++col].Value = y.entProducto.iMesVigencia;
+                    //    sheetFolios.Cells[row, ++col].Value = y.entProducto.sTipoProducto;
+                    //    #endregion
 
-                        #region Origen
-                        sheetFolios.Cells[row, ++col].Value = y.sOrigen;
-                        #endregion
+                    //    #region Origen
+                    //    sheetFolios.Cells[row, ++col].Value = y.sOrigen;
+                    //    #endregion
 
-                        #region Orden
-                        sheetFolios.Cells[row, ++col].Value = y.entOrden.sOrderId;
-                        sheetFolios.Cells[row, ++col].Value = y.entOrden.sRegisterDate;
-                        sheetFolios.Cells[row, ++col].Value = y.entOrden.nAmount;
-                        sheetFolios.Cells[row, ++col].Value = y.entOrden.nAmountTax;
-                        sheetFolios.Cells[row, ++col].Value = y.entOrden.nAmountDiscount;
-                        sheetFolios.Cells[row, ++col].Value = y.entOrden.nAmountPaid;
-                        sheetFolios.Cells[row, ++col].Value = y.entOrden.sPaymentStatus;
-                        sheetFolios.Cells[row, ++col].Value = y.entOrden.sCodigo;
-                        sheetFolios.Cells[row, ++col].Value = y.entOrden.charges.sType;
-                        #endregion
+                    //    #region Orden
+                    //    sheetFolios.Cells[row, ++col].Value = y.entOrden.sOrderId;
+                    //    sheetFolios.Cells[row, ++col].Value = y.entOrden.sRegisterDate;
+                    //    sheetFolios.Cells[row, ++col].Value = y.entOrden.nAmount;
+                    //    sheetFolios.Cells[row, ++col].Value = y.entOrden.nAmountTax;
+                    //    sheetFolios.Cells[row, ++col].Value = y.entOrden.nAmountDiscount;
+                    //    sheetFolios.Cells[row, ++col].Value = y.entOrden.nAmountPaid;
+                    //    sheetFolios.Cells[row, ++col].Value = y.entOrden.sPaymentStatus;
+                    //    sheetFolios.Cells[row, ++col].Value = y.entOrden.sCodigo;
+                    //    sheetFolios.Cells[row, ++col].Value = y.entOrden.charges.sType;
+                    //    #endregion
 
-                        #region customer_info(Cliente)
-                        sheetFolios.Cells[row, ++col].Value = y.entOrden.customer_info.name;
-                        sheetFolios.Cells[row, ++col].Value = y.entOrden.customer_info.email;
-                        sheetFolios.Cells[row, ++col].Value = y.entOrden.customer_info.phone;
-                        sheetFolios.Cells[row, ++col].Value = y.entOrden.charges.sAuthCode;
-                        #endregion
-                    });
-                    #endregion
+                    //    #region customer_info(Cliente)
+                    //    sheetFolios.Cells[row, ++col].Value = y.entOrden.customer_info.name;
+                    //    sheetFolios.Cells[row, ++col].Value = y.entOrden.customer_info.email;
+                    //    sheetFolios.Cells[row, ++col].Value = y.entOrden.customer_info.phone;
+                    //    sheetFolios.Cells[row, ++col].Value = y.entOrden.charges.sAuthCode;
+                    //    #endregion
+                    //});
+                    //#endregion
 
                     sheetFolios.Cells[sheetFolios.Dimension.Address].AutoFitColumns();
                     sheetFolios.Cells[sheetFolios.Dimension.Address].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
