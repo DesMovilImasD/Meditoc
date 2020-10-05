@@ -145,6 +145,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                     bTerminosYCondiciones = x.Select(y => y.bTerminosYCondiciones).First(),
                     iConsecutivo = x.Select(y => y.iConsecutivo).First(),
                     iIdOrigen = x.Select(y => y.iIdOrigen).First(),
+                    bConfirmado = x.Select(y => y.bConfirmado).First(),
                     sOrigen = x.Select(y => y.sOrigen).First(),
                     sFechaVencimiento = x.Select(y => y.sFechaVencimiento).First(),
                     dtFechaVencimiento = x.Select(y => y.dtFechaVencimiento).First(),
@@ -278,6 +279,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                             sFolio = f.Select(r => r.sFolio).FirstOrDefault(),
                             bTerminosYCondiciones = f.Select(r => r.bTerminosYCondiciones).FirstOrDefault(),
                             sFechaVencimiento = f.Select(r => r.sFechaVencimiento).FirstOrDefault(),
+                            bConfirmado = f.Select(r => r.bConfirmado).FirstOrDefault(),
                             sTerminosYCondiciones = f.Select(r => r.bTerminosYCondiciones).FirstOrDefault() ? "SI" : "NO"
                         }).ToList()
                     }).ToList(),
@@ -329,6 +331,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                             sFolio = f.Select(r => r.sFolio).FirstOrDefault(),
                             bTerminosYCondiciones = f.Select(r => r.bTerminosYCondiciones).FirstOrDefault(),
                             sFechaVencimiento = f.Select(r => r.sFechaVencimiento).FirstOrDefault(),
+                            bConfirmado = f.Select(r => r.bConfirmado).FirstOrDefault(),
                             sTerminosYCondiciones = f.Select(r => r.bTerminosYCondiciones).FirstOrDefault() ? "SI" : "NO"
                         }).ToList()
                     }).ToList(),
@@ -513,10 +516,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
 
                         "Producto",
                         "Costo Producto",
-                        "Mes vigencia",
+                        "Duración de vigencia",
                         "Tipo Producto",
 
                         "Origen",
+                        "Folio confirmado",
 
                         "Número de Orden",
                         "Fecha de Orden",
@@ -539,14 +543,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                     this.BReporteHeaders(sheetFolios, headers, ++row);
 
                     #region Folios con ordenes en conekta
-                    respuestaObtenerOrdenes.Result.lstFolios.Where(x => x.iIdOrigen == (int)EnumReportes.Origen.WEB || x.iIdOrigen == (int)EnumReportes.Origen.APP).ToList().ForEach(y =>
+                    respuestaObtenerOrdenes.Result.lstFolios.ForEach(y =>
                     {
                         int col = 0;
                         #region Información General folio
                         sheetFolios.Cells[++row, ++col].Value = y.sFolio;
                         sheetFolios.Cells[row, ++col].Value = y.iConsecutivo;
                         sheetFolios.Cells[row, ++col].Value = y.bTerminosYCondiciones ? "SI" : "NO";
-                        sheetFolios.Cells[row, ++col].Value = y.sFechaVencimiento;
+                        sheetFolios.Cells[row, ++col].Value = y.sFechaVencimiento == null ? "Sin asignar" : y.sFechaVencimiento;
                         #endregion
 
                         #region Empresa
@@ -556,14 +560,16 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
 
                         #region Producto
                         sheetFolios.Cells[row, ++col].Value = y.entProducto.sNombre;
-                        sheetFolios.Cells[row, ++col].Value = y.entProducto.fCosto;
-                        sheetFolios.Cells[row, ++col].Value = y.entProducto.iMesVigencia;
+                        sheetFolios.Cells[row, ++col].Value = y.entProducto.fCosto.ToString("C2");
+                        sheetFolios.Cells[row, ++col].Value = y.entProducto.iMesVigencia == 0 ? "Uso único" : y.entProducto.iMesVigencia == 1 ? "1 mes" : $"{y.entProducto.iMesVigencia} meses";
                         sheetFolios.Cells[row, ++col].Value = y.entProducto.sTipoProducto;
                         #endregion
 
                         #region Origen
                         sheetFolios.Cells[row, ++col].Value = y.sOrigen;
                         #endregion
+
+                        sheetFolios.Cells[row, ++col].Value = y.bConfirmado ? "SI" : "NO";
 
 
                         if (!orden.Equals(y.entOrden.sOrderId))
@@ -578,13 +584,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                             sheetFolios.Cells[rowStart, ++col, rowFinish, col].Merge = true;
                             sheetFolios.Cells[rowStart, col, rowFinish, col].Value = y.entOrden.sRegisterDate;
                             sheetFolios.Cells[rowStart, ++col, rowFinish, col].Merge = true;
-                            sheetFolios.Cells[rowStart, col, rowFinish, col].Value = y.entOrden.nAmount;
+                            sheetFolios.Cells[rowStart, col, rowFinish, col].Value = y.entOrden.nAmount.ToString("C2");
                             sheetFolios.Cells[rowStart, ++col, rowFinish, col].Merge = true;
-                            sheetFolios.Cells[rowStart, col, rowFinish, col].Value = y.entOrden.nAmountTax;
+                            sheetFolios.Cells[rowStart, col, rowFinish, col].Value = y.entOrden.nAmountTax.ToString("C2");
                             sheetFolios.Cells[rowStart, ++col, rowFinish, col].Merge = true;
-                            sheetFolios.Cells[rowStart, col, rowFinish, col].Value = y.entOrden.nAmountDiscount;
+                            sheetFolios.Cells[rowStart, col, rowFinish, col].Value = y.entOrden.nAmountDiscount.ToString("C2");
                             sheetFolios.Cells[rowStart, ++col, rowFinish, col].Merge = true;
-                            sheetFolios.Cells[rowStart, col, rowFinish, col].Value = y.entOrden.nAmountPaid;
+                            sheetFolios.Cells[rowStart, col, rowFinish, col].Value = y.entOrden.nAmountPaid.ToString("C2");
                             sheetFolios.Cells[rowStart, ++col, rowFinish, col].Merge = true;
                             sheetFolios.Cells[rowStart, col, rowFinish, col].Value = y.entOrden.sPaymentStatus;
                             sheetFolios.Cells[rowStart, ++col, rowFinish, col].Merge = true;
@@ -661,10 +667,10 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                     //});
                     //#endregion
 
-                    sheetFolios.Cells[sheetFolios.Dimension.Address].AutoFitColumns();
                     sheetFolios.Cells[sheetFolios.Dimension.Address].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                     sheetFolios.Cells[sheetFolios.Dimension.Address].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     sheetFolios.Cells[sheetFolios.Dimension.Address].Style.WrapText = true;
+                    sheetFolios.Cells[sheetFolios.Dimension.Address].AutoFitColumns();
 
                     MemoryStream ms = new MemoryStream(package.GetAsByteArray());
                     response.Result = ms;
@@ -783,10 +789,10 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                         dtFechaProgramadaFin = c.dtFechaProgramadaFin,
                         dtFechaConsultaInicio = c.dtFechaConsultaInicio,
                         dtFechaConsultaFin = c.dtFechaConsultaFin,
-                        sFechaProgramadaInicio = c.dtFechaProgramadaInicio.ToString(),
-                        sFechaProgramadaFin = c.dtFechaProgramadaFin.ToString(),
-                        sFechaConsultaInicio = c.dtFechaConsultaInicio.ToString(),
-                        sFechaConsultaFin = c.dtFechaConsultaFin.ToString(),
+                        sFechaProgramadaInicio = c.dtFechaProgramadaInicio?.ToString(),
+                        sFechaProgramadaFin = c.dtFechaProgramadaFin?.ToString(),
+                        sFechaConsultaInicio = c.dtFechaConsultaInicio?.ToString(),
+                        sFechaConsultaFin = c.dtFechaConsultaFin?.ToString(),
                         iIdPaciente = c.iIdPaciente,
                         entPaciente = x.Select(p => new EntPaciente
                         {
@@ -1071,8 +1077,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                         iIdFolio = dr.ConvertTo<int>("iIdFolio"),
                         sFolio = dr.ConvertTo<string>("sFolio"),
                         iConsecutivo = dr.ConvertTo<int>("iConsecutivo"),
-                        bTerminosYCondiciones = dr.ConvertTo<bool>("bTerminosYCondiciones"),
-                        dtFechaVencimiento = dr.ConvertTo<DateTime>("dtFechaVencimiento"),
+                        bConfirmado = Convert.ToBoolean(dr.ConvertTo<int>("bConfirmado")),
+                        bTerminosYCondiciones = Convert.ToBoolean(dr.ConvertTo<int>("bTerminosYCondiciones")),
+                        dtFechaVencimiento = dr.ConvertTo<DateTime?>("dtFechaVencimiento"),
                         //sFechaVencimiento = dr.ConvertTo<string>("dtFechaVencimiento"),
 
                         #region empresa
@@ -1138,7 +1145,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                         iIdTitular = dr.ConvertTo<int>("iIdTitular")
                         #endregion
                     };
-                    entFolio.sFechaVencimiento = entFolio.dtFechaVencimiento.ToString("dd/MM/yyyy HH:mm");
+                    entFolio.sFechaVencimiento = entFolio.dtFechaVencimiento?.ToString("dd/MM/yyyy HH:mm");
                     entFolio.sRegisterDate = entFolio.dtRegisterDate.ToString("dd/MM/yyyy HH:mm");
                     lstFolios.Add(entFolio);
                 }
@@ -1220,10 +1227,10 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
 
                         #region consulta
                         iIdConsulta = dr.ConvertTo<int>("iIdConsulta"),
-                        dtFechaProgramadaInicio = dr.ConvertTo<DateTime>("dtFechaProgramadaInicio"),
-                        dtFechaProgramadaFin = dr.ConvertTo<DateTime>("dtFechaProgramadaFin"),
-                        dtFechaConsultaInicio = dr.ConvertTo<DateTime>("dtFechaConsultaInicio"),
-                        dtFechaConsultaFin = dr.ConvertTo<DateTime>("dtFechaConsultaFin"),
+                        dtFechaProgramadaInicio = dr.ConvertTo<DateTime?>("dtFechaProgramadaInicio"),
+                        dtFechaProgramadaFin = dr.ConvertTo<DateTime?>("dtFechaProgramadaFin"),
+                        dtFechaConsultaInicio = dr.ConvertTo<DateTime?>("dtFechaConsultaInicio"),
+                        dtFechaConsultaFin = dr.ConvertTo<DateTime?>("dtFechaConsultaFin"),
                         sEstatusConsulta = dr.ConvertTo<string>("sEstatusConsulta"),
                         #endregion
 

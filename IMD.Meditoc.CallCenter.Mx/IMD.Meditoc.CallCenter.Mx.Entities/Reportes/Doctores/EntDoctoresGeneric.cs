@@ -19,10 +19,10 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Reportes.Doctores
         public string sDireccionConsultorio { get; set; }
         public string sRFC { get; set; }
         public int iIdConsulta { get; set; }
-        public DateTime dtFechaProgramadaInicio { get; set; }
-        public DateTime dtFechaProgramadaFin { get; set; }
-        public DateTime dtFechaConsultaInicio { get; set; }
-        public DateTime dtFechaConsultaFin { get; set; }
+        public DateTime? dtFechaProgramadaInicio { get; set; }
+        public DateTime? dtFechaProgramadaFin { get; set; }
+        public DateTime? dtFechaConsultaInicio { get; set; }
+        public DateTime? dtFechaConsultaFin { get; set; }
         public string sEstatusConsulta { get; set; }
         public int iIdPaciente { get; set; }
         public int iIdFolioPaciente { get; set; }

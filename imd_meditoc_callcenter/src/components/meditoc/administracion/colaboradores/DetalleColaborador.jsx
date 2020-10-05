@@ -15,70 +15,73 @@ const DetalleColaborador = (props) => {
                 <Grid item xs={12}>
                     <MeditocSubtitulo title="DATOS DEL DIRECTORIO MÉDICO" />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="Nombre:" value={entColaborador.sNombreDirectorio} />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="Cédula profesional:" value={entColaborador.sCedulaProfecional} />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="RFC:" value={entColaborador.sRFC} />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="Teléfono de contacto:" value={entColaborador.sTelefonoDirectorio} />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="WhatsApp:" value={entColaborador.sWhatsApp} />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="Correo electrónico:" value={entColaborador.sCorreoDirectorio} />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="Especialidad:" value={entColaborador.sEspecialidad} />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="Número de sala IceLink:" value={entColaborador.iNumSala} />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="Dirección de consultorio:" value={entColaborador.sDireccionConsultorio} />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
+                    <MeditocInfoField label="Nombre de consultorio:" value={entColaborador.sNombreConsultorio} />
+                </Grid>
+                <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="Sitio Web:" value={entColaborador.sURL} />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="Mapa:" value={entColaborador.sMaps} />
                 </Grid>
                 <Grid item xs={12}>
                     <MeditocSubtitulo title="DATOS DE CUENTA" />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="Nombres:" value={entColaborador.sNombresDoctor} />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="Apellido paterno:" value={entColaborador.sApellidoPaternoDoctor} />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="Apellido materno:" value={entColaborador.sApellidoMaternoDoctor} />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="Fecha de nacimiento:" value={entColaborador.sFechaNacimientoDoctor} />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="Teléfono:" value={entColaborador.sTelefonoDoctor} />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="Correo electrónico:" value={entColaborador.sCorreoDoctor} />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="Domicilio particular:" value={entColaborador.sDomicilioDoctor} />
                 </Grid>
                 <Grid item xs={12}>
                     <MeditocSubtitulo title="USUARIOS" />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="Titular:" value={entColaborador.sUsuarioTitular} />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="Administrativo:" value={entColaborador.sUsuarioAdministrativo} />
                 </Grid>
                 <MeditocModalBotones okMessage="Cerrar detalle" hideCancel setOpen={setOpen} />

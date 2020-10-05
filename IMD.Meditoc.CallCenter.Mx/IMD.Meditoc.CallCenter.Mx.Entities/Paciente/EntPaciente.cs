@@ -28,5 +28,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Paciente
         public string sTipoSangre { get; set; }
         public DateTime? dtFechaNacimiento { get; set; }
         public string sdtFechaNacimiento { get; set; }
+        public int iIdUsuarioMod { get; set; }
     }
 }

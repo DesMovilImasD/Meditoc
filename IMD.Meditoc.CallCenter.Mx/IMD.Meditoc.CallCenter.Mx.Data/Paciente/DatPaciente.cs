@@ -43,13 +43,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Paciente
 
             try
             {
-
                 using (DbCommand dbCommand = database.GetStoredProcCommand(savePaciente))
                 {
                     database.AddInParameter(dbCommand, "piIdFolio", DbType.Int32, entPaciente.iIdFolio);
                     database.AddInParameter(dbCommand, "psNombre", DbType.String, entPaciente.sNombre);
                     database.AddInParameter(dbCommand, "psTelefono", DbType.String, entPaciente.sTelefono?.Replace(" ", ""));
                     database.AddInParameter(dbCommand, "psCorreo", DbType.String, entPaciente.sCorreo);
+                    database.AddInParameter(dbCommand, "piIdUsuarioMod", DbType.Int32, entPaciente.iIdUsuarioMod);
 
                     response = imdCommonData.DExecuteDT(database, dbCommand);
                 }

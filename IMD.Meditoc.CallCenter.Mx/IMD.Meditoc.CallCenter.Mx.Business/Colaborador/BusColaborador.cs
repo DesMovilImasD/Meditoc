@@ -556,24 +556,36 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
 
                     if (iIdColaborador != 0)
                     {
-                        string sinInformacion = ConfigurationManager.AppSettings["sLeyendaSinInformacion"];
+
                         EntColaboradorDirectorio entColaborador = new EntColaboradorDirectorio
                         {
                             iIdColaborador = iIdColaborador,
                             iIdEspecialidad = dr.ConvertTo<int>("iIdEspecialidad"),
-                            sCedulaProfecional = dr.FDataRow["sCedulaProfecional"] == DBNull.Value ? sinInformacion : dr.ConvertTo<string>("sCedulaProfecional"),
-                            sCorreo = dr.FDataRow["sCorreo"] == DBNull.Value ? sinInformacion : dr.ConvertTo<string>("sCorreo"),
-                            sDireccionConsultorio = dr.FDataRow["sDireccionConsultorio"] == DBNull.Value ? sinInformacion : dr.ConvertTo<string>("sDireccionConsultorio"),
-                            sEspecialidad = dr.FDataRow["sEspecialidad"] == DBNull.Value ? sinInformacion : dr.ConvertTo<string>("sEspecialidad"),
+                            sCedulaProfecional = dr.ConvertTo<string>("sCedulaProfecional"),
+                            sCorreo = dr.ConvertTo<string>("sCorreo"),
+                            sDireccionConsultorio = dr.ConvertTo<string>("sDireccionConsultorio"),
+                            sEspecialidad = dr.ConvertTo<string>("sEspecialidad"),
                             sFoto = string.Empty,
                             sMaps = dr.ConvertTo<string>("sMaps"),
-                            sNombre = dr.FDataRow["sNombre"] == DBNull.Value ? sinInformacion : dr.ConvertTo<string>("sNombre"),
-                            sNombreConsultorio = dr.FDataRow["sNombreConsultorio"] == DBNull.Value ? sinInformacion : dr.ConvertTo<string>("sNombreConsultorio"),
-                            sRFC = dr.FDataRow["sRFC"] == DBNull.Value ? sinInformacion : dr.ConvertTo<string>("sRFC"),
-                            sTelefono = dr.FDataRow["sTelefono"] == DBNull.Value ? sinInformacion : dr.ConvertTo<string>("sTelefono"),
-                            sWhatsApp = dr.FDataRow["sWhatsApp"] == DBNull.Value ? sinInformacion : dr.ConvertTo<string>("sWhatsApp"),
-                            sURL = dr.FDataRow["sURL"] == DBNull.Value ? sinInformacion : dr.ConvertTo<string>("sURL"),
+                            sNombre = dr.ConvertTo<string>("sNombre"),
+                            sNombreConsultorio = dr.ConvertTo<string>("sNombreConsultorio"),
+                            sRFC = dr.ConvertTo<string>("sRFC"),
+                            sTelefono = dr.ConvertTo<string>("sTelefono"),
+                            sWhatsApp = dr.ConvertTo<string>("sWhatsApp"),
+                            sURL = dr.ConvertTo<string>("sURL"),
                         };
+
+                        string sinInformacion = ConfigurationManager.AppSettings["sLeyendaSinInformacion"];
+                        entColaborador.sCedulaProfecional = string.IsNullOrEmpty(entColaborador.sCedulaProfecional) ? sinInformacion : entColaborador.sCedulaProfecional;
+                        entColaborador.sCorreo = string.IsNullOrEmpty(entColaborador.sCorreo) ? sinInformacion : entColaborador.sCorreo;
+                        entColaborador.sDireccionConsultorio = string.IsNullOrEmpty(entColaborador.sDireccionConsultorio) ? sinInformacion : entColaborador.sDireccionConsultorio;
+                        entColaborador.sEspecialidad = string.IsNullOrEmpty(entColaborador.sEspecialidad) ? sinInformacion : entColaborador.sEspecialidad;
+                        entColaborador.sNombre = string.IsNullOrEmpty(entColaborador.sNombre) ? sinInformacion : entColaborador.sNombre;
+                        entColaborador.sNombreConsultorio = string.IsNullOrEmpty(entColaborador.sNombreConsultorio) ? sinInformacion : entColaborador.sNombreConsultorio;
+                        entColaborador.sRFC = string.IsNullOrEmpty(entColaborador.sRFC) ? sinInformacion : entColaborador.sRFC;
+                        entColaborador.sTelefono = string.IsNullOrEmpty(entColaborador.sTelefono) ? sinInformacion : entColaborador.sTelefono;
+                        entColaborador.sURL = string.IsNullOrEmpty(entColaborador.sURL) ? sinInformacion : entColaborador.sURL;
+                        entColaborador.sWhatsApp = string.IsNullOrEmpty(entColaborador.sWhatsApp) ? sinInformacion : entColaborador.sWhatsApp;
 
                         try
                         {

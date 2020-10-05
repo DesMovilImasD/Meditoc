@@ -42,6 +42,7 @@ const FormColaborador = (props) => {
         txtCorreoElectronicoContacto: "",
         txtEspecialidad: "",
         txtNumeroSala: "",
+        txtNombreConsultorio: "",
         txtDireccionConsultorio: "",
         txtUrlDoctor: "",
         txtMapsDoctor: "",
@@ -67,6 +68,7 @@ const FormColaborador = (props) => {
         txtCorreoElectronicoContacto: true,
         txtEspecialidad: true,
         txtNumeroSala: true,
+        txtNombreConsultorio: true,
         txtDireccionConsultorio: true,
         txtUrlDoctor: true,
         txtMapsDoctor: true,
@@ -96,6 +98,7 @@ const FormColaborador = (props) => {
             txtCorreoElectronicoContacto: entColaborador.sCorreoDirectorio,
             txtEspecialidad: entColaborador.iIdEspecialidad,
             txtNumeroSala: entColaborador.iNumSala,
+            txtNombreConsultorio: entColaborador.sNombreConsultorio === null ? "" : entColaborador.sNombreConsultorio,
             txtDireccionConsultorio:
                 entColaborador.sDireccionConsultorio === null ? "" : entColaborador.sDireccionConsultorio,
             txtUrlDoctor: entColaborador.sURL === null ? "" : entColaborador.sURL,
@@ -485,6 +488,7 @@ const FormColaborador = (props) => {
             sWhatsApp: formColaborador.txtWhatsApp,
             sTelefonoDirectorio: formColaborador.txtTelefonoContacto,
             sCorreoDirectorio: formColaborador.txtCorreoElectronicoContacto,
+            sNombreConsultorio: formColaborador.txtNombreConsultorio,
             sDireccionConsultorio: formColaborador.txtDireccionConsultorio,
             sRFC: formColaborador.txtRFC,
             sURL: formColaborador.txtUrlDoctor,
@@ -732,6 +736,16 @@ const FormColaborador = (props) => {
                                             variant="outlined"
                                             fullWidth
                                             value={formColaborador.txtDireccionConsultorio}
+                                            onChange={handleChangeFormColaborador}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            name="txtNombreConsultorio"
+                                            label="Nombre del consultorio:"
+                                            variant="outlined"
+                                            fullWidth
+                                            value={formColaborador.txtNombreConsultorio}
                                             onChange={handleChangeFormColaborador}
                                         />
                                     </Grid>

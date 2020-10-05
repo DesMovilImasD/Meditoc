@@ -16,5 +16,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Reportes.Ventas
         public int iIdOrigen { get; set; }
         public string sOrigen { get; set; }
         public string sFechaVencimiento { get; set; }
+        public bool bConfirmado { get; set; }
     }
 }

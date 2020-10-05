@@ -1,6 +1,8 @@
 import { Button, Grid, Hidden } from "@material-ui/core";
-import React from "react";
+
 import { MdAccountBox } from "react-icons/md";
+import React from "react";
+import { rxUrl } from "../../configuration/regexConfig";
 
 const MedicInfo = (props) => {
     const { entColaborador } = props;
@@ -44,32 +46,37 @@ const MedicInfo = (props) => {
                             </Grid>
                         </Hidden>
                         <Grid item xs={6}>
-                            <span className="directory-doctor-label">Especialidad</span>
+                            <span className="directory-doctor-label">Especialidad:</span>
                             <br />
                             <span className="directory-doctor-value">{entColaborador.sEspecialidad}</span>
                         </Grid>
                         <Grid item xs={6}>
-                            <span className="directory-doctor-label">Céd. Prof</span>
+                            <span className="directory-doctor-label">Céd. Prof:</span>
                             <br />
                             <span className="directory-doctor-value">{entColaborador.sCedulaProfecional}</span>
                         </Grid>
                         <Grid item xs={6}>
-                            <span className="directory-doctor-label">Teléfono</span>
+                            <span className="directory-doctor-label">Teléfono:</span>
                             <br />
                             <span className="directory-doctor-value">{entColaborador.sTelefono}</span>
                         </Grid>
                         <Grid item xs={6}>
-                            <span className="directory-doctor-label">Whatsapp</span>
+                            <span className="directory-doctor-label">Whatsapp:</span>
                             <br />
-                            <span className="directory-doctor-value">{entColaborador.sTelefono}</span>
+                            <span className="directory-doctor-value">{entColaborador.sWhatsApp}</span>
                         </Grid>
-                        <Grid item xs={12}>
-                            <span className="directory-doctor-label">Correo</span>
+                        <Grid item sm={6} xs={12}>
+                            <span className="directory-doctor-label">Correo:</span>
                             <br />
                             <span className="directory-doctor-value">{entColaborador.sCorreo}</span>
                         </Grid>
+                        <Grid item sm={6} xs={12}>
+                            <span className="directory-doctor-label">Nombre de consultorio:</span>
+                            <br />
+                            <span className="directory-doctor-value">{entColaborador.sNombreConsultorio}</span>
+                        </Grid>
                         <Grid item sm={entColaborador.sMaps !== null ? 6 : 12} xs={12}>
-                            <span className="directory-doctor-label">Dirección</span>
+                            <span className="directory-doctor-label">Dirección:</span>
                             <br />
                             <span className="directory-doctor-value">{entColaborador.sDireccionConsultorio}</span>
                         </Grid>
@@ -86,23 +93,22 @@ const MedicInfo = (props) => {
                                 </Button>
                             </Grid>
                         )}
-                        {/* <Grid item xs={12}>
-                            <span className="directory-doctor-label">Consultorio</span>
-                            <br />
-                            <span className="directory-doctor-value">Hospital Faro del Mayab - Consultorio 241</span>
-                        </Grid> */}
                         <Grid item xs={12}>
-                            <span className="directory-doctor-label">URL</span>
+                            <span className="directory-doctor-label">URL:</span>
                             <br />
                             <span className="directory-doctor-value">
-                                <a
-                                    href={"//" + entColaborador.sURL}
-                                    className="directory-link"
-                                    target="_blank"
-                                    rel="external"
-                                >
-                                    {entColaborador.sURL}
-                                </a>
+                                {rxUrl.test(entColaborador.sURL) ? (
+                                    <a
+                                        href={"//" + entColaborador.sURL}
+                                        className="directory-link"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        {entColaborador.sURL}
+                                    </a>
+                                ) : (
+                                    entColaborador.sURL
+                                )}
                             </span>
                         </Grid>
                     </Grid>

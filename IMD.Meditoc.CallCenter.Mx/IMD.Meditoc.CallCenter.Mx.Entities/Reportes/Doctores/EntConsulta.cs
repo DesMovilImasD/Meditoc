@@ -10,10 +10,10 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Reportes
     public class EntConsulta
     {
         public int iIdConsulta { get; set; }
-        public DateTime dtFechaProgramadaInicio { get; set; }
-        public DateTime dtFechaProgramadaFin { get; set; }
-        public DateTime dtFechaConsultaInicio { get; set; }
-        public DateTime dtFechaConsultaFin { get; set; }
+        public DateTime? dtFechaProgramadaInicio { get; set; }
+        public DateTime? dtFechaProgramadaFin { get; set; }
+        public DateTime? dtFechaConsultaInicio { get; set; }
+        public DateTime? dtFechaConsultaFin { get; set; }
         public string sFechaProgramadaInicio { get; set; }
         public string sFechaProgramadaFin { get; set; }
         public string sFechaConsultaInicio { get; set; }

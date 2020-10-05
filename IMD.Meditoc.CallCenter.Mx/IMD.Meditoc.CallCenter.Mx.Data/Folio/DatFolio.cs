@@ -63,6 +63,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
                     database.AddInParameter(dbCommand, "piConsecutivo", DbType.Int32, entFolio.iConsecutivo);
                     database.AddInParameter(dbCommand, "piIdOrigen", DbType.Int32, entFolio.iIdOrigen);
                     database.AddInParameter(dbCommand, "psPassword", DbType.String, entFolio.sPassword);
+                    database.AddInParameter(dbCommand, "pbConfirmado", DbType.Boolean, entFolio.bConfirmado);
                     database.AddInParameter(dbCommand, "psOrdenConekta", DbType.String, entFolio.sOrdenConekta);
                     database.AddInParameter(dbCommand, "pdtFechaVencimiento", DbType.DateTime, entFolio.dtFechaVencimiento);
                     database.AddInParameter(dbCommand, "piIdUsuarioMod", DbType.Int32, entFolio.iIdUsuarioMod);

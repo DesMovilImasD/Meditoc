@@ -17,6 +17,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Folio
         public int iIdPaciente { get; set; }
         public string sFolio { get; set; }
         public string sPassword { get; set; }
+        public bool bConfirmado { get; set; }
         public string sOrdenConekta { get; set; }
         public bool bTerminosYCondiciones { get; set; }
         public bool bActivo { get; set; }

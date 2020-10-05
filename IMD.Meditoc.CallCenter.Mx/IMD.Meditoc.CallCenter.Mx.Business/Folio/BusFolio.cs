@@ -260,6 +260,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             {
                 entFolio.iIdProducto = item.product_id;
                 entFolio.iConsecutivo = item.consecutive;
+                entFolio.bConfirmado = true;
 
                 if (item.months_expiration == 0)
                 {
@@ -536,12 +537,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 entFolio.iIdEmpresa = entFolioxEmpresa.iIdEmpresa;
                 entFolio.iIdOrigen = entFolioxEmpresa.iIdOrigen;
                 entFolio.bTerminosYCondiciones = false;
+                entFolio.iIdUsuarioMod = entFolioxEmpresa.iIdUsuarioMod;
 
                 //Se crea el paciente
                 EntPaciente entPaciente = new EntPaciente();
 
                 entPaciente.iIdPaciente = 0;
                 entPaciente.iIdFolio = entFolio.iIdFolio;
+                entPaciente.iIdUsuarioMod = entFolioxEmpresa.iIdUsuarioMod;
                 //entPaciente.sTelefono = "9999999999";
                 //entPaciente.sCorreo = "PPACIENTE@HOTMAIL.COM";
                 //entPaciente.sNombre = "PACIENTE";
@@ -762,6 +765,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 if (Enum.IsDefined(typeof(EnumProductos), entFolio.iIdProducto))
                 {
                     entFolio.dtFechaVencimiento = null;
+                    if (entFolio.iIdProducto == (int)EnumProductos.OrientacionEspecialistaID)
+                    {
+                        entFolio.bConfirmado = true;
+                    }
+                    else
+                    {
+                        entFolio.bConfirmado = false;
+                    }
                 }
                 else
                 {
@@ -774,6 +785,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     {
                         entFolio.dtFechaVencimiento = DateTime.Now.AddMonths(item.monthsExpiration);
                     }
+                    entFolio.bConfirmado = true;
                 }
 
                 BusGeneratePassword busGenerate = new BusGeneratePassword();
