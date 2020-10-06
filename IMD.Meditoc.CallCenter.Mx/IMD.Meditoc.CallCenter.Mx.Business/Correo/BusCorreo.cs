@@ -1,10 +1,13 @@
 ﻿using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
+using IMD.Meditoc.CallCenter.Mx.Data.Correo;
 using IMD.Meditoc.CallCenter.Mx.Entities;
+using IMD.Meditoc.CallCenter.Mx.Entities.Correo;
 using log4net;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -16,6 +19,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Correo
     public class BusCorreo
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(BusCorreo));
+        DatCorreo datCorreo;
+        public BusCorreo()
+        {
+            datCorreo = new DatCorreo();
+        }
 
         public EntCorreo oEnvioMail = new EntCorreo();
 
@@ -166,5 +174,80 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Correo
             return texto;
         }
 
+        public IMDResponse<bool> BSaveCorreo(string psOrderId, string psBody, string psTo, string psSubject)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.BSaveCorreo);
+            logger.Info(IMDSerialize.Serialize(67823458627183, $"Inicia {metodo}(string psOrderId, string psBody, string psTo, string psSubject)", psOrderId, psTo, psSubject));
+
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(psOrderId))
+                {
+                    return datCorreo.DSaveCorreo(psOrderId, psBody, psTo, psSubject);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458627960;
+                response.Message = "Ocurrió un error inesperado al guardar el correo de la orden.";
+
+                logger.Error(IMDSerialize.Serialize(67823458627960, $"Error en {metodo}(string psOrderId, string psBody, string psTo, string psSubject): {ex.Message}", psOrderId, psTo, psSubject, ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<bool> BReenviarCorreo(string psOrderId)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.BReenviarCorreo);
+            logger.Info(IMDSerialize.Serialize(67823458628737, $"Inicia {metodo}(string psOrderId)", psOrderId));
+
+            try
+            {
+                if (string.IsNullOrWhiteSpace(psOrderId))
+                {
+                    response.Code = -345673;
+                    response.Message = "No se especificó la orden";
+                    return response;
+                }
+
+                IMDResponse<DataTable> resGetData = datCorreo.DGetCorreo(psOrderId);
+                if (resGetData.Code != 0)
+                {
+                    return resGetData.GetResponse<bool>();
+                }
+
+                if (resGetData.Result.Rows.Count != 1)
+                {
+                    response.Code = -345673;
+                    response.Message = "No se encontró la orden";
+                    return response;
+                }
+
+                IMDDataRow dr = new IMDDataRow(resGetData.Result.Rows[0]);
+
+                EntOrderEmail entOrderEmail = new EntOrderEmail
+                {
+                    sBody = dr.ConvertTo<string>("sBody"),
+                    sOrderId = dr.ConvertTo<string>("sOrderId"),
+                    sSubject = dr.ConvertTo<string>("sSubject"),
+                    sTo = dr.ConvertTo<string>("sTo"),
+                };
+
+                response = this.m_EnviarEmail("", "", "", entOrderEmail.sSubject, entOrderEmail.sBody, entOrderEmail.sTo, "", "");
+
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458629514;
+                response.Message = "Ocurrió un error inesperado al reenviar el correo del cliente";
+
+                logger.Error(IMDSerialize.Serialize(67823458629514, $"Error en {metodo}(string psOrderId): {ex.Message}", psOrderId, ex, response));
+            }
+            return response;
+        }
     }
 }

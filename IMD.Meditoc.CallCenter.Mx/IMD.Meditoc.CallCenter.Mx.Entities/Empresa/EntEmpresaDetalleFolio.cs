@@ -6,6 +6,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Empresa
     public class EntEmpresaDetalleFolio
     {
         public EntEmpresa entEmpresa;
+        public string sOrderId { get; set; }
         public List<EntDetalleCompraArticulo> lstArticulos { get; set; }
 
         public EntEmpresaDetalleFolio()

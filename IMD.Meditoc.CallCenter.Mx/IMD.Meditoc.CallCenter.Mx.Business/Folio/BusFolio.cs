@@ -472,12 +472,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 plantillaBody = plantillaBody.Replace("sTerminosCondiciones", ConfigurationManager.AppSettings["sTerminosYCondiciones"]);
                 plantillaBody = plantillaBody.Replace("sLogoConekta", ConfigurationManager.AppSettings["sLogoConekta"]);
 
-                response = busCorreo.m_EnviarEmail("", "", "", asunto, plantillaBody, para, "", "");
+                busCorreo.BSaveCorreo(oDetalleCompra.sOrden, plantillaBody, para, asunto);
 
-                if (response.Code != 0)
-                {
-                    return response;
-                }
+                busCorreo.m_EnviarEmail("", "", "", asunto, plantillaBody, para, "", "");
 
 
                 response.Code = 0;
@@ -594,6 +591,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 //    scope.Complete();
                 //}
                 oDetalleFolioempresa.Result.lstArticulos = lstArticulosDetalle;
+                oDetalleFolioempresa.Result.sOrderId = entFolioxEmpresa.uid;
                 response = this.BEnvioCorreoEmpresa(oDetalleFolioempresa.Result);
 
                 if (response.Code != 0)
@@ -943,13 +941,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 plantillaBody = plantillaBody.Replace("sTerminosCondiciones", ConfigurationManager.AppSettings["sTerminosYCondiciones"]);
                 plantillaBody = plantillaBody.Replace("sLogoConekta", ConfigurationManager.AppSettings["sLogoConekta"]);
 
-                response = busCorreo.m_EnviarEmail("", "", "", asunto, plantillaBody, para, "", "");
+                busCorreo.BSaveCorreo(detalleFolio.sOrderId, plantillaBody, para, asunto);
 
-                if (response.Code != 0)
-                {
-                    return response;
-                }
-
+                busCorreo.m_EnviarEmail("", "", "", asunto, plantillaBody, para, "", "");
 
                 response.Code = 0;
                 response.Result = true;
@@ -1350,11 +1344,18 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
             try
             {
+                IMDResponse<EntConsulta> resGuardarConsulta = busConsulta.BSaveConsulta(entNuevaConsulta.consulta, entNuevaConsulta.iIdUsuarioMod);
+                if (resGuardarConsulta.Code != 0)
+                {
+                    return response = resGuardarConsulta.GetResponse<EntDetalleCompra>();
+                }
+
                 EntDetalleCompra entDetalleCompra = new EntDetalleCompra
                 {
                     sNombre = entNuevaConsulta.customerInfo.name,
                     sEmail = entNuevaConsulta.customerInfo.email,
                     sTelefono = entNuevaConsulta.customerInfo.phone,
+                    sOrden = resGuardarConsulta.Result.iIdConsulta.ToString(),
                     lstArticulos = new List<EntDetalleCompraArticulo>
                     {
                         new EntDetalleCompraArticulo
@@ -1367,11 +1368,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     }
                 };
 
-                IMDResponse<EntConsulta> resGuardarConsulta = busConsulta.BSaveConsulta(entNuevaConsulta.consulta, entNuevaConsulta.iIdUsuarioMod);
-                if (resGuardarConsulta.Code != 0)
-                {
-                    return response = resGuardarConsulta.GetResponse<EntDetalleCompra>();
-                }
 
                 IMDResponse<bool> responseCorreo = this.BEnviarCorreoConsulta(entDetalleCompra, reprogramado);
 
@@ -1433,13 +1429,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 plantillaBody = plantillaBody.Replace("sTerminosCondiciones", ConfigurationManager.AppSettings["sTerminosYCondiciones"]);
                 plantillaBody = plantillaBody.Replace("sLogoConekta", ConfigurationManager.AppSettings["sLogoConekta"]);
 
-                response = busCorreo.m_EnviarEmail("", "", "", asunto, plantillaBody, para, "", "");
-
-                if (response.Code != 0)
-                {
-                    return response;
-                }
-
+                busCorreo.BSaveCorreo(detalleFolio.sOrden, plantillaBody, para, asunto);
+                busCorreo.m_EnviarEmail("", "", "", asunto, plantillaBody, para, "", "");
 
                 response.Code = 0;
                 response.Result = true;

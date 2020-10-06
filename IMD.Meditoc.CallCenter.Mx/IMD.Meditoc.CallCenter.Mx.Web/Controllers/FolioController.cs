@@ -1,6 +1,7 @@
 ﻿using IMD.Admin.Conekta.Entities.Orders;
 using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
+using IMD.Meditoc.CallCenter.Mx.Business.Correo;
 using IMD.Meditoc.CallCenter.Mx.Business.Folio;
 using IMD.Meditoc.CallCenter.Mx.Entities;
 using IMD.Meditoc.CallCenter.Mx.Entities.Folio;
@@ -364,6 +365,31 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
                 response.Message = "Ocurrió un error inesperado en el servicio al generar los folios solicitados.";
 
                 logger.Error(IMDSerialize.Serialize(67823458620190, $"Error en {metodo}([FromUri]int piIdEmpresa, [FromUri]int piIdProducto, [FromUri]int piIdUsuarioMod): {ex.Message}", piIdEmpresa, piIdProducto, piIdUsuarioMod, ex, response));
+            }
+            return response;
+        }
+
+        [MeditocAuthentication]
+        [HttpPost]
+        [Route("Api/Folio/Reenviar/Orden/Correo")]
+        public IMDResponse<bool> CReenviarCorreo([FromUri]string psOrderId)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.CReenviarCorreo);
+            logger.Info(IMDSerialize.Serialize(67823458630291, $"Inicia {metodo}([FromUri]string psOrderId)", psOrderId));
+
+            try
+            {
+                BusCorreo busCorreo = new BusCorreo();
+                response = busCorreo.BReenviarCorreo(psOrderId);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458631068;
+                response.Message = "Ocurrió un error inesperado en el servicio al reenviar el correo";
+
+                logger.Error(IMDSerialize.Serialize(67823458631068, $"Error en {metodo}([FromUri]string psOrderId): {ex.Message}", psOrderId, ex, response));
             }
             return response;
         }

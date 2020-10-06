@@ -80,6 +80,7 @@
     <Compile Include="Consultas\EntDetalleConsulta.cs" />
     <Compile Include="Consultas\EntHistorialClinico.cs" />
     <Compile Include="Consultas\EnumEstatusConsulta.cs" />
+    <Compile Include="Correo\EntOrderEmail.cs" />
     <Compile Include="Empresa\EntEmpresa.cs" />
     <Compile Include="Empresa\EntEmpresaDetalleFolio.cs" />
     <Compile Include="EntConecktaPago.cs" />

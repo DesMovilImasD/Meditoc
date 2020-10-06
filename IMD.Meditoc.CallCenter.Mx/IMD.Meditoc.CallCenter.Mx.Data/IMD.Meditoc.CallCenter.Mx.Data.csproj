@@ -67,6 +67,7 @@
     <Compile Include="CGU\DatUsuario.cs" />
     <Compile Include="Colaborador\DatColaborador.cs" />
     <Compile Include="Consulta\DatConsulta.cs" />
+    <Compile Include="Correo\DatCorreo.cs" />
     <Compile Include="Empresa\DatEmpresa.cs" />
     <Compile Include="Folio\DatFolio.cs" />
     <Compile Include="Ordenes\DatOrder.cs" />
