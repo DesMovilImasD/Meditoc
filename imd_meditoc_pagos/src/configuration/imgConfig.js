@@ -1,5 +1,7 @@
 //CONFIGURACIONES DE LOS NOMBRES DE LAS IMÁGENES
 
+import { urlBase } from "./urlConfig";
+
 // //local
 // const logoMeditocMain = '/img/logo-meditoc-main.png'
 // const logoMeditocWhite = '/img/logo-meditoc-white.png'
@@ -13,26 +15,26 @@
 // const logoMeditocCover = '/store/img/portada-meditoc.png'
 
 //produccion
-const logoMeditocMain = '/MeditocStore/img/logo-meditoc-main.png'
-const logoMeditocWhite = '/MeditocStore/img/logo-meditoc-white.png'
-const logoMeditocSolutions = '/MeditocStore/img/logo-soluciones.png'
-const logoMeditocCover = '/MeditocStore/img/portada-meditoc.png'
-const logoMeditocDoctor = '/MeditocStore/img/MeditocDoctor.svg'
-const logoMeditocDoctorFondo = '/MeditocStore/img/MeditocDoctorFondo.svg'
-const logoMeditocDoctores = '/MeditocStore/img/MeditocDoctores.svg'
-const logoMeditocDoctorSample = '/MeditocStore/img/MeditocDoctorSample.png'
-const logoappleAvalible = '/MeditocStore/img/app-store2.png'
-const logoplayAvalible = '/MeditocStore/img/play-store2.png'
+const logoMeditocMain = urlBase + "/img/logo-meditoc-main.png";
+const logoMeditocWhite = urlBase + "/img/logo-meditoc-white.png";
+const logoMeditocSolutions = urlBase + "/img/logo-soluciones.png";
+const logoMeditocCover = urlBase + "/img/portada-meditoc.png";
+const logoMeditocDoctor = urlBase + "/img/MeditocDoctor.svg";
+const logoMeditocDoctorFondo = urlBase + "/img/MeditocDoctorFondo.svg";
+const logoMeditocDoctores = urlBase + "/img/MeditocDoctores.svg";
+const logoMeditocDoctorSample = urlBase + "/img/MeditocDoctorSample.png";
+const logoappleAvalible = urlBase + "/img/app-store2.png";
+const logoplayAvalible = urlBase + "/img/play-store2.png";
 
 export {
-  logoMeditocMain,
-  logoMeditocWhite,
-  logoMeditocSolutions,
-  logoMeditocCover,
-  logoMeditocDoctor,
-  logoMeditocDoctorFondo,
-  logoMeditocDoctores,
-  logoMeditocDoctorSample,
-  logoappleAvalible,
-  logoplayAvalible,
-}
+    logoMeditocMain,
+    logoMeditocWhite,
+    logoMeditocSolutions,
+    logoMeditocCover,
+    logoMeditocDoctor,
+    logoMeditocDoctorFondo,
+    logoMeditocDoctores,
+    logoMeditocDoctorSample,
+    logoappleAvalible,
+    logoplayAvalible,
+};

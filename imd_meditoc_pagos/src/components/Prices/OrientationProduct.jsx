@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
-import React from "react";
 import { Radio } from "@material-ui/core";
+import React from "react";
 
 /*****************************************************
  * Descripción: Representa un producto tipo servicio/orientación
@@ -50,17 +50,17 @@ const OrientationProduct = (props) => {
 };
 
 OrientationProduct.propTypes = {
-    index: PropTypes.number.isRequired,
-    lstOrientationProducts: PropTypes.array.isRequired,
+    index: PropTypes.number,
+    lstOrientationProducts: PropTypes.array,
     product: PropTypes.shape({
-        icon: PropTypes.string.isRequired,
-        info: PropTypes.string.isRequired,
-        price: PropTypes.number.isRequired,
-        selected: PropTypes.bool.isRequired,
-        shortName: PropTypes.string.isRequired,
+        icon: PropTypes.string,
+        info: PropTypes.string,
+        price: PropTypes.number,
+        selected: PropTypes.bool,
+        shortName: PropTypes.string,
     }),
-    setLstOrientationProducts: PropTypes.func.isRequired,
-    setOrientationDescription: PropTypes.func.isRequired,
+    setLstOrientationProducts: PropTypes.func,
+    setOrientationDescription: PropTypes.func,
 };
 
 export default OrientationProduct;

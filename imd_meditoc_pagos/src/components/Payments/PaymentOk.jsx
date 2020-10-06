@@ -1,7 +1,8 @@
-import PropTypes from "prop-types";
 import React, { useEffect } from "react";
+
 import { Grid } from "@material-ui/core";
 import { IoIosCheckmarkCircle } from "react-icons/io";
+import PropTypes from "prop-types";
 
 /*****************************************************
  * Descripción: Contenido de mensaje para pagos procesados y órdenes generadas
@@ -46,8 +47,8 @@ const PaymentOk = (props) => {
 };
 
 PaymentOk.propTypes = {
-    appInfo: PropTypes.object.isRequired,
-    entOrder: PropTypes.object.isRequired,
+    appInfo: PropTypes.object,
+    entOrder: PropTypes.object,
 };
 
 export default PaymentOk;

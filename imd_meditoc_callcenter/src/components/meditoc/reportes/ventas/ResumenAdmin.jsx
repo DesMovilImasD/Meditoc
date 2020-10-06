@@ -20,6 +20,7 @@ const ResumenAdmin = (props) => {
         { title: "Nombre", field: "sNombre", align: "center" },
         //{ title: "Total", field: "dTotal", align: "center" },
         //{ title: "Folios generados", field: "iTotalFolios", align: "center" },
+        { title: "Fecha", field: "sRegisterDate", align: "center" },
         { title: "Ver", field: "sDetalle", align: "center" },
     ];
 
@@ -87,7 +88,7 @@ const ResumenAdmin = (props) => {
                         color="color-3"
                     />
                 </Grid> */}
-                <Grid sm={4} xs={12} className="center">
+                <Grid item sm={4} xs={12} className="center">
                     <MeditocInfoNumber
                         label="TOTAL DE VENTA"
                         value={
@@ -99,14 +100,14 @@ const ResumenAdmin = (props) => {
                         color="color-1"
                     />
                 </Grid>
-                <Grid sm={4} xs={12} className="center">
+                <Grid item sm={4} xs={12} className="center">
                     <MeditocInfoNumber
                         label="ÓRDENES VENDIDAS"
                         value={entVentas.ResumenOrdenesAdmin.iTotalOrdenes}
                         color="color-6"
                     />
                 </Grid>
-                <Grid sm={4} xs={12} className="center">
+                <Grid item sm={4} xs={12} className="center">
                     <MeditocInfoNumber
                         label="FOLIOS GENERADOS"
                         value={entVentas.ResumenOrdenesAdmin.iTotalFolios}

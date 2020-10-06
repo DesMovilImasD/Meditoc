@@ -15,6 +15,7 @@ const DetalleConekta = (props) => {
 
     const columnas = [
         { title: "Folio", field: "sFolio", align: "center" },
+        { title: "Confirmado", field: "bConfirmado", align: "center" },
         { title: "Vencimiento", field: "sFechaVencimiento", align: "center" },
     ];
 
@@ -61,7 +62,7 @@ const DetalleConekta = (props) => {
                     <MeditocInfoField label="No. de autorización del banco:" value={entOrden.charges.sAuthCode} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <MeditocInfoField label="ID de cargo Conekta:" value={entOrden.charges.sChargeId} />
+                    <MeditocInfoField label="ID de cargo:" value={entOrden.charges.sChargeId} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="ID de control de compra:" value={entOrden.uId} />
@@ -84,7 +85,7 @@ const DetalleConekta = (props) => {
                                 }`}
                             </div>
                             <div className="center">
-                                <span className="rob-nor normal color-4 size-15">ID de artículo Conekta:</span>{" "}
+                                <span className="rob-nor normal color-4 size-15">ID de control artículo:</span>{" "}
                                 <span className="rob-nor bold color-3 size-15">{producto.sItemId}</span>
                                 <br />
                                 <span className="rob-nor normal color-4 size-15">Precio unitario:</span>{" "}

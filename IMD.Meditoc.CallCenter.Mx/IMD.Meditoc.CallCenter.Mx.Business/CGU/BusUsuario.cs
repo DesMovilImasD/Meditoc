@@ -107,6 +107,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     entUsuario.sApellidoPaterno = dr.ConvertTo<string>("sApellidoPaterno");
                     entUsuario.sApellidoMaterno = dr.ConvertTo<string>("sApellidoMaterno");
                     entUsuario.dtFechaNacimiento = dr.ConvertTo<DateTime>("dtFechaNacimiento");
+                    entUsuario.sFechaNacimiento = entUsuario.dtFechaNacimiento?.ToString("dd/MM/yyyy");
                     entUsuario.sTelefono = dr.ConvertTo<string>("sTelefono");
                     entUsuario.sCorreo = dr.ConvertTo<string>("sCorreo");
                     entUsuario.sDomicilio = dr.ConvertTo<string>("sDomicilio");

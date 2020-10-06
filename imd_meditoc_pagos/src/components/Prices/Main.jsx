@@ -1,11 +1,11 @@
-import PropTypes from "prop-types";
 import React, { Fragment } from "react";
-import Menu from "../Menu";
-import Cover from "./Cover";
+
 import Content from "./Content";
+import Directory from "./Directory";
 import Footer from "../Footer";
 import Header from "../Header";
-import Directory from "./Directory";
+import Menu from "../Menu";
+import PropTypes from "prop-types";
 
 /*****************************************************
  * Descripción: Estructura principal de la pagina de precios
@@ -42,7 +42,12 @@ const Main = (props) => {
 };
 
 Main.propTypes = {
-    funcLoader: PropTypes.func.isRequired,
+    appInfo: PropTypes.object,
+    funcLoader: PropTypes.func,
+    lstMembershipProducts: PropTypes.array,
+    lstOrientationProducts: PropTypes.array,
+    setLstMembershipProducts: PropTypes.func,
+    setLstOrientationProducts: PropTypes.func,
 };
 
 export default Main;

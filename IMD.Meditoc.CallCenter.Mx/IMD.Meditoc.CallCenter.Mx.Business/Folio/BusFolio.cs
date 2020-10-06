@@ -410,7 +410,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     if (foliosMostrar.Count == 1)
                     {
                         string plantillaFolio = "<tr><td><table class=\"table-detail\"><tr class=\"group-detail font-unset bold small center\"><td colspan=\"3\">item.sDataGroup</td></tr><tr><td><table class=\"table-detail\"><thead><tr class=\"font-table bold small font-secondary\"><th>Usuario</th><th>Contraseña</th></tr></thead><tbody><tr class=\"font-table bold small center table-border-b\"><td><small>1 -</small>&nbsp;item.sFolio</td><td>item.sPass</td></tr></tbody></table></td></tr></table></td></tr>";
-                        string vigencia = " - Vigencia:" + itemGroup.dtFechaVencimiento == null ? "" : itemGroup.dtFechaVencimiento?.ToString("dd/MM/yyyy - h:mm tt");
+                        string vigencia = string.Concat(" - Vigencia:", itemGroup.dtFechaVencimiento == null ? "" : itemGroup.dtFechaVencimiento?.ToString("dd/MM/yyyy - h:mm tt"));
                         plantillaFolio = plantillaFolio.Replace("item.sDataGroup", $"{itemGroup.sDescripcion}{vigencia}");
                         plantillaFolio = plantillaFolio.Replace("item.sFolio", foliosMostrar.First().sFolio);
                         plantillaFolio = plantillaFolio.Replace("item.sPass", foliosMostrar.First().sPass);
@@ -443,7 +443,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                         }
 
                         string plantillaFolios = "<tr><td><table class=\"table-detail\"><tr class=\"group-detail font-unset bold small center\"><td colspan=\"3\">item.sDataGroup</td></tr><tr><td><table class=\"table-detail\"><thead><tr class=\"font-table bold small font-secondary\"><th>Usuario</th><th>Contraseña</th></tr></thead><tbody>oDetalleCompra.FoliosIzquierda</tbody></table></td><td width=\"5%\"></td><td><table class=\"table-detail\"><thead><tr class=\"font-table bold small font-secondary\"><th>Usuario</th><th>Contraseña</th></tr></thead><tbody>oDetalleCompra.FoliosDerecha</tbody></table></td></tr></table></td></tr>";
-                        string vigencia = " - Vigencia:" + itemGroup.dtFechaVencimiento == null ? "" : itemGroup.dtFechaVencimiento?.ToString("dd/MM/yyyy - h:mm tt");
+                        string vigencia = string.Concat(" - Vigencia:", itemGroup.dtFechaVencimiento == null ? "" : itemGroup.dtFechaVencimiento?.ToString("dd/MM/yyyy - h:mm tt"));
                         plantillaFolios = plantillaFolios.Replace("item.sDataGroup", $"{itemGroup.sDescripcion}{vigencia}");
                         plantillaFolios = plantillaFolios.Replace("oDetalleCompra.FoliosIzquierda", htmlIzquierda);
                         plantillaFolios = plantillaFolios.Replace("oDetalleCompra.FoliosDerecha", htmlDerecha);
@@ -887,7 +887,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     if (foliosMostrar.Count == 1)
                     {
                         string plantillaFolio = "<tr><td><table class=\"table-detail\"><tr class=\"group-detail font-unset bold small center\"><td colspan=\"3\">item.sDataGroup</td></tr><tr><td><table class=\"table-detail\"><thead><tr class=\"font-table bold small font-secondary\"><th>Usuario</th><th>Contraseña</th></tr></thead><tbody><tr class=\"font-table bold small center table-border-b\"><td><small>1 -</small>&nbsp;item.sFolio</td><td>item.sPass</td></tr></tbody></table></td></tr></table></td></tr>";
-                        string vigencia = " - Vigencia:" + itemGroup.dtFechaVencimiento == null ? "" : itemGroup.dtFechaVencimiento?.ToString("dd/MM/yyyy - h:mm tt");
+                        string vigencia = string.Concat(" - Vigencia:", itemGroup.dtFechaVencimiento == null ? "" : itemGroup.dtFechaVencimiento?.ToString("dd/MM/yyyy - h:mm tt"));
                         plantillaFolio = plantillaFolio.Replace("item.sDataGroup", $"{itemGroup.sDescripcion}{vigencia}");
                         plantillaFolio = plantillaFolio.Replace("item.sFolio", foliosMostrar.First().sFolio);
                         plantillaFolio = plantillaFolio.Replace("item.sPass", foliosMostrar.First().sPass);
@@ -920,7 +920,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                         }
 
                         string plantillaFolios = "<tr><td><table class=\"table-detail\"><tr class=\"group-detail font-unset bold small center\"><td colspan=\"3\">item.sDataGroup</td></tr><tr><td><table class=\"table-detail\"><thead><tr class=\"font-table bold small font-secondary\"><th>Usuario</th><th>Contraseña</th></tr></thead><tbody>oDetalleCompra.FoliosIzquierda</tbody></table></td><td width=\"5%\"></td><td><table class=\"table-detail\"><thead><tr class=\"font-table bold small font-secondary\"><th>Usuario</th><th>Contraseña</th></tr></thead><tbody>oDetalleCompra.FoliosDerecha</tbody></table></td></tr></table></td></tr>";
-                        plantillaFolios = plantillaFolios.Replace("item.sDataGroup", $"{itemGroup.sDescripcion} - Vigencia: {itemGroup.dtFechaVencimiento:dd/MM/yyyy - h:mm tt}");
+                        string vigencia = string.Concat(" - Vigencia:", itemGroup.dtFechaVencimiento == null ? "" : itemGroup.dtFechaVencimiento?.ToString("dd/MM/yyyy - h:mm tt"));
+                        plantillaFolios = plantillaFolios.Replace("item.sDataGroup", $"{itemGroup.sDescripcion}{vigencia}");
                         plantillaFolios = plantillaFolios.Replace("oDetalleCompra.FoliosIzquierda", htmlIzquierda);
                         plantillaFolios = plantillaFolios.Replace("oDetalleCompra.FoliosDerecha", htmlDerecha);
                         htmlFolios += plantillaFolios;
@@ -1099,7 +1100,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     iIdPaciente = folioExistente.iIdPaciente,
                     sCorreo = entNuevaConsulta.customerInfo.email,
                     sNombre = entNuevaConsulta.customerInfo.name,
-                    sTelefono = entNuevaConsulta.customerInfo.phone
+                    sTelefono = entNuevaConsulta.customerInfo.phone,
+                    iIdUsuarioMod = entNuevaConsulta.iIdUsuarioMod
                 };
 
                 BusPaciente busPaciente = new BusPaciente();
@@ -1209,6 +1211,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 entPaciente.sTelefono = entNuevaConsulta.customerInfo.phone;
                 entPaciente.sCorreo = entNuevaConsulta.customerInfo.email;
                 entPaciente.sNombre = entNuevaConsulta.customerInfo.name;
+                entPaciente.iIdUsuarioMod = entNuevaConsulta.iIdUsuarioMod;
 
                 entFolio.iIdProducto = (int)EnumProductos.OrientacionEspecialistaID;
                 entFolio.dtFechaVencimiento = (DateTime)entNuevaConsulta.consulta.dtFechaProgramadaFin;
@@ -1224,7 +1227,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 if (dtFolio.Code != 0)
                 {
                     response = dtFolio.GetResponse<EntDetalleCompra>();
-                    response.Message = "Ocurrio un erro al guardar el folio";
+                    response.Message = "Ocurrio un error al guardar el folio";
                     return response;
                 }
 
@@ -1403,7 +1406,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             {
                 BusCorreo busCorreo = new BusCorreo();
 
-                string asunto = !reprogramado ? "Meditoc - Consulta programada" : "Meditoc - Consulta reprogramada";
+                string asunto = !reprogramado ? "Meditoc - Cita programada" : "Meditoc - Cita reprogramada";
                 string para = detalleFolio.sEmail;
 
 
@@ -1416,7 +1419,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 htmlFolios += plantillaFolio;
 
-                string plantillaBody = "<!DOCTYPE html><html><head><meta charset=\"utf-8;\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" /><link href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap\" rel=\"stylesheet\" /><style>body {font-family: Roboto, \"Segoe UI\", Tahoma, Geneva, Verdana, sans-serif;margin: 0;}.center {text-align: center !important;}.right {text-align: right !important;}.left {text-align: left !important;}.light {font-weight: 300;}.normal {font-weight: normal;}.bold {font-weight: 500;}.small {font-size: 12px;}.large {font-size: 15px;}.font-default {color: #707070;}.font-primary {color: #11b6ca;}.font-secondary {color: #115c8a;}.font-unset {color: #ffffff;}.font-table {color: #878787;}.table {margin: auto;width: 100%;max-width: 800px;border: 1px solid #dddddd;border-spacing: 0px;border-collapse: 0px;}.table td {padding: 6px 0px;}.logo-head {background-color: #11b6ca;padding: 5px 0px;}.table-content {margin: auto;width: 90%;border-collapse: collapse;}.table-detail {margin: auto;width: 100%;border-collapse: collapse;}.table-detail td {padding: 8px;vertical-align: top;}.head-detail {background-color: #115c8a;}.product-detail {border-bottom: 1px solid #989898;}.total-detail {background-color: #989898;}.group-detail {background-color: #11b6ca;}.divider {height: 1px;border: 0;background-color: #989898;}.link {text-decoration: none;}.link:hover {text-decoration: underline;}.link-none {text-decoration: none;}.table-border {border-right: 10px solid #115c8a;}.table-border-l {border-left: 10px solid #115c8a;}.table-border-b td {border-bottom: 1px solid #ccc;}</style></head><body><table class=\"table\"><tr><td class=\"logo-head center\"><img alt=\"logo-meditoc\" src=\"sLogoMeditoc\" height=\"50px\" /></td></tr><tr><td><table class=\"table-content\"><tr><td class=\"center\"><span class=\"font-default bold large\"> Gracias por su usar nuestros servicios </span></td></tr><tr><td class=\"center\"><span class=\"font-default normal large\"> Fecha de solicitud de consulta: oDetalleCompra.sFechaCompra </span></td></tr><tr class=\"center\"><td><span class=\"font-default normal large\">Guarda tus credenciales, te servirán para acceder a Meditoc:</span></td></tr>oDetalleCompra.folios<tr class=\"center\"><td><p><span class=\"font-default normal large\">Para utilizar el servicio, descarga la app “Meditoc 360” disponible en Appstore y Playstore.</span></p></td></tr><tr class=\"center\"><td><span><a href=\"sLinkApple\" target=\"_blank\"class=\"link-none\"><img src=\"sLogoApple\" height=\"50px\" width=\"150px\"alt=\"APP\" /></a></span><span><a href=\"sLinkPlay\"target=\"_blank\" class=\"link-none\"><img src=\"sLogoPlay\" height=\"50px\" width=\"150px\"alt=\"PLAY\" /></a></span></td></tr><tr><td><hr class=\"divider\" /></td></tr><tr><td><span class=\"font-default light small\">De conformidad con la ley federal de protección de datos personales en posesión de los particulares, ponemos a su disposición nuestro&nbsp;<a href=\"sAvisoPrivacidad\" class=\"link font-secondary normal\"> Aviso de Privacidad </a>&nbsp;y&nbsp;<a href=\"sTerminosCondiciones\" class=\"link font-secondary normal\"> Términos y Condiciones. </a></span></td></tr></table></td></tr></table></body></html>";
+                string plantillaBody = "<!DOCTYPE html><html><head><meta charset=\"utf-8;\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" /><link href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap\" rel=\"stylesheet\" /><style>body {font-family: Roboto, \"Segoe UI\", Tahoma, Geneva, Verdana, sans-serif;margin: 0;}.center {text-align: center !important;}.right {text-align: right !important;}.left {text-align: left !important;}.light {font-weight: 300;}.normal {font-weight: normal;}.bold {font-weight: 500;}.small {font-size: 12px;}.large {font-size: 15px;}.font-default {color: #707070;}.font-primary {color: #11b6ca;}.font-secondary {color: #115c8a;}.font-unset {color: #ffffff;}.font-table {color: #878787;}.table {margin: auto;width: 100%;max-width: 800px;border: 1px solid #dddddd;border-spacing: 0px;border-collapse: 0px;}.table td {padding: 6px 0px;}.logo-head {background-color: #11b6ca;padding: 5px 0px;}.table-content {margin: auto;width: 90%;border-collapse: collapse;}.table-detail {margin: auto;width: 100%;border-collapse: collapse;}.table-detail td {padding: 8px;vertical-align: top;}.head-detail {background-color: #115c8a;}.product-detail {border-bottom: 1px solid #989898;}.total-detail {background-color: #989898;}.group-detail {background-color: #11b6ca;}.divider {height: 1px;border: 0;background-color: #989898;}.link {text-decoration: none;}.link:hover {text-decoration: underline;}.link-none {text-decoration: none;}.table-border {border-right: 10px solid #115c8a;}.table-border-l {border-left: 10px solid #115c8a;}.table-border-b td {border-bottom: 1px solid #ccc;}</style></head><body><table class=\"table\"><tr><td class=\"logo-head center\"><img alt=\"logo-meditoc\" src=\"sLogoMeditoc\" height=\"50px\" /></td></tr><tr><td><table class=\"table-content\"><tr><td class=\"center\"><span class=\"font-default bold large\"> Gracias por usar nuestros servicios </span></td></tr><tr><td class=\"center\"><span class=\"font-default normal large\"> Fecha de solicitud de consulta: oDetalleCompra.sFechaCompra </span></td></tr><tr class=\"center\"><td><span class=\"font-default normal large\">Guarda tus credenciales, te servirán para acceder a Meditoc:</span></td></tr>oDetalleCompra.folios<tr class=\"center\"><td><p><span class=\"font-default normal large\">Para utilizar el servicio, descarga la app “Meditoc 360” disponible en Appstore y Playstore.</span></p></td></tr><tr class=\"center\"><td><span><a href=\"sLinkApple\" target=\"_blank\"class=\"link-none\"><img src=\"sLogoApple\" height=\"50px\" width=\"150px\"alt=\"APP\" /></a></span><span><a href=\"sLinkPlay\"target=\"_blank\" class=\"link-none\"><img src=\"sLogoPlay\" height=\"50px\" width=\"150px\"alt=\"PLAY\" /></a></span></td></tr><tr><td><hr class=\"divider\" /></td></tr><tr><td><span class=\"font-default light small\">De conformidad con la ley federal de protección de datos personales en posesión de los particulares, ponemos a su disposición nuestro&nbsp;<a href=\"sAvisoPrivacidad\" class=\"link font-secondary normal\"> Aviso de Privacidad </a>&nbsp;y&nbsp;<a href=\"sTerminosCondiciones\" class=\"link font-secondary normal\"> Términos y Condiciones. </a></span></td></tr></table></td></tr></table></body></html>";
 
                 plantillaBody = plantillaBody.Replace("sLogoMeditoc", ConfigurationManager.AppSettings["sLogoMeditoc"]);
                 plantillaBody = plantillaBody.Replace("oDetalleCompra.sNombre", detalleFolio.sNombre);
@@ -1735,22 +1738,22 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     return response;
                 }
 
-                using (DbConnection dbConnection = datFolio.database.CreateConnection())
+                //using (DbConnection dbConnection = datFolio.database.CreateConnection())
+                //{
+                //    dbConnection.Open();
+                //    using (DbTransaction dbTransaction = dbConnection.BeginTransaction())
+                //    {
+                foreach (EntFolioFVItem folio in entFolioFV.lstFolios)
                 {
-                    dbConnection.Open();
-                    using (DbTransaction dbTransaction = dbConnection.BeginTransaction())
+                    IMDResponse<bool> respuestaUpdFecha = datFolio.DUpdFechaVencimiento(entFolioFV.iIdEmpresa, folio.iIdFolio, entFolioFV.dtFechaVencimiento, entFolioFV.iIdUsuario);
+                    if (respuestaUpdFecha.Code != 0)
                     {
-                        foreach (EntFolioFVItem folio in entFolioFV.lstFolios)
-                        {
-                            IMDResponse<bool> respuestaUpdFecha = datFolio.DUpdFechaVencimiento(entFolioFV.iIdEmpresa, folio.iIdFolio, entFolioFV.dtFechaVencimiento, entFolioFV.iIdUsuario);
-                            if (respuestaUpdFecha.Code != 0)
-                            {
-                                return respuestaUpdFecha;
-                            }
-                        }
-                        dbTransaction.Commit();
+                        return respuestaUpdFecha;
                     }
                 }
+                //        dbTransaction.Commit();
+                //    }
+                //}
 
                 response.Code = 0;
                 response.Message = "Folios actualizados";
@@ -1794,22 +1797,22 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     return response;
                 }
 
-                using (DbConnection dbConnection = datFolio.database.CreateConnection())
+                //using (DbConnection dbConnection = datFolio.database.CreateConnection())
+                //{
+                //    dbConnection.Open();
+                //    using (DbTransaction dbTransaction = dbConnection.BeginTransaction())
+                //    {
+                foreach (EntFolioFVItem folio in entFolioFV.lstFolios)
                 {
-                    dbConnection.Open();
-                    using (DbTransaction dbTransaction = dbConnection.BeginTransaction())
+                    IMDResponse<bool> respuestaUpdFecha = datFolio.DEliminarFoliosEmpresa(entFolioFV.iIdEmpresa, folio.iIdFolio, entFolioFV.iIdUsuario);
+                    if (respuestaUpdFecha.Code != 0)
                     {
-                        foreach (EntFolioFVItem folio in entFolioFV.lstFolios)
-                        {
-                            IMDResponse<bool> respuestaUpdFecha = datFolio.DEliminarFoliosEmpresa(entFolioFV.iIdEmpresa, folio.iIdFolio, entFolioFV.iIdUsuario);
-                            if (respuestaUpdFecha.Code != 0)
-                            {
-                                return respuestaUpdFecha;
-                            }
-                        }
-                        dbTransaction.Commit();
+                        return respuestaUpdFecha;
                     }
                 }
+                //        dbTransaction.Commit();
+                //    }
+                //}
 
                 response.Code = 0;
                 response.Message = "Folios actualizados";
@@ -2272,41 +2275,41 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 Guid tempOrderUID = Guid.NewGuid();
                 int qty = 0;
-                using (DbConnection dbConnection = datFolio.database.CreateConnection())
+                //using (DbConnection dbConnection = datFolio.database.CreateConnection())
+                //{
+                //    dbConnection.Open();
+                //    using (DbTransaction dbTransaction = dbConnection.BeginTransaction())
+                //    {
+
+                foreach (EntFolioUser folio in data.lstFolios)
                 {
-                    dbConnection.Open();
-                    using (DbTransaction dbTransaction = dbConnection.BeginTransaction())
+                    EntFolioVentaCalle entFolioVentaCalle = new EntFolioVentaCalle
                     {
+                        iIdEmpresa = data.entEmpresa.iIdEmpresa,
+                        iIdOrigen = entFolioxEmpresa.iIdOrigen,
+                        iIdProducto = data.entProducto.iIdProducto,
+                        iIdUsuarioMod = piIdUsuarioMod,
+                        sFolio = folio.sFolio,
+                        sPassword = folio.sPassword,
+                        dtFechaVencimiento = Enum.IsDefined(typeof(EnumProductos), data.entProducto.iIdProducto) ? (DateTime?)null : data.entProducto.iMesVigencia == 0 ? DateTime.Now.AddDays(Convert.ToInt16(ConfigurationManager.AppSettings["iDiasDespuesVencimiento"])) : DateTime.Now.AddMonths(data.entProducto.iMesVigencia),
+                        sOrdenConekta = tempOrderUID.ToString(),
+                        bConfirmado = Enum.IsDefined(typeof(EnumProductos), data.entProducto.iIdProducto) && data.entProducto.iIdProducto != (int)EnumProductos.OrientacionEspecialistaID ? false : true
+                    };
 
-                        foreach (EntFolioUser folio in data.lstFolios)
-                        {
-                            EntFolioVentaCalle entFolioVentaCalle = new EntFolioVentaCalle
-                            {
-                                iIdEmpresa = data.entEmpresa.iIdEmpresa,
-                                iIdOrigen = entFolioxEmpresa.iIdOrigen,
-                                iIdProducto = data.entProducto.iIdProducto,
-                                iIdUsuarioMod = piIdUsuarioMod,
-                                sFolio = folio.sFolio,
-                                sPassword = folio.sPassword,
-                                dtFechaVencimiento = Enum.IsDefined(typeof(EnumProductos), data.entProducto.iIdProducto) ? (DateTime?)null : data.entProducto.iMesVigencia == 0 ? DateTime.Now.AddDays(Convert.ToInt16(ConfigurationManager.AppSettings["iDiasDespuesVencimiento"])) : DateTime.Now.AddMonths(data.entProducto.iMesVigencia),
-                                sOrdenConekta = tempOrderUID.ToString(),
-                                bConfirmado = Enum.IsDefined(typeof(EnumProductos), data.entProducto.iIdProducto) && data.entProducto.iIdProducto != (int)EnumProductos.OrientacionEspecialistaID ? false : true
-                            };
-
-                            IMDResponse<bool> resSaveFolio = this.BSaveFolioVC(entFolioVentaCalle);
-                            if (resSaveFolio.Code != 0)
-                            {
-                                resSaveFolio.Message = $"El folio {entFolioVentaCalle.sFolio} con contraseña {entFolioVentaCalle.sPassword} no se pudo guardar. Verifique los datos y cargue el archivo nuevamente. El proceso de guardado se ha detenido";
-                                return resSaveFolio;
-                            }
-                            if (resSaveFolio.Result)
-                            {
-                                qty++;
-                            }
-                        }
-                        dbTransaction.Commit();
+                    IMDResponse<bool> resSaveFolio = this.BSaveFolioVC(entFolioVentaCalle);
+                    if (resSaveFolio.Code != 0)
+                    {
+                        resSaveFolio.Message = $"El folio {entFolioVentaCalle.sFolio} con contraseña {entFolioVentaCalle.sPassword} no se pudo guardar. Verifique los datos y cargue el archivo nuevamente. El proceso de guardado se ha detenido";
+                        return resSaveFolio;
+                    }
+                    if (resSaveFolio.Result)
+                    {
+                        qty++;
                     }
                 }
+                //        dbTransaction.Commit();
+                //    }
+                //}
 
 
                 if (qty > 0)
@@ -2318,11 +2321,17 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     {
                         return resSaveOrder;
                     }
+                    response.Code = 0;
+                    response.Message = "Los folios se guardaron correctamente";
+                    response.Result = true;
+                }
+                else
+                {
+                    response.Code = -10;
+                    response.Message = "Los folios solicitados ya han sido registrados con anterioridad. No se generó la orden.";
+                    response.Result = false;
                 }
 
-                response.Code = 0;
-                response.Message = "Los folios se guardaron correctamente";
-                response.Result = true;
 
             }
             catch (Exception ex)

@@ -102,6 +102,9 @@ const DetalleConsulta = (props) => {
                         <MeditocInfoField label="Sexo:" value={entConsulta.sSexoPaciente} />
                     </Grid>
                     <Grid item sm={6} xs={12}>
+                        <MeditocInfoField label="Tipo de sangre:" value={entConsulta.sTipoSangrePaciente} />
+                    </Grid>
+                    <Grid item sm={6} xs={12}>
                         <MeditocInfoField label="Fecha de nacimiento:" value={entConsulta.sFechaNacimientoPaciente} />
                     </Grid>
                     <Grid item sm={6} xs={12}>

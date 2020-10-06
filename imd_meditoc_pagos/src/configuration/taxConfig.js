@@ -1,3 +1,4 @@
-const useTax = true
+const useTax = true;
+const defaultTaxValue = 0.16;
 
-export { useTax }
+export { useTax, defaultTaxValue };

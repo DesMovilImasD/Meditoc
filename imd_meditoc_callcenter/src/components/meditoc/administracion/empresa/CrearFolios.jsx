@@ -11,7 +11,16 @@ import { useEffect } from "react";
 import { useState } from "react";
 
 const CrearFolios = (props) => {
-    const { entEmpresa, open, setOpen, listaProductos, funcGetFoliosEmpresa, funcLoader, funcAlert } = props;
+    const {
+        entEmpresa,
+        open,
+        setOpen,
+        listaProductos,
+        funcGetFoliosEmpresa,
+        usuarioSesion,
+        funcLoader,
+        funcAlert,
+    } = props;
 
     const columns = [
         { title: "ID", field: "iIdProducto", align: "left", editable: "never", hidden: true },
@@ -75,6 +84,7 @@ const CrearFolios = (props) => {
         const entFoliosEmpresaSubmit = {
             iIdEmpresa: entEmpresa.iIdEmpresa,
             iIdOrigen: EnumOrigen.PanelAdministrativo,
+            iIdUsuarioMod: usuarioSesion.iIdUsuario,
             line_items: listaProductosSeleccionados.map((prod) => ({
                 product_id: prod.iIdProducto,
                 quantity: prod.iCantidad,

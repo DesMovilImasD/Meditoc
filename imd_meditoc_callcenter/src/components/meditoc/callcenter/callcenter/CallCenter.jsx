@@ -93,7 +93,17 @@ const CallCenter = (props) => {
         if (folioLocalStorage !== null && folioLocalStorage !== undefined && folioLocalStorage !== "") {
             funcLoader(true, "Buscando folio...");
 
-            const response = await folioController.funcGetFolios(null, null, null, null, folioLocalStorage);
+            const response = await folioController.funcGetFolios(
+                null,
+                null,
+                null,
+                null,
+                folioLocalStorage,
+                "",
+                "",
+                "",
+                ""
+            );
 
             if (response.Code === 0) {
                 if (response.Result.length === 1) {

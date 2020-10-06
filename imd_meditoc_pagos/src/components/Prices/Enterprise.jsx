@@ -1,6 +1,7 @@
-import React from "react";
+import { Button, Grid } from "@material-ui/core";
+
 import { FaBusinessTime } from "react-icons/fa";
-import { Grid, Button } from "@material-ui/core";
+import React from "react";
 
 const Enterprise = () => {
     return (

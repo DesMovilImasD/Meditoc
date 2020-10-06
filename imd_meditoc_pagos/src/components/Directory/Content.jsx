@@ -1,24 +1,15 @@
+import { Grid, IconButton, InputAdornment, MenuItem, TextField, Tooltip, makeStyles } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import {
-    Grid,
-    TextField,
-    InputAdornment,
-    IconButton,
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-    makeStyles,
-    Tooltip,
-} from "@material-ui/core";
-import { BsSearch } from "react-icons/bs";
-import { AiOutlineFileSearch } from "react-icons/ai";
-import { MdClose } from "react-icons/md";
-import Pagination from "@material-ui/lab/Pagination";
-import { logoMeditocDoctorSample } from "../../configuration/imgConfig";
-import { serverMain } from "../../configuration/serverConfig";
 import { apiGetDirectorio, apiGetEspecialidades } from "../../configuration/apiConfig";
+
+import { AiOutlineFileSearch } from "react-icons/ai";
+import { BsSearch } from "react-icons/bs";
+import GetApp from "../GetApp";
+import { MdClose } from "react-icons/md";
 import MedicInfo from "./MedicInfo";
+import Pagination from "@material-ui/lab/Pagination";
+import PropTypes from "prop-types";
+import { serverMain } from "../../configuration/serverConfig";
 
 const useStyles = makeStyles({
     ul: {
@@ -27,6 +18,12 @@ const useStyles = makeStyles({
     },
 });
 
+/*****************************************************
+ * Descripción: Contenido del directorio médico, filtro y detalle
+ * Autor: Cristopher Noh
+ * Fecha: 07/09/2020
+ * Modificaciones:
+ *****************************************************/
 const Content = (props) => {
     const { funcLoader } = props;
 
@@ -65,12 +62,6 @@ const Content = (props) => {
         funcLoader(true, "Consultando especialidades...");
 
         try {
-            // const apiResponse = await fetch(`${serverMain}${apiGetEspecialidades}`, {
-            //     headers: {
-            //         "AppKey": "qSVBJIQpOqtp0UfwzwX1ER6fNYR8YiPU/bw5CdEqYqk=",
-            //         "AppToken": "Xx3ePv63cUTg77QPATmztJ3J8cdO1riA7g+lVRzOzhfnl9FnaVT1O2YIv8YCTVRZ",
-            //     },
-            // });
             const apiResponse = await fetch(`${serverMain}${apiGetEspecialidades}`);
 
             const response = await apiResponse.json();
@@ -98,7 +89,8 @@ const Content = (props) => {
         setBuscadorIngresada(e.target.value);
     };
 
-    const handleClickBuscar = async () => {
+    const handleClickBuscar = async (e) => {
+        e.preventDefault();
         await funcGetDirectorio(null, buscadorIngresada, 1);
         setUltimaBusqueda(buscadorIngresada);
         setPaginaSeleccionada(1);
@@ -118,65 +110,72 @@ const Content = (props) => {
 
     useEffect(() => {
         funcGetData();
+        // eslint-disable-next-line
     }, []);
 
     return (
         <div className="directory-content">
-            <Grid container spacing={3}>
-                <Grid item sm={6} xs={12}>
-                    <TextField
-                        variant="outlined"
-                        fullWidth
-                        label="Buscar..."
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment edge="start">
-                                    {ultimaBusqueda !== "" ? (
-                                        <Tooltip title="Limpiar búsqueda" arrow placement="top">
-                                            <IconButton onClick={handleClickLimpiar}>
-                                                <MdClose />
+            <form id="form-directorio" onSubmit={handleClickBuscar} noValidate>
+                <Grid container spacing={3}>
+                    <Grid item sm={6} xs={12}>
+                        <TextField
+                            variant="outlined"
+                            fullWidth
+                            label="Buscar..."
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment edge="start">
+                                        {ultimaBusqueda !== "" ? (
+                                            <Tooltip title="Limpiar búsqueda" arrow placement="top">
+                                                <IconButton onClick={handleClickLimpiar}>
+                                                    <MdClose />
+                                                </IconButton>
+                                            </Tooltip>
+                                        ) : null}
+                                        <Tooltip title="Iniciar búsqueda" arrow placement="top">
+                                            <IconButton onClick={handleClickBuscar}>
+                                                <BsSearch />
                                             </IconButton>
                                         </Tooltip>
-                                    ) : null}
-                                    <Tooltip title="Iniciar búsqueda" arrow placement="top">
-                                        <IconButton onClick={handleClickBuscar}>
-                                            <BsSearch />
-                                        </IconButton>
-                                    </Tooltip>
-                                </InputAdornment>
-                            ),
-                        }}
-                        value={buscadorIngresada}
-                        onChange={handleChangeBuscador}
-                    />
+                                    </InputAdornment>
+                                ),
+                            }}
+                            value={buscadorIngresada}
+                            onChange={handleChangeBuscador}
+                        />
+                    </Grid>
+
+                    <Grid item sm={6} xs={12}>
+                        <TextField
+                            fullWidth
+                            variant="outlined"
+                            label="Especialidad:"
+                            select
+                            value={especialidadSeleccionada}
+                            onChange={handleChangeEspecialidad}
+                            SelectProps={{ MenuProps: { PaperProps: { style: { maxHeight: 300 } } } }}
+                        >
+                            <MenuItem value="">
+                                <em>Todas las especialidades</em>
+                            </MenuItem>
+                            {listaEspecialidades
+                                .sort((a, b) => (a.sNombre > b.sNombre ? 1 : -1))
+                                .map((especialidad) =>
+                                    especialidad.iIdEspecialidad === 1 ? null : (
+                                        <MenuItem
+                                            key={especialidad.iIdEspecialidad}
+                                            value={especialidad.iIdEspecialidad.toString()}
+                                        >
+                                            {especialidad.sNombre}
+                                        </MenuItem>
+                                    )
+                                )}
+                        </TextField>
+                    </Grid>
                 </Grid>
-                <Grid item sm={6} xs={12}>
-                    <TextField
-                        fullWidth
-                        variant="outlined"
-                        label="Especialidad:"
-                        select
-                        value={especialidadSeleccionada}
-                        onChange={handleChangeEspecialidad}
-                        SelectProps={{ MenuProps: { PaperProps: { style: { maxHeight: 300 } } } }}
-                    >
-                        <MenuItem value="">
-                            <em>Todas las especialidades</em>
-                        </MenuItem>
-                        {listaEspecialidades
-                            .sort((a, b) => (a.sNombre > b.sNombre ? 1 : -1))
-                            .map((especialidad) =>
-                                especialidad.iIdEspecialidad === 1 ? null : (
-                                    <MenuItem
-                                        key={especialidad.iIdEspecialidad}
-                                        value={especialidad.iIdEspecialidad.toString()}
-                                    >
-                                        {especialidad.sNombre}
-                                    </MenuItem>
-                                )
-                            )}
-                    </TextField>
-                </Grid>
+                <button type="submit" hidden />
+            </form>
+            <Grid container spacing={3}>
                 <Grid item xs={12}>
                     {listaColaboradores.map((entColaborador) => (
                         <MedicInfo key={entColaborador.iIdColaborador} entColaborador={entColaborador} />
@@ -202,9 +201,16 @@ const Content = (props) => {
                         </div>
                     )}
                 </Grid>
+                <Grid item xs={12}>
+                    <GetApp />
+                </Grid>
             </Grid>
         </div>
     );
+};
+
+Content.propTypes = {
+    funcLoader: PropTypes.func,
 };
 
 export default Content;

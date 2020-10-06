@@ -278,8 +278,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                             iIdFolio = f.Key,
                             sFolio = f.Select(r => r.sFolio).FirstOrDefault(),
                             bTerminosYCondiciones = f.Select(r => r.bTerminosYCondiciones).FirstOrDefault(),
-                            sFechaVencimiento = f.Select(r => r.sFechaVencimiento).FirstOrDefault(),
-                            bConfirmado = f.Select(r => r.bConfirmado).FirstOrDefault(),
+                            sFechaVencimiento = f.Select(r => r.sFechaVencimiento == null ? "Sin asignar" : r.sFechaVencimiento).FirstOrDefault(),
+                            bConfirmado = f.Select(r => r.bConfirmado ? "SI" : "NO").FirstOrDefault(),
                             sTerminosYCondiciones = f.Select(r => r.bTerminosYCondiciones).FirstOrDefault() ? "SI" : "NO"
                         }).ToList()
                     }).ToList(),
@@ -331,7 +331,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                             sFolio = f.Select(r => r.sFolio).FirstOrDefault(),
                             bTerminosYCondiciones = f.Select(r => r.bTerminosYCondiciones).FirstOrDefault(),
                             sFechaVencimiento = f.Select(r => r.sFechaVencimiento).FirstOrDefault(),
-                            bConfirmado = f.Select(r => r.bConfirmado).FirstOrDefault(),
+                            bConfirmado = f.Select(r => r.bConfirmado ? "SI" : "NO").FirstOrDefault(),
                             sTerminosYCondiciones = f.Select(r => r.bTerminosYCondiciones).FirstOrDefault() ? "SI" : "NO"
                         }).ToList()
                     }).ToList(),
@@ -667,10 +667,10 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                     //});
                     //#endregion
 
+                    sheetFolios.Cells[sheetFolios.Dimension.Address].AutoFitColumns();
                     sheetFolios.Cells[sheetFolios.Dimension.Address].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                     sheetFolios.Cells[sheetFolios.Dimension.Address].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    sheetFolios.Cells[sheetFolios.Dimension.Address].Style.WrapText = true;
-                    sheetFolios.Cells[sheetFolios.Dimension.Address].AutoFitColumns();
+                    sheetFolios.Cells[sheetFolios.Dimension.Address].Style.WrapText = false;
 
                     MemoryStream ms = new MemoryStream(package.GetAsByteArray());
                     response.Result = ms;
@@ -1009,7 +1009,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                     sheetDoctores.Cells[sheetDoctores.Dimension.Address].AutoFitColumns();
                     sheetDoctores.Cells[sheetDoctores.Dimension.Address].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                     sheetDoctores.Cells[sheetDoctores.Dimension.Address].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    sheetDoctores.Cells[sheetDoctores.Dimension.Address].Style.WrapText = true;
+                    sheetDoctores.Cells[sheetDoctores.Dimension.Address].Style.WrapText = false;
 
                     MemoryStream ms = new MemoryStream(package.GetAsByteArray());
                     response.Result = ms;

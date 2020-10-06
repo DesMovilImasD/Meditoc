@@ -243,7 +243,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
                     consulta.sFechaConsultaFin = consulta.dtFechaConsultaFin?.ToString("dd/MM/yyyy HH:mm");
                     consulta.sFechaConsultaInicio = consulta.dtFechaConsultaInicio?.ToString("dd/MM/yyyy HH:mm");
                     consulta.sFechaCreacion = consulta.dtFechaCreacion?.ToString("dd/MM/yyyy HH:mm");
-                    consulta.sFechaNacimientoPaciente = consulta.dtFechaNacimientoPaciente?.ToString("dd/MM/yyyy HH:mm");
+                    consulta.sFechaNacimientoPaciente = consulta.dtFechaNacimientoPaciente?.ToString("dd/MM/yyyy");
                     consulta.sFechaProgramadaFin = consulta.dtFechaProgramadaFin?.ToString("dd/MM/yyyy HH:mm");
                     consulta.sFechaProgramadaInicio = consulta.dtFechaProgramadaInicio?.ToString("dd/MM/yyyy HH:mm");
                     consulta.sFechaVencimiento = consulta.dtFechaVencimiento?.ToString("dd/MM/yyyy HH:mm");

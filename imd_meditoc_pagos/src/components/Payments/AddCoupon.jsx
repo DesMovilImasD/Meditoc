@@ -1,8 +1,9 @@
-import PropTypes from "prop-types";
+import { Button, Dialog, DialogContent, Grid, TextField, Typography } from "@material-ui/core";
 import React, { useState } from "react";
-import { Dialog, DialogContent, TextField, Grid, Button, Typography } from "@material-ui/core";
-import { serverMain, serverWa } from "../../configuration/serverConfig";
+
+import PropTypes from "prop-types";
 import { apiValidateCoupon } from "../../configuration/apiConfig";
+import { serverMain } from "../../configuration/serverConfig";
 
 /*****************************************************
  * Descripción: Despliega el dialogo para ingresar y validar un cupón
@@ -34,7 +35,8 @@ const AddCoupon = (props) => {
     };
 
     //Consumir servicio para validar cupón
-    const funcValidateCoupon = async () => {
+    const funcValidateCoupon = async (e) => {
+        e.preventDefault();
         funcLoader(true, "Validando cupón...");
 
         try {
@@ -47,6 +49,7 @@ const AddCoupon = (props) => {
                 setEntCoupon(response.Result);
 
                 handleCloseCouponDialog();
+                document.activeElement.blur();
             } else {
                 setCouponCodeMessage(response.Message);
             }
@@ -60,45 +63,47 @@ const AddCoupon = (props) => {
     return (
         <Dialog open={couponDialogOpen} onClose={handleCloseCouponDialog}>
             <DialogContent>
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <span className="pay-add-coupon-title">Ingrese código de descuento</span>
+                <form id="form-cupon" onSubmit={funcValidateCoupon} noValidate>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <span className="pay-add-coupon-title">Ingrese código de descuento</span>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                name="txtCouponCode"
+                                variant="standard"
+                                fullWidth
+                                autoFocus
+                                value={couponCode}
+                                onChange={handleChangeCouponCode}
+                                error={couponCodeMessage !== ""}
+                                helperText={couponCodeMessage}
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Button className="secondary-gray" onClick={handleCloseCouponDialog}>
+                                <Typography className="secondary-gray" variant="button">
+                                    Cancelar
+                                </Typography>
+                            </Button>
+                        </Grid>
+                        <Grid item xs={6} className="right">
+                            <Button color="primary" type="submit" disabled={couponCode === ""}>
+                                Aceptar
+                            </Button>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            name="txtCouponCode"
-                            variant="standard"
-                            fullWidth
-                            autoFocus
-                            value={couponCode}
-                            onChange={handleChangeCouponCode}
-                            error={couponCodeMessage !== ""}
-                            helperText={couponCodeMessage}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Button className="secondary-gray" onClick={handleCloseCouponDialog}>
-                            <Typography className="secondary-gray" variant="button">
-                                Cancelar
-                            </Typography>
-                        </Button>
-                    </Grid>
-                    <Grid item xs={6} className="right">
-                        <Button color="primary" onClick={funcValidateCoupon} disabled={couponCode === ""}>
-                            Aceptar
-                        </Button>
-                    </Grid>
-                </Grid>
+                </form>
             </DialogContent>
         </Dialog>
     );
 };
 
 AddCoupon.propTypes = {
-    couponDialogOpen: PropTypes.bool.isRequired,
-    funcLoader: PropTypes.func.isRequired,
-    setCouponDialogOpen: PropTypes.func.isRequired,
-    setEntCoupon: PropTypes.func.isRequired,
+    couponDialogOpen: PropTypes.bool,
+    funcLoader: PropTypes.func,
+    setCouponDialogOpen: PropTypes.func,
+    setEntCoupon: PropTypes.func,
 };
 
 export default AddCoupon;

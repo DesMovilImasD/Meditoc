@@ -1,9 +1,7 @@
+import { Grid } from "@material-ui/core";
 import PropTypes from "prop-types";
 import React from "react";
-import { Grid } from "@material-ui/core";
 import { logoMeditocWhite } from "../configuration/imgConfig";
-
-
 
 /*****************************************************
  * Descripción: Footer del sitio
@@ -33,7 +31,7 @@ const Footer = (props) => {
                         </div>
                         <div>
                             <span className="price-footer-address">Mail: {appInfo.sCorreoContacto}</span>
-                        </div>                        
+                        </div>
                     </Grid>
                     <Grid item md={6} xs={12}>
                         <iframe
@@ -53,7 +51,7 @@ const Footer = (props) => {
 };
 
 Footer.propTypes = {
-    appInfo: PropTypes.object.isRequired,
+    appInfo: PropTypes.object,
 };
 
 export default Footer;

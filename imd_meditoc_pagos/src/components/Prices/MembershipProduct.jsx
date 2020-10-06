@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
-import React from "react";
 import { Radio } from "@material-ui/core";
+import React from "react";
 
 /*****************************************************
  * Descripción: Representa un producto tipo membresía
@@ -40,16 +40,16 @@ const MembershipProduct = (props) => {
 };
 
 MembershipProduct.propTypes = {
-    last: PropTypes.bool.isRequired,
+    last: PropTypes.bool,
     product: PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        info: PropTypes.string.isRequired,
-        price: PropTypes.number.isRequired,
-        shortName: PropTypes.string.isRequired,
+        id: PropTypes.number,
+        info: PropTypes.string,
+        price: PropTypes.number,
+        shortName: PropTypes.string,
     }),
-    rdMembership: PropTypes.number.isRequired,
-    setMembershipDescription: PropTypes.func.isRequired,
-    setRdMembership: PropTypes.func.isRequired,
+    rdMembership: PropTypes.number,
+    setMembershipDescription: PropTypes.func,
+    setRdMembership: PropTypes.func,
 };
 
 export default MembershipProduct;

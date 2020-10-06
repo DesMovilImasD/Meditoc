@@ -1,4 +1,4 @@
-import { EnumTipoProducto, ListProductos } from "../../../../configurations/enumConfig";
+import { EnumProductos, EnumTipoProducto, ListProductos } from "../../../../configurations/enumConfig";
 import { IconButton, Tooltip } from "@material-ui/core";
 import React, { Fragment } from "react";
 
@@ -34,7 +34,7 @@ const Productos = (props) => {
         { title: "Nombre", field: "sNombre", align: "center" },
         { title: "Tipo", field: "sTipoProducto", align: "center" },
         { title: "Costo", field: "sCosto", align: "center" },
-        { title: "Meses de vigencia", field: "iMesVigencia", align: "center" },
+        { title: "Duración de vigencia (Meses)", field: "iMesVigencia", align: "center" },
         { title: "Comercial", field: "sComercial", align: "center" },
     ];
 
@@ -70,6 +70,13 @@ const Productos = (props) => {
     const handleClickEditarProducto = () => {
         if (productoSeleccionado.iIdProducto === 0) {
             funcAlert("Seleccione un producto de la tabla para continuar");
+            return;
+        }
+        if (productoSeleccionado.iIdProducto === EnumProductos.OrientacionEspecialistaID) {
+            funcAlert(
+                "Este producto no se puede editar debito a que solo está habilitado para orientaciones de médicos especialistas",
+                "info"
+            );
             return;
         }
         setProductoParaModalForm(productoSeleccionado);

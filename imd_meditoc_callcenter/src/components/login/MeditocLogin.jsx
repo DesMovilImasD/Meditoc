@@ -69,7 +69,7 @@ const Login = (props) => {
     };
 
     const funcSetPermisos = (iIdPerfil = 0, lstPermisos = []) => {
-        let usuarioPermisos = { ...permisosSistema };
+        let usuarioPermisos = JSON.parse(JSON.stringify(permisosSistema));
 
         const moduloConfiguracion = lstPermisos.find((x) => x.iIdModulo === EnumSistema.Configuracion); //Configuraciones
         if (moduloConfiguracion !== undefined) {

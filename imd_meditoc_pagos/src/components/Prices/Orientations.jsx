@@ -1,10 +1,11 @@
-import PropTypes from "prop-types";
-import React, { useState, useEffect } from "react";
-import { Grid, Button } from "@material-ui/core";
+import { Button, Grid } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+
 import { FaClinicMedical } from "react-icons/fa";
-import { useHistory } from "react-router-dom";
-import { urlPayments } from "../../configuration/urlConfig";
 import OrientationProduct from "./OrientationProduct";
+import PropTypes from "prop-types";
+import { urlPayments } from "../../configuration/urlConfig";
+import { useHistory } from "react-router-dom";
 
 /*****************************************************
  * Descripción: Contiene la estructura para mostrar
@@ -83,8 +84,8 @@ const Orientations = (props) => {
 };
 
 Orientations.propTypes = {
-    lstOrientationProducts: PropTypes.array.isRequired,
-    setLstOrientationProducts: PropTypes.func.isRequired,
+    lstOrientationProducts: PropTypes.array,
+    setLstOrientationProducts: PropTypes.func,
 };
 
 export default Orientations;

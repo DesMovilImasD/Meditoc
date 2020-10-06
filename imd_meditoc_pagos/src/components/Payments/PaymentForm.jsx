@@ -1,40 +1,41 @@
-import PropTypes from "prop-types";
-import React, { Fragment, useState, useEffect } from "react";
 import {
+    Button,
+    Checkbox,
+    FormControl,
+    FormControlLabel,
     Grid,
-    TextField,
     InputAdornment,
     InputLabel,
-    Select,
     MenuItem,
-    FormControl,
-    Button,
-    Typography,
-    Checkbox,
-    FormControlLabel,
+    Select,
+    TextField,
     Tooltip,
+    Typography,
     makeStyles,
 } from "@material-ui/core";
-import { MdEmail, MdPerson, MdDateRange, MdVerifiedUser, MdAttachMoney, MdPhone, MdInfo } from "react-icons/md";
-import { FaCreditCard, FaCcVisa, FaCcMastercard, FaCcAmex } from "react-icons/fa";
-import InputExpirationDate from "../Inputs/InputExpirationDate";
-import InputCardNumber from "../Inputs/InputCardNumber";
-import InputCVV from "../Inputs/InputCVV";
-import { serverWs, serverWa, serverMain } from "../../configuration/serverConfig";
+import { FaCcAmex, FaCcMastercard, FaCcVisa, FaCreditCard } from "react-icons/fa";
+import { MdAttachMoney, MdDateRange, MdEmail, MdInfo, MdPerson, MdPhone, MdVerifiedUser } from "react-icons/md";
+import React, { Fragment, useEffect, useState } from "react";
 import { apiBuy, apiRevalidateCoupon } from "../../configuration/apiConfig";
-import { apiKeyLanguage } from "../../configuration/tokenConfig";
+import { cardEnviromentProd, lstCardTest } from "../../configuration/cardConfig";
 import {
-    rxVisaCard,
-    rxMasterCard,
     rxAmexCard,
-    rxVisaIcon,
-    rxMasterIcon,
     rxAmexIcon,
     rxEmail,
+    rxMasterCard,
+    rxMasterIcon,
+    rxVisaCard,
+    rxVisaIcon,
 } from "../../configuration/regexConfig";
+
+import InputCVV from "../Inputs/InputCVV";
+import InputCardNumber from "../Inputs/InputCardNumber";
+import InputExpirationDate from "../Inputs/InputExpirationDate";
 import InputPhone from "../Inputs/InputPhone";
+import PropTypes from "prop-types";
+import { apiKeyLanguage } from "../../configuration/tokenConfig";
+import { serverMain } from "../../configuration/serverConfig";
 import { useTax } from "../../configuration/taxConfig";
-import { cardEnviromentProd, lstCardTest } from "../../configuration/cardConfig";
 
 const useStyles = makeStyles((theme) => ({
     paylabel: {
@@ -845,14 +846,23 @@ const PaymentForm = (props) => {
 };
 
 PaymentForm.propTypes = {
-    appInfo: PropTypes.object.isRequired,
-    entCoupon: PropTypes.object,
-    funcLoader: PropTypes.func.isRequired,
-    monthlyPayments: PropTypes.array.isRequired,
-    productList: PropTypes.array.isRequired,
-    setEntOrder: PropTypes.func.isRequired,
-    setErrorOrder: PropTypes.func.isRequired,
-    totalPayment: PropTypes.number.isRequired,
+    appInfo: PropTypes.shape({
+        bTieneMesesSinIntereses: PropTypes.bool,
+        sAvisoDePrivacidad: PropTypes.string,
+        sConektaPublicKey: PropTypes.string,
+        sTerminosYCondiciones: PropTypes.string,
+    }),
+    entCoupon: PropTypes.shape({
+        fiIdCupon: PropTypes.number,
+    }),
+    formErrorMessage: PropTypes.string,
+    funcLoader: PropTypes.func,
+    monthlyPayments: PropTypes.array,
+    productList: PropTypes.array,
+    setEntOrder: PropTypes.func,
+    setErrorOrder: PropTypes.func,
+    setFormErrorMessage: PropTypes.func,
+    totalPayment: PropTypes.number,
 };
 
 export default PaymentForm;

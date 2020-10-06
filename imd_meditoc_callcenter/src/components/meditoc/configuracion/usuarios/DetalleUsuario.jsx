@@ -27,7 +27,7 @@ const DetalleUsuario = (props) => {
                     <MeditocInfoField label="Apellido materno:" value={entUsuario.sApellidoMaterno} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <MeditocInfoField label="Fecha de nacimiento:" value={entUsuario.dtFechaNacimiento} />
+                    <MeditocInfoField label="Fecha de nacimiento:" value={entUsuario.sFechaNacimiento} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="Domicilio:" value={entUsuario.sDomicilio} />

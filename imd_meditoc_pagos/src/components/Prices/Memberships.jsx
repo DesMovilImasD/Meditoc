@@ -1,10 +1,11 @@
-import PropTypes from "prop-types";
-import React, { useState, useEffect } from "react";
-import { Grid, Button } from "@material-ui/core";
+import { Button, Grid } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+
 import { FaUser } from "react-icons/fa";
-import { useHistory } from "react-router-dom";
-import { urlPayments } from "../../configuration/urlConfig";
 import MembershipProduct from "./MembershipProduct";
+import PropTypes from "prop-types";
+import { urlPayments } from "../../configuration/urlConfig";
+import { useHistory } from "react-router-dom";
 
 /*****************************************************
  * Descripción: Contiene la estructura para mostrar
@@ -77,7 +78,7 @@ const Memberships = (props) => {
 };
 
 Memberships.propTypes = {
-    lstMembershipProducts: PropTypes.array.isRequired,
+    lstMembershipProducts: PropTypes.array,
 };
 
 export default Memberships;

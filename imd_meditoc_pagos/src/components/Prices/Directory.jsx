@@ -1,8 +1,9 @@
+import { Button, Grid, Hidden } from "@material-ui/core";
+
 import React from "react";
-import { Grid, Button, Hidden } from "@material-ui/core";
 import { logoMeditocDoctores } from "../../configuration/imgConfig";
-import { useHistory } from "react-router-dom";
 import { urlDirectory } from "../../configuration/urlConfig";
+import { useHistory } from "react-router-dom";
 
 const Directory = () => {
     const history = useHistory();

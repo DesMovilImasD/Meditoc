@@ -1,9 +1,17 @@
 import React, { Fragment, useEffect } from "react";
-import Menu from "../Menu";
-import Footer from "../Footer";
-import DirectoryHeader from "./DirectoryHeader";
-import Content from "./Content";
 
+import Content from "./Content";
+import DirectoryHeader from "./DirectoryHeader";
+import Footer from "../Footer";
+import Menu from "../Menu";
+import PropTypes from "prop-types";
+
+/*****************************************************
+ * Descripción: Estructura de la página del directorio
+ * Autor: Cristopher Noh
+ * Fecha: 07/09/2020
+ * Modificaciones:
+ *****************************************************/
 const Main = (props) => {
     const { appInfo, funcLoader } = props;
 
@@ -22,6 +30,11 @@ const Main = (props) => {
             <Footer appInfo={appInfo} />
         </Fragment>
     );
+};
+
+Main.propTypes = {
+    appInfo: PropTypes.object,
+    funcLoader: PropTypes.func,
 };
 
 export default Main;

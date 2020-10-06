@@ -1,12 +1,12 @@
-import PropTypes from "prop-types";
-import React, { useState, useEffect } from "react";
 import { Grid, Hidden } from "@material-ui/core";
-import PurchaseDetail from "./PurchaseDetail";
+import React, { useEffect, useState } from "react";
+
+import GetApp from "../GetApp";
+import PaymentError from "./PaymentError";
 import PaymentForm from "./PaymentForm";
 import PaymentOk from "./PaymentOk";
-import PaymentError from "./PaymentError";
-import { logoappleAvalible } from "../../configuration/imgConfig";
-import { logoplayAvalible } from "../../configuration/imgConfig";
+import PropTypes from "prop-types";
+import PurchaseDetail from "./PurchaseDetail";
 
 /*****************************************************
  * Descripción: Contiene la estructura de contenido para el
@@ -117,27 +117,7 @@ const Content = (props) => {
                             />
                         </Grid>
                         <Grid item xs={12} style={{ marginBottom: 50 }}>
-                            <div>
-                                <p>
-                                    <span className="price-footer-address">
-                                        Para utilizar el servicio, descarga la app “Meditoc 360” disponible en Appstore
-                                        y Playstore.
-                                    </span>
-                                </p>
-                                <span>
-                                    <a href="https://apps.apple.com/mx/app/meditoc-360/id1521078394" target="_blank">
-                                        <img src={logoappleAvalible} alt="app-store" />
-                                    </a>
-                                </span>
-                                <span style={{ marginLeft: 10 }}>
-                                    <a
-                                        href="https://play.google.com/store/apps/details?id=com.meditoc.callCenter.comercial"
-                                        target="_blank"
-                                    >
-                                        <img src={logoplayAvalible} alt="play-store" />
-                                    </a>
-                                </span>
-                            </div>
+                            <GetApp />
                         </Grid>
                     </Grid>
                 ) : errorOrder === false ? (
@@ -151,8 +131,11 @@ const Content = (props) => {
 };
 
 Content.propTypes = {
-    appInfo: PropTypes.object.isRequired,
-    funcLoader: PropTypes.func.isRequired,
+    appInfo: PropTypes.shape({
+        bTieneMesesSinIntereses: PropTypes.bool,
+        lstMensualidades: PropTypes.array,
+    }),
+    funcLoader: PropTypes.any,
 };
 
 export default Content;

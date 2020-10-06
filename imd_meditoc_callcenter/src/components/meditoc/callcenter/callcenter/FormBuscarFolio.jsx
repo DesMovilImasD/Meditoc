@@ -76,7 +76,17 @@ const FormBuscarFolio = (props) => {
 
         funcLoader(true, "Buscando folio...");
 
-        const response = await folioController.funcGetFolios(null, null, null, null, formBuscarFolio.txtBuscarFolio);
+        const response = await folioController.funcGetFolios(
+            null,
+            null,
+            null,
+            null,
+            formBuscarFolio.txtBuscarFolio,
+            "",
+            "",
+            "",
+            ""
+        );
 
         if (response.Code === 0) {
             if (response.Result.length === 1) {

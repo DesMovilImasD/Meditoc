@@ -19,6 +19,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.CGU
         public string sApellidoPaterno { get; set; }
         public string sApellidoMaterno { get; set; }
         public DateTime? dtFechaNacimiento { get; set; }
+        public string sFechaNacimiento { get; set; }
         public string sTelefono { get; set; }
         public string sCorreo { get; set; }
         public string sDomicilio { get; set; }

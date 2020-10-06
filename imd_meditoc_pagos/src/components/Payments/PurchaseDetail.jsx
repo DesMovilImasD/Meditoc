@@ -1,10 +1,11 @@
-import PropTypes from "prop-types";
-import React, { useEffect, Fragment } from "react";
-import { Typography, Button, makeStyles } from "@material-ui/core";
+import { Button, Typography, makeStyles } from "@material-ui/core";
+import React, { Fragment, useEffect } from "react";
+
+import AddCoupon from "./AddCoupon";
 import Product from "./Product";
+import PropTypes from "prop-types";
 import PurchaseSummary from "./PurchaseSummary";
 import theme from "../../configuration/themeConfig";
-import AddCoupon from "./AddCoupon";
 import { useState } from "react";
 
 const useStyles = makeStyles(() => ({
@@ -130,12 +131,15 @@ const PurchaseDetail = (props) => {
 };
 
 PurchaseDetail.propTypes = {
-    appInfo: PropTypes.object.isRequired,
+    appInfo: PropTypes.object,
     entCoupon: PropTypes.object,
-    productList: PropTypes.array.isRequired,
-    setProductList: PropTypes.func.isRequired,
-    setTotalPayment: PropTypes.func.isRequired,
-    totalPayment: PropTypes.number.isRequired,
+    funcLoader: PropTypes.func,
+    productList: PropTypes.array,
+    setEntCoupon: PropTypes.func,
+    setFormErrorMessage: PropTypes.func,
+    setProductList: PropTypes.func,
+    setTotalPayment: PropTypes.func,
+    totalPayment: PropTypes.number,
 };
 
 export default PurchaseDetail;

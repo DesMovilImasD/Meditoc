@@ -1,32 +1,11 @@
-import PropTypes from "prop-types";
-import React, { useState } from "react";
-import { FaTrash } from "react-icons/fa";
-import { IconButton, Hidden, TextField, withStyles } from "@material-ui/core";
+import { Hidden, IconButton } from "@material-ui/core";
 import { MdAdd, MdRemove } from "react-icons/md";
-import { useEffect } from "react";
+import React, { useState } from "react";
 
-//Estilos para el input de cantidad
-const CssTextField = withStyles({
-    root: {
-        "& label.Mui-focused": {
-            borderColor: "white",
-            color: "white",
-        },
-        "& .MuiInput-underline:before": {
-            borderColor: "white",
-        },
-        "& .MuiInput-underline:after": {
-            borderColor: "white",
-        },
-        "& .MuiInput-underline:hover:not(.Mui-disabled):before": {
-            borderColor: "white",
-        },
-        "& .MuiInputBase-input": {
-            color: "white",
-            borderColor: "white",
-        },
-    },
-})(TextField);
+import { FaTrash } from "react-icons/fa";
+import InputWhite from "../Inputs/InputWhite";
+import PropTypes from "prop-types";
+import { useEffect } from "react";
 
 /*****************************************************
  * Descripción: Contiene la estructura de visualización de un artículo
@@ -113,7 +92,7 @@ const Product = (props) => {
                     <IconButton size="medium" disabled={product.qty <= 1} onClick={handleClickLess}>
                         <MdRemove className="pay-purchase-detail-item-btn" />
                     </IconButton>{" "}
-                    <CssTextField
+                    <InputWhite
                         id="custom-css-standard-input"
                         margin="dense"
                         style={{ width: 50, textAlign: "center" }}
@@ -138,15 +117,15 @@ const Product = (props) => {
 };
 
 Product.propTypes = {
-    index: PropTypes.number.isRequired,
+    index: PropTypes.number,
     product: PropTypes.shape({
-        icon: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        price: PropTypes.number.isRequired,
-        qty: PropTypes.number.isRequired,
+        icon: PropTypes.string,
+        name: PropTypes.string,
+        price: PropTypes.number,
+        qty: PropTypes.number,
     }),
-    productList: PropTypes.array.isRequired,
-    setProductList: PropTypes.func.isRequired,
+    productList: PropTypes.array,
+    setProductList: PropTypes.func,
 };
 
 export default Product;

@@ -1,8 +1,9 @@
-import PropTypes from "prop-types";
+import { Button, Grid, Typography } from "@material-ui/core";
 import React, { Fragment, useEffect, useState } from "react";
-import { Grid, Button, Typography } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
+
+import PropTypes from "prop-types";
 import { urlProducts } from "../../configuration/urlConfig";
+import { useHistory } from "react-router-dom";
 
 /*****************************************************
  * Descripción: Contiene la estructura para visualizar los montos
@@ -131,14 +132,19 @@ const PurchaseSummary = (props) => {
 };
 
 PurchaseSummary.propTypes = {
-    appInfo: PropTypes.object.isRequired,
+    appInfo: PropTypes.shape({
+        nIVA: PropTypes.number,
+        nMaximoDescuento: PropTypes.number,
+    }),
     entCoupon: PropTypes.shape({
+        fiIdCuponCategoria: PropTypes.number,
         fnMontoDescuento: PropTypes.number,
+        fnPorcentajeDescuento: PropTypes.number,
         fsCodigo: PropTypes.string,
     }),
-    productList: PropTypes.array.isRequired,
-    setTotalPayment: PropTypes.func.isRequired,
-    totalPayment: PropTypes.number.isRequired,
+    productList: PropTypes.array,
+    setTotalPayment: PropTypes.func,
+    totalPayment: PropTypes.number,
 };
 
 export default PurchaseSummary;

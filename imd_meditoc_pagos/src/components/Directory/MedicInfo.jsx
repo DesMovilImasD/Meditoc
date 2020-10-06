@@ -1,9 +1,16 @@
 import { Button, Grid, Hidden } from "@material-ui/core";
 
 import { MdAccountBox } from "react-icons/md";
+import PropTypes from "prop-types";
 import React from "react";
 import { rxUrl } from "../../configuration/regexConfig";
 
+/*****************************************************
+ * Descripción: Ficha informativa del médico colaborador
+ * Autor: Cristopher Noh
+ * Fecha: 07/09/2020
+ * Modificaciones:
+ *****************************************************/
 const MedicInfo = (props) => {
     const { entColaborador } = props;
 
@@ -71,7 +78,7 @@ const MedicInfo = (props) => {
                             <span className="directory-doctor-value">{entColaborador.sCorreo}</span>
                         </Grid>
                         <Grid item sm={6} xs={12}>
-                            <span className="directory-doctor-label">Nombre de consultorio:</span>
+                            <span className="directory-doctor-label">Consultorio:</span>
                             <br />
                             <span className="directory-doctor-value">{entColaborador.sNombreConsultorio}</span>
                         </Grid>
@@ -116,6 +123,22 @@ const MedicInfo = (props) => {
             </Grid>
         </Grid>
     );
+};
+
+MedicInfo.propTypes = {
+    entColaborador: PropTypes.shape({
+        sCedulaProfecional: PropTypes.string,
+        sCorreo: PropTypes.string,
+        sDireccionConsultorio: PropTypes.string,
+        sEspecialidad: PropTypes.string,
+        sFoto: PropTypes.string,
+        sMaps: PropTypes.string,
+        sNombre: PropTypes.string,
+        sNombreConsultorio: PropTypes.string,
+        sTelefono: PropTypes.string,
+        sURL: PropTypes.string,
+        sWhatsApp: PropTypes.string,
+    }),
 };
 
 export default MedicInfo;

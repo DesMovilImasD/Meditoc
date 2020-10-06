@@ -1,7 +1,13 @@
-import React from "react";
 import { Grid } from "@material-ui/core";
+import React from "react";
 import { logoMeditocDoctores } from "../../configuration/imgConfig";
 
+/*****************************************************
+ * Descripción: Header del directorio médico
+ * Autor: Cristopher Noh
+ * Fecha: 07/09/2020
+ * Modificaciones:
+ *****************************************************/
 const DirectoryHeader = () => {
     return (
         <div className="directory-cover-container">
