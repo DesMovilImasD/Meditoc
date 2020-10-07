@@ -104,6 +104,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 response.Code = 0;
                 response.Message = "La orden ha sido generada correctamente.";
+                response.Result = resGuardarCompra.Result;
             }
             catch (Exception ex)
             {
