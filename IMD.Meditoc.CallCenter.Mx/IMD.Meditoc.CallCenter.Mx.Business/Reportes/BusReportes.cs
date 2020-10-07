@@ -264,7 +264,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                 double dIVA = ConfigurationManager.AppSettings["nIVA"] != null ? Convert.ToDouble(ConfigurationManager.AppSettings["nIVA"]) : 0.16;
 
 
-                List<EntReporteOrden> ordenes = respuestaObtenerFolios.Result.Where(o => o.iIdOrigen == (int)EnumOrigen.APP || o.iIdOrigen == (int)EnumOrigen.WEB).GroupBy(o => o.sOrderId).Select(o => new EntReporteOrden
+                List<EntReporteOrden> ordenes = respuestaObtenerFolios.Result.Where(o => o.iIdOrigen == (int)EnumOrigen.APP || o.iIdOrigen == (int)EnumOrigen.WEB || o.iIdOrigen == (int)EnumOrigen.WEBNutricionalPsicologia).GroupBy(o => o.sOrderId).Select(o => new EntReporteOrden
                 {
                     sOrderId = o.Key,
                     charges = o.Select(c => new EntChargeReporte

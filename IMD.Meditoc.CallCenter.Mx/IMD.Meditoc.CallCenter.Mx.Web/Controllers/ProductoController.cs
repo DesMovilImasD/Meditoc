@@ -118,5 +118,29 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             }
             return response;
         }
+
+        [HttpGet]
+        [Route("Api/Producto/Get/Nutricional/Psicologia")]
+        public IMDResponse<EntProductosNutricionalPsicologia> CGetProductosNutricionalPsicologia()
+        {
+            IMDResponse<EntProductosNutricionalPsicologia> response = new IMDResponse<EntProductosNutricionalPsicologia>();
+
+            string metodo = nameof(this.CGetProductosNutricionalPsicologia);
+            logger.Info(IMDSerialize.Serialize(67823458636507, $"Inicia {metodo}()"));
+
+            try
+            {
+                BusProducto busProducto = new BusProducto();
+                response = busProducto.BGetProductosNutricionalPsicologia();
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458637284;
+                response.Message = "Ocurrió un error inesperado en el servicio al consultar los productos disponibles.";
+
+                logger.Error(IMDSerialize.Serialize(67823458637284, $"Error en {metodo}(): {ex.Message}", ex, response));
+            }
+            return response;
+        }
     }
 }

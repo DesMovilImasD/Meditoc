@@ -118,6 +118,8 @@
     <Compile Include="Paciente\EntPaciente.cs" />
     <Compile Include="Paciente\EntUpdPaciente.cs" />
     <Compile Include="Producto\EntProducto.cs" />
+    <Compile Include="Producto\EntProductosNutricionalPsicologia.cs" />
+    <Compile Include="Producto\EnumGrupoProducto.cs" />
     <Compile Include="Producto\EnumProductos.cs" />
     <Compile Include="Producto\EnumTipoProducto.cs" />
     <Compile Include="Promociones\EntCreateCupon.cs" />

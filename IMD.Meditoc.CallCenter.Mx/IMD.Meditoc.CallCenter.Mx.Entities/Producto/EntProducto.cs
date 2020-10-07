@@ -7,6 +7,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Producto
         public int iIdProducto { get; set; }
         public int iIdTipoProducto { get; set; }
         public string sTipoProducto { get; set; }
+        public int iIdGrupoProducto { get; set; }
+        public string sGrupoProducto { get; set; }
         public string sNombre { get; set; }
         public string sNombreCorto { get; set; }
         public string sDescripcion { get; set; }

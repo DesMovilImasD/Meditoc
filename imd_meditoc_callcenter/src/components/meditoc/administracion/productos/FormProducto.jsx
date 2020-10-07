@@ -10,9 +10,9 @@ import {
     RadioGroup,
     TextField,
 } from "@material-ui/core";
+import { EnumGrupoProducto, EnumTipoProducto } from "../../../../configurations/enumConfig";
 import { blurPrevent, funcPrevent } from "../../../../configurations/preventConfig";
 
-import { EnumTipoProducto } from "../../../../configurations/enumConfig";
 import MeditocModal from "../../../utilidades/MeditocModal";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import ProductoController from "../../../../controllers/ProductoController";
@@ -31,6 +31,7 @@ const FormProducto = (props) => {
         txtNombreProducto: "",
         txtNombreCorto: "",
         txtDescripcion: "",
+        txtGrupoProducto: 1,
         txtCosto: "",
         txtMesesVigencia: "",
         txtIcono: "",
@@ -41,6 +42,7 @@ const FormProducto = (props) => {
         txtNombreProducto: true,
         txtNombreCorto: true,
         txtDescripcion: true,
+        txtGrupoProducto: true,
         txtCosto: true,
         txtMesesVigencia: true,
         txtIcono: true,
@@ -56,6 +58,7 @@ const FormProducto = (props) => {
             txtNombreProducto: entProducto.sNombre,
             txtNombreCorto: entProducto.sNombreCorto,
             txtDescripcion: entProducto.sDescripcion,
+            txtGrupoProducto: entProducto.iIdGrupoProducto === 0 ? 1 : entProducto.iIdGrupoProducto,
             txtCosto: entProducto.fCosto === 0 ? "" : entProducto.fCosto,
             txtMesesVigencia: entProducto.iMesVigencia === 0 ? "" : entProducto.iMesVigencia,
             txtIcono: entProducto.sIcon,
@@ -197,6 +200,7 @@ const FormProducto = (props) => {
             sNombre: formProducto.txtNombreProducto,
             sNombreCorto: formProducto.txtNombreCorto,
             sDescripcion: formProducto.txtDescripcion,
+            iIdGrupoProducto: parseInt(formProducto.txtGrupoProducto),
             fCosto: parseFloat(formProducto.txtCosto),
             iMesVigencia:
                 formProducto.rdTipoProducto === EnumTipoProducto.Servicio.toString()
@@ -285,7 +289,22 @@ const FormProducto = (props) => {
                             }
                         />
                     </Grid>
-
+                    <Grid item xs={12}>
+                        <TextField
+                            name="txtGrupoProducto"
+                            label="Grupo de productos:"
+                            fullWidth
+                            variant="outlined"
+                            value={formProducto.txtGrupoProducto}
+                            onChange={handleChangeFormProducto}
+                            required
+                            select
+                        >
+                            <MenuItem value={EnumGrupoProducto.MeditocProducts}>Productos Meditoc 360</MenuItem>
+                            <MenuItem value={EnumGrupoProducto.NutritionalProducts}>Productos Nutricionales</MenuItem>
+                            <MenuItem value={EnumGrupoProducto.PsychologyProducts}>Productos Psicología</MenuItem>
+                        </TextField>
+                    </Grid>
                     <Grid item sm={6} xs={12}>
                         <FormControl componet="fieldset">
                             <FormLabel component="legend">Tipo de producto:</FormLabel>

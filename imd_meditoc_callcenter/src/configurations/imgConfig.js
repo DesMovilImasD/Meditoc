@@ -4,8 +4,10 @@
  * Fecha: 26/08/2020
  *************************************************************/
 
-const imgLogoLogin = "/MeditocCallCenter/img/LogoLogin.svg";
-const imgLogoMeditoc = "/MeditocCallCenter/img/LogoMeditoc.svg";
-const imgLogoMeditocCasa = "/MeditocCallCenter/img/LogoMeditocCasa.svg";
+import { urlBase } from "./urlConfig";
+
+const imgLogoLogin = urlBase + "/img/LogoLogin.svg";
+const imgLogoMeditoc = urlBase + "/img/LogoMeditoc.svg";
+const imgLogoMeditocCasa = urlBase + "/img/LogoMeditocCasa.svg";
 
 export { imgLogoLogin, imgLogoMeditoc, imgLogoMeditocCasa };

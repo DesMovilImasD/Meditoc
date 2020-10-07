@@ -16,6 +16,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Folio
         public int iIdProducto { get; set; }
         public int iIdTipoProducto { get; set; }
         public string sTipoProducto { get; set; }
+        public int iIdGrupoProducto { get; set; }
+        public string sGrupoProducto { get; set; }
         public string sNombreProducto { get; set; }
         public int iMesVigenciaProducto { get; set; }
         public string sIcon { get; set; }

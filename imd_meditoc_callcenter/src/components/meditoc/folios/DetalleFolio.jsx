@@ -36,11 +36,14 @@ const DetalleFolio = (props) => {
                 <Grid item xs={12}>
                     <MeditocSubtitulo title="DATOS DEL PRODUCTO" />
                 </Grid>
-                <Grid item sm={6} xs={12}>
+                <Grid item xs={12}>
                     <MeditocInfoField label="Nombre de producto:" value={entFolio.sNombreProducto} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="Tipo de producto:" value={entFolio.sTipoProducto} />
+                </Grid>
+                <Grid item sm={6} xs={12}>
+                    <MeditocInfoField label="Grupo de productos:" value={entFolio.sGrupoProducto} />
                 </Grid>
                 <Grid item xs={12}>
                     <MeditocSubtitulo title="DATOS DEL PACIENTE" />

@@ -43,6 +43,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Producto
                 {
                     database.AddInParameter(dbCommand, "piIdProducto", DbType.Int32, entProducto.iIdProducto);
                     database.AddInParameter(dbCommand, "piIdTipoProducto", DbType.Int32, entProducto.iIdTipoProducto);
+                    database.AddInParameter(dbCommand, "piIdGrupoProducto", DbType.Int32, entProducto.iIdGrupoProducto);
                     database.AddInParameter(dbCommand, "psNombre", DbType.String, entProducto.sNombre);
                     database.AddInParameter(dbCommand, "psNombreCorto", DbType.String, entProducto.sNombreCorto);
                     database.AddInParameter(dbCommand, "psDescripcion", DbType.String, entProducto.sDescripcion);

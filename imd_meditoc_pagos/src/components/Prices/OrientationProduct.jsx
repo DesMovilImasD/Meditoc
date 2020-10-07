@@ -30,7 +30,7 @@ const OrientationProduct = (props) => {
     return (
         <div className={"price-product-display" + dividerClass}>
             <div className="price-product-amount">
-                ${product.price.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                ${product.price.toLocaleString("en-US", { minimumFractionDigits: product.price % 1 !== 0 ? 2 : 0 })}
             </div>
             <div className="price-product-amount-description">{product.shortName}</div>
             <div className="price-product-icon">

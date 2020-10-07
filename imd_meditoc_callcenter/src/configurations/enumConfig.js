@@ -120,6 +120,12 @@ const ListProductos = [
     EnumProductos.MembresiaVentaCalle12Meses,
 ];
 
+const EnumGrupoProducto = {
+    MeditocProducts: 1,
+    NutritionalProducts: 2,
+    PsychologyProducts: 3,
+};
+
 export {
     EnumPerfilesPrincipales,
     EnumTipoCuenta,
@@ -136,5 +142,6 @@ export {
     EnumTipoPago,
     EnumReportesTabs,
     EnumProductos,
+    EnumGrupoProducto,
     ListProductos,
 };

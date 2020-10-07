@@ -11,17 +11,20 @@ const DetalleProducto = (props) => {
     return (
         <MeditocModal title="Detalle de producto" size="small" open={open} setOpen={setOpen}>
             <Grid container spacing={3}>
-                <Grid item sm={6} xs={12}>
+                {/* <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="ID de producto:" value={entProducto.iIdProducto} />
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <MeditocInfoField label="Tipo de producto:" value={entProducto.sTipoProducto} />
-                </Grid>
+                </Grid> */}
                 <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="Nombre:" value={entProducto.sNombre} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="Nombre corto:" value={entProducto.sNombreCorto} />
+                </Grid>
+                <Grid item sm={6} xs={12}>
+                    <MeditocInfoField label="Tipo de producto:" value={entProducto.sTipoProducto} />
+                </Grid>
+                <Grid item sm={6} xs={12}>
+                    <MeditocInfoField label="Grupo:" value={entProducto.sGrupoProducto} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="Descripción:" value={entProducto.sDescripcion} />

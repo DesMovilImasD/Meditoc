@@ -89,23 +89,26 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Producto
                 foreach (DataRow item in dtProductos.Result.Rows)
                 {
                     IMDDataRow dr = new IMDDataRow(item);
-                    EntProducto producto = new EntProducto();
-
-                    producto.iIdProducto = dr.ConvertTo<int>("iIdProducto");
-                    producto.iIdTipoProducto = dr.ConvertTo<int>("iIdTipoProducto");
-                    producto.sTipoProducto = dr.ConvertTo<string>("sTipoProducto");
-                    producto.sNombre = dr.ConvertTo<string>("sNombre");
-                    producto.sNombreCorto = dr.ConvertTo<string>("sNombreCorto");
-                    producto.sDescripcion = dr.ConvertTo<string>("sDescripcion");
-                    producto.fCosto = dr.ConvertTo<double>("fCosto");
-                    producto.sCosto = producto.fCosto.ToString("C");
-                    producto.iMesVigencia = dr.ConvertTo<int>("iMesVigencia");
-                    producto.sIcon = dr.ConvertTo<string>("sIcon");
-                    producto.sPrefijoFolio = dr.ConvertTo<string>("sPrefijoFolio");
-                    producto.bComercial = Convert.ToBoolean(dr.ConvertTo<int>("bComercial"));
+                    EntProducto producto = new EntProducto
+                    {
+                        iIdProducto = dr.ConvertTo<int>("iIdProducto"),
+                        iIdTipoProducto = dr.ConvertTo<int>("iIdTipoProducto"),
+                        iIdGrupoProducto = dr.ConvertTo<int>("iIdGrupoProducto"),
+                        sTipoProducto = dr.ConvertTo<string>("sTipoProducto"),
+                        sGrupoProducto = dr.ConvertTo<string>("sGrupoProducto"),
+                        sNombre = dr.ConvertTo<string>("sNombre"),
+                        sNombreCorto = dr.ConvertTo<string>("sNombreCorto"),
+                        sDescripcion = dr.ConvertTo<string>("sDescripcion"),
+                        fCosto = dr.ConvertTo<double>("fCosto"),
+                        iMesVigencia = dr.ConvertTo<int>("iMesVigencia"),
+                        sIcon = dr.ConvertTo<string>("sIcon"),
+                        sPrefijoFolio = dr.ConvertTo<string>("sPrefijoFolio"),
+                        bComercial = Convert.ToBoolean(dr.ConvertTo<int>("bComercial")),
+                        bActivo = Convert.ToBoolean(dr.ConvertTo<int>("bActivo")),
+                        bBaja = Convert.ToBoolean(dr.ConvertTo<int>("bBaja"))
+                    };
                     producto.sComercial = producto.bComercial ? "Si" : "No";
-                    producto.bActivo = Convert.ToBoolean(dr.ConvertTo<int>("bActivo"));
-                    producto.bBaja = Convert.ToBoolean(dr.ConvertTo<int>("bBaja"));
+                    producto.sCosto = producto.fCosto.ToString("C");
 
                     lstProductos.Add(producto);
                 }
@@ -135,6 +138,17 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Producto
             try
             {
                 response.Code = 67823458410400;
+
+                if (entProducto.iIdTipoProducto < 1)
+                {
+                    response.Message = "No se ha especificado el tipo de producto.";
+                    return response;
+                }
+                if (entProducto.iIdGrupoProducto < 1)
+                {
+                    response.Message = "No se ha especificado el grupo del producto.";
+                    return response;
+                }
 
                 if (entProducto.sNombre == "")
                 {
@@ -218,8 +232,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Producto
                 response = BObtenerProductos(null);
 
                 response.Result = response.Result
-                    .Where(x => x.iIdTipoProducto == 2 && x.bComercial)
-                    .ToList();
+                    .Where(x => x.iIdTipoProducto == 2 && x.bComercial && x.iIdGrupoProducto == (int)EnumGrupoProducto.Meditoc360Products).ToList();
 
                 response.Code = 0;
                 response.Message = "Lista de servicios consultados.";
@@ -246,7 +259,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Producto
                 response = BObtenerProductos(null);
 
                 response.Result = response.Result
-                    .Where(x => x.iIdTipoProducto == 1 && x.bComercial)
+                    .Where(x => x.iIdTipoProducto == 1 && x.bComercial && x.iIdGrupoProducto == (int)EnumGrupoProducto.Meditoc360Products).OrderBy(x => x.fCosto)
                     .ToList();
 
                 response.Code = 0;
@@ -258,6 +271,41 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Producto
                 response.Message = "Ocurrió un error inesperado al consultar la lista de membresías.";
 
                 logger.Error(IMDSerialize.Serialize(67823458469452, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<EntProductosNutricionalPsicologia> BGetProductosNutricionalPsicologia()
+        {
+            IMDResponse<EntProductosNutricionalPsicologia> response = new IMDResponse<EntProductosNutricionalPsicologia>();
+
+            string metodo = nameof(this.BGetProductosNutricionalPsicologia);
+            logger.Info(IMDSerialize.Serialize(67823458634953, $"Inicia {metodo}()"));
+
+            try
+            {
+                IMDResponse<List<EntProducto>> resGetProducts = this.BObtenerProductos(null);
+                if (resGetProducts.Code != 0)
+                {
+                    return resGetProducts.GetResponse<EntProductosNutricionalPsicologia>();
+                }
+
+                EntProductosNutricionalPsicologia entProductos = new EntProductosNutricionalPsicologia
+                {
+                    lstNutritionalProducts = resGetProducts.Result.Where(x => x.iIdGrupoProducto == (int)EnumGrupoProducto.NutritionalProducts && x.bComercial).OrderBy(x => x.fCosto).ToList(),
+                    lstPsychologyProducts = resGetProducts.Result.Where(x => x.iIdGrupoProducto == (int)EnumGrupoProducto.PsychologyProducts && x.bComercial).OrderBy(x => x.fCosto).ToList()
+                };
+
+                response.Code = 0;
+                response.Message = "Lista de productos consultados";
+                response.Result = entProductos;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458635730;
+                response.Message = "Ocurrió un error inesperado al consultar los productos disponibles.";
+
+                logger.Error(IMDSerialize.Serialize(67823458635730, $"Error en {metodo}(): {ex.Message}", ex, response));
             }
             return response;
         }
