@@ -112,6 +112,7 @@ const FormBuscarFolio = (props) => {
                     folioEncontrado.sTelefonoPaciente === null ? "" : folioEncontrado.sTelefonoPaciente,
                 txtBuscarCorreoPaciente: folioEncontrado.sCorreoPaciente,
             });
+            handleClickIniciarConsulta();
         } else {
             setFormBuscarFolio({
                 txtBuscarFolio: "",

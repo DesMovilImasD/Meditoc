@@ -42,11 +42,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 
         [HttpGet]
         [Route("Api/Empresa/Get/GetEmpresas")]
-        public IMDResponse<List<EntEmpresa>> BGetEmpresas([FromUri] int? iIdEmpresa = null)
+        public IMDResponse<List<EntEmpresa>> CGetEmpresas([FromUri] int? iIdEmpresa = null)
         {
             IMDResponse<List<EntEmpresa>> response = new IMDResponse<List<EntEmpresa>>();
 
-            string metodo = nameof(this.BGetEmpresas);
+            string metodo = nameof(this.CGetEmpresas);
             logger.Info(IMDSerialize.Serialize(67823458411954, $"Inicia {metodo}([FromUri] int? iIdEmpresa = null)", iIdEmpresa));
 
             try

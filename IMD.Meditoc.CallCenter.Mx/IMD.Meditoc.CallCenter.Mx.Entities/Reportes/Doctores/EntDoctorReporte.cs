@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IMD.Meditoc.CallCenter.Mx.Entities.Reportes.Doctores
 {
-    public class EntDoctor
+    public class EntDoctorReporte
     {
         public int iIdDoctor { get; set; }
         public string sNombre { get; set; }
@@ -20,6 +20,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Reportes.Doctores
         public string sRFC { get; set; }
         public int iTotalConsultas { get; set; }
         public List<int> lstPacientes { get; set; }
-        public List<EntConsulta> lstConsultas { get; set; }
+        public List<EntConsultaReporte> lstConsultas { get; set; }
     }
 }

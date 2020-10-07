@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IMD.Meditoc.CallCenter.Mx.Business
 {
@@ -28,9 +24,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business
         /// al azar. No será más corto que el valor predeterminado y mínimo 
         /// No más de máximo predeterminado. 
 
-        public string Generate()
+        public string BGenerate()
         {
-            return Generate(MINIMA_LONGITUD_POR_DEFECTO,
+            return BGenerate(MINIMA_LONGITUD_POR_DEFECTO,
                             MAXIMA_LONGITUD_POR_DEFECTO);
         }
 
@@ -41,9 +37,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business
 
         /// Aleatoriamente generados contraseña. 
 
-        public string Generate(int length)
+        public string BGenerate(int length)
         {
-            return Generate(length, length);
+            return BGenerate(length, length);
         }
 
 
@@ -61,7 +57,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business
         /// Azar y caerá con la gama determinada por la 
         /// Parámetros de la función. 
 
-        public string Generate(int minLength,
+        public string BGenerate(int minLength,
                                       int maxLength)
         {
             // Asegúrese de que los parámetros de entrada son válidos. 

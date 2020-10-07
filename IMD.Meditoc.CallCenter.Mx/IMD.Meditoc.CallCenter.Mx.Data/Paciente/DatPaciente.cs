@@ -5,12 +5,8 @@ using IMD.Meditoc.CallCenter.Mx.Entities.Paciente;
 using log4net;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IMD.Meditoc.CallCenter.Mx.Data.Paciente
 {
@@ -19,9 +15,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Paciente
         private static readonly ILog logger = LogManager.GetLogger(typeof(DatPaciente));
         private Database database;
         IMDCommonData imdCommonData;
-        string savePaciente;
-        string getPacientes;
-        string updPaciente;
+        string spSavePaciente;
+        string spGetPacientes;
+        string spUpdPaciente;
 
         public DatPaciente()
         {
@@ -29,9 +25,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Paciente
             string FsConnectionString = "cnxMeditoc";
             database = imdCommonData.DGetDatabase(FsConnectionString, "MeditocComercial", "Meditoc1");
 
-            savePaciente = "sva_meditoc_save_paciente";
-            getPacientes = "svc_meditoc_pacientes";
-            updPaciente = "sva_meditoc_upd_paciente";
+            spSavePaciente = "sva_meditoc_save_paciente";
+            spGetPacientes = "svc_meditoc_pacientes";
+            spUpdPaciente = "sva_meditoc_upd_paciente";
         }
 
         public IMDResponse<DataTable> DSavePaciente(EntPaciente entPaciente)
@@ -43,7 +39,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Paciente
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(savePaciente))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spSavePaciente))
                 {
                     database.AddInParameter(dbCommand, "piIdFolio", DbType.Int32, entPaciente.iIdFolio);
                     database.AddInParameter(dbCommand, "psNombre", DbType.String, entPaciente.sNombre);
@@ -58,7 +54,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Paciente
             catch (Exception ex)
             {
                 response.Code = 67823458422832;
-                response.Message = "Ocurrió un error inesperado en la base de datos al guardar el paciente";
+                response.Message = "Ocurrió un error inesperado en la base de datos al guardar el paciente.";
 
                 logger.Error(IMDSerialize.Serialize(67823458422832, $"Error en {metodo}(EntPaciente entPaciente): {ex.Message}", entPaciente, ex, response));
             }
@@ -74,7 +70,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Paciente
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(getPacientes))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spGetPacientes))
                 {
                     database.AddInParameter(dbCommand, "piIdPaciente", DbType.Int32, piIdPaciente);
                     database.AddInParameter(dbCommand, "piIdFolio", DbType.Int32, piIdFolio);
@@ -85,7 +81,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Paciente
             catch (Exception ex)
             {
                 response.Code = 67823458516072;
-                response.Message = "Ocurrió un error inesperado en la base de datos al consultar los pacientes";
+                response.Message = "Ocurrió un error inesperado en la base de datos al consultar los pacientes.";
 
                 logger.Error(IMDSerialize.Serialize(67823458516072, $"Error en {metodo}(int? piIdPaciente = null, int? piIdFolio = null): {ex.Message}", piIdPaciente, piIdFolio, ex, response));
             }
@@ -101,7 +97,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Paciente
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(updPaciente))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spUpdPaciente))
                 {
                     database.AddInParameter(dbCommand, "piIdPaciente", DbType.Int32, piIdPaciente);
                     database.AddInParameter(dbCommand, "psNombre", DbType.String, psNombre);
@@ -118,7 +114,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Paciente
             catch (Exception ex)
             {
                 response.Code = 67823458578232;
-                response.Message = "Ocurrió un error inesperado en la base de datos al actualizar los datos del paciente";
+                response.Message = "Ocurrió un error inesperado en la base de datos al actualizar los datos del paciente.";
 
                 logger.Error(IMDSerialize.Serialize(67823458578232, $"Error en {metodo}(int piIdPaciente, string psNombre, string psCorreo, string psTelefono, string psTipoSangre, DateTime? pdtFechaNacimiento, int? piIdSexo, int piIdUsuarioMod): {ex.Message}", piIdPaciente, psNombre, psCorreo, psTelefono, psTipoSangre, pdtFechaNacimiento, piIdSexo, piIdUsuarioMod, ex, response));
             }

@@ -1,14 +1,11 @@
-﻿using IMD.Admin.Conekta.Entities;
-using IMD.Admin.Utilities.Business;
+﻿using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
+using IMD.Meditoc.CallCenter.Mx.Entities.Ordenes;
 using log4net;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Web;
 
-namespace IMD.Admin.Conekta.Web.Business
+namespace IMD.Meditoc.CallCenter.Mx.Business.Ordenes
 {
     public class BusAgent
     {
@@ -50,7 +47,7 @@ namespace IMD.Admin.Conekta.Web.Business
             catch (Exception ex)
             {
                 response.Code = 67823458107370;
-                response.Message = "Error al procesar la información";
+                response.Message = "Error al procesar la información.";
 
                 logger.Error(IMDSerialize.Serialize(67823458107370, $"Error en {metodo}(): {ex.Message}", ex, response));
             }

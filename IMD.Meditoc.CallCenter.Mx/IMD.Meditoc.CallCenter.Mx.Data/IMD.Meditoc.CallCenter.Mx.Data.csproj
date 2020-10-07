@@ -63,7 +63,7 @@
     <Compile Include="CGU\DatModulo.cs" />
     <Compile Include="CGU\DatPerfil.cs" />
     <Compile Include="CGU\DatPermiso.cs" />
-    <Compile Include="CGU\DatSubModulo.cs" />
+    <Compile Include="CGU\DatSubmodulo.cs" />
     <Compile Include="CGU\DatUsuario.cs" />
     <Compile Include="Colaborador\DatColaborador.cs" />
     <Compile Include="Consulta\DatConsulta.cs" />

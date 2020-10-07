@@ -14,12 +14,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Business
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(BusPoliticas));
 
-        public IMDResponse<EntPoliticas> ObtenerPoliticas()
+        public IMDResponse<EntPoliticas> BObtenerPoliticas()
         {
             IMDResponse<EntPoliticas> response = new IMDResponse<EntPoliticas>();
             IMDResponse<List<EntIceLinkServer>> lstServers = new IMDResponse<List<EntIceLinkServer>>();
 
-            string metodo = nameof(this.ObtenerPoliticas);
+            string metodo = nameof(this.BObtenerPoliticas);
             logger.Info(IMDSerialize.Serialize(67823458380874, $"Inicia {metodo}"));
 
             try
@@ -28,7 +28,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business
                 EntPoliticas entPoliticas = new EntPoliticas();
 
 
-                lstServers = BgetIceLinkServer();
+                lstServers = BGetIceLinkServer();
 
                 entPoliticas.sAvisoDePrivacidad = ConfigurationManager.AppSettings["sAvisoDePrivacidad"];
                 entPoliticas.sTerminosYCondiciones = ConfigurationManager.AppSettings["sTerminosYCondiciones"];
@@ -50,26 +50,26 @@ namespace IMD.Meditoc.CallCenter.Mx.Business
                 }
                 entPoliticas.bTieneMesesSinIntereses = Convert.ToBoolean(ConfigurationManager.AppSettings["bTieneMesesSinIntereses"]);
 
-                response.Message = "Políticas consultadas";
+                response.Message = "Políticas consultadas.";
                 response.Result = entPoliticas;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458381651;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al consultar las políticas de Meditoc.";
 
                 logger.Error(IMDSerialize.Serialize(67823458381651, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }
 
-        public IMDResponse<List<EntIceLinkServer>> BgetIceLinkServer()
+        public IMDResponse<List<EntIceLinkServer>> BGetIceLinkServer()
         {
             IMDResponse<List<EntIceLinkServer>> response = new IMDResponse<List<EntIceLinkServer>>();
             List<EntIceLinkServer> iceLinkServers;
             EntIceLinkServer oIceLinkServers;
 
-            string metodo = nameof(this.BgetIceLinkServer);
+            string metodo = nameof(this.BGetIceLinkServer);
             logger.Info(IMDSerialize.Serialize(67823458465567, $"Inicia {metodo}"));
 
             try

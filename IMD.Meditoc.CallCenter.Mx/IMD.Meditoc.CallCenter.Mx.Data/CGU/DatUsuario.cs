@@ -15,11 +15,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
         private static readonly ILog logger = LogManager.GetLogger(typeof(DatModulo));
         private Database database;
         IMDCommonData imdCommonData;
-        private string saveUsuario;
-        private string getUsuario;
-        private string cambioContrasenia;
-        private string getLogin;
-        private string validaUsuarioCorreo;
+        private string spSaveUsuario;
+        private string spGetUsuario;
+        private string spChangePassword;
+        private string spGetLogin;
+        private string spValidaUsuarioCorreo;
 
         public DatUsuario()
         {
@@ -27,11 +27,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             string FsConnectionString = "cnxMeditoc";
             database = imdCommonData.DGetDatabase(FsConnectionString, "MeditocComercial", "Meditoc1");
 
-            saveUsuario = "sva_cgu_save_usuario";
-            getUsuario = "svc_cgu_usuarios";
-            cambioContrasenia = "sva_cgu_CambiarContrasenia";
-            getLogin = "svc_cgu_login";
-            validaUsuarioCorreo = "svc_cgu_ValidaUsuarioCorreo";
+            spSaveUsuario = "sva_cgu_save_usuario";
+            spGetUsuario = "svc_cgu_usuarios";
+            spChangePassword = "sva_cgu_CambiarContrasenia";
+            spGetLogin = "svc_cgu_login";
+            spValidaUsuarioCorreo = "svc_cgu_ValidaUsuarioCorreo";
         }
 
         public IMDResponse<DataTable> DSaveUsuario(EntUsuario entUsuario)
@@ -43,7 +43,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(saveUsuario))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spSaveUsuario))
                 {
                     database.AddInParameter(dbCommand, "piIdUsuario", DbType.Int32, entUsuario.iIdUsuario);
                     database.AddInParameter(dbCommand, "piIdTipoCuenta", DbType.Int32, entUsuario.iIdTipoCuenta);
@@ -67,7 +67,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             catch (Exception ex)
             {
                 response.Code = 67823458343578;
-                response.Message = "Ocurrió un error inesperado en la base de datos al guardar el usuario";
+                response.Message = "Ocurrió un error inesperado en la base de datos al guardar el usuario.";
 
                 logger.Error(IMDSerialize.Serialize(67823458343578, $"Error en {metodo}(EntUsuario entUsuario): {ex.Message}", entUsuario, ex, response));
             }
@@ -83,7 +83,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(getUsuario))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spGetUsuario))
                 {
                     database.AddInParameter(dbCommand, "piIdUsuario", DbType.Int32, iIdUsuario);
                     database.AddInParameter(dbCommand, "piIdTipoCuenta", DbType.Int32, iIdTipoCuenta);
@@ -100,7 +100,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             catch (Exception ex)
             {
                 response.Code = 67823458361449;
-                response.Message = "Ocurrió un error inesperado en la base de datos al consultar los usuarios";
+                response.Message = "Ocurrió un error inesperado en la base de datos al consultar los usuarios.";
 
                 logger.Error(IMDSerialize.Serialize(67823458361449, $"Error en {metodo}(int? iIdUsuario, int? iIdTipoCuenta, int? iIdPerfil, string sUsuario, string sPassword, bool bActivo, bool bBaja): {ex.Message}", iIdUsuario, iIdTipoCuenta, iIdPerfil, sUsuario, sPassword, bActivo, bBaja, ex, response));
             }
@@ -116,7 +116,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(cambioContrasenia))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spChangePassword))
                 {
                     database.AddInParameter(dbCommand, "piIdUsuario", DbType.Int32, iIdUsuario);
                     database.AddInParameter(dbCommand, "piIdUsuarioUltMod", DbType.Int32, iIdUsuarioUltMod);
@@ -128,7 +128,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             catch (Exception ex)
             {
                 response.Code = 67823458366111;
-                response.Message = "Ocurrió un error inesperado en la base de datos al cambiar la contraseña";
+                response.Message = "Ocurrió un error inesperado en la base de datos al cambiar la contraseña.";
 
                 logger.Error(IMDSerialize.Serialize(67823458366111, $"Error en {metodo}(int iIdUsuario, string sPassword, int iIdUsuarioUltMod): {ex.Message}", iIdUsuario, sPassword, iIdUsuarioUltMod, ex, response));
             }
@@ -144,7 +144,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(getLogin))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spGetLogin))
                 {
                     database.AddInParameter(dbCommand, "psUsuario", DbType.String, sUsuario);
                     database.AddInParameter(dbCommand, "psPassword", DbType.String, sPassword);
@@ -156,7 +156,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             catch (Exception ex)
             {
                 response.Code = 67823458373881;
-                response.Message = "Ocurrió un error inesperado en la base de datos al iniciar la sesión";
+                response.Message = "Ocurrió un error inesperado en la base de datos al iniciar la sesión.";
 
                 logger.Error(IMDSerialize.Serialize(67823458373881, $"Error en {metodo}(string sUsuario, string sPassword): {ex.Message}", sUsuario, sPassword, ex, response));
             }
@@ -172,7 +172,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(validaUsuarioCorreo))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spValidaUsuarioCorreo))
                 {
                     database.AddInParameter(dbCommand, "psUsuario", DbType.String, sUsuario);
                     database.AddInParameter(dbCommand, "psCorreo", DbType.String, sCorreo);
@@ -193,7 +193,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             catch (Exception ex)
             {
                 response.Code = 67823458378543;
-                response.Message = "Ocurrió un error inesperado en la base de datos al validar los datos de usuario";
+                response.Message = "Ocurrió un error inesperado en la base de datos al validar los datos de usuario.";
 
                 logger.Error(IMDSerialize.Serialize(67823458378543, $"Error en {metodo}(string sUsuario, string sCorreo, bool bValida): {ex.Message}", sUsuario, sCorreo, bValida, ex, response));
             }

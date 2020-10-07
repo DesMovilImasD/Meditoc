@@ -6,15 +6,12 @@ using IMD.Meditoc.CallCenter.Mx.Entities.CallCenter;
 using IMD.Meditoc.CallCenter.Mx.Entities.Catalogos;
 using IMD.Meditoc.CallCenter.Mx.Entities.Consultas;
 using IMD.Meditoc.CallCenter.Mx.Entities.Folio;
-using IMD.Meditoc.CallCenter.Mx.Entities.Producto;
 using log4net;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
 {
@@ -47,7 +44,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
                 if (entConsulta == null)
                 {
                     response.Code = -8783458839487;
-                    response.Message = "No se ingresó información de consulta";
+                    response.Message = "No se ingresó información para guardar la consulta.";
                     return response;
                 }
 
@@ -69,20 +66,20 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
                 if (resSaveConsulta.Result.Rows.Count != 1)
                 {
                     response.Code = -7623486876234;
-                    response.Message = "No se pudo generar la consulta";
+                    response.Message = "No se ha sido posible acceder a la consulta en este momento. Intente de nuevo.";
                     return response;
                 }
 
                 entConsulta.iIdConsulta = Convert.ToInt32(resSaveConsulta.Result.Rows[0]["iIdConsulta"].ToString());
 
                 response.Code = 0;
-                response.Message = "Consulta creada";
+                response.Message = "La consulta ha sido guardada correctamente.";
                 response.Result = entConsulta;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458520734;
-                response.Message = "Ocurrió un error inesperado al guardar la consulta";
+                response.Message = "Ocurrió un error inesperado al guardar la consulta.";
 
                 logger.Error(IMDSerialize.Serialize(67823458520734, $"Error en {metodo}(EntConsulta entConsulta, int piIdUsuarioMod = 1): {ex.Message}", entConsulta, piIdUsuarioMod, ex, response));
             }
@@ -140,13 +137,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
                 }
 
                 response.Code = 0;
-                response.Message = "Historial consultado";
+                response.Message = "Se ha consultado el historial clínico.";
                 response.Result = lstHistorial;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458525396;
-                response.Message = "Ocurrió un error inesperado al consultar el historial clínico";
+                response.Message = "Ocurrió un error inesperado al consultar el historial clínico.";
 
                 logger.Error(IMDSerialize.Serialize(67823458525396, $"Error en {metodo}(int? piIdHistorialClinico = null, int? piIdConsulta = null, int? piIdPaciente = null, int? piIdColaborador = null, int? piIdFolio = null): {ex.Message}", piIdHistorialClinico, piIdConsulta, piIdPaciente, piIdColaborador, piIdFolio, ex, response));
             }
@@ -252,13 +249,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
                 }
 
                 response.Code = 0;
-                response.Message = "Consultas obtenidas";
+                response.Message = lstConsultas.Count == 0 ? "No se encontraron las consultas solicitadas." : "Se han obtenido los detalles de las consultas.";
                 response.Result = lstConsultas;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458531612;
-                response.Message = "Ocurrió un error inesperado al consultar el detalle de la consulta médica";
+                response.Message = "Ocurrió un error inesperado al consultar el detalle de la consulta médica.";
 
                 logger.Error(IMDSerialize.Serialize(67823458531612, $"Error en {metodo}(int? piIdConsulta = null, int? piIdPaciente = null, int? piIdColaborador = null, int? piIdEstatusConsulta = null, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null, DateTime? pdtFechaConsultaInicio = null, DateTime? pdtFechaConsultaFin = null): {ex.Message}", piIdConsulta, piIdPaciente, piIdColaborador, piIdEstatusConsulta, pdtFechaProgramadaInicio, pdtFechaProgramadaFin, pdtFechaConsultaInicio, pdtFechaConsultaFin, ex, response));
             }
@@ -328,13 +325,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
                 }
 
                 response.Code = 0;
-                response.Message = "Consultas obtenidas";
+                response.Message = "Se ha consultado la disponibilidad del colaborador.";
                 response.Result = lstConsultas;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458537828;
-                response.Message = "Ocurrió un error inesperado al consultar la disponibilidad del colaborador";
+                response.Message = "Ocurrió un error inesperado al consultar la disponibilidad del colaborador.";
 
                 logger.Error(IMDSerialize.Serialize(67823458537828, $"Error en {metodo}(int piIdColaborador, int piIdConsulta, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null): {ex.Message}", piIdColaborador, piIdConsulta, pdtFechaProgramadaInicio, pdtFechaProgramadaFin, ex, response));
             }
@@ -358,7 +355,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
                 if (consulta == null)
                 {
                     response.Code = -767234562313709;
-                    response.Message = "No se ingresó información de consulta";
+                    response.Message = "No se ingresó información de la consulta a cancelar";
                     return response;
                 }
 
@@ -371,7 +368,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
                 if (resGetDetalleConsulta.Result.Count != 1)
                 {
                     response.Code = -5723613487698;
-                    response.Message = "La consulta prporcionada no se encuentra programada";
+                    response.Message = "La consulta proporcionada no se encuentra programada.";
                     return response;
                 }
 
@@ -409,12 +406,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
 
                 response.Code = 0;
                 response.Result = true;
-                response.Message = "Consulta cancelada";
+                response.Message = "La consulta ha sido cancelada correctamente.";
             }
             catch (Exception ex)
             {
                 response.Code = 67823458553368;
-                response.Message = "Ocurrió un error inesperado al cancelar la consulta del paciente";
+                response.Message = "Ocurrió un error inesperado al cancelar la consulta del paciente.";
 
                 logger.Error(IMDSerialize.Serialize(67823458553368, $"Error en {metodo}(EntNuevaConsulta consulta): {ex.Message}", consulta, ex, response));
             }
@@ -438,7 +435,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
                 if (entHistorialClinico == null)
                 {
                     response.Code = -65766123898345;
-                    response.Message = "No se ingresó información de historial";
+                    response.Message = "No se ingresó información del historial clínico.";
                     return response;
                 }
 
@@ -459,13 +456,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
                 }
 
                 response.Code = 0;
-                response.Message = "El historial se guardó correctamente";
+                response.Message = "El historial clínico se guardó correctamente.";
                 response.Result = true;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458584448;
-                response.Message = "Ocurrió un error inesperado al guardar el historial clínico del paciente";
+                response.Message = "Ocurrió un error inesperado al guardar el historial clínico del paciente.";
 
                 logger.Error(IMDSerialize.Serialize(67823458584448, $"Error en {metodo}(EntHistorialClinico entHistorialClinico): {ex.Message}", entHistorialClinico, ex, response));
             }
@@ -519,13 +516,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
                 }
 
                 response.Code = 0;
-                response.Message = "Consultas obtenidas";
+                response.Message = "Se han obtenido las consultas programadas en el horario programado actual.";
                 response.Result = lstConsultas;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458589110;
-                response.Message = "Ocurrió un error inesperado al verificar el horario de consulta del paciente";
+                response.Message = "Ocurrió un error inesperado al verificar el horario de consulta del paciente.";
 
                 logger.Error(IMDSerialize.Serialize(67823458589110, $"Error en {metodo}(int piIdPaciente, int piIdColaborador): {ex.Message}", piIdPaciente, piIdColaborador, ex, response));
             }

@@ -5,12 +5,8 @@ using IMD.Meditoc.CallCenter.Mx.Entities.CGU;
 using log4net;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
 {
@@ -19,8 +15,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
         private static readonly ILog logger = LogManager.GetLogger(typeof(DatPermiso));
         private Database database;
         IMDCommonData imdCommonData;
-        private string savePermiso;
-        private string ObterPermisosxPerfil;
+        private string spSavePermiso;
+        private string spGetPermisosPerfil;
 
         public DatPermiso()
         {
@@ -28,8 +24,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             string FsConnectionString = "cnxMeditoc";
             database = imdCommonData.DGetDatabase(FsConnectionString, "MeditocComercial", "Meditoc1");
 
-            savePermiso = "sva_cgu_save_permiso";
-            ObterPermisosxPerfil = "svc_cgu_system";
+            spSavePermiso = "sva_cgu_save_permiso";
+            spGetPermisosPerfil = "svc_cgu_system";
         }
         public IMDResponse<bool> DSavePermiso(EntPermiso entPermiso)
         {
@@ -40,7 +36,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(savePermiso))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spSavePermiso))
                 {
                     database.AddInParameter(dbCommand, "piIdPerfil", DbType.Int32, entPermiso.iIdPerfil);
                     database.AddInParameter(dbCommand, "piIdModulo", DbType.Int32, entPermiso.iIdModulo);
@@ -56,7 +52,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             catch (Exception ex)
             {
                 response.Code = 67823458346686;
-                response.Message = "Ocurrió un error inesperado en la base de datos al guardar el permiso";
+                response.Message = "Ocurrió un error inesperado en la base de datos al guardar el permiso.";
 
                 logger.Error(IMDSerialize.Serialize(67823458346686, $"Error en {metodo}(EntPermiso entPermiso): {ex.Message}", entPermiso, ex, response));
             }
@@ -73,7 +69,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             try
             {
 
-                using (DbCommand dbCommand = database.GetStoredProcCommand(ObterPermisosxPerfil))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spGetPermisosPerfil))
                 {
                     database.AddInParameter(dbCommand, "piIdPerfil", DbType.Int32, iIdPerfil);
 
@@ -83,7 +79,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             catch (Exception ex)
             {
                 response.Code = 67823458352125;
-                response.Message = "Ocurrió un error inesperado en la base de datos al consultar los permisos";
+                response.Message = "Ocurrió un error inesperado en la base de datos al consultar los permisos.";
 
                 logger.Error(IMDSerialize.Serialize(67823458352125, $"Error en {metodo}: {ex.Message}(int iIdPerfil)", ex, iIdPerfil, response));
             }

@@ -1,19 +1,13 @@
-﻿using IMD.Admin.Conekta.Business;
-using IMD.Admin.Conekta.Entities;
-using IMD.Admin.Conekta.Entities.Orders;
-using IMD.Admin.Conekta.Entities.WebHooks;
-using IMD.Admin.Utilities.Business;
+﻿using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
+using IMD.Meditoc.CallCenter.Mx.Business.Ordenes;
+using IMD.Meditoc.CallCenter.Mx.Entities.Ordenes;
 using IMD.Meditoc.CallCenter.Mx.Web.Tokens;
 using log4net;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
-namespace IMD.Admin.Conekta.Web.Controllers
+namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 {
     public class ConektaController : ApiController
     {
@@ -62,7 +56,7 @@ namespace IMD.Admin.Conekta.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458123687;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al consultar la orden.";
 
                 logger.Error(IMDSerialize.Serialize(67823458123687, $"Error en {metodo}([FromUri]string orderId): {ex.Message}", orderId, ex, response));
             }
@@ -85,7 +79,7 @@ namespace IMD.Admin.Conekta.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458156321;
-                response.Message = "Ocurrió un error al procesar la información de la orden";
+                response.Message = "Ocurrió un error al procesar la información de la orden.";
 
                 logger.Error(IMDSerialize.Serialize(67823458156321, $"Error en {metodo}([FromBody]EntWebHook entWebHook): {ex.Message}", entWebHook, ex, response));
             }

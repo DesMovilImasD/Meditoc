@@ -6,9 +6,6 @@ using log4net;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IMD.Meditoc.CallCenter.Mx.Business.Empresa
 {
@@ -44,10 +41,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Empresa
                 }
 
                 IMDResponse<DataTable> dtEmpresa = datEmpresa.DSaveEmpresa(entEmpresa);
-
-                if (response.Code != 0 || dtEmpresa.Result?.Rows?.Count == 0)
+                if (dtEmpresa.Code != 0)
                 {
-                    response.Message = "Ocurrio un error al guardar la empresa";
+                    return dtEmpresa.GetResponse<EntEmpresa>();
+                }
+                if (dtEmpresa.Result.Rows.Count < 1)
+                {
+                    response.Code = -76768273456;
+                    response.Message = "No ha sido posible generar la empresa/cliente.";
                     return response;
                 }
 
@@ -66,13 +67,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Empresa
                 }
 
                 response.Code = 0;
-                response.Message = entEmpresa.iIdEmpresa == 0 ? "Se agrego con exito" : "Se actualizo con exito";
+                response.Message = entEmpresa.iIdEmpresa == 0 ? "La empresa ha sido guardada correctamente." : "La empresa ha sido actualizada correctamente.";
                 response.Result = oEmpresa;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458384759;
-                response.Message = "Ocurrió un error inesperado al intentar guardar los datos de la empresa";
+                response.Message = "Ocurrió un error inesperado al intentar guardar los datos de la empresa.";
 
                 logger.Error(IMDSerialize.Serialize(67823458384759, $"Error en {metodo}(EntEmpresa entEmpresa): {ex.Message}", entEmpresa, ex, response));
             }
@@ -98,13 +99,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Empresa
 
                 if (string.IsNullOrWhiteSpace(entEmpresa.sNombre))
                 {
-                    response.Message = "El nombre no puede ser vacio";
+                    response.Message = "El nombre de la empresa no puede ser vacío.";
                     return response;
                 }
 
                 if (string.IsNullOrWhiteSpace(entEmpresa.sCorreo))
                 {
-                    response.Message = "El correo no puede ser vacio";
+                    response.Message = "El correo de la empresa no puede ser vacío.";
                     return response;
                 }
 
@@ -114,7 +115,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Empresa
                 {
                     if (lstEmpresas.Result.Exists(c => c.sCorreo == entEmpresa.sCorreo) && entEmpresa.iIdEmpresa == 0)
                     {
-                        response.Message = "Ya existe una empresa con ese correo registrado.";
+                        response.Message = "Ya existe una empresa registrada con el correo proporcionado.";
                         return response;
                     }
 
@@ -126,7 +127,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Empresa
             catch (Exception ex)
             {
                 response.Code = 67823458386313;
-                response.Message = "Ocurrió un error inesperado al validar los datos ingresados de la empresa";
+                response.Message = "Ocurrió un error inesperado al validar los datos ingresados de la empresa.";
 
                 logger.Error(IMDSerialize.Serialize(67823458386313, $"Error en {metodo}(EntEmpresa entEmpresa): {ex.Message}", entEmpresa, ex, response));
             }
@@ -174,13 +175,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Empresa
                 }
 
                 response.Code = 0;
-                response.Message = "Lista de empresas";
+                response.Message = "La lista de empresas ha sido obtenida.";
                 response.Result = lstEmpresa;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458394083;
-                response.Message = "Ocurrió un error inesperado al obtener los datos de la empresa";
+                response.Message = "Ocurrió un error inesperado al obtener los datos de la empresa.";
 
                 logger.Error(IMDSerialize.Serialize(67823458394083, $"Error en {metodo}(int? iIdEmpresa, string psCorreo = null): {ex.Message}", iIdEmpresa, psCorreo, ex, response));
             }

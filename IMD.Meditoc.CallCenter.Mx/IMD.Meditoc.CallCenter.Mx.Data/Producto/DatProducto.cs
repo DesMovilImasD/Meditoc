@@ -15,8 +15,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Producto
         private static readonly ILog logger = LogManager.GetLogger(typeof(DatProducto));
         private Database database;
         IMDCommonData imdCommonData;
-        string saveProducto;
-        string ObtenerProductos;
+        string spSaveProducto;
+        string spGetProductos;
 
         public DatProducto()
         {
@@ -24,8 +24,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Producto
             string FsConnectionString = "cnxMeditoc";
             database = imdCommonData.DGetDatabase(FsConnectionString, "MeditocComercial", "Meditoc1");
 
-            saveProducto = "sva_meditoc_save_producto";
-            ObtenerProductos = "svc_meditoc_ObtenerProductos";
+            spSaveProducto = "sva_meditoc_save_producto";
+            spGetProductos = "svc_meditoc_ObtenerProductos";
         }
 
 
@@ -39,7 +39,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Producto
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(saveProducto))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spSaveProducto))
                 {
                     database.AddInParameter(dbCommand, "piIdProducto", DbType.Int32, entProducto.iIdProducto);
                     database.AddInParameter(dbCommand, "piIdTipoProducto", DbType.Int32, entProducto.iIdTipoProducto);
@@ -61,7 +61,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Producto
             catch (Exception ex)
             {
                 response.Code = 67823458406515;
-                response.Message = "Ocurrió un error inesperado en la base de datos al guardar el producto";
+                response.Message = "Ocurrió un error inesperado en la base de datos al guardar el producto.";
 
                 logger.Error(IMDSerialize.Serialize(67823458406515, $"Error en {metodo}(EntProducto entProducto): {ex.Message}", entProducto, ex, response));
             }
@@ -77,7 +77,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Producto
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(ObtenerProductos))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spGetProductos))
                 {
 
                     database.AddInParameter(dbCommand, "piIdProducto", DbType.Int32, iIdProducto);
@@ -87,7 +87,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Producto
             catch (Exception ex)
             {
                 response.Code = 67823458408069;
-                response.Message = "Ocurrió un error inesperado en la base de datos al consultar los productos";
+                response.Message = "Ocurrió un error inesperado en la base de datos al consultar los productos.";
 
                 logger.Error(IMDSerialize.Serialize(67823458408069, $"Error en {metodo}(int? iIdProducto): {ex.Message}", iIdProducto, ex, response));
             }

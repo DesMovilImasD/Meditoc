@@ -1,18 +1,15 @@
-﻿using IMD.Admin.Conekta.Business;
-using IMD.Admin.Conekta.Data;
-using IMD.Admin.Conekta.Entities;
-using IMD.Admin.Conekta.Entities.Orders;
-using IMD.Admin.Utilities.Business;
+﻿using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
 using IMD.Meditoc.CallCenter.Mx.Business.CGU;
 using IMD.Meditoc.CallCenter.Mx.Business.Consulta;
 using IMD.Meditoc.CallCenter.Mx.Business.Correo;
 using IMD.Meditoc.CallCenter.Mx.Business.Empresa;
+using IMD.Meditoc.CallCenter.Mx.Business.Ordenes;
 using IMD.Meditoc.CallCenter.Mx.Business.Paciente;
 using IMD.Meditoc.CallCenter.Mx.Business.Producto;
-using IMD.Meditoc.CallCenter.Mx.Data.CallCenter;
 using IMD.Meditoc.CallCenter.Mx.Data.Consulta;
 using IMD.Meditoc.CallCenter.Mx.Data.Folio;
+using IMD.Meditoc.CallCenter.Mx.Data.Ordenes;
 using IMD.Meditoc.CallCenter.Mx.Entities;
 using IMD.Meditoc.CallCenter.Mx.Entities.CallCenter;
 using IMD.Meditoc.CallCenter.Mx.Entities.Catalogos;
@@ -23,19 +20,14 @@ using IMD.Meditoc.CallCenter.Mx.Entities.Ordenes;
 using IMD.Meditoc.CallCenter.Mx.Entities.Paciente;
 using IMD.Meditoc.CallCenter.Mx.Entities.Producto;
 using log4net;
-using Newtonsoft.Json;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Common;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Transactions;
 
 namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 {
@@ -57,11 +49,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             busEmpresa = new BusEmpresa();
         }
 
-        /// <summary>
-        /// Genera una compra desde el portal de pagos o la App
-        /// </summary>
-        /// <param name="entConecktaPago"></param>
-        /// <returns></returns>
         public IMDResponse<EntDetalleCompra> BNuevoFolioCompra(EntCreateOrder entCreateOrder)
         {
             IMDResponse<EntDetalleCompra> response = new IMDResponse<EntDetalleCompra>();
@@ -86,7 +73,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     if (oProducto == null)
                     {
                         response.Code = -876348767345;
-                        response.Message = "Producto no válido.";
+                        response.Message = "El producto no es válido.";
                         return response;
                     }
 
@@ -108,27 +95,26 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 //requesOrder.Result = JsonConvert.DeserializeObject<EntRequestOrder>(f);
 
 
-                response = BGuardarCompraUnica(resOrder.Result, entCreateOrder.iIdOrigen);
+                IMDResponse<EntDetalleCompra> resGuardarCompra = this.BGuardarCompraUnica(resOrder.Result, entCreateOrder.iIdOrigen);
+                if (resGuardarCompra.Code != 0)
+                {
+                    logger.Warn(IMDSerialize.Serialize(67823458415840, $"Error en {metodo}(EntConecktaPago entConecktaPago) > Error al guardar la compra > {resGuardarCompra.Message}", entCreateOrder, resOrder, resGuardarCompra, response));
+
+                }
 
                 response.Code = 0;
-                response.Message = "Operación exitosa.";
+                response.Message = "La orden ha sido generada correctamente.";
             }
             catch (Exception ex)
             {
                 response.Code = 67823458415839;
-                response.Message = "Ocurrió un error inesperado al crear la orden";
+                response.Message = "Ocurrió un error inesperado al generar la orden.";
 
                 logger.Error(IMDSerialize.Serialize(67823458415839, $"Error en {metodo}(EntConecktaPago entConecktaPago): {ex.Message}", entCreateOrder, ex, response));
             }
             return response;
         }
 
-        /// <summary>
-        /// Guarda los datos de la orden generada por Conekta
-        /// </summary>
-        /// <param name="entOrder"></param>
-        /// <param name="entCreateOrder"></param>
-        /// <returns></returns>
         public IMDResponse<EntDetalleCompra> BGuardarCompraUnica(EntOrder entOrder, int piIdOrigen)
         {
             IMDResponse<EntDetalleCompra> response = new IMDResponse<EntDetalleCompra>();
@@ -225,30 +211,22 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 oDetalleCompra.bAplicaIVA = entOrder.amount_tax > 0d;
 
 
-                IMDResponse<bool> responseCorreo = this.BEnvioCorreo(oDetalleCompra);
+                this.BEnvioCorreo(oDetalleCompra);
 
                 response.Code = 0;
                 response.Result = oDetalleCompra;
+                response.Message = "Los folios de la orden han sido generados existósamente.";
             }
             catch (Exception ex)
             {
                 response.Code = 67823458417393;
-                response.Message = "Ocurrió un error inesperado durante la creación de la orden";
+                response.Message = "Ocurrió un error inesperado al generar la orden.";
 
                 logger.Error(IMDSerialize.Serialize(67823458417393, $"Error en {metodo}(EntRequestOrder entOrder, EntConecktaPago entConecktaPago): {ex.Message}", entOrder, piIdOrigen, ex, response));
             }
             return response;
         }
 
-        /// <summary>
-        /// Genera un unico folio con los datos de la orden generada
-        /// </summary>
-        /// <param name="entFolio"></param>
-        /// <param name="entPaciente"></param>
-        /// <param name="item"></param>
-        /// <param name="oDetalleCompra"></param>
-        /// <param name="i"></param>
-        /// <returns></returns>
         public IMDResponse<bool> BGenerarFolioCompra(EntFolio entFolio, EntPaciente entPaciente, EntLineItemDetail item, EntDetalleCompra oDetalleCompra, int i)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
@@ -275,7 +253,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 BusGeneratePassword busGenerate = new BusGeneratePassword();
                 BusUsuario busUsuario = new BusUsuario();
 
-                entFolio.sPassword = busGenerate.Generate(6);
+                entFolio.sPassword = busGenerate.BGenerate(6);
 
                 entFolio.sPassword = busUsuario.BEncodePassword(entFolio.sPassword);
 
@@ -320,22 +298,21 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 clsDetalleCompraArticulo.iIndex = i + 1;
 
                 oDetalleCompra.lstArticulos.Add(clsDetalleCompraArticulo);
+
+                response.Code = 0;
+                response.Message = "El folio ha sido generado correctamente.";
+                response.Result = true;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458550260;
-                response.Message = "Ocurrió un error inesperado al procesar los folios de compra";
+                response.Message = "Ocurrió un error inesperado al procesar los folios de la compra.";
 
                 logger.Error(IMDSerialize.Serialize(67823458550260, $"Error en {metodo}(EntFolio entFolio, EntPaciente entPaciente, line_items item, EntDetalleCompra oDetalleCompra, int i): {ex.Message}", entFolio, entPaciente, item, oDetalleCompra, i, ex, response));
             }
             return response;
         }
 
-        /// <summary>
-        /// Envia el corre de compra realizada en Conekta
-        /// </summary>
-        /// <param name="oDetalleCompra"></param>
-        /// <returns></returns>
         public IMDResponse<bool> BEnvioCorreo(EntDetalleCompra oDetalleCompra)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
@@ -474,27 +451,23 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 busCorreo.BSaveCorreo(oDetalleCompra.sOrden, plantillaBody, para, asunto);
 
-                busCorreo.m_EnviarEmail("", "", "", asunto, plantillaBody, para, "", "");
+                busCorreo.BEnviarEmail("", "", "", asunto, plantillaBody, para, "", "");
 
 
                 response.Code = 0;
                 response.Result = true;
+                response.Message = "El correo ha sido enviado exitósamente.";
             }
             catch (Exception ex)
             {
                 response.Code = 67823458424386;
-                response.Message = "Ocurrió un error inesperado al generar el correo de compra";
+                response.Message = "Ocurrió un error inesperado al generar el correo de compra.";
 
                 logger.Error(IMDSerialize.Serialize(67823458424386, $"Error en {metodo}(EntDetalleCompra oDetalleCompra): {ex.Message}", oDetalleCompra, ex, response));
             }
             return response;
         }
 
-        /// <summary>
-        /// Generar nuevos folios para la empresa solicitada
-        /// </summary>
-        /// <param name="entFolioxEmpresa"></param>
-        /// <returns></returns>
         public IMDResponse<bool> BNuevosFoliosEmpresa(EntFolioxEmpresa entFolioxEmpresa)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
@@ -511,7 +484,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 if (entFolioxEmpresa.iIdEmpresa == 0)
                 {
                     response.Code = -762384986834980;
-                    response.Message = "Debe seleccionar una empresa";
+                    response.Message = "No se ha especificado la empresa contenedora de los folios a generar.";
                     response.Result = false;
                     return response;
                 }
@@ -561,7 +534,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     if (oProducto == null)
                     {
                         response.Code = -73249876234999;
-                        response.Message = "Producto no válido.";
+                        response.Message = "El producto no es válido.";
                         return response;
                     }
 
@@ -592,13 +565,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 //}
                 oDetalleFolioempresa.Result.lstArticulos = lstArticulosDetalle;
                 oDetalleFolioempresa.Result.sOrderId = entFolioxEmpresa.uid;
-                response = this.BEnvioCorreoEmpresa(oDetalleFolioempresa.Result);
 
-                if (response.Code != 0)
-                {
-                    response.Message = "Ocurrio un error al enviar el correo";
-                    return response;
-                }
+                this.BEnvioCorreoEmpresa(oDetalleFolioempresa.Result);
 
                 response.Code = 0;
                 response.Message = "Los folios fueron enviados al siguiente correo " + oDetalleFolioempresa.Result.entEmpresa.sCorreo;
@@ -607,7 +575,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             catch (Exception ex)
             {
                 response.Code = 67823458427494;
-                response.Message = "Ocurrió un error inesperado al procesar los folios de la compra";
+                response.Message = "Ocurrió un error inesperado al procesar los folios de la compra.";
 
                 logger.Error(IMDSerialize.Serialize(67823458427494, $"Error en {metodo}(EntFolioxEmpresa entFolioxEmpresa): {ex.Message}", entFolioxEmpresa, ex, response));
             }
@@ -727,7 +695,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 response.Code = 0;
                 response.Result = true;
-                response.Message = "Guardado correcto";
+                response.Message = "La orden de compra ha sido guardada correctamente.";
             }
             catch (Exception ex)
             {
@@ -739,15 +707,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             return response;
         }
 
-        /// <summary>
-        /// Genera un unico folio con los datos de la empresa y paciente
-        /// </summary>
-        /// <param name="entFolio"></param>
-        /// <param name="entPaciente"></param>
-        /// <param name="item"></param>
-        /// <param name="lstArticulosDetalle"></param>
-        /// <param name="i"></param>
-        /// <returns></returns>
         public IMDResponse<bool> BGenerarFolioEmpresa(EntFolio entFolio, EntPaciente entPaciente, line_items item, List<EntDetalleCompraArticulo> lstArticulosDetalle, int i)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
@@ -789,7 +748,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 BusGeneratePassword busGenerate = new BusGeneratePassword();
                 BusUsuario busUsuario = new BusUsuario();
 
-                entFolio.sPassword = busGenerate.Generate(6);
+                entFolio.sPassword = busGenerate.BGenerate(6);
 
                 entFolio.sPassword = busUsuario.BEncodePassword(entFolio.sPassword);
 
@@ -799,9 +758,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 if (dtFolio.Code != 0)
                 {
-                    response = dtFolio.GetResponse<bool>();
-                    response.Message = "Ocurrio un error al guardar el folio";
-                    return response;
+                    return dtFolio.GetResponse<bool>();
                 }
 
                 foreach (DataRow item2 in dtFolio.Result.Rows)
@@ -834,27 +791,26 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 clsDetalleCompraArticulo.iIndex = i + 1;
 
                 lstArticulosDetalle.Add(clsDetalleCompraArticulo);
+
+                response.Code = 0;
+                response.Message = "El folio ha sido generado correctamente.";
+                response.Result = true;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458547152;
-                response.Message = "Ocurrió un error inesperado al generar los folios de la empresa";
+                response.Message = "Ocurrió un error inesperado al generar los folios de la empresa.";
 
                 logger.Error(IMDSerialize.Serialize(67823458547152, $"Error en {metodo}(EntFolio entFolio, EntPaciente entPaciente, line_items item, List<EntDetalleCompraArticulo> lstArticulosDetalle, int i): {ex.Message}", entFolio, entPaciente, item, lstArticulosDetalle, i, ex, response));
             }
             return response;
         }
 
-        /// <summary>
-        /// Envia el correo de los folios generados a la empresa que los solicito
-        /// </summary>
-        /// <param name="detalleFolio"></param>
-        /// <returns></returns>
         public IMDResponse<bool> BEnvioCorreoEmpresa(EntEmpresaDetalleFolio detalleFolio)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
-            string metodo = nameof(this.BEnvioCorreo);
+            string metodo = nameof(this.BEnvioCorreoEmpresa);
             logger.Info(IMDSerialize.Serialize(67823458423609, $"Inicia {metodo}(EntEmpresaDetalleFolio detalleFolio)", detalleFolio));
 
             try
@@ -943,10 +899,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 busCorreo.BSaveCorreo(detalleFolio.sOrderId, plantillaBody, para, asunto);
 
-                busCorreo.m_EnviarEmail("", "", "", asunto, plantillaBody, para, "", "");
+                busCorreo.BEnviarEmail("", "", "", asunto, plantillaBody, para, "", "");
 
                 response.Code = 0;
                 response.Result = true;
+                response.Message = "El correo ha sido enviado exitósamente.";
             }
             catch (Exception ex)
             {
@@ -958,11 +915,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             return response;
         }
 
-        /// <summary>
-        /// Genera un unico folio para una consulta programada del paciente
-        /// </summary>
-        /// <param name="entNuevaConsulta"></param>
-        /// <returns></returns>
         public IMDResponse<EntDetalleCompra> BNuevaConsulta(EntNuevaConsulta entNuevaConsulta)
         {
             IMDResponse<EntDetalleCompra> response = new IMDResponse<EntDetalleCompra>();
@@ -976,27 +928,27 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 if (entNuevaConsulta.consulta.iIdColaborador == null | entNuevaConsulta.consulta.iIdColaborador <= 0)
                 {
                     response.Code = -23477767234;
-                    response.Message = "No se ingresaron datos del colaborador";
+                    response.Message = "No se ingresaron datos del colaborador.";
                     return response;
                 }
 
                 if (entNuevaConsulta == null || entNuevaConsulta?.consulta == null || entNuevaConsulta?.customerInfo == null)
                 {
                     response.Code = -34234687877345;
-                    response.Message = "No se ingresaron datos";
+                    response.Message = "La información para agendar la consulta está incompleta.";
                     return response;
                 }
 
                 if (entNuevaConsulta?.consulta?.dtFechaProgramadaInicio == null || entNuevaConsulta?.consulta?.dtFechaProgramadaFin == null)
                 {
                     response.Code = -92647582876547;
-                    response.Message = "No se ingresaron las fechas de consulta";
+                    response.Message = "No se ingresaron las fechas para agendar la consulta.";
                     return response;
                 }
                 if (entNuevaConsulta?.consulta?.dtFechaProgramadaInicio >= entNuevaConsulta?.consulta?.dtFechaProgramadaFin)
                 {
                     response.Code = -3462867587263;
-                    response.Message = "La fecha de fin no puede ser menor a la fecha de inicio";
+                    response.Message = "La fecha de fin no puede ser menor a la fecha de inicio.";
                     return response;
                 }
 
@@ -1017,20 +969,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 if (resGetConsultas.Result.Count != 0)
                 {
-                    bool existeConflictoAgenda = false;
-                    resGetConsultas.Result.ForEach(consulta =>
+                    foreach (EntDetalleConsulta consulta in resGetConsultas.Result)
                     {
                         if (consulta.iIdEstatusConsulta != (int)EnumEstatusConsulta.Cancelado && consulta.iIdEstatusConsulta != (int)EnumEstatusConsulta.Finalizado)
                         {
                             response.Code = -2346727776123;
-                            response.Message = $"Ya hay una consulta programada de {consulta.dtFechaProgramadaInicio?.ToString("h:mm tt")} a {consulta.dtFechaProgramadaFin?.ToString("h:mm tt")} para el folio {consulta.sFolio}. El tiempo de espera entre consultas es de {ConfigurationManager.AppSettings["iMinToleraciaConsultaFin"]} min";
-                            existeConflictoAgenda = true;
+                            response.Message = $"Ya hay una consulta programada de {consulta.dtFechaProgramadaInicio?.ToString("h:mm tt")} a {consulta.dtFechaProgramadaFin?.ToString("h:mm tt")} para el folio {consulta.sFolio}. El tiempo de espera entre consultas es de {ConfigurationManager.AppSettings["iMinToleraciaConsultaFin"]} min.";
+                            return response;
                         }
-                    });
-
-                    if (existeConflictoAgenda)
-                    {
-                        return response;
                     }
                 }
 
@@ -1053,18 +999,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             catch (Exception ex)
             {
                 response.Code = 67823458534720;
-                response.Message = "Ocurrió un error inesperado al generar la consulta del paciente";
+                response.Message = "Ocurrió un error inesperado al generar la consulta del paciente.";
 
                 logger.Error(IMDSerialize.Serialize(67823458534720, $"Error en {metodo}(EntNuevaConsulta entNuevaConsulta): {ex.Message}", entNuevaConsulta, ex, response));
             }
             return response;
         }
 
-        /// <summary>
-        /// Genera una consulta con los datos solicitados cuando existe un folio
-        /// </summary>
-        /// <param name="entNuevaConsulta"></param>
-        /// <returns></returns>
         public IMDResponse<EntDetalleCompra> BGenerarConsultaConFolio(EntNuevaConsulta entNuevaConsulta)
         {
             IMDResponse<EntDetalleCompra> response = new IMDResponse<EntDetalleCompra>();
@@ -1083,7 +1024,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 if (resGetFolioExiste.Result.Count != 1)
                 {
                     response.Code = -374672348767234;
-                    response.Message = "El folio proporcionado no existe";
+                    response.Message = "El folio proporcionado no existe.";
                     return response;
                 }
 
@@ -1138,18 +1079,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             catch (Exception ex)
             {
                 response.Code = 67823458542490;
-                response.Message = "Ocurrió un error inesperado al generar el folio del paciente";
+                response.Message = "Ocurrió un error inesperado al generar el folio del paciente.";
 
                 logger.Error(IMDSerialize.Serialize(67823458542490, $"Error en {metodo}(EntNuevaConsulta entNuevaConsulta): {ex.Message}", entNuevaConsulta, ex, response));
             }
             return response;
         }
 
-        /// <summary>
-        /// Genera una consulta con los datos solicitados cuando no existe un folio
-        /// </summary>
-        /// <param name="entNuevaConsulta"></param>
-        /// <returns></returns>
         public IMDResponse<EntDetalleCompra> BGenerarConsultaSinFolio(EntNuevaConsulta entNuevaConsulta)
         {
             IMDResponse<EntDetalleCompra> response = new IMDResponse<EntDetalleCompra>();
@@ -1212,7 +1148,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 BusGeneratePassword busGenerate = new BusGeneratePassword();
 
-                entFolio.sPassword = busGenerate.Generate(6);
+                entFolio.sPassword = busGenerate.BGenerate(6);
                 entFolio.sPassword = busUsuario.BEncodePassword(entFolio.sPassword);
                 entFolio.iIdUsuarioMod = entNuevaConsulta.iIdUsuarioMod;
 
@@ -1220,9 +1156,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 if (dtFolio.Code != 0)
                 {
-                    response = dtFolio.GetResponse<EntDetalleCompra>();
-                    response.Message = "Ocurrio un error al guardar el folio";
-                    return response;
+                    return dtFolio.GetResponse<EntDetalleCompra>();
                 }
 
                 foreach (DataRow item2 in dtFolio.Result.Rows)
@@ -1252,18 +1186,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             catch (Exception ex)
             {
                 response.Code = 67823458544044;
-                response.Message = "Ocurrió un error inesperado al generar la consulta del paciente";
+                response.Message = "Ocurrió un error inesperado al generar la consulta del paciente.";
 
                 logger.Error(IMDSerialize.Serialize(67823458544044, $"Error en {metodo}(EntNuevaConsulta entNuevaConsulta): {ex.Message}", entNuevaConsulta, ex, response));
             }
             return response;
         }
 
-        /// <summary>
-        /// Edita los datos de una consulta con los datos solicitados
-        /// </summary>
-        /// <param name="entModificarConsulta"></param>
-        /// <returns></returns>
         public IMDResponse<EntDetalleCompra> BModificarConsultaFolio(EntNuevaConsulta entModificarConsulta)
         {
             IMDResponse<EntDetalleCompra> response = new IMDResponse<EntDetalleCompra>();
@@ -1282,7 +1211,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 if (resGetConsulta.Result.Count != 1)
                 {
                     response.Code = -3452374677623478;
-                    response.Message = "La consulta no existe";
+                    response.Message = "No se ha encontrado la consulta solicitada.";
                     return response;
                 }
 
@@ -1320,21 +1249,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             catch (Exception ex)
             {
                 response.Code = 67823458545598;
-                response.Message = "Ocurrió un error inesperado al reprogramar la consulta del paciente";
+                response.Message = "Ocurrió un error inesperado al reprogramar la consulta del paciente.";
 
                 logger.Error(IMDSerialize.Serialize(67823458545598, $"Error en {metodo}(EntNuevaConsulta entModificarConsulta): {ex.Message}", entModificarConsulta, ex, response));
             }
             return response;
         }
 
-        /// <summary>
-        /// Confirma la generacion de una consulta
-        /// </summary>
-        /// <param name="entNuevaConsulta"></param>
-        /// <param name="FolioEnviar"></param>
-        /// <param name="PassEnviar"></param>
-        /// <param name="reprogramado"></param>
-        /// <returns></returns>
         public IMDResponse<EntDetalleCompra> BConfirmarNuevaConsulta(EntNuevaConsulta entNuevaConsulta, string FolioEnviar, string PassEnviar, bool reprogramado = false)
         {
             IMDResponse<EntDetalleCompra> response = new IMDResponse<EntDetalleCompra>();
@@ -1372,30 +1293,24 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 IMDResponse<bool> responseCorreo = this.BEnviarCorreoConsulta(entDetalleCompra, reprogramado);
 
                 response.Code = 0;
-                response.Message = "Consulta creada";
+                response.Message = "La consulta ha sido agendada correctamente.";
                 response.Result = entDetalleCompra;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458540936;
-                response.Message = "Ocurrió un error inesperado al confirmar la consulta del paciente";
+                response.Message = "Ocurrió un error inesperado al confirmar la consulta del paciente.";
 
                 logger.Error(IMDSerialize.Serialize(67823458540936, $"Error en {metodo}(EntNuevaConsulta entNuevaConsulta, string FolioEnviar, string PassEnviar, bool reprogramado = false): {ex.Message}", entNuevaConsulta, FolioEnviar, PassEnviar, reprogramado, ex, response));
             }
             return response;
         }
 
-        /// <summary>
-        /// Envia el correo de una consulta generada
-        /// </summary>
-        /// <param name="detalleFolio"></param>
-        /// <param name="reprogramado"></param>
-        /// <returns></returns>
         public IMDResponse<bool> BEnviarCorreoConsulta(EntDetalleCompra detalleFolio, bool reprogramado = false)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
-            string metodo = nameof(this.BEnvioCorreo);
+            string metodo = nameof(this.BEnviarCorreoConsulta);
             logger.Info(IMDSerialize.Serialize(67823458423609, $"Inicia {metodo}(EntDetalleCompra detalleFolio, bool reprogramado = false)", detalleFolio, reprogramado));
 
             try
@@ -1430,10 +1345,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 plantillaBody = plantillaBody.Replace("sLogoConekta", ConfigurationManager.AppSettings["sLogoConekta"]);
 
                 busCorreo.BSaveCorreo(detalleFolio.sOrden, plantillaBody, para, asunto);
-                busCorreo.m_EnviarEmail("", "", "", asunto, plantillaBody, para, "", "");
+                busCorreo.BEnviarEmail("", "", "", asunto, plantillaBody, para, "", "");
 
                 response.Code = 0;
                 response.Result = true;
+                response.Message = "El correo ha sido enviado exitósamente.";
             }
             catch (Exception ex)
             {
@@ -1445,12 +1361,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             return response;
         }
 
-        /// <summary>
-        /// Inicia sesión en la APP de Meditoc
-        /// </summary>
-        /// <param name="sUsuario"></param>
-        /// <param name="sPassword"></param>
-        /// <returns></returns>
         public IMDResponse<EntFolio> BLoginApp(string sUsuario, string sPassword)
         {
             IMDResponse<EntFolio> response = new IMDResponse<EntFolio>();
@@ -1460,19 +1370,19 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             string metodo = nameof(this.BLoginApp);
             logger.Info(IMDSerialize.Serialize(67823458429825, $"Inicia {metodo}(string sUsuario, string sPassword)", sUsuario, sPassword));
 
+            response.Code = 67823458430602;
+            response.Message = "Su usuario o contraseña es inválida.";
+
             try
             {
-                response.Code = 67823458430602;
 
                 if (string.IsNullOrWhiteSpace(sUsuario))
                 {
-                    response.Message = "Su usuario o contraseña es inválida";
                     return response;
                 }
 
                 if (string.IsNullOrWhiteSpace(sPassword))
                 {
-                    response.Message = "Su usuario o contraseña es inválida";
                     return response;
                 }
 
@@ -1482,13 +1392,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 if (dtLoginApp.Code != 0)
                 {
-                    response.Message = "Su usuario o contraseña es inválida";
                     return response;
                 }
 
                 if (dtLoginApp.Result.Rows.Count == 0)
                 {
-                    response.Message = "Su usuario o contraseña es inválida";
                     return response;
                 }
 
@@ -1522,7 +1430,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     {
                         if (entFolio.dtFechaVencimiento < DateTime.Now || (!entFolio.bActivo && entFolio.bBaja))
                         {
-                            response.Message = "Su folio ha expirado";
+                            response.Message = "Su folio ha expirado.";
                             return response;
                         }
                     }
@@ -1542,13 +1450,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 }
 
                 response.Code = 0;
-                response.Message = "Login correcto";
+                response.Message = "Se ha iniciado sesión correctamente.";
                 response.Result = entFolio;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458430602;
-                response.Message = "Su usuario o contraseña es inválida";
 
                 logger.Error(IMDSerialize.Serialize(67823458430602, $"Error en {metodo}(string sUsuario, string sPassword): {ex.Message}", sUsuario, sPassword, ex, response));
             }
@@ -1574,7 +1481,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 if (resGetData.Result.Count != 1)
                 {
                     response.Code = -37465876768234;
-                    response.Message = "Error al validar la información de la compra";
+                    response.Message = "Error al validar la información de la compra.";
                     return response;
                 }
                 EntFolioReporte folio = resGetData.Result.First();
@@ -1608,33 +1515,20 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     }
 
                     response.Code = 0;
-                    response.Message = "Se actualizó la vigencia del folio";
+                    response.Message = "La vigencia del folio ha sido actualizada correctamente.";
                     response.Result = nuevaFechaVencimiento;
                 }
             }
             catch (Exception ex)
             {
                 response.Code = 67823458623298;
-                response.Message = "Ocurrió un error inesperado al verificar la información de la compra";
+                response.Message = "Ocurrió un error inesperado al verificar la información de la compra.";
 
                 logger.Error(IMDSerialize.Serialize(67823458623298, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }
 
-        /// <summary>
-        /// Obtiene los folios del sistema
-        /// </summary>
-        /// <param name="piIdFolio"></param>
-        /// <param name="piIdEmpresa"></param>
-        /// <param name="piIdProducto"></param>
-        /// <param name="piIdOrigen"></param>
-        /// <param name="psFolio"></param>
-        /// <param name="psOrdenConekta"></param>
-        /// <param name="pbTerminosYCondiciones"></param>
-        /// <param name="pbActivo"></param>
-        /// <param name="pbBaja"></param>
-        /// <returns></returns>
         public IMDResponse<List<EntFolioReporte>> BGetFolios(int? piIdFolio = null, int? piIdEmpresa = null, int? piIdProducto = null, int? piIdOrigen = null, string psFolio = null, string psOrdenConekta = null, bool? pbTerminosYCondiciones = null, bool? pbActivo = true, bool? pbBaja = false)
         {
             IMDResponse<List<EntFolioReporte>> response = new IMDResponse<List<EntFolioReporte>>();
@@ -1693,24 +1587,19 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 lstFolios = lstFolios.OrderByDescending(x => x.iIdFolio).ToList();
 
                 response.Code = 0;
-                response.Message = "Folios consultados";
+                response.Message = "La lista de folios ha sido obtenida.";
                 response.Result = lstFolios;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458435264;
-                response.Message = "Ocurrió un error inesperado al consultar los folios solicitados";
+                response.Message = "Ocurrió un error inesperado al consultar los folios solicitados.";
 
                 logger.Error(IMDSerialize.Serialize(67823458435264, $"Error en {metodo}(int? piIdFolio = null, int? piIdEmpresa = null, int? piIdProducto = null, int? piIdOrigen = null, string psFolio = null, string psOrdenConekta = null, bool? pbTerminosYCondiciones = null, bool? pbActivo = true, bool? pbBaja = false): {ex.Message}", piIdFolio, piIdEmpresa, piIdProducto, piIdOrigen, psFolio, psOrdenConekta, pbTerminosYCondiciones, pbActivo, pbBaja, ex, response));
             }
             return response;
         }
 
-        /// <summary>
-        /// Actualiza la fecha de vencimiento de los folios solicitados
-        /// </summary>
-        /// <param name="entFolioFV"></param>
-        /// <returns></returns>
         public IMDResponse<bool> BUpdFechaVencimiento(EntFolioFV entFolioFV)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
@@ -1723,14 +1612,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 if (entFolioFV == null)
                 {
                     response.Code = -23476723976234;
-                    response.Message = "Por favor, ingrese los datos para continuar";
+                    response.Message = "No se ingresó la información para actualizar la vigencia de los folios.";
                     return response;
                 }
 
                 if (entFolioFV.lstFolios == null || entFolioFV.lstFolios?.Count < 1)
                 {
                     response.Code = -65623486572344;
-                    response.Message = "Por favor, seleccione los folios para continuar";
+                    response.Message = "La información para actualizar la vigencia de los folios está incompleta.";
                     return response;
                 }
 
@@ -1752,24 +1641,19 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 //}
 
                 response.Code = 0;
-                response.Message = "Folios actualizados";
+                response.Message = "La vigencia de los folios ha sido actualizada correctamente.";
                 response.Result = true;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458439926;
-                response.Message = "Ocurrió un error inesperado al actualizar los folios";
+                response.Message = "Ocurrió un error inesperado al actualizar la vigencia de los folios.";
 
                 logger.Error(IMDSerialize.Serialize(67823458439926, $"Error en {metodo}(EntFolioFV entFolioFV): {ex.Message}", entFolioFV, ex, response));
             }
             return response;
         }
 
-        /// <summary>
-        /// Elimina los folios solicitados
-        /// </summary>
-        /// <param name="entFolioFV"></param>
-        /// <returns></returns>
         public IMDResponse<bool> BEliminarFoliosEmpresa(EntFolioFV entFolioFV)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
@@ -1781,15 +1665,15 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             {
                 if (entFolioFV == null)
                 {
-                    response.Code = -32423778752356;
-                    response.Message = "Por favor, ingrese los datos para continuar";
+                    response.Code = -23476723976234;
+                    response.Message = "No se ingresó la información para eliminar los folios.";
                     return response;
                 }
 
                 if (entFolioFV.lstFolios == null || entFolioFV.lstFolios?.Count < 1)
                 {
-                    response.Code = -44587083458623;
-                    response.Message = "Por favor, seleccione los folios para continuar";
+                    response.Code = -65623486572344;
+                    response.Message = "La información para eliminar los folios está incompleta.";
                     return response;
                 }
 
@@ -1811,24 +1695,19 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 //}
 
                 response.Code = 0;
-                response.Message = "Folios actualizados";
+                response.Message = "Los folios han sido eliminados correctamente.";
                 response.Result = true;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458444588;
-                response.Message = "Ocurrió un error inesperado al intentar eliminar los folios de la empresa";
+                response.Message = "Ocurrió un error inesperado al intentar eliminar los folios de la empresa.";
 
                 logger.Error(IMDSerialize.Serialize(67823458444588, $"Error en {metodo}(EntFolioFV entFolioFV): {ex.Message}", entFolioFV, ex, response));
             }
             return response;
         }
 
-        /// <summary>
-        /// Actualiza el acuerdo de términos y condiciones
-        /// </summary>
-        /// <param name="sFolio"></param>
-        /// <returns></returns>
         public IMDResponse<bool> BTerminosYCondiciones(string sFolio = null)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
@@ -1841,7 +1720,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 if (string.IsNullOrWhiteSpace(sFolio))
                 {
                     response.Code = -986772347673234;
-                    response.Message = "El folio se encuentra vacio";
+                    response.Message = "No se ingresó el folio.";
                     response.Result = false;
                     return response;
                 }
@@ -1850,30 +1729,24 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 if (response.Code != 0)
                 {
-                    response.Message = "No se pudo validar los terminos y condiciones";
+                    response.Message = "No se pudo validar los terminos y condiciones.";
                     return response;
                 }
 
                 response.Code = 0;
-                response.Message = "Terminos y condiciones aceptados";
+                response.Message = "Terminos y condiciones aceptados.";
                 response.Result = true;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458463236;
-                response.Message = "Ocurrió un error inesperado al actualizar la cuenta";
+                response.Message = "Ocurrió un error inesperado al actualizar la cuenta.";
 
                 logger.Error(IMDSerialize.Serialize(67823458463236, $"Error en {metodo}(string sFolio = null): {ex.Message}", sFolio, ex, response));
             }
             return response;
         }
 
-        /// <summary>
-        /// Actualiza la contraseña del folio desde la APP de Meditoc
-        /// </summary>
-        /// <param name="sFolio"></param>
-        /// <param name="sPassword"></param>
-        /// <returns></returns>
         public IMDResponse<bool> BUpdPassword(string sFolio = null, string sPassword = null)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
@@ -1895,13 +1768,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 }
 
                 response.Code = 0;
-                response.Message = "Se realizo el cambio de contraseña con exito";
+                response.Message = "Se realizó el cambio de contraseña con éxito.";
                 response.Result = true;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458500532;
-                response.Message = "Ocurrió un error inesperado al actualizar la contraseña";
+                response.Message = "Ocurrió un error inesperado al actualizar la contraseña.";
 
                 logger.Error(IMDSerialize.Serialize(67823458500532, $"Error en {metodo}: {ex.Message}(string sFolio = null, string sPassword = null)", sFolio, sPassword, ex, response));
             }
@@ -1928,13 +1801,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 if (dtConsultasAgendadas.Result.Rows.Count == 0)
                 {
                     response.Result = false;
-                    response.Message = "No cuenta con consultas agendadas";
+                    response.Message = "No se cuenta con consultas agendadas.";
 
                     return response;
                 }
 
                 response.Code = 0;
-                response.Message = "el usuario cuenta con consultas asignadas";
+                response.Message = "El usuario cuenta con consultas agendadas.";
                 response.Result = true;
             }
             catch (Exception ex)
@@ -1959,21 +1832,21 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 if (entFolioVentaCalle == null)
                 {
                     response.Code = -3746587345;
-                    response.Message = "No se ingresó información para guardar el folio";
+                    response.Message = "No se ingresó información para guardar el folio.";
                     return response;
                 }
 
                 if (entFolioVentaCalle.iIdEmpresa <= 0 || entFolioVentaCalle.iIdOrigen <= 0 || entFolioVentaCalle.iIdProducto <= 0)
                 {
                     response.Code = -54357876234;
-                    response.Message = "No se ingresó información para guardar el folio";
+                    response.Message = "La información para guardar los folios está incompleta.";
                     return response;
                 }
 
                 if (string.IsNullOrWhiteSpace(entFolioVentaCalle.sFolio) || string.IsNullOrWhiteSpace(entFolioVentaCalle.sPassword))
                 {
                     response.Code = -23468788234;
-                    response.Message = "No se ingresó información para guardar el folio";
+                    response.Message = "La información para guardar los folios está incompleta.";
                     return response;
                 }
 
@@ -1997,122 +1870,19 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 bool bIsNew = Convert.ToBoolean(Convert.ToInt32(resSaveFolio.Result.Rows[0]["bIsNew"].ToString()));
 
                 response.Code = 0;
-                response.Message = "El folio se guardó correctamente";
+                response.Message = "El folio ha sido guardado correctamente.";
                 response.Result = bIsNew;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458606204;
-                response.Message = "Ocurrió un error inesperado al guardar el folio de venta calle.";
+                response.Message = "Ocurrió un error inesperado al guardar el folio.";
 
                 logger.Error(IMDSerialize.Serialize(67823458606204, $"Error en {metodo}(EntFolioVentaCalle entFolioVentaCalle): {ex.Message}", entFolioVentaCalle, ex, response));
             }
             return response;
         }
 
-        public IMDResponse<List<EntFolioVerificarCarga>> BVerificarFoliosVentaCalle(Stream foliosExcel)
-        {
-            IMDResponse<List<EntFolioVerificarCarga>> response = new IMDResponse<List<EntFolioVerificarCarga>>();
-
-            string metodo = nameof(this.BVerificarFoliosVentaCalle);
-            logger.Info(IMDSerialize.Serialize(67823458608535, $"Inicia {metodo}(Stream foliosExcel)"));
-
-            try
-            {
-                List<EntFolioVerificarCarga> lstEntFolioVerificarCarga = new List<EntFolioVerificarCarga>();
-
-                using (ExcelPackage excelPackage = new ExcelPackage(foliosExcel))
-                {
-                    if (excelPackage == null)
-                    {
-                        response.Code = -87687673456;
-                        response.Message = "No ha sido posible leer el archivo cargado";
-                        return response;
-                    }
-
-                    ExcelWorksheets excelPaginas = excelPackage.Workbook.Worksheets;
-
-                    if (excelPaginas.Count != 5)
-                    {
-                        response.Code = -87687673456;
-                        response.Message = "Se ha cargado un archivo que no coincide con la plantilla de carga de folios";
-                        return response;
-                    }
-
-
-                    for (int i = 0; i < excelPaginas.Count; i++)
-                    {
-                        List<EntFolioUser> lstFolioVC = new List<EntFolioUser>();
-                        ExcelWorksheet excelPagina = excelPaginas[i];
-
-                        object[,] values = (object[,])excelPagina.Cells.Value;
-
-                        int rows = values.GetLength(0);
-                        int columns = values.GetLength(1);
-
-                        for (int j = 0; j < rows; j++)
-                        {
-                            for (int k = 0; k < columns; k++)
-                            {
-                                if (values[j, k] != null)
-                                {
-                                    string folio = values[j, k]?.ToString();
-                                    if (folio.StartsWith("VC"))
-                                    {
-                                        string password = values[j, ++k].ToString();
-
-                                        EntFolioUser entFolioUser = new EntFolioUser
-                                        {
-                                            sFolio = folio,
-                                            sPassword = password
-                                        };
-                                        lstFolioVC.Add(entFolioUser);
-                                    }
-                                }
-                            }
-                        }
-                        EntFolioVerificarCarga entFolioVerificarCarga = new EntFolioVerificarCarga()
-                        {
-                            lstFolios = lstFolioVC,
-                            totalFolios = lstFolioVC.Count
-                        };
-                        switch (i)
-                        {
-                            case 0:
-                                entFolioVerificarCarga.entProducto.sNombre = "Membresía 1 Mes de Venta Calle";
-                                break;
-                            case 1:
-                                entFolioVerificarCarga.entProducto.sNombre = "Membresía 3 Meses de Venta Calle";
-                                break;
-                            case 2:
-                                entFolioVerificarCarga.entProducto.sNombre = "Membresía 6 Meses de Venta Calle";
-                                break;
-                            case 3:
-                                entFolioVerificarCarga.entProducto.sNombre = "Membresía 9 Meses de Venta Calle";
-                                break;
-                            case 4:
-                                entFolioVerificarCarga.entProducto.sNombre = "Membresía 12 Meses de Venta Calle";
-                                break;
-                            default:
-                                break;
-                        }
-                        lstEntFolioVerificarCarga.Add(entFolioVerificarCarga);
-                    }
-                }
-
-                response.Code = 0;
-                response.Message = "Folios verificados";
-                response.Result = lstEntFolioVerificarCarga;
-            }
-            catch (Exception ex)
-            {
-                response.Code = 67823458609312;
-                response.Message = "Ocurrió un error inesperado al validar los folios solicitados.";
-
-                logger.Error(IMDSerialize.Serialize(67823458609312, $"Error en {metodo}(Stream foliosExcel): {ex.Message}", ex, response));
-            }
-            return response;
-        }
 
         public IMDResponse<EntFolioVerificarCarga> BVerificarFoliosArchivo(int piIdEmpresa, int piIdProducto, Stream foliosExcel)
         {
@@ -2145,7 +1915,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 if (resGetEmpresas.Result.Count != 1)
                 {
                     response.Code = -89787345234;
-                    response.Message = "No se encontró la empresa seleccionada";
+                    response.Message = "No se encontró la empresa seleccionada.";
                     return response;
                 }
 
@@ -2157,7 +1927,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     if (excelPackage == null)
                     {
                         response.Code = -87687673456;
-                        response.Message = "No ha sido posible leer el archivo cargado";
+                        response.Message = "No ha sido posible leer el archivo cargado.";
                         return response;
                     }
 
@@ -2166,7 +1936,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     if (excelPaginas.Count < 1)
                     {
                         response.Code = -87687673456;
-                        response.Message = "Se ha cargado un archivo que no coincide con la plantilla de carga de folios";
+                        response.Message = "Se ha cargado un archivo que no coincide con la plantilla de carga de folios.";
                         return response;
                     }
 
@@ -2179,7 +1949,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     if (columns != 39)
                     {
                         response.Code = -823782734234;
-                        response.Message = "Se ha cargado un archivo que no coincide con la plantilla de carga de folios";
+                        response.Message = "Se ha cargado un archivo que no coincide con la plantilla de carga de folios.";
                         return response;
                     }
 
@@ -2199,7 +1969,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                             if (!string.IsNullOrWhiteSpace(folio) && string.IsNullOrWhiteSpace(passw))
                             {
                                 response.Code = -678273678234234;
-                                response.Message = $"El folio {folio} de la fila {i} de la sección {j + 1} no tiene una contraseña definida";
+                                response.Message = $"El folio {folio} de la fila {i} de la sección {j + 1} no tiene una contraseña definida.";
                                 return response;
                             }
 
@@ -2255,7 +2025,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 EntFolioxEmpresa entFolioxEmpresa = new EntFolioxEmpresa
                 {
                     iIdEmpresa = resGetFolios.Result.entEmpresa.iIdEmpresa,
-                    iIdOrigen = (int)EnumOrigen.BaseDeDatos,
+                    iIdOrigen = (int)EnumOrigen.ArchivoExterno,
                     lstLineItems = new List<line_items>
                     {
                         new line_items
@@ -2295,7 +2065,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     IMDResponse<bool> resSaveFolio = this.BSaveFolioVC(entFolioVentaCalle);
                     if (resSaveFolio.Code != 0)
                     {
-                        resSaveFolio.Message = $"El folio {entFolioVentaCalle.sFolio} con contraseña {entFolioVentaCalle.sPassword} no se pudo guardar. Verifique los datos y cargue el archivo nuevamente. El proceso de guardado se ha detenido";
+                        resSaveFolio.Message = $"El folio {entFolioVentaCalle.sFolio} con contraseña {entFolioVentaCalle.sPassword} no se pudo guardar. Verifique los datos y cargue el archivo nuevamente. El proceso de guardado se ha detenido.";
                         return resSaveFolio;
                     }
                     if (resSaveFolio.Result)
@@ -2318,7 +2088,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                         return resSaveOrder;
                     }
                     response.Code = 0;
-                    response.Message = "Los folios se guardaron correctamente";
+                    response.Message = "Los folios se guardaron correctamente.";
                     response.Result = true;
                 }
                 else
@@ -2333,141 +2103,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             catch (Exception ex)
             {
                 response.Code = 67823458618636;
-                response.Message = "Ocurrió un error inesperado al generar los folios solicitados";
+                response.Message = "Ocurrió un error inesperado al generar los folios solicitados.";
 
                 logger.Error(IMDSerialize.Serialize(67823458618636, $"Error en {metodo}(int piIdEmpresa, int piIdProducto, Stream foliosExcel, int piIdUsuarioMod): {ex.Message}", piIdEmpresa, piIdProducto, piIdUsuarioMod, ex, response));
-            }
-            return response;
-        }
-
-        public IMDResponse<bool> BGenerarFoliosVentaCalle(int piIdUsuarioMod, string sFolioEmpresa, Stream foliosExcel)
-        {
-            IMDResponse<bool> response = new IMDResponse<bool>();
-
-            string metodo = nameof(this.BGenerarFoliosVentaCalle);
-            logger.Info(IMDSerialize.Serialize(67823458602319, $"Inicia {metodo}(int piIdUsuarioMod, string sFolioEmpresa, Stream foliosExcel)", piIdUsuarioMod, sFolioEmpresa));
-
-            try
-            {
-                if (string.IsNullOrEmpty(sFolioEmpresa))
-                {
-                    response.Code = -87687673456;
-                    response.Message = "No se ingresó el folio de la empresa par asignar los folios";
-                    return response;
-                }
-
-                IMDResponse<List<EntEmpresa>> resGetEmpresas = busEmpresa.BGetEmpresas(psFolioEmpresa: sFolioEmpresa);
-                if (resGetEmpresas.Code != 0)
-                {
-                    return resGetEmpresas.GetResponse<bool>();
-                }
-
-                if (resGetEmpresas.Result.Count != 1)
-                {
-                    response.Code = -87687673456;
-                    response.Message = "No se encontró la empresa seleccionada";
-                    return response;
-                }
-
-                EntEmpresa entEmpresa = resGetEmpresas.Result.First();
-                using (ExcelPackage excelPackage = new ExcelPackage(foliosExcel))
-                {
-                    if (excelPackage == null)
-                    {
-                        response.Code = -87687673456;
-                        response.Message = "No ha sido posible leer el archivo cargado";
-                        return response;
-                    }
-
-                    ExcelWorksheets excelPaginas = excelPackage.Workbook.Worksheets;
-
-                    if (excelPaginas.Count != 5)
-                    {
-                        response.Code = -87687673456;
-                        response.Message = "Se ha cargado un archivo que no coincide con la plantilla de carga de folios";
-                        return response;
-                    }
-
-                    for (int i = 0; i < excelPaginas.Count; i++)
-                    {
-                        int fiIdProducto = 0;
-                        switch (i)
-                        {
-                            case 0:
-                                fiIdProducto = (int)EnumProductos.MembresiaVentaCalle1Mes;
-                                break;
-                            case 1:
-                                fiIdProducto = (int)EnumProductos.MembresiaVentaCalle3Meses;
-                                break;
-                            case 2:
-                                fiIdProducto = (int)EnumProductos.MembresiaVentaCalle6Meses;
-                                break;
-                            case 3:
-                                fiIdProducto = (int)EnumProductos.MembresiaVentaCalle9Meses;
-                                break;
-                            case 4:
-                                fiIdProducto = (int)EnumProductos.MembresiaVentaCalle12Meses;
-                                break;
-                            default:
-                                break;
-                        }
-                        ExcelWorksheet excelPagina = excelPaginas[i];
-
-                        object[,] values = (object[,])excelPagina.Cells.Value;
-
-                        int rows = values.GetLength(0);
-                        int columns = values.GetLength(1);
-
-                        for (int j = 0; j < rows; j++)
-                        {
-                            for (int k = 0; k < columns; k++)
-                            {
-                                if (values[j, k] != null)
-                                {
-                                    string folio = values[j, k].ToString();
-                                    if (folio.StartsWith("VC"))
-                                    {
-                                        string password = values[j, ++k]?.ToString();
-                                        if (string.IsNullOrWhiteSpace(password))
-                                        {
-                                            response.Code = -767652873456;
-                                            response.Message = $"El folio {folio} no cuenta con contraseña. El proceso se ha detenido.";
-                                            return response;
-                                        }
-
-                                        EntFolioVentaCalle entFolioVentaCalle = new EntFolioVentaCalle
-                                        {
-                                            iIdEmpresa = entEmpresa.iIdEmpresa,
-                                            iIdOrigen = (int)EnumOrigen.BaseDeDatos,
-                                            iIdProducto = fiIdProducto,
-                                            iIdUsuarioMod = piIdUsuarioMod,
-                                            sFolio = folio,
-                                            sPassword = password
-                                        };
-
-                                        IMDResponse<bool> resSaveFolio = this.BSaveFolioVC(entFolioVentaCalle);
-                                        if (resSaveFolio.Code != 0)
-                                        {
-                                            resSaveFolio.Message = $"El folio {entFolioVentaCalle.sFolio} con contraseña {entFolioVentaCalle.sPassword} no se pudo guardar. Verifique los datos. El proceso de guardado se ha detenido";
-                                            return resSaveFolio;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                response.Code = 0;
-                response.Message = "Los folios se han guardado correctamente";
-                response.Result = true;
-            }
-            catch (Exception ex)
-            {
-                response.Code = 67823458603096;
-                response.Message = "Ocurrió un error inesperado al guardar los folios de venta calle solicitados.";
-
-                logger.Error(IMDSerialize.Serialize(67823458603096, $"Error en {metodo}(int piIdUsuarioMod, string sFolioEmpresa, Stream foliosExcel): {ex.Message}", piIdUsuarioMod, sFolioEmpresa, ex, response));
             }
             return response;
         }
@@ -2488,7 +2126,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 if (resDesencriptarRuta.Code != 0)
                 {
                     response.Code = -7645726983648;
-                    response.Message = "La plantilla para la carga de folios de venta calle no se encuentra especificada";
+                    response.Message = "La plantilla para la carga de folios de venta calle no se encuentra especificada.";
                     return response;
                 }
 
@@ -2496,7 +2134,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 MemoryStream memoryStream = new MemoryStream(plantillaByte);
 
                 response.Code = 0;
-                response.Message = "Plantilla descargada";
+                response.Message = "Plantilla obtenida.";
                 response.Result = memoryStream;
             }
             catch (Exception ex)
@@ -2508,5 +2146,241 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             }
             return response;
         }
+
+        //public IMDResponse<List<EntFolioVerificarCarga>> BVerificarFoliosVentaCalle(Stream foliosExcel)
+        //{
+        //    IMDResponse<List<EntFolioVerificarCarga>> response = new IMDResponse<List<EntFolioVerificarCarga>>();
+
+        //    string metodo = nameof(this.BVerificarFoliosVentaCalle);
+        //    logger.Info(IMDSerialize.Serialize(67823458608535, $"Inicia {metodo}(Stream foliosExcel)"));
+
+        //    try
+        //    {
+        //        List<EntFolioVerificarCarga> lstEntFolioVerificarCarga = new List<EntFolioVerificarCarga>();
+
+        //        using (ExcelPackage excelPackage = new ExcelPackage(foliosExcel))
+        //        {
+        //            if (excelPackage == null)
+        //            {
+        //                response.Code = -87687673456;
+        //                response.Message = "No ha sido posible leer el archivo cargado";
+        //                return response;
+        //            }
+
+        //            ExcelWorksheets excelPaginas = excelPackage.Workbook.Worksheets;
+
+        //            if (excelPaginas.Count != 5)
+        //            {
+        //                response.Code = -87687673456;
+        //                response.Message = "Se ha cargado un archivo que no coincide con la plantilla de carga de folios";
+        //                return response;
+        //            }
+
+
+        //            for (int i = 0; i < excelPaginas.Count; i++)
+        //            {
+        //                List<EntFolioUser> lstFolioVC = new List<EntFolioUser>();
+        //                ExcelWorksheet excelPagina = excelPaginas[i];
+
+        //                object[,] values = (object[,])excelPagina.Cells.Value;
+
+        //                int rows = values.GetLength(0);
+        //                int columns = values.GetLength(1);
+
+        //                for (int j = 0; j < rows; j++)
+        //                {
+        //                    for (int k = 0; k < columns; k++)
+        //                    {
+        //                        if (values[j, k] != null)
+        //                        {
+        //                            string folio = values[j, k]?.ToString();
+        //                            if (folio.StartsWith("VC"))
+        //                            {
+        //                                string password = values[j, ++k].ToString();
+
+        //                                EntFolioUser entFolioUser = new EntFolioUser
+        //                                {
+        //                                    sFolio = folio,
+        //                                    sPassword = password
+        //                                };
+        //                                lstFolioVC.Add(entFolioUser);
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //                EntFolioVerificarCarga entFolioVerificarCarga = new EntFolioVerificarCarga()
+        //                {
+        //                    lstFolios = lstFolioVC,
+        //                    totalFolios = lstFolioVC.Count
+        //                };
+        //                switch (i)
+        //                {
+        //                    case 0:
+        //                        entFolioVerificarCarga.entProducto.sNombre = "Membresía 1 Mes de Venta Calle";
+        //                        break;
+        //                    case 1:
+        //                        entFolioVerificarCarga.entProducto.sNombre = "Membresía 3 Meses de Venta Calle";
+        //                        break;
+        //                    case 2:
+        //                        entFolioVerificarCarga.entProducto.sNombre = "Membresía 6 Meses de Venta Calle";
+        //                        break;
+        //                    case 3:
+        //                        entFolioVerificarCarga.entProducto.sNombre = "Membresía 9 Meses de Venta Calle";
+        //                        break;
+        //                    case 4:
+        //                        entFolioVerificarCarga.entProducto.sNombre = "Membresía 12 Meses de Venta Calle";
+        //                        break;
+        //                    default:
+        //                        break;
+        //                }
+        //                lstEntFolioVerificarCarga.Add(entFolioVerificarCarga);
+        //            }
+        //        }
+
+        //        response.Code = 0;
+        //        response.Message = "Folios verificados";
+        //        response.Result = lstEntFolioVerificarCarga;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        response.Code = 67823458609312;
+        //        response.Message = "Ocurrió un error inesperado al validar los folios solicitados.";
+
+        //        logger.Error(IMDSerialize.Serialize(67823458609312, $"Error en {metodo}(Stream foliosExcel): {ex.Message}", ex, response));
+        //    }
+        //    return response;
+        //}
+
+        //public IMDResponse<bool> BGenerarFoliosVentaCalle(int piIdUsuarioMod, string sFolioEmpresa, Stream foliosExcel)
+        //{
+        //    IMDResponse<bool> response = new IMDResponse<bool>();
+
+        //    string metodo = nameof(this.BGenerarFoliosVentaCalle);
+        //    logger.Info(IMDSerialize.Serialize(67823458602319, $"Inicia {metodo}(int piIdUsuarioMod, string sFolioEmpresa, Stream foliosExcel)", piIdUsuarioMod, sFolioEmpresa));
+
+        //    try
+        //    {
+        //        if (string.IsNullOrEmpty(sFolioEmpresa))
+        //        {
+        //            response.Code = -87687673456;
+        //            response.Message = "No se ingresó el folio de la empresa par asignar los folios";
+        //            return response;
+        //        }
+
+        //        IMDResponse<List<EntEmpresa>> resGetEmpresas = busEmpresa.BGetEmpresas(psFolioEmpresa: sFolioEmpresa);
+        //        if (resGetEmpresas.Code != 0)
+        //        {
+        //            return resGetEmpresas.GetResponse<bool>();
+        //        }
+
+        //        if (resGetEmpresas.Result.Count != 1)
+        //        {
+        //            response.Code = -87687673456;
+        //            response.Message = "No se encontró la empresa seleccionada";
+        //            return response;
+        //        }
+
+        //        EntEmpresa entEmpresa = resGetEmpresas.Result.First();
+        //        using (ExcelPackage excelPackage = new ExcelPackage(foliosExcel))
+        //        {
+        //            if (excelPackage == null)
+        //            {
+        //                response.Code = -87687673456;
+        //                response.Message = "No ha sido posible leer el archivo cargado";
+        //                return response;
+        //            }
+
+        //            ExcelWorksheets excelPaginas = excelPackage.Workbook.Worksheets;
+
+        //            if (excelPaginas.Count != 5)
+        //            {
+        //                response.Code = -87687673456;
+        //                response.Message = "Se ha cargado un archivo que no coincide con la plantilla de carga de folios";
+        //                return response;
+        //            }
+
+        //            for (int i = 0; i < excelPaginas.Count; i++)
+        //            {
+        //                int fiIdProducto = 0;
+        //                switch (i)
+        //                {
+        //                    case 0:
+        //                        fiIdProducto = (int)EnumProductos.MembresiaVentaCalle1Mes;
+        //                        break;
+        //                    case 1:
+        //                        fiIdProducto = (int)EnumProductos.MembresiaVentaCalle3Meses;
+        //                        break;
+        //                    case 2:
+        //                        fiIdProducto = (int)EnumProductos.MembresiaVentaCalle6Meses;
+        //                        break;
+        //                    case 3:
+        //                        fiIdProducto = (int)EnumProductos.MembresiaVentaCalle9Meses;
+        //                        break;
+        //                    case 4:
+        //                        fiIdProducto = (int)EnumProductos.MembresiaVentaCalle12Meses;
+        //                        break;
+        //                    default:
+        //                        break;
+        //                }
+        //                ExcelWorksheet excelPagina = excelPaginas[i];
+
+        //                object[,] values = (object[,])excelPagina.Cells.Value;
+
+        //                int rows = values.GetLength(0);
+        //                int columns = values.GetLength(1);
+
+        //                for (int j = 0; j < rows; j++)
+        //                {
+        //                    for (int k = 0; k < columns; k++)
+        //                    {
+        //                        if (values[j, k] != null)
+        //                        {
+        //                            string folio = values[j, k].ToString();
+        //                            if (folio.StartsWith("VC"))
+        //                            {
+        //                                string password = values[j, ++k]?.ToString();
+        //                                if (string.IsNullOrWhiteSpace(password))
+        //                                {
+        //                                    response.Code = -767652873456;
+        //                                    response.Message = $"El folio {folio} no cuenta con contraseña. El proceso se ha detenido.";
+        //                                    return response;
+        //                                }
+
+        //                                EntFolioVentaCalle entFolioVentaCalle = new EntFolioVentaCalle
+        //                                {
+        //                                    iIdEmpresa = entEmpresa.iIdEmpresa,
+        //                                    iIdOrigen = (int)EnumOrigen.BaseDeDatos,
+        //                                    iIdProducto = fiIdProducto,
+        //                                    iIdUsuarioMod = piIdUsuarioMod,
+        //                                    sFolio = folio,
+        //                                    sPassword = password
+        //                                };
+
+        //                                IMDResponse<bool> resSaveFolio = this.BSaveFolioVC(entFolioVentaCalle);
+        //                                if (resSaveFolio.Code != 0)
+        //                                {
+        //                                    resSaveFolio.Message = $"El folio {entFolioVentaCalle.sFolio} con contraseña {entFolioVentaCalle.sPassword} no se pudo guardar. Verifique los datos. El proceso de guardado se ha detenido";
+        //                                    return resSaveFolio;
+        //                                }
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+
+        //        response.Code = 0;
+        //        response.Message = "Los folios se han guardado correctamente";
+        //        response.Result = true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        response.Code = 67823458603096;
+        //        response.Message = "Ocurrió un error inesperado al guardar los folios de venta calle solicitados.";
+
+        //        logger.Error(IMDSerialize.Serialize(67823458603096, $"Error en {metodo}(int piIdUsuarioMod, string sFolioEmpresa, Stream foliosExcel): {ex.Message}", piIdUsuarioMod, sFolioEmpresa, ex, response));
+        //    }
+        //    return response;
+        //}
     }
 }

@@ -15,8 +15,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Empresa
         private static readonly ILog logger = LogManager.GetLogger(typeof(DatEmpresa));
         private Database database;
         IMDCommonData imdCommonData;
-        string saveEmpresa;
-        string getEmpresa;
+        string spSaveEmpresa;
+        string spGetEmpresa;
 
         public DatEmpresa()
         {
@@ -24,8 +24,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Empresa
             string FsConnectionString = "cnxMeditoc";
             database = imdCommonData.DGetDatabase(FsConnectionString, "MeditocComercial", "Meditoc1");
 
-            saveEmpresa = "sva_meditoc_save_empresa";
-            getEmpresa = "svc_meditoc_empresa";
+            spSaveEmpresa = "sva_meditoc_save_empresa";
+            spGetEmpresa = "svc_meditoc_empresa";
         }
 
         public IMDResponse<DataTable> DSaveEmpresa(EntEmpresa entEmpresa)
@@ -37,7 +37,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Empresa
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(saveEmpresa))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spSaveEmpresa))
                 {
                     database.AddInParameter(dbCommand, "piIdEmpresa", DbType.Int32, entEmpresa.iIdEmpresa);
                     database.AddInParameter(dbCommand, "psNombre", DbType.String, entEmpresa.sNombre);
@@ -52,7 +52,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Empresa
             catch (Exception ex)
             {
                 response.Code = 67823458383205;
-                response.Message = "Ocurrió un error inesperado en la base de datos al guardar la empresa";
+                response.Message = "Ocurrió un error inesperado en la base de datos al guardar la empresa.";
 
                 logger.Error(IMDSerialize.Serialize(67823458383205, $"Error en {metodo}(EntEmpresa entEmpresa): {ex.Message}", entEmpresa, ex, response));
             }
@@ -69,7 +69,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Empresa
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(getEmpresa))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spGetEmpresa))
                 {
                     database.AddInParameter(dbCommand, "piIdEmpresa", DbType.Int32, iIdEmpresa);
                     database.AddInParameter(dbCommand, "psCorreo", DbType.String, psCorreo);
@@ -81,7 +81,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Empresa
             catch (Exception ex)
             {
                 response.Code = 67823458390975;
-                response.Message = "Ocurrió un error inesperado en la base de datos al consutar las empresas";
+                response.Message = "Ocurrió un error inesperado en la base de datos al consutar las empresas.";
 
                 logger.Error(IMDSerialize.Serialize(67823458390975, $"Error en {metodo}(int? iIdEmpresa, string psCorreo = null, string psFolioEmpresa = null): {ex.Message}", iIdEmpresa, psCorreo, psFolioEmpresa, ex, response));
             }

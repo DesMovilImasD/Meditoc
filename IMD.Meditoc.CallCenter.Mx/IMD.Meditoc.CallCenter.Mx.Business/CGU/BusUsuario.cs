@@ -487,7 +487,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 plantillaBody = plantillaBody.Replace("sTerminosCondiciones", ConfigurationManager.AppSettings["sTerminosYCondiciones"]);
 
                 BusCorreo busCorreo = new BusCorreo();
-                busCorreo.m_EnviarEmail("", "", "", asunto, plantillaBody, entUsuario.sCorreo, "", "");
+                busCorreo.BEnviarEmail("", "", "", asunto, plantillaBody, entUsuario.sCorreo, "", "");
 
                 response.Code = 0;
                 response.Result = true;

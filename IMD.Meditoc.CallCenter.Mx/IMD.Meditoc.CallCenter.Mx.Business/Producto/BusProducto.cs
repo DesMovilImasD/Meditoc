@@ -7,8 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IMD.Meditoc.CallCenter.Mx.Business.Producto
 {
@@ -49,13 +47,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Producto
                     return response;
                 }
 
-                response.Message = entProducto.iIdProducto == 0 ? "Se guardo con exito" : "Se actualizo con exito";
+                response.Message = entProducto.iIdProducto == 0 ? "El producto ha sido guardado correctamente." : !entProducto.bActivo ? "El producto ha sido eliminado correctamente." : "El producto ha sido actualizado correctamente.";
                 response.Result = true;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458395637;
-                response.Message = "Ocurrió un error inesperado al guardar el producto";
+                response.Message = "Ocurrió un error inesperado al guardar el producto.";
 
                 logger.Error(IMDSerialize.Serialize(67823458395637, $"Error en {metodo}(EntProducto entProducto): {ex.Message}", entProducto, ex, response));
             }
@@ -84,7 +82,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Producto
                 {
                     response = dtProductos.GetResponse<List<EntProducto>>();
                     response.Code = 67823458396414;
-                    response.Message = "No cuenta con registros de productos.";
+                    response.Message = "No se encontraron productos en el sistema.";
                     return response;
                 }
 
@@ -115,7 +113,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Producto
 
                 response.Code = 0;
                 response.Result = lstProductos;
-                response.Message = "Lista de productos";
+                response.Message = "La lista de productos ha sido obtenida.";
             }
             catch (Exception ex)
             {
@@ -140,47 +138,47 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Producto
 
                 if (entProducto.sNombre == "")
                 {
-                    response.Message = "El nombre no puede ser vacio.";
+                    response.Message = "El nombre del producto no puede ser vacío.";
                     return response;
                 }
 
                 if (entProducto.sNombreCorto == "")
                 {
-                    response.Message = "El nombre corto no puede ser vacio.";
+                    response.Message = "El nombre corto del producto no puede ser vacío.";
                     return response;
                 }
 
 
                 if (entProducto.sDescripcion == "")
                 {
-                    response.Message = "La descripción no puede ser vacio.";
+                    response.Message = "La descripción del producto no puede ser vacía.";
                     return response;
                 }
 
                 if (entProducto.fCosto <= 0)
                 {
-                    response.Message = "El costo debe ser mayor a 0.";
+                    response.Message = "El costo del producto debe ser mayor a 0.";
                     return response;
                 }
 
 
                 if (entProducto.iMesVigencia <= 0 && entProducto.iIdTipoProducto == (int)EnumTipoProducto.Membresia)
                 {
-                    response.Message = "La vigencia debe ser mayor a 0.";
+                    response.Message = "La duración de la vigencia (en meses) del producto de una membresía debe ser mayor a 0.";
                     return response;
                 }
 
 
                 if (entProducto.sIcon == "")
                 {
-                    response.Message = "El icono no puede ser vacio.";
+                    response.Message = "El ícono del producto no puede ser vacío.";
                     return response;
                 }
 
 
                 if (entProducto.sPrefijoFolio == "")
                 {
-                    response.Message = "El prefijo no puede ser vacio.";
+                    response.Message = "El prefijo de generación de folios no puede ser vacío.";
                     return response;
                 }
 
@@ -201,18 +199,18 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Producto
             catch (Exception ex)
             {
                 response.Code = 67823458411177;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al validar los datos del producto.";
 
                 logger.Error(IMDSerialize.Serialize(67823458411177, $"Error en {metodo}(EntProducto entProducto): {ex.Message}", entProducto, ex, response));
             }
             return response;
         }
 
-        public IMDResponse<List<EntProducto>> BgetServices()
+        public IMDResponse<List<EntProducto>> BGetServices()
         {
             IMDResponse<List<EntProducto>> response = new IMDResponse<List<EntProducto>>();
 
-            string metodo = nameof(this.BgetServices);
+            string metodo = nameof(this.BGetServices);
             logger.Info(IMDSerialize.Serialize(67823458467121, $"Inicia {metodo}"));
 
             try
@@ -224,23 +222,23 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Producto
                     .ToList();
 
                 response.Code = 0;
-                response.Message = "Lista de servicios consultados";
+                response.Message = "Lista de servicios consultados.";
             }
             catch (Exception ex)
             {
                 response.Code = 67823458467898;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al consultar la lista de servicios.";
 
                 logger.Error(IMDSerialize.Serialize(67823458467898, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }
 
-        public IMDResponse<List<EntProducto>> BgetMembership()
+        public IMDResponse<List<EntProducto>> BGetMembership()
         {
             IMDResponse<List<EntProducto>> response = new IMDResponse<List<EntProducto>>();
 
-            string metodo = nameof(this.BgetMembership);
+            string metodo = nameof(this.BGetMembership);
             logger.Info(IMDSerialize.Serialize(67823458468675, $"Inicia {metodo}"));
 
             try
@@ -252,12 +250,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Producto
                     .ToList();
 
                 response.Code = 0;
-                response.Message = "Lista de membresías consultadas";
+                response.Message = "Lista de membresías consultadas.";
             }
             catch (Exception ex)
             {
                 response.Code = 67823458469452;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al consultar la lista de membresías.";
 
                 logger.Error(IMDSerialize.Serialize(67823458469452, $"Error en {metodo}: {ex.Message}", ex, response));
             }

@@ -1,20 +1,16 @@
-﻿using IMD.Admin.Conekta.Entities;
-using IMD.Admin.Conekta.Entities.Orders;
-using IMD.Admin.Utilities.Business;
+﻿using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
+using IMD.Meditoc.CallCenter.Mx.Entities.Ordenes;
 using log4net;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
 
-namespace IMD.Admin.Conekta.Services
+namespace IMD.Meditoc.CallCenter.Mx.Services
 {
     public class ServOrder
     {
@@ -81,16 +77,16 @@ namespace IMD.Admin.Conekta.Services
 
                 string datosCrearOrdenSerializado = string.Empty;
 
-                if(pPropiedadesOcultar != null)
+                if (pPropiedadesOcultar != null)
                 {
-                    datosCrearOrdenSerializado = JsonConvert.SerializeObject(entCreateOrder, new JsonSerializerSettings { ContractResolver = new DynamicContractResolver(pPropiedadesOcultar) });
+                    datosCrearOrdenSerializado = JsonConvert.SerializeObject(entCreateOrder, new JsonSerializerSettings { ContractResolver = new ServContractResolver(pPropiedadesOcultar) });
                 }
                 else
                 {
                     datosCrearOrdenSerializado = JsonConvert.SerializeObject(entCreateOrder);
                 }
 
-                string json = JsonConvert.SerializeObject(entCreateOrder, Formatting.Indented, new JsonSerializerSettings { ContractResolver = new DynamicContractResolver(pPropiedadesOcultar) });
+                string json = JsonConvert.SerializeObject(entCreateOrder, Formatting.Indented, new JsonSerializerSettings { ContractResolver = new ServContractResolver(pPropiedadesOcultar) });
 
                 byte[] bytesDatosCrearOrden = Encoding.UTF8.GetBytes(datosCrearOrdenSerializado);
                 peticion.ContentLength = bytesDatosCrearOrden.Length;
@@ -104,7 +100,7 @@ namespace IMD.Admin.Conekta.Services
                 string body = respuestaStream.ReadToEnd();
 
                 response.Code = 0;
-                response.Message = "Respuesta de servicio obtenida";
+                response.Message = "Respuesta de servicio obtenida.";
                 response.Result = body;
             }
             catch (WebException webex)
@@ -121,6 +117,7 @@ namespace IMD.Admin.Conekta.Services
 
                     if (statusCode == 402)
                     {
+                        //No cambiar
                         response.Code = -1500000;
                         response.Message = "No pudimos procesar el pago, la transacción ha sido declinada. Intente con otra tarjeta o comuníquese con su banco emisor.";
                         response.Result = body;
@@ -185,7 +182,7 @@ namespace IMD.Admin.Conekta.Services
                 response.Message = "Respuesta de servicio obtenida";
                 response.Result = body;
             }
-            
+
             catch (Exception ex)
             {
                 response.Code = 67823458105816;
@@ -194,27 +191,6 @@ namespace IMD.Admin.Conekta.Services
                 logger.Error(IMDSerialize.Serialize(67823458105816, $"Error en {metodo}(string orderId, EntCreateUserAgent entUserAgent): {ex.Message}", orderId, entUserAgent, ex, response));
             }
             return response;
-        }
-    }
-
-    public class DynamicContractResolver : DefaultContractResolver
-    {
-        private readonly string[] propiedadesOcultar;
-
-        public DynamicContractResolver(string[] pPropiedadesOcultar)
-        {
-            propiedadesOcultar = pPropiedadesOcultar;
-        }
-
-        protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
-        {
-            IList<JsonProperty> properties = base.CreateProperties(type, memberSerialization);
-
-            // only serializer properties that start with the specified character
-            properties =
-                properties.Where(p => !propiedadesOcultar.Contains(p.PropertyName)).ToList();
-
-            return properties;
         }
     }
 }

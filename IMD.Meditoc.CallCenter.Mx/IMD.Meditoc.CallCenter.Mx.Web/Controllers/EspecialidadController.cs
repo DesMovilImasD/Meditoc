@@ -6,9 +6,6 @@ using IMD.Meditoc.CallCenter.Mx.Web.Tokens;
 using log4net;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers

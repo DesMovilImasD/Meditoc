@@ -1,6 +1,6 @@
 //
 // Title: IceLink for JavaScript
-// Version: 3.8.0.22151
+// Version: 3.9.2.31084
 // Copyright Frozen Mountain Software 2011+
 //
 (function(name, dependencies, definition) {
@@ -24,7 +24,7 @@ var __extends = (this && this.__extends) || (function () {
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
             function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
         return extendStatics(d, b);
-    }
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -345,7 +345,7 @@ var __extends = (this && this.__extends) || (function () {
                         this.setChannel(channel_1);
                     }
                     else {
-                        throw new icelink.Exception('Constructor overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Constructor overload does not exist with specified parameter count/type combination.');
                     }
                 }
                 PendingRenegotiationProperties.prototype.getTypeString = function () {
@@ -356,7 +356,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this._channel;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 PendingRenegotiationProperties.prototype.getClient = function () {
@@ -364,7 +364,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this._client;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 PendingRenegotiationProperties.prototype.getPendingPromise = function () {
@@ -372,7 +372,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this._pendingPromise;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
@@ -381,7 +381,7 @@ var __extends = (this && this.__extends) || (function () {
                         this._channel = value;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
@@ -390,7 +390,7 @@ var __extends = (this && this.__extends) || (function () {
                         this._client = value;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
@@ -399,7 +399,7 @@ var __extends = (this && this.__extends) || (function () {
                         this._pendingPromise = value;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 return PendingRenegotiationProperties;
@@ -426,7 +426,7 @@ var __extends = (this && this.__extends) || (function () {
                         this.fmicelinkwebsync4StateInit();
                     }
                     else {
-                        throw new icelink.Exception('Constructor overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Constructor overload does not exist with specified parameter count/type combination.');
                     }
                 }
                 State.prototype.getTypeString = function () {
@@ -442,7 +442,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this._connections;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 State.prototype.getUnlinkAllOnLeaveSuccess = function () {
@@ -450,7 +450,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this._unlinkAllOnLeaveSuccess;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 State.prototype.getUnlinkExistingOnUserJoin = function () {
@@ -458,7 +458,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this._unlinkExistingOnUserJoin;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 State.prototype.getUnlinkOnUserLeave = function () {
@@ -466,7 +466,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this._unlinkOnUserLeave;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 State.prototype.setConnections = function (value) {
@@ -474,7 +474,7 @@ var __extends = (this && this.__extends) || (function () {
                         this._connections = value;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 State.prototype.setUnlinkAllOnLeaveSuccess = function (value) {
@@ -482,7 +482,7 @@ var __extends = (this && this.__extends) || (function () {
                         this._unlinkAllOnLeaveSuccess = value;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 State.prototype.setUnlinkExistingOnUserJoin = function (value) {
@@ -490,7 +490,7 @@ var __extends = (this && this.__extends) || (function () {
                         this._unlinkExistingOnUserJoin = value;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 State.prototype.setUnlinkOnUserLeave = function (value) {
@@ -498,7 +498,7 @@ var __extends = (this && this.__extends) || (function () {
                         this._unlinkOnUserLeave = value;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 return State;
@@ -543,7 +543,7 @@ var __extends = (this && this.__extends) || (function () {
                         _this.setConferenceChannel(conferenceChannel);
                     }
                     else {
-                        throw new icelink.Exception('Constructor overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Constructor overload does not exist with specified parameter count/type combination.');
                     }
                     return _this;
                 }
@@ -564,7 +564,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this._conferenceChannel;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
@@ -573,7 +573,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this._joinSuccessTimestamp;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
@@ -582,7 +582,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this._joinTimestamp;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -593,7 +593,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this._onFailure;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -604,7 +604,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this._onReceive;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -615,7 +615,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this._onRemoteClient;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -626,7 +626,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this._onSuccess;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -637,7 +637,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this._unlinkExistingOnUserJoin;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -648,7 +648,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this._unlinkOnUserLeave;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -659,7 +659,7 @@ var __extends = (this && this.__extends) || (function () {
                         this._conferenceChannel = value;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
@@ -668,7 +668,7 @@ var __extends = (this && this.__extends) || (function () {
                         this._joinSuccessTimestamp = value;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
@@ -677,7 +677,7 @@ var __extends = (this && this.__extends) || (function () {
                         this._joinTimestamp = value;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -688,7 +688,7 @@ var __extends = (this && this.__extends) || (function () {
                         this._onFailure = value;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -699,7 +699,7 @@ var __extends = (this && this.__extends) || (function () {
                         this._onReceive = value;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -710,7 +710,7 @@ var __extends = (this && this.__extends) || (function () {
                         this._onRemoteClient = value;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -721,7 +721,7 @@ var __extends = (this && this.__extends) || (function () {
                         this._onSuccess = value;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -732,7 +732,7 @@ var __extends = (this && this.__extends) || (function () {
                         this._unlinkExistingOnUserJoin = value;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -743,7 +743,7 @@ var __extends = (this && this.__extends) || (function () {
                         this._unlinkOnUserLeave = value;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 return JoinConferenceArgs;
@@ -773,7 +773,7 @@ var __extends = (this && this.__extends) || (function () {
                         _this = _super.call(this) || this;
                     }
                     else {
-                        throw new icelink.Exception('Constructor overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Constructor overload does not exist with specified parameter count/type combination.');
                     }
                     return _this;
                 }
@@ -788,7 +788,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this.__conferenceChannel;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 return JoinConferenceFailureArgs;
@@ -831,7 +831,7 @@ var __extends = (this && this.__extends) || (function () {
                         _this = _super.call(this, channel_2, dataJson_1, dataBytes_1, connectionType_1, reconnectAfter_1) || this;
                     }
                     else {
-                        throw new icelink.Exception('Constructor overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Constructor overload does not exist with specified parameter count/type combination.');
                     }
                     return _this;
                 }
@@ -846,7 +846,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this.__publishingPeer;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 return JoinConferenceReceiveArgs;
@@ -876,7 +876,7 @@ var __extends = (this && this.__extends) || (function () {
                         _this = _super.call(this) || this;
                     }
                     else {
-                        throw new icelink.Exception('Constructor overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Constructor overload does not exist with specified parameter count/type combination.');
                     }
                     return _this;
                 }
@@ -891,7 +891,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this.__conferenceChannel;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -902,7 +902,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this.__users;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 return JoinConferenceSuccessArgs;
@@ -945,7 +945,7 @@ var __extends = (this && this.__extends) || (function () {
                         _this.setConferenceChannel(conferenceChannel);
                     }
                     else {
-                        throw new icelink.Exception('Constructor overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Constructor overload does not exist with specified parameter count/type combination.');
                     }
                     return _this;
                 }
@@ -965,7 +965,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this._conferenceChannel;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
@@ -974,7 +974,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this._leaveSuccessTimestamp;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
@@ -983,7 +983,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this._leaveTimestamp;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -994,7 +994,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this._onFailure;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -1005,7 +1005,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this._onSuccess;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -1016,7 +1016,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this._unlinkAllOnSuccess;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -1027,7 +1027,7 @@ var __extends = (this && this.__extends) || (function () {
                         this._conferenceChannel = value;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
@@ -1036,7 +1036,7 @@ var __extends = (this && this.__extends) || (function () {
                         this._leaveSuccessTimestamp = value;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
@@ -1045,7 +1045,7 @@ var __extends = (this && this.__extends) || (function () {
                         this._leaveTimestamp = value;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -1056,7 +1056,7 @@ var __extends = (this && this.__extends) || (function () {
                         this._onFailure = value;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -1067,7 +1067,7 @@ var __extends = (this && this.__extends) || (function () {
                         this._onSuccess = value;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -1078,7 +1078,7 @@ var __extends = (this && this.__extends) || (function () {
                         this._unlinkAllOnSuccess = value;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 return LeaveConferenceArgs;
@@ -1108,7 +1108,7 @@ var __extends = (this && this.__extends) || (function () {
                         _this = _super.call(this) || this;
                     }
                     else {
-                        throw new icelink.Exception('Constructor overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Constructor overload does not exist with specified parameter count/type combination.');
                     }
                     return _this;
                 }
@@ -1123,7 +1123,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this.__conferenceChannel;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 return LeaveConferenceFailureArgs;
@@ -1153,7 +1153,7 @@ var __extends = (this && this.__extends) || (function () {
                         _this = _super.call(this) || this;
                     }
                     else {
-                        throw new icelink.Exception('Constructor overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Constructor overload does not exist with specified parameter count/type combination.');
                     }
                     return _this;
                 }
@@ -1168,7 +1168,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this.__conferenceChannel;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 return LeaveConferenceSuccessArgs;
@@ -1194,6 +1194,7 @@ var __extends = (this && this.__extends) || (function () {
                 };
                 /** @hidden */
                 ClientExtensions.acceptAnswer = function (connection, remoteDescription) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 2) {
                         connection.setRemoteDescription(remoteDescription).then(function (answer) {
                         }, function (ex) {
@@ -1201,11 +1202,12 @@ var __extends = (this && this.__extends) || (function () {
                         });
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
                 ClientExtensions.acceptOfferCreateAnswerAndSend = function (connection, client, remoteDescription, userId, channel, competingOffer, boundRecords, state) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 8) {
                         if (competingOffer) {
                             if (((!fm.icelink.Global.equals(remoteDescription.getTieBreaker(), null)) && (!fm.icelink.Global.equals(connection.getTieBreaker(), null)))) {
@@ -1247,10 +1249,11 @@ var __extends = (this && this.__extends) || (function () {
                         }
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 ClientExtensions.createAndSendOffer = function () {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 4) {
                         var connection = arguments[0];
                         var client = arguments[1];
@@ -1282,11 +1285,12 @@ var __extends = (this && this.__extends) || (function () {
                         return promise_1;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
                 ClientExtensions.createNewConnectionAndSend = function (userId, boundRecords, state, remoteDescription, client, channel) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 6) {
                         var andCacheConnection = fm.icelink.websync4.ClientExtensions.getAndCacheConnection(fm.icelink.websync4.PeerClient.createPeerClient(userId, boundRecords, state));
                         if ((!fm.icelink.Global.equals(andCacheConnection, null))) {
@@ -1294,11 +1298,12 @@ var __extends = (this && this.__extends) || (function () {
                         }
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
                 ClientExtensions.doJoinConference = function (client, args, state) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 3) {
                         var action = null;
                         var action2 = null;
@@ -1337,7 +1342,7 @@ var __extends = (this && this.__extends) || (function () {
                             if ((fm.icelink.Global.equals(action3, null))) {
                                 action3 = function (e) {
                                     args.setJoinSuccessTimestamp(fm.icelink.ManagedStopwatch.getTimestamp());
-                                    var num = icelink.MathAssistant.floor((args.getJoinSuccessTimestamp() - args.getJoinTimestamp()) / fm.icelink.Constants.getTicksPerMillisecond());
+                                    var num = fm.icelink.MathAssistant.floor((args.getJoinSuccessTimestamp() - args.getJoinTimestamp()) / fm.icelink.Constants.getTicksPerMillisecond());
                                     fm.icelink.Log.info(fm.icelink.StringExtensions.format("Client {0} took {1}ms to join {2}.", client.getClientId().toString(), fm.icelink.NumberExtensions.toString(num), args.getConferenceChannel()));
                                     fm.icelink.websync4.ClientExtensions.raiseJoinSuccess(args, e, args.getConferenceChannel(), e.getUsers());
                                 };
@@ -1368,7 +1373,7 @@ var __extends = (this && this.__extends) || (function () {
                                                     }
                                                     else {
                                                         if ((fm.icelink.Global.equals(remoteDescription.getType(), fm.icelink.SessionDescriptionType.Offer))) {
-                                                            var num = icelink.MathAssistant.floor((fm.icelink.ManagedStopwatch.getTimestamp() - args.getJoinSuccessTimestamp()) / fm.icelink.Constants.getTicksPerMillisecond());
+                                                            var num = fm.icelink.MathAssistant.floor((fm.icelink.ManagedStopwatch.getTimestamp() - args.getJoinSuccessTimestamp()) / fm.icelink.Constants.getTicksPerMillisecond());
                                                             fm.icelink.Log.info(fm.icelink.StringExtensions.format("Client {0} took {1}ms to receive offer.", client.getClientId().toString(), fm.icelink.NumberExtensions.toString(num)));
                                                         }
                                                         fm.icelink.websync4.ClientExtensions.receiveRemoteDescription(remoteDescription, state, remoteUserId, remoteBoundRecords, client, args.getConferenceChannel());
@@ -1465,11 +1470,12 @@ var __extends = (this && this.__extends) || (function () {
                         return client2;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
                 ClientExtensions.doLeaveConference = function (client, args, state) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 3) {
                         var action = null;
                         var action2 = null;
@@ -1501,7 +1507,7 @@ var __extends = (this && this.__extends) || (function () {
                             if ((fm.icelink.Global.equals(action2, null))) {
                                 action2 = function (e) {
                                     args.setLeaveSuccessTimestamp(fm.icelink.ManagedStopwatch.getTimestamp());
-                                    var num = icelink.MathAssistant.floor((args.getLeaveSuccessTimestamp() - args.getLeaveTimestamp()) / fm.icelink.Constants.getTicksPerMillisecond());
+                                    var num = fm.icelink.MathAssistant.floor((args.getLeaveSuccessTimestamp() - args.getLeaveTimestamp()) / fm.icelink.Constants.getTicksPerMillisecond());
                                     fm.icelink.Log.info(fm.icelink.StringExtensions.format("Client {0} took {1}ms to leave {2}.", client.getClientId().toString(), fm.icelink.NumberExtensions.toString(num), args.getConferenceChannel()));
                                     client.unsetDynamicValue(args.getConferenceChannel());
                                     if (state.getUnlinkAllOnLeaveSuccess()) {
@@ -1528,11 +1534,12 @@ var __extends = (this && this.__extends) || (function () {
                         return client2;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
                 ClientExtensions.doRenegotiateConference = function (client, state, promise, connections) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 4) {
                         if ((!fm.icelink.Global.equals(state, null))) {
                             if ((fm.icelink.Global.equals(state.getConnections(), null))) {
@@ -1551,11 +1558,12 @@ var __extends = (this && this.__extends) || (function () {
                         }
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
                 ClientExtensions.getAndCacheConnection = function (remoteClient) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 1) {
                         var state = remoteClient.getState();
                         var joinArgs = state.getConnections().getJoinArgs();
@@ -1584,16 +1592,17 @@ var __extends = (this && this.__extends) || (function () {
                         return connection;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
                 ClientExtensions.getInstanceChannel = function (conferenceChannel, clientId) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 2) {
                         return fm.icelink.StringExtensions.concat("/fm.icelink.websync.instance", conferenceChannel, "/", clientId);
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -1603,6 +1612,7 @@ var __extends = (this && this.__extends) || (function () {
                 @return The WebSync client.
                 */
                 ClientExtensions.joinConference = function (client, args) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 2) {
                         if (fm.icelink.StringExtensions.isNullOrEmpty(args.getConferenceChannel())) {
                             throw new fm.icelink.Exception("Conference channel cannot be null.");
@@ -1625,7 +1635,7 @@ var __extends = (this && this.__extends) || (function () {
                         return fm.icelink.websync4.ClientExtensions.doJoinConference(client, args, state);
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -1635,6 +1645,7 @@ var __extends = (this && this.__extends) || (function () {
                 @return The WebSync client.
                 */
                 ClientExtensions.leaveConference = function (client, args) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 2) {
                         if (fm.icelink.StringExtensions.isNullOrEmpty(args.getConferenceChannel())) {
                             throw new fm.icelink.Exception("Conference channel cannot be null.");
@@ -1643,33 +1654,36 @@ var __extends = (this && this.__extends) || (function () {
                         return fm.icelink.websync4.ClientExtensions.doLeaveConference(client, args, state);
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
                 ClientExtensions.preparePendingRenegotiationPromise = function (connection, client, channel, individualPromises, processed) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 5) {
                         var pendingPromise = new fm.icelink.Promise();
                         connection.setDynamicValue("fm.icelink.pendingRenegotiationPromise", new fm.icelink.websync4.PendingRenegotiationProperties(pendingPromise, client, channel));
                         fm.icelink.ArrayExtensions.add(individualPromises, pendingPromise);
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
                 ClientExtensions.processConnectionSignallingStateChange = function (connection) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 1) {
                         if ((fm.icelink.Global.equals(connection.getSignallingState(), fm.icelink.SignallingState.Stable))) {
                             fm.icelink.websync4.ClientExtensions.processReadyForRenegotiation(connection);
                         }
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
                 ClientExtensions.processConnectionStateChange = function (connection) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 1) {
                         if ((fm.icelink.Global.equals(connection.getState(), fm.icelink.ConnectionState.Connected))) {
                             fm.icelink.websync4.ClientExtensions.processReadyForRenegotiation(connection);
@@ -1688,11 +1702,12 @@ var __extends = (this && this.__extends) || (function () {
                         }
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
                 ClientExtensions.processReadyForRenegotiation = function (connection) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 1) {
                         var dynamicValue = connection.getDynamicValue("fm.icelink.pendingRenegotiationPromise");
                         if ((!fm.icelink.Global.equals(dynamicValue, null))) {
@@ -1708,11 +1723,12 @@ var __extends = (this && this.__extends) || (function () {
                         }
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
                 ClientExtensions.raiseJoinFailure = function (args, e, conferenceChannel) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 3) {
                         var exception = void 0;
                         try {
@@ -1744,11 +1760,12 @@ var __extends = (this && this.__extends) || (function () {
                         }
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
                 ClientExtensions.raiseJoinReceive = function (args, e, channel, remoteUserId, remoteBoundRecords) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 5) {
                         try {
                             if ((!fm.icelink.Global.equals(args.getOnReceive(), null))) {
@@ -1769,11 +1786,12 @@ var __extends = (this && this.__extends) || (function () {
                         }
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
                 ClientExtensions.raiseJoinRemoteClient = function (args, remoteClient, userId) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 3) {
                         if ((!fm.icelink.Global.equals(args.getOnRemoteClient(), null))) {
                             var connection = null;
@@ -1794,11 +1812,12 @@ var __extends = (this && this.__extends) || (function () {
                         return null;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
                 ClientExtensions.raiseJoinSuccess = function (args, e, conferenceChannel, users) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 4) {
                         var exception = void 0;
                         try {
@@ -1830,11 +1849,12 @@ var __extends = (this && this.__extends) || (function () {
                         }
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
                 ClientExtensions.raiseLeaveFailure = function (args, e, conferenceChannel) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 3) {
                         var exception = void 0;
                         try {
@@ -1866,11 +1886,12 @@ var __extends = (this && this.__extends) || (function () {
                         }
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
                 ClientExtensions.raiseLeaveSuccess = function (args, e, conferenceChannel) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 3) {
                         var exception = void 0;
                         try {
@@ -1901,11 +1922,12 @@ var __extends = (this && this.__extends) || (function () {
                         }
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
                 ClientExtensions.receiveRemoteCandidate = function (remoteCandidate, state, userId, boundRecords) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 4) {
                         var byRemoteUserId = state.getConnections().getByRemoteUserId(userId);
                         if ((fm.icelink.Global.equals(byRemoteUserId, null))) {
@@ -1920,11 +1942,12 @@ var __extends = (this && this.__extends) || (function () {
                         return false;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
                 ClientExtensions.receiveRemoteDescription = function (remoteDescription, state, userId, boundRecords, client, conferenceChannel) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 6) {
                         var byRemoteUserId = state.getConnections().getByRemoteUserId(userId);
                         if (remoteDescription.getIsOffer()) {
@@ -1966,7 +1989,7 @@ var __extends = (this && this.__extends) || (function () {
                         return true;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -1976,6 +1999,7 @@ var __extends = (this && this.__extends) || (function () {
                 @param failedConnection Failed connection that requires reconnection.
                 */
                 ClientExtensions.reconnectRemoteClient = function (client, remoteClient, failedConnection) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 3) {
                         if ((!fm.icelink.Global.equals(failedConnection, null))) {
                             if ((!fm.icelink.Global.equals(failedConnection.getState(), fm.icelink.ConnectionState.Failed))) {
@@ -2001,7 +2025,7 @@ var __extends = (this && this.__extends) || (function () {
                         }
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -2011,6 +2035,7 @@ var __extends = (this && this.__extends) || (function () {
                 @param connection The connection on which to renegotiate.
                 */
                 ClientExtensions.renegotiate = function (client, conferenceChannel, connection) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 3) {
                         var promise = new fm.icelink.Promise();
                         if (fm.icelink.StringExtensions.isNullOrEmpty(conferenceChannel)) {
@@ -2022,11 +2047,12 @@ var __extends = (this && this.__extends) || (function () {
                         return promise;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
                 ClientExtensions.renegotiateConnection = function (processed, client, channel, promise, connections, individualPromises) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 6) {
                         try {
                             var connection = connections[processed];
@@ -2069,11 +2095,12 @@ var __extends = (this && this.__extends) || (function () {
                         }
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
                 ClientExtensions.resolveNextConnection = function (processed, client, channel, promise, connections, individualPromises) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 6) {
                         var rejectAction = null;
                         var resolveAction = null;
@@ -2096,11 +2123,12 @@ var __extends = (this && this.__extends) || (function () {
                         }
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
                 ClientExtensions.sendLocalCandidate = function (client, conferenceChannel, userId, localCandidate) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 4) {
                         var action = null;
                         try {
@@ -2120,11 +2148,12 @@ var __extends = (this && this.__extends) || (function () {
                         }
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
                 ClientExtensions.sendLocalDescription = function (client, conferenceChannel, userId, localDescription, promise) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 5) {
                         var action = null;
                         var action2 = null;
@@ -2154,11 +2183,12 @@ var __extends = (this && this.__extends) || (function () {
                         return promise;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
                 ClientExtensions.setRemoteDescription = function (connection, remoteDescription, client, channel, userId) {
+                    fm.icelink.websync4.ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize();
                     if (arguments.length == 5) {
                         connection.setRemoteDescription(remoteDescription).then(function (offer) {
                             return connection.createAnswer();
@@ -2175,15 +2205,17 @@ var __extends = (this && this.__extends) || (function () {
                         });
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
                 ClientExtensions.fmicelinkwebsync4ClientExtensionsInitialize = function () {
-                    if (!fm.icelink.websync4.ClientExtensions.__fmicelinkwebsync4ClientExtensionsInitialized) {
+                    if (!fm.icelink.websync4.ClientExtensions.__fmicelinkwebsync4ClientExtensionsInitialized && !fm.icelink.websync4.ClientExtensions.__fmicelinkwebsync4ClientExtensionsInitializing) {
+                        fm.icelink.websync4.ClientExtensions.__fmicelinkwebsync4ClientExtensionsInitializing = true;
                         fm.icelink.websync4.ClientExtensions.fm_icelink_websync4_ClientExtensions___lock = new Object();
+                        fm.icelink.websync4.ClientExtensions.__fmicelinkwebsync4ClientExtensionsInitialized = true;
+                        fm.icelink.websync4.ClientExtensions.__fmicelinkwebsync4ClientExtensionsInitializing = false;
                     }
-                    fm.icelink.websync4.ClientExtensions.__fmicelinkwebsync4ClientExtensionsInitialized = true;
                 };
                 /** @hidden */
                 ClientExtensions.RemoteClientTag = "fm.icelink.websync4.client";
@@ -2191,6 +2223,8 @@ var __extends = (this && this.__extends) || (function () {
                 ClientExtensions.Retriable = "fm.icelink.retriableConnection";
                 /** @hidden */
                 ClientExtensions.__fmicelinkwebsync4ClientExtensionsInitialized = false;
+                /** @hidden */
+                ClientExtensions.__fmicelinkwebsync4ClientExtensionsInitializing = false;
                 return ClientExtensions;
             }());
             websync4.ClientExtensions = ClientExtensions;
@@ -2206,7 +2240,7 @@ var __extends = (this && this.__extends) || (function () {
                     return fm.icelink.websync4.ClientExtensions.joinConference.apply(this, arguments);
                 }
                 else {
-                    throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                    throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                 }
             };
             /**
@@ -2221,7 +2255,7 @@ var __extends = (this && this.__extends) || (function () {
                     return fm.icelink.websync4.ClientExtensions.leaveConference.apply(this, arguments);
                 }
                 else {
-                    throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                    throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                 }
             };
             /**
@@ -2236,7 +2270,7 @@ var __extends = (this && this.__extends) || (function () {
                     return fm.icelink.websync4.ClientExtensions.reconnectRemoteClient.apply(this, arguments);
                 }
                 else {
-                    throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                    throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                 }
             };
             /**
@@ -2251,7 +2285,7 @@ var __extends = (this && this.__extends) || (function () {
                     return fm.icelink.websync4.ClientExtensions.renegotiate.apply(this, arguments);
                 }
                 else {
-                    throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                    throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                 }
             };
         })(websync4 = icelink.websync4 || (icelink.websync4 = {}));
@@ -2281,7 +2315,7 @@ var __extends = (this && this.__extends) || (function () {
                         _this.setJoinArgs(joinArgs_1);
                     }
                     else {
-                        throw new icelink.Exception('Constructor overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Constructor overload does not exist with specified parameter count/type combination.');
                     }
                     return _this;
                 }
@@ -2301,7 +2335,7 @@ var __extends = (this && this.__extends) || (function () {
                         return _super.prototype.add.call(this, value);
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 ConnectionCollection.prototype.addOnLocalCandidate = function (value) {
@@ -2309,7 +2343,7 @@ var __extends = (this && this.__extends) || (function () {
                         fm.icelink.ArrayExtensions.add(this.__onLocalCandidate, value);
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 ConnectionCollection.prototype.addSuccess = function (value) {
@@ -2319,7 +2353,7 @@ var __extends = (this && this.__extends) || (function () {
                         value.addOnLocalCandidate(this.processLocalCandidate.bind(this));
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 ConnectionCollection.prototype.checkForExistingConnection = function (remoteUserId, tieBreaker) {
@@ -2364,7 +2398,7 @@ var __extends = (this && this.__extends) || (function () {
                         return flag;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 ConnectionCollection.prototype.getByRemoteUserId = function (remoteUserId) {
@@ -2379,7 +2413,7 @@ var __extends = (this && this.__extends) || (function () {
                         return null;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 ConnectionCollection.prototype.getJoinArgs = function () {
@@ -2387,7 +2421,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this._joinArgs;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
@@ -2399,7 +2433,7 @@ var __extends = (this && this.__extends) || (function () {
                         }
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 ConnectionCollection.prototype.removeOnLocalCandidate = function (value) {
@@ -2407,7 +2441,7 @@ var __extends = (this && this.__extends) || (function () {
                         fm.icelink.ArrayExtensions.remove(this.__onLocalCandidate, value);
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 ConnectionCollection.prototype.removeSuccess = function (value) {
@@ -2431,7 +2465,7 @@ var __extends = (this && this.__extends) || (function () {
                         }
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
@@ -2440,7 +2474,7 @@ var __extends = (this && this.__extends) || (function () {
                         this._joinArgs = value;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 ConnectionCollection.prototype.tryGetByRemoteUserId = function (remoteUserId, connection) {
@@ -2449,7 +2483,7 @@ var __extends = (this && this.__extends) || (function () {
                         return _var0;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
@@ -2488,7 +2522,7 @@ var __extends = (this && this.__extends) || (function () {
                         this.setBoundRecords(boundRecords_1);
                     }
                     else {
-                        throw new icelink.Exception('Constructor overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Constructor overload does not exist with specified parameter count/type combination.');
                     }
                 }
                 PeerClient.prototype.getTypeString = function () {
@@ -2502,7 +2536,7 @@ var __extends = (this && this.__extends) || (function () {
                         return client;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -2513,7 +2547,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this._boundRecords;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -2524,7 +2558,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this._instanceId;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
@@ -2533,7 +2567,7 @@ var __extends = (this && this.__extends) || (function () {
                         return this._state;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -2544,7 +2578,7 @@ var __extends = (this && this.__extends) || (function () {
                         this._boundRecords = value;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /**
@@ -2555,7 +2589,7 @@ var __extends = (this && this.__extends) || (function () {
                         this._instanceId = value;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 /** @hidden */
@@ -2564,7 +2598,7 @@ var __extends = (this && this.__extends) || (function () {
                         this._state = value;
                     }
                     else {
-                        throw new icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
+                        throw new fm.icelink.Exception('Method overload does not exist with specified parameter count/type combination.');
                     }
                 };
                 return PeerClient;
@@ -2575,7 +2609,6 @@ var __extends = (this && this.__extends) || (function () {
 })(fm || (fm = {}));
 /// <reference path="ClientExtensions.ts" />
 
-/// <reference path="ClientExtensions.ts" />
 (function (fm) {
     var icelink;
     (function (icelink) {

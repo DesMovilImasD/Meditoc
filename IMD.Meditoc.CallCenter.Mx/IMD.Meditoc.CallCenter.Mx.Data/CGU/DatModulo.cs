@@ -16,7 +16,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
         private static readonly ILog logger = LogManager.GetLogger(typeof(DatModulo));
         private Database database;
         IMDCommonData imdCommonData;
-        private string saveModulo;
+        private string spSaveModulo;
 
         public DatModulo()
         {
@@ -24,19 +24,19 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             string FsConnectionString = "cnxMeditoc";
             database = imdCommonData.DGetDatabase(FsConnectionString, "MeditocComercial", "Meditoc1");
 
-            saveModulo = "sva_cgu_save_modulo";
+            spSaveModulo = "sva_cgu_save_modulo";
         }
 
         public IMDResponse<bool> DSaveModulo(EntModulo entModulo)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
-            string metodo = nameof(this.saveModulo);
+            string metodo = nameof(this.spSaveModulo);
             logger.Info(IMDSerialize.Serialize(67823458332700, $"Inicia {metodo}(EntModulo entModulo)", entModulo));
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(saveModulo))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spSaveModulo))
                 {
                     database.AddInParameter(dbCommand, "piIdModulo", DbType.Int32, entModulo.iIdModulo);
                     database.AddInParameter(dbCommand, "piIdUsuarioMod", DbType.Int32, entModulo.iIdUsuarioMod);

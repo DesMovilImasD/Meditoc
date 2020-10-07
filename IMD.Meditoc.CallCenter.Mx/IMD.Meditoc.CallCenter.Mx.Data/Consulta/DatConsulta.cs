@@ -4,12 +4,8 @@ using IMD.Admin.Utilities.Entities;
 using log4net;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
 {
@@ -18,14 +14,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
         private static readonly ILog logger = LogManager.GetLogger(typeof(DatConsulta));
         private Database database;
         IMDCommonData imdCommonData;
-        string saveConsulta;
-        string getHistorialMedico;
-        string getDetalleConsulta;
-        string getDisponibilidadConsulta;
-        string delConsulta;
-        string saveHistorialClinico;
-        string getConsultaMomento;
-        string getConsultaPaciente;
+        string spSaveConsulta;
+        string spGetHistorialMedico;
+        string spGetDetalleConsulta;
+        string spGetDisponibilidadConsulta;
+        string spDelConsulta;
+        string spSaveHistorialClinico;
+        string spGetConsultaMomento;
+        string spGetConsultaPaciente;
 
         public DatConsulta()
         {
@@ -33,14 +29,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             string FsConnectionString = "cnxMeditoc";
             database = imdCommonData.DGetDatabase(FsConnectionString, "MeditocComercial", "Meditoc1");
 
-            saveConsulta = "sva_meditoc_save_consulta";
-            getHistorialMedico = "svc_meditoc_historialclinico";
-            getDetalleConsulta = "svc_meditoc_consultas";
-            getDisponibilidadConsulta = "svc_meditoc_consultas_disponibilidad";
-            delConsulta = "sva_meditoc_del_consulta";
-            saveHistorialClinico = "sva_meditoc_save_historialclinico";
-            getConsultaMomento = "svc_meditoc_consultas_momento";
-            getConsultaPaciente = "svc_ObtenerConsultasByPaciente";
+            spSaveConsulta = "sva_meditoc_save_consulta";
+            spGetHistorialMedico = "svc_meditoc_historialclinico";
+            spGetDetalleConsulta = "svc_meditoc_consultas";
+            spGetDisponibilidadConsulta = "svc_meditoc_consultas_disponibilidad";
+            spDelConsulta = "sva_meditoc_del_consulta";
+            spSaveHistorialClinico = "sva_meditoc_save_historialclinico";
+            spGetConsultaMomento = "svc_meditoc_consultas_momento";
+            spGetConsultaPaciente = "svc_ObtenerConsultasByPaciente";
         }
 
         public IMDResponse<DataTable> DSaveConsulta(int piIdConsulta, int piIdUsuarioMod, int? piIdPaciente = null, int? piIdColaborador = null, int? piIdEstatusConsulta = null, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null, DateTime? pdtFechaConsultaInicio = null, DateTime? pdtFechaConsultaFin = null)
@@ -52,7 +48,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(saveConsulta))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spSaveConsulta))
                 {
                     database.AddInParameter(dbCommand, "piIdConsulta", DbType.Int32, piIdConsulta);
                     database.AddInParameter(dbCommand, "piIdUsuarioMod", DbType.Int32, piIdUsuarioMod);
@@ -70,7 +66,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             catch (Exception ex)
             {
                 response.Code = 67823458519180;
-                response.Message = "Ocurrió un error inesperado en la base de datos al guardar la consulta";
+                response.Message = "Ocurrió un error inesperado en la base de datos al guardar la consulta.";
 
                 logger.Error(IMDSerialize.Serialize(67823458519180, $"Error en {metodo}(int piIdConsulta, int piIdUsuarioMod, int? piIdPaciente = null, int? piIdColaborador = null, int? piIdEstatusConsulta = null, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null, DateTime? pdtFechaConsultaInicio = null, DateTime? pdtFechaConsultaFin = null): {ex.Message}", piIdConsulta, piIdUsuarioMod, piIdPaciente, piIdColaborador, piIdEstatusConsulta, pdtFechaProgramadaInicio, pdtFechaProgramadaFin, pdtFechaConsultaInicio, pdtFechaConsultaFin, ex, response));
             }
@@ -86,7 +82,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(getHistorialMedico))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spGetHistorialMedico))
                 {
                     database.AddInParameter(dbCommand, "piIdHistorialClinico", DbType.Int32, piIdHistorialClinico);
                     database.AddInParameter(dbCommand, "piIdConsulta", DbType.Int32, piIdConsulta);
@@ -116,7 +112,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(getDetalleConsulta))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spGetDetalleConsulta))
                 {
                     database.AddInParameter(dbCommand, "piIdConsulta", DbType.Int32, piIdConsulta);
                     database.AddInParameter(dbCommand, "piIdPaciente", DbType.Int32, piIdPaciente);
@@ -133,7 +129,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             catch (Exception ex)
             {
                 response.Code = 67823458530058;
-                response.Message = "Ocurrió un error inesperado en la base de datos al obtener el detalle de la consulta";
+                response.Message = "Ocurrió un error inesperado en la base de datos al obtener el detalle de la consulta.";
 
                 logger.Error(IMDSerialize.Serialize(67823458530058, $"Error en {metodo}(int? piIdConsulta = null, int? piIdPaciente = null, int? piIdColaborador = null, int? piIdEstatusConsulta = null, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null, DateTime? pdtFechaConsultaInicio = null, DateTime? pdtFechaConsultaFin = null): {ex.Message}", piIdConsulta, piIdPaciente, piIdColaborador, piIdEstatusConsulta, pdtFechaProgramadaInicio, pdtFechaProgramadaFin, pdtFechaConsultaInicio, pdtFechaConsultaFin, ex, response));
             }
@@ -149,7 +145,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(getDisponibilidadConsulta))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spGetDisponibilidadConsulta))
                 {
                     database.AddInParameter(dbCommand, "piIdColaborador", DbType.Int32, piIdColaborador);
                     database.AddInParameter(dbCommand, "piIdConsulta", DbType.Int32, piIdConsulta);
@@ -162,7 +158,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             catch (Exception ex)
             {
                 response.Code = 67823458536274;
-                response.Message = "Ocurrió un error inesperado en la base de datos al consultar la disponibilidad del doctor";
+                response.Message = "Ocurrió un error inesperado en la base de datos al consultar la disponibilidad del doctor.";
 
                 logger.Error(IMDSerialize.Serialize(67823458536274, $"Error en {metodo}(int piIdColaborador, int piIdConsulta, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null): {ex.Message}", piIdColaborador, piIdConsulta, pdtFechaProgramadaInicio, pdtFechaProgramadaFin, ex, response));
             }
@@ -178,7 +174,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(delConsulta))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spDelConsulta))
                 {
                     database.AddInParameter(dbCommand, "piIdConsulta", DbType.Int32, piIdConsulta);
                     database.AddInParameter(dbCommand, "piIdUsuarioMod", DbType.Int32, piIdUsuarioMod);
@@ -190,7 +186,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             catch (Exception ex)
             {
                 response.Code = 67823458551814;
-                response.Message = "Ocurrió un error inesperado en la base de datos al cancelar la consulta";
+                response.Message = "Ocurrió un error inesperado en la base de datos al cancelar la consulta.";
 
                 logger.Error(IMDSerialize.Serialize(67823458551814, $"Error en {metodo}(int piIdConsulta, int piIdUsuarioMod, int piIdEstatusConsulta): {ex.Message}", piIdConsulta, piIdUsuarioMod, piIdEstatusConsulta, ex, response));
             }
@@ -206,7 +202,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(saveHistorialClinico))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spSaveHistorialClinico))
                 {
                     database.AddInParameter(dbCommand, "piIdConsulta", DbType.Int32, piIdConsulta);
                     database.AddInParameter(dbCommand, "piIdUsuarioMod", DbType.Int32, piIdUsuarioMod);
@@ -224,7 +220,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             catch (Exception ex)
             {
                 response.Code = 67823458582894;
-                response.Message = "Ocurrió un error inesperado en la base de datos al guardar el historial médico";
+                response.Message = "Ocurrió un error inesperado en la base de datos al guardar el historial médico.";
 
                 logger.Error(IMDSerialize.Serialize(67823458582894, $"Error en {metodo}(int piIdConsulta, int piIdUsuarioMod, string psSintomas = null, string psDiagnostico = null, string psTratamiento = null, double? pfPeso = null, double? pfAltura = null, string psAlergias = null, string psComentarios = null): {ex.Message}", piIdConsulta, piIdUsuarioMod, psSintomas, psDiagnostico, psTratamiento, pfPeso, pfAltura, psAlergias, psComentarios, ex, response));
             }
@@ -240,7 +236,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(getConsultaMomento))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spGetConsultaMomento))
                 {
                     database.AddInParameter(dbCommand, "piIdPaciente", DbType.Int32, piIdPaciente);
                     database.AddInParameter(dbCommand, "piIdColaborador", DbType.Int32, piIdColaborador);
@@ -253,7 +249,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             catch (Exception ex)
             {
                 response.Code = 67823458587556;
-                response.Message = "Ocurrió un error inesperado en la base de datos al obtener el detalle de la consulta programada";
+                response.Message = "Ocurrió un error inesperado en la base de datos al obtener el detalle de la consulta programada.";
 
                 logger.Error(IMDSerialize.Serialize(67823458587556, $"Error en {metodo}(int piIdPaciente, int piIdColaborador, int piMinutosAntes, int piMinutosDespues): {ex.Message}", piIdPaciente, piIdColaborador, piMinutosAntes, piMinutosDespues, ex, response));
             }
@@ -269,7 +265,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(getConsultaPaciente))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spGetConsultaPaciente))
                 {
                     database.AddInParameter(dbCommand, "piIdPaciente", DbType.Int32, piIdPaciente);
                     database.AddInParameter(dbCommand, "pdtFechaConsulta", DbType.DateTime, dtFechaActual);
@@ -281,7 +277,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             catch (Exception ex)
             {
                 response.Code = 67823458587556;
-                response.Message = "Ocurrió un error inesperado en la base de datos al obtener el detalle de la consulta";
+                response.Message = "Ocurrió un error inesperado en la base de datos al obtener el detalle de la consulta.";
 
                 logger.Error(IMDSerialize.Serialize(67823458587557, $"Error en {metodo}(int? piIdPaciente, DateTime dtFechaActual): {ex.Message}", piIdPaciente, dtFechaActual, ex, response));
             }

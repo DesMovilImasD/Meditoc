@@ -1,5 +1,5 @@
-﻿using IMD.Admin.Conekta.Entities.Orders;
-using IMD.Meditoc.CallCenter.Mx.Entities.Consultas;
+﻿using IMD.Meditoc.CallCenter.Mx.Entities.Consultas;
+using IMD.Meditoc.CallCenter.Mx.Entities.Ordenes;
 using System;
 using System.Collections.Generic;
 using System.Linq;

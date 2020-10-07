@@ -6,7 +6,6 @@ using log4net;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
 using System.Linq;
 
 namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
@@ -26,11 +25,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
         /// </summary>
         /// <param name="entPermisos"></param>
         /// <returns></returns>
-        public IMDResponse<bool> DSavePermiso(List<EntPermiso> entPermisos)
+        public IMDResponse<bool> BSavePermiso(List<EntPermiso> entPermisos)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
-            string metodo = nameof(this.DSavePermiso);
+            string metodo = nameof(this.BSavePermiso);
             logger.Info(IMDSerialize.Serialize(67823458347463, $"Inicia {metodo}(EntPermiso entPermiso)", entPermisos));
 
             try

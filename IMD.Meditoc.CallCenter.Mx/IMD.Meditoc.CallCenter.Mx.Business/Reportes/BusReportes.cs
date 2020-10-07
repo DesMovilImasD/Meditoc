@@ -1,12 +1,11 @@
-﻿using IMD.Admin.Conekta.Entities.Orders;
-using IMD.Admin.Utilities.Business;
+﻿using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
 using IMD.Meditoc.CallCenter.Mx.Data.Reportes;
 using IMD.Meditoc.CallCenter.Mx.Entities.Catalogos;
 using IMD.Meditoc.CallCenter.Mx.Entities.Empresa;
+using IMD.Meditoc.CallCenter.Mx.Entities.Ordenes;
 using IMD.Meditoc.CallCenter.Mx.Entities.Paciente;
 using IMD.Meditoc.CallCenter.Mx.Entities.Producto;
-using IMD.Meditoc.CallCenter.Mx.Entities.Reportes;
 using IMD.Meditoc.CallCenter.Mx.Entities.Reportes.Doctores;
 using IMD.Meditoc.CallCenter.Mx.Entities.Reportes.Ventas;
 using log4net;
@@ -19,8 +18,6 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
 {
@@ -33,7 +30,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
         /// Función: Obtiene los datos para reporte de ventas
         /// Creado: Anahi Duarte 
         /// Fecha de Creación: 15/09/2020
-        /// Modificado:
+        /// Modificado: Cris 01/10/2020
         /// Fecha de Modificación: 
         /// </summary>
         /// <param name="psFolio">Folio de la venta</param>
@@ -48,9 +45,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
         /// <param name="pdtFechaFinal">...a la fecha de creación de la orden</param>
         /// <param name="pdtFechaVencimiento">Fecha de vencimiento del folio</param>
         /// <returns></returns>
-        public IMDResponse<EntVentasReporte> BObtenerReporteVentas(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, string psTipoPago = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)
+        public IMDResponse<EntReporteVentas> BObtenerReporteVentas(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, string psTipoPago = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)
         {
-            IMDResponse<EntVentasReporte> response = new IMDResponse<EntVentasReporte>();
+            IMDResponse<EntReporteVentas> response = new IMDResponse<EntReporteVentas>();
 
             string metodo = nameof(this.BObtenerReporteVentas);
             logger.Info(IMDSerialize.Serialize(67823458561915, $"Inicia {metodo}(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento));
@@ -60,7 +57,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                 IMDResponse<List<EntFolioGeneric>> respuestaObtenerFolios = this.BObtenerFolios(psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, psTipoPago, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento);
                 if (respuestaObtenerFolios.Code != 0)
                 {
-                    return respuestaObtenerFolios.GetResponse<EntVentasReporte>();
+                    return respuestaObtenerFolios.GetResponse<EntReporteVentas>();
                 }
 
                 double dIVA = ConfigurationManager.AppSettings["nIVA"] != null ? Convert.ToDouble(ConfigurationManager.AppSettings["nIVA"]) : 0.16;
@@ -138,7 +135,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                 //double dDescuento = lstFolios.Where(x => (x.iIdOrigen == (int)EnumReportes.Origen.WEB || x.iIdOrigen == (int)EnumReportes.Origen.APP) && x.entOrden.sPaymentStatus == "paid").Select(x => x.entOrden).Select(x => new { x.sOrderId, x.nAmountDiscount }).Distinct().Sum(x => x.nAmountDiscount);
                 //dDescuento += lstFolios.Where(x => x.iIdOrigen != (int)EnumReportes.Origen.WEB && x.iIdOrigen != (int)EnumReportes.Origen.APP).Select(x => x.entOrden).Sum(x => x.nAmountDiscount);
 
-                List<EntFolio> lstFolios = respuestaObtenerFolios.Result.Where(x => x.iIdOrigen != (int)EnumOrigen.Particular).GroupBy(x => x.iIdFolio).Select(x => new EntFolio
+                List<EntFolioReporte> lstFolios = respuestaObtenerFolios.Result.Where(x => x.iIdOrigen != (int)EnumOrigen.Particular).GroupBy(x => x.iIdFolio).Select(x => new EntFolioReporte
                 {
                     iIdFolio = x.Key,
                     sFolio = x.Select(y => y.sFolio).First(),
@@ -165,7 +162,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                         iIdTipoProducto = p.iIdTipoProducto,
                         sTipoProducto = p.sTipoProducto
                     }).FirstOrDefault(),
-                    entOrden = x.Select(o => new EntOrden
+                    entOrden = x.Select(o => new EntOrdenReporte
                     {
                         sOrderId = o.sOrderId,
                         nAmount = o.nAmount / 100,
@@ -202,7 +199,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                     }).FirstOrDefault()
                 }).ToList();
 
-                EntVentasReporte entVentasReporte = new EntVentasReporte();
+                EntReporteVentas entVentasReporte = new EntReporteVentas();
                 int iOrdenes = lstFolios.Where(x => x.entOrden.sPaymentStatus == "paid").Select(x => x.entOrden).Select(x => x.sOrderId).Distinct().Count();
 
                 double dTotalPagado = lstFolios.Where(x => x.entOrden.sPaymentStatus == "paid").Select(x => x.entOrden).Select(x => new { x.sOrderId, x.nAmountPaid }).Distinct().Sum(x => x.nAmountPaid);
@@ -217,19 +214,38 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                 entVentasReporte.lstFolios = lstFolios;
 
                 response.Code = 0;
-                response.Message = "Folios obtenidos";
+                response.Message = "El reporte ha sido generado.";
                 response.Result = entVentasReporte;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458562692;
-                response.Message = "Ocurrió un error inesperado al consultar los folios en la base de datos";
+                response.Message = "Ocurrió un error inesperado al consultar los folios en la base de datos.";
 
                 logger.Error(IMDSerialize.Serialize(67823458562692, $"Error en {metodo}(string psFolio = null, string psIdEmpresa = null, string psIdProducto= null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null): {ex.Message}", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento, ex, response));
             }
             return response;
         }
 
+        /// <summary>
+        /// Función: Obtiene los datos para reporte de ventas
+        /// Creado: Cristopher Noh 
+        /// Fecha de Creación: 01/10/2020
+        /// Modificado:
+        /// Fecha de Modificación: 
+        /// </summary>
+        /// <param name="psFolio">Folio de la venta</param>
+        /// <param name="psIdEmpresa">ID de la empresa</param>
+        /// <param name="psIdProducto">ID del producto</param>
+        /// <param name="psIdTipoProducto">ID del tipo de producto</param>
+        /// <param name="psIdOrigen">ID del origen</param>
+        /// <param name="psOrderId">Código de la orden</param>
+        /// <param name="psStatus">Estatus del pago</param>
+        /// <param name="psCupon">Cupon que se aplico</param>
+        /// <param name="pdtFechaInicio">Fecha de creación de la orden desde...</param>
+        /// <param name="pdtFechaFinal">...a la fecha de creación de la orden</param>
+        /// <param name="pdtFechaVencimiento">Fecha de vencimiento del folio</param>
+        /// <returns></returns>
         public IMDResponse<EntReporteVenta> BReporteGlobalVentas(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, string psTipoPago = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)
         {
             IMDResponse<EntReporteVenta> response = new IMDResponse<EntReporteVenta>();
@@ -296,7 +312,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                     uId = o.Select(r => r.uId).FirstOrDefault(),
                 }).ToList();
 
-                List<EntReporteOrden> ordenesAdmin = respuestaObtenerFolios.Result.Where(x => x.iIdOrigen == (int)EnumOrigen.PanelAdministrativo || x.iIdOrigen == (int)EnumOrigen.BaseDeDatos).GroupBy(o => o.sOrderId).Select(o => new EntReporteOrden
+                List<EntReporteOrden> ordenesAdmin = respuestaObtenerFolios.Result.Where(x => x.iIdOrigen == (int)EnumOrigen.PanelAdministrativo || x.iIdOrigen == (int)EnumOrigen.ArchivoExterno).GroupBy(o => o.sOrderId).Select(o => new EntReporteOrden
                 {
                     sOrderId = o.Key,
                     iIdEmpresa = o.Select(r => r.iIdEmpresa).FirstOrDefault(),
@@ -409,13 +425,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                 };
 
                 response.Code = 0;
-                response.Message = "Reportes obtenidos";
+                response.Message = "El reporte ha sido generado.";
                 response.Result = entReporteVenta;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458598434;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al generar el reporte.";
 
                 logger.Error(IMDSerialize.Serialize(67823458598434, $"Error en {metodo}(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, string psTipoPago = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null): {ex.Message}", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, psTipoPago, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento, ex, response));
             }
@@ -426,7 +442,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
         /// Función: Genera un documento excel con la información de ventas de folios
         /// Creado: Anahi Duarte 
         /// Fecha de Creación: 15/09/2020
-        /// Modificado:
+        /// Modificado: Cris 01/10/2020
         /// Fecha de Modificación: 
         /// </summary>
         /// <param name="psFolio">Folio de la venta</param>
@@ -451,7 +467,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
             try
             {
 
-                IMDResponse<EntVentasReporte> respuestaObtenerOrdenes = this.BObtenerReporteVentas(psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, psTipoPago, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento);
+                IMDResponse<EntReporteVentas> respuestaObtenerOrdenes = this.BObtenerReporteVentas(psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, psTipoPago, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento);
                 if (respuestaObtenerOrdenes.Code != 0)
                 {
                     return respuestaObtenerOrdenes.GetResponse<MemoryStream>();
@@ -676,12 +692,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                     response.Result = ms;
                 }
                 response.Code = 0;
-                response.Message = "Reporte creado";
+                response.Message = "El reporte ha sido generado.";
             }
             catch (Exception ex)
             {
                 response.Code = 67823458564246;
-                response.Message = "Ocurrió un error inesperado al generar el reporte de órdenes";
+                response.Message = "Ocurrió un error inesperado al generar el reporte de órdenes.";
 
                 logger.Error(IMDSerialize.Serialize(67823458564246, $"Error en {metodo}(string psFolio = null, string psIdEmpresa = null, string psIdProducto= null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null): {ex.Message}", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento, ex, response));
             }
@@ -717,11 +733,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                 worksheet.Cells[row, 1, row, headers.Count].Style.Fill.PatternType = ExcelFillStyle.Solid;
                 worksheet.Cells[row, 1, row, headers.Count].Style.Fill.BackgroundColor.SetColor(Color.DarkBlue);
                 worksheet.Cells[row, 1, row, headers.Count].Style.Font.Color.SetColor(Color.White);
+
+                response.Code = 0;
+                response.Message = "Headers agregados.";
             }
             catch (Exception ex)
             {
                 response.Code = 67823458170307;
-                response.Message = "Ocurrió un error inesperado al generar el reporte de ventas";
+                response.Message = "Ocurrió un error inesperado al generar el reporte de ventas.";
 
                 logger.Error(IMDSerialize.Serialize(67823458170307, $"Error en {metodo}(ExcelWorksheet worksheet, List<string> headers, int row): {ex.Message}", headers, row, ex, response));
             }
@@ -750,11 +769,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
         /// <param name="pdtFechaConsultaInicio">fecha inicial real de la consulta</param>
         /// <param name="pdtFechaConsultaFin">fecha final real de la consulta</param>
         /// <returns></returns>
-        public IMDResponse<EntDoctoresReporte> BObtenerReporteDoctores(string psIdColaborador = null, string psColaborador = null, string psIdTipoDoctor = null, string psIdEspecialidad = null, string psIdConsulta = null,
+        public IMDResponse<EntReporteDoctores> BObtenerReporteDoctores(string psIdColaborador = null, string psColaborador = null, string psIdTipoDoctor = null, string psIdEspecialidad = null, string psIdConsulta = null,
             string psIdEstatusConsulta = null, string psRFC = null, string psNumSala = null, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFinal = null,
             DateTime? pdtFechaConsultaInicio = null, DateTime? pdtFechaConsultaFin = null)
         {
-            IMDResponse<EntDoctoresReporte> response = new IMDResponse<EntDoctoresReporte>();
+            IMDResponse<EntReporteDoctores> response = new IMDResponse<EntReporteDoctores>();
 
             string metodo = nameof(this.BObtenerReporteDoctores);
             logger.Info(IMDSerialize.Serialize(67823458565023, $"Inicia {metodo}(string psIdColaborador = null, string psColaborador = null, string psIdTipoDoctor = null, string psIdEspecialidad = null, string psIdConsulta = null,string psIdEstatusConsulta = null, string psRFC = null, string psNumSala = null, DateTime ? pdtFechaProgramadaInicio = null, DateTime ? pdtFechaProgramadaFinal = null,DateTime ? pdtFechaConsultaInicio = null, DateTime ? pdtFechaConsultaFin = null)", psIdColaborador, psColaborador, psIdTipoDoctor, psIdEspecialidad, psIdConsulta, psIdEstatusConsulta, psRFC, psNumSala, pdtFechaProgramadaInicio, pdtFechaProgramadaFinal, pdtFechaConsultaInicio, pdtFechaConsultaFin));
@@ -764,10 +783,10 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                 IMDResponse<List<EntDoctoresGeneric>> respuestaObtenerConsultas = this.BObtenerConsultasDoctor(psIdColaborador, psColaborador, psIdTipoDoctor, psIdEspecialidad, psIdConsulta, psIdEstatusConsulta, psRFC, psNumSala, pdtFechaProgramadaInicio, pdtFechaProgramadaFinal, pdtFechaConsultaInicio, pdtFechaConsultaFin);
                 if (respuestaObtenerConsultas.Code != 0)
                 {
-                    return respuestaObtenerConsultas.GetResponse<EntDoctoresReporte>();
+                    return respuestaObtenerConsultas.GetResponse<EntReporteDoctores>();
                 }
 
-                List<EntDoctor> lstDoctores = respuestaObtenerConsultas.Result.GroupBy(x => x.iIdColaborador).Select(x => new EntDoctor
+                List<EntDoctorReporte> lstDoctores = respuestaObtenerConsultas.Result.GroupBy(x => x.iIdColaborador).Select(x => new EntDoctorReporte
                 {
                     iIdDoctor = x.Key,
                     sNombre = x.Select(d => d.sColaborador).First(),
@@ -781,7 +800,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                     sRFC = x.Select(d => d.sRFC).First(),
                     iTotalConsultas = x.Where(c => c.iIdConsulta != 0).Count(),
                     lstPacientes = x.Select(d => d.iIdPaciente).ToList(),
-                    lstConsultas = x.Select(c => new EntConsulta
+                    lstConsultas = x.Select(c => new EntConsultaReporte
                     {
                         iIdConsulta = c.iIdConsulta,
                         sEstatusConsulta = c.sEstatusConsulta,
@@ -808,25 +827,25 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                 }).ToList();
 
                 List<int> lstPacientes = new List<int>();
-                foreach (EntDoctor doctor in lstDoctores)
+                foreach (EntDoctorReporte doctor in lstDoctores)
                 {
                     lstPacientes.AddRange(doctor.lstPacientes);
                 };
 
-                EntDoctoresReporte entDoctoresReporte = new EntDoctoresReporte();
+                EntReporteDoctores entDoctoresReporte = new EntReporteDoctores();
                 entDoctoresReporte.iTotalConsultas = lstDoctores.Sum(x => x.iTotalConsultas);
                 entDoctoresReporte.iTotalDoctores = lstDoctores.Count;
                 entDoctoresReporte.iTotalPacientes = lstPacientes.Where(x => x != 0).Distinct().Count();
                 entDoctoresReporte.lstDoctores = lstDoctores;
 
                 response.Code = 0;
-                response.Message = "Doctores obtenidos";
+                response.Message = "El reporte ha sido generado.";
                 response.Result = entDoctoresReporte;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458565800;
-                response.Message = "Ocurrió un error inesperado al consultar la información de los doctores en la base de datos";
+                response.Message = "Ocurrió un error inesperado al consultar la información de los doctores en la base de datos.";
 
                 logger.Error(IMDSerialize.Serialize(67823458565800, $"Error en {metodo}(string psIdColaborador = null, string psColaborador = null, string psIdTipoDoctor = null, string psIdEspecialidad = null, string psIdConsulta = null,string psIdEstatusConsulta = null, string psRFC = null, string psNumSala = null, DateTime ? pdtFechaProgramadaInicio = null, DateTime ? pdtFechaProgramadaFinal = null,DateTime ? pdtFechaConsultaInicio = null, DateTime ? pdtFechaConsultaFin = null): {ex.Message}", psIdColaborador, psColaborador, psIdTipoDoctor, psIdEspecialidad, psIdConsulta, psIdEstatusConsulta, psRFC, psNumSala, pdtFechaProgramadaInicio, pdtFechaProgramadaFinal, pdtFechaConsultaInicio, pdtFechaConsultaFin, ex, response));
             }
@@ -864,7 +883,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
 
             try
             {
-                IMDResponse<EntDoctoresReporte> respuestaObtenerDoctores = this.BObtenerReporteDoctores(psIdColaborador, psColaborador, psIdTipoDoctor, psIdEspecialidad, psIdConsulta, psIdEstatusConsulta, psRFC, psNumSala, pdtFechaProgramadaInicio, pdtFechaProgramadaFinal, pdtFechaConsultaInicio, pdtFechaConsultaFin);
+                IMDResponse<EntReporteDoctores> respuestaObtenerDoctores = this.BObtenerReporteDoctores(psIdColaborador, psColaborador, psIdTipoDoctor, psIdEspecialidad, psIdConsulta, psIdEstatusConsulta, psRFC, psNumSala, pdtFechaProgramadaInicio, pdtFechaProgramadaFinal, pdtFechaConsultaInicio, pdtFechaConsultaFin);
                 if (respuestaObtenerDoctores.Code != 0)
                 {
                     return respuestaObtenerDoctores.GetResponse<MemoryStream>();
@@ -981,7 +1000,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                         #region Información General folio
                         if (y.iTotalConsultas != 0)
                         {
-                            foreach (EntConsulta consulta in y.lstConsultas)
+                            foreach (EntConsultaReporte consulta in y.lstConsultas)
                             {
                                 int colFor = col;
                                 sheetDoctores.Cells[++row, ++col].Value = consulta.iIdConsulta;
@@ -1015,12 +1034,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                     response.Result = ms;
                 }
                 response.Code = 0;
-                response.Message = "Reporte creado";
+                response.Message = "El reporte ha sido generado";
             }
             catch (Exception ex)
             {
                 response.Code = 67823458567354;
-                response.Message = "Ocurrió un error inesperado al generar el reporte de doctores";
+                response.Message = "Ocurrió un error inesperado al generar el reporte de doctores.";
 
                 logger.Error(IMDSerialize.Serialize(67823458567354, $"Error en {metodo}(string psIdColaborador = null, string psColaborador = null, string psIdTipoDoctor = null, string psIdEspecialidad = null, string psIdConsulta = null,string psIdEstatusConsulta = null, string psRFC = null, string psNumSala = null, DateTime ? pdtFechaProgramadaInicio = null, DateTime ? pdtFechaProgramadaFinal = null,DateTime ? pdtFechaConsultaInicio = null, DateTime ? pdtFechaConsultaFin = null): {ex.Message}", psIdColaborador, psColaborador, psIdTipoDoctor, psIdEspecialidad, psIdConsulta, psIdEstatusConsulta, psRFC, psNumSala, pdtFechaProgramadaInicio, pdtFechaProgramadaFinal, pdtFechaConsultaInicio, pdtFechaConsultaFin, ex, response));
             }
@@ -1151,12 +1170,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                 }
 
                 response.Code = 0;
+                response.Message = "El reporte ha sido generado.";
                 response.Result = lstFolios;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458568908;
-                response.Message = "Ocurrió un error inesperado al obtener el reporte de ventas";
+                response.Message = "Ocurrió un error inesperado al obtener el reporte de ventas.";
 
                 logger.Error(IMDSerialize.Serialize(67823458568908, $"Error en {metodo}(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, string psTipoPago = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null): {ex.Message}", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, psTipoPago, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento, ex, response));
             }
@@ -1250,11 +1270,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
 
                 response.Code = 0;
                 response.Result = lstConsultas;
+                response.Message = "El reporte ha sido generado.";
             }
             catch (Exception ex)
             {
                 response.Code = 67823458570462;
-                response.Message = "Ocurrió un error inesperado al obtener la información del reporte de doctores";
+                response.Message = "Ocurrió un error inesperado al obtener la información del reporte de doctores.";
 
                 logger.Error(IMDSerialize.Serialize(67823458570462, $"Error en {metodo}(string psIdColaborador = null, string psColaborador = null, string psIdTipoDoctor = null, string psIdEspecialidad = null, string psIdConsulta = null,string psIdEstatusConsulta = null, string psRFC = null, string psNumSala = null, DateTime ? pdtFechaProgramadaInicio = null, DateTime ? pdtFechaProgramadaFinal = null,DateTime ? pdtFechaConsultaInicio = null, DateTime ? pdtFechaConsultaFin = null): {ex.Message}", psIdColaborador, psColaborador, psIdTipoDoctor, psIdEspecialidad, psIdConsulta, psIdEstatusConsulta, psRFC, psNumSala, pdtFechaProgramadaInicio, pdtFechaProgramadaFinal, pdtFechaConsultaInicio, pdtFechaConsultaFin, ex, response));
             }

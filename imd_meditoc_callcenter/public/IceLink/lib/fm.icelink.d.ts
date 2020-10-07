@@ -1,6 +1,6 @@
 //
 // Title: IceLink for JavaScript
-// Version: 3.8.0.22151
+// Version: 3.9.2.31084
 // Copyright Frozen Mountain Software 2011+
 //
 declare namespace fm.icelink {
@@ -18,7 +18,7 @@ declare namespace fm.icelink {
         static contains<T>(array: T[], value: T): boolean;
         static newArray<T>(values: T[]): T[];
         static clone<T>(array: T[]): T[];
-        static map<T, R>(array: T[], callback: IFunction3<T, number, T[], R>): R[];
+        static map<T, R>(array: T[], callback: fm.icelink.IFunction3<T, number, T[], R>): R[];
     }
 }
 declare namespace fm.icelink {
@@ -102,11 +102,11 @@ declare namespace fm.icelink {
         getTypeString(): string;
         private static _base64Regex;
         static encode(b: Uint8Array): string;
-        static encodeBuffer(buffer: DataBuffer): string;
+        static encodeBuffer(buffer: fm.icelink.DataBuffer): string;
         static decode(s: string): Uint8Array;
-        static tryEncode(b: Uint8Array, result: Holder<string>): boolean;
-        static tryEncodeBuffer(buffer: DataBuffer, result: Holder<string>): boolean;
-        static tryDecode(s: string, result: Holder<Uint8Array>): boolean;
+        static tryEncode(b: Uint8Array, result: fm.icelink.Holder<string>): boolean;
+        static tryEncodeBuffer(buffer: fm.icelink.DataBuffer, result: fm.icelink.Holder<string>): boolean;
+        static tryDecode(s: string, result: fm.icelink.Holder<Uint8Array>): boolean;
         private static b64ToUint6;
         private static decodeIt;
         private static uint6ToB64;
@@ -245,9 +245,9 @@ declare namespace fm.icelink {
     }
 }
 declare namespace fm.icelink {
-    class ConsoleLogProvider extends LogProvider {
+    class ConsoleLogProvider extends fm.icelink.LogProvider {
         getTypeString(): string;
-        constructor(level?: LogLevel);
+        constructor(level?: fm.icelink.LogLevel);
         writeLine(text: string): void;
         doLog(logItem: fm.icelink.LogEvent): void;
     }
@@ -256,14 +256,6 @@ declare namespace fm.icelink {
     class Convert {
         getTypeString(): string;
         static toInt32(s: string, base: number): number;
-    }
-}
-declare namespace fm.icelink {
-    class DataBufferPool {
-        private static fm_DataBufferPool___singleton;
-        static getInstance(): fm.icelink.DataBufferPool;
-        static getIsSupported(): boolean;
-        take(size: number): fm.icelink.DataBuffer;
     }
 }
 declare namespace fm.icelink {
@@ -315,21 +307,21 @@ declare namespace fm.icelink {
     }
 }
 declare namespace fm.icelink {
-    class DispatchQueue<T> implements IDispatchQueue<T> {
+    class DispatchQueue<T> implements fm.icelink.IDispatchQueue<T> {
         getTypeString(): string;
         private _count;
         private _action;
-        constructor(action: IAction1<T>);
+        constructor(action: fm.icelink.IAction1<T>);
         getQueueCount(): number;
         destroy(): void;
         enqueue(item: T): void;
     }
 }
 declare namespace fm.icelink {
-    class DomLogProvider extends LogProvider {
+    class DomLogProvider extends fm.icelink.LogProvider {
         getTypeString(): string;
         private _container;
-        constructor(container: HTMLElement, level?: LogLevel);
+        constructor(container: HTMLElement, level?: fm.icelink.LogLevel);
         writeLine(text: string): void;
         doLog(logItem: fm.icelink.LogEvent): void;
     }
@@ -391,11 +383,11 @@ declare namespace fm.icelink {
     }
 }
 declare namespace fm.icelink {
-    abstract class Future<T> extends FutureBase<T> {
+    abstract class Future<T> extends fm.icelink.FutureBase<T> {
         getTypeString(): string;
-        abstract fail(rejectAction: IAction1<Exception>): Future<T>;
-        abstract then<R>(resolve: IAction1<T> | IFunction1<T, Future<R>>): Future<R>;
-        abstract then<R>(resolve: IAction1<T> | IFunction1<T, Future<R>>, reject: IAction1<Exception>): Future<R>;
+        abstract fail(rejectAction: fm.icelink.IAction1<fm.icelink.Exception>): fm.icelink.Future<T>;
+        abstract then<R>(resolve: fm.icelink.IAction1<T> | fm.icelink.IFunction1<T, fm.icelink.Future<R>>): fm.icelink.Future<R>;
+        abstract then<R>(resolve: fm.icelink.IAction1<T> | fm.icelink.IFunction1<T, fm.icelink.Future<R>>, reject: fm.icelink.IAction1<fm.icelink.Exception>): fm.icelink.Future<R>;
     }
 }
 declare namespace fm.icelink {
@@ -485,25 +477,41 @@ declare namespace fm.icelink {
     }
 }
 declare namespace fm.icelink {
-    class HashContext extends HashContextBase {
+    class HashContext extends fm.icelink.HashContextBase {
         getTypeString(): string;
-        constructor(type: HashType);
-        doCompute(input: DataBuffer): DataBuffer;
+        constructor(type: fm.icelink.HashType);
+        doCompute(input: fm.icelink.DataBuffer): fm.icelink.DataBuffer;
         doDestroy(): void;
     }
 }
 declare namespace fm.icelink {
     class HashExtensions {
         getTypeString(): string;
-        static getCount<T>(obj: Hash<string, T>): number;
-        static getKeys<T>(obj: Hash<string, T>): string[];
-        static getValues<T>(obj: Hash<string, T>): T[];
-        static tryGetValue<T>(obj: Hash<any, T>, key: any, holder: Holder<T>): boolean;
-        static containsKey<T>(obj: Hash<any, T>, key: any): boolean;
-        static containsValue<T>(obj: Hash<string, T>, value: T): boolean;
-        static add<T>(obj: Hash<string, T>, key: string, value: T): T;
-        static remove<T>(obj: Hash<string, T>, key: string): boolean;
-        static clear<T>(obj: Hash<string, T>): void;
+        static getCount<T>(obj: fm.icelink.Hash<string, T>): number;
+        static getKeys<T>(obj: fm.icelink.Hash<string, T>): string[];
+        static getValues<T>(obj: fm.icelink.Hash<string, T>): T[];
+        static tryGetValue<T>(obj: fm.icelink.Hash<any, T>, key: any, holder: fm.icelink.Holder<T>): boolean;
+        static containsKey<T>(obj: fm.icelink.Hash<any, T>, key: any): boolean;
+        static containsValue<T>(obj: fm.icelink.Hash<string, T>, value: T): boolean;
+        static add<T>(obj: fm.icelink.Hash<string, T>, key: string, value: T): T;
+        static remove<T>(obj: fm.icelink.Hash<string, T>, key: string): boolean;
+        static clear<T>(obj: fm.icelink.Hash<string, T>): void;
+    }
+}
+declare namespace fm.icelink {
+    class HmacSha256 {
+        private inner;
+        private outer;
+        blockSize: number;
+        digestLength: number;
+        private istate;
+        private ostate;
+        constructor(key: Uint8Array);
+        reset(): this;
+        clean(): void;
+        update(data: Uint8Array): this;
+        finish(out: Uint8Array): this;
+        digest(): Uint8Array;
     }
 }
 declare namespace fm.icelink {
@@ -516,11 +524,48 @@ declare namespace fm.icelink {
     }
 }
 declare namespace fm.icelink {
+    interface HttpWebRequest {
+    }
+}
+declare namespace fm.icelink {
+    interface HttpWebRequestFailureArgs {
+        message: string;
+        local: boolean;
+    }
+}
+declare namespace fm.icelink {
+    interface HttpWebRequestSendOptions {
+        sync: boolean;
+        url: string;
+        frameUrl: string;
+        method: string;
+        content: string;
+        contentBinary: Uint8Array;
+        headers: fm.icelink.Hash<string, string>;
+        timeout: number;
+        robustResponse: boolean;
+        onRequestCreated?: fm.icelink.IFunction1<fm.icelink.HttpWebRequest, HttpWebRequestSendOptions>;
+        onResponseReceived?: fm.icelink.IAction1<fm.icelink.HttpWebResponse>;
+        onSuccess?: fm.icelink.IAction1<fm.icelink.HttpWebRequestSuccessArgs>;
+        onFailure?: fm.icelink.IAction1<fm.icelink.HttpWebRequestFailureArgs>;
+    }
+}
+declare namespace fm.icelink {
+    interface HttpWebRequestSuccessArgs {
+        content: string;
+        contentBinary: Uint8Array;
+        headers: fm.icelink.Hash<string, string>;
+        statusCode: number;
+    }
+}
+declare namespace fm.icelink {
     /**
     Base class that defines methods for transferring content over HTTP.
     */
     abstract class HttpTransfer {
         getTypeString(): string;
+        /** @hidden */
+        private static fm_icelink_HttpTransfer___log;
         /** @hidden */
         private static fm_icelink_HttpTransfer___onSendFinish;
         /** @hidden */
@@ -582,6 +627,10 @@ declare namespace fm.icelink {
         */
         static setWildcardCharacters(value: string): void;
         /** @hidden */
+        private doSend;
+        /** @hidden */
+        private doSendAsync;
+        /** @hidden */
         private finishRequest;
         /** @hidden */
         private raiseOnSendFinish;
@@ -599,6 +648,8 @@ declare namespace fm.icelink {
         @param callback The callback to execute with the resulting response.
         */
         sendAsync(requestArgs: fm.icelink.HttpRequestArgs, callback: fm.icelink.IAction1<fm.icelink.HttpResponseArgs>): void;
+        /** @hidden */
+        private sendAsyncCallback;
         /**
         Sends binary content synchronously using the specified arguments.
         @param requestArgs The request arguments.
@@ -631,6 +682,8 @@ declare namespace fm.icelink {
         private startRequest;
         /** @hidden */
         private static __fmicelinkHttpTransferInitialized;
+        /** @hidden */
+        private static __fmicelinkHttpTransferInitializing;
         /** @hidden */
         static fmicelinkHttpTransferInitialize(): void;
     }
@@ -709,36 +762,7 @@ declare namespace fm.icelink {
     }
 }
 declare namespace fm.icelink {
-    interface HttpWebRequestSendOptions {
-        sync: boolean;
-        url: string;
-        frameUrl: string;
-        method: string;
-        content: string;
-        contentBinary: Uint8Array;
-        headers: Hash<string, string>;
-        timeout: number;
-        robustResponse: boolean;
-        onRequestCreated?: IFunction1<HttpWebRequest, HttpWebRequestSendOptions>;
-        onResponseReceived?: IAction1<HttpWebResponse>;
-        onSuccess?: IAction1<HttpWebRequestSuccessArgs>;
-        onFailure?: IAction1<HttpWebRequestFailureArgs>;
-    }
-    interface HttpWebRequest {
-    }
-    interface HttpWebResponse {
-    }
-    interface HttpWebRequestSuccessArgs {
-        content: string;
-        contentBinary: Uint8Array;
-        headers: Hash<string, string>;
-        statusCode: number;
-    }
-    interface HttpWebRequestFailureArgs {
-        message: string;
-        local: boolean;
-    }
-    class HttpWebRequestTransfer extends HttpTransfer {
+    class HttpWebRequestTransfer extends fm.icelink.HttpTransfer {
         getTypeString(): string;
         private static _corsFailCache;
         private static _corsSuccessCache;
@@ -760,13 +784,17 @@ declare namespace fm.icelink {
         static getForceJsonp(): boolean;
         static canCors(): boolean;
         static canPostMessage(): boolean;
-        sendTextAsync(requestArgs: HttpRequestArgs, callback: IAction1<HttpResponseArgs>): void;
-        sendText(requestArgs: HttpRequestArgs): HttpResponseArgs;
-        sendBinaryAsync(requestArgs: HttpRequestArgs, callback: IAction1<HttpResponseArgs>): void;
-        sendBinary(requestArgs: HttpRequestArgs): HttpResponseArgs;
-        process(requestArgs: HttpRequestArgs, callback: IAction1<HttpResponseArgs>): HttpResponseArgs;
-        sendInternal(fn: IAction1<Object>, cors: boolean, pm: boolean, requestArgs: HttpRequestArgs, callback: IAction1<HttpResponseArgs>): HttpResponseArgs;
+        sendTextAsync(requestArgs: fm.icelink.HttpRequestArgs, callback: fm.icelink.IAction1<fm.icelink.HttpResponseArgs>): void;
+        sendText(requestArgs: fm.icelink.HttpRequestArgs): fm.icelink.HttpResponseArgs;
+        sendBinaryAsync(requestArgs: fm.icelink.HttpRequestArgs, callback: fm.icelink.IAction1<fm.icelink.HttpResponseArgs>): void;
+        sendBinary(requestArgs: fm.icelink.HttpRequestArgs): fm.icelink.HttpResponseArgs;
+        process(requestArgs: fm.icelink.HttpRequestArgs, callback: fm.icelink.IAction1<fm.icelink.HttpResponseArgs>): fm.icelink.HttpResponseArgs;
+        sendInternal(fn: fm.icelink.IAction1<fm.icelink.HttpWebRequestSendOptions>, cors: boolean, pm: boolean, requestArgs: fm.icelink.HttpRequestArgs, callback: fm.icelink.IAction1<fm.icelink.HttpResponseArgs>): fm.icelink.HttpResponseArgs;
         shutdown(): void;
+    }
+}
+declare namespace fm.icelink {
+    interface HttpWebResponse {
     }
 }
 declare namespace fm.icelink {
@@ -880,20 +908,7 @@ declare namespace fm.icelink {
         static serialize(value: any, replacer: any[], space: string | number): string;
     }
 }
-interface Date {
-    toJSONFM(key?: any): string;
-}
 declare namespace fm.icelink {
-    interface JsonpSendOptions extends HttpWebRequestSendOptions {
-        canSegmentJsonArray: boolean;
-        callbackParameterName: string;
-        contentParameterName: string;
-        methodParameterName: string;
-        headersParameterName: string;
-        statusCodeParameterName: string;
-        cacheBusterParameterName: string;
-        useFrame: boolean;
-    }
     class Jsonp {
         getTypeString(): string;
         static maxUrlLength: number;
@@ -903,11 +918,23 @@ declare namespace fm.icelink {
         private static _cb;
         private static _pastScriptFrames;
         private static _scriptFrameDestroyer;
-        static getNextCallback(options: JsonpSendOptions): string;
+        static getNextCallback(options: fm.icelink.JsonpSendOptions): string;
         private static failureHandler;
-        static send(options: JsonpSendOptions): void;
+        static send(options: fm.icelink.JsonpSendOptions): void;
         private static cleanup;
         private static callbackExists;
+    }
+}
+declare namespace fm.icelink {
+    interface JsonpSendOptions extends fm.icelink.HttpWebRequestSendOptions {
+        canSegmentJsonArray: boolean;
+        callbackParameterName: string;
+        contentParameterName: string;
+        methodParameterName: string;
+        headersParameterName: string;
+        statusCodeParameterName: string;
+        cacheBusterParameterName: string;
+        useFrame: boolean;
     }
 }
 declare namespace fm.icelink {
@@ -957,18 +984,18 @@ declare namespace fm.icelink {
     }
 }
 declare namespace fm.icelink {
-    class MacContext extends MacContextBase {
+    class MacContext extends fm.icelink.MacContextBase {
         getTypeString(): string;
         private _key;
-        constructor(type: MacType, key: DataBuffer);
-        doCompute(input: DataBuffer): DataBuffer;
+        constructor(type: fm.icelink.MacType, key: fm.icelink.DataBuffer);
+        doCompute(input: fm.icelink.DataBuffer): fm.icelink.DataBuffer;
         doDestroy(): void;
     }
 }
 declare namespace fm.icelink {
     class ManagedStopwatch {
         getTypeString(): string;
-        static dispatch(action: IAction0): void;
+        static dispatch(action: fm.icelink.IAction0): void;
         private startTime;
         private stopTime;
         static getTimestamp(): number;
@@ -983,7 +1010,7 @@ declare namespace fm.icelink {
     class ManagedThread {
         getTypeString(): string;
         static getCurrentThreadId(): number;
-        static dispatch(action: IAction0): void;
+        static dispatch(action: fm.icelink.IAction0): void;
     }
 }
 declare namespace fm.icelink {
@@ -1018,12 +1045,12 @@ declare namespace fm.icelink {
     class NameValueCollection {
         getTypeString(): string;
         private _value;
-        constructor(value?: Hash<string, string>);
-        source: () => Hash<string, string>;
+        constructor(value?: fm.icelink.Hash<string, string>);
+        source(): fm.icelink.Hash<string, string>;
         get(name: string): string;
         set(name: string, value: string): void;
         getCount(): number;
-        toHash(): Hash<string, string>;
+        toHash(): fm.icelink.Hash<string, string>;
         getKeys(): string[];
         getAllKeys(): string[];
     }
@@ -1037,7 +1064,7 @@ declare namespace fm.icelink {
 declare namespace fm.icelink {
     class ObjectExtensions {
         getTypeString(): string;
-        static getType(obj: any): Type;
+        static getType(obj: any): fm.icelink.Type;
         static getHashCode(obj: any): number;
     }
 }
@@ -1052,16 +1079,16 @@ declare namespace fm.icelink {
         static parseDoubleValue(s: string): number;
         static parseDecimalValue(s: string): number;
         static parseBooleanValue(s: string): boolean;
-        static parseGuidValue(s: string): Guid;
-        static tryParseByteValue(s: string, h: Holder<number>): boolean;
-        static tryParseShortValue(s: string, h: Holder<number>): boolean;
-        static tryParseIntegerValue(s: string, h: Holder<number>): boolean;
-        static tryParseLongValue(s: string, h: Holder<number>): boolean;
-        static tryParseFloatValue(s: string, h: Holder<number>): boolean;
-        static tryParseDoubleValue(s: string, h: Holder<number>): boolean;
-        static tryParseDecimalValue(s: string, h: Holder<number>): boolean;
-        static tryParseBooleanValue(s: string, h: Holder<boolean>): boolean;
-        static tryParseGuidValue(s: string, h: Holder<Guid>): boolean;
+        static parseGuidValue(s: string): fm.icelink.Guid;
+        static tryParseByteValue(s: string, h: fm.icelink.Holder<number>): boolean;
+        static tryParseShortValue(s: string, h: fm.icelink.Holder<number>): boolean;
+        static tryParseIntegerValue(s: string, h: fm.icelink.Holder<number>): boolean;
+        static tryParseLongValue(s: string, h: fm.icelink.Holder<number>): boolean;
+        static tryParseFloatValue(s: string, h: fm.icelink.Holder<number>): boolean;
+        static tryParseDoubleValue(s: string, h: fm.icelink.Holder<number>): boolean;
+        static tryParseDecimalValue(s: string, h: fm.icelink.Holder<number>): boolean;
+        static tryParseBooleanValue(s: string, h: fm.icelink.Holder<boolean>): boolean;
+        static tryParseGuidValue(s: string, h: fm.icelink.Holder<fm.icelink.Guid>): boolean;
     }
 }
 declare namespace fm.icelink {
@@ -1088,9 +1115,9 @@ declare namespace fm.icelink {
     }
 }
 declare namespace fm.icelink {
-    class Platform implements IPlatform {
+    class Platform implements fm.icelink.IPlatform {
         private static instance;
-        static getInstance(): IPlatform;
+        static getInstance(): fm.icelink.IPlatform;
         constructor();
         private littleEndianChecked;
         private isLittleEndian;
@@ -1099,10 +1126,10 @@ declare namespace fm.icelink {
         getIsMobile(): boolean;
         setIsMobile(isMobile: boolean): void;
         getIsLittleEndian(): boolean;
-        getOperatingSystem(): OperatingSystem;
+        getOperatingSystem(): fm.icelink.OperatingSystem;
         getOperatingSystemVersion(): string;
-        getArchitecture(): Architecture;
-        getSourceLanguage(): SourceLanguage;
+        getArchitecture(): fm.icelink.Architecture;
+        getSourceLanguage(): fm.icelink.SourceLanguage;
         getCoreCount(): number;
         getPhysicalMemory(): number;
         getMachineName(): string;
@@ -1110,15 +1137,11 @@ declare namespace fm.icelink {
         getProcessId(): number;
         getUseFipsAlgorithms(): boolean;
         setUseFipsAlgorithms(useFipsAlgorithms: boolean): void;
-        getCryptoLibrary(): CryptoLibrary;
-        setCryptoLibrary(cryptoLibrary: CryptoLibrary): void;
+        getCryptoLibrary(): fm.icelink.CryptoLibrary;
+        setCryptoLibrary(cryptoLibrary: fm.icelink.CryptoLibrary): void;
     }
 }
 declare namespace fm.icelink {
-    interface XhrSendOptions extends HttpWebRequestSendOptions {
-        abortOnUnload?: boolean;
-        cacheBusterParameterName?: string;
-    }
     class Xhr {
         getTypeString(): string;
         private static _count;
@@ -1132,15 +1155,12 @@ declare namespace fm.icelink {
         private static failureHandler;
         private static successHandler;
         private static handler;
-        static send(options: XhrSendOptions): boolean;
+        static send(options: fm.icelink.XhrSendOptions): boolean;
         private static __initialized;
         static initialize(): void;
     }
 }
 declare namespace fm.icelink {
-    interface PostMessageSendOptions extends XhrSendOptions {
-        id: number;
-    }
     class PostMessage {
         getTypeString(): string;
         private static _cache;
@@ -1148,8 +1168,13 @@ declare namespace fm.icelink {
         private static _optionsCache;
         private static getOrigin;
         private static createFrame;
-        static send(options: PostMessageSendOptions): void;
+        static send(options: fm.icelink.PostMessageSendOptions): void;
         private static listen;
+    }
+}
+declare namespace fm.icelink {
+    interface PostMessageSendOptions extends fm.icelink.XhrSendOptions {
+        id: number;
     }
 }
 declare namespace fm.icelink {
@@ -1203,6 +1228,11 @@ declare namespace fm.icelink {
         /** @hidden */
         private addResolve;
         /**
+        Casts the result and resolves the promise. Will throw an exception if the cast fails.
+        @param result The result.
+        */
+        castAndResolve(result: Object): boolean;
+        /**
         Internal DoAll.
         */
         protected doAll<R extends Object>(promises: fm.icelink.Future<R>[], counter: fm.icelink.AtomicInteger): void;
@@ -1254,14 +1284,14 @@ declare namespace fm.icelink {
     }
 }
 declare namespace fm.icelink {
-    class Promise<T> extends PromiseBase<T> {
+    class Promise<T> extends fm.icelink.PromiseBase<T> {
         getTypeString(): string;
-        then<R>(resolve: IFunction1<T, R | Future<R>>, reject?: IAction1<Exception>): Future<R>;
-        fail(reject?: IAction1<Exception>): Future<T>;
-        static wrap(callbackAction: IAction0): Future<Object>;
-        static wrap<R extends Object>(callbackFunction: IFunction0<R>): Future<R>;
-        static wrapAsync(callbackAction: IAction0): Future<Object>;
-        static wrapAsync<R extends Object>(callbackFunction: IFunction0<R>): Future<R>;
+        then<R>(resolve: fm.icelink.IFunction1<T, R | fm.icelink.Future<R>>, reject?: fm.icelink.IAction1<fm.icelink.Exception>): fm.icelink.Future<R>;
+        fail(reject?: fm.icelink.IAction1<fm.icelink.Exception>): fm.icelink.Future<T>;
+        static wrap(callbackAction: fm.icelink.IAction0): fm.icelink.Future<Object>;
+        static wrap<R extends Object>(callbackFunction: fm.icelink.IFunction0<R>): fm.icelink.Future<R>;
+        static wrapAsync(callbackAction: fm.icelink.IAction0): fm.icelink.Future<Object>;
+        static wrapAsync<R extends Object>(callbackFunction: fm.icelink.IFunction0<R>): fm.icelink.Future<R>;
     }
 }
 declare namespace fm.icelink {
@@ -1303,20 +1333,6 @@ declare namespace fm.icelink {
         digest(): Uint8Array;
         _saveState(out: Uint32Array): void;
         _restoreState(from: Uint32Array, bytesHashed: number): void;
-    }
-    class HmacSha256 {
-        private inner;
-        private outer;
-        blockSize: number;
-        digestLength: number;
-        private istate;
-        private ostate;
-        constructor(key: Uint8Array);
-        reset(): this;
-        clean(): void;
-        update(data: Uint8Array): this;
-        finish(out: Uint8Array): this;
-        digest(): Uint8Array;
     }
 }
 declare namespace fm.icelink {
@@ -1369,11 +1385,11 @@ declare namespace fm.icelink {
         static join(separator: string, ...array: any[]): string;
         static split(s: string, chars: number[]): string[];
         static isNullOrEmpty(s: string): boolean;
-        static isEqual(str: string, s: string, stringComparison?: StringComparison): boolean;
-        static indexOf(str: string, s: string, stringComparison?: StringComparison): number;
-        static lastIndexOf(str: string, s: string, stringComparison?: StringComparison): number;
-        static startsWith(str: string, s: string, stringComparison?: StringComparison): boolean;
-        static endsWith(str: string, s: string, stringComparison?: StringComparison): boolean;
+        static isEqual(str: string, s: string, stringComparison?: fm.icelink.StringComparison): boolean;
+        static indexOf(str: string, s: string, stringComparison?: fm.icelink.StringComparison): number;
+        static lastIndexOf(str: string, s: string, stringComparison?: fm.icelink.StringComparison): number;
+        static startsWith(str: string, s: string, stringComparison?: fm.icelink.StringComparison): boolean;
+        static endsWith(str: string, s: string, stringComparison?: fm.icelink.StringComparison): boolean;
         static compareTo(s1: string, s2: string): number;
         static format(format: string, ...args: any[]): string;
         static toLower(str: string): string;
@@ -1394,13 +1410,13 @@ declare namespace fm.icelink {
     }
 }
 declare namespace fm.icelink {
-    class TimeoutTimer implements ITimeoutTimer {
+    class TimeoutTimer implements fm.icelink.ITimeoutTimer {
         getTypeString(): string;
         private _timer;
         private _callback;
         private _state;
         private _currentTimeout;
-        constructor(callback: IAction1<any>, state: any);
+        constructor(callback: fm.icelink.IAction1<any>, state: any);
         start(timeout: number): void;
         stop(): boolean;
     }
@@ -1480,11 +1496,13 @@ declare namespace fm.icelink {
         /** @hidden */
         private static __fmicelinkWebSocketBaseInitialized;
         /** @hidden */
+        private static __fmicelinkWebSocketBaseInitializing;
+        /** @hidden */
         static fmicelinkWebSocketBaseInitialize(): void;
     }
 }
 declare namespace fm.icelink {
-    class WebSocket extends WebSocketBase implements IWebSocket {
+    class WebSocket extends fm.icelink.WebSocketBase implements fm.icelink.IWebSocket {
         getTypeString(): string;
         private static _disableBinary;
         private _requestUrl;
@@ -1507,4508 +1525,23 @@ declare namespace fm.icelink {
         constructor(requestUrl: string, protocol?: string);
         getBufferedAmount(): number;
         getIsOpen(): boolean;
-        open(args: WebSocketOpenArgs): void;
+        open(args: fm.icelink.WebSocketOpenArgs): void;
         private onOpen;
         private onError;
         private onClose;
         private processOnClose;
         private onMessage;
-        send(args: WebSocketSendArgs): void;
+        send(args: fm.icelink.WebSocketSendArgs): void;
         close(): void;
-        close(args: WebSocketCloseArgs): void;
+        close(args: fm.icelink.WebSocketCloseArgs): void;
         private raiseOnRequestCreated;
         private raiseOnResponseReceived;
     }
 }
 declare namespace fm.icelink {
-    /**
-    Base definition for classes that allow serialization to/from JSON.
-    */
-    abstract class Serializable {
-        getTypeString(): string;
-        /** @hidden */
-        private __serialized;
-        /** @hidden */
-        private _isDirty;
-        /** @hidden */
-        private _isSerialized;
-        private fmicelinkSerializableInit;
-        /**
-        Initializes a new instance of the [[fm.icelink.serializable]] class.
-        */
-        constructor();
-        /** @hidden */
-        getIsDirty(): boolean;
-        /** @hidden */
-        getIsSerialized(): boolean;
-        /** @hidden */
-        getSerialized(): string;
-        /** @hidden */
-        setIsDirty(value: boolean): void;
-        /** @hidden */
-        setIsSerialized(value: boolean): void;
-        /** @hidden */
-        setSerialized(value: string): void;
-    }
-}
-declare namespace fm.icelink {
-    /**
-    Supplies class instances with a key-value mapping to support dynamic property storage.
-    */
-    abstract class Dynamic extends fm.icelink.Serializable {
-        getTypeString(): string;
-        /** @hidden */
-        private __dynamicProperties;
-        /** @hidden */
-        private __dynamicPropertiesLock;
-        constructor();
-        /**
-        Gets the dynamic properties on this instance.
-        */
-        getDynamicProperties(): fm.icelink.Hash<string, Object>;
-        /**
-        Gets a property value from the local cache.
-        @param key The property key. This key is used internally only, but should be namespaced to avoid conflict with third-party extensions.
-        @return The stored value, if found; otherwise null.
-        */
-        getDynamicValue(key: string): Object;
-        /** @hidden */
-        setDynamicProperties(value: fm.icelink.Hash<string, Object>): void;
-        /**
-        Sets a property value in the local cache.
-        @param key The property key. This key is used internally only, but should be namespaced to avoid conflict with third-party extensions.
-        @param value The property value. This can be any object that needs to be stored for future use.
-        */
-        setDynamicValue(key: string, value: Object): void;
-        /** @hidden */
-        private tryInitDynamicProperties;
-        /**
-        Unsets a property value in the local cache.
-        @param key The property key. This key is used internally only, but should be namespaced to avoid conflict with third-party extensions.
-        @return `true` if the value was removed; otherwise, `false`.
-        */
-        unsetDynamicValue(key: string): boolean;
-    }
-}
-declare namespace fm.icelink {
-    interface IExternalStream extends IStream, IExternal<IInternalStream> {
-    }
-    interface IInternalStream extends IStream, IInternal<IExternalStream> {
-    }
-    abstract class Stream extends Dynamic implements IExternalStream {
-        getTypeString(): string;
-        getState(): StreamState;
-        addOnStateChange(value: IAction0): void;
-        removeOnStateChange(value: IAction0): void;
-        changeDirection(newDirection: StreamDirection): Error;
-        getDirection(): StreamDirection;
-        getLocalReceive(): boolean;
-        setLocalReceive(receiveEnabled: boolean): void;
-        getLocalSend(): boolean;
-        setLocalSend(sendEnabled: boolean): void;
-        getRemoteReceive(): boolean;
-        getRemoteSend(): boolean;
-        getRemoteDirection(): StreamDirection;
-        getId(): string;
-        getExternalId(): string;
-        getLabel(): string;
-        getLocalDirection(): StreamDirection;
-        getTag(): string;
-        getType(): StreamType;
-        setExternalId(value: string): void;
-        setLocalDirection(value: StreamDirection): void;
-        setTag(value: string): void;
-        addOnDirectionChange(value: IAction0): void;
-        removeOnDirectionChange(value: IAction0): void;
-        getTransportInfo(): TransportInfo;
-    }
-}
-declare namespace fm.icelink {
-    interface IExternalMediaStream extends IMediaStream, IExternal<IInternalMediaStream> {
-    }
-    interface IInternalMediaStream extends IMediaStream, IInternal<IExternalMediaStream> {
-    }
-    abstract class MediaStream<TTrack> extends Stream implements IMediaStream, IExternalMediaStream {
-        getTypeString(): string;
-        getLocalTrack(): TTrack;
-        getRemoteTrack(): TTrack;
-        getLocalBandwidth(): number;
-        getMuted(): boolean;
-        getInputMuted(): boolean;
-        getOutputMuted(): boolean;
-        getRemoteBandwidth(): number;
-        setLocalBandwidth(value: number): void;
-        setMuted(value: boolean): void;
-        setInputMuted(value: boolean): void;
-        setOutputMuted(value: boolean): void;
-        getPreferredCodecs(): string[];
-        setPreferredCodecs(names: string[]): void;
-        getCodecDisabled(name: string): boolean;
-        setCodecDisabled(name: string, disabled: boolean): void;
-        getRemoteEncoding(): EncodingInfo;
-        setRemoteEncoding(value: EncodingInfo): void;
-        getSimulcastMode(): SimulcastMode;
-        setSimulcastMode(value: SimulcastMode): void;
-        getInfo(): MediaStreamInfo;
-        constructor(localTrack: TTrack, remoteTrack: TTrack);
-        getControlTransportInfo(): TransportInfo;
-        getLocalCanonicalName(): string;
-        getRemoteCanonicalName(): string;
-        addOnLocalEncodingDisabled(value: IAction1<EncodingInfo>): void;
-        addOnLocalEncodingEnabled(value: IAction1<EncodingInfo>): void;
-        removeOnLocalEncodingDisabled(value: IAction1<EncodingInfo>): void;
-        removeOnLocalEncodingEnabled(value: IAction1<EncodingInfo>): void;
-    }
-}
-declare namespace fm.icelink {
-    interface IExternalAudioStream extends IAudioStream, IExternal<IInternalAudioStream> {
-    }
-    interface IInternalAudioStream extends IAudioStream, IInternal<IExternalAudioStream> {
-    }
-    class AudioStream extends MediaStream<AudioTrack> implements IAudioStream, IExternalAudioStream {
-        getTypeString(): string;
-        getLocalMedia(): LocalMedia;
-        getRemoteMedia(): RemoteMedia;
-        constructor(localTrack: AudioTrack);
-        constructor(localTrack: AudioTrack, remoteTrack: AudioTrack);
-        constructor(localMedia: LocalMedia);
-        constructor(localMedia: LocalMedia, remoteMedia: RemoteMedia);
-        constructor(remoteMedia: RemoteMedia);
-        addOnReceiveDtmfTone(value: IAction1<dtmf.Tone>): void;
-        addOnReceiveDtmfToneChange(value: IAction1<dtmf.Tone>): void;
-        addOnSendDtmfTone(value: IAction1<dtmf.Tone>): void;
-        addOnSendDtmfToneChange(value: IAction1<dtmf.Tone>): void;
-        insertDtmfTone(dtmfTone: dtmf.Tone): boolean;
-        insertDtmfTones(dtmfTones: dtmf.Tone[]): boolean;
-        removeOnReceiveDtmfTone(value: IAction1<dtmf.Tone>): void;
-        removeOnReceiveDtmfToneChange(value: IAction1<dtmf.Tone>): void;
-        removeOnSendDtmfTone(value: IAction1<dtmf.Tone>): void;
-        removeOnSendDtmfToneChange(value: IAction1<dtmf.Tone>): void;
-        getOpusDisabled(): boolean;
-        getG722Disabled(): boolean;
-        getPcmuDisabled(): boolean;
-        getPcmaDisabled(): boolean;
-        setOpusDisabled(value: boolean): void;
-        setG722Disabled(value: boolean): void;
-        setPcmuDisabled(value: boolean): void;
-        setPcmaDisabled(value: boolean): void;
-    }
-}
-declare namespace fm.icelink {
-    interface IExternalMediaTrack extends IMediaTrack, IExternal<IInternalMediaTrack> {
-    }
-    interface IInternalMediaTrack extends IMediaTrack, IInternal<IExternalMediaTrack> {
-    }
-    abstract class MediaTrack extends Dynamic implements IMediaTrack, IExternalMediaTrack {
-        getTypeString(): string;
-        getMedia(): Media;
-        constructor(media: Media);
-        addOnStarted(value: IAction0): void;
-        addOnStopped(value: IAction0): void;
-        addOnDestroyed(value: IAction0): void;
-        removeOnStarted(value: IAction0): void;
-        removeOnStopped(value: IAction0): void;
-        removeOnDestroyed(value: IAction0): void;
-        changeSinkOutput(sinkOutput: SinkOutput): Future<Object>;
-        changeSourceInput(sourceInput: SourceInput): Future<Object>;
-        destroy(): boolean;
-        getMuted(): boolean;
-        getSinkOutput(): SinkOutput;
-        getSinkOutputs(): Future<SinkOutput[]>;
-        getSourceInput(): SourceInput;
-        getSourceInputs(): Future<SourceInput[]>;
-        setMuted(value: boolean): void;
-        setSinkOutput(value: SinkOutput): void;
-        setSourceInput(value: SourceInput): void;
-    }
-}
-declare namespace fm.icelink {
-    interface IExternalAudioTrack extends IAudioTrack, IExternal<IInternalAudioTrack> {
-    }
-    interface IInternalAudioTrack extends IAudioTrack, IInternal<IExternalAudioTrack> {
-    }
-    class AudioTrack extends MediaTrack implements IAudioTrack, IExternalAudioTrack {
-        getTypeString(): string;
-        constructor(media: Media, internalMedia?: IInternalMedia);
-        addOnLevel(value: IAction1<number>): void;
-        getGain(): number;
-        getVolume(): number;
-        removeOnLevel(value: IAction1<number>): void;
-        setGain(value: number): void;
-        setVolume(value: number): void;
-    }
-}
-declare namespace fm.icelink {
-    interface IExternalConnection extends IConnection<IExternalConnection, IExternalStream, IExternalAudioStream, IExternalVideoStream, IExternalDataStream>, IExternal<IInternalConnection> {
-    }
-    interface IInternalConnection extends IConnection<IInternalConnection, IInternalStream, IInternalAudioStream, IInternalVideoStream, IInternalDataStream>, IInternal<IExternalConnection> {
-    }
-    class Connection extends Dynamic implements IConnection<Connection, Stream, AudioStream, VideoStream, DataStream>, IExternalConnection {
-        getTypeString(): string;
-        private _onExternalIdChangeValues;
-        constructor(stream: Stream);
-        constructor(streams: Stream[]);
-        addIceServer(iceServer: IceServer): void;
-        addIceServers(iceServers: IceServer[]): void;
-        addOnGatheringStateChange(value: IAction1<Connection>): void;
-        addOnIceConnectionStateChange(value: IAction1<Connection>): void;
-        addOnLocalCandidate(value: IAction2<Connection, Candidate>): void;
-        addOnLocalDescription(value: IAction2<Connection, SessionDescription>): void;
-        addOnRemoteCandidate(value: IAction2<Connection, Candidate>): void;
-        addOnRemoteDescription(value: IAction2<Connection, SessionDescription>): void;
-        addOnSignallingStateChange(value: IAction1<Connection>): void;
-        addOnStateChange(value: IAction1<Connection>): void;
-        addRemoteCandidate(remoteCandidate: Candidate): Future<Candidate>;
-        close(): boolean;
-        createAnswer(): Future<SessionDescription>;
-        createOffer(): Future<SessionDescription>;
-        getDeadStreamTimeout(): number;
-        getError(): Error;
-        getExternalId(): string;
-        getBundlePolicy(): BundlePolicy;
-        getIceGatherPolicy(): IceGatherPolicy;
-        getIceServer(): IceServer;
-        getGatheringState(): IceGatheringState;
-        getIceConnectionState(): IceConnectionState;
-        getIceServers(): IceServer[];
-        getId(): string;
-        getCanonicalName(): string;
-        getLocalDescription(): SessionDescription;
-        getRemoteDescription(): SessionDescription;
-        getSignallingState(): SignallingState;
-        getState(): ConnectionState;
-        getStats(): Future<ConnectionStats>;
-        getStreams(): Stream[];
-        getTieBreaker(): string;
-        getLegacyTimeout(): boolean;
-        getTimeout(): number;
-        getTrickleIcePolicy(): TrickleIcePolicy;
-        getHasAudio(): boolean;
-        getHasVideo(): boolean;
-        getHasData(): boolean;
-        getAudioStream(): AudioStream;
-        getAudioStreams(): AudioStream[];
-        getVideoStream(): VideoStream;
-        getVideoStreams(): VideoStream[];
-        getDataStream(): DataStream;
-        getDataStreams(): DataStream[];
-        removeIceServer(iceServer: IceServer): void;
-        removeIceServers(iceServers: IceServer[]): void;
-        removeOnGatheringStateChange(value: IAction1<Connection>): void;
-        removeOnIceConnectionStateChange(value: IAction1<Connection>): void;
-        removeOnLocalCandidate(value: IAction2<Connection, Candidate>): void;
-        removeOnLocalDescription(value: IAction2<Connection, SessionDescription>): void;
-        removeOnRemoteCandidate(value: IAction2<Connection, Candidate>): void;
-        removeOnRemoteDescription(value: IAction2<Connection, SessionDescription>): void;
-        removeOnSignallingStateChange(value: IAction1<Connection>): void;
-        removeOnStateChange(value: IAction1<Connection>): void;
-        setDeadStreamTimeout(value: number): void;
-        setExternalId(value: string): void;
-        setError(value: Error): void;
-        addOnExternalIdChange(value: IAction2<string, string>): void;
-        removeOnExternalIdChange(value: IAction2<string, string>): void;
-        setBundlePolicy(value: BundlePolicy): void;
-        setIceGatherPolicy(value: IceGatherPolicy): void;
-        setIceServer(value: IceServer): void;
-        setIceServers(value: IceServer[]): void;
-        setLocalDescription(localDescription: SessionDescription): Future<SessionDescription>;
-        setLegacyTimeout(legacyTimeout: boolean): void;
-        setRemoteDescription(remoteDescription: SessionDescription): Future<SessionDescription>;
-        setTimeout(value: number): void;
-        setTrickleIcePolicy(value: TrickleIcePolicy): void;
-        setTieBreaker(value: string): void;
-        getRemoteMedia(): RemoteMedia;
-        private externalsToInternals;
-        private externalToInternal;
-        private internalsToExternals;
-        private internalToExternal;
-    }
-}
-declare namespace fm.icelink {
-    interface IExternalDataChannel extends IDataChannel<IExternalDataChannel>, IExternal<IInternalDataChannel> {
-    }
-    interface IInternalDataChannel extends IDataChannel<IInternalDataChannel>, IInternal<IExternalDataChannel> {
-    }
-    class DataChannel extends Dynamic implements IDataChannel<DataChannel>, IExternalDataChannel {
-        getTypeString(): string;
-        getInfo(): DataChannelInfo;
-        constructor(label: string, ordered?: boolean, subprotocol?: string);
-        setOnReceive(value: IAction1<DataChannelReceiveArgs>): void;
-        getSubprotocol(): string;
-        getOnReceive(): IAction1<DataChannelReceiveArgs>;
-        sendDataString(dataString: string): fm.icelink.Future<Object>;
-        sendDataBytes(dataBytes: DataBuffer): fm.icelink.Future<Object>;
-        getState(): DataChannelState;
-        getLabel(): string;
-        getId(): string;
-        getOrdered(): boolean;
-        addOnStateChange(value: IAction1<DataChannel>): void;
-        removeOnStateChange(value: IAction1<DataChannel>): void;
-    }
-}
-declare namespace fm.icelink {
-    interface IExternalDataStream extends IDataStream<IExternalDataChannel>, IExternal<IInternalDataStream> {
-    }
-    interface IInternalDataStream extends IDataStream<IInternalDataChannel>, IInternal<IExternalDataStream> {
-    }
-    class DataStream extends Stream implements IDataStream<DataChannel>, IExternalDataStream {
-        getTypeString(): string;
-        getInfo(): DataStreamInfo;
-        constructor(channel: DataChannel);
-        constructor(channels: DataChannel[]);
-        setGetRemoteConnectionInfo(value: IFunction1<string, any>): void;
-        getChannels(): DataChannel[];
-        private externalToInternal;
-        private externalsToInternals;
-        private internalToExternal;
-        private internalsToExternals;
-    }
-}
-declare namespace fm.icelink {
-    class DomAudioSink extends Dynamic {
-        getTypeString(): string;
-        constructor(track: AudioTrack);
-    }
-}
-declare namespace fm.icelink {
-    /**
-    A layout preset.
-    */
-    class LayoutPreset extends fm.icelink.Dynamic {
-        getTypeString(): string;
-        /** @hidden */
-        private __blockHeight;
-        /** @hidden */
-        private __blockHeightPercent;
-        /** @hidden */
-        private __blockMarginX;
-        /** @hidden */
-        private __blockMarginXPercent;
-        /** @hidden */
-        private __blockMarginY;
-        /** @hidden */
-        private __blockMarginYPercent;
-        /** @hidden */
-        private __blockWidth;
-        /** @hidden */
-        private __blockWidthPercent;
-        /** @hidden */
-        private __floatHeight;
-        /** @hidden */
-        private __floatHeightPercent;
-        /** @hidden */
-        private __floatMarginX;
-        /** @hidden */
-        private __floatMarginXPercent;
-        /** @hidden */
-        private __floatMarginY;
-        /** @hidden */
-        private __floatMarginYPercent;
-        /** @hidden */
-        private __floatWidth;
-        /** @hidden */
-        private __floatWidthPercent;
-        /** @hidden */
-        private _alignment;
-        /** @hidden */
-        private _direction;
-        /** @hidden */
-        private _inlineMargin;
-        /** @hidden */
-        private _mode;
-        private fmicelinkLayoutPresetInit;
-        /**
-        Initializes a new instance of the [[fm.icelink.layoutPreset]] class.
-        */
-        constructor();
-        /** @hidden */
-        private static calculateTable;
-        /** @hidden */
-        private static divideByTwo;
-        /**
-        Gets a Facetime-style layout preset.
-        */
-        static getFacetime(): fm.icelink.LayoutPreset;
-        /**
-        Gets a Google Hangouts-style layout preset. Note that this will present differently on mobile devices.
-        */
-        static getGoogleHangouts(): fm.icelink.LayoutPreset;
-        /** @hidden */
-        private static getSingleLayout;
-        /**
-        Gets a Skype-style layout preset. Note that this will present differently on mobile devices.
-        */
-        static getSkype(): fm.icelink.LayoutPreset;
-        /** @hidden */
-        private static getXMax;
-        /** @hidden */
-        private static getXMid;
-        /** @hidden */
-        private static getXMin;
-        /** @hidden */
-        private static getYMax;
-        /** @hidden */
-        private static getYMid;
-        /** @hidden */
-        private static getYMin;
-        /** @hidden */
-        private static mergeLayoutFrames;
-        /** @hidden */
-        private static spliceLayoutFrame;
-        /** @hidden */
-        private static takeLayoutFrames;
-        /** @hidden */
-        static transformFrame(frame: fm.icelink.LayoutFrame, origin: fm.icelink.LayoutOrigin, layoutWidth: number, layoutHeight: number): void;
-        /**
-        Applies a preset.
-        @param preset The preset to apply.
-        */
-        applyPreset(preset: fm.icelink.LayoutPreset): void;
-        /** @hidden */
-        private calculateBlockFrame;
-        /** @hidden */
-        private calculateFillFrame;
-        /** @hidden */
-        private calculateFloatFrame;
-        /** @hidden */
-        private calculateFloatFrames;
-        /** @hidden */
-        private calculateInlineFrame;
-        /** @hidden */
-        private calculateInlineFrames;
-        /**
-        Gets a video frame layout.
-        @param layoutWidth The total width of the layout.
-        @param layoutHeight The total height of the layout.
-        @param remoteCount The number of remote frames.
-        @param origin The layout origin
-        @return The video frame layout.
-        */
-        calculateLayout(layoutWidth: number, layoutHeight: number, remoteCount: number, origin: fm.icelink.LayoutOrigin): fm.icelink.Layout;
-        /**
-        Copies this preset's properties to another preset.
-        @param preset The target preset.
-        */
-        copyToPreset(preset: fm.icelink.LayoutPreset): void;
-        /**
-        Gets the alignment of the layout. Defaults to [[fm.icelink.layoutAlignment.BottomRight]].
-        */
-        getAlignment(): fm.icelink.LayoutAlignment;
-        /**
-        Gets the height of block elements in pixels. Overrides [[fm.icelink.layoutPreset.blockHeightPercent]].
-        */
-        getBlockHeight(): number;
-        /**
-        Gets the height of block elements as a percent of the container height between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.blockHeight]].
-        */
-        getBlockHeightPercent(): number;
-        /** @hidden */
-        private getBlockLayout;
-        /**
-        Gets the X-margin between block elements and the layout edge in pixels. Overrides [[fm.icelink.layoutPreset.blockMarginXPercent]].
-        */
-        getBlockMarginX(): number;
-        /**
-        Gets the X-margin between block elements and the layout edge as a percent of the container width between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.blockMarginX]].
-        */
-        getBlockMarginXPercent(): number;
-        /**
-        Gets the Y-margin between block elements and the layout edge in pixels. Overrides [[fm.icelink.layoutPreset.blockMarginYPercent]].
-        */
-        getBlockMarginY(): number;
-        /**
-        Gets the Y-margin between block elements and the layout edge as a percent of the container height between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.blockMarginY]].
-        */
-        getBlockMarginYPercent(): number;
-        /**
-        Gets the width of block elements in pixels. Overrides [[fm.icelink.layoutPreset.blockWidthPercent]].
-        */
-        getBlockWidth(): number;
-        /**
-        Gets the width of block elements as a percent of the container width between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.blockWidth]].
-        */
-        getBlockWidthPercent(): number;
-        /** @hidden */
-        private getBottomRowIndexes;
-        /** @hidden */
-        private getCenterColumnIndexes;
-        /** @hidden */
-        private getCenterRowIndexes;
-        /**
-        Gets the direction of the layout flow. Defaults to [[fm.icelink.layoutDirection.Horizontal]].
-        */
-        getDirection(): fm.icelink.LayoutDirection;
-        /**
-        Gets the height of floating elements in pixels. Overrides [[fm.icelink.layoutPreset.floatHeightPercent]].
-        */
-        getFloatHeight(): number;
-        /**
-        Gets the height of floating elements as a percent of the container height between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.floatHeight]].
-        */
-        getFloatHeightPercent(): number;
-        /** @hidden */
-        private getFloatLocalLayout;
-        /**
-        Gets the X-margin between floating elements and the layout edge in pixels. Overrides [[fm.icelink.layoutPreset.floatMarginXPercent]].
-        */
-        getFloatMarginX(): number;
-        /**
-        Gets the X-margin between floating elements and the layout edge as a percent of the container width between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.floatMarginX]].
-        */
-        getFloatMarginXPercent(): number;
-        /**
-        Gets the Y-margin between floating elements and the layout edge in pixels. Overrides [[fm.icelink.layoutPreset.floatMarginYPercent]].
-        */
-        getFloatMarginY(): number;
-        /**
-        Gets the Y-margin between floating elements and the layout edge as a percent of the container height between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.floatMarginY]].
-        */
-        getFloatMarginYPercent(): number;
-        /** @hidden */
-        private getFloatRemoteLayout;
-        /**
-        Gets the width of floating elements in pixels. Overrides [[fm.icelink.layoutPreset.floatWidthPercent]].
-        */
-        getFloatWidth(): number;
-        /**
-        Gets the width of floating elements as a percent of the container width between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.floatWidth]].
-        */
-        getFloatWidthPercent(): number;
-        /** @hidden */
-        private getInlineLayout;
-        /**
-        Gets the size of the margin in pixels to use between inline elements.
-        */
-        getInlineMargin(): number;
-        /** @hidden */
-        private getLeftColumnIndexes;
-        /**
-        Gets the mode used by the layout engine. Defaults to [[fm.icelink.layoutMode.FloatLocal]].
-        */
-        getMode(): fm.icelink.LayoutMode;
-        /** @hidden */
-        private getRightColumnIndexes;
-        /** @hidden */
-        private getTopRowIndexes;
-        /**
-        Sets the alignment of the layout. Defaults to [[fm.icelink.layoutAlignment.BottomRight]].
-        */
-        setAlignment(value: fm.icelink.LayoutAlignment): void;
-        /**
-        Sets the height of block elements in pixels. Overrides [[fm.icelink.layoutPreset.blockHeightPercent]].
-        */
-        setBlockHeight(value: number): void;
-        /**
-        Sets the height of block elements as a percent of the container height between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.blockHeight]].
-        */
-        setBlockHeightPercent(value: number): void;
-        /**
-        Sets the X-margin between block elements and the layout edge in pixels. Overrides [[fm.icelink.layoutPreset.blockMarginXPercent]].
-        */
-        setBlockMarginX(value: number): void;
-        /**
-        Sets the X-margin between block elements and the layout edge as a percent of the container width between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.blockMarginX]].
-        */
-        setBlockMarginXPercent(value: number): void;
-        /**
-        Sets the Y-margin between block elements and the layout edge in pixels. Overrides [[fm.icelink.layoutPreset.blockMarginYPercent]].
-        */
-        setBlockMarginY(value: number): void;
-        /**
-        Sets the Y-margin between block elements and the layout edge as a percent of the container height between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.blockMarginY]].
-        */
-        setBlockMarginYPercent(value: number): void;
-        /**
-        Sets the width of block elements in pixels. Overrides [[fm.icelink.layoutPreset.blockWidthPercent]].
-        */
-        setBlockWidth(value: number): void;
-        /**
-        Sets the width of block elements as a percent of the container width between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.blockWidth]].
-        */
-        setBlockWidthPercent(value: number): void;
-        /**
-        Sets the direction of the layout flow. Defaults to [[fm.icelink.layoutDirection.Horizontal]].
-        */
-        setDirection(value: fm.icelink.LayoutDirection): void;
-        /**
-        Sets the height of floating elements in pixels. Overrides [[fm.icelink.layoutPreset.floatHeightPercent]].
-        */
-        setFloatHeight(value: number): void;
-        /**
-        Sets the height of floating elements as a percent of the container height between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.floatHeight]].
-        */
-        setFloatHeightPercent(value: number): void;
-        /**
-        Sets the X-margin between floating elements and the layout edge in pixels. Overrides [[fm.icelink.layoutPreset.floatMarginXPercent]].
-        */
-        setFloatMarginX(value: number): void;
-        /**
-        Sets the X-margin between floating elements and the layout edge as a percent of the container width between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.floatMarginX]].
-        */
-        setFloatMarginXPercent(value: number): void;
-        /**
-        Sets the Y-margin between floating elements and the layout edge in pixels. Overrides [[fm.icelink.layoutPreset.floatMarginYPercent]].
-        */
-        setFloatMarginY(value: number): void;
-        /**
-        Sets the Y-margin between floating elements and the layout edge as a percent of the container height between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.floatMarginY]].
-        */
-        setFloatMarginYPercent(value: number): void;
-        /**
-        Sets the width of floating elements in pixels. Overrides [[fm.icelink.layoutPreset.floatWidthPercent]].
-        */
-        setFloatWidth(value: number): void;
-        /**
-        Sets the width of floating elements as a percent of the container width between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.floatWidth]].
-        */
-        setFloatWidthPercent(value: number): void;
-        /**
-        Sets the size of the margin in pixels to use between inline elements.
-        */
-        setInlineMargin(value: number): void;
-        /**
-        Sets the mode used by the layout engine. Defaults to [[fm.icelink.layoutMode.FloatLocal]].
-        */
-        setMode(value: fm.icelink.LayoutMode): void;
-    }
-}
-declare namespace fm.icelink {
-    /**
-    A class that supplies simple video frame layout management.
-    */
-    abstract class LayoutManager<T> extends fm.icelink.LayoutPreset {
-        getTypeString(): string;
-        /** @hidden */
-        private __onLayout;
-        /** @hidden */
-        private _inBatch;
-        /** @hidden */
-        private _layoutOrigin;
-        /** @hidden */
-        private _localView;
-        /** @hidden */
-        private _onLayout;
-        /** @hidden */
-        private _remoteViewsLock;
-        /** @hidden */
-        private _remoteViewsTable;
-        private fmicelinkLayoutManagerInit;
-        /**
-        Initializes a new instance of the [[fm.icelink.layoutManager]] class.
-        */
-        constructor();
-        /**
-        Initializes a new instance of the [[fm.icelink.layoutManager]] class.
-        */
-        constructor(preset: fm.icelink.LayoutPreset);
-        /**
-        Adds a handler that is raised when a layout is calculated.
-        */
-        addOnLayout(value: fm.icelink.IAction1<fm.icelink.Layout>): void;
-        /**
-        Adds remote media to the layout.
-        @param remoteMedia The remote media.
-        @return `true` if successful; otherwise, `false`.
-            
-        */
-        addRemoteMedia(remoteMedia: fm.icelink.IViewableMedia<T>): boolean;
-        /**
-        Adds a remote view to the layout.
-        @param idValue The remote view ID.
-        @param view The remote view.
-        @return `true` if successful; otherwise, `false`. Check the logs for additional information.
-        */
-        addRemoteView(idValue: string, view: T): boolean;
-        /**
-        Adds remote views to the layout.
-        @param ids The remote view IDs.
-        @param views The remote views.
-        @return `true` if successful; otherwise, `false`. Check the logs for additional information.
-        */
-        addRemoteViews(ids: string[], views: T[]): boolean;
-        /** @hidden */
-        private addRemoteViewsUI;
-        /** @hidden */
-        private addRemoteViewUI;
-        /**
-        Adds a view to the container.
-        @param view The view to add.
-        */
-        protected abstract addView(view: T): void;
-        /**
-        Dispatches an action to the main thread.
-        @param action The action to invoke.
-        @param arg1 The first argument.
-        @param arg2 The second argument.
-        */
-        protected abstract dispatchToMainThread(action: fm.icelink.IAction2<Object, Object>, arg1: Object, arg2: Object): void;
-        /** @hidden */
-        private doSwapRemoteView;
-        /** @hidden */
-        private doSwapRemoteViews;
-        /**
-        Gets a video frame layout.
-        @param layoutWidth The total width of the layout.
-        @param layoutHeight The total height of the layout.
-        @param remoteCount The number of remote frames.
-        @return The video frame layout.
-        */
-        protected getLayout(layoutWidth: number, layoutHeight: number, remoteCount: number): fm.icelink.Layout;
-        /**
-        Gets a video frame layout.
-        @param layoutWidth The total width of the layout.
-        @param layoutHeight The total height of the layout.
-        @param remoteCount The number of remote frames.
-        @param remoteViewIds The array of remote view ids.
-        @return The video frame layout.
-        */
-        protected getLayout(layoutWidth: number, layoutHeight: number, remoteCount: number, remoteViewIds: string[]): fm.icelink.Layout;
-        /**
-        Gets the layout origin. Defaults to TopLeft.
-        */
-        getLayoutOrigin(): fm.icelink.LayoutOrigin;
-        /**
-        Gets the local view from the layout.
-        @return The local view.
-        */
-        getLocalView(): T;
-        /** @hidden */
-        private getNewestRemoteView;
-        /** @hidden */
-        private getOldestRemoteView;
-        /**
-        Gets a remote view from the layout.
-        @param idValue The remote view ID.
-        @return The remote view.
-        */
-        getRemoteView(idValue: string): T;
-        /**
-        Gets the IDs of the remote views in the layout.
-        @return The remote view IDs.
-        */
-        getRemoteViewIds(): string[];
-        /**
-        Gets all remote views from the layout.
-        @return The remote views.
-        */
-        getRemoteViews(): Array<T>;
-        /**
-        Gets remote views from the layout.
-        @param ids The remote view IDs.
-        @return The remote views.
-        */
-        getRemoteViews(ids: string[]): Array<T>;
-        /** @hidden */
-        private getRemoteViewsInternal;
-        /**
-        Positions the local and remote views within the layout.
-        */
-        abstract layout(): void;
-        /**
-        Positions the local and remote views within the layout after dispatching to the main thread.
-        */
-        layoutOnMainThread(): void;
-        /** @hidden */
-        private layoutOnMainThreadUI;
-        /**
-        Removes a handler that is raised when a layout is calculated.
-        */
-        removeOnLayout(value: fm.icelink.IAction1<fm.icelink.Layout>): void;
-        /**
-        Removes remote media from the layout.
-        @param remoteMedia The remote media.
-        @return `true` if successful; otherwise, `false`.
-            
-        */
-        removeRemoteMedia(remoteMedia: fm.icelink.IViewableMedia<T>): boolean;
-        /**
-        Removes a remote view from the layout.
-        @param idValue The remote view ID.
-        @return `true` if successful; otherwise, `false`. Check the logs for additional information.
-        */
-        removeRemoteView(idValue: string): boolean;
-        /**
-        Removes all remote views from the layout.
-        */
-        removeRemoteViews(): void;
-        /**
-        Removes remote views from the layout.
-        @param ids The remote view IDs.
-        @return `true` if successful; otherwise, `false`. Check the logs for additional information.
-        */
-        removeRemoteViews(ids: string[]): boolean;
-        /** @hidden */
-        private removeRemoteViewsUI;
-        /** @hidden */
-        private removeRemoteViewUI;
-        /**
-        Removes a view from the container.
-        @param view The view to remove.
-        */
-        protected abstract removeView(view: T): void;
-        /**
-        Removes all remote views from the layout, then removes the local view from the layout.
-        */
-        reset(): void;
-        /**
-        Sets the layout origin. Defaults to TopLeft.
-        */
-        protected setLayoutOrigin(value: fm.icelink.LayoutOrigin): void;
-        /**
-        Adds the local media to the layout.
-        @param localMedia The local media.
-        @return `true` if successful; otherwise, `false`.
-        */
-        setLocalMedia(localMedia: fm.icelink.IViewableMedia<T>): boolean;
-        /**
-        Adds the local view to the layout.
-        @param view The local view.
-        @return `true` if successful; otherwise, `false`. Check the logs for additional information.
-        */
-        setLocalView(view: T): boolean;
-        /** @hidden */
-        private setLocalViewUI;
-        /**
-        Swaps remote media in the layout.
-        @param remoteMediaToRemove The remote media to remove.
-        @param remoteMediaToAdd The remote media to add.
-        */
-        swapRemoteMedia(remoteMediaToRemove: fm.icelink.IViewableMedia<T>, remoteMediaToAdd: fm.icelink.IViewableMedia<T>): boolean;
-        /**
-        Swaps a remote view in the layout.
-        @param idToRemove The remote view ID to remove.
-        @param idToAdd The remote view ID to add.
-        @param viewToAdd The remote view to add.
-        */
-        swapRemoteView(idToRemove: string, idToAdd: string, viewToAdd: T): boolean;
-        /**
-        Swaps remote views in the layout.
-        @param idsToRemove The remote view IDs to remove.
-        @param idsToAdd The remote view IDs to add.
-        @param viewsToAdd The remote views to add.
-        @return `true` if successful; otherwise, `false`. Check the logs for additional information.
-        */
-        swapRemoteViews(idsToRemove: string[], idsToAdd: string[], viewsToAdd: T[]): boolean;
-        /**
-        Removes the local view from the layout.
-        @return `true` if successful; otherwise, `false`. Check the logs for additional information.
-        */
-        unsetLocalView(): boolean;
-        /** @hidden */
-        private unsetLocalViewUI;
-    }
-}
-declare namespace fm.icelink {
-    class DomLayoutManager extends LayoutManager<HTMLElement> {
-        getTypeString(): string;
-        getContainer(): HTMLElement;
-        constructor(container: HTMLElement, preset?: LayoutPreset);
-        protected addView(view: HTMLElement): void;
-        protected removeView(view: HTMLElement): void;
-        protected dispatchToMainThread(action: IAction2<any, any>, arg1: any, arg2: any): void;
-        layout(): void;
-    }
-}
-declare namespace fm.icelink {
-    interface IExternalDomVideoSink extends IViewSink<HTMLElement>, IExternal<IInternalDomVideoSink> {
-    }
-    interface IInternalDomVideoSink extends IViewSink<HTMLElement>, IInternal<IExternalDomVideoSink> {
-    }
-    class DomVideoSink extends Dynamic implements IExternalDomVideoSink {
-        getTypeString(): string;
-        getView(): HTMLElement;
-        getViewScale(): LayoutScale;
-        setViewScale(viewScale: LayoutScale): void;
-        getViewMirror(): boolean;
-        setViewMirror(viewMirror: boolean): void;
-        constructor(track: VideoTrack);
-    }
-}
-declare namespace fm.icelink {
-    class Factory {
-        getTypeString(): string;
-        static createConnection(streams: Stream[]): Connection;
-        static createAudioStream(localMedia: LocalMedia): AudioStream;
-        static createVideoStream(localMedia: LocalMedia): VideoStream;
-        static createDataChannel(label: string): DataChannel;
-        static createDataStream(channel: DataChannel): DataStream;
-        static createDomVideoSink(track: VideoTrack): DomVideoSink;
-        static createLocalMedia(audio: any, video: any, screen?: boolean): LocalMedia;
-    }
-}
-declare namespace fm.icelink {
-    interface IExternal<TInternal> {
-    }
-}
-declare namespace fm.icelink {
-    interface IInternal<TExternal> {
-    }
-}
-declare namespace fm.icelink {
-    interface IExternalMedia extends IMedia<IExternalAudioTrack, IExternalVideoTrack>, IViewSinkableMedia<HTMLElement, IExternalDomVideoSink>, IExternal<IInternalMedia> {
-    }
-    interface IInternalMedia extends IMedia<IInternalAudioTrack, IInternalVideoTrack>, IViewSinkableMedia<HTMLElement, IInternalDomVideoSink>, IInternal<IExternalMedia> {
-    }
-    abstract class Media extends Dynamic implements IMedia<AudioTrack, VideoTrack>, IExternalMedia {
-        getTypeString(): string;
-        addOnAudioDestroyed(value: IAction0): void;
-        addOnVideoDestroyed(value: IAction0): void;
-        removeOnAudioDestroyed(value: IAction0): void;
-        removeOnVideoDestroyed(value: IAction0): void;
-        addOnAudioLevel(value: IAction1<number>): void;
-        addOnVideoSize(value: IAction1<Size>): void;
-        getAudioGain(): number;
-        getAudioMuted(): boolean;
-        getAudioTrack(): AudioTrack;
-        getAudioTracks(): AudioTrack[];
-        getAudioVolume(): number;
-        getId(): string;
-        getVideoMuted(): boolean;
-        getVideoSize(): Size;
-        getVideoTrack(): VideoTrack;
-        getVideoTracks(): VideoTrack[];
-        grabVideoFrame(): Future<VideoBuffer>;
-        removeOnAudioLevel(value: IAction1<number>): void;
-        removeOnVideoSize(value: IAction1<Size>): void;
-        setAudioGain(value: number): void;
-        setAudioMuted(value: boolean): void;
-        setAudioVolume(value: number): void;
-        setId(value: string): void;
-        setVideoMuted(value: boolean): void;
-        destroy(): void;
-        getView(): HTMLElement;
-        getViewSink(): DomVideoSink;
-        private externalsToInternals;
-        private externalToInternal;
-        private internalsToExternals;
-        private internalToExternal;
-    }
-}
-declare namespace fm.icelink {
-    interface IExternalLocalMedia extends ILocalMedia<IExternalLocalMedia, IExternalAudioTrack, IExternalVideoTrack>, IViewSinkableMedia<HTMLElement, IExternalDomVideoSink>, IExternal<IInternalLocalMedia> {
-    }
-    interface IInternalLocalMedia extends ILocalMedia<IInternalLocalMedia, IInternalAudioTrack, IInternalVideoTrack>, IViewSinkableMedia<HTMLElement, IInternalDomVideoSink>, IInternal<IExternalLocalMedia> {
-    }
-    class LocalMedia extends Media implements ILocalMedia<LocalMedia, AudioTrack, VideoTrack>, IExternalLocalMedia {
-        getTypeString(): string;
-        private _internal;
-        addOnAudioStarted(value: IAction0): void;
-        addOnAudioStopped(value: IAction0): void;
-        addOnVideoStarted(value: IAction0): void;
-        addOnVideoStopped(value: IAction0): void;
-        removeOnAudioStarted(value: IAction0): void;
-        removeOnAudioStopped(value: IAction0): void;
-        removeOnVideoStarted(value: IAction0): void;
-        removeOnVideoStopped(value: IAction0): void;
-        getAudioEncoding(): AudioEncodingConfig;
-        getAudioEncodings(): AudioEncodingConfig[];
-        setAudioEncodings(value: AudioEncodingConfig[]): void;
-        getVideoEncoding(): VideoEncodingConfig;
-        getVideoEncodings(): VideoEncodingConfig[];
-        setVideoEncodings(value: VideoEncodingConfig[]): void;
-        /**
-         * Deprecated: Use fm.icelink.Plugin.getChromeExtensionId()
-         */
-        static getChromeExtensionId(): string;
-        /**
-         * Deprecated: Use fm.icelink.Plugin.setChromeExtensionId()
-         */
-        static setChromeExtensionId(chromeExtensionId: string): void;
-        /**
-         * Deprecated: Use fm.icelink.Plugin.getChromeExtensionUrl()
-         */
-        static getChromeExtensionUrl(): string;
-        /**
-         * Deprecated: Use fm.icelink.Plugin.getChromeExtensionInstalled()
-         */
-        static getChromeExtensionInstalled(): boolean;
-        /**
-         * Deprecated: Use fm.icelink.Plugin.getChromeExtensionRequiresUserGesture()
-         */
-        static getChromeExtensionRequiresUserGesture(): boolean;
-        /**
-         * Deprecated: Use fm.icelink.Plugin.setChromeExtensionRequiresUserGesture()
-         */
-        static setChromeExtensionRequiresUserGesture(chromeExtensionRequiresUserGesture: boolean): void;
-        constructor(audio: any, video: any, screen?: boolean);
-        changeAudioSourceInput(audioSourceInput: SourceInput): Future<Object>;
-        changeVideoSourceInput(videoSourceInput: SourceInput): Future<Object>;
-        getAudioSourceInput(): SourceInput;
-        getAudioSourceInputs(): Future<SourceInput[]>;
-        getVideoSourceInput(): SourceInput;
-        getVideoSourceInputs(): Future<SourceInput[]>;
-        setAudioSourceInput(value: SourceInput): void;
-        setVideoSourceInput(value: SourceInput): void;
-        start(): Future<LocalMedia>;
-        stop(): Future<LocalMedia>;
-        changeAudioInput(audioInput: SourceInput): Future<Object>;
-        changeVideoInput(videoInput: SourceInput): Future<Object>;
-        getAudioInput(): SourceInput;
-        getAudioInputs(): Future<SourceInput[]>;
-        getVideoInput(): SourceInput;
-        getVideoInputs(): Future<SourceInput[]>;
-        setAudioInput(audioInput: SourceInput): void;
-        setVideoInput(videoInput: SourceInput): void;
-        getState(): LocalMediaState;
-    }
-}
-declare namespace fm.icelink {
-    class LocalNetwork {
-        getTypeString(): string;
-        static getAddressType(ipAddress: string): AddressType;
-    }
-}
-declare namespace fm.icelink {
-    /** @hidden */
-    abstract class MediaDescriptionManagerBase {
-        getTypeString(): string;
-        /** @hidden */
-        private _mediaStreamIdentifier;
-        constructor();
-        static syncroniseMediaIdentification(sdpMediaDescription: fm.icelink.sdp.MediaDescription, index: number): string;
-        getMediaStreamIdentifier(): string;
-        processSdpMediaDescription(mediaRequirements: fm.icelink.MediaDescriptionRequirementsBase, sdpMessage: fm.icelink.sdp.Message, index: number, isLocalDescription: boolean, isRenegotiation: boolean, isOffer: boolean): fm.icelink.Error;
-        setMediaStreamIdentifier(value: string): void;
-    }
-}
-declare namespace fm.icelink {
-    /**
-    @hidden
-    */
-    class MediaDescriptionManager extends MediaDescriptionManagerBase {
-        getTypeString(): string;
-        constructor();
-        processSdpMediaDescription(mediaRequirements: fm.icelink.MediaDescriptionRequirementsBase, sdpMessage: fm.icelink.sdp.Message, index: number, isLocalDescription: boolean, isRenegotiation: boolean, isOffer: boolean): fm.icelink.Error;
-    }
-}
-declare namespace fm.icelink {
-    /** @hidden */
-    abstract class MediaDescriptionRequirementsBase {
-        getTypeString(): string;
-        /** @hidden */
-        private _mediaStreamIdentifier;
-        constructor();
-        getMediaStreamIdentifier(): string;
-        setMediaStreamIdentifier(value: string): void;
-    }
-}
-declare namespace fm.icelink {
-}
-declare namespace fm.icelink {
-    class PluginConstants {
-        static getLoaderClassId(): string;
-        static getDomVideoSinkClassId(): string;
-    }
-}
-declare namespace fm.icelink {
-    class Plugin {
-        static install(pluginConfig: PluginConfig): Future<Object>;
-        static getPluginConfig(): PluginConfig;
-        static hasRtcPeerConnection(): boolean;
-        static hasRtcDataChannel(): boolean;
-        static hasGetUserMedia(): boolean;
-        static hasRtcIceGatherer(): boolean;
-        static hasRtcIceTransport(): boolean;
-        static hasRtcDtlsTransport(): boolean;
-        static hasRtcRtpSender(): boolean;
-        static hasRtcRtpReceiver(): boolean;
-        static hasWebRtc(localMedia?: boolean, dataChannels?: boolean): boolean;
-        static hasOrtc(localMedia?: boolean, dataChannels?: boolean): boolean;
-        static hasNative(localMedia?: boolean, dataChannels?: boolean): boolean;
-        static hasActiveX(): boolean;
-        static isReady(localMedia?: boolean, dataChannels?: boolean): boolean;
-        static isSupported(localMedia?: boolean, dataChannels?: boolean): boolean;
-        static useActiveX(localMedia?: boolean, dataChannels?: boolean): boolean;
-        static useNative(localMedia?: boolean, dataChannels?: boolean): boolean;
-        private static checkForActiveX;
-        static getChromeExtensionId(): string;
-        static setChromeExtensionId(chromeExtensionId: string): void;
-        static getChromeExtensionUrl(): string;
-        static getChromeExtensionInstalled(): boolean;
-        static getChromeExtensionRequiresUserGesture(): boolean;
-        static setChromeExtensionRequiresUserGesture(chromeExtensionRequiresUserGesture: boolean): void;
-        static getChromeExtensionRequired(): boolean;
-    }
-}
-declare namespace fm.icelink {
-    abstract class PluginStream extends Dynamic implements IStream, IInternalStream {
-        getTypeString(): string;
-        abstract getState(): StreamState;
-        abstract addOnStateChange(value: IAction0): void;
-        abstract removeOnStateChange(value: IAction0): void;
-        abstract getLocalReceive(): boolean;
-        abstract setLocalReceive(localReceiveEnabled: boolean): void;
-        abstract getLocalSend(): boolean;
-        abstract setLocalSend(localSendEnabled: boolean): void;
-        abstract getRemoteSend(): boolean;
-        abstract getRemoteReceive(): boolean;
-        abstract getRemoteDirection(): StreamDirection;
-        abstract getHandle(): number;
-        abstract addOnDirectionChange(value: IAction0): void;
-        abstract removeOnDirectionChange(value: IAction0): void;
-        abstract changeDirection(newDirection: StreamDirection): Error;
-        abstract getDirection(): StreamDirection;
-        abstract getId(): string;
-        abstract getExternalId(): string;
-        abstract setExternalId(value: string): void;
-        abstract getLabel(): string;
-        abstract getLocalDirection(): StreamDirection;
-        abstract getTag(): string;
-        abstract getType(): StreamType;
-        abstract setLocalDirection(value: StreamDirection): void;
-        abstract setTag(value: string): void;
-        abstract getTransportInfo(): TransportInfo;
-    }
-}
-declare namespace fm.icelink {
-    abstract class PluginMediaStream<TTrack extends PluginMediaTrack> extends PluginStream implements IMediaStream, IInternalMediaStream {
-        getTypeString(): string;
-        getLocalTrack(): TTrack;
-        getRemoteTrack(): TTrack;
-        abstract getLocalBandwidth(): number;
-        abstract setLocalBandwidth(value: number): void;
-        abstract getInputMuted(): boolean;
-        abstract getOutputMuted(): boolean;
-        abstract getRemoteBandwidth(): number;
-        abstract setInputMuted(muted: boolean): void;
-        abstract setOutputMuted(muted: boolean): void;
-        abstract getPreferredCodecs(): string[];
-        abstract setPreferredCodecs(names: string[]): void;
-        abstract getCodecDisabled(name: string): boolean;
-        abstract setCodecDisabled(name: string, disabled: boolean): void;
-        abstract getRemoteEncoding(): EncodingInfo;
-        abstract setRemoteEncoding(value: EncodingInfo): void;
-        abstract getSimulcastMode(): SimulcastMode;
-        abstract setSimulcastMode(value: SimulcastMode): void;
-        abstract getLocalCanonicalName(): string;
-        abstract getRemoteCanonicalName(): string;
-        abstract getInfo(): MediaStreamInfo;
-        abstract getControlTransportInfo(): TransportInfo;
-        abstract addOnLocalEncodingDisabled(value: IAction1<EncodingInfo>): void;
-        abstract addOnLocalEncodingEnabled(value: IAction1<EncodingInfo>): void;
-        abstract removeOnLocalEncodingDisabled(value: IAction1<EncodingInfo>): void;
-        abstract removeOnLocalEncodingEnabled(value: IAction1<EncodingInfo>): void;
-        constructor(localTrack: TTrack, remoteTrack: TTrack);
-    }
-}
-declare namespace fm.icelink {
-    /**
-    An interface for COM usage.
-    */
-    interface IPluginAudioStream {
-        ChangeDirection(newDirection: number): string;
-        GetCodecDisabled(name: string): boolean;
-        GetControlTransportInfo(): string;
-        GetDirection(): number;
-        GetExternalId(): string;
-        GetG722Disabled(): boolean;
-        GetHandle(): number;
-        GetId(): string;
-        GetInfo(): string;
-        GetInputMuted(): boolean;
-        GetLabel(): string;
-        GetLocalBandwidth(): number;
-        GetLocalCanonicalName(): string;
-        GetLocalDirection(): number;
-        GetLocalReceive(): boolean;
-        GetLocalSend(): boolean;
-        GetOpusDisabled(): boolean;
-        GetOutputMuted(): boolean;
-        GetPcmaDisabled(): boolean;
-        GetPcmuDisabled(): boolean;
-        GetPreferredCodecs(): string[];
-        GetRemoteBandwidth(): number;
-        GetRemoteCanonicalName(): string;
-        GetRemoteDirection(): number;
-        GetRemoteEncoding(): string;
-        GetRemoteReceive(): boolean;
-        GetRemoteSend(): boolean;
-        GetSimulcastMode(): number;
-        GetTag(): string;
-        GetTransportInfo(): string;
-        Initialize(localMediaHandle: number, remoteMediaHandle: number): void;
-        InsertDtmfTone(dtmfToneJson: string): boolean;
-        InsertDtmfTones(dtmfTonesJson: string): boolean;
-        SetCodecDisabled(name: string, disabled: boolean): void;
-        SetExternalId(externalId: string): void;
-        SetG722Disabled(disabled: boolean): void;
-        SetInputMuted(muted: boolean): void;
-        SetLocalBandwidth(bandwidth: number): void;
-        SetLocalDirection(direction: number): void;
-        SetLocalReceive(localReceiveEnabled: boolean): void;
-        SetLocalSend(localSendEnabled: boolean): void;
-        SetOnDirectionChange(callback: Object): void;
-        SetOnLocalEncodingDisabled(callback: Object): void;
-        SetOnLocalEncodingEnabled(callback: Object): void;
-        SetOnReceiveDtmfTone(callback: Object): void;
-        SetOnReceiveDtmfToneChange(callback: Object): void;
-        SetOnSendDtmfTone(callback: Object): void;
-        SetOnSendDtmfToneChange(callback: Object): void;
-        SetOnStateChange(callback: Object): void;
-        SetOpusDisabled(disabled: boolean): void;
-        SetOutputMuted(muted: boolean): void;
-        SetPcmaDisabled(disabled: boolean): void;
-        SetPcmuDisabled(disabled: boolean): void;
-        SetPreferredCodecs(names: string[]): void;
-        SetRemoteEncoding(remoteEncodingJson: string): void;
-        SetSimulcastMode(simulcastMode: number): void;
-        SetTag(tag: string): void;
-    }
-}
-declare namespace fm.icelink.dtmf {
-    /**
-    A DTMF (telephone-event) tone.
-    */
-    class Tone {
-        getTypeString(): string;
-        /** @hidden */
-        private _duration;
-        /** @hidden */
-        private _remainingDuration;
-        /** @hidden */
-        private _timestamp;
-        /** @hidden */
-        private _value;
-        private fmicelinkdtmfToneInit;
-        constructor();
-        /**
-        Initializes a new instance of the [[fm.icelink.dtmf.tone]] class.
-        @param value The value.
-        */
-        constructor(value: string);
-        /**
-        Initializes a new instance of the [[fm.icelink.dtmf.tone]] class.
-        @param value The value.
-        @param duration The duration.
-        */
-        constructor(value: string, duration: number);
-        /** @hidden */
-        private static eventCodeFromValue;
-        /**
-        Deserializes from JSON.
-        @param toneJson The JSON.
-        */
-        static fromJson(toneJson: string): fm.icelink.dtmf.Tone;
-        /**
-        Deserializes an array from JSON.
-        @param tonesJson The JSON.
-        */
-        static fromJsonArray(tonesJson: string): fm.icelink.dtmf.Tone[];
-        /**
-        Converts a DTMF tone string into an array of tones. Each tone will have a duration of 100ms and an inter-tone gap of 100ms.
-        @param toneString The tone string.
-        */
-        static fromToneString(toneString: string): fm.icelink.dtmf.Tone[];
-        /**
-        Converts a DTMF tone string into an array of tones. Each tone will have an inter-tone gap of 100ms.
-        @param toneString The tone string.
-        @param duration The duration, in milliseconds (minimum of 40, maximum of 2,000).
-        */
-        static fromToneString(toneString: string, duration: number): fm.icelink.dtmf.Tone[];
-        /**
-        Converts a DTMF tone string into an array of tones.
-        @param toneString The tone string.
-        @param duration The duration, in milliseconds (minimum of 40, maximum of 2,000).
-        @param interToneGap The time between tones, in milliseconds (minimum of 40).
-        */
-        static fromToneString(toneString: string, duration: number, interToneGap: number): fm.icelink.dtmf.Tone[];
-        /**
-        Gets A tone.
-        */
-        static getA(): fm.icelink.dtmf.Tone;
-        /**
-        Gets the A value ("A").
-        */
-        static getAValue(): string;
-        /**
-        Gets the B tone.
-        */
-        static getB(): fm.icelink.dtmf.Tone;
-        /**
-        Gets the B value ("B").
-        */
-        static getBValue(): string;
-        /**
-        Gets the C tone.
-        */
-        static getC(): fm.icelink.dtmf.Tone;
-        /**
-        Gets the C value ("C").
-        */
-        static getCValue(): string;
-        /**
-        Gets the D tone.
-        */
-        static getD(): fm.icelink.dtmf.Tone;
-        /**
-        Gets the D value ("D").
-        */
-        static getDValue(): string;
-        /**
-        Gets the eight tone.
-        */
-        static getEight(): fm.icelink.dtmf.Tone;
-        /**
-        Gets the eight value ("8").
-        */
-        static getEightValue(): string;
-        /**
-        Gets the empty tone.
-        */
-        static getEmpty(): fm.icelink.dtmf.Tone;
-        /**
-        Gets the empty value ("").
-        */
-        static getEmptyValue(): string;
-        /**
-        Gets the five tone.
-        */
-        static getFive(): fm.icelink.dtmf.Tone;
-        /**
-        Gets the five value ("5").
-        */
-        static getFiveValue(): string;
-        /**
-        Gets the four tone.
-        */
-        static getFour(): fm.icelink.dtmf.Tone;
-        /**
-        Gets the four value ("4").
-        */
-        static getFourValue(): string;
-        /**
-        Gets the hash tone.
-        */
-        static getHash(): fm.icelink.dtmf.Tone;
-        /**
-        Gets the hash value ("#").
-        */
-        static getHashValue(): string;
-        /**
-        Gets the nine tone.
-        */
-        static getNine(): fm.icelink.dtmf.Tone;
-        /**
-        Gets the nine value ("9").
-        */
-        static getNineValue(): string;
-        /**
-        Gets the one tone.
-        */
-        static getOne(): fm.icelink.dtmf.Tone;
-        /**
-        Gets the one value ("1").
-        */
-        static getOneValue(): string;
-        /**
-        Gets the pause tone.
-        */
-        static getPause(): fm.icelink.dtmf.Tone;
-        /**
-        Gets the pause duration in milliseconds (2000).
-        */
-        static getPauseDuration(): number;
-        /**
-        Gets the pause value (",").
-        */
-        static getPauseValue(): string;
-        /**
-        Gets the seven tone.
-        */
-        static getSeven(): fm.icelink.dtmf.Tone;
-        /**
-        Gets the seven value ("7").
-        */
-        static getSevenValue(): string;
-        /**
-        Gets the six tone.
-        */
-        static getSix(): fm.icelink.dtmf.Tone;
-        /**
-        Gets the six value ("6").
-        */
-        static getSixValue(): string;
-        /**
-        Gets the star tone.
-        */
-        static getStar(): fm.icelink.dtmf.Tone;
-        /**
-        Gets the star value ("*").
-        */
-        static getStarValue(): string;
-        /**
-        Gets the three tone.
-        */
-        static getThree(): fm.icelink.dtmf.Tone;
-        /**
-        Gets the three value ("3").
-        */
-        static getThreeValue(): string;
-        /**
-        Gets the two tone.
-        */
-        static getTwo(): fm.icelink.dtmf.Tone;
-        /**
-        Gets the two value ("2").
-        */
-        static getTwoValue(): string;
-        /**
-        Gets the zero tone.
-        */
-        static getZero(): fm.icelink.dtmf.Tone;
-        /**
-        Gets the zero value ("0").
-        */
-        static getZeroValue(): string;
-        /**
-        Serializes to JSON.
-        */
-        static toJson(tone: fm.icelink.dtmf.Tone): string;
-        /**
-        Serializes an array to JSON.
-        @param tones The array.
-        */
-        static toJsonArray(tones: fm.icelink.dtmf.Tone[]): string;
-        /**
-        Converts an array of DTMF tones into a tone string. This discards duration and inter-tone gap data.
-        @param tones The tones.
-        */
-        static toToneString(tones: fm.icelink.dtmf.Tone[]): string;
-        /** @hidden */
-        private static valueFromEventCode;
-        /**
-        Clones this instance.
-        */
-        clone(): fm.icelink.dtmf.Tone;
-        /**
-        Clones this instance.
-        @param duration The new duration.
-        */
-        clone(duration: number): fm.icelink.dtmf.Tone;
-        /**
-        Gets the duration in milliseconds.
-        */
-        getDuration(): number;
-        /** @hidden */
-        getRemainingDuration(): number;
-        /** @hidden */
-        getTimestamp(): number;
-        /**
-        Gets the value.
-        */
-        getValue(): string;
-        /** @hidden */
-        setDuration(value: number): void;
-        /** @hidden */
-        setRemainingDuration(value: number): void;
-        /** @hidden */
-        setTimestamp(value: number): void;
-        /** @hidden */
-        private setValue;
-        /**
-        Serializes to JSON.
-        */
-        toJson(): string;
-        /**
-        Serializes to a string.
-        */
-        toString(): string;
-    }
-}
-declare namespace fm.icelink {
-    class PluginAudioStream extends PluginMediaStream<PluginAudioTrack> implements IAudioStream, IInternalAudioStream {
-        getTypeString(): string;
-        private _state;
-        constructor(external: IExternalAudioStream, localTrack: PluginAudioTrack, remoteTrack: PluginAudioTrack);
-        getState(): StreamState;
-        addOnStateChange(value: IAction0): void;
-        removeOnStateChange(value: IAction0): void;
-        getInfo(): MediaStreamInfo;
-        getLocalReceive(): boolean;
-        getLocalSend(): boolean;
-        getRemoteReceive(): boolean;
-        getRemoteSend(): boolean;
-        setLocalReceive(value: boolean): void;
-        setLocalSend(value: boolean): void;
-        getRemoteDirection(): StreamDirection;
-        getHandle(): number;
-        changeDirection(newDirection: StreamDirection): Error;
-        getDirection(): StreamDirection;
-        getId(): string;
-        getExternalId(): string;
-        setExternalId(value: string): void;
-        getLabel(): string;
-        getLocalBandwidth(): number;
-        getLocalDirection(): StreamDirection;
-        getInputMuted(): boolean;
-        getLocalCanonicalName(): string;
-        getRemoteCanonicalName(): string;
-        getOutputMuted(): boolean;
-        getRemoteBandwidth(): number;
-        getTag(): string;
-        getType(): StreamType;
-        setLocalDirection(value: StreamDirection): void;
-        setLocalBandwidth(value: number): void;
-        setInputMuted(value: boolean): void;
-        setOutputMuted(value: boolean): void;
-        setTag(value: string): void;
-        addOnDirectionChange(value: IAction0): void;
-        removeOnDirectionChange(value: IAction0): void;
-        addOnReceiveDtmfTone(value: IAction1<dtmf.Tone>): void;
-        addOnReceiveDtmfToneChange(value: IAction1<dtmf.Tone>): void;
-        addOnSendDtmfTone(value: IAction1<dtmf.Tone>): void;
-        addOnSendDtmfToneChange(value: IAction1<dtmf.Tone>): void;
-        insertDtmfTone(dtmfTone: dtmf.Tone): boolean;
-        insertDtmfTones(dtmfTones: dtmf.Tone[]): boolean;
-        removeOnReceiveDtmfTone(value: IAction1<dtmf.Tone>): void;
-        removeOnReceiveDtmfToneChange(value: IAction1<dtmf.Tone>): void;
-        removeOnSendDtmfTone(value: IAction1<dtmf.Tone>): void;
-        removeOnSendDtmfToneChange(value: IAction1<dtmf.Tone>): void;
-        getPreferredCodecs(): string[];
-        setPreferredCodecs(names: string[]): void;
-        getCodecDisabled(name: string): boolean;
-        setCodecDisabled(name: string, disabled: boolean): void;
-        getOpusDisabled(): boolean;
-        getG722Disabled(): boolean;
-        getPcmuDisabled(): boolean;
-        getPcmaDisabled(): boolean;
-        setOpusDisabled(value: boolean): void;
-        setG722Disabled(value: boolean): void;
-        setPcmuDisabled(value: boolean): void;
-        setPcmaDisabled(value: boolean): void;
-        getRemoteEncoding(): EncodingInfo;
-        setRemoteEncoding(value: EncodingInfo): void;
-        getSimulcastMode(): SimulcastMode;
-        setSimulcastMode(value: SimulcastMode): void;
-        getTransportInfo(): TransportInfo;
-        getControlTransportInfo(): TransportInfo;
-        addOnLocalEncodingDisabled(value: IAction1<EncodingInfo>): void;
-        addOnLocalEncodingEnabled(value: IAction1<EncodingInfo>): void;
-        removeOnLocalEncodingDisabled(value: IAction1<EncodingInfo>): void;
-        removeOnLocalEncodingEnabled(value: IAction1<EncodingInfo>): void;
-    }
-}
-declare namespace fm.icelink {
-    abstract class PluginMediaTrack extends Dynamic implements IMediaTrack, IInternalMediaTrack {
-        getTypeString(): string;
-        getMedia(): PluginMedia;
-        constructor(media: PluginMedia);
-        abstract changeSinkOutput(sinkOutput: SinkOutput): Future<Object>;
-        abstract changeSourceInput(sourceInput: SourceInput): Future<Object>;
-        destroy(): boolean;
-        abstract addOnStarted(value: IAction0): void;
-        abstract addOnStopped(value: IAction0): void;
-        abstract addOnDestroyed(value: IAction0): void;
-        abstract removeOnStarted(value: IAction0): void;
-        abstract removeOnStopped(value: IAction0): void;
-        abstract removeOnDestroyed(value: IAction0): void;
-        abstract getMuted(): boolean;
-        abstract getSinkOutput(): SinkOutput;
-        abstract getSinkOutputs(): Future<SinkOutput[]>;
-        abstract getSourceInput(): SourceInput;
-        abstract getSourceInputs(): Future<SourceInput[]>;
-        abstract setMuted(value: boolean): void;
-        abstract setSinkOutput(value: SinkOutput): void;
-        abstract setSourceInput(value: SourceInput): void;
-    }
-}
-declare namespace fm.icelink {
-    class PluginAudioTrack extends PluginMediaTrack implements IAudioTrack, IInternalAudioTrack {
-        getTypeString(): string;
-        constructor(external: IExternalAudioTrack, media: PluginMedia);
-        private isLocal;
-        addOnStarted(value: IAction0): void;
-        addOnStopped(value: IAction0): void;
-        addOnDestroyed(value: IAction0): void;
-        removeOnStarted(value: IAction0): void;
-        removeOnStopped(value: IAction0): void;
-        removeOnDestroyed(value: IAction0): void;
-        changeSinkOutput(sinkOutput: SinkOutput): Future<Object>;
-        getSinkOutput(): SinkOutput;
-        getSinkOutputs(): Future<SinkOutput[]>;
-        setSinkOutput(value: SinkOutput): void;
-        changeSourceInput(sourceInput: SourceInput): Future<Object>;
-        getSourceInput(): SourceInput;
-        getSourceInputs(): Future<SourceInput[]>;
-        setSourceInput(value: SourceInput): void;
-        addOnLevel(value: IAction1<number>): void;
-        getGain(): number;
-        getMuted(): boolean;
-        getVolume(): number;
-        removeOnLevel(value: IAction1<number>): void;
-        setGain(value: number): void;
-        setMuted(value: boolean): void;
-        setVolume(value: number): void;
-    }
-}
-declare namespace fm.icelink {
-    class PluginConfig {
-        private _activeXPath;
-        private _activeXTimeout;
-        private _preferActiveX;
-        getActiveXPath(): string;
-        setActiveXPath(activeXPath: string): void;
-        getActiveXTimeout(): number;
-        setActiveXTimeout(activeXTimeout: number): void;
-        getPreferActiveX(): boolean;
-        setPreferActiveX(preferActiveX: boolean): void;
-    }
-}
-declare namespace fm.icelink {
-    /**
-    An interface for COM usage.
-    */
-    interface IPluginConnection {
-        AddIceServer(iceServer: string): void;
-        AddIceServers(iceServers: string): void;
-        AddRemoteCandidate(remoteCandidate: string, promise: Object): void;
-        Close(): boolean;
-        CreateAnswer(promise: Object): void;
-        CreateOffer(promise: Object): void;
-        GetBundlePolicy(): number;
-        GetCanonicalName(): string;
-        GetDeadStreamTimeout(): number;
-        GetError(): string;
-        GetExternalId(): string;
-        GetHandle(): number;
-        GetIceGatherPolicy(): number;
-        GetIceServer(): string;
-        GetIceServers(): string;
-        GetId(): string;
-        GetLegacyTimeout(): boolean;
-        GetLocalDescription(): string;
-        GetRemoteDescription(): string;
-        GetStats(promise: Object): void;
-        GetTieBreaker(): string;
-        GetTimeout(): number;
-        GetTrickleIcePolicy(): number;
-        Initialize(streamPtrs: Object): void;
-        RemoveIceServer(iceServer: string): void;
-        RemoveIceServers(iceServers: string): void;
-        SetBundlePolicy(bundlePolicy: number): void;
-        SetDeadStreamTimeout(deadStreamTimeout: number): void;
-        SetError(errorJson: string): void;
-        SetExternalId(externalId: string): void;
-        SetIceGatherPolicy(iceGatherPolicy: number): void;
-        SetIceServer(iceServer: string): void;
-        SetIceServers(iceServers: string): void;
-        SetLegacyTimeout(value: boolean): void;
-        SetLocalDescription(localDescription: string, promise: Object): void;
-        SetOnExternalIdChange(callback: Object): void;
-        SetOnGatheringStateChange(callback: Object): void;
-        SetOnIceConnectionStateChange(callback: Object): void;
-        SetOnLocalCandidate(callback: Object): void;
-        SetOnLocalDescription(callback: Object): void;
-        SetOnRemoteCandidate(callback: Object): void;
-        SetOnRemoteDescription(callback: Object): void;
-        SetOnSignallingStateChange(callback: Object): void;
-        SetOnStateChange(callback: Object): void;
-        SetRemoteDescription(remoteDescription: string, promise: Object): void;
-        SetTieBreaker(tieBreaker: string): void;
-        SetTimeout(timeout: number): void;
-        SetTrickleIcePolicy(trickleIcePolicy: number): void;
-    }
-}
-declare namespace fm.icelink {
-    class PluginConnection extends Dynamic implements IConnection<PluginConnection, PluginStream, PluginAudioStream, PluginVideoStream, PluginDataStream>, IInternalConnection {
-        getTypeString(): string;
-        private _gatheringState;
-        private _iceConnectionState;
-        private _signallingState;
-        private _state;
-        constructor(external: IExternalConnection, streams: PluginStream[]);
-        addIceServer(iceServer: IceServer): void;
-        addIceServers(iceServers: IceServer[]): void;
-        addOnLocalCandidate(value: IAction2<PluginConnection, Candidate>): void;
-        addOnExternalIdChange(value: IAction2<string, string>): void;
-        addOnIceConnectionStateChange(value: IAction1<PluginConnection>): void;
-        addOnGatheringStateChange(value: IAction1<PluginConnection>): void;
-        addOnLocalDescription(value: IAction2<PluginConnection, SessionDescription>): void;
-        addOnRemoteCandidate(value: IAction2<PluginConnection, Candidate>): void;
-        addOnRemoteDescription(value: IAction2<PluginConnection, SessionDescription>): void;
-        addOnSignallingStateChange(value: IAction1<PluginConnection>): void;
-        addOnStateChange(value: IAction1<PluginConnection>): void;
-        addRemoteCandidate(remoteCandidate: Candidate): Future<Candidate>;
-        close(): boolean;
-        createAnswer(): Future<SessionDescription>;
-        createOffer(): Future<SessionDescription>;
-        getHasAudio(): boolean;
-        getHasVideo(): boolean;
-        getHasData(): boolean;
-        getAudioStream(): PluginAudioStream;
-        getAudioStreams(): PluginAudioStream[];
-        getVideoStream(): PluginVideoStream;
-        getVideoStreams(): PluginVideoStream[];
-        getDataStream(): PluginDataStream;
-        getDataStreams(): PluginDataStream[];
-        getDeadStreamTimeout(): number;
-        getExternalId(): string;
-        getError(): Error;
-        getIceGatherPolicy(): IceGatherPolicy;
-        getBundlePolicy(): BundlePolicy;
-        getIceServer(): IceServer;
-        getIceServers(): IceServer[];
-        getId(): string;
-        getCanonicalName(): string;
-        getLocalDescription(): SessionDescription;
-        getRemoteDescription(): SessionDescription;
-        getSignallingState(): SignallingState;
-        getState(): ConnectionState;
-        getStats(): Future<ConnectionStats>;
-        getStreams(): PluginStream[];
-        getTieBreaker(): string;
-        getTimeout(): number;
-        getLegacyTimeout(): boolean;
-        getTrickleIcePolicy(): TrickleIcePolicy;
-        getIceConnectionState(): IceConnectionState;
-        getGatheringState(): IceGatheringState;
-        removeIceServer(iceServer: IceServer): void;
-        removeIceServers(iceServers: IceServer[]): void;
-        removeOnLocalCandidate(value: IAction2<PluginConnection, Candidate>): void;
-        removeOnIceConnectionStateChange(value: IAction1<PluginConnection>): void;
-        removeOnExternalIdChange(value: IAction2<string, string>): void;
-        removeOnGatheringStateChange(value: IAction1<PluginConnection>): void;
-        removeOnLocalDescription(value: IAction2<PluginConnection, SessionDescription>): void;
-        removeOnRemoteCandidate(value: IAction2<PluginConnection, Candidate>): void;
-        removeOnRemoteDescription(value: IAction2<PluginConnection, SessionDescription>): void;
-        removeOnSignallingStateChange(value: IAction1<PluginConnection>): void;
-        removeOnStateChange(value: IAction1<PluginConnection>): void;
-        setDeadStreamTimeout(value: number): void;
-        setExternalId(value: string): void;
-        setError(value: Error): void;
-        setIceGatherPolicy(value: IceGatherPolicy): void;
-        setBundlePolicy(value: BundlePolicy): void;
-        setIceServer(value: IceServer): void;
-        setIceServers(value: IceServer[]): void;
-        setLegacyTimeout(value: boolean): void;
-        setTieBreaker(value: string): void;
-        setLocalDescription(localDescription: SessionDescription): Future<SessionDescription>;
-        setRemoteDescription(remoteDescription: SessionDescription): Future<SessionDescription>;
-        setTimeout(value: number): void;
-        setTrickleIcePolicy(value: TrickleIcePolicy): void;
-    }
-}
-declare namespace fm.icelink {
-    /**
-    An interface for COM usage.
-    */
-    interface IPluginDataChannel {
-        GetHandle(): number;
-        GetId(): string;
-        GetInfo(): string;
-        GetLabel(): string;
-        GetOrdered(): boolean;
-        GetSubprotocol(): string;
-        Initialize(label: string, ordered: boolean, subprotocol: string): void;
-        PrepareAndSendBytes(data: string, promise: Object): void;
-        PrepareAndSendString(dataString: string, promise: Object): void;
-        SetOnReceive(callback: Object): void;
-        SetOnStateChange(callback: Object): void;
-    }
-}
-declare namespace fm.icelink {
-    class PluginDataChannel extends Dynamic implements IDataChannel<PluginDataChannel>, IInternalDataChannel {
-        getTypeString(): string;
-        getHandle(): number;
-        private _state;
-        constructor(external: IExternalDataChannel, label: string, ordered?: boolean, subprotocol?: string);
-        private _getRemoteConnectionInfo;
-        setGetRemoteConnectionInfo(value: IFunction1<string, any>): void;
-        getInfo(): DataChannelInfo;
-        addOnStateChange(value: IAction1<PluginDataChannel>): void;
-        getLabel(): string;
-        getOnReceive(): IAction1<DataChannelReceiveArgs>;
-        getOrdered(): boolean;
-        getId(): string;
-        getState(): DataChannelState;
-        getSubprotocol(): string;
-        removeOnStateChange(value: IAction1<PluginDataChannel>): void;
-        sendDataBytes(dataBytes: DataBuffer): fm.icelink.Future<Object>;
-        sendDataString(dataString: string): fm.icelink.Future<Object>;
-        setOnReceive(value: IAction1<DataChannelReceiveArgs>): void;
-    }
-}
-declare namespace fm.icelink {
-    /**
-    An interface for COM usage.
-    */
-    interface IPluginDataStream {
-        ChangeDirection(newDirection: number): string;
-        GetDirection(): number;
-        GetExternalId(): string;
-        GetHandle(): number;
-        GetId(): string;
-        GetInfo(): string;
-        GetLabel(): string;
-        GetLocalDirection(): number;
-        GetLocalReceive(): boolean;
-        GetLocalSend(): boolean;
-        GetRemoteDirection(): number;
-        GetRemoteReceive(): boolean;
-        GetRemoteSend(): boolean;
-        GetTag(): string;
-        GetTransportInfo(): string;
-        Initialize(channelHandles: Object): void;
-        SetExternalId(externalId: string): void;
-        SetLocalDirection(direction: number): void;
-        SetLocalReceive(localReceiveEnabled: boolean): void;
-        SetLocalSend(localSendEnabled: boolean): void;
-        SetOnDirectionChange(callback: Object): void;
-        SetOnStateChange(callback: Object): void;
-        SetTag(tag: string): void;
-    }
-}
-declare namespace fm.icelink {
-    class PluginDataStream extends PluginStream implements IDataStream<PluginDataChannel>, IInternalDataStream {
-        getTypeString(): string;
-        private _state;
-        constructor(external: IExternalDataStream, channels: PluginDataChannel[]);
-        getState(): StreamState;
-        addOnStateChange(value: IAction0): void;
-        removeOnStateChange(value: IAction0): void;
-        getInfo(): DataStreamInfo;
-        getLocalReceive(): boolean;
-        getLocalSend(): boolean;
-        getRemoteReceive(): boolean;
-        getRemoteSend(): boolean;
-        setLocalReceive(value: boolean): void;
-        setLocalSend(value: boolean): void;
-        getRemoteDirection(): StreamDirection;
-        getHandle(): number;
-        changeDirection(newDirection: StreamDirection): Error;
-        getDirection(): StreamDirection;
-        getId(): string;
-        getExternalId(): string;
-        setExternalId(value: string): void;
-        getLabel(): string;
-        getLocalDirection(): StreamDirection;
-        getTag(): string;
-        getType(): StreamType;
-        setLocalDirection(value: StreamDirection): void;
-        setTag(value: string): void;
-        addOnDirectionChange(callback: Object): void;
-        removeOnDirectionChange(callback: Object): void;
-        getChannels(): PluginDataChannel[];
-        getTransportInfo(): TransportInfo;
-    }
-}
-declare namespace fm.icelink {
-    class PluginDomAudioSink extends Dynamic implements /*ISoundSink<HTMLElement>,*/ IInternal<DomAudioSink> {
-        getTypeString(): string;
-        getTrack(): PluginAudioTrack;
-        getLocal(): boolean;
-        constructor(external: DomAudioSink, track: PluginAudioTrack);
-        setTrack(track: PluginAudioTrack): boolean;
-    }
-}
-declare namespace fm.icelink {
-    class PluginDomVideoSink extends Dynamic implements IInternalDomVideoSink {
-        getTypeString(): string;
-        getTrack(): PluginVideoTrack;
-        getLocal(): boolean;
-        getView(): HTMLElement;
-        getViewScale(): LayoutScale;
-        setViewScale(viewScale: LayoutScale): void;
-        getVideoWidth(): number;
-        getVideoHeight(): number;
-        getViewMirror(): boolean;
-        setViewMirror(viewMirror: boolean): void;
-        constructor(external: IExternalDomVideoSink, track: PluginVideoTrack);
-        setTrack(track: PluginVideoTrack): boolean;
-        private checkifLoaded;
-    }
-}
-declare namespace fm.icelink {
-    abstract class PluginMedia extends Dynamic implements IMedia<PluginAudioTrack, PluginVideoTrack>, IInternalMedia {
-        getTypeString(): string;
-        getHandle(): number;
-        abstract addOnAudioDestroyed(value: IAction0): void;
-        abstract addOnVideoDestroyed(value: IAction0): void;
-        abstract removeOnAudioDestroyed(value: IAction0): void;
-        abstract removeOnVideoDestroyed(value: IAction0): void;
-        destroy(): void;
-        addOnAudioLevel(value: IAction1<number>): void;
-        addOnVideoSize(value: IAction1<Size>): void;
-        getAudioGain(): number;
-        getAudioMuted(): boolean;
-        getAudioTrack(): PluginAudioTrack;
-        getAudioTracks(): PluginAudioTrack[];
-        getAudioVolume(): number;
-        getId(): string;
-        getVideoMuted(): boolean;
-        getVideoSize(): Size;
-        getVideoTrack(): PluginVideoTrack;
-        getVideoTracks(): PluginVideoTrack[];
-        grabVideoFrame(): Future<VideoBuffer>;
-        removeOnAudioLevel(value: IAction1<number>): void;
-        removeOnVideoSize(value: IAction1<Size>): void;
-        setAudioGain(value: number): void;
-        setAudioMuted(value: boolean): void;
-        setAudioVolume(value: number): void;
-        setId(value: string): void;
-        setVideoMuted(value: boolean): void;
-        getView(): HTMLElement;
-        getViewSink(): PluginDomVideoSink;
-        protected _videoSink: PluginDomVideoSink;
-        constructor(external: IExternalMedia);
-    }
-}
-declare namespace fm.icelink {
-    /**
-    An interface for COM usage.
-    */
-    interface IPluginLocalMedia {
-        AttachView(viewHandle: number): void;
-        ChangeAudioSourceInput(promise: Object, audioSourceInput: string): void;
-        ChangeVideoSourceInput(promise: Object, videoSourceInput: string): void;
-        Destroy(): void;
-        GetAudioEncoding(): string;
-        GetAudioEncodings(): string;
-        GetAudioGain(): number;
-        GetAudioMuted(): boolean;
-        GetAudioSourceInput(): string;
-        GetAudioSourceInputs(promise: Object): void;
-        GetAudioVolume(): number;
-        GetHandle(): number;
-        GetId(): string;
-        GetState(): number;
-        GetVideoEncoding(): string;
-        GetVideoEncodings(): string;
-        GetVideoMuted(): boolean;
-        GetVideoSize(): string;
-        GetVideoSourceInput(): string;
-        GetVideoSourceInputs(promise: Object): void;
-        GrabVideoFrame(promise: Object): void;
-        Initialize(disableAudio: boolean, disableVideo: boolean, isScreenShare: boolean): void;
-        SetAudioEncodings(valueJson: string): void;
-        SetAudioGain(gain: number): void;
-        SetAudioMuted(muted: boolean): void;
-        SetAudioSourceInput(value: string): void;
-        SetAudioVolume(volume: number): void;
-        SetId(idValue: string): void;
-        SetOnAudioDestroyed(callback: Object): void;
-        SetOnAudioLevel(callback: Object): void;
-        SetOnAudioStarted(callback: Object): void;
-        SetOnAudioStopped(callback: Object): void;
-        SetOnVideoDestroyed(callback: Object): void;
-        SetOnVideoSize(callback: Object): void;
-        SetOnVideoStarted(callback: Object): void;
-        SetOnVideoStopped(callback: Object): void;
-        SetVideoEncodings(valueJson: string): void;
-        SetVideoMuted(muted: boolean): void;
-        SetVideoSourceInput(value: string): void;
-        Start(promise: Object): void;
-        Stop(promise: Object): void;
-    }
-}
-declare namespace fm.icelink {
-    class PluginLocalMedia extends PluginMedia implements ILocalMedia<PluginLocalMedia, PluginAudioTrack, PluginVideoTrack>, IInternalLocalMedia {
-        getTypeString(): string;
-        getAudio(): any;
-        setAudio(audio: any): void;
-        getVideo(): any;
-        setVideo(video: any): void;
-        getScreen(): boolean;
-        setScreen(screen: boolean): void;
-        getState(): LocalMediaState;
-        constructor(external: IExternalLocalMedia, audio: any, video: any, screen?: boolean);
-        start(): Future<PluginLocalMedia>;
-        stop(): Future<PluginLocalMedia>;
-        getHandle(): number;
-        addOnAudioStarted(value: IAction0): void;
-        addOnVideoStarted(value: IAction0): void;
-        addOnAudioStopped(value: IAction0): void;
-        addOnVideoStopped(value: IAction0): void;
-        addOnAudioDestroyed(value: IAction0): void;
-        addOnVideoDestroyed(value: IAction0): void;
-        removeOnAudioStarted(value: IAction0): void;
-        removeOnVideoStarted(value: IAction0): void;
-        removeOnAudioStopped(value: IAction0): void;
-        removeOnVideoStopped(value: IAction0): void;
-        removeOnAudioDestroyed(value: IAction0): void;
-        removeOnVideoDestroyed(value: IAction0): void;
-        getAudioEncoding(): AudioEncodingConfig;
-        getAudioEncodings(): AudioEncodingConfig[];
-        setAudioEncodings(value: AudioEncodingConfig[]): void;
-        getVideoEncoding(): VideoEncodingConfig;
-        getVideoEncodings(): VideoEncodingConfig[];
-        setVideoEncodings(value: VideoEncodingConfig[]): void;
-        changeAudioSourceInput(audioSourceInput: SourceInput): Future<Object>;
-        changeVideoSourceInput(videoSourceInput: SourceInput): Future<Object>;
-        getAudioSourceInput(): SourceInput;
-        getAudioSourceInputs(): Future<SourceInput[]>;
-        getVideoSourceInput(): SourceInput;
-        getVideoSourceInputs(): Future<SourceInput[]>;
-        setAudioSourceInput(value: SourceInput): void;
-        setVideoSourceInput(value: SourceInput): void;
-        destroy(): void;
-        getAudioGain(): number;
-        getAudioMuted(): boolean;
-        getId(): string;
-        getVideoMuted(): boolean;
-        setAudioGain(value: number): void;
-        setAudioMuted(value: boolean): void;
-        setVideoMuted(value: boolean): void;
-        private checkifLoaded;
-    }
-}
-declare namespace fm.icelink {
-    /**
-    An interface for COM usage.
-    */
-    interface IPluginRemoteMedia {
-        AttachView(viewHandle: number): void;
-        ChangeAudioSinkOutput(promise: Object, audioSinkOutput: string): void;
-        ChangeVideoSinkOutput(promise: Object, videoSinkOutput: string): void;
-        Destroy(): void;
-        GetAudioGain(): number;
-        GetAudioMuted(): boolean;
-        GetAudioSinkOutput(): string;
-        GetAudioSinkOutputs(promise: Object): void;
-        GetAudioVolume(): number;
-        GetHandle(): number;
-        GetId(): string;
-        GetVideoMuted(): boolean;
-        GetVideoSinkOutput(): string;
-        GetVideoSinkOutputs(promise: Object): void;
-        GetVideoSize(): string;
-        GrabVideoFrame(promise: Object): void;
-        Initialize(disableAudio: boolean, disableVideo: boolean): void;
-        SetAudioGain(gain: number): void;
-        SetAudioMuted(muted: boolean): void;
-        SetAudioSinkOutput(value: string): void;
-        SetAudioVolume(volume: number): void;
-        SetId(idValue: string): void;
-        SetOnAudioDestroyed(callback: Object): void;
-        SetOnAudioLevel(callback: Object): void;
-        SetOnVideoDestroyed(callback: Object): void;
-        SetOnVideoSize(callback: Object): void;
-        SetVideoMuted(muted: boolean): void;
-        SetVideoSinkOutput(value: string): void;
-    }
-}
-declare namespace fm.icelink {
-    class PluginRemoteMedia extends PluginMedia implements IRemoteMedia<PluginAudioTrack, PluginVideoTrack>, IInternalRemoteMedia {
-        getTypeString(): string;
-        constructor(external: IExternalRemoteMedia);
-        private checkifLoaded;
-        getHandle(): number;
-        addOnAudioDestroyed(value: IAction0): void;
-        addOnVideoDestroyed(value: IAction0): void;
-        removeOnAudioDestroyed(value: IAction0): void;
-        removeOnVideoDestroyed(value: IAction0): void;
-        changeAudioSinkOutput(audioSinkOutput: SinkOutput): Future<Object>;
-        changeVideoSinkOutput(videoSinkOutput: SinkOutput): Future<Object>;
-        getAudioSinkOutput(): SinkOutput;
-        getAudioSinkOutputs(): Future<SinkOutput[]>;
-        getVideoSinkOutput(): SinkOutput;
-        getVideoSinkOutputs(): Future<SinkOutput[]>;
-        setAudioSinkOutput(value: SinkOutput): void;
-        setVideoSinkOutput(value: SinkOutput): void;
-        destroy(): void;
-        getAudioGain(): number;
-        getAudioMuted(): boolean;
-        getId(): string;
-        getVideoMuted(): boolean;
-        setAudioGain(value: number): void;
-        setAudioMuted(value: boolean): void;
-        setVideoMuted(value: boolean): void;
-    }
-}
-declare namespace fm.icelink {
-    /**
-    An interface for COM usage.
-    */
-    interface IPluginVideoStream {
-        ChangeDirection(newDirection: number): string;
-        GetCodecDisabled(name: string): boolean;
-        GetControlTransportInfo(): string;
-        GetDirection(): number;
-        GetExternalId(): string;
-        GetH264Disabled(): boolean;
-        GetHandle(): number;
-        GetId(): string;
-        GetInfo(): string;
-        GetInputMuted(): boolean;
-        GetLabel(): string;
-        GetLocalBandwidth(): number;
-        GetLocalCanonicalName(): string;
-        GetLocalDirection(): number;
-        GetLocalReceive(): boolean;
-        GetLocalSend(): boolean;
-        GetOutputMuted(): boolean;
-        GetPreferredCodecs(): string[];
-        GetRemoteBandwidth(): number;
-        GetRemoteCanonicalName(): string;
-        GetRemoteDirection(): number;
-        GetRemoteEncoding(): string;
-        GetRemoteReceive(): boolean;
-        GetRemoteSend(): boolean;
-        GetSimulcastMode(): number;
-        GetTag(): string;
-        GetTransportInfo(): string;
-        GetVp8Disabled(): boolean;
-        GetVp9Disabled(): boolean;
-        Initialize(localMediaHandle: number, remoteMediaHandle: number): void;
-        SetCodecDisabled(name: string, disabled: boolean): void;
-        SetExternalId(externalId: string): void;
-        SetH264Disabled(disabled: boolean): void;
-        SetInputMuted(muted: boolean): void;
-        SetLocalBandwidth(bandwidth: number): void;
-        SetLocalDirection(direction: number): void;
-        SetLocalReceive(localReceiveEnabled: boolean): void;
-        SetLocalSend(localSendEnabled: boolean): void;
-        SetOnDirectionChange(callback: Object): void;
-        SetOnLocalEncodingDisabled(callback: Object): void;
-        SetOnLocalEncodingEnabled(callback: Object): void;
-        SetOnStateChange(callback: Object): void;
-        SetOutputMuted(muted: boolean): void;
-        SetPreferredCodecs(names: string[]): void;
-        SetRemoteEncoding(remoteEncodingJson: string): void;
-        SetSimulcastMode(simulcastMode: number): void;
-        SetTag(tag: string): void;
-        SetVp8Disabled(disabled: boolean): void;
-        SetVp9Disabled(disabled: boolean): void;
-    }
-}
-declare namespace fm.icelink {
-    class PluginVideoStream extends PluginMediaStream<PluginVideoTrack> implements IVideoStream, IInternalVideoStream {
-        getTypeString(): string;
-        private _state;
-        constructor(external: IExternalVideoStream, localTrack: PluginVideoTrack, remoteTrack: PluginVideoTrack);
-        getState(): StreamState;
-        addOnStateChange(value: IAction0): void;
-        removeOnStateChange(value: IAction0): void;
-        getInfo(): MediaStreamInfo;
-        getLocalReceive(): boolean;
-        getLocalSend(): boolean;
-        getRemoteReceive(): boolean;
-        getRemoteSend(): boolean;
-        setLocalReceive(value: boolean): void;
-        setLocalSend(value: boolean): void;
-        getRemoteDirection(): StreamDirection;
-        getHandle(): number;
-        changeDirection(newDirection: StreamDirection): Error;
-        getDirection(): StreamDirection;
-        getLocalCanonicalName(): string;
-        getRemoteCanonicalName(): string;
-        getId(): string;
-        getExternalId(): string;
-        setExternalId(value: string): void;
-        getLabel(): string;
-        getLocalBandwidth(): number;
-        getLocalDirection(): StreamDirection;
-        getInputMuted(): boolean;
-        getOutputMuted(): boolean;
-        getRemoteBandwidth(): number;
-        getTag(): string;
-        getType(): StreamType;
-        setLocalDirection(value: StreamDirection): void;
-        setLocalBandwidth(value: number): void;
-        setInputMuted(value: boolean): void;
-        setOutputMuted(value: boolean): void;
-        setTag(value: string): void;
-        addOnDirectionChange(callback: Object): void;
-        removeOnDirectionChange(callback: Object): void;
-        getPreferredCodecs(): string[];
-        setPreferredCodecs(names: string[]): void;
-        getCodecDisabled(name: string): boolean;
-        setCodecDisabled(name: string, disabled: boolean): void;
-        getVp8Disabled(): boolean;
-        getVp9Disabled(): boolean;
-        getH264Disabled(): boolean;
-        setVp8Disabled(value: boolean): void;
-        setVp9Disabled(value: boolean): void;
-        setH264Disabled(value: boolean): void;
-        getRemoteEncoding(): EncodingInfo;
-        setRemoteEncoding(value: EncodingInfo): void;
-        getSimulcastMode(): SimulcastMode;
-        setSimulcastMode(value: SimulcastMode): void;
-        getTransportInfo(): TransportInfo;
-        getControlTransportInfo(): TransportInfo;
-        addOnLocalEncodingDisabled(value: IAction1<EncodingInfo>): void;
-        addOnLocalEncodingEnabled(value: IAction1<EncodingInfo>): void;
-        removeOnLocalEncodingDisabled(value: IAction1<EncodingInfo>): void;
-        removeOnLocalEncodingEnabled(value: IAction1<EncodingInfo>): void;
-    }
-}
-declare namespace fm.icelink {
-    class PluginVideoTrack extends PluginMediaTrack implements IVideoTrack, IInternalVideoTrack {
-        getTypeString(): string;
-        constructor(external: IExternalVideoTrack, media: PluginMedia);
-        private isLocal;
-        addOnStarted(value: IAction0): void;
-        addOnStopped(value: IAction0): void;
-        addOnDestroyed(value: IAction0): void;
-        removeOnStarted(value: IAction0): void;
-        removeOnStopped(value: IAction0): void;
-        removeOnDestroyed(value: IAction0): void;
-        changeSinkOutput(sinkOutput: SinkOutput): Future<Object>;
-        getSinkOutput(): SinkOutput;
-        getSinkOutputs(): Future<SinkOutput[]>;
-        setSinkOutput(value: SinkOutput): void;
-        changeSourceInput(sourceInput: SourceInput): Future<Object>;
-        getSourceInput(): SourceInput;
-        getSourceInputs(): Future<SourceInput[]>;
-        setSourceInput(value: SourceInput): void;
-        addOnSize(value: IAction1<Size>): void;
-        getMuted(): boolean;
-        getSize(): Size;
-        grabFrame(): Future<VideoBuffer>;
-        setMuted(value: boolean): void;
-        removeOnSize(value: IAction1<Size>): void;
-    }
-}
-declare namespace fm.icelink {
-    interface IExternalRemoteMedia extends IRemoteMedia<IExternalAudioTrack, IExternalVideoTrack>, IViewSinkableMedia<HTMLElement, IExternalDomVideoSink>, IExternal<IInternalRemoteMedia> {
-    }
-    interface IInternalRemoteMedia extends IRemoteMedia<IInternalAudioTrack, IInternalVideoTrack>, IViewSinkableMedia<HTMLElement, IInternalDomVideoSink>, IInternal<IExternalRemoteMedia> {
-    }
-    class RemoteMedia extends Media implements IRemoteMedia<AudioTrack, VideoTrack>, IExternalRemoteMedia {
-        getTypeString(): string;
-        constructor();
-        changeAudioSinkOutput(audioSinkOutput: SinkOutput): Future<Object>;
-        changeVideoSinkOutput(videoSinkOutput: SinkOutput): Future<Object>;
-        getAudioSinkOutput(): SinkOutput;
-        getAudioSinkOutputs(): Future<SinkOutput[]>;
-        getVideoSinkOutput(): SinkOutput;
-        getVideoSinkOutputs(): Future<SinkOutput[]>;
-        setAudioSinkOutput(value: SinkOutput): void;
-        setVideoSinkOutput(value: SinkOutput): void;
-    }
-}
-declare namespace fm.icelink {
-    /** @hidden */
-    abstract class SessionDescriptionManagerBase<TStream extends fm.icelink.WebRtcStreamBase, TAudioStream extends fm.icelink.IAudioStream, TVideoStream extends fm.icelink.IVideoStream, TDataStream extends fm.icelink.IDataStream<TDataChannel>, TDataChannel extends fm.icelink.IDataChannel<TDataChannel>> {
-        getTypeString(): string;
-        protected __audioStreamIndex: Array<TStream>;
-        protected __dataStreamIndex: Array<TStream>;
-        protected __streamIndex: Array<TStream>;
-        protected __streamMatcher: fm.icelink.SessionDescriptionStreamMatcher<TStream>;
-        protected __videoStreamIndex: Array<TStream>;
-        constructor();
-        /** @hidden */
-        static updateTrickleIcePolicy(message: fm.icelink.sdp.Message, policy: fm.icelink.TrickleIcePolicy): void;
-        /** @hidden */
-        addMediaDescriptions(msg: fm.icelink.sdp.Message, descriptions: fm.icelink.sdp.MediaDescription[]): void;
-        addStream(stream: TStream): void;
-        /** @hidden */
-        private addToIndex;
-        protected abstract getAudioStreams(): TStream[];
-        protected abstract getDataStreams(): TStream[];
-        /** @hidden */
-        getOffererStreamIndexFor(answererStreamIndex: number): number;
-        protected abstract getStreams(): fm.icelink.Hash<string, TStream>;
-        protected abstract getVideoStreams(): TStream[];
-        /** @hidden */
-        matchAndProcessDescriptionPerType(streams: Array<TStream>, description: fm.icelink.SessionDescription, isLocalDescription: boolean, streamMatcher: fm.icelink.SessionDescriptionStreamMatcher<TStream>, processSdpMediaDescriptionForStreamHandler: fm.icelink.IFunction5<TStream, fm.icelink.sdp.MediaDescription, number, boolean, boolean, fm.icelink.Error>, processSdpMediaDescriptionInternal: boolean): fm.icelink.Error;
-        /** @hidden */
-        parseSessionDescriptionForStreamChangesAndUpdateMids(newRemoteDescription: fm.icelink.SessionDescription, existingAudioStreams: TStream[], existingVideoStreams: TStream[], existingDataStreams: TStream[]): fm.icelink.Pair<fm.icelink.StreamDescription[], Object[]>;
-        /** @hidden */
-        populateStreamTypeIndexes(descriptions: fm.icelink.sdp.MediaDescription[], streams: Array<TStream>, streamMatcher: fm.icelink.SessionDescriptionStreamMatcher<TStream>): fm.icelink.Error;
-        processDescription(description: fm.icelink.SessionDescription, isLocalDescription: boolean): fm.icelink.Error;
-        /** @hidden */
-        private processMSection;
-        protected abstract processSdpMediaDescriptionForStream(stream: TStream, sdpMediaDescription: fm.icelink.sdp.MediaDescription, sdpMediaIndex: number, isLocalDescription: boolean, isRenegotiation: boolean): fm.icelink.Error;
-        /** @hidden */
-        private removeFromIndex;
-        removeStream(stream: TStream): boolean;
-        /** @hidden */
-        private resetStreamMatcher;
-        updateLocalDescription(localDescription: fm.icelink.SessionDescription): void;
-        /** @hidden */
-        private validateBaseDescription;
-    }
-}
-declare namespace fm.icelink {
-    /**
-    @hidden
-    */
-    class SessionDescriptionManager extends SessionDescriptionManagerBase<WebRtcStream, WebRtcAudioStream, WebRtcVideoStream, WebRtcDataStream, WebRtcDataChannel> {
-        getTypeString(): string;
-        /** @hidden */
-        private _streams;
-        constructor();
-        getStreams(): fm.icelink.Hash<string, WebRtcStream>;
-        getAudioStreams(): WebRtcAudioStream[];
-        getVideoStreams(): WebRtcVideoStream[];
-        getDataStreams(): WebRtcDataStream[];
-        protected processSdpMediaDescriptionForStream(stream: WebRtcStream, sdpMediaDescription: fm.icelink.sdp.MediaDescription, sdpMediaIndex: number, isLocalDescription: boolean, isRenegotiation: boolean): fm.icelink.Error;
-    }
-}
-declare namespace fm.icelink {
-    interface IExternalVideoStream extends IVideoStream, IExternal<IInternalVideoStream> {
-    }
-    interface IInternalVideoStream extends IVideoStream, IInternal<IExternalVideoStream> {
-    }
-    class VideoStream extends MediaStream<VideoTrack> implements IVideoStream, IExternalVideoStream {
-        getTypeString(): string;
-        getLocalMedia(): LocalMedia;
-        getRemoteMedia(): RemoteMedia;
-        constructor(localTrack: VideoTrack);
-        constructor(localTrack: VideoTrack, remoteTrack: VideoTrack);
-        constructor(localMedia: LocalMedia);
-        constructor(localMedia: LocalMedia, remoteMedia: RemoteMedia);
-        constructor(remoteMedia: RemoteMedia);
-        getVp8Disabled(): boolean;
-        getVp9Disabled(): boolean;
-        getH264Disabled(): boolean;
-        setVp8Disabled(value: boolean): void;
-        setVp9Disabled(value: boolean): void;
-        setH264Disabled(value: boolean): void;
-        addOnDiscardKeyFrameRequest(value: IAction1<number[]>): void;
-        removeOnDiscardKeyFrameRequest(value: IAction1<number[]>): void;
-        raiseKeyFrameRequest(synchronizationSources: number[]): void;
-    }
-}
-declare namespace fm.icelink {
-    interface IExternalVideoTrack extends IVideoTrack, IExternal<IInternalVideoTrack> {
-    }
-    interface IInternalVideoTrack extends IVideoTrack, IInternal<IExternalVideoTrack> {
-    }
-    class VideoTrack extends MediaTrack implements IVideoTrack, IExternalVideoTrack {
-        getTypeString(): string;
-        constructor(media: Media, internalMedia?: IInternalMedia);
-        addOnSize(value: IAction1<Size>): void;
-        getSize(): Size;
-        grabFrame(): Future<VideoBuffer>;
-        removeOnSize(value: IAction1<Size>): void;
-    }
-}
-declare namespace fm.icelink {
-    /**
-    Stream base properties/methods.
-    */
-    abstract class WebRtcStreamBase extends fm.icelink.Dynamic implements fm.icelink.IStream {
-        getTypeString(): string;
-        /** @hidden */
-        private __id;
-        /** @hidden */
-        private __mediaStreamIdentification;
-        /** @hidden */
-        private __onDirectionChange;
-        /** @hidden */
-        private __onStateChange;
-        /** @hidden */
-        private __stateLock;
-        /** @hidden */
-        private __stateMachine;
-        /** @hidden */
-        private _connectedTimestamp;
-        /** @hidden */
-        private _connectionId;
-        /** @hidden */
-        private _externalId;
-        /** @hidden */
-        private _onDirectionChange;
-        /** @hidden */
-        private _onStateChange;
-        /** @hidden */
-        private _tag;
-        /** @hidden */
-        private _type;
-        private fmicelinkWebRtcStreamBaseInit;
-        /**
-        Initializes a new instance of the [[fm.icelink.streamBase]] class.
-        @param type The type.
-        */
-        constructor(type: fm.icelink.StreamType);
-        /**
-        Adds a handler that is raised when the stream direction change has occurred.
-        */
-        addOnDirectionChange(value: fm.icelink.IAction0): void;
-        /**
-        Adds a handler that is raised when the stream state changes.
-        */
-        addOnStateChange(value: fm.icelink.IAction0): void;
-        /**
-        Changes this stream's direction.
-        */
-        abstract changeDirection(newDirection: fm.icelink.StreamDirection): fm.icelink.Error;
-        /**
-        Gets the ManagedStopwatch.GetTimestamp() value representing the ticks that passed when this stream's connection state changed to connected.
-        */
-        protected getConnectedTimestamp(): number;
-        /**
-        Gets the connection identifier.
-        */
-        getConnectionId(): string;
-        /**
-        Gets the current direction.
-        */
-        abstract getDirection(): fm.icelink.StreamDirection;
-        /** @hidden */
-        abstract getDirectionCapabilities(): fm.icelink.StreamDirection;
-        /**
-        Gets the external identifier.
-        */
-        getExternalId(): string;
-        /**
-        Gets the identifier.
-        */
-        getId(): string;
-        /**
-        Gets a value indicating whether the stream is currently closed or failed.
-        */
-        getIsTerminated(): boolean;
-        /**
-        Gets a value indicating whether the stream is currently closing or failing.
-        */
-        getIsTerminating(): boolean;
-        /**
-        Gets a value indicating whether the stream is currently closing, failing, closed, or failed.
-        */
-        getIsTerminatingOrTerminated(): boolean;
-        /**
-        Gets a label that identifies this class.
-        */
-        abstract getLabel(): string;
-        /**
-        Gets current direction indicated by the local description.
-        */
-        abstract getLocalDirection(): fm.icelink.StreamDirection;
-        /**
-        Gets a value indicating whether receiving media is supported by the local peer on this stream.
-        */
-        getLocalReceive(): boolean;
-        /**
-        Gets a value indicating whether sending media is supported by the local peer on this stream.
-        */
-        getLocalSend(): boolean;
-        /** @hidden */
-        abstract getMediaDescriptionManager(): fm.icelink.MediaDescriptionManagerBase;
-        /** @hidden */
-        getMediaStreamIdentification(): string;
-        /**
-        Gets current direction indicated by the remote description.
-        */
-        abstract getRemoteDirection(): fm.icelink.StreamDirection;
-        /**
-        Gets a value indicating whether receiving media is supported by the local peer on this stream. Returns false if the remote stream direction has not been received.
-        */
-        getRemoteReceive(): boolean;
-        /**
-        Gets a value indicating whether sending media is supported by the remote peer on this stream. Returns false if the remote stream direction has not been received.
-        */
-        getRemoteSend(): boolean;
-        /**
-        Gets the state of the stream.
-        */
-        getState(): fm.icelink.StreamState;
-        /** @hidden */
-        getStateLock(): Object;
-        /**
-        Gets optional data to associate with this instance.
-        */
-        getTag(): string;
-        /**
-        Gets the stream transport info.
-        */
-        abstract getTransportInfo(): fm.icelink.TransportInfo;
-        /**
-        Gets the type.
-        */
-        getType(): fm.icelink.StreamType;
-        /** @hidden */
-        private logInvalidStateTransition;
-        /** @hidden */
-        abstract processSdpMediaDescription(sdpMessage: fm.icelink.sdp.Message, sdpMediaDescription: fm.icelink.sdp.MediaDescription, index: number, isLocalDescription: boolean, isOffer: boolean, isRenegotiation: boolean): fm.icelink.Error;
-        /**
-        Processes a state change.
-        */
-        protected processStateChange(): void;
-        /**
-        Processes a state lock change.
-        */
-        protected processStateLockChange(): void;
-        /** @hidden */
-        processUpdateToMediaStreamIdentification(oldValue: string): void;
-        /** @hidden */
-        raiseDirectionChange(): void;
-        /** @hidden */
-        private raiseStateChange;
-        /**
-        Removes a handler that is raised when the stream direction change has occurred.
-        */
-        removeOnDirectionChange(value: fm.icelink.IAction0): void;
-        /**
-        Removes a handler that is raised when the stream state changes.
-        */
-        removeOnStateChange(value: fm.icelink.IAction0): void;
-        /** @hidden */
-        private setConnectedTimestamp;
-        /** @hidden */
-        setConnectionId(value: string): void;
-        /**
-        Sets the external identifier.
-        */
-        setExternalId(value: string): void;
-        /**
-        Sets current direction indicated by the local description.
-        */
-        abstract setLocalDirection(value: fm.icelink.StreamDirection): void;
-        /**
-        Sets a value indicating whether receiving media is supported by the local peer on this stream.
-        */
-        setLocalReceive(value: boolean): void;
-        /**
-        Sets a value indicating whether sending media is supported by the local peer on this stream.
-        */
-        setLocalSend(value: boolean): void;
-        /** @hidden */
-        setMediaStreamIdentification(value: string): void;
-        /** @hidden */
-        abstract setRemoteDirection(value: fm.icelink.StreamDirection): void;
-        /** @hidden */
-        setState(state: fm.icelink.StreamState): boolean;
-        /** @hidden */
-        setStateLock(value: Object): void;
-        /**
-        Sets optional data to associate with this instance.
-        */
-        setTag(value: string): void;
-        /** @hidden */
-        private setType;
-        /**
-        Returns a string that represents this instance.
-        */
-        toString(): string;
-    }
-}
-declare namespace fm.icelink {
-    abstract class WebRtcStream extends WebRtcStreamBase implements IInternalStream {
-        getTypeString(): string;
-        /** @hidden */
-        private _connection;
-        getConnection(): WebRtcConnection;
-        setConnection(remoteTrack: WebRtcConnection): void;
-        /** @hidden */
-        abstract _getExternal(): IExternalStream;
-        private _transportInfo;
-        /** @hidden */
-        getMediaDescriptionManager(): MediaDescriptionManager;
-        /** @hidden */
-        setMediaDescriptionManager(manager: MediaDescriptionManager): void;
-        private _mediaDescriptionManager;
-        setTransportInfo(transportInfo: TransportInfo): void;
-        getTransportInfo(): TransportInfo;
-    }
-}
-declare namespace fm.icelink {
-    /**
-    Media stream base properties/methods.
-    */
-    abstract class WebRtcMediaStreamBase extends fm.icelink.WebRtcStream implements fm.icelink.IMediaStream, fm.icelink.IStream {
-        getTypeString(): string;
-        /** @hidden */
-        private __disabledCodecs;
-        /** @hidden */
-        private __localCanonicalName;
-        /** @hidden */
-        private __localDirection;
-        /** @hidden */
-        private __onLocalEncodingDisabled;
-        /** @hidden */
-        private __onLocalEncodingEnabled;
-        /** @hidden */
-        private __pendingLocalDirection;
-        /** @hidden */
-        private __remoteDirection;
-        /** @hidden */
-        private _localBandwidth;
-        /** @hidden */
-        private _onLocalEncodingDisabled;
-        /** @hidden */
-        private _onLocalEncodingEnabled;
-        /** @hidden */
-        private _preferredCodecs;
-        /** @hidden */
-        private _remoteBandwidth;
-        /** @hidden */
-        private _remoteCanonicalName;
-        /** @hidden */
-        private _remoteEncoding;
-        /** @hidden */
-        private _renegotiationLock;
-        /** @hidden */
-        private _renegotiationPending;
-        private fmicelinkWebRtcMediaStreamBaseInit;
-        /**
-        Initializes a new instance of the [[fm.icelink.mediaStreamBase]] class.
-        @param type The type.
-        */
-        constructor(type: fm.icelink.StreamType);
-        /**
-        Adds a handler that is raised when a local encoding is disabled.
-        */
-        addOnLocalEncodingDisabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
-        /**
-        Adds a handler that is raised when a local encoding is enabled.
-        */
-        addOnLocalEncodingEnabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
-        /**
-        Records the pending direction of this stream. The LocalDirection of this stream will be updated when the connection renegotiation commences.
-        */
-        changeDirection(newDirection: fm.icelink.StreamDirection): fm.icelink.Error;
-        /** @hidden */
-        extractCanonicalName(mediaDescription: fm.icelink.sdp.MediaDescription, isLocalDescription: boolean): void;
-        /**
-        Gets the canonical name. Getting the value of MediaStream.CanonicalName is deprecated. Get the value of MediaStream.LocalCanonicalName instead.
-        */
-        getCanonicalName(): string;
-        /**
-        Gets whether a codec is disabled.
-        @param name The codec name.
-        @return Whether the codec is disabled.
-        */
-        getCodecDisabled(name: string): boolean;
-        /**
-        Gets control transport info.
-        */
-        abstract getControlTransportInfo(): fm.icelink.TransportInfo;
-        /**
-        Gets the direction.
-        */
-        getDirection(): fm.icelink.StreamDirection;
-        /**
-        Gets the media stream info.
-        */
-        getInfo(): fm.icelink.MediaStreamInfo;
-        /**
-        Gets whether the input track is muted.
-        */
-        abstract getInputMuted(): boolean;
-        /**
-        Gets a label that identifies this class.
-        */
-        getLabel(): string;
-        /**
-        Gets the local bandwidth, in kbps.
-        */
-        getLocalBandwidth(): number;
-        /**
-        Gets the local canonical name.
-        */
-        getLocalCanonicalName(): string;
-        /**
-        Gets current direction indicated by the local description.
-        */
-        getLocalDirection(): fm.icelink.StreamDirection;
-        /**
-        Gets whether the input track is muted. Alias for [[fm.icelink.mediaStreamBase.inputMuted]].
-        */
-        getMuted(): boolean;
-        /**
-        Gets whether the output track is muted.
-        */
-        abstract getOutputMuted(): boolean;
-        /** @hidden */
-        getPendingLocalDirection(): fm.icelink.StreamDirection;
-        /**
-        Gets any preferred codecs, in order of preference.
-        */
-        getPreferredCodecs(): string[];
-        /**
-        Gets the remote bandwidth, in kbps.
-        */
-        getRemoteBandwidth(): number;
-        /**
-        Gets the remote canonical name.
-        */
-        getRemoteCanonicalName(): string;
-        /**
-        Gets current direction indicated by the remote description.
-        */
-        getRemoteDirection(): fm.icelink.StreamDirection;
-        /**
-        Gets the remote encoding.
-        */
-        getRemoteEncoding(): fm.icelink.EncodingInfo;
-        /**
-        Gets whether there exist changes that are pending SDP renegotiation.
-        */
-        protected getRenegotiationPending(): boolean;
-        /**
-        Gets the simulcast mode.
-        */
-        abstract getSimulcastMode(): fm.icelink.SimulcastMode;
-        /**
-        Populates the media stream info.
-        @param info
-        */
-        protected abstract populateInfo(info: fm.icelink.MediaStreamInfo): void;
-        /**
-        Raises the OnLocalEncodingDisabled event.
-        @param encoding The encoding.
-        */
-        protected raiseLocalEncodingDisabled(encoding: fm.icelink.EncodingInfo): void;
-        /**
-        Raises the OnLocalEncodingEnabled event.
-        @param encoding The encoding.
-        */
-        protected raiseLocalEncodingEnabled(encoding: fm.icelink.EncodingInfo): void;
-        /**
-        Removes a handler that is raised when a local encoding is disabled.
-        */
-        removeOnLocalEncodingDisabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
-        /**
-        Removes a handler that is raised when a local encoding is enabled.
-        */
-        removeOnLocalEncodingEnabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
-        /**
-        Sets whether a codec is disabled.
-        @param name The codec name.
-        @param disabled Whether to disable the codec.
-        */
-        setCodecDisabled(name: string, disabled: boolean): void;
-        /**
-        Sets whether the input track is muted.
-        */
-        abstract setInputMuted(value: boolean): void;
-        /**
-        Sets the local bandwidth, in kbps.
-        */
-        setLocalBandwidth(value: number): void;
-        /** @hidden */
-        setLocalCanonicalName(value: string): void;
-        /**
-        Sets current direction indicated by the local description.
-        */
-        setLocalDirection(value: fm.icelink.StreamDirection): void;
-        /**
-        Sets whether the input track is muted. Alias for [[fm.icelink.mediaStreamBase.inputMuted]].
-        */
-        setMuted(value: boolean): void;
-        /**
-        Sets whether the output track is muted.
-        */
-        abstract setOutputMuted(value: boolean): void;
-        /** @hidden */
-        setPendingLocalDirection(value: fm.icelink.StreamDirection): void;
-        /**
-        Sets any preferred codecs, in order of preference.
-        */
-        setPreferredCodecs(value: string[]): void;
-        /**
-        Sets the remote bandwidth, in kbps.
-        */
-        protected setRemoteBandwidth(value: number): void;
-        /** @hidden */
-        setRemoteCanonicalName(value: string): void;
-        /** @hidden */
-        setRemoteDirection(value: fm.icelink.StreamDirection): void;
-        /**
-        Sets the remote encoding.
-        */
-        setRemoteEncoding(value: fm.icelink.EncodingInfo): void;
-        /**
-        Sets whether there exist changes that are pending SDP renegotiation.
-        */
-        protected setRenegotiationPending(value: boolean): void;
-        /**
-        Sets the simulcast mode.
-        */
-        abstract setSimulcastMode(value: fm.icelink.SimulcastMode): void;
-    }
-}
-declare namespace fm.icelink {
-    abstract class WebRtcMediaStream<TTrack extends WebRtcMediaTrack> extends WebRtcMediaStreamBase implements IInternalMediaStream {
-        getTypeString(): string;
-        /** @hidden */
-        abstract _getExternal(): IExternalMediaStream;
-        /** @hidden */
-        private _localTrack;
-        getLocalTrack(): TTrack;
-        setLocalTrack(localTrack: TTrack): void;
-        /** @hidden */
-        private _remoteTrack;
-        getRemoteTrack(): TTrack;
-        setRemoteTrack(remoteTrack: TTrack): void;
-        setInputMuted(muted: boolean): void;
-        getInputMuted(): boolean;
-        setOutputMuted(muted: boolean): void;
-        getOutputMuted(): boolean;
-        constructor(external: IExternalMediaStream, localTrack: TTrack, remoteTrack: TTrack, type: StreamType);
-        /** @hidden */
-        private _maxVideoSize;
-        /** @hidden */
-        setMaxWidthAndHeight(width: number, height: number): void;
-        populateInfo(info: MediaStreamInfo): void;
-        /** @hidden */
-        private toFormatInfos;
-        /** @hidden */
-        private _sender;
-        /** @hidden */
-        getSender(): RTCRtpSender;
-        /** @hidden */
-        setSender(value: RTCRtpSender, applySendEncodings: boolean): void;
-        /** @hidden */
-        private _receiver;
-        /** @hidden */
-        getReceiver(): RTCRtpReceiver;
-        /** @hidden */
-        setReceiver(value: RTCRtpReceiver): void;
-        /** @hidden */
-        private _sendEncodings;
-        /** @hidden */
-        getSendEncodings(): EncodingConfig[];
-        /** @hidden */
-        setSendEncodings(sendEncodings: EncodingConfig[]): void;
-        /** @hidden */
-        private applySendEncodings;
-        /** @hidden */
-        private _receiveEncodings;
-        /** @hidden */
-        getReceiveEncodings(): EncodingConfig[];
-        /** @hidden */
-        setReceiveEncodings(receiveEncodings: EncodingConfig[]): void;
-        /** @hidden */
-        getNativeSendEncodings(): RTCRtpEncodingParameters[];
-        /** @hidden */
-        getSendEncodingInfos(): EncodingInfo[];
-        /** @hidden */
-        getReceiveEncodingInfos(): EncodingInfo[];
-        /** @hidden */
-        private updateNativeEncoding;
-        /** @hidden */
-        private updateEncodingInfo;
-        /** @hidden */
-        private getNativeTrack;
-        /** @hidden */
-        replaceLocalTrack(localTrack: TTrack): Future<object>;
-        /** @hidden */
-        replaceRemoteTrack(remoteTrack: TTrack): Future<object>;
-        processCachedChanges(): void;
-        resetRemoteDirection(): void;
-        processSdpMediaDescription(sdpMessage: sdp.Message, sdpMediaDescription: sdp.MediaDescription, index: number, isLocalDescription: boolean, isOffer: boolean, isRenegotiation: boolean): Error;
-        getDirectionCapabilities(): StreamDirection;
-        private _controlTransportInfo;
-        setControlTransportInfo(info: TransportInfo): void;
-        getControlTransportInfo(): TransportInfo;
-        private _simulcastMode;
-        getSimulcastMode(): SimulcastMode;
-        setSimulcastMode(value: SimulcastMode): void;
-    }
-}
-declare namespace fm.icelink {
-    class WebRtcAudioStream extends WebRtcMediaStream<WebRtcAudioTrack> implements IAudioStream, IInternalAudioStream {
-        getTypeString(): string;
-        /** @hidden */
-        private _dtmfSender;
-        /** @hidden */
-        private _onSendDtmfToneValues;
-        /** @hidden */
-        private _onSendDtmfToneChangeValues;
-        /** @hidden */
-        private _external;
-        /** @hidden */
-        _getExternal(): IExternalAudioStream;
-        constructor(external: IExternalAudioStream, localTrack: WebRtcAudioTrack, remoteTrack: WebRtcAudioTrack);
-        addOnReceiveDtmfTone(value: IAction1<dtmf.Tone>): void;
-        addOnReceiveDtmfToneChange(value: IAction1<dtmf.Tone>): void;
-        addOnSendDtmfTone(value: IAction1<dtmf.Tone>): void;
-        addOnSendDtmfToneChange(value: IAction1<dtmf.Tone>): void;
-        insertDtmfTone(dtmfTone: dtmf.Tone): boolean;
-        insertDtmfTones(dtmfTones: dtmf.Tone[]): boolean;
-        removeOnReceiveDtmfTone(value: IAction1<dtmf.Tone>): void;
-        removeOnReceiveDtmfToneChange(value: IAction1<dtmf.Tone>): void;
-        removeOnSendDtmfTone(value: IAction1<dtmf.Tone>): void;
-        removeOnSendDtmfToneChange(value: IAction1<dtmf.Tone>): void;
-        getOpusDisabled(): boolean;
-        getG722Disabled(): boolean;
-        getPcmuDisabled(): boolean;
-        getPcmaDisabled(): boolean;
-        setOpusDisabled(value: boolean): void;
-        setG722Disabled(value: boolean): void;
-        setPcmuDisabled(value: boolean): void;
-        setPcmaDisabled(value: boolean): void;
-    }
-}
-declare namespace fm.icelink {
-    /**
-    Media track base properties/methods.
-    */
-    abstract class WebRtcMediaTrackBase extends fm.icelink.Dynamic implements fm.icelink.IMediaTrack {
-        getTypeString(): string;
-        constructor();
-        /**
-        Adds a handler that is raised when the track is destroyed.
-        */
-        abstract addOnDestroyed(value: fm.icelink.IAction0): void;
-        /**
-        Adds a handler that is raised when the track is started. Only applicable for local media tracks.
-        */
-        abstract addOnStarted(value: fm.icelink.IAction0): void;
-        /**
-        Adds a handler that is raised when the track is stopped. Only applicable for local media tracks.
-        */
-        abstract addOnStopped(value: fm.icelink.IAction0): void;
-        /**
-        Changes the sink output while the media track is active.
-        @param sinkOutput The sink output.
-        */
-        abstract changeSinkOutput(sinkOutput: fm.icelink.SinkOutput): fm.icelink.Future<Object>;
-        /**
-        Changes the source input while the media track is active.
-        @param sourceInput The source input.
-        */
-        abstract changeSourceInput(sourceInput: fm.icelink.SourceInput): fm.icelink.Future<Object>;
-        /**
-        Destroys this media track.
-        */
-        abstract destroy(): boolean;
-        /**
-        Gets a value indicating whether this track is muted.
-        */
-        abstract getMuted(): boolean;
-        /**
-        Gets the current sink output.
-        */
-        abstract getSinkOutput(): fm.icelink.SinkOutput;
-        /**
-        Gets the available sink outputs.
-        @return
-                    A future with an array of sink outputs.
-            
-        */
-        abstract getSinkOutputs(): fm.icelink.Future<fm.icelink.SinkOutput[]>;
-        /**
-        Gets the current source input.
-        */
-        abstract getSourceInput(): fm.icelink.SourceInput;
-        /**
-        Gets the available source inputs.
-        @return
-                    A future with an array of source inputs.
-            
-        */
-        abstract getSourceInputs(): fm.icelink.Future<fm.icelink.SourceInput[]>;
-        /**
-        Removes a handler that is raised when the track is destroyed.
-        */
-        abstract removeOnDestroyed(value: fm.icelink.IAction0): void;
-        /**
-        Removes a handler that is raised when the track is started. Only applicable for local media tracks.
-        */
-        abstract removeOnStarted(value: fm.icelink.IAction0): void;
-        /**
-        Removes a handler that is raised when the track is stopped. Only applicable for local media tracks.
-        */
-        abstract removeOnStopped(value: fm.icelink.IAction0): void;
-        /**
-        Sets a value indicating whether this track is muted.
-        */
-        abstract setMuted(value: boolean): void;
-        /**
-        Sets the current sink output.
-        */
-        abstract setSinkOutput(value: fm.icelink.SinkOutput): void;
-        /**
-        Sets the current source input.
-        */
-        abstract setSourceInput(value: fm.icelink.SourceInput): void;
-    }
-}
-interface MediaStreamTrack {
-}
-declare var MediaStreamTrack: {
-    prototype: MediaStreamTrack;
-    new (): MediaStreamTrack;
-};
-declare namespace fm.icelink {
-    abstract class WebRtcMediaTrack extends WebRtcMediaTrackBase implements IMediaTrack, IInternalMediaTrack {
-        getTypeString(): string;
-        addOnStarted(value: IAction0): void;
-        addOnStopped(value: IAction0): void;
-        addOnDestroyed(value: IAction0): void;
-        removeOnStarted(value: IAction0): void;
-        removeOnStopped(value: IAction0): void;
-        removeOnDestroyed(value: IAction0): void;
-        getMedia(): WebRtcMedia<WebRtcAudioTrack, WebRtcVideoTrack>;
-        constructor(external: IExternalMediaTrack, media: WebRtcMedia<WebRtcAudioTrack, WebRtcVideoTrack>);
-        private _muted;
-        getMuted(): boolean;
-        setMuted(muted: boolean): void;
-        getOnEnded(): EventListener;
-        setOnEnded(onEnded: EventListener): void;
-        stop(): void;
-        destroy(): boolean;
-        private raiseOnStopped;
-    }
-}
-declare namespace fm.icelink {
-    class WebRtcAudioTrack extends WebRtcMediaTrack implements IAudioTrack, IInternalAudioTrack {
-        getTypeString(): string;
-        constructor(external: IExternalAudioTrack, media: WebRtcMedia<WebRtcAudioTrack, WebRtcVideoTrack>);
-        private isLocal;
-        changeSinkOutput(sinkOutput: SinkOutput): Future<Object>;
-        getSinkOutput(): SinkOutput;
-        getSinkOutputs(): Future<SinkOutput[]>;
-        setSinkOutput(value: SinkOutput): void;
-        changeSourceInput(sourceInput: SourceInput): Future<Object>;
-        getSourceInput(): SourceInput;
-        getSourceInputs(): Future<SourceInput[]>;
-        setSourceInput(value: SourceInput): void;
-        addOnLevel(value: IAction1<number>): void;
-        getGain(): number;
-        getVolume(): number;
-        removeOnLevel(value: IAction1<number>): void;
-        setGain(value: number): void;
-        setVolume(value: number): void;
-    }
-}
-declare namespace fm.icelink {
-    /**
-    Connection base properties/methods.
-    */
-    abstract class WebRtcConnectionBase<TConnection extends fm.icelink.WebRtcConnectionBase<TConnection, TStream, TAudioStream, TVideoStream, TDataStream, TDataChannel>, TStream extends fm.icelink.WebRtcStreamBase, TAudioStream extends fm.icelink.IAudioStream, TVideoStream extends fm.icelink.IVideoStream, TDataStream extends fm.icelink.IDataStream<TDataChannel>, TDataChannel extends fm.icelink.IDataChannel<TDataChannel>> extends fm.icelink.Dynamic implements fm.icelink.IConnection<TConnection, TStream, TAudioStream, TVideoStream, TDataStream> {
-        getTypeString(): string;
-        /** @hidden */
-        private __bundlePolicy;
-        /** @hidden */
-        private __closed;
-        /** @hidden */
-        private __connected;
-        /** @hidden */
-        private __externalId;
-        /** @hidden */
-        private __failed;
-        /** @hidden */
-        private __iceServers;
-        /** @hidden */
-        private __id;
-        /** @hidden */
-        private __onExternalIdChange;
-        /** @hidden */
-        private __onGatheringStateChange;
-        /** @hidden */
-        private __onIceConnectionStateChange;
-        /** @hidden */
-        private __onLocalCandidate;
-        /** @hidden */
-        private __onLocalDescription;
-        /** @hidden */
-        private __onRemoteCandidate;
-        /** @hidden */
-        private __onRemoteDescription;
-        /** @hidden */
-        private __onSignallingStateChange;
-        /** @hidden */
-        private __onStateChange;
-        /** @hidden */
-        private __signallingState;
-        /** @hidden */
-        private __stateMachine;
-        /** @hidden */
-        private __trickleIcePolicy;
-        /** @hidden */
-        private __useTrickleIce;
-        /** @hidden */
-        _connectionLock: Object;
-        /** @hidden */
-        private _deadStreamTimeout;
-        /** @hidden */
-        private _earlyRemoteCandidatePromises;
-        /** @hidden */
-        private _error;
-        /** @hidden */
-        private _iceGatherPolicy;
-        /** @hidden */
-        private _legacyTimeout;
-        /** @hidden */
-        private _onExternalIdChange;
-        /** @hidden */
-        private _onGatheringStateChange;
-        /** @hidden */
-        private _onIceConnectionStateChange;
-        /** @hidden */
-        private _onLocalCandidate;
-        /** @hidden */
-        private _onLocalDescription;
-        /** @hidden */
-        private _onRemoteCandidate;
-        /** @hidden */
-        private _onRemoteDescription;
-        /** @hidden */
-        private _onSignallingStateChange;
-        /** @hidden */
-        private _onStateChange;
-        /** @hidden */
-        private _tieBreaker;
-        /** @hidden */
-        private _timeout;
-        private fmicelinkWebRtcConnectionBaseInit;
-        /**
-        Initializes a new instance of the [[fm.icelink.connectionBase]] class.
-        */
-        constructor(sharedLock: Object);
-        /**
-        Adds an ICE server.
-        @param iceServer The ICE server.
-        */
-        addIceServer(iceServer: fm.icelink.IceServer): void;
-        /**
-        Adds some ICE servers.
-        @param iceServers The ICE servers.
-        */
-        addIceServers(iceServers: fm.icelink.IceServer[]): void;
-        /**
-        Adds a handler that is raised when external Id of this connection changes. Old external Id as well as internal Id are raised.
-        */
-        addOnExternalIdChange(value: fm.icelink.IAction2<string, string>): void;
-        /**
-        Adds a handler that is raised when the gathering state changes.
-        */
-        addOnGatheringStateChange(value: fm.icelink.IAction1<TConnection>): void;
-        /**
-        Adds a handler that is raised when the ice connection state changes.
-        */
-        addOnIceConnectionStateChange(value: fm.icelink.IAction1<TConnection>): void;
-        /**
-        Adds a handler that is raised when a local candidate is added.
-        */
-        addOnLocalCandidate(value: fm.icelink.IAction2<TConnection, fm.icelink.Candidate>): void;
-        /**
-        Adds a handler that is raised when a local description is set.
-        */
-        addOnLocalDescription(value: fm.icelink.IAction2<TConnection, fm.icelink.SessionDescription>): void;
-        /**
-        Adds a handler that is raised when a remote description is added.
-        */
-        addOnRemoteCandidate(value: fm.icelink.IAction2<TConnection, fm.icelink.Candidate>): void;
-        /**
-        Adds a handler that is raised when a remote description is set.
-        */
-        addOnRemoteDescription(value: fm.icelink.IAction2<TConnection, fm.icelink.SessionDescription>): void;
-        /**
-        Adds a handler that is raised when the signalling state changes.
-        */
-        addOnSignallingStateChange(value: fm.icelink.IAction1<TConnection>): void;
-        /**
-        Adds a handler that is raised when the connection state changes.
-        */
-        addOnStateChange(value: fm.icelink.IAction1<TConnection>): void;
-        /**
-        Adds the remote candidate.
-        @param remoteCandidate The remote candidate.
-        */
-        addRemoteCandidate(remoteCandidate: fm.icelink.Candidate): fm.icelink.Future<fm.icelink.Candidate>;
-        /** @hidden */
-        private addRemoteCandidatePromise;
-        /**
-        Closes this instance.
-        */
-        abstract close(): boolean;
-        /**
-        Creates an answer.
-        */
-        createAnswer(): fm.icelink.Future<fm.icelink.SessionDescription>;
-        /** @hidden */
-        private createAnswerWrapper;
-        /**
-        Creates an offer.
-        */
-        createOffer(): fm.icelink.Future<fm.icelink.SessionDescription>;
-        /** @hidden */
-        private createOfferWrapper;
-        /**
-        Adds the remote candidate.
-        @param promise The promise.
-        @param remoteCandidate The remote candidate.
-        */
-        protected abstract doAddRemoteCandidate(promise: fm.icelink.Promise<fm.icelink.Candidate>, remoteCandidate: fm.icelink.Candidate): void;
-        /**
-        Creates an answer.
-        */
-        protected abstract doCreateAnswer(promise: fm.icelink.Promise<fm.icelink.SessionDescription>): void;
-        /**
-        Creates an offer.
-        */
-        protected abstract doCreateOffer(promise: fm.icelink.Promise<fm.icelink.SessionDescription>): boolean;
-        /**
-        Processes a session description.
-        @param description The session description.
-        @param isLocalDescription Whether this is a local session description.
-        */
-        protected doProcessDescription(description: fm.icelink.SessionDescription, isLocalDescription: boolean): fm.icelink.Error;
-        /**
-        Dispatches cached local candidates that were gathered while Connection generated session description.
-        */
-        protected abstract doSendCachedLocalCandidates(): void;
-        /**
-        Sets the local description.
-        @param promise The promise.
-        @param localDescription The local description.
-        */
-        protected abstract doSetLocalDescription(promise: fm.icelink.Promise<fm.icelink.SessionDescription>, localDescription: fm.icelink.SessionDescription): void;
-        /** @hidden */
-        private doSetLocalDescriptionInternal;
-        /**
-        Sets the remote description.
-        @param promise The promise.
-        @param remoteDescription The remote description.
-        */
-        protected abstract doSetRemoteDescription(promise: fm.icelink.Promise<fm.icelink.SessionDescription>, remoteDescription: fm.icelink.SessionDescription): void;
-        /** @hidden */
-        private doSetRemoteDescriptionInternal;
-        /**
-        Gets the first audio stream.
-        */
-        getAudioStream(): TAudioStream;
-        /**
-        Gets the audio streams.
-        */
-        abstract getAudioStreams(): TAudioStream[];
-        /**
-        Gets the bundle policy.
-        */
-        getBundlePolicy(): fm.icelink.BundlePolicy;
-        /**
-        Gets the canonical name. Getting the value of Connection.CanonicalName is deprecated. Get the value of MediaStream.LocalCanonicalName instead.
-        */
-        getCanonicalName(): string;
-        /**
-        Gets a future that resolves if the connection enters the Closed state or rejects if the connection enters the Failed state before that happens.
-        */
-        getClosed(): fm.icelink.Future<Object>;
-        /**
-        Gets a future that resolves if the connection enters the Connected state or rejects if the connection enters the Failed state before that happens.
-        */
-        getConnected(): fm.icelink.Future<Object>;
-        /** @hidden */
-        getConnectionWideCanonicalName(): string;
-        /**
-        Gets the first data stream.
-        */
-        getDataStream(): TDataStream;
-        /**
-        Gets the data streams.
-        */
-        abstract getDataStreams(): TDataStream[];
-        /**
-        Gets the amount of time (in milliseconds) to wait for connectivity checks to re-establish after they start to fail on a live connection. Defaults to 15,000.
-        */
-        getDeadStreamTimeout(): number;
-        /**
-        Gets the error.
-        */
-        getError(): fm.icelink.Error;
-        /**
-        Gets the external identifier.
-        */
-        getExternalId(): string;
-        /**
-        Gets a future that resolves if the connection enters the Failed state or rejects if the connection enters the Closed state before that happens.
-        */
-        getFailed(): fm.icelink.Future<Object>;
-        /**
-        Gets the ICE gathering state.
-        */
-        abstract getGatheringState(): fm.icelink.IceGatheringState;
-        /**
-        Gets whether this connection has an audio stream.
-        */
-        getHasAudio(): boolean;
-        /**
-        Gets whether this connection has a data stream.
-        */
-        getHasData(): boolean;
-        /**
-        Gets whether this connection has a video stream.
-        */
-        getHasVideo(): boolean;
-        /**
-        Gets the ICE connection state.
-        */
-        abstract getIceConnectionState(): fm.icelink.IceConnectionState;
-        /**
-        Gets the ICE gather policy.
-        */
-        getIceGatherPolicy(): fm.icelink.IceGatherPolicy;
-        /**
-        Gets the ICE server.
-        */
-        getIceServer(): fm.icelink.IceServer;
-        /**
-        Gets the ICE servers.
-        */
-        getIceServers(): fm.icelink.IceServer[];
-        /**
-        Gets the identifier.
-        */
-        getId(): string;
-        /**
-        Gets the current instance.
-        */
-        protected abstract getInstance(): TConnection;
-        /**
-        Gets a value indicating whether the connection is currently closed or failed.
-        */
-        getIsTerminated(): boolean;
-        /**
-        Gets a value indicating whether the connection is currently closing or failing.
-        */
-        getIsTerminating(): boolean;
-        /**
-        Gets a value indicating whether the connection is currently closing, failing, closed, or failed.
-        */
-        getIsTerminatingOrTerminated(): boolean;
-        /**
-        Gets a value indicating whether legacy Connection.Timeout should be used. When disabled, Connection.Timeout only accounts for the time spent trying to establish connectivity (i.e. time it takes to transition from the Connecting to the Connected state; from the time point when both offer and answer had been set to the connection being fully established). When enabled, Connection.Timeout accounts for the time spent from receiving an offer (or creating an offer) to establishing connectivity (i.e. time it takes to transition from Initializing to Connected state). By default, LegacyTimeout is set to true, so that existing behavior is preserved. However, in the future default will be updated to false. This means that IL will not account for any signalling delays that may occur while establishing connectivity. This option will be later deprecated.
-        */
-        getLegacyTimeout(): boolean;
-        /**
-        Gets the local description.
-        */
-        abstract getLocalDescription(): fm.icelink.SessionDescription;
-        /**
-        Gets the remote description.
-        */
-        abstract getRemoteDescription(): fm.icelink.SessionDescription;
-        /** @hidden */
-        abstract getSessionDescriptionManager(): fm.icelink.SessionDescriptionManagerBase<TStream, TAudioStream, TVideoStream, TDataStream, TDataChannel>;
-        /**
-        Gets the state of the signalling.
-        */
-        getSignallingState(): fm.icelink.SignallingState;
-        /**
-        Gets the state of the connection.
-        */
-        getState(): fm.icelink.ConnectionState;
-        /**
-        Gets the current connection stats.
-        */
-        abstract getStats(): fm.icelink.Future<fm.icelink.ConnectionStats>;
-        /**
-        Gets the first stream.
-        */
-        getStream(): TStream;
-        /**
-        Gets the streams.
-        */
-        abstract getStreams(): TStream[];
-        /**
-        Gets the tie breaker.
-        */
-        getTieBreaker(): string;
-        /**
-        Gets the amount of time (in milliseconds) to wait for a connection to establish before giving up and closing it. Defaults to 30,000.
-        */
-        getTimeout(): number;
-        /**
-        Gets Trickle Ice Support Policy. Cf. https://tools.ietf.org/html/draft-ietf-ice-trickle-05
-        */
-        getTrickleIcePolicy(): fm.icelink.TrickleIcePolicy;
-        /** @hidden */
-        getUseTrickleIce(): boolean;
-        /**
-        Gets the first video stream.
-        */
-        getVideoStream(): TVideoStream;
-        /**
-        Gets the video streams.
-        */
-        abstract getVideoStreams(): TVideoStream[];
-        /** @hidden */
-        private logInvalidStateTransition;
-        /**
-        Processes a session description.
-        @param description The session description.
-        @param isLocalDescription Whether this is a local session description.
-        */
-        protected processDescription(description: fm.icelink.SessionDescription, isLocalDescription: boolean): fm.icelink.Error;
-        /**
-        Processes a state change.
-        */
-        protected processStateChange(): void;
-        /** @hidden */
-        raiseCachedCandidates(): void;
-        /** @hidden */
-        private raiseConnected;
-        /**
-        Raises gathering state change.
-        */
-        protected raiseGatheringStateChange(connection: TConnection): void;
-        /**
-        Raises ICE connection state change.
-        */
-        protected raiseIceConnectionStateChange(connection: TConnection): void;
-        /**
-        Raises a local candidate but only if it has not been already raised.
-        @param localCandidate The local candidate.
-        */
-        protected raiseLocalCandidate(localCandidate: fm.icelink.Candidate): void;
-        /** @hidden */
-        private raiseLocalDescription;
-        /** @hidden */
-        private raiseRemoteCandidate;
-        /** @hidden */
-        private raiseRemoteDescription;
-        /** @hidden */
-        private raiseStateChange;
-        /** @hidden */
-        private raiseTerminated;
-        /** @hidden */
-        registerStreamWithSessionDescriptionManager(stream: TStream): void;
-        /**
-        Removes an ICE server.
-        @param iceServer The ICE server.
-        */
-        removeIceServer(iceServer: fm.icelink.IceServer): void;
-        /**
-        Removes some ICE servers.
-        @param iceServers The ICE servers.
-        */
-        removeIceServers(iceServers: fm.icelink.IceServer[]): void;
-        /**
-        Removes a handler that is raised when external Id of this connection changes. Old external Id as well as internal Id are raised.
-        */
-        removeOnExternalIdChange(value: fm.icelink.IAction2<string, string>): void;
-        /**
-        Removes a handler that is raised when the gathering state changes.
-        */
-        removeOnGatheringStateChange(value: fm.icelink.IAction1<TConnection>): void;
-        /**
-        Removes a handler that is raised when the ice connection state changes.
-        */
-        removeOnIceConnectionStateChange(value: fm.icelink.IAction1<TConnection>): void;
-        /**
-        Removes a handler that is raised when a local candidate is added.
-        */
-        removeOnLocalCandidate(value: fm.icelink.IAction2<TConnection, fm.icelink.Candidate>): void;
-        /**
-        Removes a handler that is raised when a local description is set.
-        */
-        removeOnLocalDescription(value: fm.icelink.IAction2<TConnection, fm.icelink.SessionDescription>): void;
-        /**
-        Removes a handler that is raised when a remote description is added.
-        */
-        removeOnRemoteCandidate(value: fm.icelink.IAction2<TConnection, fm.icelink.Candidate>): void;
-        /**
-        Removes a handler that is raised when a remote description is set.
-        */
-        removeOnRemoteDescription(value: fm.icelink.IAction2<TConnection, fm.icelink.SessionDescription>): void;
-        /**
-        Removes a handler that is raised when the signalling state changes.
-        */
-        removeOnSignallingStateChange(value: fm.icelink.IAction1<TConnection>): void;
-        /**
-        Removes a handler that is raised when the connection state changes.
-        */
-        removeOnStateChange(value: fm.icelink.IAction1<TConnection>): void;
-        /**
-        Sets the bundle policy.
-        */
-        setBundlePolicy(value: fm.icelink.BundlePolicy): void;
-        /**
-        Sets the amount of time (in milliseconds) to wait for connectivity checks to re-establish after they start to fail on a live connection. Defaults to 15,000.
-        */
-        setDeadStreamTimeout(value: number): void;
-        /**
-        Sets the error.
-        */
-        setError(value: fm.icelink.Error): void;
-        /**
-        Sets the external identifier.
-        */
-        setExternalId(value: string): void;
-        /**
-        Sets the ICE gathering state.
-        */
-        protected abstract setGatheringState(value: fm.icelink.IceGatheringState): void;
-        /**
-        Sets the ICE connection state.
-        */
-        protected abstract setIceConnectionState(value: fm.icelink.IceConnectionState): void;
-        /**
-        Sets the ICE gather policy.
-        */
-        setIceGatherPolicy(value: fm.icelink.IceGatherPolicy): void;
-        /**
-        Sets the ICE server.
-        */
-        setIceServer(value: fm.icelink.IceServer): void;
-        /**
-        Sets the ICE servers.
-        */
-        setIceServers(value: fm.icelink.IceServer[]): void;
-        /**
-        Sets a value indicating whether legacy Connection.Timeout should be used. When disabled, Connection.Timeout only accounts for the time spent trying to establish connectivity (i.e. time it takes to transition from the Connecting to the Connected state; from the time point when both offer and answer had been set to the connection being fully established). When enabled, Connection.Timeout accounts for the time spent from receiving an offer (or creating an offer) to establishing connectivity (i.e. time it takes to transition from Initializing to Connected state). By default, LegacyTimeout is set to true, so that existing behavior is preserved. However, in the future default will be updated to false. This means that IL will not account for any signalling delays that may occur while establishing connectivity. This option will be later deprecated.
-        */
-        setLegacyTimeout(value: boolean): void;
-        /**
-        Sets the local description.
-        @param localDescription The local description.
-        */
-        setLocalDescription(localDescription: fm.icelink.SessionDescription): fm.icelink.Future<fm.icelink.SessionDescription>;
-        /** @hidden */
-        private setLocalDescriptionInternal;
-        /**
-        Sets the remote description.
-        @param remoteDescription The remote description.
-        */
-        setRemoteDescription(remoteDescription: fm.icelink.SessionDescription): fm.icelink.Future<fm.icelink.SessionDescription>;
-        /** @hidden */
-        private setRemoteDescriptionInternal;
-        /** @hidden */
-        abstract setSessionDescriptionManager(value: fm.icelink.SessionDescriptionManagerBase<TStream, TAudioStream, TVideoStream, TDataStream, TDataChannel>): void;
-        /**
-        Sets the state of the signalling.
-        */
-        protected setSignallingState(value: fm.icelink.SignallingState): void;
-        /** @hidden */
-        setState(state: fm.icelink.ConnectionState): boolean;
-        /** @hidden */
-        setState(state: fm.icelink.ConnectionState, error: fm.icelink.Error): boolean;
-        /**
-        Sets the tie breaker.
-        */
-        setTieBreaker(value: string): void;
-        /**
-        Sets the amount of time (in milliseconds) to wait for a connection to establish before giving up and closing it. Defaults to 30,000.
-        */
-        setTimeout(value: number): void;
-        /**
-        Sets Trickle Ice Support Policy. Cf. https://tools.ietf.org/html/draft-ietf-ice-trickle-05
-        */
-        setTrickleIcePolicy(value: fm.icelink.TrickleIcePolicy): void;
-        /** @hidden */
-        setUseTrickleIce(value: boolean): void;
-        /** @hidden */
-        unregisterStreamWithSessionDescriptionManager(stream: TStream): void;
-        /** @hidden */
-        updateBundlePolicy(policy: fm.icelink.BundlePolicy): void;
-        /** @hidden */
-        updateRemoteCandidateIndex(candidate: fm.icelink.Candidate): void;
-        /** @hidden */
-        private verifySessionIdAndVersion;
-    }
-}
-declare function makeMediaStream(): MediaStream;
-declare namespace fm.icelink {
-    class WebRtcConnection extends WebRtcConnectionBase<WebRtcConnection, WebRtcStream, WebRtcAudioStream, WebRtcVideoStream, WebRtcDataStream, WebRtcDataChannel> implements IInternalConnection {
-        getTypeString(): string;
-        /** @hidden */
-        private _external;
-        /** @hidden */
-        _getExternal(): IExternalConnection;
-        /** @hidden */
-        private _streams;
-        /** @hidden */
-        private _mediaStreams;
-        /** @hidden */
-        private _audioStreams;
-        /** @hidden */
-        private _videoStreams;
-        /** @hidden */
-        private _dataStreams;
-        /** @hidden */
-        private _offerer;
-        /** @hidden */
-        private _initialized;
-        /** @hidden */
-        private _localDescription;
-        /** @hidden */
-        private _remoteDescription;
-        /** @hidden */
-        private _gatheringState;
-        /** @hidden */
-        private _iceConnectionState;
-        /** @hidden */
-        private _remoteMedia;
-        /** @hidden */
-        private _isRenegotiation;
-        getRemoteMedia(): WebRtcRemoteMedia;
-        /** @hidden */
-        private _nativePeerConnection;
-        getNativePeerConnection(): RTCPeerConnection;
-        /** @hidden */
-        private _discoveredCandidates;
-        private _remoteMediaTrackCount;
-        private _dataStreamsReady;
-        private _mediaStreamsReady;
-        /** @hidden */
-        private _nativeIceGatherers;
-        getNativeIceGatherers(): RTCIceGatherer[];
-        /** @hidden */
-        private _nativeIceTransports;
-        getNativeIceTransports(): RTCIceTransport[];
-        /** @hidden */
-        private _nativeDtlsTransports;
-        getNativeDtlsTransports(): RTCDtlsTransport[];
-        /** @hidden */
-        private _nativeRtpSenders;
-        getNativeRtpSenders(): RTCRtpSender[];
-        /** @hidden */
-        private _nativeRtpReceivers;
-        getNativeRtpReceivers(): RTCRtpReceiver[];
-        /** @hidden */
-        private _remoteNativeMediaStream;
-        /** @hidden */
-        private _rtpKinds;
-        /** @hidden */
-        private _ortcLocalDescription;
-        /** @hidden */
-        private _ortcRemoteDescription;
-        /** @hidden */
-        private _remoteCandidatesTimer;
-        /** @hidden */
-        private _remoteCandidatesDone;
-        /** @hidden */
-        private _transportsRemaining;
-        /** @hidden */
-        private _ortcSupportsTcp;
-        constructor(external: IExternalConnection, streams: WebRtcStream[], remoteMedia: WebRtcRemoteMedia);
-        getInstance(): WebRtcConnection;
-        private addStreamInternal;
-        private addStreamsInternal;
-        processStateChange(): void;
-        private startConnectionTimeout;
-        getStreams(): WebRtcStream[];
-        getMediaStreams(): WebRtcMediaStream<WebRtcMediaTrack>[];
-        getAudioStreams(): WebRtcAudioStream[];
-        getVideoStreams(): WebRtcVideoStream[];
-        getDataStreams(): WebRtcDataStream[];
-        getStats(): Future<ConnectionStats>;
-        private getMediaSenderStats;
-        private getMediaReceiverStats;
-        private getTransportStats;
-        private getCertificateStats;
-        private getCandidateStats;
-        private getCandidatePairStats;
-        private getCodecStats;
-        private getWebRTCBundlePolicyString;
-        private getMediaTrackStats;
-        private initialize;
-        private initializeTrack;
-        private validateCandidate;
-        private createIceGatherer;
-        private sessionDescriptionTypeToString;
-        private sessionDescriptionTypeToEnum;
-        private webrtcCandidateToCandidate;
-        private webrtcCandidateFromCandidate;
-        private webrtcSessionDescriptionToSessionDescription;
-        private webrtcSessionDescriptionFromSessionDescription;
-        private rtcCandidateToSdpCandidateAttribute;
-        private rtcCandidateFromSdpCandidateAttribute;
-        private ortcCandidateToCandidate;
-        private ortcCandidateFromCandidate;
-        private ortcSessionDescriptionToSessionDescription;
-        private ortcSessionDescriptionFromSessionDescription;
-        private applyMediaFormatParametersAttributes;
-        private applyMediaFeedbackAttributes;
-        /** @hidden */
-        private _iceCandidateProcessingTimeout;
-        /**<span id='method-fm.icelink.Connection-getIceCandidateProcessingTimeout'>&nbsp;</span>**/
-        /**
-         <div>
-         Gets the amount of time (in milliseconds) to wait
-         before halting gathering efforts for early candidates.
-         Only applies when TrickleIceSupport is set to NotSupported.
-         Defaults to 2000.
-         </div>
-
-
-        @return {number}
-        */
-        getIceCandidateProcessingTimeout(): number;
-        /**<span id='method-fm.icelink.ConnectionBase-setIceCandidateProcessingTimeout'>&nbsp;</span>**/
-        /**
-         <div>
-         Sets the amount of time (in milliseconds) to wait
-         before halting gathering efforts for early candidates.
-         Only applies when TrickleIceSupport is set to NotSupported.
-         Defaults to 1000.
-         </div>
-
-
-        @param {number} value
-        @return {void}
-        */
-        setIceCandidateProcessingTimeout(value: number): void;
-        protected doCreateOffer(promise: Promise<SessionDescription>): boolean;
-        protected doCreateAnswer(promise: Promise<SessionDescription>): void;
-        private processIceGatheringStateComplete;
-        private injectDiscoveredCandidatesIntoSdp;
-        private setNativeDescriptionSuccess;
-        private doCreate;
-        getLocalDescription(): SessionDescription;
-        getGatheringState(): IceGatheringState;
-        getIceConnectionState(): IceConnectionState;
-        protected setGatheringState(state: IceGatheringState): void;
-        protected setIceConnectionState(state: IceConnectionState): void;
-        getRemoteDescription(): SessionDescription;
-        /** @hidden */
-        private _sessionDescriptionManager;
-        /** @hidden */
-        getSessionDescriptionManager(): SessionDescriptionManager;
-        /** @hidden */
-        setSessionDescriptionManager(manager: SessionDescriptionManager): void;
-        private updateLocalDescription;
-        protected doSetLocalDescription(promise: Promise<SessionDescription>, localDescription: SessionDescription): void;
-        private processRemoteDescriptionOnRenegotiation;
-        private removeSdesAttributesIfNeeded;
-        protected doSetRemoteDescription(promise: Promise<SessionDescription>, remoteDescription: SessionDescription): void;
-        protected doSendCachedLocalCandidates(): void;
-        private startOrtc;
-        private startOrtcTrack;
-        private selectCodecs;
-        private selectEncodings;
-        private selectRtcp;
-        protected doAddRemoteCandidate(promise: Promise<Candidate>, remoteCandidate: Candidate): void;
-        private setRemoteCandidatesDoneTimer;
-        protected assignRemoteDescriptionInternal(sessionDescription: SessionDescription): void;
-        close(): boolean;
-        private doClose;
-        private dtmfSender;
-        getDtmfSender(): RTCDtmfSender;
-        replaceLocalTrack(localTrack: WebRtcMediaTrack, mediaStream: WebRtcMediaStream<WebRtcMediaTrack>): Future<object>;
-        replaceRemoteTrack(remoteTrack: WebRtcMediaTrack, mediaStream: WebRtcMediaStream<WebRtcMediaTrack>): Future<object>;
-        private getRtpSender;
-        private tryGetRtpSender;
-        /** @hidden */
-        private static __webRtcConnectionInitialized;
-        /** @hidden */
-        static webRtcConnectionInitialize(): void;
-    }
-}
-declare namespace fm.icelink {
-    /**
-    Data channel base properties/methods.
-    */
-    abstract class WebRtcDataChannelBase<TDataChannel> extends fm.icelink.Dynamic implements fm.icelink.IDataChannel<TDataChannel> {
-        getTypeString(): string;
-        /** @hidden */
-        private __bytesReceived;
-        /** @hidden */
-        private __bytesSent;
-        /** @hidden */
-        private __id;
-        /** @hidden */
-        private __messagesReceived;
-        /** @hidden */
-        private __messagesSent;
-        /** @hidden */
-        private __onDataReceived;
-        /** @hidden */
-        private __onDataSent;
-        /** @hidden */
-        private __onStateChange;
-        /** @hidden */
-        private __stateLock;
-        /** @hidden */
-        private __stateMachine;
-        /** @hidden */
-        private _connectionId;
-        /** @hidden */
-        private _getRemoteConnectionInfo;
-        /** @hidden */
-        private _label;
-        /** @hidden */
-        private _onDataReceived;
-        /** @hidden */
-        private _onDataSent;
-        /** @hidden */
-        private _onReceive;
-        /** @hidden */
-        private _onStateChange;
-        /** @hidden */
-        private _ordered;
-        /** @hidden */
-        private _streamId;
-        /** @hidden */
-        private _subprotocol;
-        private fmicelinkWebRtcDataChannelBaseInit;
-        /**
-        Initializes a new instance of the [[fm.icelink.dataChannelBase]] class.
-        @param label The label.
-        @param ordered Whether messages will be delivered in the order they are sent.
-        @param subprotocol The subprotocol.
-        */
-        constructor(label: string, ordered: boolean, subprotocol: string);
-        /** @hidden */
-        addOnDataReceived(value: fm.icelink.IAction1<number>): void;
-        /** @hidden */
-        addOnDataSent(value: fm.icelink.IAction1<number>): void;
-        /**
-        Adds a handler that is raised when the data channel state changes.
-        */
-        addOnStateChange(value: fm.icelink.IAction1<TDataChannel>): void;
-        /**
-        Gets the number of bytes received.
-        */
-        getBytesReceived(): number;
-        /**
-        Gets the number of bytes sent.
-        */
-        getBytesSent(): number;
-        /**
-        Gets the connection identifier.
-        */
-        getConnectionId(): string;
-        /** @hidden */
-        getGetRemoteConnectionInfo(): fm.icelink.IFunction1<string, Object>;
-        /**
-        Gets the identifier.
-        */
-        getId(): string;
-        /**
-        Gets the data channel info.
-        */
-        getInfo(): fm.icelink.DataChannelInfo;
-        /**
-        Gets the current instance.
-        */
-        protected abstract getInstance(): TDataChannel;
-        /**
-        Gets a value indicating whether the data channel is currently closed or failed.
-        */
-        getIsTerminated(): boolean;
-        /**
-        Gets a value indicating whether the data channel is currently closing.
-        */
-        getIsTerminating(): boolean;
-        /**
-        Gets a value indicating whether the data channel is currently closing, closed, or failed.
-        */
-        getIsTerminatingOrTerminated(): boolean;
-        /**
-        Gets the label.
-        */
-        getLabel(): string;
-        /**
-        Gets the number of messages received.
-        */
-        getMessagesReceived(): number;
-        /**
-        Gets the number of messages sent.
-        */
-        getMessagesSent(): number;
-        /**
-        Gets the callback to execute when a message is received.
-        */
-        getOnReceive(): fm.icelink.IAction1<fm.icelink.DataChannelReceiveArgs>;
-        /**
-        Gets a value indicating whether messages will be delivered in the order they are sent.
-        */
-        getOrdered(): boolean;
-        /**
-        Gets the state.
-        */
-        getState(): fm.icelink.DataChannelState;
-        /** @hidden */
-        getStateLock(): Object;
-        /**
-        Gets the stream identifier.
-        */
-        getStreamId(): string;
-        /**
-        Gets the subprotocol.
-        */
-        getSubprotocol(): string;
-        /** @hidden */
-        private logInvalidStateTransition;
-        /** @hidden */
-        prepareAndSendMessage(buffer: fm.icelink.DataBuffer, promise: fm.icelink.Promise<Object>): void;
-        /** @hidden */
-        prepareAndSendMessage(msg: string, promise: fm.icelink.Promise<Object>): void;
-        /**
-        Processes a state change.
-        */
-        protected processStateChange(): void;
-        /**
-        Processes a state lock change.
-        */
-        protected processStateLockChange(): void;
-        /** @hidden */
-        abstract promisedSendDataBytes(dataBytes: fm.icelink.DataBuffer, dataLength: number, promise: fm.icelink.Promise<Object>): void;
-        /** @hidden */
-        abstract promisedSendDataString(dataString: string, dataLength: number, promise: fm.icelink.Promise<Object>): void;
-        /**
-        Raises the OnReceive callback with data bytes.
-        @param dataBytes The data bytes.
-        */
-        protected raiseDataBytes(dataBytes: fm.icelink.DataBuffer): void;
-        /**
-        Raises the OnReceive callback with a data string.
-        @param dataString The data string.
-        */
-        protected raiseDataString(dataString: string): void;
-        /** @hidden */
-        private raiseStateChange;
-        /**
-        Registers that a data has been sent.
-        @param dataLength The data length.
-        */
-        protected registerDataReceived(dataLength: number): void;
-        /**
-        Registers that a data has been sent.
-        @param dataLength The data length.
-        */
-        protected registerDataSent(dataLength: number): void;
-        /** @hidden */
-        removeOnDataReceived(value: fm.icelink.IAction1<number>): void;
-        /** @hidden */
-        removeOnDataSent(value: fm.icelink.IAction1<number>): void;
-        /**
-        Removes a handler that is raised when the data channel state changes.
-        */
-        removeOnStateChange(value: fm.icelink.IAction1<TDataChannel>): void;
-        /**
-        Sends some bytes.
-        @param dataBytes The data bytes.
-        */
-        abstract sendDataBytes(dataBytes: fm.icelink.DataBuffer): fm.icelink.Future<Object>;
-        /**
-        Sends a string.
-        @param dataString The data string.
-        */
-        abstract sendDataString(dataString: string): fm.icelink.Future<Object>;
-        /** @hidden */
-        setConnectionId(value: string): void;
-        /** @hidden */
-        setGetRemoteConnectionInfo(value: fm.icelink.IFunction1<string, Object>): void;
-        /** @hidden */
-        private setLabel;
-        /**
-        Sets the callback to execute when a message is received.
-        */
-        setOnReceive(value: fm.icelink.IAction1<fm.icelink.DataChannelReceiveArgs>): void;
-        /** @hidden */
-        private setOrdered;
-        /** @hidden */
-        setState(state: fm.icelink.DataChannelState): boolean;
-        /** @hidden */
-        setStateLock(value: Object): void;
-        /** @hidden */
-        setStreamId(value: string): void;
-        /** @hidden */
-        private setSubprotocol;
-    }
-}
-declare namespace fm.icelink {
-    class WebRtcDataChannel extends WebRtcDataChannelBase<WebRtcDataChannel> implements IInternalDataChannel {
-        getTypeString(): string;
-        /** @hidden */
-        private _external;
-        /** @hidden */
-        _getExternal(): IExternalDataChannel;
-        /** @hidden */
-        private sendQueue;
-        /** @hidden */
-        private _nativeDataChannel;
-        getNativeDataChannel(): any;
-        setNativeDataChannel(nativeDataChannel: any): void;
-        constructor(external: IExternalDataChannel, label: string, ordered?: boolean, subprotocol?: string);
-        getInstance(): WebRtcDataChannel;
-        sendDataString(dataString: string): fm.icelink.Future<Object>;
-        /** @hidden */
-        promisedSendDataBytes(dataBytes: fm.icelink.DataBuffer, dataLength: number, promise: fm.icelink.Promise<Object>): void;
-        /** @hidden */
-        promisedSendDataString(dataString: string, dataLength: number, promise: fm.icelink.Promise<Object>): void;
-        sendDataBytes(dataBytes: DataBuffer): fm.icelink.Future<Object>;
-    }
-}
-declare namespace fm.icelink {
-    /**
-    Data stream base properties/methods.
-    */
-    abstract class WebRtcDataStreamBase<TDataChannel extends fm.icelink.WebRtcDataChannelBase<TDataChannel>> extends fm.icelink.WebRtcStream implements fm.icelink.IDataStream<TDataChannel>, fm.icelink.IStream {
-        getTypeString(): string;
-        /** @hidden */
-        private __bytesReceived;
-        /** @hidden */
-        private __bytesSent;
-        /** @hidden */
-        private __getRemoteConnectionInfo;
-        /** @hidden */
-        private __messagesReceived;
-        /** @hidden */
-        private __messagesSent;
-        /** @hidden */
-        private __obsoleteCanonicalName;
-        /**
-        Initializes a new instance of the [[fm.icelink.dataStreamBase]] class.
-        */
-        constructor();
-        /**
-        Attaches a data channel to this stream (events and IDs).
-        @param channel
-        */
-        protected attachToChannel(channel: TDataChannel): void;
-        /**
-        Changes this stream's direction
-        */
-        changeDirection(newDirection: fm.icelink.StreamDirection): fm.icelink.Error;
-        /**
-        Gets the number of bytes received.
-        */
-        getBytesReceived(): number;
-        /**
-        Gets the number of bytes sent.
-        */
-        getBytesSent(): number;
-        /**
-        Gets the canonical name. Getting the value of DataStream.CanonicalName is deprecated and will be removed in a future release.
-        */
-        getCanonicalName(): string;
-        /**
-        Gets the channels.
-        */
-        abstract getChannels(): TDataChannel[];
-        /**
-        Gets the current direction.
-        */
-        getDirection(): fm.icelink.StreamDirection;
-        /** @hidden */
-        getDirectionCapabilities(): fm.icelink.StreamDirection;
-        /** @hidden */
-        getGetRemoteConnectionInfo(): fm.icelink.IFunction1<string, Object>;
-        /**
-        Gets the data stream info.
-        */
-        getInfo(): fm.icelink.DataStreamInfo;
-        /**
-        Gets a label that identifies this class.
-        */
-        getLabel(): string;
-        /**
-        Gets the current direction.
-        */
-        getLocalDirection(): fm.icelink.StreamDirection;
-        /**
-        Gets the number of messages received.
-        */
-        getMessagesReceived(): number;
-        /**
-        Gets the number of messages sent.
-        */
-        getMessagesSent(): number;
-        /**
-        Gets the current direction.
-        */
-        getRemoteDirection(): fm.icelink.StreamDirection;
-        /**
-        Processes a state change.
-        */
-        protected processStateChange(): void;
-        /**
-        Processes a state lock change.
-        */
-        protected processStateLockChange(): void;
-        /**
-        Registers that a data has been received.
-        @param dataLength The data length.
-        */
-        protected registerDataReceived(dataLength: number): void;
-        /**
-        Registers that a data has been received.
-        @param dataLength The data length.
-        */
-        protected registerDataSent(dataLength: number): void;
-        /** @hidden */
-        setCanonicalName(canonicalName: string): void;
-        /** @hidden */
-        setGetRemoteConnectionInfo(value: fm.icelink.IFunction1<string, Object>): void;
-        /**
-        Sets the current direction.
-        */
-        setLocalDirection(value: fm.icelink.StreamDirection): void;
-        /** @hidden */
-        setRemoteDirection(value: fm.icelink.StreamDirection): void;
-    }
-}
-declare namespace fm.icelink {
-    class WebRtcDataStream extends WebRtcDataStreamBase<WebRtcDataChannel> implements IInternalDataStream {
-        getTypeString(): string;
-        processSdpMediaDescription(sdpMessage: sdp.Message, sdpMediaDescription: sdp.MediaDescription, index: number, isLocalDescription: boolean, isOffer: boolean, isRenegotiation: boolean): Error;
-        /** @hidden */
-        private _external;
-        /** @hidden */
-        _getExternal(): IExternalDataStream;
-        /** @hidden */
-        private _channels;
-        constructor(external: IExternalDataStream, channels: WebRtcDataChannel[]);
-        getChannels(): WebRtcDataChannel[];
-    }
-}
-declare namespace fm.icelink {
-    class WebRtcDomAudioSink extends Dynamic implements /*ISoundSink<HTMLElement>,*/ IInternal<DomAudioSink> {
-        getTypeString(): string;
-        getTrack(): WebRtcAudioTrack;
-        getLocal(): boolean;
-        getAudio(): HTMLAudioElement;
-        getVolume(): number;
-        setVolume(volume: number): void;
-        getMuted(): boolean;
-        setMuted(muted: boolean): void;
-        constructor(external: DomAudioSink, track: WebRtcAudioTrack);
-        setTrack(track: WebRtcAudioTrack): boolean;
-        private playAudio;
-    }
-}
-declare namespace fm.icelink {
-    class WebRtcDomVideoSink extends Dynamic implements IInternalDomVideoSink {
-        getTypeString(): string;
-        getTrack(): WebRtcVideoTrack;
-        getLocal(): boolean;
-        getView(): HTMLElement;
-        getViewScale(): LayoutScale;
-        setViewScale(viewScale: LayoutScale): void;
-        getViewMirror(): boolean;
-        setViewMirror(viewMirror: boolean): void;
-        getVideo(): HTMLVideoElement;
-        getVideoWidth(): number;
-        getVideoHeight(): number;
-        getVolume(): number;
-        setVolume(volume: number): void;
-        getMuted(): boolean;
-        setMuted(muted: boolean): void;
-        destroy(): void;
-        constructor(external: IExternalDomVideoSink, track: WebRtcVideoTrack);
-        setTrack(track: WebRtcVideoTrack): boolean;
-        private playVideo;
-        private applyScale;
-    }
-}
-declare namespace fm.icelink {
-    /**
-    A collection of audio/video track base methods/properties.
-    */
-    abstract class WebRtcMediaBase<TIAudioTrack extends fm.icelink.IAudioTrack, TIVideoTrack extends fm.icelink.IVideoTrack> extends fm.icelink.Dynamic implements fm.icelink.IMedia<TIAudioTrack, TIVideoTrack> {
-        getTypeString(): string;
-        /** @hidden */
-        private _id;
-        /**
-        Initializes a new instance of the [[fm.icelink.mediaBase]] class.
-        */
-        constructor();
-        /**
-        Adds a handler that is raised when the first audio track is destroyed.
-        */
-        abstract addOnAudioDestroyed(value: fm.icelink.IAction0): void;
-        /**
-        Adds a handler that is raised whenever the level of the first audio track is calculated.
-        */
-        abstract addOnAudioLevel(value: fm.icelink.IAction1<number>): void;
-        /**
-        Adds a handler that is raised when the first video track is destroyed.
-        */
-        abstract addOnVideoDestroyed(value: fm.icelink.IAction0): void;
-        /**
-        Adds a handler that is raised whenever the size of the first video track is calculated.
-        */
-        abstract addOnVideoSize(value: fm.icelink.IAction1<fm.icelink.Size>): void;
-        /**
-        Destroys this media.
-        */
-        abstract destroy(): void;
-        /**
-        Gets a value indicating the gain (input amplification) of the first audio track.
-        */
-        getAudioGain(): number;
-        /**
-        Gets a value indicating whether the first audio track is muted.
-        */
-        getAudioMuted(): boolean;
-        /**
-        Gets the first audio track.
-        */
-        getAudioTrack(): TIAudioTrack;
-        /**
-        Gets the audio tracks.
-        */
-        abstract getAudioTracks(): TIAudioTrack[];
-        /**
-        Gets a value indicating the volume (output resistance) of the first audio track.
-        */
-        getAudioVolume(): number;
-        /**
-        Gets the identifier.
-        */
-        getId(): string;
-        /**
-        Gets a value indicating whether the first video track is muted.
-        */
-        getVideoMuted(): boolean;
-        /**
-        Gets the size of the first video track.
-        */
-        abstract getVideoSize(): fm.icelink.Size;
-        /**
-        Gets the first video track.
-        */
-        getVideoTrack(): TIVideoTrack;
-        /**
-        Gets the video tracks.
-        */
-        abstract getVideoTracks(): TIVideoTrack[];
-        /**
-        Grabs a frame from the first video track.
-        */
-        abstract grabVideoFrame(): fm.icelink.Future<fm.icelink.VideoBuffer>;
-        /**
-        Removes a handler that is raised when the first audio track is destroyed.
-        */
-        abstract removeOnAudioDestroyed(value: fm.icelink.IAction0): void;
-        /**
-        Removes a handler that is raised whenever the level of the first audio track is calculated.
-        */
-        abstract removeOnAudioLevel(value: fm.icelink.IAction1<number>): void;
-        /**
-        Removes a handler that is raised when the first video track is destroyed.
-        */
-        abstract removeOnVideoDestroyed(value: fm.icelink.IAction0): void;
-        /**
-        Removes a handler that is raised whenever the size of the first video track is calculated.
-        */
-        abstract removeOnVideoSize(value: fm.icelink.IAction1<fm.icelink.Size>): void;
-        /**
-        Sets a value indicating the gain (input amplification) of the first audio track.
-        */
-        setAudioGain(value: number): void;
-        /**
-        Sets a value indicating whether the first audio track is muted.
-        */
-        setAudioMuted(value: boolean): void;
-        /**
-        Sets a value indicating the volume (output resistance) of the first audio track.
-        */
-        setAudioVolume(value: number): void;
-        /**
-        Sets the identifier.
-        */
-        setId(value: string): void;
-        /**
-        Sets a value indicating whether the first video track is muted.
-        */
-        setVideoMuted(value: boolean): void;
-    }
-}
-declare type fmicelinkGlobalMediaStream = MediaStream;
-declare namespace fm.icelink {
-    abstract class WebRtcMedia<TAudioTrack extends WebRtcAudioTrack, TVideoTrack extends WebRtcVideoTrack> extends WebRtcMediaBase<WebRtcAudioTrack, WebRtcVideoTrack> implements IMedia<WebRtcAudioTrack, WebRtcVideoTrack>, IInternalMedia {
-        getTypeString(): string;
-        protected _setAudioMediaStream(audioMediaStream: fmicelinkGlobalMediaStream): boolean;
-        protected _setVideoMediaStream(videoMediaStream: fmicelinkGlobalMediaStream): boolean;
-        constructor(external: any | IExternalMedia);
-        addOnAudioDestroyed(value: IAction0): void;
-        addOnVideoDestroyed(value: IAction0): void;
-        removeOnAudioDestroyed(value: IAction0): void;
-        removeOnVideoDestroyed(value: IAction0): void;
-        addOnAudioLevel(value: IAction1<number>): void;
-        addOnVideoSize(value: IAction1<Size>): void;
-        destroy(): void;
-        getAudioGain(): number;
-        getAudioTracks(): WebRtcAudioTrack[];
-        getAudioVolume(): number;
-        getVideoSize(): Size;
-        getVideoTracks(): WebRtcVideoTrack[];
-        getView(): HTMLElement;
-        getViewSink(): WebRtcDomVideoSink;
-        grabVideoFrame(): Future<VideoBuffer>;
-        removeOnAudioLevel(value: IAction1<number>): void;
-        removeOnVideoSize(value: IAction1<Size>): void;
-        setAudioGain(value: number): void;
-        setAudioVolume(value: number): void;
-        protected initializeAudioContext(): void;
-        protected destroyAudioContext(): void;
-    }
-}
-declare namespace fm.icelink {
-    /**
-    A collection of local audio/video track base methods.
-    */
-    abstract class WebRtcLocalMediaBase<TLocalMedia extends fm.icelink.WebRtcLocalMediaBase<TLocalMedia, TAudioTrack, TVideoTrack>, TAudioTrack extends fm.icelink.WebRtcAudioTrack, TVideoTrack extends fm.icelink.WebRtcVideoTrack> extends fm.icelink.WebRtcMedia<TAudioTrack, TVideoTrack> {
-        getTypeString(): string;
-        /** @hidden */
-        private __audioEncodingsSet;
-        /** @hidden */
-        private __audioEncodingsSetLock;
-        /** @hidden */
-        private __stateLock;
-        /** @hidden */
-        private __videoEncodingsSet;
-        /** @hidden */
-        private __videoEncodingsSetLock;
-        /** @hidden */
-        private _state;
-        private fmicelinkWebRtcLocalMediaBaseInit;
-        /**
-        Initializes a new instance of the [[fm.icelink.localMediaBase]] class.
-        @param external The external.
-        */
-        constructor(external: Object);
-        /**
-        Aborts the start.
-        @param promise The promise.
-        @param exception The exception.
-        */
-        protected abortStart(promise: fm.icelink.Promise<TLocalMedia>, exception: fm.icelink.Exception): void;
-        /**
-        Gets the local audio encodings.
-        @return The local audio encodings.
-        */
-        protected abstract doGetAudioEncodings(): fm.icelink.AudioEncodingConfig[];
-        /**
-        Gets the local video encodings.
-        @return The local video encodings.
-        */
-        protected abstract doGetVideoEncodings(): fm.icelink.VideoEncodingConfig[];
-        /**
-        Sets the local audio encodings.
-        @param encodings The local audio encodings.
-        */
-        protected abstract doSetAudioEncodings(encodings: fm.icelink.AudioEncodingConfig[]): void;
-        /**
-        Sets the local video encodings.
-        @param encodings The local video encodings.
-        */
-        protected abstract doSetVideoEncodings(encodings: fm.icelink.VideoEncodingConfig[]): void;
-        /**
-        Starts the local media.
-        */
-        protected abstract doStart(): fm.icelink.Future<TLocalMedia>;
-        /**
-        Stops the local media.
-        */
-        protected abstract doStop(): fm.icelink.Future<TLocalMedia>;
-        /**
-        Gets the first (primary) local audio encoding.
-        */
-        getAudioEncoding(): fm.icelink.AudioEncodingConfig;
-        /**
-        Gets the local audio encodings.
-        */
-        getAudioEncodings(): fm.icelink.AudioEncodingConfig[];
-        /**
-        Gets the state.
-        */
-        getState(): fm.icelink.LocalMediaState;
-        /**
-        Gets the first (primary) local video encoding.
-        */
-        getVideoEncoding(): fm.icelink.VideoEncodingConfig;
-        /**
-        Gets the local video encodings.
-        */
-        getVideoEncodings(): fm.icelink.VideoEncodingConfig[];
-        /**
-        Sets the local audio encodings.
-        */
-        setAudioEncodings(value: fm.icelink.AudioEncodingConfig[]): void;
-        /** @hidden */
-        private setState;
-        /**
-        Sets the local video encodings.
-        */
-        setVideoEncodings(value: fm.icelink.VideoEncodingConfig[]): void;
-        /**
-        Starts the media track sources.
-        */
-        start(): fm.icelink.Future<TLocalMedia>;
-        /** @hidden */
-        private startInternal;
-        /**
-        Stops the media track sources.
-        */
-        stop(): fm.icelink.Future<TLocalMedia>;
-        /** @hidden */
-        private stopInternal;
-    }
-}
-declare namespace fm.icelink {
-    class WebRtcLocalMedia extends WebRtcLocalMediaBase<WebRtcLocalMedia, WebRtcAudioTrack, WebRtcVideoTrack> implements ILocalMedia<WebRtcLocalMedia, WebRtcAudioTrack, WebRtcVideoTrack>, IInternalLocalMedia {
-        getTypeString(): string;
-        addOnAudioStarted(value: IAction0): void;
-        addOnAudioStopped(value: IAction0): void;
-        addOnVideoStarted(value: IAction0): void;
-        addOnVideoStopped(value: IAction0): void;
-        removeOnAudioStarted(value: IAction0): void;
-        removeOnAudioStopped(value: IAction0): void;
-        removeOnVideoStarted(value: IAction0): void;
-        removeOnVideoStopped(value: IAction0): void;
-        getAudioSourceInputs(): Future<SourceInput[]>;
-        getVideoSourceInputs(): Future<SourceInput[]>;
-        private getSourceInputs;
-        private _audioSourceInput;
-        getAudioSourceInput(): SourceInput;
-        setAudioSourceInput(audioInput: SourceInput): void;
-        private _videoSourceInput;
-        getVideoSourceInput(): SourceInput;
-        setVideoSourceInput(videoInput: SourceInput): void;
-        getAudio(): any;
-        setAudio(audio: any): void;
-        getVideo(): any;
-        setVideo(video: any): void;
-        getScreen(): boolean;
-        setScreen(screen: boolean): void;
-        getAudioConstraints(): MediaTrackConstraints;
-        getVideoConstraints(): MediaTrackConstraints;
-        changeAudioConstraints(audioConstraints: MediaTrackConstraints): Future<Object>;
-        changeVideoConstraints(videoConstraints: MediaTrackConstraints): Future<Object>;
-        changeAudioSourceInput(audioSourceInput: SourceInput): Future<Object>;
-        changeVideoSourceInput(videoSourceInput: SourceInput): Future<Object>;
-        constructor(external: IExternalLocalMedia, audio: any, video: any, screen?: boolean);
-        doStart(): Future<WebRtcLocalMedia>;
-        private doStartInternal;
-        doStop(): Future<WebRtcLocalMedia>;
-        protected doGetAudioEncodings(): AudioEncodingConfig[];
-        protected doSetAudioEncodings(encodings: AudioEncodingConfig[]): void;
-        protected doGetVideoEncodings(): VideoEncodingConfig[];
-        protected doSetVideoEncodings(encodings: VideoEncodingConfig[]): void;
-    }
-}
-declare namespace fm.icelink {
-    class WebRtcRemoteMedia extends WebRtcMedia<WebRtcAudioTrack, WebRtcVideoTrack> implements IRemoteMedia<WebRtcAudioTrack, WebRtcVideoTrack>, IInternalRemoteMedia {
-        getTypeString(): string;
-        constructor(external: IExternalRemoteMedia);
-        getAudioSinkOutputs(): Future<SinkOutput[]>;
-        getVideoSinkOutputs(): Future<SinkOutput[]>;
-        private getSinkOutputs;
-        getAudioSinkOutput(): SinkOutput;
-        setAudioSinkOutput(audioSinkOutput: SinkOutput): void;
-        private attachAudioSinkOutput;
-        getVideoSinkOutput(): SinkOutput;
-        setVideoSinkOutput(videoSinkOutput: SinkOutput): void;
-        changeAudioSinkOutput(audioInput: SinkOutput): Future<Object>;
-        changeVideoSinkOutput(videoInput: SinkOutput): Future<Object>;
-    }
-}
-declare namespace fm.icelink {
-    class WebRtcVideoStream extends WebRtcMediaStream<WebRtcVideoTrack> implements IVideoStream, IInternalVideoStream {
-        getTypeString(): string;
-        /** @hidden */
-        private _external;
-        /** @hidden */
-        _getExternal(): IExternalVideoStream;
-        constructor(external: IExternalVideoStream, localTrack: WebRtcVideoTrack, remoteTrack: WebRtcVideoTrack);
-        getVp8Disabled(): boolean;
-        getVp9Disabled(): boolean;
-        getH264Disabled(): boolean;
-        setVp8Disabled(value: boolean): void;
-        setVp9Disabled(value: boolean): void;
-        setH264Disabled(value: boolean): void;
-    }
-}
-declare namespace fm.icelink {
-    class WebRtcVideoTrack extends WebRtcMediaTrack implements IVideoTrack, IInternalVideoTrack {
-        getTypeString(): string;
-        constructor(external: IExternalVideoTrack, media: WebRtcMedia<WebRtcAudioTrack, WebRtcVideoTrack>);
-        setConfig(config: VideoConfig): void;
-        private isLocal;
-        changeSinkOutput(sinkOutput: SinkOutput): Future<Object>;
-        getSinkOutput(): SinkOutput;
-        getSinkOutputs(): Future<SinkOutput[]>;
-        setSinkOutput(value: SinkOutput): void;
-        changeSourceInput(sourceInput: SourceInput): Future<Object>;
-        getSourceInput(): SourceInput;
-        getSourceInputs(): Future<SourceInput[]>;
-        setSourceInput(value: SourceInput): void;
-        addOnSize(value: IAction1<Size>): void;
-        getSize(): Size;
-        grabFrame(): Future<VideoBuffer>;
-        removeOnSize(value: IAction1<Size>): void;
+    interface XhrSendOptions extends fm.icelink.HttpWebRequestSendOptions {
+        abortOnUnload?: boolean;
+        cacheBusterParameterName?: string;
     }
 }
 declare namespace fm.icelink {
@@ -6693,6 +2226,78 @@ declare namespace fm.icelink {
 }
 declare namespace fm.icelink {
     /**
+    The CCM TMMBN policy.
+    */
+    enum CcmTmmbnPolicy {
+        /**
+        The usage of CCM TMMBN is disabled.
+        */
+        Disabled = 1,
+        /**
+        The usage of CCM TMMBN is negotiated with the peer.
+        */
+        Negotiated = 2
+    }
+}
+declare namespace fm.icelink {
+    /**
+    The CCM TMMBR policy.
+    */
+    enum CcmTmmbrPolicy {
+        /**
+        The usage of CCM TMMBR is disabled.
+        */
+        Disabled = 1,
+        /**
+        The usage of CCM TMMBR is negotiated with the peer.
+        */
+        Negotiated = 2
+    }
+}
+declare namespace fm.icelink {
+    /**
+    A video type.
+    */
+    enum VideoType {
+        /**
+        Indicates an unknown type.
+        */
+        Unknown = 1,
+        /**
+        Indicates camera-based video.
+        */
+        Camera = 2,
+        /**
+        Indicates screen-based video.
+        */
+        Screen = 3
+    }
+}
+declare namespace fm.icelink {
+    /**
+    A video degradation preference.
+    */
+    enum VideoDegradationPreference {
+        /**
+        Indicates a preference to automate the degradation preference based on the video type. A video type of [[fm.icelink.videoType.Screen]] will prefer to degrade [[fm.icelink.videoDegradationPreference.FrameRate]]. A video type of [[fm.icelink.videoType.Camera]] will prefer to degrade [[fm.icelink.videoDegradationPreference.Resolution]]. A video type of [[fm.icelink.videoType.Unknown]] will prefer a [[fm.icelink.videoDegradationPreference.Balanced]] approach.
+        */
+        Automatic = 1,
+        /**
+        Indicates a preference to degrade both frame-rate and resolution together in smaller increments.
+        */
+        Balanced = 2,
+        /**
+        Indicates a preference to degrade frame-rate instead of resolution.
+        */
+        FrameRate = 3,
+        /**
+        Indicates a preference to degrade resolution instead of frame-rate.
+        */
+        Resolution = 4
+    }
+}
+declare namespace fm.icelink {
+    /**
     The CCM LRR policy.
     */
     enum CcmLrrPolicy {
@@ -6950,13 +2555,17 @@ declare namespace fm.icelink {
         */
         FloatRemote = 2,
         /**
-        Indicates that the video feed should be displayed as a block element on its own row, separate from other video feeds.
+        Indicates that the video feed should be displayed as a block element on its own row/column, separate from other video feeds.
         */
         Block = 3,
         /**
-        Indicates that the video feed should be displayed as an inline element that shares a row with other video feeds.
+        Indicates that the video feed should be displayed as an inline element that shares a row/column with other video feeds.
         */
-        Inline = 4
+        Inline = 4,
+        /**
+        Indicates that the video feed should be displayed as an inline element that shares a row/column with other video feeds, allowing container overflow as needed.
+        */
+        InlineOverflow = 5
     }
 }
 declare namespace fm.icelink {
@@ -7706,6 +3315,101 @@ declare namespace fm.icelink {
         private _value;
         constructor(value: fm.icelink.CryptoLibrary);
         toString(): string;
+    }
+}
+declare namespace fm.icelink {
+    /**
+    A data buffer pool interface.
+    */
+    interface IDataBufferPool {
+        take(size: number): fm.icelink.DataBuffer;
+        take(size: number, littleEndian: boolean): fm.icelink.DataBuffer;
+        take(size: number, littleEndian: boolean, clearBytes: boolean): fm.icelink.DataBuffer;
+    }
+}
+declare namespace fm.icelink {
+    /**
+    A data buffer pool tracer.
+    */
+    class DataBufferPoolTracer implements fm.icelink.IDataBufferPool {
+        getTypeString(): string;
+        /** @hidden */
+        private _pool;
+        /** @hidden */
+        private _tag;
+        /**
+        Initializes a new instance of the [[fm.icelink.dataBufferPoolTracer]] class.
+        */
+        constructor(tag: string, pool: fm.icelink.DataBufferPool);
+        /**
+        Gets the underlying pool.
+        */
+        getPool(): fm.icelink.DataBufferPool;
+        /**
+        Gets the traced usage statistics.
+        */
+        getStatistics(): fm.icelink.PoolStatistics;
+        /**
+        Gets the tag that identifies requests to the underlying pool.
+        */
+        getTag(): string;
+        /** @hidden */
+        private setPool;
+        /** @hidden */
+        private setTag;
+        /**
+        Takes a buffer from the pool.
+        @param size The number of bytes needed.
+        */
+        take(size: number): fm.icelink.DataBuffer;
+        /**
+        Takes a buffer from the pool.
+        @param size The number of bytes needed.
+        @param littleEndian Whether the data buffer should be little-endian.
+        */
+        take(size: number, littleEndian: boolean): fm.icelink.DataBuffer;
+        /**
+        Takes a buffer from the pool.
+        @param size The number of bytes needed.
+        @param littleEndian Whether the data buffer should be little-endian.
+        @param clearBytes Whether to clear the data buffer.
+        */
+        take(size: number, littleEndian: boolean, clearBytes: boolean): fm.icelink.DataBuffer;
+    }
+}
+declare namespace fm.icelink {
+    /**
+    A system clock interface.
+    */
+    interface ISystemClock {
+        getTimestamp(): number;
+    }
+}
+declare namespace fm.icelink {
+    /** @hidden */
+    class PendingPromise {
+        getTypeString(): string;
+        /** @hidden */
+        private __promise;
+        /** @hidden */
+        private __result;
+        constructor(promise: fm.icelink.IPromise, result: Object);
+        reject(ex: fm.icelink.Exception): void;
+        resolve(): void;
+    }
+}
+declare namespace fm.icelink {
+    /**
+    A system clock.
+    */
+    class SystemClock implements fm.icelink.ISystemClock {
+        getTypeString(): string;
+        constructor();
+        /**
+        Gets the current system timestamp in ticks. 10,000 ticks is equal to 1 millisecond.
+        @return The current system timestamp in ticks.
+        */
+        getTimestamp(): number;
     }
 }
 declare namespace fm.icelink {
@@ -9025,6 +4729,8 @@ declare namespace fm.icelink {
         /** @hidden */
         private static __fmicelinkBinaryInitialized;
         /** @hidden */
+        private static __fmicelinkBinaryInitializing;
+        /** @hidden */
         static fmicelinkBinaryInitialize(): void;
     }
 }
@@ -9246,7 +4952,12 @@ declare namespace fm.icelink {
         /** @hidden */
         private __values;
         /** @hidden */
+        private __valuesCache;
+        /** @hidden */
         private __valuesLock;
+        /**
+        Initializes a new instance of the [[fm.icelink.collection]] class.
+        */
         constructor();
         /**
         Adds a value.
@@ -9413,6 +5124,10 @@ declare namespace fm.icelink {
         Gets the only value that matches the specified predicate. Returns a default value if there are no values or more than one value in the collection.
         */
         singleOrDefault(predicate: fm.icelink.IFunction1<T, boolean>): T;
+        /**
+        Clones the values into a new array.
+        */
+        toArray(): T[];
         /**
         Gets the value at the specified index. Throws an exception if a value does not exist at that index.
         @param index The index.
@@ -10062,7 +5777,13 @@ declare namespace fm.icelink {
     abstract class StateMachine<T> {
         getTypeString(): string;
         /** @hidden */
+        private __pendingPromises;
+        /** @hidden */
+        private __states;
+        /** @hidden */
         private __stateValue;
+        /** @hidden */
+        private __transitionReachabilityMatrix;
         /** @hidden */
         private __transitions;
         /** @hidden */
@@ -10077,6 +5798,8 @@ declare namespace fm.icelink {
         @param initialState The initial state.
         */
         constructor(initialState: T);
+        /** @hidden */
+        private addPendingPromise;
         /**
         Adds an allowed transition.
         @param fromState The "from" state.
@@ -10090,6 +5813,12 @@ declare namespace fm.icelink {
             
         */
         canTransition(toState: T): boolean;
+        /** @hidden */
+        private checkReachable;
+        /** @hidden */
+        private computeTransitionMatrix;
+        /** @hidden */
+        private exploreStates;
         /**
         Gets the length of time spent in the last state, in milliseconds.
         */
@@ -10098,6 +5827,13 @@ declare namespace fm.icelink {
         Gets the length of time spent in the last state, in ticks.
         */
         getLastStateTicks(): number;
+        /**
+        Gets a promise, which may be resolved or rejected depending on the current state of this machine.
+        @param state State, in which promise must be resolved.
+        @param returnValue Return type of this promise.
+        @return Promise, which may be resolved or rejected depending on the current state of this machine
+        */
+        getPromise<R extends Object>(state: T, returnValue: R): fm.icelink.Promise<R>;
         /**
         Gets the state.
         */
@@ -10110,6 +5846,13 @@ declare namespace fm.icelink {
         Gets the system timestamp of the last state transition.
         */
         getSystemTimestamp(): number;
+        /**
+        Determines whether a transition to a specified state is possible (even via intermediate hops).
+        @param state The "to" state.
+        @return `true` if a transition to the specified state is possible; otherwise, `false`.
+            
+        */
+        isReachable(state: T): boolean;
         /** @hidden */
         private setLastStateTicks;
         /** @hidden */
@@ -10128,6 +5871,8 @@ declare namespace fm.icelink {
             
         */
         transition(toState: T): boolean;
+        /** @hidden */
+        private validatePendingPromises;
         /**
         Converts an integer value to a state.
         @param value The integer value.
@@ -10730,6 +6475,8 @@ declare namespace fm.icelink {
         /** @hidden */
         private static __fmicelinkConstantsInitialized;
         /** @hidden */
+        private static __fmicelinkConstantsInitializing;
+        /** @hidden */
         static fmicelinkConstantsInitialize(): void;
     }
 }
@@ -10921,6 +6668,8 @@ declare namespace fm.icelink {
         private _length;
         /** @hidden */
         private _littleEndian;
+        /** @hidden */
+        private static fm_icelink_DataBuffer___dataBufferPool;
         private fmicelinkDataBufferInit;
         constructor();
         constructor(data: Uint8Array, index: number, length: number, littleEndian: boolean);
@@ -10941,10 +6690,6 @@ declare namespace fm.icelink {
         @param buffer2 Second buffer to test.
         */
         static areEqual(buffer1: fm.icelink.DataBuffer, buffer2: fm.icelink.DataBuffer): boolean;
-        /** @hidden */
-        private static check;
-        /** @hidden */
-        private static checkSequenceEqual;
         /**
         Creates an instance from an array of bytes.
         */
@@ -12147,6 +7892,31 @@ declare namespace fm.icelink {
         @param offset The offset.
         */
         xor(value: number, offset: number): boolean;
+        /** @hidden */
+        private static __fmicelinkDataBufferInitialized;
+        /** @hidden */
+        private static __fmicelinkDataBufferInitializing;
+        /** @hidden */
+        static fmicelinkDataBufferInitialize(): void;
+    }
+}
+declare namespace fm.icelink {
+    /** @hidden */
+    class DataBufferPooled extends fm.icelink.DataBuffer {
+        getTypeString(): string;
+        /** @hidden */
+        private __counter;
+        /** @hidden */
+        private __pool;
+        /** @hidden */
+        private __tag;
+        constructor(pool: fm.icelink.DataBufferPool, data: Uint8Array, length: number, littleEndian: boolean, tag: string);
+        decrementRetain(): number;
+        free(): fm.icelink.DataBuffer;
+        getIsPooled(): boolean;
+        getRetainCount(): number;
+        invalidate(): Uint8Array;
+        keep(): fm.icelink.DataBuffer;
     }
 }
 declare namespace fm.icelink {
@@ -12423,6 +8193,8 @@ declare namespace fm.icelink {
         /** @hidden */
         private static __fmicelinkUnixTimestampInitialized;
         /** @hidden */
+        private static __fmicelinkUnixTimestampInitializing;
+        /** @hidden */
         static fmicelinkUnixTimestampInitialize(): void;
     }
 }
@@ -12452,6 +8224,76 @@ declare namespace fm.icelink {
         Sets the value.
         */
         setValue(value: number): void;
+    }
+}
+declare namespace fm.icelink {
+    /**
+    Base definition for classes that allow serialization to/from JSON.
+    */
+    abstract class Serializable {
+        getTypeString(): string;
+        /** @hidden */
+        private __serialized;
+        /** @hidden */
+        private _isDirty;
+        /** @hidden */
+        private _isSerialized;
+        private fmicelinkSerializableInit;
+        /**
+        Initializes a new instance of the [[fm.icelink.serializable]] class.
+        */
+        constructor();
+        /** @hidden */
+        getIsDirty(): boolean;
+        /** @hidden */
+        getIsSerialized(): boolean;
+        /** @hidden */
+        getSerialized(): string;
+        /** @hidden */
+        setIsDirty(value: boolean): void;
+        /** @hidden */
+        setIsSerialized(value: boolean): void;
+        /** @hidden */
+        setSerialized(value: string): void;
+    }
+}
+declare namespace fm.icelink {
+    /**
+    Supplies class instances with a key-value mapping to support dynamic property storage.
+    */
+    abstract class Dynamic extends fm.icelink.Serializable {
+        getTypeString(): string;
+        /** @hidden */
+        private __dynamicProperties;
+        /** @hidden */
+        private __dynamicPropertiesLock;
+        constructor();
+        /**
+        Gets the dynamic properties on this instance.
+        */
+        getDynamicProperties(): fm.icelink.Hash<string, Object>;
+        /**
+        Gets a property value from the local cache.
+        @param key The property key. This key is used internally only, but should be namespaced to avoid conflict with third-party extensions.
+        @return The stored value, if found; otherwise null.
+        */
+        getDynamicValue(key: string): Object;
+        /** @hidden */
+        setDynamicProperties(value: fm.icelink.Hash<string, Object>): void;
+        /**
+        Sets a property value in the local cache.
+        @param key The property key. This key is used internally only, but should be namespaced to avoid conflict with third-party extensions.
+        @param value The property value. This can be any object that needs to be stored for future use.
+        */
+        setDynamicValue(key: string, value: Object): void;
+        /** @hidden */
+        private tryInitDynamicProperties;
+        /**
+        Unsets a property value in the local cache.
+        @param key The property key. This key is used internally only, but should be namespaced to avoid conflict with third-party extensions.
+        @return `true` if the value was removed; otherwise, `false`.
+        */
+        unsetDynamicValue(key: string): boolean;
     }
 }
 declare namespace fm.icelink {
@@ -12608,6 +8450,8 @@ declare namespace fm.icelink {
         /** @hidden */
         private _binaryContent;
         /** @hidden */
+        private _maxRetries;
+        /** @hidden */
         private _method;
         /** @hidden */
         private _onRequestCreated;
@@ -12634,6 +8478,10 @@ declare namespace fm.icelink {
         Gets the headers to transfer over HTTP.
         */
         getHeaders(): fm.icelink.NameValueCollection;
+        /**
+        Gets the maximum number of retries allowed.
+        */
+        getMaxRetries(): number;
         /**
         Gets the HTTP method.
         */
@@ -12670,6 +8518,10 @@ declare namespace fm.icelink {
         Sets the headers to transfer over HTTP.
         */
         setHeaders(value: fm.icelink.NameValueCollection): void;
+        /**
+        Sets the maximum number of retries allowed.
+        */
+        setMaxRetries(value: number): void;
         /**
         Sets the HTTP method.
         */
@@ -12754,6 +8606,8 @@ declare namespace fm.icelink {
         /** @hidden */
         private _requestArgs;
         /** @hidden */
+        private _retries;
+        /** @hidden */
         private _statusCode;
         /** @hidden */
         private _textContent;
@@ -12781,6 +8635,10 @@ declare namespace fm.icelink {
         */
         getRequestArgs(): fm.icelink.HttpRequestArgs;
         /**
+        Gets the number of retries that were required.
+        */
+        getRetries(): number;
+        /**
         Gets the status code read from the HTTP response.
         */
         getStatusCode(): number;
@@ -12802,6 +8660,10 @@ declare namespace fm.icelink {
         Sets the original [[fm.icelink.httpRequestArgs]].
         */
         setRequestArgs(value: fm.icelink.HttpRequestArgs): void;
+        /**
+        Sets the number of retries that were required.
+        */
+        setRetries(value: number): void;
         /**
         Sets the status code read from the HTTP response.
         */
@@ -13049,6 +8911,7 @@ declare namespace fm.icelink {
     Interface for a promise that can be rejected.
     */
     interface IPromise {
+        castAndResolve(result: Object): boolean;
         reject(exception: fm.icelink.Exception): boolean;
     }
 }
@@ -13084,6 +8947,8 @@ declare namespace fm.icelink {
         private push;
         /** @hidden */
         private static __fmicelinkJsonCheckerInitialized;
+        /** @hidden */
+        private static __fmicelinkJsonCheckerInitializing;
         /** @hidden */
         static fmicelinkJsonCheckerInitialize(): void;
     }
@@ -13154,6 +9019,8 @@ declare namespace fm.icelink {
         static randomString(size: number): string;
         /** @hidden */
         private static __fmicelinkLockedRandomizerInitialized;
+        /** @hidden */
+        private static __fmicelinkLockedRandomizerInitializing;
         /** @hidden */
         static fmicelinkLockedRandomizerInitialize(): void;
     }
@@ -13361,6 +9228,8 @@ declare namespace fm.icelink {
         /** @hidden */
         private static __fmicelinkLogInitialized;
         /** @hidden */
+        private static __fmicelinkLogInitializing;
+        /** @hidden */
         static fmicelinkLogInitialize(): void;
     }
 }
@@ -13383,19 +9252,17 @@ declare namespace fm.icelink {
         constructor();
         static addLogProvider(provider: fm.icelink.LogProvider): void;
         static clearLogProviders(): void;
-        /** @hidden */
-        private static get_TagOverrides;
         static getDefaultLogLevel(): fm.icelink.LogLevel;
         static getHasProviders(): boolean;
         static getLogProviders(): fm.icelink.LogProvider[];
         static getTagLogLevel(tag: string): fm.icelink.LogLevel;
         static removeLogProvider(provider: fm.icelink.LogProvider): boolean;
-        /** @hidden */
-        private static set_TagOverrides;
         static setDefaultLogLevel(value: fm.icelink.LogLevel): void;
         static setTagLogLevel(tag: string, logLevel: fm.icelink.LogLevel): void;
         /** @hidden */
         private static __fmicelinkLogConfigurationInitialized;
+        /** @hidden */
+        private static __fmicelinkLogConfigurationInitializing;
         /** @hidden */
         static fmicelinkLogConfigurationInitialize(): void;
     }
@@ -13474,6 +9341,234 @@ declare namespace fm.icelink {
         @param logEvent The log event details.
         */
         protected doLog(logEvent: fm.icelink.LogEvent): void;
+    }
+}
+declare namespace fm.icelink {
+    /**
+    A data buffer pool.
+    */
+    class DataBufferPool implements fm.icelink.IDataBufferPool {
+        getTypeString(): string;
+        /** @hidden */
+        private __blockSize;
+        /** @hidden */
+        private __pools;
+        /** @hidden */
+        private __traceStatistics;
+        /** @hidden */
+        private _disabled;
+        /** @hidden */
+        private _enableStatistics;
+        /** @hidden */
+        private _log;
+        /** @hidden */
+        private _statistics;
+        /** @hidden */
+        private static fm_icelink_DataBufferPool___singleton;
+        /** @hidden */
+        private static fm_icelink_DataBufferPool___singletonLock;
+        private fmicelinkDataBufferPoolInit;
+        /**
+        Initializes a new instance of the [[fm.icelink.dataBufferPool]] class.
+        */
+        constructor();
+        /**
+        Initializes a new instance of the [[fm.icelink.dataBufferPool]] class.
+        @param tag The tag for stats output.
+        */
+        constructor(tag: string);
+        /**
+        Gets the singleton instance.
+        */
+        static getInstance(): fm.icelink.DataBufferPool;
+        /**
+        Gets a value indicating whether DataBuffer pooling is supported on this platform.
+        */
+        static getIsSupported(): boolean;
+        /**
+        Get a data buffer pool tracer for a specific tag using the default pool.
+        @param tag The tag to log to.
+        @return A tracer that will associate stats with the type.
+        */
+        static getTracer(tag: string): fm.icelink.DataBufferPoolTracer;
+        /**
+        Get a data buffer pool tracer for a specific tag and pool.
+        @param tag The tag to log to.
+        @param pool The underlying pool.
+        @return A tracer that will associate stats with the type.
+        */
+        static getTracer(tag: string, pool: fm.icelink.DataBufferPool): fm.icelink.DataBufferPoolTracer;
+        /**
+        Get a data buffer pool tracer for a specific tag using the default pool. The tag is taken from the class namespace and name.
+        @param type The type to use as the tag.
+        @return A tracer that will associate stats with the tag.
+        */
+        static getTracer(type: fm.icelink.Type): fm.icelink.DataBufferPoolTracer;
+        /**
+        Get a data buffer pool tracer for a specific tag and pool. The tag is taken from the class namespace and name.
+        @param type The type to use as the tag.
+        @param pool The underlying pool.
+        @return A tracer that will associate stats with the tag.
+        */
+        static getTracer(type: fm.icelink.Type, pool: fm.icelink.DataBufferPool): fm.icelink.DataBufferPoolTracer;
+        /** @hidden */
+        private createStack;
+        /** @hidden */
+        private createTraceStatistics;
+        /** @hidden */
+        private doTraceTake;
+        /**
+        Gets the block size.
+        */
+        getBlockSize(): number;
+        /**
+        Gets whether the pool is disabled. If disabled, each call to take a buffer will result in a new allocation.
+        */
+        getDisabled(): boolean;
+        /**
+        Gets whether to enable statistics.
+        */
+        getEnableStatistics(): boolean;
+        /** @hidden */
+        getOrAddTraceStatistics(tag: string): fm.icelink.PoolStatistics;
+        /**
+        Gets the pool usage statistics.
+        */
+        getStatistics(): fm.icelink.PoolStatistics;
+        /**
+        Gets all tagged pool usage statistics.
+        */
+        getTraceStatistics(): fm.icelink.PoolStatistics[];
+        /**
+        Gets pool usage statistics for a specific tag.
+        @param tag The tag.
+        */
+        getTraceStatistics(tag: string): fm.icelink.PoolStatistics;
+        /**
+        Gets pool usage statistics for a specific tag.
+        @param type The type to use as the tag.
+        */
+        getTraceStatistics(type: fm.icelink.Type): fm.icelink.PoolStatistics;
+        /** @hidden */
+        private padToBlock;
+        /** @hidden */
+        returnBuffer(buffer: fm.icelink.DataBufferPooled, tag: string): void;
+        /** @hidden */
+        setBlockSize(value: number): void;
+        /**
+        Sets whether the pool is disabled. If disabled, each call to take a buffer will result in a new allocation.
+        */
+        setDisabled(value: boolean): void;
+        /**
+        Sets whether to enable statistics.
+        */
+        setEnableStatistics(value: boolean): void;
+        /** @hidden */
+        private setStatistics;
+        /**
+        Takes a buffer from the pool.
+        @param size The number of bytes needed.
+        */
+        take(size: number): fm.icelink.DataBuffer;
+        /**
+        Takes a buffer from the pool.
+        @param size The number of bytes needed.
+        @param littleEndian Whether the data buffer should be little-endian.
+        */
+        take(size: number, littleEndian: boolean): fm.icelink.DataBuffer;
+        /**
+        Takes a buffer from the pool.
+        @param size The number of bytes needed.
+        @param littleEndian Whether the data buffer should be little-endian.
+        @param clearBytes Whether to clear the data buffer.
+        */
+        take(size: number, littleEndian: boolean, clearBytes: boolean): fm.icelink.DataBuffer;
+        /** @hidden */
+        traceTake(size: number, littleEndian: boolean, clearBytes: boolean, tag: string): fm.icelink.DataBuffer;
+        /** @hidden */
+        traceTake(size: number, littleEndian: boolean, tag: string): fm.icelink.DataBuffer;
+        /** @hidden */
+        traceTake(size: number, tag: string): fm.icelink.DataBuffer;
+        /** @hidden */
+        private static __fmicelinkDataBufferPoolInitialized;
+        /** @hidden */
+        private static __fmicelinkDataBufferPoolInitializing;
+        /** @hidden */
+        static fmicelinkDataBufferPoolInitialize(): void;
+    }
+}
+declare namespace fm.icelink {
+    /**
+    Pool statistics.
+    */
+    class PoolStatistics {
+        getTypeString(): string;
+        /** @hidden */
+        __creates: fm.icelink.AtomicLong;
+        /** @hidden */
+        __hits: fm.icelink.AtomicLong;
+        /** @hidden */
+        __misses: fm.icelink.AtomicLong;
+        /** @hidden */
+        __paddingWasted: fm.icelink.AtomicLong;
+        /** @hidden */
+        __pendingPoolSize: fm.icelink.AtomicLong;
+        /** @hidden */
+        __returnedSize: fm.icelink.AtomicLong;
+        /** @hidden */
+        __takenSize: fm.icelink.AtomicLong;
+        /** @hidden */
+        __totalPoolSize: fm.icelink.AtomicLong;
+        /** @hidden */
+        private _tag;
+        /** @hidden */
+        constructor(tag: string);
+        /**
+        Gets the number of pools in use.
+        */
+        getActivePools(): number;
+        /**
+        Gets the percentage of cache hits.
+        */
+        getHitPercentage(): number;
+        /**
+        Gets the percentage of cache misses.
+        */
+        getMissPercentage(): number;
+        /**
+        Gets the amount of buffer padding that is unused for caller's requested buffers.
+        */
+        getPaddingWasted(): number;
+        /**
+        Gets the total size of all buffers currently in the pool.
+        */
+        getPendingPoolSize(): number;
+        /**
+        Gets the percentage of items returned to the pool.
+        */
+        getReturnPercentage(): number;
+        /**
+        Gets the tag.
+        */
+        getTag(): string;
+        /**
+        Gets the total calls to obtain a DataBuffer.
+        */
+        getTotalCalls(): number;
+        /**
+        Gets the total pools created.
+        */
+        getTotalPools(): number;
+        /**
+        Gets the total size of all buffers allocated in the pool.
+        */
+        getTotalPoolSize(): number;
+        /** @hidden */
+        private setTag;
+        /**
+        Overriden ToString
+        */
+        toString(): string;
     }
 }
 declare namespace fm.icelink {
@@ -14623,12 +10718,20 @@ declare namespace fm.icelink {
         */
         getLevelIsStrict(): boolean;
         /**
+        Gets the maximum bitrate supported by this format, in kbps.
+        */
+        getMaxBitrate(): number;
+        /**
         Gets the maximum level.
         @param level1 The first level.
         @param level2 The second level.
         @return The maximum level.
         */
         protected getMaxLevel(level1: string, level2: string): string;
+        /**
+        Gets the minimum bitrate supported by this format, in kbps.
+        */
+        getMinBitrate(): number;
         /**
         Gets the minimum level.
         @param level1 The first level.
@@ -14986,6 +11089,7 @@ declare namespace fm.icelink {
         getLocalDirection(): fm.icelink.StreamDirection;
         getLocalReceive(): boolean;
         getLocalSend(): boolean;
+        getMediaDescriptionId(): string;
         getRemoteDirection(): fm.icelink.StreamDirection;
         getRemoteReceive(): boolean;
         getRemoteSend(): boolean;
@@ -15004,9 +11108,471 @@ declare namespace fm.icelink {
 }
 declare namespace fm.icelink {
     /**
+    Stream base properties/methods.
+    */
+    abstract class WebRtcStreamBase extends fm.icelink.Dynamic implements fm.icelink.IStream {
+        getTypeString(): string;
+        /** @hidden */
+        private __id;
+        /** @hidden */
+        private __mediaStreamIdentification;
+        /** @hidden */
+        private __onDirectionChange;
+        /** @hidden */
+        private __onStateChange;
+        /** @hidden */
+        private __stateLock;
+        /** @hidden */
+        private __stateMachine;
+        /** @hidden */
+        private _connectedTimestamp;
+        /** @hidden */
+        private _connectionId;
+        /** @hidden */
+        private _externalId;
+        /** @hidden */
+        private _onDirectionChange;
+        /** @hidden */
+        private _onStateChange;
+        /** @hidden */
+        private _tag;
+        /** @hidden */
+        private _type;
+        private fmicelinkWebRtcStreamBaseInit;
+        /**
+        Initializes a new instance of the [[fm.icelink.streamBase]] class.
+        @param type The type.
+        */
+        constructor(type: fm.icelink.StreamType);
+        /**
+        Adds a handler that is raised when the stream direction change has occurred.
+        */
+        addOnDirectionChange(value: fm.icelink.IAction0): void;
+        /**
+        Adds a handler that is raised when the stream state changes.
+        */
+        addOnStateChange(value: fm.icelink.IAction0): void;
+        /**
+        Changes this stream's direction.
+        */
+        abstract changeDirection(newDirection: fm.icelink.StreamDirection): fm.icelink.Error;
+        /**
+        Gets the ManagedStopwatch.GetTimestamp() value representing the ticks that passed when this stream's connection state changed to connected.
+        */
+        protected getConnectedTimestamp(): number;
+        /**
+        Gets the connection identifier.
+        */
+        getConnectionId(): string;
+        /**
+        Gets the current direction.
+        */
+        abstract getDirection(): fm.icelink.StreamDirection;
+        /** @hidden */
+        abstract getDirectionCapabilities(): fm.icelink.StreamDirection;
+        /**
+        Gets the external identifier.
+        */
+        getExternalId(): string;
+        /**
+        Gets the identifier.
+        */
+        getId(): string;
+        /**
+        Gets a value indicating whether the stream is currently closed or failed.
+        */
+        getIsTerminated(): boolean;
+        /**
+        Gets a value indicating whether the stream is currently closing or failing.
+        */
+        getIsTerminating(): boolean;
+        /**
+        Gets a value indicating whether the stream is currently closing, failing, closed, or failed.
+        */
+        getIsTerminatingOrTerminated(): boolean;
+        /**
+        Gets a label that identifies this class.
+        */
+        abstract getLabel(): string;
+        /**
+        Gets current direction indicated by the local description.
+        */
+        abstract getLocalDirection(): fm.icelink.StreamDirection;
+        /**
+        Gets a value indicating whether receiving media is supported by the local peer on this stream.
+        */
+        getLocalReceive(): boolean;
+        /**
+        Gets a value indicating whether sending media is supported by the local peer on this stream.
+        */
+        getLocalSend(): boolean;
+        /**
+        Gets the media description identifier.
+        */
+        getMediaDescriptionId(): string;
+        /** @hidden */
+        abstract getMediaDescriptionManager(): fm.icelink.MediaDescriptionManagerBase;
+        /** @hidden */
+        getMediaStreamIdentification(): string;
+        /**
+        Gets current direction indicated by the remote description.
+        */
+        abstract getRemoteDirection(): fm.icelink.StreamDirection;
+        /**
+        Gets a value indicating whether receiving media is supported by the local peer on this stream. Returns false if the remote stream direction has not been received.
+        */
+        getRemoteReceive(): boolean;
+        /**
+        Gets a value indicating whether sending media is supported by the remote peer on this stream. Returns false if the remote stream direction has not been received.
+        */
+        getRemoteSend(): boolean;
+        /**
+        Gets the state of the stream.
+        */
+        getState(): fm.icelink.StreamState;
+        /** @hidden */
+        getStateLock(): Object;
+        /**
+        Gets optional data to associate with this instance.
+        */
+        getTag(): string;
+        /**
+        Gets the stream transport info.
+        */
+        abstract getTransportInfo(): fm.icelink.TransportInfo;
+        /**
+        Gets the type.
+        */
+        getType(): fm.icelink.StreamType;
+        /** @hidden */
+        private logInvalidStateTransition;
+        /** @hidden */
+        abstract processSdpMediaDescription(sdpMessage: fm.icelink.sdp.Message, sdpMediaDescription: fm.icelink.sdp.MediaDescription, index: number, isLocalDescription: boolean, isOffer: boolean, isRenegotiation: boolean): fm.icelink.Error;
+        /**
+        Processes a state change.
+        */
+        protected processStateChange(): void;
+        /**
+        Processes a state lock change.
+        */
+        protected processStateLockChange(): void;
+        /** @hidden */
+        processUpdateToMediaStreamIdentification(oldValue: string): void;
+        /** @hidden */
+        raiseDirectionChange(): void;
+        /** @hidden */
+        private raiseStateChange;
+        /**
+        Removes a handler that is raised when the stream direction change has occurred.
+        */
+        removeOnDirectionChange(value: fm.icelink.IAction0): void;
+        /**
+        Removes a handler that is raised when the stream state changes.
+        */
+        removeOnStateChange(value: fm.icelink.IAction0): void;
+        /** @hidden */
+        private setConnectedTimestamp;
+        /** @hidden */
+        setConnectionId(value: string): void;
+        /**
+        Sets the external identifier.
+        */
+        setExternalId(value: string): void;
+        /**
+        Sets current direction indicated by the local description.
+        */
+        abstract setLocalDirection(value: fm.icelink.StreamDirection): void;
+        /**
+        Sets a value indicating whether receiving media is supported by the local peer on this stream.
+        */
+        setLocalReceive(value: boolean): void;
+        /**
+        Sets a value indicating whether sending media is supported by the local peer on this stream.
+        */
+        setLocalSend(value: boolean): void;
+        /** @hidden */
+        setMediaStreamIdentification(value: string): void;
+        /** @hidden */
+        abstract setRemoteDirection(value: fm.icelink.StreamDirection): void;
+        /** @hidden */
+        setState(state: fm.icelink.StreamState): boolean;
+        /** @hidden */
+        setStateLock(value: Object): void;
+        /**
+        Sets optional data to associate with this instance.
+        */
+        setTag(value: string): void;
+        /** @hidden */
+        private setType;
+        /**
+        Returns a string that represents this instance.
+        */
+        toString(): string;
+    }
+}
+declare namespace fm.icelink {
+    abstract class WebRtcStream extends fm.icelink.WebRtcStreamBase implements fm.icelink.IInternalStream {
+        getTypeString(): string;
+        /** @hidden */
+        private _connection;
+        getConnection(): fm.icelink.WebRtcConnection;
+        setConnection(remoteTrack: fm.icelink.WebRtcConnection): void;
+        /** @hidden */
+        abstract _getExternal(): fm.icelink.IExternalStream;
+        private _transportInfo;
+        /** @hidden */
+        getMediaDescriptionManager(): fm.icelink.MediaDescriptionManager;
+        /** @hidden */
+        setMediaDescriptionManager(manager: fm.icelink.MediaDescriptionManager): void;
+        private _mediaDescriptionManager;
+        setTransportInfo(transportInfo: fm.icelink.TransportInfo): void;
+        getTransportInfo(): fm.icelink.TransportInfo;
+    }
+}
+declare namespace fm.icelink {
+    /**
+    Media stream base properties/methods.
+    */
+    abstract class WebRtcMediaStreamBase extends fm.icelink.WebRtcStream {
+        getTypeString(): string;
+        /** @hidden */
+        private __disabledCodecs;
+        /** @hidden */
+        private __localCanonicalName;
+        /** @hidden */
+        private __localDirection;
+        /** @hidden */
+        private __maxReceiveBitrate;
+        /** @hidden */
+        private __maxSendBitrate;
+        /** @hidden */
+        private __onLocalEncodingDisabled;
+        /** @hidden */
+        private __onLocalEncodingEnabled;
+        /** @hidden */
+        private __pendingLocalDirection;
+        /** @hidden */
+        private __remoteDirection;
+        /** @hidden */
+        private _localBandwidth;
+        /** @hidden */
+        private _onLocalEncodingDisabled;
+        /** @hidden */
+        private _onLocalEncodingEnabled;
+        /** @hidden */
+        private _preferredCodecs;
+        /** @hidden */
+        private _remoteBandwidth;
+        /** @hidden */
+        private _remoteCanonicalName;
+        /** @hidden */
+        private _remoteEncoding;
+        /** @hidden */
+        private _renegotiationLock;
+        /** @hidden */
+        private _renegotiationPending;
+        private fmicelinkWebRtcMediaStreamBaseInit;
+        /**
+        Initializes a new instance of the [[fm.icelink.mediaStreamBase]] class.
+        @param type The type.
+        */
+        constructor(type: fm.icelink.StreamType);
+        /**
+        Adds a handler that is raised when a local encoding is disabled.
+        */
+        addOnLocalEncodingDisabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
+        /**
+        Adds a handler that is raised when a local encoding is enabled.
+        */
+        addOnLocalEncodingEnabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
+        /**
+        Records the pending direction of this stream. The LocalDirection of this stream will be updated when the connection renegotiation commences.
+        */
+        changeDirection(newDirection: fm.icelink.StreamDirection): fm.icelink.Error;
+        /** @hidden */
+        extractCanonicalName(mediaDescription: fm.icelink.sdp.MediaDescription, isLocalDescription: boolean): void;
+        /**
+        Gets the canonical name. Getting the value of MediaStream.CanonicalName is deprecated. Get the value of MediaStream.LocalCanonicalName instead.
+        */
+        getCanonicalName(): string;
+        /**
+        Gets whether a codec is disabled.
+        @param name The codec name.
+        @return Whether the codec is disabled.
+        */
+        getCodecDisabled(name: string): boolean;
+        /**
+        Gets control transport info.
+        */
+        abstract getControlTransportInfo(): fm.icelink.TransportInfo;
+        /**
+        Gets the direction.
+        */
+        getDirection(): fm.icelink.StreamDirection;
+        /**
+        Gets the media stream info.
+        */
+        getInfo(): fm.icelink.MediaStreamInfo;
+        /**
+        Gets whether the input track is muted.
+        */
+        abstract getInputMuted(): boolean;
+        /**
+        Gets a label that identifies this class.
+        */
+        getLabel(): string;
+        /**
+        Gets the local bandwidth, in kbps. This value is signalled in the local session description sent to the remote endpoint so it can limit its outbound media bitrate. Use [[fm.icelink.mediaStreamBase.maxReceiveBitrate]] to control inbound media bitrate once the session has been negotiated.
+        */
+        getLocalBandwidth(): number;
+        /**
+        Gets the local canonical name.
+        */
+        getLocalCanonicalName(): string;
+        /**
+        Gets current direction indicated by the local description.
+        */
+        getLocalDirection(): fm.icelink.StreamDirection;
+        /**
+        Gets the maximum desired receive bitrate, in kbps. This value must be less than or equal to [[fm.icelink.mediaStreamBase.localBandwidth]].
+        */
+        getMaxReceiveBitrate(): number;
+        /**
+        Gets the maximum desired send bitrate, in kbps. This value must be less than or equal to [[fm.icelink.mediaStreamBase.remoteBandwidth]].
+        */
+        getMaxSendBitrate(): number;
+        /**
+        Gets whether the input track is muted. Alias for [[fm.icelink.mediaStreamBase.inputMuted]].
+        */
+        getMuted(): boolean;
+        /**
+        Gets whether the output track is muted.
+        */
+        abstract getOutputMuted(): boolean;
+        /** @hidden */
+        getPendingLocalDirection(): fm.icelink.StreamDirection;
+        /**
+        Gets any preferred codecs, in order of preference.
+        */
+        getPreferredCodecs(): string[];
+        /**
+        Gets the remote bandwidth, in kbps. This value is signalled in the remote session description received from the remote endpoint so we can limit our outbound media bitrate. Use [[fm.icelink.mediaStreamBase.maxSendBitrate]] to control outbound media bitrate once the session has been negotiated.
+        */
+        getRemoteBandwidth(): number;
+        /**
+        Gets the remote canonical name.
+        */
+        getRemoteCanonicalName(): string;
+        /**
+        Gets current direction indicated by the remote description.
+        */
+        getRemoteDirection(): fm.icelink.StreamDirection;
+        /**
+        Gets the remote encoding.
+        */
+        getRemoteEncoding(): fm.icelink.EncodingInfo;
+        /**
+        Gets whether there exist changes that are pending SDP renegotiation.
+        */
+        protected getRenegotiationPending(): boolean;
+        /**
+        Gets the simulcast mode.
+        */
+        abstract getSimulcastMode(): fm.icelink.SimulcastMode;
+        /**
+        Populates the media stream info.
+        @param info
+        */
+        protected abstract populateInfo(info: fm.icelink.MediaStreamInfo): void;
+        /**
+        Raises the OnLocalEncodingDisabled event.
+        @param encoding The encoding.
+        */
+        protected raiseLocalEncodingDisabled(encoding: fm.icelink.EncodingInfo): void;
+        /**
+        Raises the OnLocalEncodingEnabled event.
+        @param encoding The encoding.
+        */
+        protected raiseLocalEncodingEnabled(encoding: fm.icelink.EncodingInfo): void;
+        /**
+        Removes a handler that is raised when a local encoding is disabled.
+        */
+        removeOnLocalEncodingDisabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
+        /**
+        Removes a handler that is raised when a local encoding is enabled.
+        */
+        removeOnLocalEncodingEnabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
+        /**
+        Sets whether a codec is disabled.
+        @param name The codec name.
+        @param disabled Whether to disable the codec.
+        */
+        setCodecDisabled(name: string, disabled: boolean): void;
+        /**
+        Sets whether the input track is muted.
+        */
+        abstract setInputMuted(value: boolean): void;
+        /**
+        Sets the local bandwidth, in kbps. This value is signalled in the local session description sent to the remote endpoint so it can limit its outbound media bitrate. Use [[fm.icelink.mediaStreamBase.maxReceiveBitrate]] to control inbound media bitrate once the session has been negotiated.
+        */
+        setLocalBandwidth(value: number): void;
+        /** @hidden */
+        setLocalCanonicalName(value: string): void;
+        /**
+        Sets current direction indicated by the local description.
+        */
+        setLocalDirection(value: fm.icelink.StreamDirection): void;
+        /**
+        Sets the maximum desired receive bitrate, in kbps. This value must be less than or equal to [[fm.icelink.mediaStreamBase.localBandwidth]].
+        */
+        setMaxReceiveBitrate(value: number): void;
+        /**
+        Sets the maximum desired send bitrate, in kbps. This value must be less than or equal to [[fm.icelink.mediaStreamBase.remoteBandwidth]].
+        */
+        setMaxSendBitrate(value: number): void;
+        /**
+        Sets whether the input track is muted. Alias for [[fm.icelink.mediaStreamBase.inputMuted]].
+        */
+        setMuted(value: boolean): void;
+        /**
+        Sets whether the output track is muted.
+        */
+        abstract setOutputMuted(value: boolean): void;
+        /** @hidden */
+        setPendingLocalDirection(value: fm.icelink.StreamDirection): void;
+        /**
+        Sets any preferred codecs, in order of preference.
+        */
+        setPreferredCodecs(value: string[]): void;
+        /**
+        Sets the remote bandwidth, in kbps. This value is signalled in the remote session description received from the remote endpoint so we can limit our outbound media bitrate. Use [[fm.icelink.mediaStreamBase.maxSendBitrate]] to control outbound media bitrate once the session has been negotiated.
+        */
+        protected setRemoteBandwidth(value: number): void;
+        /** @hidden */
+        setRemoteCanonicalName(value: string): void;
+        /** @hidden */
+        setRemoteDirection(value: fm.icelink.StreamDirection): void;
+        /**
+        Sets the remote encoding.
+        */
+        setRemoteEncoding(value: fm.icelink.EncodingInfo): void;
+        /**
+        Sets whether there exist changes that are pending SDP renegotiation.
+        */
+        protected setRenegotiationPending(value: boolean): void;
+        /**
+        Sets the simulcast mode.
+        */
+        abstract setSimulcastMode(value: fm.icelink.SimulcastMode): void;
+    }
+}
+declare namespace fm.icelink {
+    /**
     Media stream interface.
     */
     interface IMediaStream extends fm.icelink.IStream {
+        addOnDiscardBitrateNotification(value: fm.icelink.IAction1<fm.icelink.BitrateNotification>): void;
+        addOnDiscardBitrateRequest(value: fm.icelink.IAction1<fm.icelink.BitrateRequest>): void;
         addOnLocalEncodingDisabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
         addOnLocalEncodingEnabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
         getCodecDisabled(name: string): boolean;
@@ -15015,17 +11581,25 @@ declare namespace fm.icelink {
         getInputMuted(): boolean;
         getLocalBandwidth(): number;
         getLocalCanonicalName(): string;
+        getMaxReceiveBitrate(): number;
+        getMaxSendBitrate(): number;
         getOutputMuted(): boolean;
         getPreferredCodecs(): string[];
         getRemoteBandwidth(): number;
         getRemoteCanonicalName(): string;
         getRemoteEncoding(): fm.icelink.EncodingInfo;
         getSimulcastMode(): fm.icelink.SimulcastMode;
+        raiseBitrateNotification(bitrateNotification: fm.icelink.BitrateNotification): boolean;
+        raiseBitrateRequest(bitrateRequest: fm.icelink.BitrateRequest): boolean;
+        removeOnDiscardBitrateNotification(value: fm.icelink.IAction1<fm.icelink.BitrateNotification>): void;
+        removeOnDiscardBitrateRequest(value: fm.icelink.IAction1<fm.icelink.BitrateRequest>): void;
         removeOnLocalEncodingDisabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
         removeOnLocalEncodingEnabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
         setCodecDisabled(name: string, disabled: boolean): void;
         setInputMuted(value: boolean): void;
         setLocalBandwidth(value: number): void;
+        setMaxReceiveBitrate(value: number): void;
+        setMaxSendBitrate(value: number): void;
         setOutputMuted(value: boolean): void;
         setPreferredCodecs(value: string[]): void;
         setRemoteEncoding(value: fm.icelink.EncodingInfo): void;
@@ -15058,6 +11632,206 @@ declare namespace fm.icelink {
     }
 }
 declare namespace fm.icelink {
+    class CcmTmmbnPolicyWrapper {
+        getTypeString(): string;
+        /** @hidden */
+        private _value;
+        constructor(value: fm.icelink.CcmTmmbnPolicy);
+        toString(): string;
+    }
+}
+declare namespace fm.icelink {
+    class CcmTmmbrPolicyWrapper {
+        getTypeString(): string;
+        /** @hidden */
+        private _value;
+        constructor(value: fm.icelink.CcmTmmbrPolicy);
+        toString(): string;
+    }
+}
+declare namespace fm.icelink {
+    /** @hidden */
+    abstract class MediaDescriptionManagerBase {
+        getTypeString(): string;
+        /** @hidden */
+        private _mediaStreamIdentifier;
+        constructor();
+        static syncroniseMediaIdentification(sdpMediaDescription: fm.icelink.sdp.MediaDescription, index: number): string;
+        getMediaStreamIdentifier(): string;
+        processSdpMediaDescription(mediaRequirements: fm.icelink.MediaDescriptionRequirementsBase, sdpMessage: fm.icelink.sdp.Message, index: number, isLocalDescription: boolean, isRenegotiation: boolean, isOffer: boolean): fm.icelink.Error;
+        setMediaStreamIdentifier(value: string): void;
+    }
+}
+declare namespace fm.icelink {
+    /** @hidden */
+    abstract class MediaDescriptionRequirementsBase {
+        getTypeString(): string;
+        /** @hidden */
+        private _mediaStreamIdentifier;
+        constructor();
+        getMediaStreamIdentifier(): string;
+        setMediaStreamIdentifier(value: string): void;
+    }
+}
+declare namespace fm.icelink {
+    class VideoTypeWrapper {
+        getTypeString(): string;
+        /** @hidden */
+        private _value;
+        constructor(value: fm.icelink.VideoType);
+        toString(): string;
+    }
+}
+declare namespace fm.icelink {
+    class VideoDegradationPreferenceWrapper {
+        getTypeString(): string;
+        /** @hidden */
+        private _value;
+        constructor(value: fm.icelink.VideoDegradationPreference);
+        toString(): string;
+    }
+}
+declare namespace fm.icelink {
+    /** @hidden */
+    abstract class SimulcastConfig {
+        getTypeString(): string;
+        /** @hidden */
+        private __encodingCount;
+        /** @hidden */
+        private __preferredBitrate;
+        /** @hidden */
+        private _disabled;
+        private fmicelinkSimulcastConfigInit;
+        constructor(encodingCount: number, preferredBitrate: number);
+        getDisabled(): boolean;
+        getEncodingCount(): number;
+        getPreferredBitrate(): number;
+        setDisabled(value: boolean): void;
+        setEncodingCount(value: number): void;
+        setPreferredBitrate(value: number): void;
+    }
+}
+declare namespace fm.icelink {
+    /** @hidden */
+    class AudioSimulcastConfig extends fm.icelink.SimulcastConfig {
+        getTypeString(): string;
+        constructor(encodingCount: number, preferredBitrate: number);
+        /** @hidden */
+        getEncodingConfigs(): fm.icelink.AudioEncodingConfig[];
+    }
+}
+declare namespace fm.icelink {
+    /** @hidden */
+    class VideoSimulcastConfig extends fm.icelink.SimulcastConfig {
+        getTypeString(): string;
+        /** @hidden */
+        private __bitsPerPixel;
+        /** @hidden */
+        private _degradationPreference;
+        private fmicelinkVideoSimulcastConfigInit;
+        constructor(encodingCount: number, preferredBitrate: number);
+        constructor(encodingCount: number, preferredBitrate: number, bitsPerPixel: number);
+        getBitsPerPixel(): number;
+        getDegradationPreference(): fm.icelink.VideoDegradationPreference;
+        /** @hidden */
+        getEncodingConfigs(sourceType: fm.icelink.VideoType, sourceWidth: number, sourceHeight: number, sourceFrameRate: number): fm.icelink.VideoEncodingConfig[];
+        setBitsPerPixel(value: number): void;
+        setDegradationPreference(value: fm.icelink.VideoDegradationPreference): void;
+    }
+}
+declare namespace fm.icelink.g722 {
+    /**
+    A G.722 format.
+    */
+    class Format extends fm.icelink.AudioFormat {
+        getTypeString(): string;
+        /**
+        Initializes a new instance of the [[fm.icelink.g722.format]] class.
+        */
+        constructor();
+        /**
+        Initializes a new instance of the [[fm.icelink.g722.format]] class.
+        @param clockRate The clock rate.
+        @param channelCount The channel count.
+        */
+        constructor(clockRate: number, channelCount: number);
+        /**
+        Initializes a new instance of the [[fm.icelink.g722.format]] class.
+        @param config The configuration.
+        */
+        constructor(config: fm.icelink.AudioConfig);
+        /**
+        Gets the default clock rate (1).
+        */
+        static getDefaultChannelCount(): number;
+        /**
+        Gets the default clock rate (16000).
+        */
+        static getDefaultClockRate(): number;
+        /**
+        Gets the default configuration (16000/1).
+        */
+        static getDefaultConfig(): fm.icelink.AudioConfig;
+        /**
+        Creates a new instance.
+        */
+        protected createInstance(): fm.icelink.AudioFormat;
+        /** @hidden */
+        private getFixedBitrate;
+        /**
+        Gets the maximum bitrate supported by this format, in kbps.
+        */
+        getMaxBitrate(): number;
+        /**
+        Gets the minimum bitrate supported by this format, in kbps.
+        */
+        getMinBitrate(): number;
+    }
+}
+declare namespace fm.icelink {
+    /** @hidden */
+    abstract class SessionDescriptionManagerBase<TStream extends fm.icelink.WebRtcStreamBase, TAudioStream extends fm.icelink.IAudioStream, TVideoStream extends fm.icelink.IVideoStream, TDataStream extends fm.icelink.IDataStream<TDataChannel>, TDataChannel extends fm.icelink.IDataChannel<TDataChannel>> {
+        getTypeString(): string;
+        protected __audioStreamIndex: Array<TStream>;
+        protected __dataStreamIndex: Array<TStream>;
+        protected __streamIndex: Array<TStream>;
+        protected __streamMatcher: fm.icelink.SessionDescriptionStreamMatcher<TStream>;
+        protected __videoStreamIndex: Array<TStream>;
+        constructor();
+        /** @hidden */
+        static updateTrickleIcePolicy(message: fm.icelink.sdp.Message, policy: fm.icelink.TrickleIcePolicy): void;
+        /** @hidden */
+        addMediaDescriptions(msg: fm.icelink.sdp.Message, descriptions: fm.icelink.sdp.MediaDescription[]): void;
+        addStream(stream: TStream): void;
+        /** @hidden */
+        private addToIndex;
+        protected abstract getAudioStreams(): TStream[];
+        protected abstract getDataStreams(): TStream[];
+        /** @hidden */
+        getOffererStreamIndexFor(answererStreamIndex: number): number;
+        protected abstract getStreams(): fm.icelink.Hash<string, TStream>;
+        protected abstract getVideoStreams(): TStream[];
+        /** @hidden */
+        matchAndProcessDescriptionPerType(streams: Array<TStream>, description: fm.icelink.SessionDescription, isLocalDescription: boolean, streamMatcher: fm.icelink.SessionDescriptionStreamMatcher<TStream>, processSdpMediaDescriptionForStreamHandler: fm.icelink.IFunction5<TStream, fm.icelink.sdp.MediaDescription, number, boolean, boolean, fm.icelink.Error>, processSdpMediaDescriptionInternal: boolean): fm.icelink.Error;
+        /** @hidden */
+        parseSessionDescriptionForStreamChangesAndUpdateMids(newRemoteDescription: fm.icelink.SessionDescription, existingAudioStreams: TStream[], existingVideoStreams: TStream[], existingDataStreams: TStream[]): fm.icelink.Pair<fm.icelink.StreamDescription[], Object[]>;
+        /** @hidden */
+        populateStreamTypeIndexes(descriptions: fm.icelink.sdp.MediaDescription[], streams: Array<TStream>, streamMatcher: fm.icelink.SessionDescriptionStreamMatcher<TStream>): fm.icelink.Error;
+        processDescription(description: fm.icelink.SessionDescription, isLocalDescription: boolean): fm.icelink.Error;
+        /** @hidden */
+        private processMSection;
+        protected abstract processSdpMediaDescriptionForStream(stream: TStream, sdpMediaDescription: fm.icelink.sdp.MediaDescription, sdpMediaIndex: number, isLocalDescription: boolean, isRenegotiation: boolean): fm.icelink.Error;
+        /** @hidden */
+        private removeFromIndex;
+        removeStream(stream: TStream): boolean;
+        /** @hidden */
+        private resetStreamMatcher;
+        updateLocalDescription(localDescription: fm.icelink.SessionDescription): void;
+        /** @hidden */
+        private validateBaseDescription;
+    }
+}
+declare namespace fm.icelink {
     class CcmLrrPolicyWrapper {
         getTypeString(): string;
         /** @hidden */
@@ -15076,6 +11850,8 @@ declare namespace fm.icelink {
         private _dataBytes;
         /** @hidden */
         private _dataString;
+        /** @hidden */
+        private static fm_icelink_DataMessage___dataBufferPool;
         /** @hidden */
         private static fm_icelink_DataMessage___log;
         /** @hidden */
@@ -15113,6 +11889,8 @@ declare namespace fm.icelink {
         /** @hidden */
         private static __fmicelinkDataMessageInitialized;
         /** @hidden */
+        private static __fmicelinkDataMessageInitializing;
+        /** @hidden */
         static fmicelinkDataMessageInitialize(): void;
     }
 }
@@ -15137,6 +11915,8 @@ declare namespace fm.icelink.datamessageheader {
         getTypeString(): string;
         /** @hidden */
         private _deliveryAttempts;
+        /** @hidden */
+        private static fm_icelink_datamessageheader_DeliveryAttemptsElement___dataBufferPool;
         private fmicelinkdatamessageheaderDeliveryAttemptsElementInit;
         constructor(numAttempts: number);
         /** @hidden */
@@ -15146,6 +11926,12 @@ declare namespace fm.icelink.datamessageheader {
         getLength(): number;
         /** @hidden */
         private setDeliveryAttempts;
+        /** @hidden */
+        private static __fmicelinkdatamessageheaderDeliveryAttemptsElementInitialized;
+        /** @hidden */
+        private static __fmicelinkdatamessageheaderDeliveryAttemptsElementInitializing;
+        /** @hidden */
+        static fmicelinkdatamessageheaderDeliveryAttemptsElementInitialize(): void;
     }
 }
 declare namespace fm.icelink.datamessageheader {
@@ -15154,6 +11940,8 @@ declare namespace fm.icelink.datamessageheader {
         getTypeString(): string;
         /** @hidden */
         private __connectionId;
+        /** @hidden */
+        private static fm_icelink_datamessageheader_ConnectionIdElement___dataBufferPool;
         constructor(idValue: string);
         /** @hidden */
         static doParseBytes(buffer: fm.icelink.DataBuffer, index: number, offsetPlus: fm.icelink.Holder<number>): fm.icelink.datamessageheader.Element;
@@ -15162,6 +11950,12 @@ declare namespace fm.icelink.datamessageheader {
         getLength(): number;
         /** @hidden */
         private setConnectionId;
+        /** @hidden */
+        private static __fmicelinkdatamessageheaderConnectionIdElementInitialized;
+        /** @hidden */
+        private static __fmicelinkdatamessageheaderConnectionIdElementInitializing;
+        /** @hidden */
+        static fmicelinkdatamessageheaderConnectionIdElementInitialize(): void;
     }
 }
 declare namespace fm.icelink.datamessageheader {
@@ -15170,6 +11964,8 @@ declare namespace fm.icelink.datamessageheader {
         getTypeString(): string;
         /** @hidden */
         private _timeToLive;
+        /** @hidden */
+        private static fm_icelink_datamessageheader_TimeToLiveElement___dataBufferPool;
         private fmicelinkdatamessageheaderTimeToLiveElementInit;
         constructor(ttl: number);
         /** @hidden */
@@ -15179,6 +11975,12 @@ declare namespace fm.icelink.datamessageheader {
         getTimeToLive(): number;
         /** @hidden */
         private setTimeToLive;
+        /** @hidden */
+        private static __fmicelinkdatamessageheaderTimeToLiveElementInitialized;
+        /** @hidden */
+        private static __fmicelinkdatamessageheaderTimeToLiveElementInitializing;
+        /** @hidden */
+        static fmicelinkdatamessageheaderTimeToLiveElementInitialize(): void;
     }
 }
 declare namespace fm.icelink.datamessageheader {
@@ -15199,6 +12001,8 @@ declare namespace fm.icelink.datamessageheader {
         private __length;
         /** @hidden */
         private __payload;
+        /** @hidden */
+        private static fm_icelink_datamessageheader_UnknownElement___dataBufferPool;
         private fmicelinkdatamessageheaderUnknownElementInit;
         constructor(type: number, payload: fm.icelink.DataBuffer);
         /** @hidden */
@@ -15209,6 +12013,12 @@ declare namespace fm.icelink.datamessageheader {
         getPayload(): fm.icelink.DataBuffer;
         /** @hidden */
         setPayload(value: fm.icelink.DataBuffer): void;
+        /** @hidden */
+        private static __fmicelinkdatamessageheaderUnknownElementInitialized;
+        /** @hidden */
+        private static __fmicelinkdatamessageheaderUnknownElementInitializing;
+        /** @hidden */
+        static fmicelinkdatamessageheaderUnknownElementInitialize(): void;
     }
 }
 declare namespace fm.icelink {
@@ -15296,6 +12106,91 @@ declare namespace fm.icelink {
         setMuted(value: boolean): void;
         setSinkOutput(value: fm.icelink.SinkOutput): void;
         setSourceInput(value: fm.icelink.SourceInput): void;
+    }
+}
+declare namespace fm.icelink {
+    /**
+    Media track base properties/methods.
+    */
+    abstract class WebRtcMediaTrackBase extends fm.icelink.Dynamic implements fm.icelink.IMediaTrack {
+        getTypeString(): string;
+        constructor();
+        /**
+        Adds a handler that is raised when the track is destroyed.
+        */
+        abstract addOnDestroyed(value: fm.icelink.IAction0): void;
+        /**
+        Adds a handler that is raised when the track is started. Only applicable for local media tracks.
+        */
+        abstract addOnStarted(value: fm.icelink.IAction0): void;
+        /**
+        Adds a handler that is raised when the track is stopped. Only applicable for local media tracks.
+        */
+        abstract addOnStopped(value: fm.icelink.IAction0): void;
+        /**
+        Changes the sink output while the media track is active.
+        @param sinkOutput The sink output.
+        */
+        abstract changeSinkOutput(sinkOutput: fm.icelink.SinkOutput): fm.icelink.Future<Object>;
+        /**
+        Changes the source input while the media track is active.
+        @param sourceInput The source input.
+        */
+        abstract changeSourceInput(sourceInput: fm.icelink.SourceInput): fm.icelink.Future<Object>;
+        /**
+        Destroys this media track.
+        */
+        abstract destroy(): boolean;
+        /**
+        Gets a value indicating whether this track is muted.
+        */
+        abstract getMuted(): boolean;
+        /**
+        Gets the current sink output.
+        */
+        abstract getSinkOutput(): fm.icelink.SinkOutput;
+        /**
+        Gets the available sink outputs.
+        @return
+                    A future with an array of sink outputs.
+            
+        */
+        abstract getSinkOutputs(): fm.icelink.Future<fm.icelink.SinkOutput[]>;
+        /**
+        Gets the current source input.
+        */
+        abstract getSourceInput(): fm.icelink.SourceInput;
+        /**
+        Gets the available source inputs.
+        @return
+                    A future with an array of source inputs.
+            
+        */
+        abstract getSourceInputs(): fm.icelink.Future<fm.icelink.SourceInput[]>;
+        /**
+        Removes a handler that is raised when the track is destroyed.
+        */
+        abstract removeOnDestroyed(value: fm.icelink.IAction0): void;
+        /**
+        Removes a handler that is raised when the track is started. Only applicable for local media tracks.
+        */
+        abstract removeOnStarted(value: fm.icelink.IAction0): void;
+        /**
+        Removes a handler that is raised when the track is stopped. Only applicable for local media tracks.
+        */
+        abstract removeOnStopped(value: fm.icelink.IAction0): void;
+        /**
+        Sets a value indicating whether this track is muted.
+        */
+        abstract setMuted(value: boolean): void;
+        /**
+        Sets the current sink output.
+        */
+        abstract setSinkOutput(value: fm.icelink.SinkOutput): void;
+        /**
+        Sets the current source input.
+        */
+        abstract setSourceInput(value: fm.icelink.SourceInput): void;
     }
 }
 declare namespace fm.icelink {
@@ -15589,6 +12484,533 @@ declare namespace fm.icelink {
 }
 declare namespace fm.icelink {
     /**
+    Connection base properties/methods.
+    */
+    abstract class WebRtcConnectionBase<TConnection extends fm.icelink.WebRtcConnectionBase<TConnection, TStream, TAudioStream, TVideoStream, TDataStream, TDataChannel>, TStream extends fm.icelink.WebRtcStreamBase, TAudioStream extends fm.icelink.IAudioStream, TVideoStream extends fm.icelink.IVideoStream, TDataStream extends fm.icelink.IDataStream<TDataChannel>, TDataChannel extends fm.icelink.IDataChannel<TDataChannel>> extends fm.icelink.Dynamic implements fm.icelink.IConnection<TConnection, TStream, TAudioStream, TVideoStream, TDataStream> {
+        getTypeString(): string;
+        /** @hidden */
+        private __bundlePolicy;
+        /** @hidden */
+        private __closed;
+        /** @hidden */
+        private __connected;
+        /** @hidden */
+        private __externalId;
+        /** @hidden */
+        private __failed;
+        /** @hidden */
+        private __iceServers;
+        /** @hidden */
+        private __id;
+        /** @hidden */
+        private __onExternalIdChange;
+        /** @hidden */
+        private __onGatheringStateChange;
+        /** @hidden */
+        private __onIceConnectionStateChange;
+        /** @hidden */
+        private __onLocalCandidate;
+        /** @hidden */
+        private __onLocalDescription;
+        /** @hidden */
+        private __onRemoteCandidate;
+        /** @hidden */
+        private __onRemoteDescription;
+        /** @hidden */
+        private __onSignallingStateChange;
+        /** @hidden */
+        private __onStateChange;
+        /** @hidden */
+        private __signallingState;
+        /** @hidden */
+        private __stateMachine;
+        /** @hidden */
+        private __trickleIcePolicy;
+        /** @hidden */
+        private __useTrickleIce;
+        /** @hidden */
+        _connectionLock: Object;
+        /** @hidden */
+        private _deadStreamTimeout;
+        /** @hidden */
+        private _earlyRemoteCandidatePromises;
+        /** @hidden */
+        private _error;
+        /** @hidden */
+        private _iceGatherPolicy;
+        /** @hidden */
+        private _legacyTimeout;
+        /** @hidden */
+        private _onExternalIdChange;
+        /** @hidden */
+        private _onGatheringStateChange;
+        /** @hidden */
+        private _onIceConnectionStateChange;
+        /** @hidden */
+        private _onLocalCandidate;
+        /** @hidden */
+        private _onLocalDescription;
+        /** @hidden */
+        private _onRemoteCandidate;
+        /** @hidden */
+        private _onRemoteDescription;
+        /** @hidden */
+        private _onSignallingStateChange;
+        /** @hidden */
+        private _onStateChange;
+        /** @hidden */
+        private _tieBreaker;
+        /** @hidden */
+        private _timeout;
+        private fmicelinkWebRtcConnectionBaseInit;
+        /**
+        Initializes a new instance of the [[fm.icelink.connectionBase]] class.
+        */
+        constructor(sharedLock: Object);
+        /**
+        Adds an ICE server.
+        @param iceServer The ICE server.
+        */
+        addIceServer(iceServer: fm.icelink.IceServer): void;
+        /**
+        Adds some ICE servers.
+        @param iceServers The ICE servers.
+        */
+        addIceServers(iceServers: fm.icelink.IceServer[]): void;
+        /**
+        Adds a handler that is raised when external Id of this connection changes. Old external Id as well as internal Id are raised.
+        */
+        addOnExternalIdChange(value: fm.icelink.IAction2<string, string>): void;
+        /**
+        Adds a handler that is raised when the gathering state changes.
+        */
+        addOnGatheringStateChange(value: fm.icelink.IAction1<TConnection>): void;
+        /**
+        Adds a handler that is raised when the ice connection state changes.
+        */
+        addOnIceConnectionStateChange(value: fm.icelink.IAction1<TConnection>): void;
+        /**
+        Adds a handler that is raised when a local candidate is added.
+        */
+        addOnLocalCandidate(value: fm.icelink.IAction2<TConnection, fm.icelink.Candidate>): void;
+        /**
+        Adds a handler that is raised when a local description is set.
+        */
+        addOnLocalDescription(value: fm.icelink.IAction2<TConnection, fm.icelink.SessionDescription>): void;
+        /**
+        Adds a handler that is raised when a remote description is added.
+        */
+        addOnRemoteCandidate(value: fm.icelink.IAction2<TConnection, fm.icelink.Candidate>): void;
+        /**
+        Adds a handler that is raised when a remote description is set.
+        */
+        addOnRemoteDescription(value: fm.icelink.IAction2<TConnection, fm.icelink.SessionDescription>): void;
+        /**
+        Adds a handler that is raised when the signalling state changes.
+        */
+        addOnSignallingStateChange(value: fm.icelink.IAction1<TConnection>): void;
+        /**
+        Adds a handler that is raised when the connection state changes.
+        */
+        addOnStateChange(value: fm.icelink.IAction1<TConnection>): void;
+        /**
+        Adds the remote candidate.
+        @param remoteCandidate The remote candidate.
+        */
+        addRemoteCandidate(remoteCandidate: fm.icelink.Candidate): fm.icelink.Future<fm.icelink.Candidate>;
+        /** @hidden */
+        private addRemoteCandidatePromise;
+        /**
+        Closes this instance.
+        */
+        abstract close(): boolean;
+        /**
+        Creates an answer.
+        */
+        createAnswer(): fm.icelink.Future<fm.icelink.SessionDescription>;
+        /** @hidden */
+        private createAnswerWrapper;
+        /**
+        Creates an offer.
+        */
+        createOffer(): fm.icelink.Future<fm.icelink.SessionDescription>;
+        /** @hidden */
+        private createOfferWrapper;
+        /**
+        Adds the remote candidate.
+        @param promise The promise.
+        @param remoteCandidate The remote candidate.
+        */
+        protected abstract doAddRemoteCandidate(promise: fm.icelink.Promise<fm.icelink.Candidate>, remoteCandidate: fm.icelink.Candidate): void;
+        /**
+        Creates an answer.
+        */
+        protected abstract doCreateAnswer(promise: fm.icelink.Promise<fm.icelink.SessionDescription>): void;
+        /**
+        Creates an offer.
+        */
+        protected abstract doCreateOffer(promise: fm.icelink.Promise<fm.icelink.SessionDescription>): boolean;
+        /**
+        Processes a session description.
+        @param description The session description.
+        @param isLocalDescription Whether this is a local session description.
+        */
+        protected doProcessDescription(description: fm.icelink.SessionDescription, isLocalDescription: boolean): fm.icelink.Error;
+        /**
+        Dispatches cached local candidates that were gathered while Connection generated session description.
+        */
+        protected abstract doSendCachedLocalCandidates(): void;
+        /**
+        Sets the local description.
+        @param promise The promise.
+        @param localDescription The local description.
+        */
+        protected abstract doSetLocalDescription(promise: fm.icelink.Promise<fm.icelink.SessionDescription>, localDescription: fm.icelink.SessionDescription): void;
+        /** @hidden */
+        private doSetLocalDescriptionInternal;
+        /**
+        Sets the remote description.
+        @param promise The promise.
+        @param remoteDescription The remote description.
+        */
+        protected abstract doSetRemoteDescription(promise: fm.icelink.Promise<fm.icelink.SessionDescription>, remoteDescription: fm.icelink.SessionDescription): void;
+        /** @hidden */
+        private doSetRemoteDescriptionInternal;
+        /**
+        Gets the first audio stream.
+        */
+        getAudioStream(): TAudioStream;
+        /**
+        Gets the audio streams.
+        */
+        abstract getAudioStreams(): TAudioStream[];
+        /**
+        Gets the bundle policy.
+        */
+        getBundlePolicy(): fm.icelink.BundlePolicy;
+        /**
+        Gets the canonical name. Getting the value of Connection.CanonicalName is deprecated. Get the value of MediaStream.LocalCanonicalName instead.
+        */
+        getCanonicalName(): string;
+        /**
+        Gets a future that resolves if the connection enters the Closed state or rejects if the connection enters the Failed state before that happens.
+        */
+        getClosed(): fm.icelink.Future<Object>;
+        /**
+        Gets a future that resolves if the connection enters the Connected state or rejects if the connection enters the Failed state before that happens.
+        */
+        getConnected(): fm.icelink.Future<Object>;
+        /** @hidden */
+        getConnectionWideCanonicalName(): string;
+        /**
+        Gets the first data stream.
+        */
+        getDataStream(): TDataStream;
+        /**
+        Gets the data streams.
+        */
+        abstract getDataStreams(): TDataStream[];
+        /**
+        Gets the amount of time (in milliseconds) to wait for connectivity checks to re-establish after they start to fail on a live connection. Defaults to 15,000.
+        */
+        getDeadStreamTimeout(): number;
+        /**
+        Gets the error.
+        */
+        getError(): fm.icelink.Error;
+        /**
+        Gets the external identifier.
+        */
+        getExternalId(): string;
+        /**
+        Gets a future that resolves if the connection enters the Failed state or rejects if the connection enters the Closed state before that happens.
+        */
+        getFailed(): fm.icelink.Future<Object>;
+        /**
+        Gets the ICE gathering state.
+        */
+        abstract getGatheringState(): fm.icelink.IceGatheringState;
+        /**
+        Gets whether this connection has an audio stream.
+        */
+        getHasAudio(): boolean;
+        /**
+        Gets whether this connection has a data stream.
+        */
+        getHasData(): boolean;
+        /**
+        Gets whether this connection has a video stream.
+        */
+        getHasVideo(): boolean;
+        /**
+        Gets the ICE connection state.
+        */
+        abstract getIceConnectionState(): fm.icelink.IceConnectionState;
+        /**
+        Gets the ICE gather policy.
+        */
+        getIceGatherPolicy(): fm.icelink.IceGatherPolicy;
+        /**
+        Gets the ICE server.
+        */
+        getIceServer(): fm.icelink.IceServer;
+        /**
+        Gets the ICE servers.
+        */
+        getIceServers(): fm.icelink.IceServer[];
+        /**
+        Gets the identifier.
+        */
+        getId(): string;
+        /**
+        Gets the current instance.
+        */
+        protected abstract getInstance(): TConnection;
+        /**
+        Gets a value indicating whether the connection is currently closed or failed.
+        */
+        getIsTerminated(): boolean;
+        /**
+        Gets a value indicating whether the connection is currently closing or failing.
+        */
+        getIsTerminating(): boolean;
+        /**
+        Gets a value indicating whether the connection is currently closing, failing, closed, or failed.
+        */
+        getIsTerminatingOrTerminated(): boolean;
+        /**
+        Gets a value indicating whether legacy Connection.Timeout should be used. When disabled, Connection.Timeout only accounts for the time spent trying to establish connectivity (i.e. time it takes to transition from the Connecting to the Connected state; from the time point when both offer and answer had been set to the connection being fully established). When enabled, Connection.Timeout accounts for the time spent from receiving an offer (or creating an offer) to establishing connectivity (i.e. time it takes to transition from Initializing to Connected state). By default, LegacyTimeout is set to true, so that existing behavior is preserved. However, in the future default will be updated to false. This means that IL will not account for any signalling delays that may occur while establishing connectivity. This option will be later deprecated.
+        */
+        getLegacyTimeout(): boolean;
+        /**
+        Gets the local description.
+        */
+        abstract getLocalDescription(): fm.icelink.SessionDescription;
+        /**
+        Gets the remote description.
+        */
+        abstract getRemoteDescription(): fm.icelink.SessionDescription;
+        /** @hidden */
+        abstract getSessionDescriptionManager(): fm.icelink.SessionDescriptionManagerBase<TStream, TAudioStream, TVideoStream, TDataStream, TDataChannel>;
+        /**
+        Gets the state of the signalling.
+        */
+        getSignallingState(): fm.icelink.SignallingState;
+        /**
+        Gets the state of the connection.
+        */
+        getState(): fm.icelink.ConnectionState;
+        /**
+        Gets the current connection stats.
+        */
+        abstract getStats(): fm.icelink.Future<fm.icelink.ConnectionStats>;
+        /**
+        Gets the first stream.
+        */
+        getStream(): TStream;
+        /**
+        Gets the streams.
+        */
+        abstract getStreams(): TStream[];
+        /**
+        Gets the tie breaker.
+        */
+        getTieBreaker(): string;
+        /**
+        Gets the amount of time (in milliseconds) to wait for a connection to establish before giving up and closing it. Defaults to 30,000.
+        */
+        getTimeout(): number;
+        /**
+        Gets Trickle Ice Support Policy. Cf. https://tools.ietf.org/html/draft-ietf-ice-trickle-05
+        */
+        getTrickleIcePolicy(): fm.icelink.TrickleIcePolicy;
+        /** @hidden */
+        getUseTrickleIce(): boolean;
+        /**
+        Gets the first video stream.
+        */
+        getVideoStream(): TVideoStream;
+        /**
+        Gets the video streams.
+        */
+        abstract getVideoStreams(): TVideoStream[];
+        /** @hidden */
+        private logInvalidStateTransition;
+        /**
+        Processes a session description.
+        @param description The session description.
+        @param isLocalDescription Whether this is a local session description.
+        */
+        protected processDescription(description: fm.icelink.SessionDescription, isLocalDescription: boolean): fm.icelink.Error;
+        /**
+        Processes a state change.
+        */
+        protected processStateChange(): void;
+        /** @hidden */
+        raiseCachedCandidates(): void;
+        /** @hidden */
+        private raiseConnected;
+        /**
+        Raises gathering state change.
+        */
+        protected raiseGatheringStateChange(connection: TConnection): void;
+        /**
+        Raises ICE connection state change.
+        */
+        protected raiseIceConnectionStateChange(connection: TConnection): void;
+        /**
+        Raises a local candidate but only if it has not been already raised.
+        @param localCandidate The local candidate.
+        */
+        protected raiseLocalCandidate(localCandidate: fm.icelink.Candidate): void;
+        /** @hidden */
+        private raiseLocalDescription;
+        /** @hidden */
+        private raiseRemoteCandidate;
+        /** @hidden */
+        private raiseRemoteDescription;
+        /** @hidden */
+        private raiseStateChange;
+        /** @hidden */
+        private raiseTerminated;
+        /** @hidden */
+        registerStreamWithSessionDescriptionManager(stream: TStream): void;
+        /**
+        Removes an ICE server.
+        @param iceServer The ICE server.
+        */
+        removeIceServer(iceServer: fm.icelink.IceServer): void;
+        /**
+        Removes some ICE servers.
+        @param iceServers The ICE servers.
+        */
+        removeIceServers(iceServers: fm.icelink.IceServer[]): void;
+        /**
+        Removes a handler that is raised when external Id of this connection changes. Old external Id as well as internal Id are raised.
+        */
+        removeOnExternalIdChange(value: fm.icelink.IAction2<string, string>): void;
+        /**
+        Removes a handler that is raised when the gathering state changes.
+        */
+        removeOnGatheringStateChange(value: fm.icelink.IAction1<TConnection>): void;
+        /**
+        Removes a handler that is raised when the ice connection state changes.
+        */
+        removeOnIceConnectionStateChange(value: fm.icelink.IAction1<TConnection>): void;
+        /**
+        Removes a handler that is raised when a local candidate is added.
+        */
+        removeOnLocalCandidate(value: fm.icelink.IAction2<TConnection, fm.icelink.Candidate>): void;
+        /**
+        Removes a handler that is raised when a local description is set.
+        */
+        removeOnLocalDescription(value: fm.icelink.IAction2<TConnection, fm.icelink.SessionDescription>): void;
+        /**
+        Removes a handler that is raised when a remote description is added.
+        */
+        removeOnRemoteCandidate(value: fm.icelink.IAction2<TConnection, fm.icelink.Candidate>): void;
+        /**
+        Removes a handler that is raised when a remote description is set.
+        */
+        removeOnRemoteDescription(value: fm.icelink.IAction2<TConnection, fm.icelink.SessionDescription>): void;
+        /**
+        Removes a handler that is raised when the signalling state changes.
+        */
+        removeOnSignallingStateChange(value: fm.icelink.IAction1<TConnection>): void;
+        /**
+        Removes a handler that is raised when the connection state changes.
+        */
+        removeOnStateChange(value: fm.icelink.IAction1<TConnection>): void;
+        /**
+        Sets the bundle policy.
+        */
+        setBundlePolicy(value: fm.icelink.BundlePolicy): void;
+        /**
+        Sets the amount of time (in milliseconds) to wait for connectivity checks to re-establish after they start to fail on a live connection. Defaults to 15,000.
+        */
+        setDeadStreamTimeout(value: number): void;
+        /**
+        Sets the error.
+        */
+        setError(value: fm.icelink.Error): void;
+        /**
+        Sets the external identifier.
+        */
+        setExternalId(value: string): void;
+        /**
+        Sets the ICE gathering state.
+        */
+        protected abstract setGatheringState(value: fm.icelink.IceGatheringState): void;
+        /**
+        Sets the ICE connection state.
+        */
+        protected abstract setIceConnectionState(value: fm.icelink.IceConnectionState): void;
+        /**
+        Sets the ICE gather policy.
+        */
+        setIceGatherPolicy(value: fm.icelink.IceGatherPolicy): void;
+        /**
+        Sets the ICE server.
+        */
+        setIceServer(value: fm.icelink.IceServer): void;
+        /**
+        Sets the ICE servers.
+        */
+        setIceServers(value: fm.icelink.IceServer[]): void;
+        /**
+        Sets a value indicating whether legacy Connection.Timeout should be used. When disabled, Connection.Timeout only accounts for the time spent trying to establish connectivity (i.e. time it takes to transition from the Connecting to the Connected state; from the time point when both offer and answer had been set to the connection being fully established). When enabled, Connection.Timeout accounts for the time spent from receiving an offer (or creating an offer) to establishing connectivity (i.e. time it takes to transition from Initializing to Connected state). By default, LegacyTimeout is set to true, so that existing behavior is preserved. However, in the future default will be updated to false. This means that IL will not account for any signalling delays that may occur while establishing connectivity. This option will be later deprecated.
+        */
+        setLegacyTimeout(value: boolean): void;
+        /**
+        Sets the local description.
+        @param localDescription The local description.
+        */
+        setLocalDescription(localDescription: fm.icelink.SessionDescription): fm.icelink.Future<fm.icelink.SessionDescription>;
+        /** @hidden */
+        private setLocalDescriptionInternal;
+        /**
+        Sets the remote description.
+        @param remoteDescription The remote description.
+        */
+        setRemoteDescription(remoteDescription: fm.icelink.SessionDescription): fm.icelink.Future<fm.icelink.SessionDescription>;
+        /** @hidden */
+        private setRemoteDescriptionInternal;
+        /** @hidden */
+        abstract setSessionDescriptionManager(value: fm.icelink.SessionDescriptionManagerBase<TStream, TAudioStream, TVideoStream, TDataStream, TDataChannel>): void;
+        /**
+        Sets the state of the signalling.
+        */
+        protected setSignallingState(value: fm.icelink.SignallingState): void;
+        /** @hidden */
+        setState(state: fm.icelink.ConnectionState): boolean;
+        /** @hidden */
+        setState(state: fm.icelink.ConnectionState, error: fm.icelink.Error): boolean;
+        /**
+        Sets the tie breaker.
+        */
+        setTieBreaker(value: string): void;
+        /**
+        Sets the amount of time (in milliseconds) to wait for a connection to establish before giving up and closing it. Defaults to 30,000.
+        */
+        setTimeout(value: number): void;
+        /**
+        Sets Trickle Ice Support Policy. Cf. https://tools.ietf.org/html/draft-ietf-ice-trickle-05
+        */
+        setTrickleIcePolicy(value: fm.icelink.TrickleIcePolicy): void;
+        /** @hidden */
+        setUseTrickleIce(value: boolean): void;
+        /** @hidden */
+        unregisterStreamWithSessionDescriptionManager(stream: TStream): void;
+        /** @hidden */
+        updateBundlePolicy(policy: fm.icelink.BundlePolicy): void;
+        /** @hidden */
+        updateRemoteCandidateIndex(candidate: fm.icelink.Candidate): void;
+        /** @hidden */
+        private verifySessionIdAndVersion;
+    }
+}
+declare namespace fm.icelink {
+    /**
     A collection of connections.
     */
     class ConnectionCollection extends fm.icelink.Collection<fm.icelink.Connection, fm.icelink.ConnectionCollection> {
@@ -15748,6 +13170,222 @@ declare namespace fm.icelink {
 }
 declare namespace fm.icelink {
     /**
+    Data channel base properties/methods.
+    */
+    abstract class WebRtcDataChannelBase<TDataChannel> extends fm.icelink.Dynamic implements fm.icelink.IDataChannel<TDataChannel> {
+        getTypeString(): string;
+        /** @hidden */
+        private __bytesReceived;
+        /** @hidden */
+        private __bytesSent;
+        /** @hidden */
+        private __id;
+        /** @hidden */
+        private __log;
+        /** @hidden */
+        private __messagesReceived;
+        /** @hidden */
+        private __messagesSent;
+        /** @hidden */
+        private __onDataReceived;
+        /** @hidden */
+        private __onDataSent;
+        /** @hidden */
+        private __onStateChange;
+        /** @hidden */
+        private __stateLock;
+        /** @hidden */
+        private __stateMachine;
+        /** @hidden */
+        private _connectionId;
+        /** @hidden */
+        private _getRemoteConnectionInfo;
+        /** @hidden */
+        private _label;
+        /** @hidden */
+        private _onDataReceived;
+        /** @hidden */
+        private _onDataSent;
+        /** @hidden */
+        private _onReceive;
+        /** @hidden */
+        private _onStateChange;
+        /** @hidden */
+        private _ordered;
+        /** @hidden */
+        private _streamId;
+        /** @hidden */
+        private _subprotocol;
+        private fmicelinkWebRtcDataChannelBaseInit;
+        /**
+        Initializes a new instance of the [[fm.icelink.dataChannelBase]] class.
+        @param label The label.
+        @param ordered Whether messages will be delivered in the order they are sent.
+        @param subprotocol The subprotocol.
+        */
+        constructor(label: string, ordered: boolean, subprotocol: string);
+        /** @hidden */
+        addOnDataReceived(value: fm.icelink.IAction1<number>): void;
+        /** @hidden */
+        addOnDataSent(value: fm.icelink.IAction1<number>): void;
+        /**
+        Adds a handler that is raised when the data channel state changes.
+        */
+        addOnStateChange(value: fm.icelink.IAction1<TDataChannel>): void;
+        /**
+        Gets the number of bytes received.
+        */
+        getBytesReceived(): number;
+        /**
+        Gets the number of bytes sent.
+        */
+        getBytesSent(): number;
+        /**
+        Gets the connection identifier.
+        */
+        getConnectionId(): string;
+        /** @hidden */
+        getGetRemoteConnectionInfo(): fm.icelink.IFunction1<string, Object>;
+        /**
+        Gets the identifier.
+        */
+        getId(): string;
+        /**
+        Gets the data channel info.
+        */
+        getInfo(): fm.icelink.DataChannelInfo;
+        /**
+        Gets the current instance.
+        */
+        protected abstract getInstance(): TDataChannel;
+        /**
+        Gets a value indicating whether the data channel is currently closed or failed.
+        */
+        getIsTerminated(): boolean;
+        /**
+        Gets a value indicating whether the data channel is currently closing.
+        */
+        getIsTerminating(): boolean;
+        /**
+        Gets a value indicating whether the data channel is currently closing, closed, or failed.
+        */
+        getIsTerminatingOrTerminated(): boolean;
+        /**
+        Gets the label.
+        */
+        getLabel(): string;
+        /**
+        Gets the number of messages received.
+        */
+        getMessagesReceived(): number;
+        /**
+        Gets the number of messages sent.
+        */
+        getMessagesSent(): number;
+        /**
+        Gets the callback to execute when a message is received.
+        */
+        getOnReceive(): fm.icelink.IAction1<fm.icelink.DataChannelReceiveArgs>;
+        /**
+        Gets a value indicating whether messages will be delivered in the order they are sent.
+        */
+        getOrdered(): boolean;
+        /**
+        Gets the state.
+        */
+        getState(): fm.icelink.DataChannelState;
+        /** @hidden */
+        getStateLock(): Object;
+        /**
+        Gets the stream identifier.
+        */
+        getStreamId(): string;
+        /**
+        Gets the subprotocol.
+        */
+        getSubprotocol(): string;
+        /** @hidden */
+        private logInvalidStateTransition;
+        /** @hidden */
+        prepareAndSendMessage(buffer: fm.icelink.DataBuffer, promise: fm.icelink.Promise<Object>): void;
+        /** @hidden */
+        prepareAndSendMessage(msg: string, promise: fm.icelink.Promise<Object>): void;
+        /**
+        Processes a state change.
+        */
+        protected processStateChange(): void;
+        /**
+        Processes a state lock change.
+        */
+        protected processStateLockChange(): void;
+        /** @hidden */
+        abstract promisedSendDataBytes(dataBytes: fm.icelink.DataBuffer, dataLength: number, promise: fm.icelink.Promise<Object>): void;
+        /** @hidden */
+        abstract promisedSendDataString(dataString: string, dataLength: number, promise: fm.icelink.Promise<Object>): void;
+        /**
+        Raises the OnReceive callback with data bytes.
+        @param dataBytes The data bytes.
+        */
+        protected raiseDataBytes(dataBytes: fm.icelink.DataBuffer): void;
+        /**
+        Raises the OnReceive callback with a data string.
+        @param dataString The data string.
+        */
+        protected raiseDataString(dataString: string): void;
+        /** @hidden */
+        private raiseStateChange;
+        /**
+        Registers that a data has been sent.
+        @param dataLength The data length.
+        */
+        protected registerDataReceived(dataLength: number): void;
+        /**
+        Registers that a data has been sent.
+        @param dataLength The data length.
+        */
+        protected registerDataSent(dataLength: number): void;
+        /** @hidden */
+        removeOnDataReceived(value: fm.icelink.IAction1<number>): void;
+        /** @hidden */
+        removeOnDataSent(value: fm.icelink.IAction1<number>): void;
+        /**
+        Removes a handler that is raised when the data channel state changes.
+        */
+        removeOnStateChange(value: fm.icelink.IAction1<TDataChannel>): void;
+        /**
+        Sends some bytes.
+        @param dataBytes The data bytes.
+        */
+        abstract sendDataBytes(dataBytes: fm.icelink.DataBuffer): fm.icelink.Future<Object>;
+        /**
+        Sends a string.
+        @param dataString The data string.
+        */
+        abstract sendDataString(dataString: string): fm.icelink.Future<Object>;
+        /** @hidden */
+        setConnectionId(value: string): void;
+        /** @hidden */
+        setGetRemoteConnectionInfo(value: fm.icelink.IFunction1<string, Object>): void;
+        /** @hidden */
+        private setLabel;
+        /**
+        Sets the callback to execute when a message is received.
+        */
+        setOnReceive(value: fm.icelink.IAction1<fm.icelink.DataChannelReceiveArgs>): void;
+        /** @hidden */
+        private setOrdered;
+        /** @hidden */
+        setState(state: fm.icelink.DataChannelState): boolean;
+        /** @hidden */
+        setStateLock(value: Object): void;
+        /** @hidden */
+        setStreamId(value: string): void;
+        /** @hidden */
+        private setSubprotocol;
+    }
+}
+declare namespace fm.icelink {
+    /**
     A collection of data channels.
     */
     class DataChannelCollection extends fm.icelink.Collection<fm.icelink.DataChannel, fm.icelink.DataChannelCollection> {
@@ -15807,12 +13445,179 @@ declare namespace fm.icelink {
     }
 }
 declare namespace fm.icelink {
+    /**
+    Data stream base properties/methods.
+    */
+    abstract class WebRtcDataStreamBase<TDataChannel extends fm.icelink.WebRtcDataChannelBase<TDataChannel>> extends fm.icelink.WebRtcStream implements fm.icelink.IDataStream<TDataChannel>, fm.icelink.IStream {
+        getTypeString(): string;
+        /** @hidden */
+        private __bytesReceived;
+        /** @hidden */
+        private __bytesSent;
+        /** @hidden */
+        private __getRemoteConnectionInfo;
+        /** @hidden */
+        private __messagesReceived;
+        /** @hidden */
+        private __messagesSent;
+        /** @hidden */
+        private __obsoleteCanonicalName;
+        /**
+        Initializes a new instance of the [[fm.icelink.dataStreamBase]] class.
+        */
+        constructor();
+        /**
+        Attaches a data channel to this stream (events and IDs).
+        @param channel
+        */
+        protected attachToChannel(channel: TDataChannel): void;
+        /**
+        Changes this stream's direction
+        */
+        changeDirection(newDirection: fm.icelink.StreamDirection): fm.icelink.Error;
+        /**
+        Gets the number of bytes received.
+        */
+        getBytesReceived(): number;
+        /**
+        Gets the number of bytes sent.
+        */
+        getBytesSent(): number;
+        /**
+        Gets the canonical name. Getting the value of DataStream.CanonicalName is deprecated and will be removed in a future release.
+        */
+        getCanonicalName(): string;
+        /**
+        Gets the channels.
+        */
+        abstract getChannels(): TDataChannel[];
+        /**
+        Gets the current direction.
+        */
+        getDirection(): fm.icelink.StreamDirection;
+        /** @hidden */
+        getDirectionCapabilities(): fm.icelink.StreamDirection;
+        /** @hidden */
+        getGetRemoteConnectionInfo(): fm.icelink.IFunction1<string, Object>;
+        /**
+        Gets the data stream info.
+        */
+        getInfo(): fm.icelink.DataStreamInfo;
+        /**
+        Gets a label that identifies this class.
+        */
+        getLabel(): string;
+        /**
+        Gets the current direction.
+        */
+        getLocalDirection(): fm.icelink.StreamDirection;
+        /**
+        Gets the number of messages received.
+        */
+        getMessagesReceived(): number;
+        /**
+        Gets the number of messages sent.
+        */
+        getMessagesSent(): number;
+        /**
+        Gets the current direction.
+        */
+        getRemoteDirection(): fm.icelink.StreamDirection;
+        /**
+        Processes a state change.
+        */
+        protected processStateChange(): void;
+        /**
+        Processes a state lock change.
+        */
+        protected processStateLockChange(): void;
+        /**
+        Registers that a data has been received.
+        @param dataLength The data length.
+        */
+        protected registerDataReceived(dataLength: number): void;
+        /**
+        Registers that a data has been received.
+        @param dataLength The data length.
+        */
+        protected registerDataSent(dataLength: number): void;
+        /** @hidden */
+        setCanonicalName(canonicalName: string): void;
+        /** @hidden */
+        setGetRemoteConnectionInfo(value: fm.icelink.IFunction1<string, Object>): void;
+        /**
+        Sets the current direction.
+        */
+        setLocalDirection(value: fm.icelink.StreamDirection): void;
+        /** @hidden */
+        setRemoteDirection(value: fm.icelink.StreamDirection): void;
+    }
+}
+declare namespace fm.icelink.dtmf {
+    /**
+    A DTMF (telephone-event) format.
+    */
+    class Format extends fm.icelink.AudioFormat {
+        getTypeString(): string;
+        /**
+        Initializes a new instance of the [[fm.icelink.dtmf.format]] class.
+        */
+        constructor();
+        /**
+        Initializes a new instance of the [[fm.icelink.dtmf.format]] class.
+        @param clockRate The clock rate.
+        */
+        constructor(clockRate: number);
+        /**
+        Gets the default clock rate (8000).
+        */
+        static getDefaultClockRate(): number;
+    }
+}
+declare namespace fm.icelink {
     class EncryptionPolicyWrapper {
         getTypeString(): string;
         /** @hidden */
         private _value;
         constructor(value: fm.icelink.EncryptionPolicy);
         toString(): string;
+    }
+}
+declare namespace fm.icelink.g711 {
+    /**
+    A G.711 format.
+    */
+    abstract class Format extends fm.icelink.AudioFormat {
+        getTypeString(): string;
+        /**
+        Initializes a new instance of the [[fm.icelink.g711.format]] class.
+        @param name The name.
+        @param clockRate The clock rate.
+        @param channelCount The channel count.
+        */
+        constructor(name: string, clockRate: number, channelCount: number);
+        /**
+        Gets the default clock rate (1).
+        */
+        static getDefaultChannelCount(): number;
+        /**
+        Gets the default clock rate (8000).
+        */
+        static getDefaultClockRate(): number;
+        /**
+        Gets the default configuration (8000/1).
+        */
+        static getDefaultConfig(): fm.icelink.AudioConfig;
+        /** @hidden */
+        private getFixedBitrate;
+        /**
+        Gets the maximum bitrate supported by this format, in kbps.
+        */
+        getMaxBitrate(): number;
+        /**
+        Gets the minimum bitrate supported by this format, in kbps.
+        */
+        getMinBitrate(): number;
     }
 }
 declare namespace fm.icelink {
@@ -16135,6 +13940,8 @@ declare namespace fm.icelink {
         /** @hidden */
         private static __fmicelinkVideoFormatInitialized;
         /** @hidden */
+        private static __fmicelinkVideoFormatInitializing;
+        /** @hidden */
         static fmicelinkVideoFormatInitialize(): void;
     }
 }
@@ -16192,6 +13999,18 @@ declare namespace fm.icelink.h264 {
         @param packetizationMode The packetization mode.
         */
         constructor(profileLevelId: fm.icelink.h264.ProfileLevelId, packetizationMode: number);
+        /**
+        Creates a new instance.
+        */
+        protected createInstance(): fm.icelink.VideoFormat;
+        /**
+        Gets the maximum bitrate supported by this format, in kbps.
+        */
+        getMaxBitrate(): number;
+        /**
+        Gets the minimum bitrate supported by this format, in kbps.
+        */
+        getMinBitrate(): number;
     }
 }
 declare namespace fm.icelink.h264 {
@@ -16579,11 +14398,19 @@ declare namespace fm.icelink {
         changeVideoSourceInput(videoSourceInput: fm.icelink.SourceInput): fm.icelink.Future<Object>;
         getAudioEncoding(): fm.icelink.AudioEncodingConfig;
         getAudioEncodings(): fm.icelink.AudioEncodingConfig[];
+        getAudioSimulcastDisabled(): boolean;
+        getAudioSimulcastEncodingCount(): number;
+        getAudioSimulcastPreferredBitrate(): number;
         getAudioSourceInput(): fm.icelink.SourceInput;
         getAudioSourceInputs(): fm.icelink.Future<fm.icelink.SourceInput[]>;
         getState(): fm.icelink.LocalMediaState;
         getVideoEncoding(): fm.icelink.VideoEncodingConfig;
         getVideoEncodings(): fm.icelink.VideoEncodingConfig[];
+        getVideoSimulcastBitsPerPixel(): number;
+        getVideoSimulcastDegradationPreference(): fm.icelink.VideoDegradationPreference;
+        getVideoSimulcastDisabled(): boolean;
+        getVideoSimulcastEncodingCount(): number;
+        getVideoSimulcastPreferredBitrate(): number;
         getVideoSourceInput(): fm.icelink.SourceInput;
         getVideoSourceInputs(): fm.icelink.Future<fm.icelink.SourceInput[]>;
         removeOnAudioStarted(value: fm.icelink.IAction0): void;
@@ -16591,8 +14418,16 @@ declare namespace fm.icelink {
         removeOnVideoStarted(value: fm.icelink.IAction0): void;
         removeOnVideoStopped(value: fm.icelink.IAction0): void;
         setAudioEncodings(value: fm.icelink.AudioEncodingConfig[]): void;
+        setAudioSimulcastDisabled(value: boolean): void;
+        setAudioSimulcastEncodingCount(value: number): void;
+        setAudioSimulcastPreferredBitrate(value: number): void;
         setAudioSourceInput(value: fm.icelink.SourceInput): void;
         setVideoEncodings(value: fm.icelink.VideoEncodingConfig[]): void;
+        setVideoSimulcastBitsPerPixel(value: number): void;
+        setVideoSimulcastDegradationPreference(value: fm.icelink.VideoDegradationPreference): void;
+        setVideoSimulcastDisabled(value: boolean): void;
+        setVideoSimulcastEncodingCount(value: number): void;
+        setVideoSimulcastPreferredBitrate(value: number): void;
         setVideoSourceInput(value: fm.icelink.SourceInput): void;
         start(): fm.icelink.Future<TLocalMedia>;
         stop(): fm.icelink.Future<TLocalMedia>;
@@ -16617,6 +14452,349 @@ declare namespace fm.icelink {
 }
 declare namespace fm.icelink {
     /**
+    An interface for COM usage.
+    */
+    interface IPluginAudioStream {
+        ChangeDirection(newDirection: number): string;
+        GetCodecDisabled(name: string): boolean;
+        GetControlTransportInfo(): string;
+        GetDirection(): number;
+        GetExternalId(): string;
+        GetG722Disabled(): boolean;
+        GetHandle(): number;
+        GetId(): string;
+        GetInfo(): string;
+        GetInputMuted(): boolean;
+        GetLabel(): string;
+        GetLocalBandwidth(): number;
+        GetLocalCanonicalName(): string;
+        GetLocalDirection(): number;
+        GetLocalReceive(): boolean;
+        GetLocalSend(): boolean;
+        GetMaxReceiveBitrate(): number;
+        GetMaxSendBitrate(): number;
+        GetMediaDescriptionId(): string;
+        GetOpusDisabled(): boolean;
+        GetOutputMuted(): boolean;
+        GetPcmaDisabled(): boolean;
+        GetPcmuDisabled(): boolean;
+        GetPreferredCodecs(): string[];
+        GetRemoteBandwidth(): number;
+        GetRemoteCanonicalName(): string;
+        GetRemoteDirection(): number;
+        GetRemoteEncoding(): string;
+        GetRemoteReceive(): boolean;
+        GetRemoteSend(): boolean;
+        GetSimulcastMode(): number;
+        GetTag(): string;
+        GetTransportInfo(): string;
+        Initialize(localMediaHandle: number, remoteMediaHandle: number): void;
+        InsertDtmfTone(dtmfToneJson: string): boolean;
+        InsertDtmfTones(dtmfTonesJson: string): boolean;
+        RaiseBitrateNotification(bitrateNotificationJson: string): boolean;
+        RaiseBitrateRequest(bitrateRequestJson: string): boolean;
+        SetCodecDisabled(name: string, disabled: boolean): void;
+        SetExternalId(externalId: string): void;
+        SetG722Disabled(disabled: boolean): void;
+        SetInputMuted(muted: boolean): void;
+        SetLocalBandwidth(bandwidth: number): void;
+        SetLocalDirection(direction: number): void;
+        SetLocalReceive(localReceiveEnabled: boolean): void;
+        SetLocalSend(localSendEnabled: boolean): void;
+        SetMaxReceiveBitrate(bandwidth: number): void;
+        SetMaxSendBitrate(bandwidth: number): void;
+        SetOnDirectionChange(callback: Object): void;
+        SetOnDiscardBitrateNotification(callback: Object): void;
+        SetOnDiscardBitrateRequest(callback: Object): void;
+        SetOnLocalEncodingDisabled(callback: Object): void;
+        SetOnLocalEncodingEnabled(callback: Object): void;
+        SetOnReceiveDtmfTone(callback: Object): void;
+        SetOnReceiveDtmfToneChange(callback: Object): void;
+        SetOnSendDtmfTone(callback: Object): void;
+        SetOnSendDtmfToneChange(callback: Object): void;
+        SetOnStateChange(callback: Object): void;
+        SetOpusDisabled(disabled: boolean): void;
+        SetOutputMuted(muted: boolean): void;
+        SetPcmaDisabled(disabled: boolean): void;
+        SetPcmuDisabled(disabled: boolean): void;
+        SetPreferredCodecs(names: string[]): void;
+        SetRemoteEncoding(remoteEncodingJson: string): void;
+        SetSimulcastMode(simulcastMode: number): void;
+        SetTag(tag: string): void;
+    }
+}
+declare namespace fm.icelink {
+    /**
+    An interface for COM usage.
+    */
+    interface IPluginConnection {
+        AddIceServer(iceServer: string): void;
+        AddIceServers(iceServers: string): void;
+        AddRemoteCandidate(remoteCandidate: string, promise: Object): void;
+        Close(): boolean;
+        CreateAnswer(promise: Object): void;
+        CreateOffer(promise: Object): void;
+        GetBundlePolicy(): number;
+        GetCanonicalName(): string;
+        GetDeadStreamTimeout(): number;
+        GetError(): string;
+        GetExternalId(): string;
+        GetHandle(): number;
+        GetIceGatherPolicy(): number;
+        GetIceServer(): string;
+        GetIceServers(): string;
+        GetId(): string;
+        GetLegacyTimeout(): boolean;
+        GetLocalDescription(): string;
+        GetRemoteDescription(): string;
+        GetStats(promise: Object): void;
+        GetTieBreaker(): string;
+        GetTimeout(): number;
+        GetTrickleIcePolicy(): number;
+        Initialize(streamPtrs: Object): void;
+        RemoveIceServer(iceServer: string): void;
+        RemoveIceServers(iceServers: string): void;
+        SetBundlePolicy(bundlePolicy: number): void;
+        SetDeadStreamTimeout(deadStreamTimeout: number): void;
+        SetError(errorJson: string): void;
+        SetExternalId(externalId: string): void;
+        SetIceGatherPolicy(iceGatherPolicy: number): void;
+        SetIceServer(iceServer: string): void;
+        SetIceServers(iceServers: string): void;
+        SetLegacyTimeout(value: boolean): void;
+        SetLocalDescription(localDescription: string, promise: Object): void;
+        SetOnExternalIdChange(callback: Object): void;
+        SetOnGatheringStateChange(callback: Object): void;
+        SetOnIceConnectionStateChange(callback: Object): void;
+        SetOnLocalCandidate(callback: Object): void;
+        SetOnLocalDescription(callback: Object): void;
+        SetOnRemoteCandidate(callback: Object): void;
+        SetOnRemoteDescription(callback: Object): void;
+        SetOnSignallingStateChange(callback: Object): void;
+        SetOnStateChange(callback: Object): void;
+        SetRemoteDescription(remoteDescription: string, promise: Object): void;
+        SetTieBreaker(tieBreaker: string): void;
+        SetTimeout(timeout: number): void;
+        SetTrickleIcePolicy(trickleIcePolicy: number): void;
+    }
+}
+declare namespace fm.icelink {
+    /**
+    An interface for COM usage.
+    */
+    interface IPluginDataChannel {
+        GetHandle(): number;
+        GetId(): string;
+        GetInfo(): string;
+        GetLabel(): string;
+        GetOrdered(): boolean;
+        GetSubprotocol(): string;
+        Initialize(label: string, ordered: boolean, subprotocol: string): void;
+        PrepareAndSendBytes(data: string, promise: Object): void;
+        PrepareAndSendString(dataString: string, promise: Object): void;
+        SetOnReceive(callback: Object): void;
+        SetOnStateChange(callback: Object): void;
+    }
+}
+declare namespace fm.icelink {
+    /**
+    An interface for COM usage.
+    */
+    interface IPluginDataStream {
+        ChangeDirection(newDirection: number): string;
+        GetDirection(): number;
+        GetExternalId(): string;
+        GetHandle(): number;
+        GetId(): string;
+        GetInfo(): string;
+        GetLabel(): string;
+        GetLocalDirection(): number;
+        GetLocalReceive(): boolean;
+        GetLocalSend(): boolean;
+        GetMediaDescriptionId(): string;
+        GetRemoteDirection(): number;
+        GetRemoteReceive(): boolean;
+        GetRemoteSend(): boolean;
+        GetTag(): string;
+        GetTransportInfo(): string;
+        Initialize(channelHandles: Object): void;
+        SetExternalId(externalId: string): void;
+        SetLocalDirection(direction: number): void;
+        SetLocalReceive(localReceiveEnabled: boolean): void;
+        SetLocalSend(localSendEnabled: boolean): void;
+        SetOnDirectionChange(callback: Object): void;
+        SetOnStateChange(callback: Object): void;
+        SetTag(tag: string): void;
+    }
+}
+declare namespace fm.icelink {
+    /**
+    An interface for COM usage.
+    */
+    interface IPluginLocalMedia {
+        AttachView(viewHandle: number): void;
+        ChangeAudioSourceInput(promise: Object, audioSourceInput: string): void;
+        ChangeVideoSourceInput(promise: Object, videoSourceInput: string): void;
+        Destroy(): void;
+        GetAudioEncoding(): string;
+        GetAudioEncodings(): string;
+        GetAudioGain(): number;
+        GetAudioMuted(): boolean;
+        GetAudioSimulcastDisabled(): boolean;
+        GetAudioSimulcastEncodingCount(): number;
+        GetAudioSimulcastPreferredBitrate(): number;
+        GetAudioSourceInput(): string;
+        GetAudioSourceInputs(promise: Object): void;
+        GetAudioVolume(): number;
+        GetHandle(): number;
+        GetId(): string;
+        GetState(): number;
+        GetVideoEncoding(): string;
+        GetVideoEncodings(): string;
+        GetVideoMuted(): boolean;
+        GetVideoSimulcastBitsPerPixel(): number;
+        GetVideoSimulcastDegradationPreference(): number;
+        GetVideoSimulcastDisabled(): boolean;
+        GetVideoSimulcastEncodingCount(): number;
+        GetVideoSimulcastPreferredBitrate(): number;
+        GetVideoSize(): string;
+        GetVideoSourceInput(): string;
+        GetVideoSourceInputs(promise: Object): void;
+        GrabVideoFrame(promise: Object): void;
+        Initialize(disableAudio: boolean, disableVideo: boolean, isScreenShare: boolean): void;
+        SetAudioEncodings(valueJson: string): void;
+        SetAudioGain(gain: number): void;
+        SetAudioMuted(muted: boolean): void;
+        SetAudioSimulcastDisabled(value: boolean): void;
+        SetAudioSimulcastEncodingCount(value: number): void;
+        SetAudioSimulcastPreferredBitrate(value: number): void;
+        SetAudioSourceInput(value: string): void;
+        SetAudioVolume(volume: number): void;
+        SetId(idValue: string): void;
+        SetOnAudioDestroyed(callback: Object): void;
+        SetOnAudioLevel(callback: Object): void;
+        SetOnAudioStarted(callback: Object): void;
+        SetOnAudioStopped(callback: Object): void;
+        SetOnVideoDestroyed(callback: Object): void;
+        SetOnVideoSize(callback: Object): void;
+        SetOnVideoStarted(callback: Object): void;
+        SetOnVideoStopped(callback: Object): void;
+        SetVideoEncodings(valueJson: string): void;
+        SetVideoMuted(muted: boolean): void;
+        SetVideoSimulcastBitsPerPixel(value: number): void;
+        SetVideoSimulcastDegradationPreference(value: number): void;
+        SetVideoSimulcastDisabled(value: boolean): void;
+        SetVideoSimulcastEncodingCount(value: number): void;
+        SetVideoSimulcastPreferredBitrate(value: number): void;
+        SetVideoSourceInput(value: string): void;
+        Start(promise: Object): void;
+        Stop(promise: Object): void;
+    }
+}
+declare namespace fm.icelink {
+    /**
+    An interface for COM usage.
+    */
+    interface IPluginRemoteMedia {
+        AttachView(viewHandle: number): void;
+        ChangeAudioSinkOutput(promise: Object, audioSinkOutput: string): void;
+        ChangeVideoSinkOutput(promise: Object, videoSinkOutput: string): void;
+        Destroy(): void;
+        GetAudioGain(): number;
+        GetAudioMuted(): boolean;
+        GetAudioSinkOutput(): string;
+        GetAudioSinkOutputs(promise: Object): void;
+        GetAudioVolume(): number;
+        GetHandle(): number;
+        GetId(): string;
+        GetVideoMuted(): boolean;
+        GetVideoSinkOutput(): string;
+        GetVideoSinkOutputs(promise: Object): void;
+        GetVideoSize(): string;
+        GrabVideoFrame(promise: Object): void;
+        Initialize(disableAudio: boolean, disableVideo: boolean): void;
+        SetAudioGain(gain: number): void;
+        SetAudioMuted(muted: boolean): void;
+        SetAudioSinkOutput(value: string): void;
+        SetAudioVolume(volume: number): void;
+        SetId(idValue: string): void;
+        SetOnAudioDestroyed(callback: Object): void;
+        SetOnAudioLevel(callback: Object): void;
+        SetOnVideoDestroyed(callback: Object): void;
+        SetOnVideoSize(callback: Object): void;
+        SetVideoMuted(muted: boolean): void;
+        SetVideoSinkOutput(value: string): void;
+    }
+}
+declare namespace fm.icelink {
+    /**
+    An interface for COM usage.
+    */
+    interface IPluginVideoStream {
+        ChangeDirection(newDirection: number): string;
+        GetCodecDisabled(name: string): boolean;
+        GetControlTransportInfo(): string;
+        GetDirection(): number;
+        GetExternalId(): string;
+        GetH264Disabled(): boolean;
+        GetHandle(): number;
+        GetId(): string;
+        GetInfo(): string;
+        GetInputMuted(): boolean;
+        GetLabel(): string;
+        GetLocalBandwidth(): number;
+        GetLocalCanonicalName(): string;
+        GetLocalDirection(): number;
+        GetLocalReceive(): boolean;
+        GetLocalSend(): boolean;
+        GetMaxReceiveBitrate(): number;
+        GetMaxSendBitrate(): number;
+        GetMediaDescriptionId(): string;
+        GetOutputMuted(): boolean;
+        GetPreferredCodecs(): string[];
+        GetRemoteBandwidth(): number;
+        GetRemoteCanonicalName(): string;
+        GetRemoteDirection(): number;
+        GetRemoteEncoding(): string;
+        GetRemoteReceive(): boolean;
+        GetRemoteSend(): boolean;
+        GetSimulcastMode(): number;
+        GetTag(): string;
+        GetTransportInfo(): string;
+        GetVp8Disabled(): boolean;
+        GetVp9Disabled(): boolean;
+        Initialize(localMediaHandle: number, remoteMediaHandle: number): void;
+        RaiseBitrateNotification(bitrateNotificationJson: string): boolean;
+        RaiseBitrateRequest(bitrateRequestJson: string): boolean;
+        RaiseKeyFrameRequest(synchronizationSources: number[]): void;
+        SetCodecDisabled(name: string, disabled: boolean): void;
+        SetExternalId(externalId: string): void;
+        SetH264Disabled(disabled: boolean): void;
+        SetInputMuted(muted: boolean): void;
+        SetLocalBandwidth(bandwidth: number): void;
+        SetLocalDirection(direction: number): void;
+        SetLocalReceive(localReceiveEnabled: boolean): void;
+        SetLocalSend(localSendEnabled: boolean): void;
+        SetMaxReceiveBitrate(bandwidth: number): void;
+        SetMaxSendBitrate(bandwidth: number): void;
+        SetOnDirectionChange(callback: Object): void;
+        SetOnDiscardBitrateNotification(callback: Object): void;
+        SetOnDiscardBitrateRequest(callback: Object): void;
+        SetOnDiscardKeyFrameRequest(callback: Object): void;
+        SetOnLocalEncodingDisabled(callback: Object): void;
+        SetOnLocalEncodingEnabled(callback: Object): void;
+        SetOnStateChange(callback: Object): void;
+        SetOutputMuted(muted: boolean): void;
+        SetPreferredCodecs(names: string[]): void;
+        SetRemoteEncoding(remoteEncodingJson: string): void;
+        SetSimulcastMode(simulcastMode: number): void;
+        SetTag(tag: string): void;
+        SetVp8Disabled(disabled: boolean): void;
+        SetVp9Disabled(disabled: boolean): void;
+    }
+}
+declare namespace fm.icelink {
+    /**
     Remote media interface.
     */
     interface IRemoteMedia<TIAudioTrack extends fm.icelink.IAudioTrack, TIVideoTrack extends fm.icelink.IVideoTrack> extends fm.icelink.IMedia<TIAudioTrack, TIVideoTrack> {
@@ -16635,9 +14813,12 @@ declare namespace fm.icelink {
     Video stream interface.
     */
     interface IVideoStream extends fm.icelink.IMediaStream, fm.icelink.IStream {
+        addOnDiscardKeyFrameRequest(value: fm.icelink.IAction1<number[]>): void;
         getH264Disabled(): boolean;
         getVp8Disabled(): boolean;
         getVp9Disabled(): boolean;
+        raiseKeyFrameRequest(synchronizationSources: number[]): void;
+        removeOnDiscardKeyFrameRequest(value: fm.icelink.IAction1<number[]>): void;
         setH264Disabled(value: boolean): void;
         setVp8Disabled(value: boolean): void;
         setVp9Disabled(value: boolean): void;
@@ -16754,6 +14935,599 @@ declare namespace fm.icelink {
     }
 }
 declare namespace fm.icelink {
+    /**
+    A layout preset.
+    */
+    class LayoutPreset extends fm.icelink.Dynamic {
+        getTypeString(): string;
+        /** @hidden */
+        private __blockHeight;
+        /** @hidden */
+        private __blockHeightPercent;
+        /** @hidden */
+        private __blockMarginX;
+        /** @hidden */
+        private __blockMarginXPercent;
+        /** @hidden */
+        private __blockMarginY;
+        /** @hidden */
+        private __blockMarginYPercent;
+        /** @hidden */
+        private __blockWidth;
+        /** @hidden */
+        private __blockWidthPercent;
+        /** @hidden */
+        private __floatHeight;
+        /** @hidden */
+        private __floatHeightPercent;
+        /** @hidden */
+        private __floatMarginX;
+        /** @hidden */
+        private __floatMarginXPercent;
+        /** @hidden */
+        private __floatMarginY;
+        /** @hidden */
+        private __floatMarginYPercent;
+        /** @hidden */
+        private __floatWidth;
+        /** @hidden */
+        private __floatWidthPercent;
+        /** @hidden */
+        private _alignment;
+        /** @hidden */
+        private _direction;
+        /** @hidden */
+        private _inlineMargin;
+        /** @hidden */
+        private _mode;
+        private fmicelinkLayoutPresetInit;
+        /**
+        Initializes a new instance of the [[fm.icelink.layoutPreset]] class.
+        */
+        constructor();
+        /** @hidden */
+        private static calculateInlineOverflowFrame;
+        /** @hidden */
+        private static calculateTable;
+        /** @hidden */
+        private static divideByTwo;
+        /**
+        Gets a Facetime-style layout preset.
+        */
+        static getFacetime(): fm.icelink.LayoutPreset;
+        /**
+        Gets a Google Hangouts-style layout preset. Note that this will present differently on mobile devices.
+        */
+        static getGoogleHangouts(): fm.icelink.LayoutPreset;
+        /** @hidden */
+        private static getSingleLayout;
+        /**
+        Gets a Skype-style layout preset. Note that this will present differently on mobile devices.
+        */
+        static getSkype(): fm.icelink.LayoutPreset;
+        /** @hidden */
+        private static getXMax;
+        /** @hidden */
+        private static getXMid;
+        /** @hidden */
+        private static getXMin;
+        /** @hidden */
+        private static getYMax;
+        /** @hidden */
+        private static getYMid;
+        /** @hidden */
+        private static getYMin;
+        /** @hidden */
+        private static mergeLayoutFrames;
+        /** @hidden */
+        private static spliceLayoutFrame;
+        /** @hidden */
+        private static takeLayoutFrames;
+        /** @hidden */
+        static transformFrame(frame: fm.icelink.LayoutFrame, origin: fm.icelink.LayoutOrigin, layoutWidth: number, layoutHeight: number): void;
+        /**
+        Applies a preset.
+        @param preset The preset to apply.
+        */
+        applyPreset(preset: fm.icelink.LayoutPreset): void;
+        /** @hidden */
+        private calculateBlockFrame;
+        /** @hidden */
+        private calculateFillFrame;
+        /** @hidden */
+        private calculateFloatFrame;
+        /** @hidden */
+        private calculateFloatFrames;
+        /** @hidden */
+        private calculateInlineFrame;
+        /** @hidden */
+        private calculateInlineFrames;
+        /** @hidden */
+        private calculateInlineOverflowFrames;
+        /**
+        Gets a video frame layout.
+        @param layoutWidth The total width of the layout.
+        @param layoutHeight The total height of the layout.
+        @param local Whether a local frame is needed.
+        @param remoteCount The number of remote frames.
+        @param origin The layout origin.
+        @param localVideoSize The local video size.
+        @param remoteVideoSizes The remote video sizes.
+        @return The video frame layout.
+        */
+        calculateLayout(layoutWidth: number, layoutHeight: number, local: boolean, remoteCount: number, origin: fm.icelink.LayoutOrigin, localVideoSize: fm.icelink.Size, remoteVideoSizes: fm.icelink.Size[]): fm.icelink.Layout;
+        /**
+        Gets a video frame layout.
+        @param layoutWidth The total width of the layout.
+        @param layoutHeight The total height of the layout.
+        @param remoteCount The number of remote frames.
+        @param origin The layout origin.
+        @return The video frame layout.
+        */
+        calculateLayout(layoutWidth: number, layoutHeight: number, remoteCount: number, origin: fm.icelink.LayoutOrigin): fm.icelink.Layout;
+        /**
+        Copies this preset's properties to another preset.
+        @param preset The target preset.
+        */
+        copyToPreset(preset: fm.icelink.LayoutPreset): void;
+        /**
+        Gets the alignment of the layout. Defaults to [[fm.icelink.layoutAlignment.BottomRight]].
+        */
+        getAlignment(): fm.icelink.LayoutAlignment;
+        /**
+        Gets the height of block elements in pixels. Overrides [[fm.icelink.layoutPreset.blockHeightPercent]].
+        */
+        getBlockHeight(): number;
+        /**
+        Gets the height of block elements as a percent of the container height between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.blockHeight]].
+        */
+        getBlockHeightPercent(): number;
+        /** @hidden */
+        private getBlockLayout;
+        /**
+        Gets the X-margin between block elements and the layout edge in pixels. Overrides [[fm.icelink.layoutPreset.blockMarginXPercent]].
+        */
+        getBlockMarginX(): number;
+        /**
+        Gets the X-margin between block elements and the layout edge as a percent of the container width between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.blockMarginX]].
+        */
+        getBlockMarginXPercent(): number;
+        /**
+        Gets the Y-margin between block elements and the layout edge in pixels. Overrides [[fm.icelink.layoutPreset.blockMarginYPercent]].
+        */
+        getBlockMarginY(): number;
+        /**
+        Gets the Y-margin between block elements and the layout edge as a percent of the container height between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.blockMarginY]].
+        */
+        getBlockMarginYPercent(): number;
+        /**
+        Gets the width of block elements in pixels. Overrides [[fm.icelink.layoutPreset.blockWidthPercent]].
+        */
+        getBlockWidth(): number;
+        /**
+        Gets the width of block elements as a percent of the container width between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.blockWidth]].
+        */
+        getBlockWidthPercent(): number;
+        /** @hidden */
+        private getBottomRowIndexes;
+        /** @hidden */
+        private getCenterColumnIndexes;
+        /** @hidden */
+        private getCenterRowIndexes;
+        /**
+        Gets the direction of the layout flow. Defaults to [[fm.icelink.layoutDirection.Horizontal]].
+        */
+        getDirection(): fm.icelink.LayoutDirection;
+        /**
+        Gets the height of floating elements in pixels. Overrides [[fm.icelink.layoutPreset.floatHeightPercent]].
+        */
+        getFloatHeight(): number;
+        /**
+        Gets the height of floating elements as a percent of the container height between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.floatHeight]].
+        */
+        getFloatHeightPercent(): number;
+        /** @hidden */
+        private getFloatLocalLayout;
+        /**
+        Gets the X-margin between floating elements and the layout edge in pixels. Overrides [[fm.icelink.layoutPreset.floatMarginXPercent]].
+        */
+        getFloatMarginX(): number;
+        /**
+        Gets the X-margin between floating elements and the layout edge as a percent of the container width between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.floatMarginX]].
+        */
+        getFloatMarginXPercent(): number;
+        /**
+        Gets the Y-margin between floating elements and the layout edge in pixels. Overrides [[fm.icelink.layoutPreset.floatMarginYPercent]].
+        */
+        getFloatMarginY(): number;
+        /**
+        Gets the Y-margin between floating elements and the layout edge as a percent of the container height between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.floatMarginY]].
+        */
+        getFloatMarginYPercent(): number;
+        /** @hidden */
+        private getFloatRemoteLayout;
+        /**
+        Gets the width of floating elements in pixels. Overrides [[fm.icelink.layoutPreset.floatWidthPercent]].
+        */
+        getFloatWidth(): number;
+        /**
+        Gets the width of floating elements as a percent of the container width between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.floatWidth]].
+        */
+        getFloatWidthPercent(): number;
+        /** @hidden */
+        private getInlineLayout;
+        /**
+        Gets the size of the margin in pixels to use between inline elements.
+        */
+        getInlineMargin(): number;
+        /** @hidden */
+        private getInlineOverflowLayout;
+        /** @hidden */
+        private getLeftColumnIndexes;
+        /**
+        Gets the mode used by the layout engine. Defaults to [[fm.icelink.layoutMode.FloatLocal]].
+        */
+        getMode(): fm.icelink.LayoutMode;
+        /** @hidden */
+        private getRightColumnIndexes;
+        /** @hidden */
+        private getTopRowIndexes;
+        /**
+        Sets the alignment of the layout. Defaults to [[fm.icelink.layoutAlignment.BottomRight]].
+        */
+        setAlignment(value: fm.icelink.LayoutAlignment): void;
+        /**
+        Sets the height of block elements in pixels. Overrides [[fm.icelink.layoutPreset.blockHeightPercent]].
+        */
+        setBlockHeight(value: number): void;
+        /**
+        Sets the height of block elements as a percent of the container height between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.blockHeight]].
+        */
+        setBlockHeightPercent(value: number): void;
+        /**
+        Sets the X-margin between block elements and the layout edge in pixels. Overrides [[fm.icelink.layoutPreset.blockMarginXPercent]].
+        */
+        setBlockMarginX(value: number): void;
+        /**
+        Sets the X-margin between block elements and the layout edge as a percent of the container width between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.blockMarginX]].
+        */
+        setBlockMarginXPercent(value: number): void;
+        /**
+        Sets the Y-margin between block elements and the layout edge in pixels. Overrides [[fm.icelink.layoutPreset.blockMarginYPercent]].
+        */
+        setBlockMarginY(value: number): void;
+        /**
+        Sets the Y-margin between block elements and the layout edge as a percent of the container height between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.blockMarginY]].
+        */
+        setBlockMarginYPercent(value: number): void;
+        /**
+        Sets the width of block elements in pixels. Overrides [[fm.icelink.layoutPreset.blockWidthPercent]].
+        */
+        setBlockWidth(value: number): void;
+        /**
+        Sets the width of block elements as a percent of the container width between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.blockWidth]].
+        */
+        setBlockWidthPercent(value: number): void;
+        /**
+        Sets the direction of the layout flow. Defaults to [[fm.icelink.layoutDirection.Horizontal]].
+        */
+        setDirection(value: fm.icelink.LayoutDirection): void;
+        /**
+        Sets the height of floating elements in pixels. Overrides [[fm.icelink.layoutPreset.floatHeightPercent]].
+        */
+        setFloatHeight(value: number): void;
+        /**
+        Sets the height of floating elements as a percent of the container height between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.floatHeight]].
+        */
+        setFloatHeightPercent(value: number): void;
+        /**
+        Sets the X-margin between floating elements and the layout edge in pixels. Overrides [[fm.icelink.layoutPreset.floatMarginXPercent]].
+        */
+        setFloatMarginX(value: number): void;
+        /**
+        Sets the X-margin between floating elements and the layout edge as a percent of the container width between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.floatMarginX]].
+        */
+        setFloatMarginXPercent(value: number): void;
+        /**
+        Sets the Y-margin between floating elements and the layout edge in pixels. Overrides [[fm.icelink.layoutPreset.floatMarginYPercent]].
+        */
+        setFloatMarginY(value: number): void;
+        /**
+        Sets the Y-margin between floating elements and the layout edge as a percent of the container height between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.floatMarginY]].
+        */
+        setFloatMarginYPercent(value: number): void;
+        /**
+        Sets the width of floating elements in pixels. Overrides [[fm.icelink.layoutPreset.floatWidthPercent]].
+        */
+        setFloatWidth(value: number): void;
+        /**
+        Sets the width of floating elements as a percent of the container width between 0.0 and 1.0. Overrides [[fm.icelink.layoutPreset.floatWidth]].
+        */
+        setFloatWidthPercent(value: number): void;
+        /**
+        Sets the size of the margin in pixels to use between inline elements.
+        */
+        setInlineMargin(value: number): void;
+        /**
+        Sets the mode used by the layout engine. Defaults to [[fm.icelink.layoutMode.FloatLocal]].
+        */
+        setMode(value: fm.icelink.LayoutMode): void;
+    }
+}
+declare namespace fm.icelink {
+    /**
+    A class that supplies simple video frame layout management.
+    */
+    abstract class LayoutManager<T> extends fm.icelink.LayoutPreset {
+        getTypeString(): string;
+        /** @hidden */
+        private __onLayout;
+        /** @hidden */
+        private _inBatch;
+        /** @hidden */
+        private _layoutOrigin;
+        /** @hidden */
+        private _localView;
+        /** @hidden */
+        private _onLayout;
+        /** @hidden */
+        private _remoteViewsLock;
+        /** @hidden */
+        private _remoteViewsTable;
+        private fmicelinkLayoutManagerInit;
+        /**
+        Initializes a new instance of the [[fm.icelink.layoutManager]] class.
+        */
+        constructor();
+        /**
+        Initializes a new instance of the [[fm.icelink.layoutManager]] class.
+        */
+        constructor(preset: fm.icelink.LayoutPreset);
+        /**
+        Adds a handler that is raised when a layout is calculated.
+        */
+        addOnLayout(value: fm.icelink.IAction1<fm.icelink.Layout>): void;
+        /**
+        Adds remote media to the layout.
+        @param remoteMedia The remote media.
+        @return `true` if successful; otherwise, `false`.
+            
+        */
+        addRemoteMedia(remoteMedia: fm.icelink.IViewableMedia<T>): boolean;
+        /**
+        Adds a remote view to the layout.
+        @param idValue The remote view ID.
+        @param view The remote view.
+        @return `true` if successful; otherwise, `false`. Check the logs for additional information.
+        */
+        addRemoteView(idValue: string, view: T): boolean;
+        /**
+        Adds remote views to the layout.
+        @param ids The remote view IDs.
+        @param views The remote views.
+        @return `true` if successful; otherwise, `false`. Check the logs for additional information.
+        */
+        addRemoteViews(ids: string[], views: T[]): boolean;
+        /** @hidden */
+        private addRemoteViewsUI;
+        /** @hidden */
+        private addRemoteViewUI;
+        /**
+        Adds a view to the container.
+        @param view The view to add.
+        */
+        protected abstract addView(view: T): void;
+        /**
+        Dispatches an action to the main thread.
+        @param action The action to invoke.
+        @param arg1 The first argument.
+        @param arg2 The second argument.
+        */
+        protected abstract dispatchToMainThread(action: fm.icelink.IAction2<Object, Object>, arg1: Object, arg2: Object): void;
+        /**
+        Gets the local view.
+        @return The local view.
+        */
+        protected doGetLocalView(): T;
+        /**
+        Gets the remote views for a given remote view ID.
+        @param idValue The remote view ID.
+        @return The remote views.
+        */
+        protected doGetRemoteViews(idValue: string): Array<T>;
+        /**
+        Gets the remote view IDs.
+        @return The remote view IDs.
+        */
+        protected doGetRemoteViewsIds(): string[];
+        /** @hidden */
+        private doSwapRemoteView;
+        /** @hidden */
+        private doSwapRemoteViews;
+        /**
+        Gets a video frame layout.
+        @param layoutWidth The total width of the layout.
+        @param layoutHeight The total height of the layout.
+        @param local Whether a local frame is needed.
+        @param remoteCount The number of remote frames.
+        @return The video frame layout.
+        */
+        protected getLayout(layoutWidth: number, layoutHeight: number, local: boolean, remoteCount: number): fm.icelink.Layout;
+        /**
+        Gets a video frame layout.
+        @param layoutWidth The total width of the layout.
+        @param layoutHeight The total height of the layout.
+        @param local Whether a local frame is needed.
+        @param remoteCount The number of remote frames.
+        @param remoteViewIds The remote view IDs.
+        @return The video frame layout.
+        */
+        protected getLayout(layoutWidth: number, layoutHeight: number, local: boolean, remoteCount: number, remoteViewIds: string[]): fm.icelink.Layout;
+        /**
+        Gets a video frame layout.
+        @param layoutWidth The total width of the layout.
+        @param layoutHeight The total height of the layout.
+        @param local Whether a local frame is needed.
+        @param remoteCount The number of remote frames.
+        @param remoteViewIds The remote view IDs.
+        @param localVideoSize The local video size.
+        @param remoteVideoSizes The remote video sizes.
+        @return The video frame layout.
+        */
+        protected getLayout(layoutWidth: number, layoutHeight: number, local: boolean, remoteCount: number, remoteViewIds: string[], localVideoSize: fm.icelink.Size, remoteVideoSizes: fm.icelink.Size[]): fm.icelink.Layout;
+        /**
+        Gets a video frame layout.
+        @param layoutWidth The total width of the layout.
+        @param layoutHeight The total height of the layout.
+        @param remoteCount The number of remote frames.
+        @return The video frame layout.
+        */
+        protected getLayout(layoutWidth: number, layoutHeight: number, remoteCount: number): fm.icelink.Layout;
+        /**
+        Gets a video frame layout.
+        @param layoutWidth The total width of the layout.
+        @param layoutHeight The total height of the layout.
+        @param remoteCount The number of remote frames.
+        @param remoteViewIds The remote view IDs.
+        @return The video frame layout.
+        */
+        protected getLayout(layoutWidth: number, layoutHeight: number, remoteCount: number, remoteViewIds: string[]): fm.icelink.Layout;
+        /**
+        Gets the layout origin. Defaults to TopLeft.
+        */
+        getLayoutOrigin(): fm.icelink.LayoutOrigin;
+        /**
+        Gets the local view from the layout.
+        @return The local view.
+        */
+        getLocalView(): T;
+        /** @hidden */
+        private getNewestRemoteView;
+        /** @hidden */
+        private getOldestRemoteView;
+        /**
+        Gets a remote view from the layout.
+        @param idValue The remote view ID.
+        @return The remote view.
+        */
+        getRemoteView(idValue: string): T;
+        /**
+        Gets the IDs of the remote views in the layout.
+        @return The remote view IDs.
+        */
+        getRemoteViewIds(): string[];
+        /**
+        Gets all remote views from the layout.
+        @return The remote views.
+        */
+        getRemoteViews(): Array<T>;
+        /**
+        Gets remote views from the layout.
+        @param ids The remote view IDs.
+        @return The remote views.
+        */
+        getRemoteViews(ids: string[]): Array<T>;
+        /** @hidden */
+        private getRemoteViewsInternal;
+        /**
+        Positions the local and remote views within the layout.
+        */
+        abstract layout(): void;
+        /**
+        Positions the local and remote views within the layout after dispatching to the main thread.
+        */
+        layoutOnMainThread(): void;
+        /** @hidden */
+        private layoutOnMainThreadUI;
+        /**
+        Removes a handler that is raised when a layout is calculated.
+        */
+        removeOnLayout(value: fm.icelink.IAction1<fm.icelink.Layout>): void;
+        /**
+        Removes remote media from the layout.
+        @param remoteMedia The remote media.
+        @return `true` if successful; otherwise, `false`.
+            
+        */
+        removeRemoteMedia(remoteMedia: fm.icelink.IViewableMedia<T>): boolean;
+        /**
+        Removes a remote view from the layout.
+        @param idValue The remote view ID.
+        @return `true` if successful; otherwise, `false`. Check the logs for additional information.
+        */
+        removeRemoteView(idValue: string): boolean;
+        /**
+        Removes all remote views from the layout.
+        */
+        removeRemoteViews(): void;
+        /**
+        Removes remote views from the layout.
+        @param ids The remote view IDs.
+        @return `true` if successful; otherwise, `false`. Check the logs for additional information.
+        */
+        removeRemoteViews(ids: string[]): boolean;
+        /** @hidden */
+        private removeRemoteViewsUI;
+        /** @hidden */
+        private removeRemoteViewUI;
+        /**
+        Removes a view from the container.
+        @param view The view to remove.
+        */
+        protected abstract removeView(view: T): void;
+        /**
+        Removes all remote views from the layout, then removes the local view from the layout.
+        */
+        reset(): void;
+        /**
+        Sets the layout origin. Defaults to TopLeft.
+        */
+        protected setLayoutOrigin(value: fm.icelink.LayoutOrigin): void;
+        /**
+        Adds the local media to the layout.
+        @param localMedia The local media.
+        @return `true` if successful; otherwise, `false`.
+        */
+        setLocalMedia(localMedia: fm.icelink.IViewableMedia<T>): boolean;
+        /**
+        Adds the local view to the layout.
+        @param view The local view.
+        @return `true` if successful; otherwise, `false`. Check the logs for additional information.
+        */
+        setLocalView(view: T): boolean;
+        /** @hidden */
+        private setLocalViewUI;
+        /**
+        Swaps remote media in the layout.
+        @param remoteMediaToRemove The remote media to remove.
+        @param remoteMediaToAdd The remote media to add.
+        */
+        swapRemoteMedia(remoteMediaToRemove: fm.icelink.IViewableMedia<T>, remoteMediaToAdd: fm.icelink.IViewableMedia<T>): boolean;
+        /**
+        Swaps a remote view in the layout.
+        @param idToRemove The remote view ID to remove.
+        @param idToAdd The remote view ID to add.
+        @param viewToAdd The remote view to add.
+        */
+        swapRemoteView(idToRemove: string, idToAdd: string, viewToAdd: T): boolean;
+        /**
+        Swaps remote views in the layout.
+        @param idsToRemove The remote view IDs to remove.
+        @param idsToAdd The remote view IDs to add.
+        @param viewsToAdd The remote views to add.
+        @return `true` if successful; otherwise, `false`. Check the logs for additional information.
+        */
+        swapRemoteViews(idsToRemove: string[], idsToAdd: string[], viewsToAdd: T[]): boolean;
+        /**
+        Removes the local view from the layout.
+        @return `true` if successful; otherwise, `false`. Check the logs for additional information.
+        */
+        unsetLocalView(): boolean;
+        /** @hidden */
+        private unsetLocalViewUI;
+    }
+}
+declare namespace fm.icelink {
     class LayoutModeWrapper {
         getTypeString(): string;
         /** @hidden */
@@ -16829,6 +15603,344 @@ declare namespace fm.icelink {
     }
 }
 declare namespace fm.icelink {
+    /**
+    A collection of audio/video track base methods/properties.
+    */
+    abstract class WebRtcMediaBase<TIAudioTrack extends fm.icelink.IAudioTrack, TIVideoTrack extends fm.icelink.IVideoTrack> extends fm.icelink.Dynamic implements fm.icelink.IMedia<TIAudioTrack, TIVideoTrack> {
+        getTypeString(): string;
+        /** @hidden */
+        private _id;
+        /**
+        Initializes a new instance of the [[fm.icelink.mediaBase]] class.
+        */
+        constructor();
+        /**
+        Adds a handler that is raised when the first audio track is destroyed.
+        */
+        abstract addOnAudioDestroyed(value: fm.icelink.IAction0): void;
+        /**
+        Adds a handler that is raised whenever the level of the first audio track is calculated.
+        */
+        abstract addOnAudioLevel(value: fm.icelink.IAction1<number>): void;
+        /**
+        Adds a handler that is raised when the first video track is destroyed.
+        */
+        abstract addOnVideoDestroyed(value: fm.icelink.IAction0): void;
+        /**
+        Adds a handler that is raised whenever the size of the first video track is calculated.
+        */
+        abstract addOnVideoSize(value: fm.icelink.IAction1<fm.icelink.Size>): void;
+        /**
+        Destroys this media.
+        */
+        abstract destroy(): void;
+        /**
+        Gets a value indicating the gain (input amplification) of the first audio track.
+        */
+        getAudioGain(): number;
+        /**
+        Gets a value indicating whether the first audio track is muted.
+        */
+        getAudioMuted(): boolean;
+        /**
+        Gets the first audio track.
+        */
+        getAudioTrack(): TIAudioTrack;
+        /**
+        Gets the audio tracks.
+        */
+        abstract getAudioTracks(): TIAudioTrack[];
+        /**
+        Gets a value indicating the volume (output resistance) of the first audio track.
+        */
+        getAudioVolume(): number;
+        /**
+        Gets the identifier.
+        */
+        getId(): string;
+        /**
+        Gets a value indicating whether the first video track is muted.
+        */
+        getVideoMuted(): boolean;
+        /**
+        Gets the size of the first video track.
+        */
+        abstract getVideoSize(): fm.icelink.Size;
+        /**
+        Gets the first video track.
+        */
+        getVideoTrack(): TIVideoTrack;
+        /**
+        Gets the video tracks.
+        */
+        abstract getVideoTracks(): TIVideoTrack[];
+        /**
+        Grabs a frame from the first video track.
+        */
+        abstract grabVideoFrame(): fm.icelink.Future<fm.icelink.VideoBuffer>;
+        /**
+        Removes a handler that is raised when the first audio track is destroyed.
+        */
+        abstract removeOnAudioDestroyed(value: fm.icelink.IAction0): void;
+        /**
+        Removes a handler that is raised whenever the level of the first audio track is calculated.
+        */
+        abstract removeOnAudioLevel(value: fm.icelink.IAction1<number>): void;
+        /**
+        Removes a handler that is raised when the first video track is destroyed.
+        */
+        abstract removeOnVideoDestroyed(value: fm.icelink.IAction0): void;
+        /**
+        Removes a handler that is raised whenever the size of the first video track is calculated.
+        */
+        abstract removeOnVideoSize(value: fm.icelink.IAction1<fm.icelink.Size>): void;
+        /**
+        Sets a value indicating the gain (input amplification) of the first audio track.
+        */
+        setAudioGain(value: number): void;
+        /**
+        Sets a value indicating whether the first audio track is muted.
+        */
+        setAudioMuted(value: boolean): void;
+        /**
+        Sets a value indicating the volume (output resistance) of the first audio track.
+        */
+        setAudioVolume(value: number): void;
+        /**
+        Sets the identifier.
+        */
+        setId(value: string): void;
+        /**
+        Sets a value indicating whether the first video track is muted.
+        */
+        setVideoMuted(value: boolean): void;
+    }
+}
+declare type fmicelinkWebRtcMedia_GlobalMediaStream = MediaStream;
+declare namespace fm.icelink {
+    abstract class WebRtcMedia<TAudioTrack extends fm.icelink.WebRtcAudioTrack, TVideoTrack extends fm.icelink.WebRtcVideoTrack> extends fm.icelink.WebRtcMediaBase<fm.icelink.WebRtcAudioTrack, fm.icelink.WebRtcVideoTrack> implements fm.icelink.IMedia<fm.icelink.WebRtcAudioTrack, fm.icelink.WebRtcVideoTrack>, fm.icelink.IInternalMedia {
+        getTypeString(): string;
+        protected _setAudioMediaStream(audioMediaStream: fmicelinkWebRtcMedia_GlobalMediaStream): boolean;
+        protected _setVideoMediaStream(videoMediaStream: fmicelinkWebRtcMedia_GlobalMediaStream): boolean;
+        getAudio(): any;
+        setAudio(audio: any): void;
+        getVideo(): any;
+        setVideo(video: any): void;
+        constructor(external: any | fm.icelink.IExternalMedia);
+        addOnAudioDestroyed(value: fm.icelink.IAction0): void;
+        addOnVideoDestroyed(value: fm.icelink.IAction0): void;
+        removeOnAudioDestroyed(value: fm.icelink.IAction0): void;
+        removeOnVideoDestroyed(value: fm.icelink.IAction0): void;
+        addOnAudioLevel(value: fm.icelink.IAction1<number>): void;
+        addOnVideoSize(value: fm.icelink.IAction1<fm.icelink.Size>): void;
+        destroy(): void;
+        getAudioGain(): number;
+        getAudioTracks(): fm.icelink.WebRtcAudioTrack[];
+        getAudioVolume(): number;
+        getVideoSize(): fm.icelink.Size;
+        getVideoTracks(): fm.icelink.WebRtcVideoTrack[];
+        getAudioSink(): fm.icelink.WebRtcDomAudioSink;
+        getVideoSink(): fm.icelink.WebRtcDomVideoSink;
+        getView(): HTMLElement;
+        getViewSink(): fm.icelink.WebRtcDomVideoSink;
+        grabVideoFrame(): fm.icelink.Future<fm.icelink.VideoBuffer>;
+        removeOnAudioLevel(value: fm.icelink.IAction1<number>): void;
+        removeOnVideoSize(value: fm.icelink.IAction1<fm.icelink.Size>): void;
+        setAudioGain(value: number): void;
+        setAudioVolume(value: number): void;
+        protected initializeAudioContext(): void;
+        protected destroyAudioContext(): void;
+    }
+}
+declare namespace fm.icelink {
+    /**
+    A collection of local audio/video track base methods.
+    */
+    abstract class WebRtcLocalMediaBase<TLocalMedia extends fm.icelink.WebRtcLocalMediaBase<TLocalMedia, TAudioTrack, TVideoTrack>, TAudioTrack extends fm.icelink.WebRtcAudioTrack, TVideoTrack extends fm.icelink.WebRtcVideoTrack> extends fm.icelink.WebRtcMedia<TAudioTrack, TVideoTrack> {
+        getTypeString(): string;
+        /** @hidden */
+        private __audioEncodingsSet;
+        /** @hidden */
+        private __audioEncodingsSetLock;
+        /** @hidden */
+        private __audioSimulcast;
+        /** @hidden */
+        private __stateLock;
+        /** @hidden */
+        private __videoEncodingsSet;
+        /** @hidden */
+        private __videoEncodingsSetLock;
+        /** @hidden */
+        private __videoSimulcast;
+        /** @hidden */
+        private _state;
+        private fmicelinkWebRtcLocalMediaBaseInit;
+        /**
+        Initializes a new instance of the [[fm.icelink.localMediaBase]] class.
+        @param external The external.
+        */
+        constructor(external: Object);
+        /**
+        Aborts the start.
+        @param promise The promise.
+        @param exception The exception.
+        */
+        protected abortStart(promise: fm.icelink.Promise<TLocalMedia>, exception: fm.icelink.Exception): void;
+        /**
+        Gets the local audio encodings.
+        @return The local audio encodings.
+        */
+        protected abstract doGetAudioEncodings(): fm.icelink.AudioEncodingConfig[];
+        /**
+        Gets the local video encodings.
+        @return The local video encodings.
+        */
+        protected abstract doGetVideoEncodings(): fm.icelink.VideoEncodingConfig[];
+        /**
+        Sets the local audio encodings.
+        @param encodings The local audio encodings.
+        */
+        protected abstract doSetAudioEncodings(encodings: fm.icelink.AudioEncodingConfig[]): void;
+        /**
+        Sets the local video encodings.
+        @param encodings The local video encodings.
+        */
+        protected abstract doSetVideoEncodings(encodings: fm.icelink.VideoEncodingConfig[]): void;
+        /**
+        Starts the local media.
+        */
+        protected abstract doStart(): fm.icelink.Future<TLocalMedia>;
+        /**
+        Stops the local media.
+        */
+        protected abstract doStop(): fm.icelink.Future<TLocalMedia>;
+        /**
+        Gets the first (primary) local audio encoding.
+        */
+        getAudioEncoding(): fm.icelink.AudioEncodingConfig;
+        /**
+        Gets the local audio encodings.
+        */
+        getAudioEncodings(): fm.icelink.AudioEncodingConfig[];
+        /**
+        Gets whether audio simulcast is disabled.
+        */
+        getAudioSimulcastDisabled(): boolean;
+        /**
+        Gets the number of audio simulcast encodings.
+        */
+        getAudioSimulcastEncodingCount(): number;
+        /**
+        Gets the preferred audio simulcast bitrate, in kbps.
+        */
+        getAudioSimulcastPreferredBitrate(): number;
+        /**
+        Gets the state.
+        */
+        getState(): fm.icelink.LocalMediaState;
+        /**
+        Gets the first (primary) local video encoding.
+        */
+        getVideoEncoding(): fm.icelink.VideoEncodingConfig;
+        /**
+        Gets the local video encodings.
+        */
+        getVideoEncodings(): fm.icelink.VideoEncodingConfig[];
+        /**
+        Gets the desired video simulcast bits-per-pixel (bpp). If this value is set and the video source has declared a target width, height, and frame-rate, encoding bitrates will be automatically calculated using this value instad of using preferred bitrate.
+        */
+        getVideoSimulcastBitsPerPixel(): number;
+        /**
+        Gets the video simulcast degradation preference.
+        */
+        getVideoSimulcastDegradationPreference(): fm.icelink.VideoDegradationPreference;
+        /**
+        Gets whether video simulcast is disabled.
+        */
+        getVideoSimulcastDisabled(): boolean;
+        /**
+        Gets the number of video simulcast encodings.
+        */
+        getVideoSimulcastEncodingCount(): number;
+        /**
+        Gets the preferred video simulcast bitrate, in kbps.
+        */
+        getVideoSimulcastPreferredBitrate(): number;
+        /** @hidden */
+        private initializeSimulcastConfigs;
+        /**
+        Locks the audio encodings in prior to initialization.
+        */
+        protected lockAudioEncodings(): void;
+        /**
+        Locks the video encodings in prior to initialization.
+        */
+        protected lockVideoEncodings(): void;
+        /**
+        Locks the video encodings in prior to initialization.
+        */
+        protected lockVideoEncodings(sourceType: fm.icelink.VideoType): void;
+        /**
+        Locks the video encodings in prior to initialization.
+        */
+        protected lockVideoEncodings(sourceType: fm.icelink.VideoType, sourceWidth: number, sourceHeight: number, sourceFrameRate: number): void;
+        /**
+        Sets the local audio encodings.
+        */
+        setAudioEncodings(value: fm.icelink.AudioEncodingConfig[]): void;
+        /**
+        Sets whether audio simulcast is disabled.
+        */
+        setAudioSimulcastDisabled(value: boolean): void;
+        /**
+        Sets the number of audio simulcast encodings.
+        */
+        setAudioSimulcastEncodingCount(value: number): void;
+        /**
+        Sets the preferred audio simulcast bitrate, in kbps.
+        */
+        setAudioSimulcastPreferredBitrate(value: number): void;
+        /** @hidden */
+        private setState;
+        /**
+        Sets the local video encodings.
+        */
+        setVideoEncodings(value: fm.icelink.VideoEncodingConfig[]): void;
+        /**
+        Sets the desired video simulcast bits-per-pixel (bpp). If this value is set and the video source has declared a target width, height, and frame-rate, encoding bitrates will be automatically calculated using this value instad of using preferred bitrate.
+        */
+        setVideoSimulcastBitsPerPixel(value: number): void;
+        /**
+        Sets the video simulcast degradation preference.
+        */
+        setVideoSimulcastDegradationPreference(value: fm.icelink.VideoDegradationPreference): void;
+        /**
+        Sets whether video simulcast is disabled.
+        */
+        setVideoSimulcastDisabled(value: boolean): void;
+        /**
+        Sets the number of video simulcast encodings.
+        */
+        setVideoSimulcastEncodingCount(value: number): void;
+        /**
+        Sets the preferred video simulcast bitrate, in kbps.
+        */
+        setVideoSimulcastPreferredBitrate(value: number): void;
+        /**
+        Starts the media track sources.
+        */
+        start(): fm.icelink.Future<TLocalMedia>;
+        /** @hidden */
+        private startInternal;
+        /**
+        Stops the media track sources.
+        */
+        stop(): fm.icelink.Future<TLocalMedia>;
+        /** @hidden */
+        private stopInternal;
+    }
+}
+declare namespace fm.icelink {
     class LocalMediaStateWrapper {
         getTypeString(): string;
         /** @hidden */
@@ -16853,6 +15965,8 @@ declare namespace fm.icelink {
         private __width;
         /** @hidden */
         private _strides;
+        /** @hidden */
+        private static fm_icelink_VideoBuffer___dataBufferPool;
         private fmicelinkVideoBufferInit;
         /**
         Initializes a new instance of the [[fm.icelink.videoBuffer]] class.
@@ -17338,6 +16452,12 @@ declare namespace fm.icelink {
         private writeRgba;
         /** @hidden */
         private writeYuv;
+        /** @hidden */
+        private static __fmicelinkVideoBufferInitialized;
+        /** @hidden */
+        private static __fmicelinkVideoBufferInitializing;
+        /** @hidden */
+        static fmicelinkVideoBufferInitialize(): void;
     }
 }
 declare namespace fm.icelink {
@@ -17405,6 +16525,107 @@ declare namespace fm.icelink {
         private _value;
         constructor(value: fm.icelink.NackPolicy);
         toString(): string;
+    }
+}
+declare namespace fm.icelink.opus {
+    /**
+    An Opus format.
+    */
+    class Format extends fm.icelink.AudioFormat {
+        getTypeString(): string;
+        /**
+        Initializes a new instance of the [[fm.icelink.opus.format]] class.
+        */
+        constructor();
+        /**
+        Initializes a new instance of the [[fm.icelink.opus.format]] class.
+        @param clockRate The clock rate.
+        @param channelCount The channel count.
+        */
+        constructor(clockRate: number, channelCount: number);
+        /**
+        Initializes a new instance of the [[fm.icelink.opus.format]] class.
+        @param config The configuration.
+        */
+        constructor(config: fm.icelink.AudioConfig);
+        /**
+        Gets the default clock rate (2).
+        */
+        static getDefaultChannelCount(): number;
+        /**
+        Gets the default clock rate (48000).
+        */
+        static getDefaultClockRate(): number;
+        /**
+        Gets the default configuration (48000/2).
+        */
+        static getDefaultConfig(): fm.icelink.AudioConfig;
+        /**
+        Creates a new instance.
+        */
+        protected createInstance(): fm.icelink.AudioFormat;
+        /**
+        Gets the maximum bitrate supported by this format, in kbps.
+        */
+        getMaxBitrate(): number;
+        /**
+        Gets the minimum bitrate supported by this format, in kbps.
+        */
+        getMinBitrate(): number;
+    }
+}
+declare namespace fm.icelink.pcma {
+    /**
+    A PCMA (G.711a) format.
+    */
+    class Format extends fm.icelink.g711.Format {
+        getTypeString(): string;
+        /**
+        Initializes a new instance of the [[fm.icelink.pcma.format]] class.
+        */
+        constructor();
+        /**
+        Initializes a new instance of the [[fm.icelink.pcma.format]] class.
+        @param clockRate The clock rate.
+        @param channelCount The channel count.
+        */
+        constructor(clockRate: number, channelCount: number);
+        /**
+        Initializes a new instance of the [[fm.icelink.pcma.format]] class.
+        @param config The configuration.
+        */
+        constructor(config: fm.icelink.AudioConfig);
+        /**
+        Creates a new instance.
+        */
+        protected createInstance(): fm.icelink.AudioFormat;
+    }
+}
+declare namespace fm.icelink.pcmu {
+    /**
+    A PCMU (G.711u) format.
+    */
+    class Format extends fm.icelink.g711.Format {
+        getTypeString(): string;
+        /**
+        Initializes a new instance of the [[fm.icelink.pcmu.format]] class.
+        */
+        constructor();
+        /**
+        Initializes a new instance of the [[fm.icelink.pcmu.format]] class.
+        @param clockRate The clock rate.
+        @param channelCount The channel count.
+        */
+        constructor(clockRate: number, channelCount: number);
+        /**
+        Initializes a new instance of the [[fm.icelink.pcmu.format]] class.
+        @param config The configuration.
+        */
+        constructor(config: fm.icelink.AudioConfig);
+        /**
+        Creates a new instance.
+        */
+        protected createInstance(): fm.icelink.AudioFormat;
     }
 }
 declare namespace fm.icelink {
@@ -17828,6 +17049,18 @@ declare namespace fm.icelink.vp8 {
         @param clockRate The clock rate.
         */
         constructor(clockRate: number);
+        /**
+        Creates a new instance.
+        */
+        protected createInstance(): fm.icelink.VideoFormat;
+        /**
+        Gets the maximum bitrate supported by this format, in kbps.
+        */
+        getMaxBitrate(): number;
+        /**
+        Gets the minimum bitrate supported by this format, in kbps.
+        */
+        getMinBitrate(): number;
     }
 }
 declare namespace fm.icelink.vp9 {
@@ -17845,6 +17078,18 @@ declare namespace fm.icelink.vp9 {
         @param clockRate The clock rate.
         */
         constructor(clockRate: number);
+        /**
+        Creates a new instance.
+        */
+        protected createInstance(): fm.icelink.VideoFormat;
+        /**
+        Gets the maximum bitrate supported by this format, in kbps.
+        */
+        getMaxBitrate(): number;
+        /**
+        Gets the minimum bitrate supported by this format, in kbps.
+        */
+        getMinBitrate(): number;
     }
 }
 declare namespace fm.icelink {
@@ -17940,6 +17185,200 @@ declare namespace fm.icelink {
         setId(value: string): void;
         /** @hidden */
         setTimestamp(value: fm.icelink.DateTime): void;
+    }
+}
+declare namespace fm.icelink {
+    /**
+    A bitrate notification.
+    */
+    class BitrateNotification {
+        getTypeString(): string;
+        /** @hidden */
+        private _bitrate;
+        /** @hidden */
+        private _mediaDescriptionId;
+        /** @hidden */
+        private _rtpStreamId;
+        /** @hidden */
+        private _synchronizationSource;
+        private fmicelinkBitrateNotificationInit;
+        /**
+        Initializes a new instance of the [[fm.icelink.bitrateNotification]] class.
+        */
+        constructor();
+        /**
+        Deserializes an instance from JSON.
+        @param bitrateNotificationJson The instance in JSON format.
+        @return The instance.
+        */
+        static fromJson(bitrateNotificationJson: string): fm.icelink.BitrateNotification;
+        /**
+        Deserializes an array from JSON.
+        @param bitrateNotificationsJson The array in JSON format.
+        @return The array.
+        */
+        static fromJsonArray(bitrateNotificationsJson: string): fm.icelink.BitrateNotification[];
+        /**
+        Serializes an instance to JSON.
+        @param bitrateNotification The instance.
+        @return The instance in JSON format.
+        */
+        static toJson(bitrateNotification: fm.icelink.BitrateNotification): string;
+        /**
+        Serializes an array to JSON.
+        @param bitrateNotifications The array.
+        @return The array in JSON format.
+        */
+        static toJsonArray(bitrateNotifications: fm.icelink.BitrateNotification[]): string;
+        /**
+        Deserializes a property from JSON.
+        @param key The property key.
+        @param valueJson The property value in JSON format.
+        */
+        protected deserializeProperty(key: string, valueJson: string): void;
+        /**
+        Gets the bitrate.
+        */
+        getBitrate(): number;
+        /**
+        Gets the media description ID.
+        */
+        getMediaDescriptionId(): string;
+        /**
+        Gets the RTP stream ID.
+        */
+        getRtpStreamId(): string;
+        /**
+        Gets the synchronization source.
+        */
+        getSynchronizationSource(): number;
+        /**
+        Serializes properties to JSON.
+        @param jsonObject The JSON target.
+        */
+        protected serializeProperties(jsonObject: fm.icelink.Hash<string, string>): void;
+        /**
+        Sets the bitrate.
+        */
+        setBitrate(value: number): void;
+        /**
+        Sets the media description ID.
+        */
+        setMediaDescriptionId(value: string): void;
+        /**
+        Sets the RTP stream ID.
+        */
+        setRtpStreamId(value: string): void;
+        /**
+        Sets the synchronization source.
+        */
+        setSynchronizationSource(value: number): void;
+        /**
+        Serializes this instance to JSON.
+        */
+        toJson(): string;
+    }
+}
+declare namespace fm.icelink {
+    /**
+    A bitrate request.
+    */
+    class BitrateRequest {
+        getTypeString(): string;
+        /** @hidden */
+        private _bitrate;
+        /** @hidden */
+        private _mediaDescriptionId;
+        /** @hidden */
+        private _rtpStreamId;
+        /** @hidden */
+        private _senderSynchronizationSource;
+        /** @hidden */
+        private _synchronizationSource;
+        private fmicelinkBitrateRequestInit;
+        /**
+        Initializes a new instance of the [[fm.icelink.bitrateRequest]] class.
+        */
+        constructor();
+        /**
+        Deserializes an instance from JSON.
+        @param bitrateRequestJson The instance in JSON format.
+        @return The instance.
+        */
+        static fromJson(bitrateRequestJson: string): fm.icelink.BitrateRequest;
+        /**
+        Deserializes an array from JSON.
+        @param bitrateRequestsJson The array in JSON format.
+        @return The array.
+        */
+        static fromJsonArray(bitrateRequestsJson: string): fm.icelink.BitrateRequest[];
+        /**
+        Serializes an instance to JSON.
+        @param bitrateRequest The instance.
+        @return The instance in JSON format.
+        */
+        static toJson(bitrateRequest: fm.icelink.BitrateRequest): string;
+        /**
+        Serializes an array to JSON.
+        @param bitrateRequests The array.
+        @return The array in JSON format.
+        */
+        static toJsonArray(bitrateRequests: fm.icelink.BitrateRequest[]): string;
+        /**
+        Deserializes a property from JSON.
+        @param key The property key.
+        @param valueJson The property value in JSON format.
+        */
+        protected deserializeProperty(key: string, valueJson: string): void;
+        /**
+        Gets the bitrate.
+        */
+        getBitrate(): number;
+        /**
+        Gets the media description ID.
+        */
+        getMediaDescriptionId(): string;
+        /**
+        Gets the RTP stream ID.
+        */
+        getRtpStreamId(): string;
+        /**
+        Gets the sender synchronization source.
+        */
+        getSenderSynchronizationSource(): number;
+        /**
+        Gets the synchronization source.
+        */
+        getSynchronizationSource(): number;
+        /**
+        Serializes properties to JSON.
+        @param jsonObject The JSON target.
+        */
+        protected serializeProperties(jsonObject: fm.icelink.Hash<string, string>): void;
+        /**
+        Sets the bitrate.
+        */
+        setBitrate(value: number): void;
+        /**
+        Sets the media description ID.
+        */
+        setMediaDescriptionId(value: string): void;
+        /**
+        Sets the RTP stream ID.
+        */
+        setRtpStreamId(value: string): void;
+        /**
+        Sets the sender synchronization source.
+        */
+        setSenderSynchronizationSource(value: number): void;
+        /**
+        Sets the synchronization source.
+        */
+        setSynchronizationSource(value: number): void;
+        /**
+        Serializes this instance to JSON.
+        */
+        toJson(): string;
     }
 }
 declare namespace fm.icelink {
@@ -19746,6 +19185,268 @@ declare namespace fm.icelink {
         toString(): string;
     }
 }
+declare namespace fm.icelink.dtmf {
+    /**
+    A DTMF (telephone-event) tone.
+    */
+    class Tone {
+        getTypeString(): string;
+        /** @hidden */
+        private _duration;
+        /** @hidden */
+        private _end;
+        /** @hidden */
+        private _sentDuration;
+        /** @hidden */
+        private _value;
+        private fmicelinkdtmfToneInit;
+        constructor();
+        /**
+        Initializes a new instance of the [[fm.icelink.dtmf.tone]] class.
+        @param value The value.
+        */
+        constructor(value: string);
+        /**
+        Initializes a new instance of the [[fm.icelink.dtmf.tone]] class.
+        @param value The value.
+        @param duration The duration.
+        */
+        constructor(value: string, duration: number);
+        /** @hidden */
+        private static eventCodeFromValue;
+        /**
+        Deserializes from JSON.
+        @param toneJson The JSON.
+        */
+        static fromJson(toneJson: string): fm.icelink.dtmf.Tone;
+        /**
+        Deserializes an array from JSON.
+        @param tonesJson The JSON.
+        */
+        static fromJsonArray(tonesJson: string): fm.icelink.dtmf.Tone[];
+        /**
+        Converts a DTMF tone string into an array of tones. Each tone will have a duration of 100ms and an inter-tone gap of 100ms.
+        @param toneString The tone string.
+        */
+        static fromToneString(toneString: string): fm.icelink.dtmf.Tone[];
+        /**
+        Converts a DTMF tone string into an array of tones. Each tone will have an inter-tone gap of 100ms.
+        @param toneString The tone string.
+        @param duration The duration, in milliseconds (minimum of 40, maximum of 2,000).
+        */
+        static fromToneString(toneString: string, duration: number): fm.icelink.dtmf.Tone[];
+        /**
+        Converts a DTMF tone string into an array of tones.
+        @param toneString The tone string.
+        @param duration The duration, in milliseconds (minimum of 40, maximum of 2,000).
+        @param interToneGap The time between tones, in milliseconds (minimum of 40).
+        */
+        static fromToneString(toneString: string, duration: number, interToneGap: number): fm.icelink.dtmf.Tone[];
+        /**
+        Gets A tone.
+        */
+        static getA(): fm.icelink.dtmf.Tone;
+        /**
+        Gets the A value ("A").
+        */
+        static getAValue(): string;
+        /**
+        Gets the B tone.
+        */
+        static getB(): fm.icelink.dtmf.Tone;
+        /**
+        Gets the B value ("B").
+        */
+        static getBValue(): string;
+        /**
+        Gets the C tone.
+        */
+        static getC(): fm.icelink.dtmf.Tone;
+        /**
+        Gets the C value ("C").
+        */
+        static getCValue(): string;
+        /**
+        Gets the D tone.
+        */
+        static getD(): fm.icelink.dtmf.Tone;
+        /**
+        Gets the D value ("D").
+        */
+        static getDValue(): string;
+        /**
+        Gets the eight tone.
+        */
+        static getEight(): fm.icelink.dtmf.Tone;
+        /**
+        Gets the eight value ("8").
+        */
+        static getEightValue(): string;
+        /**
+        Gets the empty tone.
+        */
+        static getEmpty(): fm.icelink.dtmf.Tone;
+        /**
+        Gets the empty value ("").
+        */
+        static getEmptyValue(): string;
+        /**
+        Gets the five tone.
+        */
+        static getFive(): fm.icelink.dtmf.Tone;
+        /**
+        Gets the five value ("5").
+        */
+        static getFiveValue(): string;
+        /**
+        Gets the four tone.
+        */
+        static getFour(): fm.icelink.dtmf.Tone;
+        /**
+        Gets the four value ("4").
+        */
+        static getFourValue(): string;
+        /**
+        Gets the hash tone.
+        */
+        static getHash(): fm.icelink.dtmf.Tone;
+        /**
+        Gets the hash value ("#").
+        */
+        static getHashValue(): string;
+        /**
+        Gets the nine tone.
+        */
+        static getNine(): fm.icelink.dtmf.Tone;
+        /**
+        Gets the nine value ("9").
+        */
+        static getNineValue(): string;
+        /**
+        Gets the one tone.
+        */
+        static getOne(): fm.icelink.dtmf.Tone;
+        /**
+        Gets the one value ("1").
+        */
+        static getOneValue(): string;
+        /**
+        Gets the pause tone.
+        */
+        static getPause(): fm.icelink.dtmf.Tone;
+        /**
+        Gets the pause duration in milliseconds (2000).
+        */
+        static getPauseDuration(): number;
+        /**
+        Gets the pause value (",").
+        */
+        static getPauseValue(): string;
+        /**
+        Gets the seven tone.
+        */
+        static getSeven(): fm.icelink.dtmf.Tone;
+        /**
+        Gets the seven value ("7").
+        */
+        static getSevenValue(): string;
+        /**
+        Gets the six tone.
+        */
+        static getSix(): fm.icelink.dtmf.Tone;
+        /**
+        Gets the six value ("6").
+        */
+        static getSixValue(): string;
+        /**
+        Gets the star tone.
+        */
+        static getStar(): fm.icelink.dtmf.Tone;
+        /**
+        Gets the star value ("*").
+        */
+        static getStarValue(): string;
+        /**
+        Gets the three tone.
+        */
+        static getThree(): fm.icelink.dtmf.Tone;
+        /**
+        Gets the three value ("3").
+        */
+        static getThreeValue(): string;
+        /**
+        Gets the two tone.
+        */
+        static getTwo(): fm.icelink.dtmf.Tone;
+        /**
+        Gets the two value ("2").
+        */
+        static getTwoValue(): string;
+        /**
+        Gets the zero tone.
+        */
+        static getZero(): fm.icelink.dtmf.Tone;
+        /**
+        Gets the zero value ("0").
+        */
+        static getZeroValue(): string;
+        /**
+        Serializes to JSON.
+        */
+        static toJson(tone: fm.icelink.dtmf.Tone): string;
+        /**
+        Serializes an array to JSON.
+        @param tones The array.
+        */
+        static toJsonArray(tones: fm.icelink.dtmf.Tone[]): string;
+        /**
+        Converts an array of DTMF tones into a tone string. This discards duration and inter-tone gap data.
+        @param tones The tones.
+        */
+        static toToneString(tones: fm.icelink.dtmf.Tone[]): string;
+        /** @hidden */
+        private static valueFromEventCode;
+        /**
+        Clones this instance.
+        */
+        clone(): fm.icelink.dtmf.Tone;
+        /**
+        Clones this instance.
+        @param duration The new duration.
+        */
+        clone(duration: number): fm.icelink.dtmf.Tone;
+        /**
+        Gets the duration in milliseconds.
+        */
+        getDuration(): number;
+        /**
+        Gets whether this is the final tone raised for the current value.
+        */
+        getEnd(): boolean;
+        /** @hidden */
+        getSentDuration(): number;
+        /**
+        Gets the value.
+        */
+        getValue(): string;
+        /** @hidden */
+        setDuration(value: number): void;
+        /** @hidden */
+        private setEnd;
+        /** @hidden */
+        setSentDuration(value: number): void;
+        /** @hidden */
+        private setValue;
+        /**
+        Serializes to JSON.
+        */
+        toJson(): string;
+        /**
+        Serializes to a string.
+        */
+        toString(): string;
+    }
+}
 declare namespace fm.icelink {
     /**
     A stream description.
@@ -20003,6 +19704,8 @@ declare namespace fm.icelink {
         /** @hidden */
         private _height;
         /** @hidden */
+        private _orientation;
+        /** @hidden */
         private _viewId;
         /** @hidden */
         private _width;
@@ -20044,6 +19747,10 @@ declare namespace fm.icelink {
         */
         getHeight(): number;
         /**
+        Gets the orientation in degrees.
+        */
+        getOrientation(): number;
+        /**
         Gets the view ID.
         */
         getViewId(): string;
@@ -20068,6 +19775,10 @@ declare namespace fm.icelink {
         Sets the height value.
         */
         setHeight(value: number): void;
+        /**
+        Sets the orientation in degrees.
+        */
+        setOrientation(value: number): void;
         /**
         Sets the view ID.
         */
@@ -21027,8 +20738,34 @@ declare namespace fm.icelink {
         static isEquivalent(encoding1: fm.icelink.EncodingInfo, encoding2: fm.icelink.EncodingInfo, restrictionsOnly: boolean): boolean;
         /** @hidden */
         private static isEquivalentNoCheck;
+        /**
+        Returns a new encoding with each value being the maximum of two input encodings.
+        @param encoding1 The first encoding.
+        @param encoding2 The second encoding.
+        @return A new encoding.
+        */
+        static max(encoding1: fm.icelink.EncodingInfo, encoding2: fm.icelink.EncodingInfo): fm.icelink.EncodingInfo;
+        /** @hidden */
+        private static maxDouble;
+        /** @hidden */
+        private static maxInteger;
+        /** @hidden */
+        private static maxSize;
         /** @hidden */
         static merge(encodings: fm.icelink.EncodingInfo[]): fm.icelink.EncodingInfo[];
+        /**
+        Returns a new encoding with each value being the minimum of two input encodings.
+        @param encoding1 The first encoding.
+        @param encoding2 The second encoding.
+        @return A new encoding.
+        */
+        static min(encoding1: fm.icelink.EncodingInfo, encoding2: fm.icelink.EncodingInfo): fm.icelink.EncodingInfo;
+        /** @hidden */
+        private static minDouble;
+        /** @hidden */
+        private static minInteger;
+        /** @hidden */
+        private static minSize;
         /**
         Serializes an instance to JSON.
         @param encodingInfo The instance to serialize.
@@ -21209,6 +20946,8 @@ declare namespace fm.icelink {
         /** @hidden */
         private static __fmicelinkEncodingInfoInitialized;
         /** @hidden */
+        private static __fmicelinkEncodingInfoInitializing;
+        /** @hidden */
         static fmicelinkEncodingInfoInitialize(): void;
     }
 }
@@ -21388,9 +21127,14 @@ declare namespace fm.icelink {
         /** @hidden */
         private _direction;
         /** @hidden */
+        private _maxReceiveBitrate;
+        /** @hidden */
+        private _maxSendBitrate;
+        /** @hidden */
         private _receivers;
         /** @hidden */
         private _senders;
+        private fmicelinkMediaStreamStatsInit;
         constructor();
         /**
         Derializes media stream stats from JSON.
@@ -21423,6 +21167,14 @@ declare namespace fm.icelink {
         */
         getDirection(): fm.icelink.StreamDirection;
         /**
+        Gets the max receive bitrate.
+        */
+        getMaxReceiveBitrate(): number;
+        /**
+        Gets the max send bitrate.
+        */
+        getMaxSendBitrate(): number;
+        /**
         Gets the first receiver's stats.
         */
         getReceiver(): fm.icelink.MediaReceiverStats;
@@ -21445,6 +21197,10 @@ declare namespace fm.icelink {
         protected serializeProperties(jsonObject: fm.icelink.Hash<string, string>): void;
         /** @hidden */
         setDirection(value: fm.icelink.StreamDirection): void;
+        /** @hidden */
+        setMaxReceiveBitrate(value: number): void;
+        /** @hidden */
+        setMaxSendBitrate(value: number): void;
         /** @hidden */
         setReceivers(value: fm.icelink.MediaReceiverStats[]): void;
         /** @hidden */
@@ -21550,6 +21306,8 @@ declare namespace fm.icelink {
     class MediaTrackStats extends fm.icelink.BaseStats implements fm.icelink.IEquivalent<fm.icelink.MediaTrackStats> {
         getTypeString(): string;
         /** @hidden */
+        private _bitrate;
+        /** @hidden */
         private _detached;
         /** @hidden */
         private _frameHeight;
@@ -21569,6 +21327,10 @@ declare namespace fm.icelink {
         private _framesSent;
         /** @hidden */
         private _frameWidth;
+        /** @hidden */
+        private _maxBitrate;
+        /** @hidden */
+        private _minBitrate;
         /** @hidden */
         private _muted;
         /** @hidden */
@@ -21607,6 +21369,10 @@ declare namespace fm.icelink {
         @param valueJson The value in JSON format.
         */
         protected deserializeProperties(key: string, valueJson: string): void;
+        /**
+        Gets the bitrate. Set by the encoder.
+        */
+        getBitrate(): number;
         /**
         Gets whether the track is detached.
         */
@@ -21647,6 +21413,14 @@ declare namespace fm.icelink {
         Gets the frame width. Video-only. Set by encoder or decoder.
         */
         getFrameWidth(): number;
+        /**
+        Gets the maximum bitrate. Set by the encoder.
+        */
+        getMaxBitrate(): number;
+        /**
+        Gets the minimum bitrate. Set by the encoder.
+        */
+        getMinBitrate(): number;
         /**
         Gets whether the track is muted.
         */
@@ -21690,6 +21464,8 @@ declare namespace fm.icelink {
         */
         protected serializeProperties(jsonObject: fm.icelink.Hash<string, string>): void;
         /** @hidden */
+        setBitrate(value: number): void;
+        /** @hidden */
         setDetached(value: boolean): void;
         /** @hidden */
         setFrameHeight(value: number): void;
@@ -21709,6 +21485,10 @@ declare namespace fm.icelink {
         setFramesSent(value: number): void;
         /** @hidden */
         setFrameWidth(value: number): void;
+        /** @hidden */
+        setMaxBitrate(value: number): void;
+        /** @hidden */
+        setMinBitrate(value: number): void;
         /** @hidden */
         setMuted(value: boolean): void;
         /** @hidden */
@@ -22199,6 +21979,8 @@ declare namespace fm.icelink.sdp {
         toString(): string;
         /** @hidden */
         private static __fmicelinksdpAttributeInitialized;
+        /** @hidden */
+        private static __fmicelinksdpAttributeInitializing;
         /** @hidden */
         static fmicelinksdpAttributeInitialize(): void;
     }
@@ -23726,6 +23508,8 @@ declare namespace fm.icelink.sdp {
         /** @hidden */
         private static __fmicelinksdpMediaInitialized;
         /** @hidden */
+        private static __fmicelinksdpMediaInitializing;
+        /** @hidden */
         static fmicelinksdpMediaInitialize(): void;
     }
 }
@@ -24990,14 +24774,22 @@ declare namespace fm.icelink.sdp.rtcp {
         Gets the RTCP port number.
         */
         getPort(): number;
-        /** @hidden */
-        private setAddressType;
-        /** @hidden */
-        private setConnectionAddress;
-        /** @hidden */
-        private setNetworkType;
-        /** @hidden */
-        private setPort;
+        /**
+        Sets the type of the address. See [[fm.icelink.sdp.rtcp.attribute.addressType]] for possible values.
+        */
+        setAddressType(value: string): void;
+        /**
+        Sets the RTCP connection address.
+        */
+        setConnectionAddress(value: string): void;
+        /**
+        Sets the type of network. See [[fm.icelink.sdp.rtcp.attribute.networkType]] for possible values.
+        */
+        setNetworkType(value: string): void;
+        /**
+        Sets the RTCP port number.
+        */
+        setPort(value: number): void;
         /**
         Updates the port and connection address.
         @param port The port.
@@ -25043,6 +24835,16 @@ declare namespace fm.icelink.sdp.rtcp {
         @param payloadType The payload type.
         */
         static ccmLrrAttribute(payloadType: number): fm.icelink.sdp.rtcp.FeedbackAttribute;
+        /**
+        Creates a "ccm tmmbn" feedback attribute.
+        @param payloadType The payload type.
+        */
+        static ccmTmmbnAttribute(payloadType: number): fm.icelink.sdp.rtcp.FeedbackAttribute;
+        /**
+        Creates a "ccm tmmbr" feedback attribute.
+        @param payloadType The payload type.
+        */
+        static ccmTmmbrAttribute(payloadType: number): fm.icelink.sdp.rtcp.FeedbackAttribute;
         /**
         Initializes a new instance of the [[fm.icelink.sdp.rtcp.feedbackAttribute]] class.
         @param value The attribute value.
@@ -25134,6 +24936,14 @@ declare namespace fm.icelink.sdp.rtcp {
         Gets the "slice loss indication" sub-type.
         */
         static getSli(): string;
+        /**
+        Gets the "temporary maximum media-stream bitrate notification" sub-type.
+        */
+        static getTmmbn(): string;
+        /**
+        Gets the "temporary maximum media-stream bitrate request" sub-type.
+        */
+        static getTmmbr(): string;
     }
 }
 declare namespace fm.icelink.sdp.rtcp {
@@ -25353,6 +25163,14 @@ declare namespace fm.icelink.sdp.rtp {
         */
         getRelatedCcmLrrFeedbackAttribute(): fm.icelink.sdp.rtcp.FeedbackAttribute;
         /**
+        Gets the RTCP "ccm tmmbn" feedback attribute associated with this payload type.
+        */
+        getRelatedCcmTmmbnFeedbackAttribute(): fm.icelink.sdp.rtcp.FeedbackAttribute;
+        /**
+        Gets the RTCP "ccm tmmbr" feedback attribute associated with this payload type.
+        */
+        getRelatedCcmTmmbrFeedbackAttribute(): fm.icelink.sdp.rtcp.FeedbackAttribute;
+        /**
         Gets Format Parameters attribute associated with this Map Attribute
         */
         getRelatedFormatParametersAttribute(): fm.icelink.sdp.FormatParametersAttribute;
@@ -25418,6 +25236,8 @@ declare namespace fm.icelink.sdp.rtp {
         setRelatedFormatParametersAttribute(value: fm.icelink.sdp.FormatParametersAttribute): void;
         /** @hidden */
         private static __fmicelinksdprtpMapAttributeInitialized;
+        /** @hidden */
+        private static __fmicelinksdprtpMapAttributeInitializing;
         /** @hidden */
         static fmicelinksdprtpMapAttributeInitialize(): void;
     }
@@ -27160,6 +26980,21 @@ declare namespace fm.icelink {
         */
         static clone<T>(list: Array<T>): Array<T>;
         /**
+        Clones an array of int values.
+        @param intArray An array of int values.
+        */
+        static cloneIntArray(intArray: number[]): number[];
+        /**
+        Clones an array of long values.
+        @param longArray An array of long values.
+        */
+        static cloneLongArray(longArray: number[]): number[];
+        /**
+        Clones an array of string values.
+        @param stringArray An array of string values.
+        */
+        static cloneStringArray(stringArray: string[]): string[];
+        /**
         Gets the first element in the array or the default value if the array is null or empty.
         @param array The array.
         */
@@ -27187,6 +27022,20 @@ declare namespace fm.icelink {
         Generates a tie-breaker. Obsolete. Alias for [[fm.icelink.utility.generateId]].
         */
         static generateTieBreaker(): string;
+        /**
+        Retrieves the difference between two RTP sequence numbers while accounting for overflow rollover.
+        @param rtpSequenceNumber The current RTP sequence number.
+        @param lastRtpSequenceNumber The last (previous) RTP sequence number.
+        @return The difference between the two RTP sequence numbers.
+        */
+        static getRtpSequenceNumberDelta(rtpSequenceNumber: number, lastRtpSequenceNumber: number): number;
+        /**
+        Retrieves the difference between two RTP timestamps while accounting for overflow rollover.
+        @param rtpTimestamp The current RTP timestamp.
+        @param lastRtpTimestamp The last (previous) RTP timestamp.
+        @return The difference between the two RTP timestamps.
+        */
+        static getRtpTimestampDelta(rtpTimestamp: number, lastRtpTimestamp: number): number;
         /**
         Gets the last element in the array or the default value if the array is null or empty.
         @param array The array.
@@ -27464,6 +27313,1857 @@ declare namespace fm.icelink {
     }
 }
 declare namespace fm.icelink {
+    abstract class Stream extends fm.icelink.Dynamic implements fm.icelink.IExternalStream {
+        getTypeString(): string;
+        getState(): fm.icelink.StreamState;
+        addOnStateChange(value: fm.icelink.IAction0): void;
+        removeOnStateChange(value: fm.icelink.IAction0): void;
+        changeDirection(newDirection: fm.icelink.StreamDirection): fm.icelink.Error;
+        getDirection(): fm.icelink.StreamDirection;
+        getLocalReceive(): boolean;
+        setLocalReceive(receiveEnabled: boolean): void;
+        getLocalSend(): boolean;
+        setLocalSend(sendEnabled: boolean): void;
+        getRemoteReceive(): boolean;
+        getRemoteSend(): boolean;
+        getRemoteDirection(): fm.icelink.StreamDirection;
+        getId(): string;
+        getExternalId(): string;
+        getLabel(): string;
+        getLocalDirection(): fm.icelink.StreamDirection;
+        getMediaDescriptionId(): string;
+        getTag(): string;
+        getType(): fm.icelink.StreamType;
+        setExternalId(value: string): void;
+        setLocalDirection(value: fm.icelink.StreamDirection): void;
+        setTag(value: string): void;
+        addOnDirectionChange(value: fm.icelink.IAction0): void;
+        removeOnDirectionChange(value: fm.icelink.IAction0): void;
+        getTransportInfo(): fm.icelink.TransportInfo;
+    }
+}
+declare namespace fm.icelink {
+    abstract class MediaStream<TTrack> extends fm.icelink.Stream implements fm.icelink.IMediaStream, fm.icelink.IExternalMediaStream {
+        getTypeString(): string;
+        getLocalTrack(): TTrack;
+        getRemoteTrack(): TTrack;
+        getLocalBandwidth(): number;
+        getMuted(): boolean;
+        getInputMuted(): boolean;
+        getOutputMuted(): boolean;
+        getRemoteBandwidth(): number;
+        setLocalBandwidth(value: number): void;
+        setMuted(value: boolean): void;
+        setInputMuted(value: boolean): void;
+        setOutputMuted(value: boolean): void;
+        getPreferredCodecs(): string[];
+        setPreferredCodecs(names: string[]): void;
+        getCodecDisabled(name: string): boolean;
+        setCodecDisabled(name: string, disabled: boolean): void;
+        getRemoteEncoding(): fm.icelink.EncodingInfo;
+        setRemoteEncoding(value: fm.icelink.EncodingInfo): void;
+        getSimulcastMode(): fm.icelink.SimulcastMode;
+        setSimulcastMode(value: fm.icelink.SimulcastMode): void;
+        getInfo(): fm.icelink.MediaStreamInfo;
+        constructor(localTrack: TTrack, remoteTrack: TTrack);
+        getControlTransportInfo(): fm.icelink.TransportInfo;
+        getLocalCanonicalName(): string;
+        getRemoteCanonicalName(): string;
+        addOnLocalEncodingDisabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
+        addOnLocalEncodingEnabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
+        removeOnLocalEncodingDisabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
+        removeOnLocalEncodingEnabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
+        addOnDiscardBitrateRequest(value: fm.icelink.IAction1<fm.icelink.BitrateRequest>): void;
+        removeOnDiscardBitrateRequest(value: fm.icelink.IAction1<fm.icelink.BitrateRequest>): void;
+        raiseBitrateRequest(bitrateRequest: fm.icelink.BitrateRequest): boolean;
+        addOnDiscardBitrateNotification(value: fm.icelink.IAction1<fm.icelink.BitrateNotification>): void;
+        removeOnDiscardBitrateNotification(value: fm.icelink.IAction1<fm.icelink.BitrateNotification>): void;
+        raiseBitrateNotification(bitrateNotification: fm.icelink.BitrateNotification): boolean;
+        getMaxSendBitrate(): number;
+        setMaxSendBitrate(value: number): void;
+        getMaxReceiveBitrate(): number;
+        setMaxReceiveBitrate(value: number): void;
+    }
+}
+declare namespace fm.icelink {
+    class AudioStream extends fm.icelink.MediaStream<fm.icelink.AudioTrack> implements fm.icelink.IAudioStream, fm.icelink.IExternalAudioStream {
+        getTypeString(): string;
+        getLocalMedia(): fm.icelink.LocalMedia;
+        getRemoteMedia(): fm.icelink.RemoteMedia;
+        constructor(localTrack: fm.icelink.AudioTrack);
+        constructor(localTrack: fm.icelink.AudioTrack, remoteTrack: fm.icelink.AudioTrack);
+        constructor(localMedia: fm.icelink.LocalMedia);
+        constructor(localMedia: fm.icelink.LocalMedia, remoteMedia: fm.icelink.RemoteMedia);
+        constructor(remoteMedia: fm.icelink.RemoteMedia);
+        addOnReceiveDtmfTone(value: fm.icelink.IAction1<fm.icelink.dtmf.Tone>): void;
+        addOnReceiveDtmfToneChange(value: fm.icelink.IAction1<fm.icelink.dtmf.Tone>): void;
+        addOnSendDtmfTone(value: fm.icelink.IAction1<fm.icelink.dtmf.Tone>): void;
+        addOnSendDtmfToneChange(value: fm.icelink.IAction1<fm.icelink.dtmf.Tone>): void;
+        insertDtmfTone(dtmfTone: fm.icelink.dtmf.Tone): boolean;
+        insertDtmfTones(dtmfTones: fm.icelink.dtmf.Tone[]): boolean;
+        removeOnReceiveDtmfTone(value: fm.icelink.IAction1<fm.icelink.dtmf.Tone>): void;
+        removeOnReceiveDtmfToneChange(value: fm.icelink.IAction1<fm.icelink.dtmf.Tone>): void;
+        removeOnSendDtmfTone(value: fm.icelink.IAction1<fm.icelink.dtmf.Tone>): void;
+        removeOnSendDtmfToneChange(value: fm.icelink.IAction1<fm.icelink.dtmf.Tone>): void;
+        getOpusDisabled(): boolean;
+        getG722Disabled(): boolean;
+        getPcmuDisabled(): boolean;
+        getPcmaDisabled(): boolean;
+        setOpusDisabled(value: boolean): void;
+        setG722Disabled(value: boolean): void;
+        setPcmuDisabled(value: boolean): void;
+        setPcmaDisabled(value: boolean): void;
+        addOnDiscardOutboundDtmfTones(value: fm.icelink.IAction1<fm.icelink.dtmf.Tone[]>): void;
+        removeOnDiscardOutboundDtmfTones(value: fm.icelink.IAction1<fm.icelink.dtmf.Tone[]>): void;
+    }
+}
+declare namespace fm.icelink {
+    abstract class MediaTrack extends fm.icelink.Dynamic implements fm.icelink.IMediaTrack, fm.icelink.IExternalMediaTrack {
+        getTypeString(): string;
+        getMedia(): fm.icelink.Media;
+        constructor(media: fm.icelink.Media);
+        addOnStarted(value: fm.icelink.IAction0): void;
+        addOnStopped(value: fm.icelink.IAction0): void;
+        addOnDestroyed(value: fm.icelink.IAction0): void;
+        removeOnStarted(value: fm.icelink.IAction0): void;
+        removeOnStopped(value: fm.icelink.IAction0): void;
+        removeOnDestroyed(value: fm.icelink.IAction0): void;
+        changeSinkOutput(sinkOutput: fm.icelink.SinkOutput): fm.icelink.Future<Object>;
+        changeSourceInput(sourceInput: fm.icelink.SourceInput): fm.icelink.Future<Object>;
+        destroy(): boolean;
+        getMuted(): boolean;
+        getSinkOutput(): fm.icelink.SinkOutput;
+        getSinkOutputs(): fm.icelink.Future<fm.icelink.SinkOutput[]>;
+        getSourceInput(): fm.icelink.SourceInput;
+        getSourceInputs(): fm.icelink.Future<fm.icelink.SourceInput[]>;
+        setMuted(value: boolean): void;
+        setSinkOutput(value: fm.icelink.SinkOutput): void;
+        setSourceInput(value: fm.icelink.SourceInput): void;
+    }
+}
+declare namespace fm.icelink {
+    class AudioTrack extends fm.icelink.MediaTrack implements fm.icelink.IAudioTrack, fm.icelink.IExternalAudioTrack {
+        getTypeString(): string;
+        constructor(media: fm.icelink.Media, internalMedia?: fm.icelink.IInternalMedia);
+        addOnLevel(value: fm.icelink.IAction1<number>): void;
+        getGain(): number;
+        getVolume(): number;
+        removeOnLevel(value: fm.icelink.IAction1<number>): void;
+        setGain(value: number): void;
+        setVolume(value: number): void;
+    }
+}
+declare namespace fm.icelink {
+    class Connection extends fm.icelink.Dynamic implements fm.icelink.IConnection<fm.icelink.Connection, fm.icelink.Stream, fm.icelink.AudioStream, fm.icelink.VideoStream, fm.icelink.DataStream>, fm.icelink.IExternalConnection {
+        getTypeString(): string;
+        private _onExternalIdChangeValues;
+        constructor(stream: fm.icelink.Stream);
+        constructor(streams: fm.icelink.Stream[]);
+        addIceServer(iceServer: fm.icelink.IceServer): void;
+        addIceServers(iceServers: fm.icelink.IceServer[]): void;
+        addOnGatheringStateChange(value: fm.icelink.IAction1<fm.icelink.Connection>): void;
+        addOnIceConnectionStateChange(value: fm.icelink.IAction1<fm.icelink.Connection>): void;
+        addOnLocalCandidate(value: fm.icelink.IAction2<fm.icelink.Connection, fm.icelink.Candidate>): void;
+        addOnLocalDescription(value: fm.icelink.IAction2<fm.icelink.Connection, fm.icelink.SessionDescription>): void;
+        addOnRemoteCandidate(value: fm.icelink.IAction2<fm.icelink.Connection, fm.icelink.Candidate>): void;
+        addOnRemoteDescription(value: fm.icelink.IAction2<fm.icelink.Connection, fm.icelink.SessionDescription>): void;
+        addOnSignallingStateChange(value: fm.icelink.IAction1<fm.icelink.Connection>): void;
+        addOnStateChange(value: fm.icelink.IAction1<fm.icelink.Connection>): void;
+        addRemoteCandidate(remoteCandidate: fm.icelink.Candidate): fm.icelink.Future<fm.icelink.Candidate>;
+        close(): boolean;
+        createAnswer(): fm.icelink.Future<fm.icelink.SessionDescription>;
+        createOffer(): fm.icelink.Future<fm.icelink.SessionDescription>;
+        getDeadStreamTimeout(): number;
+        getError(): fm.icelink.Error;
+        getExternalId(): string;
+        getBundlePolicy(): fm.icelink.BundlePolicy;
+        getIceGatherPolicy(): fm.icelink.IceGatherPolicy;
+        getIceServer(): fm.icelink.IceServer;
+        getGatheringState(): fm.icelink.IceGatheringState;
+        getIceConnectionState(): fm.icelink.IceConnectionState;
+        getIceServers(): fm.icelink.IceServer[];
+        getId(): string;
+        getCanonicalName(): string;
+        getLocalDescription(): fm.icelink.SessionDescription;
+        getRemoteDescription(): fm.icelink.SessionDescription;
+        getSignallingState(): fm.icelink.SignallingState;
+        getState(): fm.icelink.ConnectionState;
+        getStats(): fm.icelink.Future<fm.icelink.ConnectionStats>;
+        getStreams(): fm.icelink.Stream[];
+        getTieBreaker(): string;
+        getLegacyTimeout(): boolean;
+        getTimeout(): number;
+        getTrickleIcePolicy(): fm.icelink.TrickleIcePolicy;
+        getHasAudio(): boolean;
+        getHasVideo(): boolean;
+        getHasData(): boolean;
+        getAudioStream(): fm.icelink.AudioStream;
+        getAudioStreams(): fm.icelink.AudioStream[];
+        getVideoStream(): fm.icelink.VideoStream;
+        getVideoStreams(): fm.icelink.VideoStream[];
+        getDataStream(): fm.icelink.DataStream;
+        getDataStreams(): fm.icelink.DataStream[];
+        removeIceServer(iceServer: fm.icelink.IceServer): void;
+        removeIceServers(iceServers: fm.icelink.IceServer[]): void;
+        removeOnGatheringStateChange(value: fm.icelink.IAction1<fm.icelink.Connection>): void;
+        removeOnIceConnectionStateChange(value: fm.icelink.IAction1<fm.icelink.Connection>): void;
+        removeOnLocalCandidate(value: fm.icelink.IAction2<fm.icelink.Connection, fm.icelink.Candidate>): void;
+        removeOnLocalDescription(value: fm.icelink.IAction2<fm.icelink.Connection, fm.icelink.SessionDescription>): void;
+        removeOnRemoteCandidate(value: fm.icelink.IAction2<fm.icelink.Connection, fm.icelink.Candidate>): void;
+        removeOnRemoteDescription(value: fm.icelink.IAction2<fm.icelink.Connection, fm.icelink.SessionDescription>): void;
+        removeOnSignallingStateChange(value: fm.icelink.IAction1<fm.icelink.Connection>): void;
+        removeOnStateChange(value: fm.icelink.IAction1<fm.icelink.Connection>): void;
+        setDeadStreamTimeout(value: number): void;
+        setExternalId(value: string): void;
+        setError(value: fm.icelink.Error): void;
+        addOnExternalIdChange(value: fm.icelink.IAction2<string, string>): void;
+        removeOnExternalIdChange(value: fm.icelink.IAction2<string, string>): void;
+        setBundlePolicy(value: fm.icelink.BundlePolicy): void;
+        setIceGatherPolicy(value: fm.icelink.IceGatherPolicy): void;
+        setIceServer(value: fm.icelink.IceServer): void;
+        setIceServers(value: fm.icelink.IceServer[]): void;
+        setLocalDescription(localDescription: fm.icelink.SessionDescription): fm.icelink.Future<fm.icelink.SessionDescription>;
+        setLegacyTimeout(legacyTimeout: boolean): void;
+        setRemoteDescription(remoteDescription: fm.icelink.SessionDescription): fm.icelink.Future<fm.icelink.SessionDescription>;
+        setTimeout(value: number): void;
+        setTrickleIcePolicy(value: fm.icelink.TrickleIcePolicy): void;
+        setTieBreaker(value: string): void;
+        getRemoteMedia(): fm.icelink.RemoteMedia;
+        private externalsToInternals;
+        private externalToInternal;
+        private internalsToExternals;
+        private internalToExternal;
+    }
+}
+declare namespace fm.icelink {
+    class DataChannel extends fm.icelink.Dynamic implements fm.icelink.IDataChannel<fm.icelink.DataChannel>, fm.icelink.IExternalDataChannel {
+        getTypeString(): string;
+        getInfo(): fm.icelink.DataChannelInfo;
+        constructor(label: string, ordered?: boolean, subprotocol?: string);
+        setOnReceive(value: fm.icelink.IAction1<fm.icelink.DataChannelReceiveArgs>): void;
+        getSubprotocol(): string;
+        getOnReceive(): fm.icelink.IAction1<fm.icelink.DataChannelReceiveArgs>;
+        sendDataString(dataString: string): fm.icelink.Future<Object>;
+        sendDataBytes(dataBytes: fm.icelink.DataBuffer): fm.icelink.Future<Object>;
+        getState(): fm.icelink.DataChannelState;
+        getLabel(): string;
+        getId(): string;
+        getOrdered(): boolean;
+        addOnStateChange(value: fm.icelink.IAction1<fm.icelink.DataChannel>): void;
+        removeOnStateChange(value: fm.icelink.IAction1<fm.icelink.DataChannel>): void;
+    }
+}
+declare namespace fm.icelink {
+    class DataStream extends fm.icelink.Stream implements fm.icelink.IDataStream<fm.icelink.DataChannel>, fm.icelink.IExternalDataStream {
+        getTypeString(): string;
+        getInfo(): fm.icelink.DataStreamInfo;
+        constructor(channel: fm.icelink.DataChannel);
+        constructor(channels: fm.icelink.DataChannel[]);
+        setGetRemoteConnectionInfo(value: fm.icelink.IFunction1<string, any>): void;
+        getChannels(): fm.icelink.DataChannel[];
+        private externalToInternal;
+        private externalsToInternals;
+        private internalToExternal;
+        private internalsToExternals;
+    }
+}
+declare namespace fm.icelink {
+    class DomAudioSink extends fm.icelink.Dynamic implements fm.icelink.IExternalDomAudioSink {
+        getTypeString(): string;
+        getAudio(): HTMLAudioElement;
+        constructor(track: fm.icelink.AudioTrack);
+    }
+}
+declare namespace fm.icelink {
+    class DomLayoutManager extends fm.icelink.LayoutManager<HTMLElement> {
+        getTypeString(): string;
+        getContainer(): HTMLElement;
+        constructor(container: HTMLElement, preset?: fm.icelink.LayoutPreset);
+        private initializeInnerContainer;
+        private destroyInnerContainer;
+        destroy(): void;
+        protected addView(view: HTMLElement): void;
+        protected removeView(view: HTMLElement): void;
+        protected dispatchToMainThread(action: fm.icelink.IAction2<any, any>, arg1: any, arg2: any): void;
+        protected doGetLocalView(): HTMLElement;
+        protected doGetRemoteViewsIds(): string[];
+        protected doGetRemoteViews(idValue: string): HTMLElement[];
+        private getViewsByClassName;
+        private getParentViews;
+        private getParentView;
+        private collectionToArray;
+        layout(): void;
+        private getVideoSize;
+        private getWebRtcVideoSize;
+        private getPluginVideoSize;
+        private addOnVideoSizeChange;
+        private addOnWebRtcVideoSizeChange;
+        private addOnPluginVideoSizeChange;
+        private getVerticalScrollbarWidth;
+        private getHorizontalScrollbarHeight;
+    }
+}
+declare namespace fm.icelink {
+    class DomVideoSink extends fm.icelink.Dynamic implements fm.icelink.IExternalDomVideoSink {
+        getTypeString(): string;
+        getVideo(): HTMLVideoElement;
+        getView(): HTMLElement;
+        getViewScale(): fm.icelink.LayoutScale;
+        setViewScale(viewScale: fm.icelink.LayoutScale): void;
+        getViewMirror(): boolean;
+        setViewMirror(viewMirror: boolean): void;
+        constructor(track: fm.icelink.VideoTrack);
+    }
+}
+declare namespace fm.icelink {
+    class Factory {
+        getTypeString(): string;
+        static createConnection(streams: fm.icelink.Stream[]): fm.icelink.Connection;
+        static createAudioStream(localMedia: fm.icelink.LocalMedia): fm.icelink.AudioStream;
+        static createVideoStream(localMedia: fm.icelink.LocalMedia): fm.icelink.VideoStream;
+        static createDataChannel(label: string): fm.icelink.DataChannel;
+        static createDataStream(channel: fm.icelink.DataChannel): fm.icelink.DataStream;
+        static createDomVideoSink(track: fm.icelink.VideoTrack): fm.icelink.DomVideoSink;
+        static createLocalMedia(audio: any, video: any, screen?: boolean): fm.icelink.LocalMedia;
+    }
+}
+declare namespace fm.icelink {
+    interface IExternal<TInternal> {
+    }
+}
+declare namespace fm.icelink {
+    interface IExternalAudioStream extends fm.icelink.IAudioStream, fm.icelink.IExternal<fm.icelink.IInternalAudioStream> {
+    }
+}
+declare namespace fm.icelink {
+    interface IExternalAudioTrack extends fm.icelink.IAudioTrack, fm.icelink.IExternal<fm.icelink.IInternalAudioTrack> {
+    }
+}
+declare namespace fm.icelink {
+    interface IExternalConnection extends fm.icelink.IConnection<fm.icelink.IExternalConnection, fm.icelink.IExternalStream, fm.icelink.IExternalAudioStream, fm.icelink.IExternalVideoStream, fm.icelink.IExternalDataStream>, fm.icelink.IExternal<fm.icelink.IInternalConnection> {
+    }
+}
+declare namespace fm.icelink {
+    interface IExternalDataChannel extends fm.icelink.IDataChannel<fm.icelink.IExternalDataChannel>, fm.icelink.IExternal<fm.icelink.IInternalDataChannel> {
+    }
+}
+declare namespace fm.icelink {
+    interface IExternalDataStream extends fm.icelink.IDataStream<fm.icelink.IExternalDataChannel>, fm.icelink.IExternal<fm.icelink.IInternalDataStream> {
+    }
+}
+declare namespace fm.icelink {
+    interface IExternalDomAudioSink extends fm.icelink.IExternal<fm.icelink.IInternalDomAudioSink> {
+        getAudio(): HTMLAudioElement;
+    }
+}
+declare namespace fm.icelink {
+    interface IExternalDomVideoSink extends fm.icelink.IViewSink<HTMLElement>, fm.icelink.IExternal<fm.icelink.IInternalDomVideoSink> {
+        getVideo(): HTMLVideoElement;
+    }
+}
+declare namespace fm.icelink {
+    interface IExternalLocalMedia extends fm.icelink.ILocalMedia<fm.icelink.IExternalLocalMedia, fm.icelink.IExternalAudioTrack, fm.icelink.IExternalVideoTrack>, fm.icelink.IViewSinkableMedia<HTMLElement, fm.icelink.IExternalDomVideoSink>, fm.icelink.IExternal<fm.icelink.IInternalLocalMedia>, fm.icelink.IExternalMedia {
+    }
+}
+declare namespace fm.icelink {
+    interface IExternalMedia extends fm.icelink.IMedia<fm.icelink.IExternalAudioTrack, fm.icelink.IExternalVideoTrack>, fm.icelink.IViewSinkableMedia<HTMLElement, fm.icelink.IExternalDomVideoSink> {
+        getAudioSink(): fm.icelink.IExternalDomAudioSink;
+        getVideoSink(): fm.icelink.IExternalDomVideoSink;
+    }
+}
+declare namespace fm.icelink {
+    interface IExternalMediaStream extends fm.icelink.IMediaStream, fm.icelink.IExternal<fm.icelink.IInternalMediaStream> {
+    }
+}
+declare namespace fm.icelink {
+    interface IExternalMediaTrack extends fm.icelink.IMediaTrack, fm.icelink.IExternal<fm.icelink.IInternalMediaTrack> {
+    }
+}
+declare namespace fm.icelink {
+    interface IExternalRemoteMedia extends fm.icelink.IRemoteMedia<fm.icelink.IExternalAudioTrack, fm.icelink.IExternalVideoTrack>, fm.icelink.IViewSinkableMedia<HTMLElement, fm.icelink.IExternalDomVideoSink>, fm.icelink.IExternal<fm.icelink.IInternalRemoteMedia>, fm.icelink.IExternalMedia {
+    }
+}
+declare namespace fm.icelink {
+    interface IExternalStream extends fm.icelink.IStream, fm.icelink.IExternal<fm.icelink.IInternalStream> {
+    }
+}
+declare namespace fm.icelink {
+    interface IExternalVideoStream extends fm.icelink.IVideoStream, fm.icelink.IExternal<fm.icelink.IInternalVideoStream> {
+    }
+}
+declare namespace fm.icelink {
+    interface IExternalVideoTrack extends fm.icelink.IVideoTrack, fm.icelink.IExternal<fm.icelink.IInternalVideoTrack> {
+    }
+}
+declare namespace fm.icelink {
+    interface IInternal<TExternal> {
+    }
+}
+declare namespace fm.icelink {
+    interface IInternalAudioStream extends fm.icelink.IAudioStream, fm.icelink.IInternal<fm.icelink.IExternalAudioStream> {
+    }
+}
+declare namespace fm.icelink {
+    interface IInternalAudioTrack extends fm.icelink.IAudioTrack, fm.icelink.IInternal<fm.icelink.IExternalAudioTrack> {
+    }
+}
+declare namespace fm.icelink {
+    interface IInternalConnection extends fm.icelink.IConnection<fm.icelink.IInternalConnection, fm.icelink.IInternalStream, fm.icelink.IInternalAudioStream, fm.icelink.IInternalVideoStream, fm.icelink.IInternalDataStream>, fm.icelink.IInternal<fm.icelink.IExternalConnection> {
+    }
+}
+declare namespace fm.icelink {
+    interface IInternalDataChannel extends fm.icelink.IDataChannel<fm.icelink.IInternalDataChannel>, fm.icelink.IInternal<fm.icelink.IExternalDataChannel> {
+    }
+}
+declare namespace fm.icelink {
+    interface IInternalDataStream extends fm.icelink.IDataStream<fm.icelink.IInternalDataChannel>, fm.icelink.IInternal<fm.icelink.IExternalDataStream> {
+    }
+}
+declare namespace fm.icelink {
+    interface IInternalDomAudioSink extends fm.icelink.IInternal<fm.icelink.IExternalDomAudioSink> {
+        getAudio(): HTMLAudioElement;
+    }
+}
+declare namespace fm.icelink {
+    interface IInternalDomVideoSink extends fm.icelink.IViewSink<HTMLElement>, fm.icelink.IInternal<fm.icelink.IExternalDomVideoSink> {
+        getVideo(): HTMLVideoElement;
+    }
+}
+declare namespace fm.icelink {
+    interface IInternalLocalMedia extends fm.icelink.ILocalMedia<fm.icelink.IInternalLocalMedia, fm.icelink.IInternalAudioTrack, fm.icelink.IInternalVideoTrack>, fm.icelink.IViewSinkableMedia<HTMLElement, fm.icelink.IInternalDomVideoSink>, fm.icelink.IInternal<fm.icelink.IExternalLocalMedia>, fm.icelink.IInternalMedia {
+    }
+}
+declare namespace fm.icelink {
+    interface IInternalMedia extends fm.icelink.IMedia<fm.icelink.IInternalAudioTrack, fm.icelink.IInternalVideoTrack>, fm.icelink.IViewSinkableMedia<HTMLElement, fm.icelink.IInternalDomVideoSink> {
+        getAudioSink(): fm.icelink.IInternalDomAudioSink;
+        getVideoSink(): fm.icelink.IInternalDomVideoSink;
+    }
+}
+declare namespace fm.icelink {
+    interface IInternalMediaStream extends fm.icelink.IMediaStream, fm.icelink.IInternal<fm.icelink.IExternalMediaStream> {
+    }
+}
+declare namespace fm.icelink {
+    interface IInternalMediaTrack extends fm.icelink.IMediaTrack, fm.icelink.IInternal<fm.icelink.IExternalMediaTrack> {
+    }
+}
+declare namespace fm.icelink {
+    interface IInternalRemoteMedia extends fm.icelink.IRemoteMedia<fm.icelink.IInternalAudioTrack, fm.icelink.IInternalVideoTrack>, fm.icelink.IViewSinkableMedia<HTMLElement, fm.icelink.IInternalDomVideoSink>, fm.icelink.IInternal<fm.icelink.IExternalRemoteMedia>, fm.icelink.IInternalMedia {
+    }
+}
+declare namespace fm.icelink {
+    interface IInternalStream extends fm.icelink.IStream, fm.icelink.IInternal<fm.icelink.IExternalStream> {
+    }
+}
+declare namespace fm.icelink {
+    interface IInternalVideoStream extends fm.icelink.IVideoStream, fm.icelink.IInternal<fm.icelink.IExternalVideoStream> {
+    }
+}
+declare namespace fm.icelink {
+    interface IInternalVideoTrack extends fm.icelink.IVideoTrack, fm.icelink.IInternal<fm.icelink.IExternalVideoTrack> {
+    }
+}
+declare namespace fm.icelink {
+    interface IPluginDomVideoView extends HTMLObjectElement {
+        GetIsLoaded(): boolean;
+        GetHandle(): number;
+        GetWidth(): number;
+        GetHeight(): number;
+        SetOnVideoResize(callback: Object): void;
+        GetVideoWidth(): number;
+        GetVideoHeight(): number;
+        GetViewMirror(): boolean;
+        SetViewMirror(viewMirrow: boolean): void;
+        GetViewScale(): number;
+        SetViewScale(viewScale: number): void;
+    }
+}
+declare namespace fm.icelink {
+    abstract class Media extends fm.icelink.Dynamic implements fm.icelink.IMedia<fm.icelink.AudioTrack, fm.icelink.VideoTrack>, fm.icelink.IExternalMedia {
+        getTypeString(): string;
+        addOnAudioDestroyed(value: fm.icelink.IAction0): void;
+        addOnVideoDestroyed(value: fm.icelink.IAction0): void;
+        removeOnAudioDestroyed(value: fm.icelink.IAction0): void;
+        removeOnVideoDestroyed(value: fm.icelink.IAction0): void;
+        addOnAudioLevel(value: fm.icelink.IAction1<number>): void;
+        addOnVideoSize(value: fm.icelink.IAction1<fm.icelink.Size>): void;
+        getAudioGain(): number;
+        getAudioMuted(): boolean;
+        getAudioTrack(): fm.icelink.AudioTrack;
+        getAudioTracks(): fm.icelink.AudioTrack[];
+        getAudioVolume(): number;
+        getId(): string;
+        getVideoMuted(): boolean;
+        getVideoSize(): fm.icelink.Size;
+        getVideoTrack(): fm.icelink.VideoTrack;
+        getVideoTracks(): fm.icelink.VideoTrack[];
+        grabVideoFrame(): fm.icelink.Future<fm.icelink.VideoBuffer>;
+        removeOnAudioLevel(value: fm.icelink.IAction1<number>): void;
+        removeOnVideoSize(value: fm.icelink.IAction1<fm.icelink.Size>): void;
+        setAudioGain(value: number): void;
+        setAudioMuted(value: boolean): void;
+        setAudioVolume(value: number): void;
+        setId(value: string): void;
+        setVideoMuted(value: boolean): void;
+        destroy(): void;
+        getAudioSink(): fm.icelink.DomAudioSink;
+        getVideoSink(): fm.icelink.DomVideoSink;
+        getView(): HTMLElement;
+        getViewSink(): fm.icelink.DomVideoSink;
+        private externalsToInternals;
+        private externalToInternal;
+        private internalsToExternals;
+        private internalToExternal;
+    }
+}
+declare namespace fm.icelink {
+    class LocalMedia extends fm.icelink.Media implements fm.icelink.ILocalMedia<fm.icelink.LocalMedia, fm.icelink.AudioTrack, fm.icelink.VideoTrack>, fm.icelink.IExternalLocalMedia {
+        getTypeString(): string;
+        private _internal;
+        addOnAudioStarted(value: fm.icelink.IAction0): void;
+        addOnAudioStopped(value: fm.icelink.IAction0): void;
+        addOnVideoStarted(value: fm.icelink.IAction0): void;
+        addOnVideoStopped(value: fm.icelink.IAction0): void;
+        removeOnAudioStarted(value: fm.icelink.IAction0): void;
+        removeOnAudioStopped(value: fm.icelink.IAction0): void;
+        removeOnVideoStarted(value: fm.icelink.IAction0): void;
+        removeOnVideoStopped(value: fm.icelink.IAction0): void;
+        getAudioEncoding(): fm.icelink.AudioEncodingConfig;
+        getAudioEncodings(): fm.icelink.AudioEncodingConfig[];
+        setAudioEncodings(value: fm.icelink.AudioEncodingConfig[]): void;
+        getVideoEncoding(): fm.icelink.VideoEncodingConfig;
+        getVideoEncodings(): fm.icelink.VideoEncodingConfig[];
+        setVideoEncodings(value: fm.icelink.VideoEncodingConfig[]): void;
+        /**
+         * Deprecated: Use fm.icelink.Plugin.getChromeExtensionId()
+         */
+        static getChromeExtensionId(): string;
+        /**
+         * Deprecated: Use fm.icelink.Plugin.setChromeExtensionId()
+         */
+        static setChromeExtensionId(chromeExtensionId: string): void;
+        /**
+         * Deprecated: Use fm.icelink.Plugin.getChromeExtensionUrl()
+         */
+        static getChromeExtensionUrl(): string;
+        /**
+         * Deprecated: Use fm.icelink.Plugin.getChromeExtensionInstalled()
+         */
+        static getChromeExtensionInstalled(): boolean;
+        /**
+         * Deprecated: Use fm.icelink.Plugin.getChromeExtensionRequiresUserGesture()
+         */
+        static getChromeExtensionRequiresUserGesture(): boolean;
+        /**
+         * Deprecated: Use fm.icelink.Plugin.setChromeExtensionRequiresUserGesture()
+         */
+        static setChromeExtensionRequiresUserGesture(chromeExtensionRequiresUserGesture: boolean): void;
+        constructor(audio: any, video: any, screen?: boolean);
+        changeAudioSourceInput(audioSourceInput: fm.icelink.SourceInput): fm.icelink.Future<Object>;
+        changeVideoSourceInput(videoSourceInput: fm.icelink.SourceInput): fm.icelink.Future<Object>;
+        getAudioSourceInput(): fm.icelink.SourceInput;
+        getAudioSourceInputs(): fm.icelink.Future<fm.icelink.SourceInput[]>;
+        getVideoSourceInput(): fm.icelink.SourceInput;
+        getVideoSourceInputs(): fm.icelink.Future<fm.icelink.SourceInput[]>;
+        setAudioSourceInput(value: fm.icelink.SourceInput): void;
+        setVideoSourceInput(value: fm.icelink.SourceInput): void;
+        start(): fm.icelink.Future<fm.icelink.LocalMedia>;
+        stop(): fm.icelink.Future<fm.icelink.LocalMedia>;
+        changeAudioInput(audioInput: fm.icelink.SourceInput): fm.icelink.Future<Object>;
+        changeVideoInput(videoInput: fm.icelink.SourceInput): fm.icelink.Future<Object>;
+        getAudioInput(): fm.icelink.SourceInput;
+        getAudioInputs(): fm.icelink.Future<fm.icelink.SourceInput[]>;
+        getVideoInput(): fm.icelink.SourceInput;
+        getVideoInputs(): fm.icelink.Future<fm.icelink.SourceInput[]>;
+        setAudioInput(audioInput: fm.icelink.SourceInput): void;
+        setVideoInput(videoInput: fm.icelink.SourceInput): void;
+        getState(): fm.icelink.LocalMediaState;
+        getAudioSimulcastDisabled(): boolean;
+        setAudioSimulcastDisabled(value: boolean): void;
+        getAudioSimulcastEncodingCount(): number;
+        setAudioSimulcastEncodingCount(value: number): void;
+        getAudioSimulcastPreferredBitrate(): number;
+        setAudioSimulcastPreferredBitrate(value: number): void;
+        getVideoSimulcastDisabled(): boolean;
+        setVideoSimulcastDisabled(value: boolean): void;
+        getVideoSimulcastEncodingCount(): number;
+        setVideoSimulcastEncodingCount(value: number): void;
+        getVideoSimulcastPreferredBitrate(): number;
+        setVideoSimulcastPreferredBitrate(value: number): void;
+        getVideoSimulcastBitsPerPixel(): number;
+        setVideoSimulcastBitsPerPixel(value: number): void;
+        getVideoSimulcastDegradationPreference(): fm.icelink.VideoDegradationPreference;
+        setVideoSimulcastDegradationPreference(value: fm.icelink.VideoDegradationPreference): void;
+    }
+}
+declare namespace fm.icelink {
+    class LocalNetwork {
+        getTypeString(): string;
+        static getAddressType(ipAddress: string): fm.icelink.AddressType;
+    }
+}
+declare namespace fm.icelink {
+    /**
+    @hidden
+    */
+    class MediaDescriptionManager extends fm.icelink.MediaDescriptionManagerBase {
+        getTypeString(): string;
+        constructor();
+        processSdpMediaDescription(mediaRequirements: fm.icelink.MediaDescriptionRequirementsBase, sdpMessage: fm.icelink.sdp.Message, index: number, isLocalDescription: boolean, isRenegotiation: boolean, isOffer: boolean): fm.icelink.Error;
+    }
+}
+declare namespace fm.icelink {
+}
+declare namespace fm.icelink {
+    class PluginConstants {
+        static getLoaderClassId(): string;
+        static getDomVideoSinkClassId(): string;
+    }
+}
+declare namespace fm.icelink {
+    class Plugin {
+        static install(pluginConfig: fm.icelink.PluginConfig): fm.icelink.Future<Object>;
+        static getPluginConfig(): fm.icelink.PluginConfig;
+        static hasRtcPeerConnection(): boolean;
+        static hasRtcDataChannel(): boolean;
+        static hasGetUserMedia(): boolean;
+        static hasGetDisplayMedia(): boolean;
+        static hasRtcIceGatherer(): boolean;
+        static hasRtcIceTransport(): boolean;
+        static hasRtcDtlsTransport(): boolean;
+        static hasRtcRtpSender(): boolean;
+        static hasRtcRtpReceiver(): boolean;
+        static hasWebRtc(localMedia?: boolean, dataChannels?: boolean): boolean;
+        static hasOrtc(localMedia?: boolean, dataChannels?: boolean): boolean;
+        static hasNative(localMedia?: boolean, dataChannels?: boolean): boolean;
+        static hasActiveX(): boolean;
+        static isReady(localMedia?: boolean, dataChannels?: boolean): boolean;
+        static isSupported(localMedia?: boolean, dataChannels?: boolean): boolean;
+        static useActiveX(localMedia?: boolean, dataChannels?: boolean): boolean;
+        static useNative(localMedia?: boolean, dataChannels?: boolean): boolean;
+        private static checkForActiveX;
+        static getChromeExtensionId(): string;
+        static setChromeExtensionId(chromeExtensionId: string): void;
+        static getChromeExtensionUrl(): string;
+        static getChromeExtensionInstalled(): boolean;
+        static getChromeExtensionRequiresUserGesture(): boolean;
+        static setChromeExtensionRequiresUserGesture(chromeExtensionRequiresUserGesture: boolean): void;
+        static getChromeExtensionRequired(): boolean;
+    }
+}
+declare namespace fm.icelink {
+    abstract class PluginStream extends fm.icelink.Dynamic implements fm.icelink.IStream, fm.icelink.IInternalStream {
+        getTypeString(): string;
+        abstract getState(): fm.icelink.StreamState;
+        abstract addOnStateChange(value: fm.icelink.IAction0): void;
+        abstract removeOnStateChange(value: fm.icelink.IAction0): void;
+        abstract getLocalReceive(): boolean;
+        abstract setLocalReceive(localReceiveEnabled: boolean): void;
+        abstract getLocalSend(): boolean;
+        abstract setLocalSend(localSendEnabled: boolean): void;
+        abstract getRemoteSend(): boolean;
+        abstract getRemoteReceive(): boolean;
+        abstract getRemoteDirection(): fm.icelink.StreamDirection;
+        abstract getHandle(): number;
+        abstract addOnDirectionChange(value: fm.icelink.IAction0): void;
+        abstract removeOnDirectionChange(value: fm.icelink.IAction0): void;
+        abstract changeDirection(newDirection: fm.icelink.StreamDirection): fm.icelink.Error;
+        abstract getDirection(): fm.icelink.StreamDirection;
+        abstract getId(): string;
+        abstract getExternalId(): string;
+        abstract setExternalId(value: string): void;
+        abstract getLabel(): string;
+        abstract getLocalDirection(): fm.icelink.StreamDirection;
+        abstract getMediaDescriptionId(): string;
+        abstract getTag(): string;
+        abstract getType(): fm.icelink.StreamType;
+        abstract setLocalDirection(value: fm.icelink.StreamDirection): void;
+        abstract setTag(value: string): void;
+        abstract getTransportInfo(): fm.icelink.TransportInfo;
+    }
+}
+declare namespace fm.icelink {
+    abstract class PluginMediaStream<TTrack extends fm.icelink.PluginMediaTrack> extends fm.icelink.PluginStream implements fm.icelink.IMediaStream, fm.icelink.IInternalMediaStream {
+        getTypeString(): string;
+        getLocalTrack(): TTrack;
+        getRemoteTrack(): TTrack;
+        abstract getLocalBandwidth(): number;
+        abstract setLocalBandwidth(value: number): void;
+        abstract getInputMuted(): boolean;
+        abstract getOutputMuted(): boolean;
+        abstract getRemoteBandwidth(): number;
+        abstract setInputMuted(muted: boolean): void;
+        abstract setOutputMuted(muted: boolean): void;
+        abstract getPreferredCodecs(): string[];
+        abstract setPreferredCodecs(names: string[]): void;
+        abstract getCodecDisabled(name: string): boolean;
+        abstract setCodecDisabled(name: string, disabled: boolean): void;
+        abstract getRemoteEncoding(): fm.icelink.EncodingInfo;
+        abstract setRemoteEncoding(value: fm.icelink.EncodingInfo): void;
+        abstract getSimulcastMode(): fm.icelink.SimulcastMode;
+        abstract setSimulcastMode(value: fm.icelink.SimulcastMode): void;
+        abstract getLocalCanonicalName(): string;
+        abstract getRemoteCanonicalName(): string;
+        abstract getInfo(): fm.icelink.MediaStreamInfo;
+        abstract getControlTransportInfo(): fm.icelink.TransportInfo;
+        abstract addOnLocalEncodingDisabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
+        abstract addOnLocalEncodingEnabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
+        abstract removeOnLocalEncodingDisabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
+        abstract removeOnLocalEncodingEnabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
+        abstract addOnDiscardBitrateRequest(value: fm.icelink.IAction1<fm.icelink.BitrateRequest>): void;
+        abstract removeOnDiscardBitrateRequest(value: fm.icelink.IAction1<fm.icelink.BitrateRequest>): void;
+        abstract raiseBitrateRequest(bitrateRequest: fm.icelink.BitrateRequest): boolean;
+        abstract addOnDiscardBitrateNotification(value: fm.icelink.IAction1<fm.icelink.BitrateNotification>): void;
+        abstract removeOnDiscardBitrateNotification(value: fm.icelink.IAction1<fm.icelink.BitrateNotification>): void;
+        abstract raiseBitrateNotification(bitrateNotification: fm.icelink.BitrateNotification): boolean;
+        abstract getMaxSendBitrate(): number;
+        abstract setMaxSendBitrate(value: number): void;
+        abstract getMaxReceiveBitrate(): number;
+        abstract setMaxReceiveBitrate(value: number): void;
+        constructor(localTrack: TTrack, remoteTrack: TTrack);
+    }
+}
+declare namespace fm.icelink {
+    class PluginAudioStream extends fm.icelink.PluginMediaStream<fm.icelink.PluginAudioTrack> implements fm.icelink.IAudioStream, fm.icelink.IInternalAudioStream {
+        getTypeString(): string;
+        private _state;
+        constructor(external: fm.icelink.IExternalAudioStream, localTrack: fm.icelink.PluginAudioTrack, remoteTrack: fm.icelink.PluginAudioTrack);
+        getState(): fm.icelink.StreamState;
+        addOnStateChange(value: fm.icelink.IAction0): void;
+        removeOnStateChange(value: fm.icelink.IAction0): void;
+        getInfo(): fm.icelink.MediaStreamInfo;
+        getLocalReceive(): boolean;
+        getLocalSend(): boolean;
+        getRemoteReceive(): boolean;
+        getRemoteSend(): boolean;
+        setLocalReceive(value: boolean): void;
+        setLocalSend(value: boolean): void;
+        getRemoteDirection(): fm.icelink.StreamDirection;
+        getHandle(): number;
+        changeDirection(newDirection: fm.icelink.StreamDirection): fm.icelink.Error;
+        getDirection(): fm.icelink.StreamDirection;
+        getId(): string;
+        getExternalId(): string;
+        setExternalId(value: string): void;
+        getLabel(): string;
+        getLocalBandwidth(): number;
+        getLocalDirection(): fm.icelink.StreamDirection;
+        getInputMuted(): boolean;
+        getLocalCanonicalName(): string;
+        getOutputMuted(): boolean;
+        getMediaDescriptionId(): string;
+        getRemoteCanonicalName(): string;
+        getRemoteBandwidth(): number;
+        getTag(): string;
+        getType(): fm.icelink.StreamType;
+        setLocalDirection(value: fm.icelink.StreamDirection): void;
+        setLocalBandwidth(value: number): void;
+        setInputMuted(value: boolean): void;
+        setOutputMuted(value: boolean): void;
+        setTag(value: string): void;
+        addOnDirectionChange(value: fm.icelink.IAction0): void;
+        removeOnDirectionChange(value: fm.icelink.IAction0): void;
+        addOnReceiveDtmfTone(value: fm.icelink.IAction1<fm.icelink.dtmf.Tone>): void;
+        addOnReceiveDtmfToneChange(value: fm.icelink.IAction1<fm.icelink.dtmf.Tone>): void;
+        addOnSendDtmfTone(value: fm.icelink.IAction1<fm.icelink.dtmf.Tone>): void;
+        addOnSendDtmfToneChange(value: fm.icelink.IAction1<fm.icelink.dtmf.Tone>): void;
+        insertDtmfTone(dtmfTone: fm.icelink.dtmf.Tone): boolean;
+        insertDtmfTones(dtmfTones: fm.icelink.dtmf.Tone[]): boolean;
+        removeOnReceiveDtmfTone(value: fm.icelink.IAction1<fm.icelink.dtmf.Tone>): void;
+        removeOnReceiveDtmfToneChange(value: fm.icelink.IAction1<fm.icelink.dtmf.Tone>): void;
+        removeOnSendDtmfTone(value: fm.icelink.IAction1<fm.icelink.dtmf.Tone>): void;
+        removeOnSendDtmfToneChange(value: fm.icelink.IAction1<fm.icelink.dtmf.Tone>): void;
+        getPreferredCodecs(): string[];
+        setPreferredCodecs(names: string[]): void;
+        getCodecDisabled(name: string): boolean;
+        setCodecDisabled(name: string, disabled: boolean): void;
+        getOpusDisabled(): boolean;
+        getG722Disabled(): boolean;
+        getPcmuDisabled(): boolean;
+        getPcmaDisabled(): boolean;
+        setOpusDisabled(value: boolean): void;
+        setG722Disabled(value: boolean): void;
+        setPcmuDisabled(value: boolean): void;
+        setPcmaDisabled(value: boolean): void;
+        getRemoteEncoding(): fm.icelink.EncodingInfo;
+        setRemoteEncoding(value: fm.icelink.EncodingInfo): void;
+        getSimulcastMode(): fm.icelink.SimulcastMode;
+        setSimulcastMode(value: fm.icelink.SimulcastMode): void;
+        getTransportInfo(): fm.icelink.TransportInfo;
+        getControlTransportInfo(): fm.icelink.TransportInfo;
+        addOnLocalEncodingDisabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
+        addOnLocalEncodingEnabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
+        removeOnLocalEncodingDisabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
+        removeOnLocalEncodingEnabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
+        addOnDiscardBitrateRequest(value: fm.icelink.IAction1<fm.icelink.BitrateRequest>): void;
+        removeOnDiscardBitrateRequest(value: fm.icelink.IAction1<fm.icelink.BitrateRequest>): void;
+        raiseBitrateRequest(bitrateRequest: fm.icelink.BitrateRequest): boolean;
+        addOnDiscardBitrateNotification(value: fm.icelink.IAction1<fm.icelink.BitrateNotification>): void;
+        removeOnDiscardBitrateNotification(value: fm.icelink.IAction1<fm.icelink.BitrateNotification>): void;
+        raiseBitrateNotification(bitrateNotification: fm.icelink.BitrateNotification): boolean;
+        getMaxSendBitrate(): number;
+        setMaxSendBitrate(value: number): void;
+        getMaxReceiveBitrate(): number;
+        setMaxReceiveBitrate(value: number): void;
+    }
+}
+declare namespace fm.icelink {
+    abstract class PluginMediaTrack extends fm.icelink.Dynamic implements fm.icelink.IMediaTrack, fm.icelink.IInternalMediaTrack {
+        getTypeString(): string;
+        getMedia(): fm.icelink.PluginMedia;
+        constructor(media: fm.icelink.PluginMedia);
+        abstract changeSinkOutput(sinkOutput: fm.icelink.SinkOutput): fm.icelink.Future<Object>;
+        abstract changeSourceInput(sourceInput: fm.icelink.SourceInput): fm.icelink.Future<Object>;
+        destroy(): boolean;
+        abstract addOnStarted(value: fm.icelink.IAction0): void;
+        abstract addOnStopped(value: fm.icelink.IAction0): void;
+        abstract addOnDestroyed(value: fm.icelink.IAction0): void;
+        abstract removeOnStarted(value: fm.icelink.IAction0): void;
+        abstract removeOnStopped(value: fm.icelink.IAction0): void;
+        abstract removeOnDestroyed(value: fm.icelink.IAction0): void;
+        abstract getMuted(): boolean;
+        abstract getSinkOutput(): fm.icelink.SinkOutput;
+        abstract getSinkOutputs(): fm.icelink.Future<fm.icelink.SinkOutput[]>;
+        abstract getSourceInput(): fm.icelink.SourceInput;
+        abstract getSourceInputs(): fm.icelink.Future<fm.icelink.SourceInput[]>;
+        abstract setMuted(value: boolean): void;
+        abstract setSinkOutput(value: fm.icelink.SinkOutput): void;
+        abstract setSourceInput(value: fm.icelink.SourceInput): void;
+    }
+}
+declare namespace fm.icelink {
+    class PluginAudioTrack extends fm.icelink.PluginMediaTrack implements fm.icelink.IAudioTrack, fm.icelink.IInternalAudioTrack {
+        getTypeString(): string;
+        constructor(external: fm.icelink.IExternalAudioTrack, media: fm.icelink.PluginMedia);
+        private isLocal;
+        addOnStarted(value: fm.icelink.IAction0): void;
+        addOnStopped(value: fm.icelink.IAction0): void;
+        addOnDestroyed(value: fm.icelink.IAction0): void;
+        removeOnStarted(value: fm.icelink.IAction0): void;
+        removeOnStopped(value: fm.icelink.IAction0): void;
+        removeOnDestroyed(value: fm.icelink.IAction0): void;
+        changeSinkOutput(sinkOutput: fm.icelink.SinkOutput): fm.icelink.Future<Object>;
+        getSinkOutput(): fm.icelink.SinkOutput;
+        getSinkOutputs(): fm.icelink.Future<fm.icelink.SinkOutput[]>;
+        setSinkOutput(value: fm.icelink.SinkOutput): void;
+        changeSourceInput(sourceInput: fm.icelink.SourceInput): fm.icelink.Future<Object>;
+        getSourceInput(): fm.icelink.SourceInput;
+        getSourceInputs(): fm.icelink.Future<fm.icelink.SourceInput[]>;
+        setSourceInput(value: fm.icelink.SourceInput): void;
+        addOnLevel(value: fm.icelink.IAction1<number>): void;
+        getGain(): number;
+        getMuted(): boolean;
+        getVolume(): number;
+        removeOnLevel(value: fm.icelink.IAction1<number>): void;
+        setGain(value: number): void;
+        setMuted(value: boolean): void;
+        setVolume(value: number): void;
+    }
+}
+declare namespace fm.icelink {
+    class PluginConfig {
+        private _activeXPath;
+        private _activeXTimeout;
+        private _preferActiveX;
+        getActiveXPath(): string;
+        setActiveXPath(activeXPath: string): void;
+        getActiveXTimeout(): number;
+        setActiveXTimeout(activeXTimeout: number): void;
+        getPreferActiveX(): boolean;
+        setPreferActiveX(preferActiveX: boolean): void;
+    }
+}
+declare namespace fm.icelink {
+    class PluginConnection extends fm.icelink.Dynamic implements fm.icelink.IConnection<fm.icelink.PluginConnection, fm.icelink.PluginStream, fm.icelink.PluginAudioStream, fm.icelink.PluginVideoStream, fm.icelink.PluginDataStream>, fm.icelink.IInternalConnection {
+        getTypeString(): string;
+        private _gatheringState;
+        private _iceConnectionState;
+        private _signallingState;
+        private _state;
+        constructor(external: fm.icelink.IExternalConnection, streams: fm.icelink.PluginStream[]);
+        addIceServer(iceServer: fm.icelink.IceServer): void;
+        addIceServers(iceServers: fm.icelink.IceServer[]): void;
+        addOnLocalCandidate(value: fm.icelink.IAction2<fm.icelink.PluginConnection, fm.icelink.Candidate>): void;
+        addOnExternalIdChange(value: fm.icelink.IAction2<string, string>): void;
+        addOnIceConnectionStateChange(value: fm.icelink.IAction1<fm.icelink.PluginConnection>): void;
+        addOnGatheringStateChange(value: fm.icelink.IAction1<fm.icelink.PluginConnection>): void;
+        addOnLocalDescription(value: fm.icelink.IAction2<fm.icelink.PluginConnection, fm.icelink.SessionDescription>): void;
+        addOnRemoteCandidate(value: fm.icelink.IAction2<fm.icelink.PluginConnection, fm.icelink.Candidate>): void;
+        addOnRemoteDescription(value: fm.icelink.IAction2<fm.icelink.PluginConnection, fm.icelink.SessionDescription>): void;
+        addOnSignallingStateChange(value: fm.icelink.IAction1<fm.icelink.PluginConnection>): void;
+        addOnStateChange(value: fm.icelink.IAction1<fm.icelink.PluginConnection>): void;
+        addRemoteCandidate(remoteCandidate: fm.icelink.Candidate): fm.icelink.Future<fm.icelink.Candidate>;
+        close(): boolean;
+        createAnswer(): fm.icelink.Future<fm.icelink.SessionDescription>;
+        createOffer(): fm.icelink.Future<fm.icelink.SessionDescription>;
+        getHasAudio(): boolean;
+        getHasVideo(): boolean;
+        getHasData(): boolean;
+        getAudioStream(): fm.icelink.PluginAudioStream;
+        getAudioStreams(): fm.icelink.PluginAudioStream[];
+        getVideoStream(): fm.icelink.PluginVideoStream;
+        getVideoStreams(): fm.icelink.PluginVideoStream[];
+        getDataStream(): fm.icelink.PluginDataStream;
+        getDataStreams(): fm.icelink.PluginDataStream[];
+        getDeadStreamTimeout(): number;
+        getExternalId(): string;
+        getError(): fm.icelink.Error;
+        getIceGatherPolicy(): fm.icelink.IceGatherPolicy;
+        getBundlePolicy(): fm.icelink.BundlePolicy;
+        getIceServer(): fm.icelink.IceServer;
+        getIceServers(): fm.icelink.IceServer[];
+        getId(): string;
+        getCanonicalName(): string;
+        getLocalDescription(): fm.icelink.SessionDescription;
+        getRemoteDescription(): fm.icelink.SessionDescription;
+        getSignallingState(): fm.icelink.SignallingState;
+        getState(): fm.icelink.ConnectionState;
+        getStats(): fm.icelink.Future<fm.icelink.ConnectionStats>;
+        getStreams(): fm.icelink.PluginStream[];
+        getTieBreaker(): string;
+        getTimeout(): number;
+        getLegacyTimeout(): boolean;
+        getTrickleIcePolicy(): fm.icelink.TrickleIcePolicy;
+        getIceConnectionState(): fm.icelink.IceConnectionState;
+        getGatheringState(): fm.icelink.IceGatheringState;
+        removeIceServer(iceServer: fm.icelink.IceServer): void;
+        removeIceServers(iceServers: fm.icelink.IceServer[]): void;
+        removeOnLocalCandidate(value: fm.icelink.IAction2<fm.icelink.PluginConnection, fm.icelink.Candidate>): void;
+        removeOnIceConnectionStateChange(value: fm.icelink.IAction1<fm.icelink.PluginConnection>): void;
+        removeOnExternalIdChange(value: fm.icelink.IAction2<string, string>): void;
+        removeOnGatheringStateChange(value: fm.icelink.IAction1<fm.icelink.PluginConnection>): void;
+        removeOnLocalDescription(value: fm.icelink.IAction2<fm.icelink.PluginConnection, fm.icelink.SessionDescription>): void;
+        removeOnRemoteCandidate(value: fm.icelink.IAction2<fm.icelink.PluginConnection, fm.icelink.Candidate>): void;
+        removeOnRemoteDescription(value: fm.icelink.IAction2<fm.icelink.PluginConnection, fm.icelink.SessionDescription>): void;
+        removeOnSignallingStateChange(value: fm.icelink.IAction1<fm.icelink.PluginConnection>): void;
+        removeOnStateChange(value: fm.icelink.IAction1<fm.icelink.PluginConnection>): void;
+        setDeadStreamTimeout(value: number): void;
+        setExternalId(value: string): void;
+        setError(value: fm.icelink.Error): void;
+        setIceGatherPolicy(value: fm.icelink.IceGatherPolicy): void;
+        setBundlePolicy(value: fm.icelink.BundlePolicy): void;
+        setIceServer(value: fm.icelink.IceServer): void;
+        setIceServers(value: fm.icelink.IceServer[]): void;
+        setLegacyTimeout(value: boolean): void;
+        setTieBreaker(value: string): void;
+        setLocalDescription(localDescription: fm.icelink.SessionDescription): fm.icelink.Future<fm.icelink.SessionDescription>;
+        setRemoteDescription(remoteDescription: fm.icelink.SessionDescription): fm.icelink.Future<fm.icelink.SessionDescription>;
+        setTimeout(value: number): void;
+        setTrickleIcePolicy(value: fm.icelink.TrickleIcePolicy): void;
+    }
+}
+declare namespace fm.icelink {
+    class PluginDataChannel extends fm.icelink.Dynamic implements fm.icelink.IDataChannel<fm.icelink.PluginDataChannel>, fm.icelink.IInternalDataChannel {
+        getTypeString(): string;
+        getHandle(): number;
+        private _state;
+        constructor(external: fm.icelink.IExternalDataChannel, label: string, ordered?: boolean, subprotocol?: string);
+        private _getRemoteConnectionInfo;
+        setGetRemoteConnectionInfo(value: fm.icelink.IFunction1<string, any>): void;
+        getInfo(): fm.icelink.DataChannelInfo;
+        addOnStateChange(value: fm.icelink.IAction1<fm.icelink.PluginDataChannel>): void;
+        getLabel(): string;
+        getOnReceive(): fm.icelink.IAction1<fm.icelink.DataChannelReceiveArgs>;
+        getOrdered(): boolean;
+        getId(): string;
+        getState(): fm.icelink.DataChannelState;
+        getSubprotocol(): string;
+        removeOnStateChange(value: fm.icelink.IAction1<fm.icelink.PluginDataChannel>): void;
+        sendDataBytes(dataBytes: fm.icelink.DataBuffer): fm.icelink.Future<Object>;
+        sendDataString(dataString: string): fm.icelink.Future<Object>;
+        setOnReceive(value: fm.icelink.IAction1<fm.icelink.DataChannelReceiveArgs>): void;
+    }
+}
+declare namespace fm.icelink {
+    class PluginDataStream extends fm.icelink.PluginStream implements fm.icelink.IDataStream<fm.icelink.PluginDataChannel>, fm.icelink.IInternalDataStream {
+        getTypeString(): string;
+        private _state;
+        constructor(external: fm.icelink.IExternalDataStream, channels: fm.icelink.PluginDataChannel[]);
+        getState(): fm.icelink.StreamState;
+        addOnStateChange(value: fm.icelink.IAction0): void;
+        removeOnStateChange(value: fm.icelink.IAction0): void;
+        getInfo(): fm.icelink.DataStreamInfo;
+        getLocalReceive(): boolean;
+        getLocalSend(): boolean;
+        getRemoteReceive(): boolean;
+        getRemoteSend(): boolean;
+        setLocalReceive(value: boolean): void;
+        setLocalSend(value: boolean): void;
+        getRemoteDirection(): fm.icelink.StreamDirection;
+        getHandle(): number;
+        changeDirection(newDirection: fm.icelink.StreamDirection): fm.icelink.Error;
+        getDirection(): fm.icelink.StreamDirection;
+        getId(): string;
+        getExternalId(): string;
+        setExternalId(value: string): void;
+        getLabel(): string;
+        getLocalDirection(): fm.icelink.StreamDirection;
+        getMediaDescriptionId(): string;
+        getTag(): string;
+        getType(): fm.icelink.StreamType;
+        setLocalDirection(value: fm.icelink.StreamDirection): void;
+        setTag(value: string): void;
+        addOnDirectionChange(callback: Object): void;
+        removeOnDirectionChange(callback: Object): void;
+        getChannels(): fm.icelink.PluginDataChannel[];
+        getTransportInfo(): fm.icelink.TransportInfo;
+    }
+}
+declare namespace fm.icelink {
+    class PluginDomAudioSink extends fm.icelink.Dynamic implements fm.icelink.IInternalDomAudioSink {
+        getTypeString(): string;
+        getTrack(): fm.icelink.PluginAudioTrack;
+        getLocal(): boolean;
+        getAudio(): HTMLAudioElement;
+        constructor(external: fm.icelink.DomAudioSink, track: fm.icelink.PluginAudioTrack);
+        setTrack(track: fm.icelink.PluginAudioTrack): boolean;
+    }
+}
+declare namespace fm.icelink {
+    class PluginDomVideoSink extends fm.icelink.Dynamic implements fm.icelink.IInternalDomVideoSink {
+        getTypeString(): string;
+        getTrack(): fm.icelink.PluginVideoTrack;
+        getLocal(): boolean;
+        getVideo(): HTMLVideoElement;
+        getView(): HTMLElement;
+        getViewScale(): fm.icelink.LayoutScale;
+        setViewScale(viewScale: fm.icelink.LayoutScale): void;
+        getVideoWidth(): number;
+        getVideoHeight(): number;
+        getViewMirror(): boolean;
+        setViewMirror(viewMirror: boolean): void;
+        constructor(external: fm.icelink.IExternalDomVideoSink, track: fm.icelink.PluginVideoTrack);
+        setTrack(track: fm.icelink.PluginVideoTrack): boolean;
+        private checkifLoaded;
+    }
+}
+declare namespace fm.icelink {
+    abstract class PluginMedia extends fm.icelink.Dynamic implements fm.icelink.IMedia<fm.icelink.PluginAudioTrack, fm.icelink.PluginVideoTrack>, fm.icelink.IInternalMedia {
+        getTypeString(): string;
+        getHandle(): number;
+        abstract addOnAudioDestroyed(value: fm.icelink.IAction0): void;
+        abstract addOnVideoDestroyed(value: fm.icelink.IAction0): void;
+        abstract removeOnAudioDestroyed(value: fm.icelink.IAction0): void;
+        abstract removeOnVideoDestroyed(value: fm.icelink.IAction0): void;
+        destroy(): void;
+        addOnAudioLevel(value: fm.icelink.IAction1<number>): void;
+        addOnVideoSize(value: fm.icelink.IAction1<fm.icelink.Size>): void;
+        getAudioGain(): number;
+        getAudioMuted(): boolean;
+        getAudioTrack(): fm.icelink.PluginAudioTrack;
+        getAudioTracks(): fm.icelink.PluginAudioTrack[];
+        getAudioVolume(): number;
+        getId(): string;
+        getVideoMuted(): boolean;
+        getVideoSize(): fm.icelink.Size;
+        getVideoTrack(): fm.icelink.PluginVideoTrack;
+        getVideoTracks(): fm.icelink.PluginVideoTrack[];
+        grabVideoFrame(): fm.icelink.Future<fm.icelink.VideoBuffer>;
+        removeOnAudioLevel(value: fm.icelink.IAction1<number>): void;
+        removeOnVideoSize(value: fm.icelink.IAction1<fm.icelink.Size>): void;
+        setAudioGain(value: number): void;
+        setAudioMuted(value: boolean): void;
+        setAudioVolume(value: number): void;
+        setId(value: string): void;
+        setVideoMuted(value: boolean): void;
+        getAudioSink(): fm.icelink.PluginDomAudioSink;
+        getVideoSink(): fm.icelink.PluginDomVideoSink;
+        getView(): HTMLElement;
+        getViewSink(): fm.icelink.PluginDomVideoSink;
+        getAudio(): any;
+        setAudio(audio: any): void;
+        getVideo(): any;
+        setVideo(video: any): void;
+        protected _videoSink: fm.icelink.PluginDomVideoSink;
+        constructor(external: fm.icelink.IExternalMedia);
+    }
+}
+declare namespace fm.icelink {
+    class PluginLocalMedia extends fm.icelink.PluginMedia implements fm.icelink.ILocalMedia<fm.icelink.PluginLocalMedia, fm.icelink.PluginAudioTrack, fm.icelink.PluginVideoTrack>, fm.icelink.IInternalLocalMedia {
+        getTypeString(): string;
+        getScreen(): boolean;
+        setScreen(screen: boolean): void;
+        getState(): fm.icelink.LocalMediaState;
+        constructor(external: fm.icelink.IExternalLocalMedia, audio: any, video: any, screen?: boolean);
+        start(): fm.icelink.Future<fm.icelink.PluginLocalMedia>;
+        stop(): fm.icelink.Future<fm.icelink.PluginLocalMedia>;
+        getHandle(): number;
+        addOnAudioStarted(value: fm.icelink.IAction0): void;
+        addOnVideoStarted(value: fm.icelink.IAction0): void;
+        addOnAudioStopped(value: fm.icelink.IAction0): void;
+        addOnVideoStopped(value: fm.icelink.IAction0): void;
+        addOnAudioDestroyed(value: fm.icelink.IAction0): void;
+        addOnVideoDestroyed(value: fm.icelink.IAction0): void;
+        removeOnAudioStarted(value: fm.icelink.IAction0): void;
+        removeOnVideoStarted(value: fm.icelink.IAction0): void;
+        removeOnAudioStopped(value: fm.icelink.IAction0): void;
+        removeOnVideoStopped(value: fm.icelink.IAction0): void;
+        removeOnAudioDestroyed(value: fm.icelink.IAction0): void;
+        removeOnVideoDestroyed(value: fm.icelink.IAction0): void;
+        getAudioEncoding(): fm.icelink.AudioEncodingConfig;
+        getAudioEncodings(): fm.icelink.AudioEncodingConfig[];
+        setAudioEncodings(value: fm.icelink.AudioEncodingConfig[]): void;
+        getVideoEncoding(): fm.icelink.VideoEncodingConfig;
+        getVideoEncodings(): fm.icelink.VideoEncodingConfig[];
+        setVideoEncodings(value: fm.icelink.VideoEncodingConfig[]): void;
+        changeAudioSourceInput(audioSourceInput: fm.icelink.SourceInput): fm.icelink.Future<Object>;
+        changeVideoSourceInput(videoSourceInput: fm.icelink.SourceInput): fm.icelink.Future<Object>;
+        getAudioSourceInput(): fm.icelink.SourceInput;
+        getAudioSourceInputs(): fm.icelink.Future<fm.icelink.SourceInput[]>;
+        getVideoSourceInput(): fm.icelink.SourceInput;
+        getVideoSourceInputs(): fm.icelink.Future<fm.icelink.SourceInput[]>;
+        setAudioSourceInput(value: fm.icelink.SourceInput): void;
+        setVideoSourceInput(value: fm.icelink.SourceInput): void;
+        destroy(): void;
+        getAudioGain(): number;
+        getAudioMuted(): boolean;
+        getId(): string;
+        getVideoMuted(): boolean;
+        setAudioGain(value: number): void;
+        setAudioMuted(value: boolean): void;
+        setVideoMuted(value: boolean): void;
+        getAudioSimulcastDisabled(): boolean;
+        setAudioSimulcastDisabled(value: boolean): void;
+        getAudioSimulcastEncodingCount(): number;
+        setAudioSimulcastEncodingCount(value: number): void;
+        getAudioSimulcastPreferredBitrate(): number;
+        setAudioSimulcastPreferredBitrate(value: number): void;
+        getVideoSimulcastDisabled(): boolean;
+        setVideoSimulcastDisabled(value: boolean): void;
+        getVideoSimulcastEncodingCount(): number;
+        setVideoSimulcastEncodingCount(value: number): void;
+        getVideoSimulcastPreferredBitrate(): number;
+        setVideoSimulcastPreferredBitrate(value: number): void;
+        getVideoSimulcastBitsPerPixel(): number;
+        setVideoSimulcastBitsPerPixel(value: number): void;
+        getVideoSimulcastDegradationPreference(): fm.icelink.VideoDegradationPreference;
+        setVideoSimulcastDegradationPreference(value: fm.icelink.VideoDegradationPreference): void;
+        private checkifLoaded;
+    }
+}
+declare namespace fm.icelink {
+    class PluginRemoteMedia extends fm.icelink.PluginMedia implements fm.icelink.IRemoteMedia<fm.icelink.PluginAudioTrack, fm.icelink.PluginVideoTrack>, fm.icelink.IInternalRemoteMedia {
+        getTypeString(): string;
+        constructor(external: fm.icelink.IExternalRemoteMedia, audio: boolean, video: boolean);
+        private checkifLoaded;
+        getHandle(): number;
+        addOnAudioDestroyed(value: fm.icelink.IAction0): void;
+        addOnVideoDestroyed(value: fm.icelink.IAction0): void;
+        removeOnAudioDestroyed(value: fm.icelink.IAction0): void;
+        removeOnVideoDestroyed(value: fm.icelink.IAction0): void;
+        changeAudioSinkOutput(audioSinkOutput: fm.icelink.SinkOutput): fm.icelink.Future<Object>;
+        changeVideoSinkOutput(videoSinkOutput: fm.icelink.SinkOutput): fm.icelink.Future<Object>;
+        getAudioSinkOutput(): fm.icelink.SinkOutput;
+        getAudioSinkOutputs(): fm.icelink.Future<fm.icelink.SinkOutput[]>;
+        getVideoSinkOutput(): fm.icelink.SinkOutput;
+        getVideoSinkOutputs(): fm.icelink.Future<fm.icelink.SinkOutput[]>;
+        setAudioSinkOutput(value: fm.icelink.SinkOutput): void;
+        setVideoSinkOutput(value: fm.icelink.SinkOutput): void;
+        destroy(): void;
+        getAudioGain(): number;
+        getAudioMuted(): boolean;
+        getId(): string;
+        getVideoMuted(): boolean;
+        setAudioGain(value: number): void;
+        setAudioMuted(value: boolean): void;
+        setVideoMuted(value: boolean): void;
+    }
+}
+declare namespace fm.icelink {
+    class PluginVideoStream extends fm.icelink.PluginMediaStream<fm.icelink.PluginVideoTrack> implements fm.icelink.IVideoStream, fm.icelink.IInternalVideoStream {
+        getTypeString(): string;
+        private _state;
+        constructor(external: fm.icelink.IExternalVideoStream, localTrack: fm.icelink.PluginVideoTrack, remoteTrack: fm.icelink.PluginVideoTrack);
+        getState(): fm.icelink.StreamState;
+        addOnStateChange(value: fm.icelink.IAction0): void;
+        removeOnStateChange(value: fm.icelink.IAction0): void;
+        getInfo(): fm.icelink.MediaStreamInfo;
+        getLocalReceive(): boolean;
+        getLocalSend(): boolean;
+        getRemoteReceive(): boolean;
+        getRemoteSend(): boolean;
+        setLocalReceive(value: boolean): void;
+        setLocalSend(value: boolean): void;
+        getRemoteDirection(): fm.icelink.StreamDirection;
+        getHandle(): number;
+        changeDirection(newDirection: fm.icelink.StreamDirection): fm.icelink.Error;
+        getDirection(): fm.icelink.StreamDirection;
+        getLocalCanonicalName(): string;
+        getRemoteCanonicalName(): string;
+        getId(): string;
+        getExternalId(): string;
+        setExternalId(value: string): void;
+        getLabel(): string;
+        getLocalBandwidth(): number;
+        getLocalDirection(): fm.icelink.StreamDirection;
+        getInputMuted(): boolean;
+        getMediaDescriptionId(): string;
+        getOutputMuted(): boolean;
+        getRemoteBandwidth(): number;
+        getTag(): string;
+        getType(): fm.icelink.StreamType;
+        setLocalDirection(value: fm.icelink.StreamDirection): void;
+        setLocalBandwidth(value: number): void;
+        setInputMuted(value: boolean): void;
+        setOutputMuted(value: boolean): void;
+        setTag(value: string): void;
+        addOnDirectionChange(callback: Object): void;
+        removeOnDirectionChange(callback: Object): void;
+        getPreferredCodecs(): string[];
+        setPreferredCodecs(names: string[]): void;
+        getCodecDisabled(name: string): boolean;
+        setCodecDisabled(name: string, disabled: boolean): void;
+        getVp8Disabled(): boolean;
+        getVp9Disabled(): boolean;
+        getH264Disabled(): boolean;
+        setVp8Disabled(value: boolean): void;
+        setVp9Disabled(value: boolean): void;
+        setH264Disabled(value: boolean): void;
+        getRemoteEncoding(): fm.icelink.EncodingInfo;
+        setRemoteEncoding(value: fm.icelink.EncodingInfo): void;
+        getSimulcastMode(): fm.icelink.SimulcastMode;
+        setSimulcastMode(value: fm.icelink.SimulcastMode): void;
+        getTransportInfo(): fm.icelink.TransportInfo;
+        getControlTransportInfo(): fm.icelink.TransportInfo;
+        addOnLocalEncodingDisabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
+        addOnLocalEncodingEnabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
+        removeOnLocalEncodingDisabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
+        removeOnLocalEncodingEnabled(value: fm.icelink.IAction1<fm.icelink.EncodingInfo>): void;
+        addOnDiscardKeyFrameRequest(value: fm.icelink.IAction1<number[]>): void;
+        removeOnDiscardKeyFrameRequest(value: fm.icelink.IAction1<number[]>): void;
+        raiseKeyFrameRequest(synchronizationSources: number[]): void;
+        addOnDiscardBitrateRequest(value: fm.icelink.IAction1<fm.icelink.BitrateRequest>): void;
+        removeOnDiscardBitrateRequest(value: fm.icelink.IAction1<fm.icelink.BitrateRequest>): void;
+        raiseBitrateRequest(bitrateRequest: fm.icelink.BitrateRequest): boolean;
+        addOnDiscardBitrateNotification(value: fm.icelink.IAction1<fm.icelink.BitrateNotification>): void;
+        removeOnDiscardBitrateNotification(value: fm.icelink.IAction1<fm.icelink.BitrateNotification>): void;
+        raiseBitrateNotification(bitrateNotification: fm.icelink.BitrateNotification): boolean;
+        getMaxSendBitrate(): number;
+        setMaxSendBitrate(value: number): void;
+        getMaxReceiveBitrate(): number;
+        setMaxReceiveBitrate(value: number): void;
+    }
+}
+declare namespace fm.icelink {
+    class PluginVideoTrack extends fm.icelink.PluginMediaTrack implements fm.icelink.IVideoTrack, fm.icelink.IInternalVideoTrack {
+        getTypeString(): string;
+        constructor(external: fm.icelink.IExternalVideoTrack, media: fm.icelink.PluginMedia);
+        private isLocal;
+        addOnStarted(value: fm.icelink.IAction0): void;
+        addOnStopped(value: fm.icelink.IAction0): void;
+        addOnDestroyed(value: fm.icelink.IAction0): void;
+        removeOnStarted(value: fm.icelink.IAction0): void;
+        removeOnStopped(value: fm.icelink.IAction0): void;
+        removeOnDestroyed(value: fm.icelink.IAction0): void;
+        changeSinkOutput(sinkOutput: fm.icelink.SinkOutput): fm.icelink.Future<Object>;
+        getSinkOutput(): fm.icelink.SinkOutput;
+        getSinkOutputs(): fm.icelink.Future<fm.icelink.SinkOutput[]>;
+        setSinkOutput(value: fm.icelink.SinkOutput): void;
+        changeSourceInput(sourceInput: fm.icelink.SourceInput): fm.icelink.Future<Object>;
+        getSourceInput(): fm.icelink.SourceInput;
+        getSourceInputs(): fm.icelink.Future<fm.icelink.SourceInput[]>;
+        setSourceInput(value: fm.icelink.SourceInput): void;
+        addOnSize(value: fm.icelink.IAction1<fm.icelink.Size>): void;
+        getMuted(): boolean;
+        getSize(): fm.icelink.Size;
+        grabFrame(): fm.icelink.Future<fm.icelink.VideoBuffer>;
+        setMuted(value: boolean): void;
+        removeOnSize(value: fm.icelink.IAction1<fm.icelink.Size>): void;
+    }
+}
+declare namespace fm.icelink {
+    class RemoteMedia extends fm.icelink.Media implements fm.icelink.IRemoteMedia<fm.icelink.AudioTrack, fm.icelink.VideoTrack>, fm.icelink.IExternalRemoteMedia {
+        getTypeString(): string;
+        constructor(audio?: boolean, video?: boolean);
+        changeAudioSinkOutput(audioSinkOutput: fm.icelink.SinkOutput): fm.icelink.Future<Object>;
+        changeVideoSinkOutput(videoSinkOutput: fm.icelink.SinkOutput): fm.icelink.Future<Object>;
+        getAudioSinkOutput(): fm.icelink.SinkOutput;
+        getAudioSinkOutputs(): fm.icelink.Future<fm.icelink.SinkOutput[]>;
+        getVideoSinkOutput(): fm.icelink.SinkOutput;
+        getVideoSinkOutputs(): fm.icelink.Future<fm.icelink.SinkOutput[]>;
+        setAudioSinkOutput(value: fm.icelink.SinkOutput): void;
+        setVideoSinkOutput(value: fm.icelink.SinkOutput): void;
+    }
+}
+declare namespace fm.icelink {
+    /**
+    @hidden
+    */
+    class SessionDescriptionManager extends fm.icelink.SessionDescriptionManagerBase<fm.icelink.WebRtcStream, fm.icelink.WebRtcAudioStream, fm.icelink.WebRtcVideoStream, fm.icelink.WebRtcDataStream, fm.icelink.WebRtcDataChannel> {
+        getTypeString(): string;
+        /** @hidden */
+        private _streams;
+        constructor();
+        getStreams(): fm.icelink.Hash<string, fm.icelink.WebRtcStream>;
+        getAudioStreams(): fm.icelink.WebRtcAudioStream[];
+        getVideoStreams(): fm.icelink.WebRtcVideoStream[];
+        getDataStreams(): fm.icelink.WebRtcDataStream[];
+        protected processSdpMediaDescriptionForStream(stream: fm.icelink.WebRtcStream, sdpMediaDescription: fm.icelink.sdp.MediaDescription, sdpMediaIndex: number, isLocalDescription: boolean, isRenegotiation: boolean): fm.icelink.Error;
+    }
+}
+declare namespace fm.icelink {
+    class VideoStream extends fm.icelink.MediaStream<fm.icelink.VideoTrack> implements fm.icelink.IVideoStream, fm.icelink.IExternalVideoStream {
+        getTypeString(): string;
+        getLocalMedia(): fm.icelink.LocalMedia;
+        getRemoteMedia(): fm.icelink.RemoteMedia;
+        constructor(localTrack: fm.icelink.VideoTrack);
+        constructor(localTrack: fm.icelink.VideoTrack, remoteTrack: fm.icelink.VideoTrack);
+        constructor(localMedia: fm.icelink.LocalMedia);
+        constructor(localMedia: fm.icelink.LocalMedia, remoteMedia: fm.icelink.RemoteMedia);
+        constructor(remoteMedia: fm.icelink.RemoteMedia);
+        getVp8Disabled(): boolean;
+        getVp9Disabled(): boolean;
+        getH264Disabled(): boolean;
+        setVp8Disabled(value: boolean): void;
+        setVp9Disabled(value: boolean): void;
+        setH264Disabled(value: boolean): void;
+        addOnDiscardKeyFrameRequest(value: fm.icelink.IAction1<number[]>): void;
+        removeOnDiscardKeyFrameRequest(value: fm.icelink.IAction1<number[]>): void;
+        raiseKeyFrameRequest(synchronizationSources: number[]): void;
+    }
+}
+declare namespace fm.icelink {
+    class VideoTrack extends fm.icelink.MediaTrack implements fm.icelink.IVideoTrack, fm.icelink.IExternalVideoTrack {
+        getTypeString(): string;
+        constructor(media: fm.icelink.Media, internalMedia?: fm.icelink.IInternalMedia);
+        addOnSize(value: fm.icelink.IAction1<fm.icelink.Size>): void;
+        getSize(): fm.icelink.Size;
+        grabFrame(): fm.icelink.Future<fm.icelink.VideoBuffer>;
+        removeOnSize(value: fm.icelink.IAction1<fm.icelink.Size>): void;
+    }
+}
+declare namespace fm.icelink {
+    abstract class WebRtcMediaStream<TTrack extends fm.icelink.WebRtcMediaTrack> extends fm.icelink.WebRtcMediaStreamBase implements fm.icelink.IMediaStream, fm.icelink.IInternalMediaStream {
+        getTypeString(): string;
+        /** @hidden */
+        abstract _getExternal(): fm.icelink.IExternalMediaStream;
+        /** @hidden */
+        private _onDiscardBitrateRequestValues;
+        /** @hidden */
+        private _onDiscardBitrateNotificationValues;
+        /** @hidden */
+        private _deactivatedByServer;
+        /** @hidden */
+        private _localTrack;
+        getLocalTrack(): TTrack;
+        setLocalTrack(localTrack: TTrack): void;
+        /** @hidden */
+        private _remoteTrack;
+        getRemoteTrack(): TTrack;
+        setRemoteTrack(remoteTrack: TTrack): void;
+        setInputMuted(muted: boolean): void;
+        getInputMuted(): boolean;
+        setOutputMuted(muted: boolean): void;
+        getOutputMuted(): boolean;
+        constructor(external: fm.icelink.IExternalMediaStream, localTrack: TTrack, remoteTrack: TTrack, type: fm.icelink.StreamType);
+        /** @hidden */
+        private _maxVideoSize;
+        /** @hidden */
+        setMaxWidthAndHeight(width: number, height: number): void;
+        populateInfo(info: fm.icelink.MediaStreamInfo): void;
+        /** @hidden */
+        private toFormatInfos;
+        /** @hidden */
+        private _sender;
+        /** @hidden */
+        getSender(): RTCRtpSender;
+        /** @hidden */
+        setSender(value: RTCRtpSender, applySendEncodings: boolean): void;
+        /** @hidden */
+        private _receiver;
+        /** @hidden */
+        getReceiver(): RTCRtpReceiver;
+        /** @hidden */
+        setReceiver(value: RTCRtpReceiver): void;
+        /** @hidden */
+        private _singleSendBitrate;
+        /** @hidden */
+        getSingleSendBitrate(): number;
+        /** @hidden */
+        private _sendEncodings;
+        /** @hidden */
+        getSendEncodings(): fm.icelink.EncodingConfig[];
+        /** @hidden */
+        setSendEncodings(sendEncodings: fm.icelink.EncodingConfig[]): void;
+        /** @hidden */
+        private applySendEncodings;
+        /** @hidden */
+        private _receiveEncodings;
+        /** @hidden */
+        getReceiveEncodings(): fm.icelink.EncodingConfig[];
+        /** @hidden */
+        setReceiveEncodings(receiveEncodings: fm.icelink.EncodingConfig[]): void;
+        /** @hidden */
+        getNativeSendEncodings(): RTCRtpEncodingParameters[];
+        /** @hidden */
+        getSendEncodingInfos(): fm.icelink.EncodingInfo[];
+        /** @hidden */
+        getReceiveEncodingInfos(): fm.icelink.EncodingInfo[];
+        /** @hidden */
+        private updateNativeEncoding;
+        /** @hidden */
+        private updateEncodingInfo;
+        /** @hidden */
+        private getNativeTrack;
+        /** @hidden */
+        getSourceEncoding(): fm.icelink.EncodingInfo;
+        /** @hidden */
+        replaceLocalTrack(localTrack: TTrack): fm.icelink.Future<object>;
+        /** @hidden */
+        replaceRemoteTrack(remoteTrack: TTrack): fm.icelink.Future<object>;
+        processCachedChanges(): void;
+        resetRemoteDirection(): void;
+        processSdpMediaDescription(sdpMessage: fm.icelink.sdp.Message, sdpMediaDescription: fm.icelink.sdp.MediaDescription, index: number, isLocalDescription: boolean, isOffer: boolean, isRenegotiation: boolean): fm.icelink.Error;
+        getDirectionCapabilities(): fm.icelink.StreamDirection;
+        private _controlTransportInfo;
+        setControlTransportInfo(info: fm.icelink.TransportInfo): void;
+        getControlTransportInfo(): fm.icelink.TransportInfo;
+        private _simulcastMode;
+        getSimulcastMode(): fm.icelink.SimulcastMode;
+        setSimulcastMode(value: fm.icelink.SimulcastMode): void;
+        addOnDiscardBitrateRequest(value: fm.icelink.IAction1<fm.icelink.BitrateRequest>): void;
+        removeOnDiscardBitrateRequest(value: fm.icelink.IAction1<fm.icelink.BitrateRequest>): void;
+        /** @hidden */
+        private raiseOnDiscardBitrateRequest;
+        /** @hidden */
+        protected processBitrateRequest(bitrateRequest: fm.icelink.BitrateRequest): void;
+        raiseBitrateRequest(bitrateRequest: fm.icelink.BitrateRequest): boolean;
+        private remoteRequestedMaxSendBitrate;
+        private findSendEncodingIndex;
+        addOnDiscardBitrateNotification(value: fm.icelink.IAction1<fm.icelink.BitrateNotification>): void;
+        removeOnDiscardBitrateNotification(value: fm.icelink.IAction1<fm.icelink.BitrateNotification>): void;
+        /** @hidden */
+        private _raiseOnDiscardBitrateNotification;
+        /** @hidden */
+        protected processBitrateNotification(bitrateNotification: fm.icelink.BitrateNotification): void;
+        raiseBitrateNotification(bitrateNotification: fm.icelink.BitrateNotification): boolean;
+        setMaxSendBitrate(value: number): fm.icelink.Future<object>;
+        setMaxReceiveBitrate(value: number): void;
+    }
+}
+declare namespace fm.icelink {
+    class WebRtcAudioStream extends fm.icelink.WebRtcMediaStream<fm.icelink.WebRtcAudioTrack> implements fm.icelink.IAudioStream, fm.icelink.IInternalAudioStream {
+        getTypeString(): string;
+        /** @hidden */
+        private _dtmfSender;
+        /** @hidden */
+        private _onSendDtmfToneValues;
+        /** @hidden */
+        private _onSendDtmfToneChangeValues;
+        /** @hidden */
+        private _external;
+        /** @hidden */
+        _getExternal(): fm.icelink.IExternalAudioStream;
+        /** @hidden */
+        private _discardDtmfTones;
+        /** @hidden */
+        private _onDiscardOutboundDtmfTonesValues;
+        /** @hidden */
+        private raiseOnDiscardOutboundDtmfTones;
+        constructor(external: fm.icelink.IExternalAudioStream, localTrack: fm.icelink.WebRtcAudioTrack, remoteTrack: fm.icelink.WebRtcAudioTrack);
+        addOnReceiveDtmfTone(value: fm.icelink.IAction1<fm.icelink.dtmf.Tone>): void;
+        addOnReceiveDtmfToneChange(value: fm.icelink.IAction1<fm.icelink.dtmf.Tone>): void;
+        addOnSendDtmfTone(value: fm.icelink.IAction1<fm.icelink.dtmf.Tone>): void;
+        addOnSendDtmfToneChange(value: fm.icelink.IAction1<fm.icelink.dtmf.Tone>): void;
+        insertDtmfTone(dtmfTone: fm.icelink.dtmf.Tone): boolean;
+        insertDtmfTones(dtmfTones: fm.icelink.dtmf.Tone[]): boolean;
+        removeOnReceiveDtmfTone(value: fm.icelink.IAction1<fm.icelink.dtmf.Tone>): void;
+        removeOnReceiveDtmfToneChange(value: fm.icelink.IAction1<fm.icelink.dtmf.Tone>): void;
+        removeOnSendDtmfTone(value: fm.icelink.IAction1<fm.icelink.dtmf.Tone>): void;
+        removeOnSendDtmfToneChange(value: fm.icelink.IAction1<fm.icelink.dtmf.Tone>): void;
+        getOpusDisabled(): boolean;
+        getG722Disabled(): boolean;
+        getPcmuDisabled(): boolean;
+        getPcmaDisabled(): boolean;
+        setOpusDisabled(value: boolean): void;
+        setG722Disabled(value: boolean): void;
+        setPcmuDisabled(value: boolean): void;
+        setPcmaDisabled(value: boolean): void;
+    }
+}
+declare namespace fm.icelink {
+    abstract class WebRtcMediaTrack extends fm.icelink.WebRtcMediaTrackBase implements fm.icelink.IMediaTrack, fm.icelink.IInternalMediaTrack {
+        getTypeString(): string;
+        addOnStarted(value: fm.icelink.IAction0): void;
+        addOnStopped(value: fm.icelink.IAction0): void;
+        addOnDestroyed(value: fm.icelink.IAction0): void;
+        removeOnStarted(value: fm.icelink.IAction0): void;
+        removeOnStopped(value: fm.icelink.IAction0): void;
+        removeOnDestroyed(value: fm.icelink.IAction0): void;
+        getMedia(): fm.icelink.WebRtcMedia<fm.icelink.WebRtcAudioTrack, fm.icelink.WebRtcVideoTrack>;
+        constructor(external: fm.icelink.IExternalMediaTrack, media: fm.icelink.WebRtcMedia<fm.icelink.WebRtcAudioTrack, fm.icelink.WebRtcVideoTrack>);
+        private _muted;
+        getMuted(): boolean;
+        setMuted(muted: boolean): void;
+        stop(): void;
+        destroy(): boolean;
+        private raiseOnStopped;
+    }
+}
+declare namespace fm.icelink {
+    class WebRtcAudioTrack extends fm.icelink.WebRtcMediaTrack implements fm.icelink.IAudioTrack, fm.icelink.IInternalAudioTrack {
+        getTypeString(): string;
+        constructor(external: fm.icelink.IExternalAudioTrack, media: fm.icelink.WebRtcMedia<fm.icelink.WebRtcAudioTrack, fm.icelink.WebRtcVideoTrack>);
+        private isLocal;
+        changeSinkOutput(sinkOutput: fm.icelink.SinkOutput): fm.icelink.Future<Object>;
+        getSinkOutput(): fm.icelink.SinkOutput;
+        getSinkOutputs(): fm.icelink.Future<fm.icelink.SinkOutput[]>;
+        setSinkOutput(value: fm.icelink.SinkOutput): void;
+        changeSourceInput(sourceInput: fm.icelink.SourceInput): fm.icelink.Future<Object>;
+        getSourceInput(): fm.icelink.SourceInput;
+        getSourceInputs(): fm.icelink.Future<fm.icelink.SourceInput[]>;
+        setSourceInput(value: fm.icelink.SourceInput): void;
+        addOnLevel(value: fm.icelink.IAction1<number>): void;
+        getGain(): number;
+        getVolume(): number;
+        removeOnLevel(value: fm.icelink.IAction1<number>): void;
+        setGain(value: number): void;
+        setVolume(value: number): void;
+    }
+}
+declare function fmicelinkWebRtcConnection_makeMediaStream(): MediaStream;
+declare type fmicelinkWebRtcConnection_GlobalMediaStream = MediaStream;
+declare namespace fm.icelink {
+    class WebRtcConnection extends fm.icelink.WebRtcConnectionBase<fm.icelink.WebRtcConnection, fm.icelink.WebRtcStream, fm.icelink.WebRtcAudioStream, fm.icelink.WebRtcVideoStream, fm.icelink.WebRtcDataStream, fm.icelink.WebRtcDataChannel> implements fm.icelink.IInternalConnection {
+        getTypeString(): string;
+        /** @hidden */
+        private _external;
+        /** @hidden */
+        _getExternal(): fm.icelink.IExternalConnection;
+        /** @hidden */
+        private _streams;
+        /** @hidden */
+        private _mediaStreams;
+        /** @hidden */
+        private _audioStreams;
+        /** @hidden */
+        private _videoStreams;
+        /** @hidden */
+        private _dataStreams;
+        /** @hidden */
+        private _offerer;
+        /** @hidden */
+        private _initialized;
+        /** @hidden */
+        private _localDescription;
+        /** @hidden */
+        private _remoteDescription;
+        /** @hidden */
+        private _gatheringState;
+        /** @hidden */
+        private _iceConnectionState;
+        /** @hidden */
+        private _remoteMedia;
+        /** @hidden */
+        private _isRenegotiation;
+        getRemoteMedia(): fm.icelink.WebRtcRemoteMedia;
+        /** @hidden */
+        private _nativePeerConnection;
+        getNativePeerConnection(): RTCPeerConnection;
+        /** @hidden */
+        private _discoveredCandidates;
+        private _remoteMediaTrackCount;
+        private _dataStreamsReady;
+        private _mediaStreamsReady;
+        /** @hidden */
+        private _nativeIceGatherers;
+        getNativeIceGatherers(): RTCIceGatherer[];
+        /** @hidden */
+        private _nativeIceTransports;
+        getNativeIceTransports(): RTCIceTransport[];
+        /** @hidden */
+        private _nativeDtlsTransports;
+        getNativeDtlsTransports(): RTCDtlsTransport[];
+        /** @hidden */
+        private _nativeRtpSenders;
+        getNativeRtpSenders(): RTCRtpSender[];
+        /** @hidden */
+        private _nativeRtpReceivers;
+        getNativeRtpReceivers(): RTCRtpReceiver[];
+        /** @hidden */
+        private _remoteNativeMediaStream;
+        /** @hidden */
+        private _rtpKinds;
+        /** @hidden */
+        private _ortcLocalDescription;
+        /** @hidden */
+        private _ortcRemoteDescription;
+        /** @hidden */
+        private _remoteCandidatesTimer;
+        /** @hidden */
+        private _remoteCandidatesDone;
+        /** @hidden */
+        private _transportsRemaining;
+        /** @hidden */
+        private _ortcSupportsTcp;
+        constructor(external: fm.icelink.IExternalConnection, streams: fm.icelink.WebRtcStream[], remoteMedia: fm.icelink.WebRtcRemoteMedia);
+        getInstance(): fm.icelink.WebRtcConnection;
+        private addStreamInternal;
+        private addStreamsInternal;
+        processStateChange(): void;
+        private startConnectionTimeout;
+        getStreams(): fm.icelink.WebRtcStream[];
+        getMediaStreams(): fm.icelink.WebRtcMediaStream<fm.icelink.WebRtcMediaTrack>[];
+        getAudioStreams(): fm.icelink.WebRtcAudioStream[];
+        getVideoStreams(): fm.icelink.WebRtcVideoStream[];
+        getDataStreams(): fm.icelink.WebRtcDataStream[];
+        private constraintMin;
+        private constraintMax;
+        getStats(): fm.icelink.Future<fm.icelink.ConnectionStats>;
+        private getMediaSenderStats;
+        private getMediaReceiverStats;
+        private getTransportStats;
+        private getCertificateStats;
+        private getCandidateStats;
+        private getCandidatePairStats;
+        private getCodecStats;
+        private getWebRTCBundlePolicyString;
+        private _lastMediaComponentFrameStatsCollection;
+        private getMediaTrackStats;
+        private initialize;
+        private initializeTrack;
+        private validateCandidate;
+        private createIceGatherer;
+        private sessionDescriptionTypeToString;
+        private sessionDescriptionTypeToEnum;
+        private webrtcCandidateToCandidate;
+        private webrtcCandidateFromCandidate;
+        private webrtcSessionDescriptionToSessionDescription;
+        private webrtcSessionDescriptionFromSessionDescription;
+        private rtcCandidateToSdpCandidateAttribute;
+        private rtcCandidateFromSdpCandidateAttribute;
+        private ortcCandidateToCandidate;
+        private ortcCandidateFromCandidate;
+        private ortcSessionDescriptionToSessionDescription;
+        private ortcSessionDescriptionFromSessionDescription;
+        private applyMediaFormatParametersAttributes;
+        private applyMediaFeedbackAttributes;
+        /** @hidden */
+        private _iceCandidateProcessingTimeout;
+        getIceCandidateProcessingTimeout(): number;
+        setIceCandidateProcessingTimeout(value: number): void;
+        protected doCreateOffer(promise: fm.icelink.Promise<fm.icelink.SessionDescription>): boolean;
+        protected doCreateAnswer(promise: fm.icelink.Promise<fm.icelink.SessionDescription>): void;
+        private processIceGatheringStateComplete;
+        private injectDiscoveredCandidatesIntoSdp;
+        private setNativeDescriptionSuccess;
+        private doCreate;
+        getLocalDescription(): fm.icelink.SessionDescription;
+        getGatheringState(): fm.icelink.IceGatheringState;
+        getIceConnectionState(): fm.icelink.IceConnectionState;
+        protected setGatheringState(state: fm.icelink.IceGatheringState): void;
+        protected setIceConnectionState(state: fm.icelink.IceConnectionState): void;
+        getRemoteDescription(): fm.icelink.SessionDescription;
+        /** @hidden */
+        private _sessionDescriptionManager;
+        /** @hidden */
+        getSessionDescriptionManager(): fm.icelink.SessionDescriptionManager;
+        /** @hidden */
+        setSessionDescriptionManager(manager: fm.icelink.SessionDescriptionManager): void;
+        private updateLocalDescription;
+        protected doSetLocalDescription(promise: fm.icelink.Promise<fm.icelink.SessionDescription>, localDescription: fm.icelink.SessionDescription): void;
+        private processRemoteDescriptionOnRenegotiation;
+        private removeSdesAttributesIfNeeded;
+        protected doSetRemoteDescription(promise: fm.icelink.Promise<fm.icelink.SessionDescription>, remoteDescription: fm.icelink.SessionDescription): void;
+        protected doSendCachedLocalCandidates(): void;
+        private startOrtc;
+        private startOrtcTrack;
+        private selectCodecs;
+        private selectEncodings;
+        private selectRtcp;
+        protected doAddRemoteCandidate(promise: fm.icelink.Promise<fm.icelink.Candidate>, remoteCandidate: fm.icelink.Candidate): void;
+        private setRemoteCandidatesDoneTimer;
+        protected assignRemoteDescriptionInternal(sessionDescription: fm.icelink.SessionDescription): void;
+        close(): boolean;
+        private doClose;
+        private dtmfSender;
+        getDtmfSender(): RTCDtmfSender;
+        replaceLocalTrack(localTrack: fm.icelink.WebRtcMediaTrack, mediaStream: fm.icelink.WebRtcMediaStream<fm.icelink.WebRtcMediaTrack>): fm.icelink.Future<object>;
+        replaceRemoteTrack(remoteTrack: fm.icelink.WebRtcMediaTrack, mediaStream: fm.icelink.WebRtcMediaStream<fm.icelink.WebRtcMediaTrack>): fm.icelink.Future<object>;
+        private getRtpSender;
+        private tryGetRtpSender;
+        private _setMaxSendBitrateQueue;
+        private _processingMaxSendBitrate;
+        setMaxSendBitrate(bitrate: number, streamType: fm.icelink.StreamType): fm.icelink.Future<object>;
+        private processNextSetMaxSendBitrate;
+        private doSetMaxSendBitrate;
+        private updateMaxBitrateSdpMessage;
+        private updateMaxBitrateSdpMediaDescription;
+        /** @hidden */
+        private static __webRtcConnectionInitialized;
+        /** @hidden */
+        static webRtcConnectionInitialize(): void;
+    }
+}
+declare namespace fm.icelink {
+    class WebRtcDataChannel extends fm.icelink.WebRtcDataChannelBase<fm.icelink.WebRtcDataChannel> implements fm.icelink.IInternalDataChannel {
+        getTypeString(): string;
+        /** @hidden */
+        private _external;
+        /** @hidden */
+        _getExternal(): fm.icelink.IExternalDataChannel;
+        /** @hidden */
+        private sendQueue;
+        /** @hidden */
+        private _nativeDataChannel;
+        getNativeDataChannel(): any;
+        setNativeDataChannel(nativeDataChannel: any): void;
+        constructor(external: fm.icelink.IExternalDataChannel, label: string, ordered?: boolean, subprotocol?: string);
+        getInstance(): fm.icelink.WebRtcDataChannel;
+        sendDataString(dataString: string): fm.icelink.Future<Object>;
+        /** @hidden */
+        promisedSendDataBytes(dataBytes: fm.icelink.DataBuffer, dataLength: number, promise: fm.icelink.Promise<Object>): void;
+        /** @hidden */
+        promisedSendDataString(dataString: string, dataLength: number, promise: fm.icelink.Promise<Object>): void;
+        sendDataBytes(dataBytes: fm.icelink.DataBuffer): fm.icelink.Future<Object>;
+    }
+}
+declare namespace fm.icelink {
+    class WebRtcDataStream extends fm.icelink.WebRtcDataStreamBase<fm.icelink.WebRtcDataChannel> implements fm.icelink.IInternalDataStream {
+        getTypeString(): string;
+        processSdpMediaDescription(sdpMessage: fm.icelink.sdp.Message, sdpMediaDescription: fm.icelink.sdp.MediaDescription, index: number, isLocalDescription: boolean, isOffer: boolean, isRenegotiation: boolean): fm.icelink.Error;
+        /** @hidden */
+        private _external;
+        /** @hidden */
+        _getExternal(): fm.icelink.IExternalDataStream;
+        /** @hidden */
+        private _channels;
+        constructor(external: fm.icelink.IExternalDataStream, channels: fm.icelink.WebRtcDataChannel[]);
+        getChannels(): fm.icelink.WebRtcDataChannel[];
+    }
+}
+declare namespace fm.icelink {
+    class WebRtcDomAudioSink extends fm.icelink.Dynamic implements fm.icelink.IInternalDomAudioSink {
+        getTypeString(): string;
+        getTrack(): fm.icelink.WebRtcAudioTrack;
+        getLocal(): boolean;
+        getAudio(): HTMLAudioElement;
+        getVolume(): number;
+        setVolume(volume: number): void;
+        getMuted(): boolean;
+        setMuted(muted: boolean): void;
+        constructor(external: fm.icelink.DomAudioSink, track: fm.icelink.WebRtcAudioTrack);
+        setTrack(track: fm.icelink.WebRtcAudioTrack): boolean;
+        private playAudio;
+    }
+}
+declare namespace fm.icelink {
+    class WebRtcDomVideoSink extends fm.icelink.Dynamic implements fm.icelink.IInternalDomVideoSink {
+        getTypeString(): string;
+        getTrack(): fm.icelink.WebRtcVideoTrack;
+        getLocal(): boolean;
+        getView(): HTMLElement;
+        getViewScale(): fm.icelink.LayoutScale;
+        setViewScale(viewScale: fm.icelink.LayoutScale): void;
+        getViewMirror(): boolean;
+        setViewMirror(viewMirror: boolean): void;
+        getVideo(): HTMLVideoElement;
+        getVideoWidth(): number;
+        getVideoHeight(): number;
+        getVolume(): number;
+        setVolume(volume: number): void;
+        getMuted(): boolean;
+        setMuted(muted: boolean): void;
+        destroy(): void;
+        constructor(external: fm.icelink.IExternalDomVideoSink, track: fm.icelink.WebRtcVideoTrack);
+        setTrack(track: fm.icelink.WebRtcVideoTrack): boolean;
+        private playVideo;
+        private applyScale;
+    }
+}
+declare type fmicelinkWebRtcLocalMedia_GlobalMediaStream = MediaStream;
+declare namespace fm.icelink {
+    class WebRtcLocalMedia extends fm.icelink.WebRtcLocalMediaBase<fm.icelink.WebRtcLocalMedia, fm.icelink.WebRtcAudioTrack, fm.icelink.WebRtcVideoTrack> implements fm.icelink.ILocalMedia<fm.icelink.WebRtcLocalMedia, fm.icelink.WebRtcAudioTrack, fm.icelink.WebRtcVideoTrack>, fm.icelink.IInternalLocalMedia {
+        getTypeString(): string;
+        addOnAudioStarted(value: fm.icelink.IAction0): void;
+        addOnAudioStopped(value: fm.icelink.IAction0): void;
+        addOnVideoStarted(value: fm.icelink.IAction0): void;
+        addOnVideoStopped(value: fm.icelink.IAction0): void;
+        removeOnAudioStarted(value: fm.icelink.IAction0): void;
+        removeOnAudioStopped(value: fm.icelink.IAction0): void;
+        removeOnVideoStarted(value: fm.icelink.IAction0): void;
+        removeOnVideoStopped(value: fm.icelink.IAction0): void;
+        getAudioSourceInputs(): fm.icelink.Future<fm.icelink.SourceInput[]>;
+        getVideoSourceInputs(): fm.icelink.Future<fm.icelink.SourceInput[]>;
+        private getSourceInputs;
+        private _audioSourceInput;
+        getAudioSourceInput(): fm.icelink.SourceInput;
+        setAudioSourceInput(audioInput: fm.icelink.SourceInput): void;
+        private _videoSourceInput;
+        getVideoSourceInput(): fm.icelink.SourceInput;
+        setVideoSourceInput(videoInput: fm.icelink.SourceInput): void;
+        getScreen(): boolean;
+        setScreen(screen: boolean): void;
+        getAudioConstraints(): MediaTrackConstraints;
+        getVideoConstraints(): MediaTrackConstraints;
+        changeAudioConstraints(audioConstraints: MediaTrackConstraints): fm.icelink.Future<Object>;
+        changeVideoConstraints(videoConstraints: MediaTrackConstraints): fm.icelink.Future<Object>;
+        changeAudioSourceInput(audioSourceInput: fm.icelink.SourceInput): fm.icelink.Future<Object>;
+        changeVideoSourceInput(videoSourceInput: fm.icelink.SourceInput): fm.icelink.Future<Object>;
+        constructor(external: fm.icelink.IExternalLocalMedia, audio: any, video: any, screen?: boolean);
+        doStart(): fm.icelink.Future<fm.icelink.WebRtcLocalMedia>;
+        private doStartInternal;
+        doStop(): fm.icelink.Future<fm.icelink.WebRtcLocalMedia>;
+        protected doGetAudioEncodings(): fm.icelink.AudioEncodingConfig[];
+        protected doSetAudioEncodings(encodings: fm.icelink.AudioEncodingConfig[]): void;
+        protected doGetVideoEncodings(): fm.icelink.VideoEncodingConfig[];
+        protected doSetVideoEncodings(encodings: fm.icelink.VideoEncodingConfig[]): void;
+    }
+}
+declare namespace fm.icelink {
+    class WebRtcRemoteMedia extends fm.icelink.WebRtcMedia<fm.icelink.WebRtcAudioTrack, fm.icelink.WebRtcVideoTrack> implements fm.icelink.IRemoteMedia<fm.icelink.WebRtcAudioTrack, fm.icelink.WebRtcVideoTrack>, fm.icelink.IInternalRemoteMedia {
+        getTypeString(): string;
+        constructor(external: fm.icelink.IExternalRemoteMedia, audio: boolean, video: boolean);
+        getAudioSinkOutputs(): fm.icelink.Future<fm.icelink.SinkOutput[]>;
+        getVideoSinkOutputs(): fm.icelink.Future<fm.icelink.SinkOutput[]>;
+        private getSinkOutputs;
+        getAudioSinkOutput(): fm.icelink.SinkOutput;
+        setAudioSinkOutput(audioSinkOutput: fm.icelink.SinkOutput): void;
+        private attachAudioSinkOutput;
+        getVideoSinkOutput(): fm.icelink.SinkOutput;
+        setVideoSinkOutput(videoSinkOutput: fm.icelink.SinkOutput): void;
+        changeAudioSinkOutput(audioInput: fm.icelink.SinkOutput): fm.icelink.Future<Object>;
+        changeVideoSinkOutput(videoInput: fm.icelink.SinkOutput): fm.icelink.Future<Object>;
+    }
+}
+declare namespace fm.icelink {
+    class WebRtcVideoStream extends fm.icelink.WebRtcMediaStream<fm.icelink.WebRtcVideoTrack> implements fm.icelink.IVideoStream, fm.icelink.IInternalVideoStream {
+        getTypeString(): string;
+        /** @hidden */
+        private _external;
+        /** @hidden */
+        _getExternal(): fm.icelink.IExternalVideoStream;
+        constructor(external: fm.icelink.IExternalVideoStream, localTrack: fm.icelink.WebRtcVideoTrack, remoteTrack: fm.icelink.WebRtcVideoTrack);
+        getVp8Disabled(): boolean;
+        getVp9Disabled(): boolean;
+        getH264Disabled(): boolean;
+        setVp8Disabled(value: boolean): void;
+        setVp9Disabled(value: boolean): void;
+        setH264Disabled(value: boolean): void;
+        addOnDiscardKeyFrameRequest(value: fm.icelink.IAction1<number[]>): void;
+        removeOnDiscardKeyFrameRequest(value: fm.icelink.IAction1<number[]>): void;
+        raiseKeyFrameRequest(synchronizationSources: number[]): void;
+    }
+}
+declare namespace fm.icelink {
+    class WebRtcVideoTrack extends fm.icelink.WebRtcMediaTrack implements fm.icelink.IVideoTrack, fm.icelink.IInternalVideoTrack {
+        getTypeString(): string;
+        constructor(external: fm.icelink.IExternalVideoTrack, media: fm.icelink.WebRtcMedia<fm.icelink.WebRtcAudioTrack, fm.icelink.WebRtcVideoTrack>);
+        setConfig(config: fm.icelink.VideoConfig): void;
+        private isLocal;
+        changeSinkOutput(sinkOutput: fm.icelink.SinkOutput): fm.icelink.Future<Object>;
+        getSinkOutput(): fm.icelink.SinkOutput;
+        getSinkOutputs(): fm.icelink.Future<fm.icelink.SinkOutput[]>;
+        setSinkOutput(value: fm.icelink.SinkOutput): void;
+        changeSourceInput(sourceInput: fm.icelink.SourceInput): fm.icelink.Future<Object>;
+        getSourceInput(): fm.icelink.SourceInput;
+        getSourceInputs(): fm.icelink.Future<fm.icelink.SourceInput[]>;
+        setSourceInput(value: fm.icelink.SourceInput): void;
+        addOnSize(value: fm.icelink.IAction1<fm.icelink.Size>): void;
+        getSize(): fm.icelink.Size;
+        grabFrame(): fm.icelink.Future<fm.icelink.VideoBuffer>;
+        removeOnSize(value: fm.icelink.IAction1<fm.icelink.Size>): void;
+    }
 }
 declare namespace fm.icelink {
 }
@@ -27480,6 +29180,22 @@ declare namespace fm.icelink {
 declare namespace fm.icelink {
 }
 declare namespace fm.icelink {
+}
+declare namespace fm.icelink {
+}
+declare namespace fm.icelink {
+}
+declare namespace fm.icelink {
+}
+declare namespace fm.icelink {
+}
+declare namespace fm.icelink.datamessageheader {
+}
+declare namespace fm.icelink.datamessageheader {
+}
+declare namespace fm.icelink.datamessageheader {
+}
+declare namespace fm.icelink.datamessageheader {
 }
 declare namespace fm.icelink {
 }

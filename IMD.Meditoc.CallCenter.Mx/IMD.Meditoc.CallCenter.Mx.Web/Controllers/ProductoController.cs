@@ -17,11 +17,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         [MeditocAuthentication]
         [HttpPost]
         [Route("Api/Producto/Create/Producto")]
-        public IMDResponse<bool> BSaveProducto([FromBody] EntProducto entProducto)
+        public IMDResponse<bool> CSaveProducto([FromBody] EntProducto entProducto)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
-            string metodo = nameof(this.BSaveProducto);
+            string metodo = nameof(this.CSaveProducto);
             logger.Info(IMDSerialize.Serialize(67823458404184, $"Inicia {metodo}([FromBody] EntProducto entProducto)", entProducto));
 
             try
@@ -43,11 +43,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         [MeditocAuthentication]
         [HttpGet]
         [Route("Api/Producto/Get/ObtenerProducto")]
-        public IMDResponse<List<EntProducto>> BObtenerProductoByID([FromUri] int? iIdProducto = null)
+        public IMDResponse<List<EntProducto>> CObtenerProductoByID([FromUri] int? iIdProducto = null)
         {
             IMDResponse<List<EntProducto>> response = new IMDResponse<List<EntProducto>>();
 
-            string metodo = nameof(this.BObtenerProductoByID);
+            string metodo = nameof(this.CObtenerProductoByID);
             logger.Info(IMDSerialize.Serialize(67823458399522, $"Inicia {metodo}([FromUri] int iIdProducto)", iIdProducto));
 
             try
@@ -80,13 +80,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             {
                 BusProducto busProducto = new BusProducto();
 
-                response = busProducto.BgetMembership();
+                response = busProducto.BGetMembership();
 
             }
             catch (Exception ex)
             {
                 response.Code = 67823458472560;
-                response.Message = "Ocurrió un error inesperado en el servicio al obtener las membresías";
+                response.Message = "Ocurrió un error inesperado en el servicio al obtener las membresías.";
 
                 logger.Error(IMDSerialize.Serialize(67823458472560, $"Error en {metodo}(): {ex.Message}", ex, response));
             }
@@ -107,7 +107,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             {
                 BusProducto busProducto = new BusProducto();
 
-                response = busProducto.BgetServices();
+                response = busProducto.BGetServices();
             }
             catch (Exception ex)
             {

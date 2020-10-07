@@ -4,7 +4,6 @@ using IMD.Admin.Utilities.Entities;
 using IMD.Meditoc.CallCenter.Mx.Entities.CGU;
 using log4net;
 using Microsoft.Practices.EnterpriseLibrary.Data;
-using Newtonsoft.Json;
 using System;
 using System.Data;
 using System.Data.Common;
@@ -16,26 +15,26 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
         private static readonly ILog logger = LogManager.GetLogger(typeof(DatModulo));
         private Database database;
         IMDCommonData imdCommonData;
-        private string saveBoton;
+        private string spSaveBoton;
         public DatBoton()
         {
             imdCommonData = new IMDCommonData();
             string FsConnectionString = "cnxMeditoc";
             database = imdCommonData.DGetDatabase(FsConnectionString, "MeditocComercial", "Meditoc1");
 
-            saveBoton = "sva_cgu_save_boton";
+            spSaveBoton = "sva_cgu_save_boton";
         }
 
         public IMDResponse<bool> DSaveBoton(EntBoton entBoton)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
-            string metodo = nameof(this.saveBoton);
+            string metodo = nameof(this.spSaveBoton);
             logger.Info(IMDSerialize.Serialize(67823458338916, $"Inicia {metodo}(EntBoton entBoton)", entBoton));
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(saveBoton))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spSaveBoton))
                 {
                     database.AddInParameter(dbCommand, "piIdModulo", DbType.Int32, entBoton.iIdModulo);
                     database.AddInParameter(dbCommand, "piIdSubmodulo", DbType.Int32, entBoton.iIdSubModulo);

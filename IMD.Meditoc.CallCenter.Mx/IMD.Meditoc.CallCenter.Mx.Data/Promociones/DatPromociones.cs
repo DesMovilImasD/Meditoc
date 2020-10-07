@@ -1,20 +1,15 @@
-﻿using IMD.Admin.Conekta.Entities;
-using IMD.Admin.Conekta.Entities.Promotions;
-using IMD.Admin.Utilities.Business;
+﻿using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Data;
 using IMD.Admin.Utilities.Entities;
+using IMD.Meditoc.CallCenter.Mx.Entities.Promociones;
 using log4net;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
-using System.Linq;
-using System.Web;
 
-namespace IMD.Admin.Conekta.Data
+namespace IMD.Meditoc.CallCenter.Mx.Data.Promociones
 {
     public class DatPromociones
     {
@@ -117,7 +112,7 @@ namespace IMD.Admin.Conekta.Data
             catch (Exception ex)
             {
                 response.Code = 67823458184293;
-                response.Message = "Ocurrió un error al intentar guardar el cupon";
+                response.Message = "Ocurrió un error al intentar guardar el cupon.";
 
                 logger.Error(IMDSerialize.Serialize(67823458184293, $"Error en {metodo}(EntCupon entCupon, int? piUsuario = null): {ex.Message}", entCupon, piUsuario, ex, response));
             }
@@ -168,7 +163,7 @@ namespace IMD.Admin.Conekta.Data
             catch (Exception ex)
             {
                 response.Code = 67823458185847;
-                response.Message = "Ocurrió un error al obtener los cupones";
+                response.Message = "Ocurrió un error al obtener los cupones.";
 
                 logger.Error(IMDSerialize.Serialize(67823458185847, $"Error en {metodo}: {ex.Message}(int? piIdCupon = null, int? piIdCuponCategoria = null, string psDescripcion = null, string psCodigo = null, DateTime? pdtFechaVencimientoInicio = null, DateTime? pdtFechaVencimientoFin = null, DateTime? pdtFechaCreacionInicio = null, DateTime? pdtFechaCreacionFin = null, bool pbActivo = true, bool pbBaja = false)", piIdCupon, piIdCuponCategoria, psDescripcion, psCodigo, pdtFechaVencimientoInicio, pdtFechaVencimientoFin, pdtFechaCreacionInicio, pdtFechaCreacionFin, pbActivo, pbBaja, ex, response));
             }
@@ -204,7 +199,7 @@ namespace IMD.Admin.Conekta.Data
             catch (Exception ex)
             {
                 response.Code = 67823458187401;
-                response.Message = "Ocurrió un error al desactivar el cupon";
+                response.Message = "Ocurrió un error al desactivar el cupon.";
 
                 logger.Error(IMDSerialize.Serialize(67823458187401, $"Error en {metodo}: {ex.Message}(int piIdCupon, int? piIdUsuario = null)", piIdCupon, piIdUsuario, ex, response));
             }
@@ -234,7 +229,7 @@ namespace IMD.Admin.Conekta.Data
             catch (Exception ex)
             {
                 response.Code = 67823458210711;
-                response.Message = "Ocurrió un error inesperado al generar el cupón";
+                response.Message = "Ocurrió un error inesperado al generar el cupón.";
 
                 logger.Error(IMDSerialize.Serialize(67823458210711, $"Error en {metodo}(): {ex.Message}", ex, response));
             }
@@ -269,7 +264,7 @@ namespace IMD.Admin.Conekta.Data
             catch (Exception ex)
             {
                 response.Code = 67823458213819;
-                response.Message = "Ocurrió un error inesperado al validar el cupón";
+                response.Message = "Ocurrió un error inesperado al validar el cupón.";
 
                 logger.Error(IMDSerialize.Serialize(67823458213819, $"Error en {metodo}(int piIdCupon, string psEmail): {ex.Message}", piIdCupon, psEmail, ex, response));
             }
@@ -299,7 +294,7 @@ namespace IMD.Admin.Conekta.Data
             catch (Exception ex)
             {
                 response.Code = 67823458235575;
-                response.Message = "Ocurrió un error inesperado al consultar los códigos";
+                response.Message = "Ocurrió un error inesperado al consultar los códigos.";
 
                 logger.Error(IMDSerialize.Serialize(67823458235575, $"Error en {metodo}(): {ex.Message}", ex, response));
             }

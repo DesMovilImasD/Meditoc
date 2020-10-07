@@ -14,18 +14,18 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 
         [HttpGet]
         [Route("Api/Politicas/Get/Politicas")]
-        public IMDResponse<EntPoliticas> GetPoliticas()
+        public IMDResponse<EntPoliticas> CGetPoliticas()
         {
             IMDResponse<EntPoliticas> response = new IMDResponse<EntPoliticas>();
 
-            string metodo = nameof(this.GetPoliticas);
+            string metodo = nameof(this.CGetPoliticas);
             logger.Info(IMDSerialize.Serialize(67823458379320, $"Inicia {metodo}()"));
 
             try
             {
                 BusPoliticas busPoliticas = new BusPoliticas();
 
-                response = busPoliticas.ObtenerPoliticas();
+                response = busPoliticas.BObtenerPoliticas();
             }
             catch (Exception ex)
             {

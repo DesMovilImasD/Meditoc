@@ -7,14 +7,14 @@ using System;
 
 namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 {
-    public class BusSubModulo
+    public class BusSubmodulo
     {
-        private static readonly ILog logger = LogManager.GetLogger(typeof(BusSubModulo));
-        DatSubModulo datSubModulo;
+        private static readonly ILog logger = LogManager.GetLogger(typeof(BusSubmodulo));
+        DatSubmodulo datSubmodulo;
 
-        public BusSubModulo()
+        public BusSubmodulo()
         {
-            datSubModulo = new DatSubModulo();
+            datSubmodulo = new DatSubmodulo();
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     return response;
                 }
 
-                response = datSubModulo.DSaveSubModulo(entSubModulo);
+                response = datSubmodulo.DSaveSubModulo(entSubModulo);
                 if (response.Code != 0)
                 {
                     return response;

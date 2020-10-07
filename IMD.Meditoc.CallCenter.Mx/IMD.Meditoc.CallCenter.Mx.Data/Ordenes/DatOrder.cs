@@ -1,20 +1,15 @@
-﻿using IMD.Admin.Conekta.Entities.Orders;
-using IMD.Admin.Utilities.Business;
+﻿using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Data;
 using IMD.Admin.Utilities.Entities;
+using IMD.Meditoc.CallCenter.Mx.Entities.Ordenes;
 using log4net;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace IMD.Admin.Conekta.Data
+namespace IMD.Meditoc.CallCenter.Mx.Data.Ordenes
 {
     public class DatOrder
     {
@@ -118,7 +113,7 @@ namespace IMD.Admin.Conekta.Data
             catch (Exception ex)
             {
                 response.Code = 67823458098046;
-                response.Message = "Ocurrió un error inesperado al guardar el detalle de la orden en la base de datos";
+                response.Message = "Ocurrió un error inesperado al guardar el detalle de la orden en la base de datos.";
 
                 logger.Error(IMDSerialize.Serialize(67823458098046, $"Error en {metodo}(Guid puId, EntOrder entOrder, string psOrigin, int? piIdCupon = null): {ex.Message}", puId, entOrder, psOrigin, ex, response));
             }
@@ -155,7 +150,7 @@ namespace IMD.Admin.Conekta.Data
             catch (Exception ex)
             {
                 response.Code = 67823458099600;
-                response.Message = "Ocurrió un error inesperado al guardar el detalle del comprador en la base de datos";
+                response.Message = "Ocurrió un error inesperado al guardar el detalle del comprador en la base de datos.";
 
                 logger.Error(IMDSerialize.Serialize(67823458099600, $"Error en {metodo}(Guid puId, EntCustomerInfo entCustomerInfo): {ex.Message}", puId, entCustomerInfo, ex, response));
             }
@@ -195,7 +190,7 @@ namespace IMD.Admin.Conekta.Data
             catch (Exception ex)
             {
                 response.Code = 67823458101154;
-                response.Message = "Ocurrió un error inesperado al guardar el detalle del artículo en la base de datos";
+                response.Message = "Ocurrió un error inesperado al guardar el detalle del artículo en la base de datos.";
 
                 logger.Error(IMDSerialize.Serialize(67823458101154, $"Error en {metodo}(Guid puId, int piConsecutive, EntLineItemDetail entLineItemDetail): {ex.Message}", puId, entLineItemDetail, ex, response));
             }
@@ -253,7 +248,7 @@ namespace IMD.Admin.Conekta.Data
             catch (Exception ex)
             {
                 response.Code = 67823458102708;
-                response.Message = "Ocurrió un error inesperado al guardar el detalle del pago en la base de datos";
+                response.Message = "Ocurrió un error inesperado al guardar el detalle del pago en la base de datos.";
 
                 logger.Error(IMDSerialize.Serialize(67823458102708, $"Error en {metodo}(Guid puId, EntChargeDetail entChargeDetail, string psOrigin): {ex.Message}", puId, entChargeDetail, psOrigin, ex, response));
             }
@@ -279,7 +274,7 @@ namespace IMD.Admin.Conekta.Data
             catch (Exception ex)
             {
                 response.Code = 67823458157875;
-                response.Message = "Ocurrió un error inesperado al consultar el detalle de la orden";
+                response.Message = "Ocurrió un error inesperado al consultar el detalle de la orden.";
 
                 logger.Error(IMDSerialize.Serialize(67823458157875, $"Error en {metodo}: {ex.Message}(string psOrderId)", psOrderId, ex, response));
             }

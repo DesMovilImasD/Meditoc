@@ -1,11 +1,10 @@
-﻿using IMD.Admin.Conekta.Entities.Orders;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IMD.Admin.Conekta.Entities.WebHooks
+namespace IMD.Meditoc.CallCenter.Mx.Entities.Ordenes
 {
     public class EntWebHook
     {

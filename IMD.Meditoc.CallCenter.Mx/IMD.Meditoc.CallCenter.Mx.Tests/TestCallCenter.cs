@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using IMD.Admin.Conekta.Entities.Orders;
 using IMD.Admin.Utilities.Entities;
 using IMD.Meditoc.CallCenter.Mx.Business.CallCenter;
 using IMD.Meditoc.CallCenter.Mx.Business.Consulta;
 using IMD.Meditoc.CallCenter.Mx.Business.Folio;
 using IMD.Meditoc.CallCenter.Mx.Entities.CallCenter;
 using IMD.Meditoc.CallCenter.Mx.Entities.Consultas;
+using IMD.Meditoc.CallCenter.Mx.Entities.Ordenes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 

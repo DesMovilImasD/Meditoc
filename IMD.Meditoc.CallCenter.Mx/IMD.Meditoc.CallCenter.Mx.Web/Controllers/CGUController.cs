@@ -55,7 +55,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 
             try
             {
-                BusSubModulo busSubModulo = new BusSubModulo();
+                BusSubmodulo busSubModulo = new BusSubmodulo();
                 response = busSubModulo.BSaveSubModulo(entCreateSubModulo);
             }
             catch (Exception ex)
@@ -252,7 +252,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458634176;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al recuperar la contraseña del usuario.";
 
                 logger.Error(IMDSerialize.Serialize(67823458634176, $"Error en {metodo}: {ex.Message}", ex, response));
             }
@@ -302,7 +302,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             try
             {
                 BusPermiso busPermiso = new BusPermiso();
-                response = busPermiso.DSavePermiso(entPermisos);
+                response = busPermiso.BSavePermiso(entPermisos);
             }
             catch (Exception ex)
             {
@@ -345,9 +345,17 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 
         [HttpGet]
         [Route("status")]
-        public string Status()
+        public string CStatus()
         {
             return "SERVER OK";
+        }
+
+        [MeditocAuthentication]
+        [HttpGet]
+        [Route("status/auth")]
+        public string CStatusAuth()
+        {
+            return "SERVER AUTH OK";
         }
     }
 }

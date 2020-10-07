@@ -5,12 +5,8 @@ using IMD.Meditoc.CallCenter.Mx.Entities.CGU;
 using log4net;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
 {
@@ -19,8 +15,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
         private static readonly ILog logger = LogManager.GetLogger(typeof(DatPerfil));
         private Database database;
         IMDCommonData imdCommonData;
-        private string savePerfil;
-        private string ObtenerPerfil;
+        private string spSavePerfil;
+        private string spGetPerfil;
 
         public DatPerfil()
         {
@@ -28,19 +24,19 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             string FsConnectionString = "cnxMeditoc";
             database = imdCommonData.DGetDatabase(FsConnectionString, "MeditocComercial", "Meditoc1");
 
-            savePerfil = "sva_cgu_save_perfil";
-            ObtenerPerfil = "svc_cgu_perfiles";
+            spSavePerfil = "sva_cgu_save_perfil";
+            spGetPerfil = "svc_cgu_perfiles";
         }
 
         public IMDResponse<bool> DSavePerfil(EntPerfil entPerfil)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
-            string metodo = nameof(this.savePerfil);
+            string metodo = nameof(this.spSavePerfil);
             logger.Info(IMDSerialize.Serialize(67823458340470, $"Inicia {metodo}(EntPerfil entPerfil)", entPerfil));
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(savePerfil))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spSavePerfil))
                 {
                     database.AddInParameter(dbCommand, "piIdPerfil", DbType.Int32, entPerfil.iIdPerfil);
                     database.AddInParameter(dbCommand, "piIdUsuarioMod", DbType.Int32, entPerfil.iIdUsuarioMod);
@@ -70,7 +66,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(ObtenerPerfil))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spGetPerfil))
                 {
                     database.AddInParameter(dbCommand, "piIdPerfil", DbType.Int32, iIdPerfil);
                     database.AddInParameter(dbCommand, "pbActivo", DbType.Boolean, bActivo);
@@ -82,7 +78,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             catch (Exception ex)
             {
                 response.Code = 67823458356787;
-                response.Message = "Ocurrió un error inesperado en la base de datos al consultar los perfiles";
+                response.Message = "Ocurrió un error inesperado en la base de datos al consultar los perfiles.";
 
                 logger.Error(IMDSerialize.Serialize(67823458356787, $"Error en {metodo}(int? iIdPerfil, bool bActivo, bool bBaja): {ex.Message}", iIdPerfil, bActivo, bBaja, ex, response));
             }

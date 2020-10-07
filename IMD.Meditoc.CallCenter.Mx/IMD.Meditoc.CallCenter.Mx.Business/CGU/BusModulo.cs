@@ -3,12 +3,7 @@ using IMD.Admin.Utilities.Entities;
 using IMD.Meditoc.CallCenter.Mx.Data.CGU;
 using IMD.Meditoc.CallCenter.Mx.Entities.CGU;
 using log4net;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 {

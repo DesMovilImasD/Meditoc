@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IMD.Admin.Conekta.Entities.Orders
+namespace IMD.Meditoc.CallCenter.Mx.Entities.Ordenes
 {
     public class EntCharge
     {

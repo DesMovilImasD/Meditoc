@@ -1,5 +1,5 @@
-﻿using IMD.Admin.Conekta.Entities.Orders;
-using IMD.Meditoc.CallCenter.Mx.Entities.Empresa;
+﻿using IMD.Meditoc.CallCenter.Mx.Entities.Empresa;
+using IMD.Meditoc.CallCenter.Mx.Entities.Ordenes;
 using IMD.Meditoc.CallCenter.Mx.Entities.Producto;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace IMD.Meditoc.CallCenter.Mx.Entities.Reportes.Ventas
 {
-    public class EntOrden
+    public class EntOrdenReporte
     {
         public string uId { get; set; }
         public string sOrderId { get; set; }

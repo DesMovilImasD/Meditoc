@@ -6,9 +6,7 @@ using IMD.Meditoc.CallCenter.Mx.Entities.Reportes.Ventas;
 using IMD.Meditoc.CallCenter.Mx.Web.Tokens;
 using log4net;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -24,14 +22,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         #region Ventas
         [HttpGet]
         [Route("api/reportes/ventas")]
-        public IMDResponse<EntVentasReporte> CObtenerReporteVentas([FromUri]string psFolio = null,
+        public IMDResponse<EntReporteVentas> CObtenerReporteVentas([FromUri]string psFolio = null,
             [FromUri]string psIdEmpresa = null, [FromUri]string psIdProducto = null,
             [FromUri]string psIdTipoProducto = null, [FromUri]string psIdOrigen = null,
             [FromUri]string psOrderId = null, [FromUri]string psStatus = null, [FromUri]string psCupon = null, [FromUri]string psTipoPago = null,
             [FromUri]DateTime? pdtFechaInicio = null, [FromUri]DateTime? pdtFechaFinal = null,
             [FromUri]DateTime? pdtFechaVencimiento = null)
         {
-            IMDResponse<EntVentasReporte> response = new IMDResponse<EntVentasReporte>();
+            IMDResponse<EntReporteVentas> response = new IMDResponse<EntReporteVentas>();
 
             string metodo = nameof(this.CObtenerReporteVentas);
             logger.Info(IMDSerialize.Serialize(67823458571239, $"Inicia {metodo}([FromUri]string psFolio = null, [FromUri]string psIdEmpresa = null, [FromUri]string psIdProducto = null, [FromUri]string psIdTipoProducto = null, [FromUri]string psIdOrigen = null, [FromUri]string psOrderId = null, [FromUri]string psStatus = null,[FromUri]string psCupon = null, [FromUri]DateTime ? pdtFechaInicio = null, [FromUri]DateTime ? pdtFechaFinal = null, [FromUri]DateTime ? pdtFechaVencimiento = null)", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento));
@@ -44,7 +42,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458572016;
-                response.Message = "Ocurrió un error inesperado al consultar los folios del reporte en la base de datos";
+                response.Message = "Ocurrió un error inesperado al consultar los folios del reporte en la base de datos.";
 
                 logger.Error(IMDSerialize.Serialize(67823458572016, $"Error en {metodo}([FromUri]string psFolio = null, [FromUri]string psIdEmpresa = null, [FromUri]string psIdProducto = null, [FromUri]string psIdTipoProducto = null, [FromUri]string psIdOrigen = null, [FromUri]string psOrderId = null, [FromUri]string psStatus = null,[FromUri]string psCupon = null, [FromUri]DateTime ? pdtFechaInicio = null, [FromUri]DateTime ? pdtFechaFinal = null, [FromUri]DateTime ? pdtFechaVencimiento = null): {ex.Message}", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento, ex, response));
             }
@@ -73,7 +71,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458599988;
-                response.Message = "Ocurrió un error inesperado al consultar los folios del reporte en la base de datos";
+                response.Message = "Ocurrió un error inesperado al consultar los folios del reporte en la base de datos.";
 
                 logger.Error(IMDSerialize.Serialize(67823458599988, $"Error en {metodo}([FromUri]string psFolio = null, [FromUri]string psIdEmpresa = null, [FromUri]string psIdProducto = null, [FromUri]string psIdTipoProducto = null, [FromUri]string psIdOrigen = null, [FromUri]string psOrderId = null, [FromUri]string psStatus = null,[FromUri]string psCupon = null, [FromUri]DateTime ? pdtFechaInicio = null, [FromUri]DateTime ? pdtFechaFinal = null, [FromUri]DateTime ? pdtFechaVencimiento = null): {ex.Message}", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento, ex, response));
             }
@@ -113,7 +111,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             }
             catch (Exception ex)
             {
-                response = Request.CreateResponse(HttpStatusCode.InternalServerError, "No se pudo generar el reporte de ventas");
+                response = Request.CreateResponse(HttpStatusCode.InternalServerError, "No se pudo generar el reporte de ventas.");
 
                 logger.Error(IMDSerialize.Serialize(67823458573570, $"Error en {metodo}([FromUri]string psFolio = null, [FromUri]string psIdEmpresa = null, [FromUri]string psIdProducto = null, [FromUri]string psIdTipoProducto = null, [FromUri]string psIdOrigen = null, [FromUri]string psOrderId = null, [FromUri]string psStatus = null,[FromUri]string psCupon = null, [FromUri]DateTime ? pdtFechaInicio = null, [FromUri]DateTime ? pdtFechaFinal = null, [FromUri]DateTime ? pdtFechaVencimiento = null): {ex.Message}", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento, ex, response));
             }
@@ -124,12 +122,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         #region Doctores
         [HttpGet]
         [Route("api/reportes/doctores")]
-        public IMDResponse<EntDoctoresReporte> CObtenerReporteDoctores(
+        public IMDResponse<EntReporteDoctores> CObtenerReporteDoctores(
             [FromUri]string psIdColaborador = null, [FromUri]string psColaborador = null, [FromUri]string psIdTipoDoctor = null, [FromUri]string psIdEspecialidad = null,
             [FromUri]string psIdConsulta = null, [FromUri]string psIdEstatusConsulta = null, [FromUri]string psRFC = null, [FromUri]string psNumSala = null,
             [FromUri]DateTime? pdtFechaProgramadaInicio = null, [FromUri]DateTime? pdtFechaProgramadaFinal = null, [FromUri]DateTime? pdtFechaConsultaInicio = null, [FromUri]DateTime? pdtFechaConsultaFin = null)
         {
-            IMDResponse<EntDoctoresReporte> response = new IMDResponse<EntDoctoresReporte>();
+            IMDResponse<EntReporteDoctores> response = new IMDResponse<EntReporteDoctores>();
 
             string metodo = nameof(this.CObtenerReporteDoctores);
             logger.Info(IMDSerialize.Serialize(67823458574347, $"Inicia {metodo}([FromUri]string psIdColaborador = null, [FromUri]string psColaborador = null, [FromUri]string psIdTipoDoctor = null, [FromUri]string psIdEspecialidad = null, [FromUri]string psIdConsulta = null, [FromUri]string psIdEstatusConsulta = null, [FromUri]string psRFC = null, [FromUri]string psNumSala = null, [FromUri]DateTime ? pdtFechaProgramadaInicio = null, [FromUri]DateTime ? pdtFechaProgramadaFinal = null, [FromUri]DateTime ? pdtFechaConsultaInicio = null, [FromUri]DateTime ? pdtFechaConsultaFin = null)", psIdColaborador, psColaborador, psIdTipoDoctor, psIdEspecialidad, psIdConsulta, psIdEstatusConsulta, psRFC, psNumSala, pdtFechaProgramadaInicio, pdtFechaProgramadaFinal, pdtFechaConsultaInicio, pdtFechaConsultaFin));
@@ -142,7 +140,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458575124;
-                response.Message = "Ocurrió un error inesperado al consultar la información de doctores para el reporte en la base de datos";
+                response.Message = "Ocurrió un error inesperado al consultar la información de doctores para el reporte en la base de datos.";
 
                 logger.Error(IMDSerialize.Serialize(67823458575124, $"Error en {metodo}([FromUri]string psIdColaborador = null, [FromUri]string psColaborador = null, [FromUri]string psIdTipoDoctor = null, [FromUri]string psIdEspecialidad = null, [FromUri]string psIdConsulta = null, [FromUri]string psIdEstatusConsulta = null, [FromUri]string psRFC = null, [FromUri]string psNumSala = null, [FromUri]DateTime ? pdtFechaProgramadaInicio = null, [FromUri]DateTime ? pdtFechaProgramadaFinal = null, [FromUri]DateTime ? pdtFechaConsultaInicio = null, [FromUri]DateTime ? pdtFechaConsultaFin = null): {ex.Message}", psIdColaborador, psColaborador, psIdTipoDoctor, psIdEspecialidad, psIdConsulta, psIdEstatusConsulta, psRFC, psNumSala, pdtFechaProgramadaInicio, pdtFechaProgramadaFinal, pdtFechaConsultaInicio, pdtFechaConsultaFin, ex, response));
             }
@@ -179,7 +177,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             }
             catch (Exception ex)
             {
-                response = Request.CreateResponse(HttpStatusCode.InternalServerError, "No se pudo generar el reporte de doctores");
+                response = Request.CreateResponse(HttpStatusCode.InternalServerError, "No se pudo generar el reporte de doctores.");
 
                 logger.Error(IMDSerialize.Serialize(67823458576678, $"Error en {metodo}([FromUri]string psIdColaborador = null, [FromUri]string psColaborador = null, [FromUri]string psIdTipoDoctor = null, [FromUri]string psIdEspecialidad = null, [FromUri]string psIdConsulta = null, [FromUri]string psIdEstatusConsulta = null, [FromUri]string psRFC = null, [FromUri]string psNumSala = null, [FromUri]DateTime ? pdtFechaProgramadaInicio = null, [FromUri]DateTime ? pdtFechaProgramadaFinal = null, [FromUri]DateTime ? pdtFechaConsultaInicio = null, [FromUri]DateTime ? pdtFechaConsultaFin = null): {ex.Message}", psIdColaborador, psColaborador, psIdTipoDoctor, psIdEspecialidad, psIdConsulta, psIdEstatusConsulta, psRFC, psNumSala, pdtFechaProgramadaInicio, pdtFechaProgramadaFinal, pdtFechaConsultaInicio, pdtFechaConsultaFin, ex, response));
             }

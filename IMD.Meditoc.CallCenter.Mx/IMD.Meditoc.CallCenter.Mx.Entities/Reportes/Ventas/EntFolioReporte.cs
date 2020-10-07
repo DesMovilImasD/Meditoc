@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IMD.Meditoc.CallCenter.Mx.Entities.Reportes.Ventas
 {
-    public class EntFolio
+    public class EntFolioReporte
     {
         public int iIdFolio { get; set; }
         public string sFolio { get; set; }
@@ -21,6 +21,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Reportes.Ventas
         public string sFechaVencimiento { get; set; }
         public EntEmpresa entEmpresa { get; set; }
         public EntProducto entProducto { get; set; }
-        public EntOrden entOrden { get; set; }
+        public EntOrdenReporte entOrden { get; set; }
     }
 }

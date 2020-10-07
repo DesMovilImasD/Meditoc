@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IMD.Meditoc.CallCenter.Mx.Entities.Reportes
+namespace IMD.Meditoc.CallCenter.Mx.Entities.Reportes.Doctores
 {
-    public class EntConsulta
+    public class EntConsultaReporte
     {
         public int iIdConsulta { get; set; }
         public DateTime? dtFechaProgramadaInicio { get; set; }

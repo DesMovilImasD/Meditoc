@@ -5,12 +5,8 @@ using IMD.Meditoc.CallCenter.Mx.Entities.Folio;
 using log4net;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
 {
@@ -19,14 +15,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
         private static readonly ILog logger = LogManager.GetLogger(typeof(DatFolio));
         public Database database;
         IMDCommonData imdCommonData;
-        string saveFolio;
-        string loginApp;
-        string getFolios;
-        string updFechaVencimiento;
-        string delFolioEmpresa;
-        string updTerminosYCondiciones;
-        string updPassword;
-        string saveFolioVC;
+        string spSaveFolio;
+        string spGetloginApp;
+        string spGetFolios;
+        string spUpdFechaVencimiento;
+        string spDelFolioEmpresa;
+        string spUpdTerminosYCondiciones;
+        string spUpdPassword;
+        string spSaveFolioVC;
 
         public DatFolio()
         {
@@ -34,14 +30,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             string FsConnectionString = "cnxMeditoc";
             database = imdCommonData.DGetDatabase(FsConnectionString, "MeditocComercial", "Meditoc1");
 
-            saveFolio = "sva_meditoc_save_folio";
-            loginApp = "svc_app_login";
-            getFolios = "svc_meditoc_folios";
-            updFechaVencimiento = "sva_meditoc_upd_foliovigencia";
-            delFolioEmpresa = "sva_meditoc_del_folioempresa";
-            updTerminosYCondiciones = "svc_meditoc_upd_terminosyCondiciones";
-            updPassword = "svc_meditoc_upd_updPassword";
-            saveFolioVC = "sva_meditoc_save_foliovc";
+            spSaveFolio = "sva_meditoc_save_folio";
+            spGetloginApp = "svc_app_login";
+            spGetFolios = "svc_meditoc_folios";
+            spUpdFechaVencimiento = "sva_meditoc_upd_foliovigencia";
+            spDelFolioEmpresa = "sva_meditoc_del_folioempresa";
+            spUpdTerminosYCondiciones = "svc_meditoc_upd_terminosyCondiciones";
+            spUpdPassword = "svc_meditoc_upd_updPassword";
+            spSaveFolioVC = "sva_meditoc_save_foliovc";
 
         }
 
@@ -56,7 +52,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             try
             {
 
-                using (DbCommand dbCommand = database.GetStoredProcCommand(saveFolio))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spSaveFolio))
                 {
                     database.AddInParameter(dbCommand, "piIdEmpresa", DbType.Int32, entFolio.iIdEmpresa);
                     database.AddInParameter(dbCommand, "piIdProducto", DbType.Int32, entFolio.iIdProducto);
@@ -92,7 +88,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(loginApp))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spGetloginApp))
                 {
                     database.AddInParameter(dbCommand, "psUsuario", DbType.String, sUsuario);
                     database.AddInParameter(dbCommand, "psPassword", DbType.String, sPassword);
@@ -120,7 +116,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(getFolios))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spGetFolios))
                 {
                     database.AddInParameter(dbCommand, "piIdFolio", DbType.Int32, piIdFolio);
                     database.AddInParameter(dbCommand, "piIdEmpresa", DbType.Int32, piIdEmpresa);
@@ -155,7 +151,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(updFechaVencimiento))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spUpdFechaVencimiento))
                 {
                     database.AddInParameter(dbCommand, "piIdFolio", DbType.Int32, piIdFolio);
                     database.AddInParameter(dbCommand, "piIdEmpresa", DbType.Int32, piIdEmpresa);
@@ -184,7 +180,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(delFolioEmpresa))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spDelFolioEmpresa))
                 {
                     database.AddInParameter(dbCommand, "piIdFolio", DbType.Int32, piIdFolio);
                     database.AddInParameter(dbCommand, "piIdEmpresa", DbType.Int32, piIdEmpresa);
@@ -212,7 +208,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(updTerminosYCondiciones))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spUpdTerminosYCondiciones))
                 {
                     database.AddInParameter(dbCommand, "psFolio", DbType.String, sFolio);
 
@@ -239,7 +235,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             try
             {
 
-                using (DbCommand dbCommand = database.GetStoredProcCommand(updPassword))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spUpdPassword))
                 {
                     database.AddInParameter(dbCommand, "psFolio", DbType.String, sFolio);
                     database.AddInParameter(dbCommand, "psPassword", DbType.String, sPassword);
@@ -251,7 +247,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             catch (Exception ex)
             {
                 response.Code = 67823458503640;
-                response.Message = "Ocurrió un error inesperado en la base de datos al actualizar la contraseña de la cuenta";
+                response.Message = "Ocurrió un error inesperado en la base de datos al actualizar la contraseña de la cuenta.";
 
                 logger.Error(IMDSerialize.Serialize(67823458503640, $"Error en {metodo}(string sFolio = null, string sPassword = null): {ex.Message}", sFolio, sPassword, ex, response));
             }
@@ -267,7 +263,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(saveFolioVC))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spSaveFolioVC))
                 {
                     database.AddInParameter(dbCommand, "piIdEmpresa", DbType.Int32, piIdEmpresa);
                     database.AddInParameter(dbCommand, "piIdProducto", DbType.Int32, piIdProducto);
@@ -285,7 +281,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             catch (Exception ex)
             {
                 response.Code = 67823458604650;
-                response.Message = "Ocurrió un error inesperado en la base de datos al guardar el folio de venta calle";
+                response.Message = "Ocurrió un error inesperado en la base de datos al guardar el folio de venta calle.";
 
                 logger.Error(IMDSerialize.Serialize(67823458604650, $"Error en {metodo}(int piIdEmpresa, int piIdProducto, int piIdOrigen, string psFolio, string psPassword, int piIdUsuarioMod): {ex.Message}", piIdEmpresa, piIdProducto, piIdOrigen, psFolio, psPassword, piIdUsuarioMod, ex, response));
             }

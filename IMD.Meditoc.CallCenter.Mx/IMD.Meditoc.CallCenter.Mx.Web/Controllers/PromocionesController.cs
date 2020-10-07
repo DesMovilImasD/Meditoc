@@ -1,15 +1,11 @@
-﻿using IMD.Admin.Conekta.Business;
-using IMD.Admin.Conekta.Entities;
-using IMD.Admin.Conekta.Entities.Promotions;
-using IMD.Admin.Utilities.Business;
+﻿using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
+using IMD.Meditoc.CallCenter.Mx.Business.Promociones;
+using IMD.Meditoc.CallCenter.Mx.Entities.Promociones;
 using IMD.Meditoc.CallCenter.Mx.Web.Tokens;
 using log4net;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
@@ -37,7 +33,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458201387;
-                response.Message = "Ocurrió un error al intentar activar el cupón";
+                response.Message = "Ocurrió un error al intentar activar el cupón.";
 
                 logger.Error(IMDSerialize.Serialize(67823458201387, $"Error en {metodo}([FromBody]EntCreateCupon entCreateCupon, [FromUri]int? piIdUsuario = null): {ex.Message}", entCreateCupon, piIdUsuario, ex, response));
             }
@@ -61,7 +57,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458202941;
-                response.Message = "Ocurrió un error al intentar aplicar el cupón";
+                response.Message = "Ocurrió un error al intentar aplicar el cupón.";
 
                 logger.Error(IMDSerialize.Serialize(67823458202941, $"Error en {metodo}([FromUri]int piIdCupon, [FromUri]int? piIdUsuario = null): {ex.Message}", piIdCupon, piIdUsuario, ex, response));
             }
@@ -84,7 +80,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458204495;
-                response.Message = "Ocurrió un error al intentar validar el cupón";
+                response.Message = "Ocurrió un error al intentar validar el cupón.";
 
                 logger.Error(IMDSerialize.Serialize(67823458204495, $"Error en {metodo}([FromUri]string psCodigo = null, [FromUri]int? piIdCupon = null): {ex.Message}", psCodigo, piIdCupon, ex, response));
             }
@@ -108,7 +104,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458206049;
-                response.Message = "Ocurrió un error al intentar desactivar el cupón";
+                response.Message = "Ocurrió un error al intentar desactivar el cupón.";
 
                 logger.Error(IMDSerialize.Serialize(67823458206049, $"Error en {metodo}([FromUri]int piIdCupon, [FromUri]int? piIdUsuario = null): {ex.Message}", piIdCupon, piIdUsuario, ex, response));
             }
@@ -132,7 +128,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458207603;
-                response.Message = "Ocurrió un error al intentar consultar los cupones";
+                response.Message = "Ocurrió un error al intentar consultar los cupones.";
 
                 logger.Error(IMDSerialize.Serialize(67823458207603, $"Error en {metodo}([FromUri]int? piIdCupon = null, [FromUri]int? piIdCuponCategoria = null, [FromUri]string psDescripcion = null, [FromUri]string psCodigo = null, [FromUri]DateTime? pdtFechaVencimientoInicio = null, [FromUri]DateTime? pdtFechaVencimientoFin = null, [FromUri]DateTime? pdtFechaCreacionInicio = null, [FromUri]DateTime? pdtFechaCreacionFin = null, [FromUri]bool pbActivo = true, [FromUri]bool pbBaja = false): {ex.Message}", piIdCupon, piIdCuponCategoria, psDescripcion, psCodigo, pdtFechaVencimientoInicio, pdtFechaVencimientoFin, pdtFechaCreacionInicio, pdtFechaCreacionFin, pbActivo, pbBaja, ex, response));
             }
@@ -179,7 +175,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458238683;
-                response.Message = "Ocurrió un error inesperado al consultar los códigos de descuento";
+                response.Message = "Ocurrió un error inesperado al consultar los códigos de descuento.";
 
                 logger.Error(IMDSerialize.Serialize(67823458238683, $"Error en {metodo}(): {ex.Message}", ex, response));
             }

@@ -1,17 +1,14 @@
-﻿using IMD.Admin.Conekta.Entities;
-using IMD.Admin.Conekta.Data;
-using IMD.Admin.Utilities.Business;
+﻿using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
+using IMD.Meditoc.CallCenter.Mx.Data.Promociones;
+using IMD.Meditoc.CallCenter.Mx.Entities.Promociones;
 using log4net;
-using Newtonsoft.Json.Schema;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Web;
-using IMD.Admin.Conekta.Entities.Promotions;
 
-namespace IMD.Admin.Conekta.Business
+namespace IMD.Meditoc.CallCenter.Mx.Business.Promociones
 {
     public class BusPromociones
     {
@@ -44,7 +41,7 @@ namespace IMD.Admin.Conekta.Business
                 if (entCreateCupon == null)
                 {
                     response.Code = 67823458220812;
-                    response.Message = "No se ingresó información de cupón";
+                    response.Message = "No se ingresó información de cupón.";
                     return response;
                 }
 
@@ -54,7 +51,7 @@ namespace IMD.Admin.Conekta.Business
                     if (entCreateCupon.fiLongitudCodigo <= 0)
                     {
                         response.Code = 67823458221589;
-                        response.Message = "No se especificó la longitud del código de cupón nuevo";
+                        response.Message = "No se especificó la longitud del código de cupón nuevo.";
                         return response;
                     }
 
@@ -78,7 +75,7 @@ namespace IMD.Admin.Conekta.Business
                     if (respuestaVerificarCodigo.Result.Count > 0)
                     {
                         response.Code = 67823458222366;
-                        response.Message = "Ya hay un cupón activo con el código proporcionado";
+                        response.Message = "Ya hay un cupón activo con el código proporcionado.";
                         return response;
                     }
                 }
@@ -94,7 +91,7 @@ namespace IMD.Admin.Conekta.Business
                     else
                     {
                         response.Code = 67823458223143;
-                        response.Message = "Los días activos del cupón deben ser mayores o iguales a 1 día. Si no requiere días de vencimiento, deje el campo vacío";
+                        response.Message = "Los días activos del cupón deben ser mayores o iguales a 1 día. Si no requiere días de vencimiento, deje el campo vacío.";
                         return response;
                     }
                 }
@@ -103,7 +100,7 @@ namespace IMD.Admin.Conekta.Business
                 if (entCreateCupon.fiTotalLanzamiento < 1)
                 {
                     response.Code = 67823458223920;
-                    response.Message = "No se especificó el total de cupones a activar. El total de lanzamiento debe ser mínimo 1 cupón";
+                    response.Message = "No se especificó el total de cupones a activar. El total de lanzamiento debe ser mínimo 1 cupón.";
                     return response;
                 }
 
@@ -118,7 +115,7 @@ namespace IMD.Admin.Conekta.Business
                         if (entCreateCupon.fnMontoDescuento <= 0d || entCreateCupon.fnMontoDescuento == null)
                         {
                             response.Code = 67823458224697;
-                            response.Message = "El descuento no puede ser de monto igual o menor a $0.00 pesos";
+                            response.Message = "El descuento no puede ser de monto igual o menor a $0.00 pesos.";
                             return response;
                         }
 
@@ -135,7 +132,7 @@ namespace IMD.Admin.Conekta.Business
                         if (entCreateCupon.fnPorcentajeDescuento <= 0d || entCreateCupon.fnPorcentajeDescuento > 1 || entCreateCupon.fnPorcentajeDescuento == null)
                         {
                             response.Code = 67823458225474;
-                            response.Message = "El porcentaje de descuento no puede ser 0% o más de 100%";
+                            response.Message = "El porcentaje de descuento no puede ser 0% o más de 100%.";
                             return response;
                         }
 
@@ -146,7 +143,7 @@ namespace IMD.Admin.Conekta.Business
 
                     default:
                         response.Code = 67823458226251;
-                        response.Message = "No se ingresó el tipo de promoción de cupón";
+                        response.Message = "No se ingresó el tipo de promoción de cupón.";
                         break;
                 }
 
@@ -157,13 +154,13 @@ namespace IMD.Admin.Conekta.Business
                 }
 
                 response.Code = 0;
-                response.Message = "El cupón se guardó correctamente";
+                response.Message = "El cupón ha sido activado correctamente.";
                 response.Result = true;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458190509;
-                response.Message = "Ocurrió un error al intentar activar el cupón";
+                response.Message = "Ocurrió un error al intentar activar el cupón.";
 
                 logger.Error(IMDSerialize.Serialize(67823458190509, $"Error en {metodo}(EntCreateCupon entCreateCupon, int? piIdUsuario = null): {ex.Message}", entCreateCupon, piIdUsuario, ex, response));
             }
@@ -203,13 +200,13 @@ namespace IMD.Admin.Conekta.Business
                 }
 
                 response.Code = 0;
-                response.Message = "Código aplicado";
+                response.Message = "Código aplicado.";
                 response.Result = true;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458196725;
-                response.Message = "Ocurrió un error al intentar aplicar el código";
+                response.Message = "Ocurrió un error al intentar aplicar el código.";
 
                 logger.Error(IMDSerialize.Serialize(67823458196725, $"Error en {metodo}(int piIdCupon, int? piIdUsuario = null): {ex.Message}", piIdCupon, piIdUsuario, ex, response));
             }
@@ -248,7 +245,7 @@ namespace IMD.Admin.Conekta.Business
                     else
                     {
                         response.Code = 67823458227028;
-                        response.Message = "No se ingresó un código válido";
+                        response.Message = "No se ingresó un código válido.";
                         return response;
                     }
                 }
@@ -261,12 +258,12 @@ namespace IMD.Admin.Conekta.Business
                 if (respuestaCupon.Result.Count == 0)
                 {
                     response.Code = 67823458227805;
-                    response.Message = "Código no válido";
+                    response.Message = "Código no válido.";
                     return response;
                 }
 
                 EntCupon cupon = respuestaCupon.Result.First();
-                string mensajeCodigoExpirado = "El código ha expirado";
+                string mensajeCodigoExpirado = "El código ha expirado.";
 
                 if (!cupon.fbActivo || cupon.fbBaja)
                 {
@@ -294,13 +291,13 @@ namespace IMD.Admin.Conekta.Business
                 }
 
                 response.Code = 0;
-                response.Message = "Código validado";
+                response.Message = "Código validado.";
                 response.Result = cupon;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458198279;
-                response.Message = "Ocurrió un error al intentar validar el código";
+                response.Message = "Ocurrió un error al intentar validar el código.";
 
                 logger.Error(IMDSerialize.Serialize(67823458198279, $"Error en {metodo}(string psCodigo = null, int? piIdCupon = null): {ex.Message}", psCodigo, piIdCupon, ex, response));
             }
@@ -327,7 +324,7 @@ namespace IMD.Admin.Conekta.Business
                 if (piIdCupon <= 0)
                 {
                     response.Code = 67823458230913;
-                    response.Message = "Código no válido";
+                    response.Message = "Código no válido.";
                     return response;
                 }
 
@@ -338,7 +335,7 @@ namespace IMD.Admin.Conekta.Business
                 }
 
                 response.Code = 0;
-                response.Message = "El código ha sido desactivado";
+                response.Message = "El código ha sido desactivado.";
                 response.Result = true;
             }
             catch (Exception ex)
@@ -402,7 +399,7 @@ namespace IMD.Admin.Conekta.Business
                     cupon.fnMontoDescuento = dr.ConvertTo<double?>("nMontoDescuento");
                     cupon.sMontoDescuento = cupon.fnMontoDescuento == null ? null : ((double)cupon.fnMontoDescuento / 100d).ToString("C");
                     cupon.fnPorcentajeDescuento = dr.ConvertTo<double?>("nPorcentajeDescuento");
-                    cupon.sPorcentajeDescuento = cupon.fnPorcentajeDescuento == null ? null: ((double)cupon.fnPorcentajeDescuento).ToString("#%");
+                    cupon.sPorcentajeDescuento = cupon.fnPorcentajeDescuento == null ? null : ((double)cupon.fnPorcentajeDescuento).ToString("#%");
                     cupon.fsCodigo = dr.ConvertTo<string>("sCodigo");
                     cupon.fsDescripcion = dr.ConvertTo<string>("sDescripcion");
                     cupon.fsDescripcionCategoria = dr.ConvertTo<string>("sDescripcionCategoria");
@@ -411,7 +408,7 @@ namespace IMD.Admin.Conekta.Business
                 }
 
                 response.Code = 0;
-                response.Message = "Lista de cupones obtenida";
+                response.Message = "Lista de cupones obtenida.";
                 response.Result = listaCupones;
             }
             catch (Exception ex)
@@ -443,7 +440,7 @@ namespace IMD.Admin.Conekta.Business
                 if (piLongitud < 6)
                 {
                     response.Code = 67823458231690;
-                    response.Message = "La longitud mínima para un cupón es de 6 caractéres";
+                    response.Message = "La longitud mínima para un cupón es de 6 caractéres.";
                     return response;
                 }
 
@@ -463,7 +460,7 @@ namespace IMD.Admin.Conekta.Business
                 if (string.IsNullOrWhiteSpace(sCodigoEncr))
                 {
                     response.Code = 67823458232467;
-                    response.Message = "No se pudo generar el código del cupón";
+                    response.Message = "No se pudo generar el código del cupón.";
                     return response;
                 }
                 response.Code = 0;
@@ -472,7 +469,7 @@ namespace IMD.Admin.Conekta.Business
             catch (Exception ex)
             {
                 response.Code = 67823458195171;
-                response.Message = "Ocurrió un error al generar el cupón";
+                response.Message = "Ocurrió un error al generar el cupón.";
 
                 logger.Error(IMDSerialize.Serialize(67823458195171, $"Error en {metodo}(int piLongitud): {ex.Message}", piLongitud, ex, response));
             }
@@ -507,7 +504,7 @@ namespace IMD.Admin.Conekta.Business
                 if (nuevoCuponID == 0)
                 {
                     response.Code = 67823458233244;
-                    response.Message = "No se pudo generar el nuevo cupón";
+                    response.Message = "No se pudo generar el nuevo cupón.";
                     return response;
                 }
 
@@ -517,7 +514,7 @@ namespace IMD.Admin.Conekta.Business
             catch (Exception ex)
             {
                 response.Code = 67823458212265;
-                response.Message = "Ocurrió un error inesperado al generar el nuevo ID del cupón";
+                response.Message = "Ocurrió un error inesperado al generar el nuevo ID del cupón.";
 
                 logger.Error(IMDSerialize.Serialize(67823458212265, $"Error en {metodo}(): {ex.Message}", ex, response));
             }
@@ -558,19 +555,19 @@ namespace IMD.Admin.Conekta.Business
                 {
                     response.Code = 0;
                     response.Result = false;
-                    response.Message = "El usuario ya ha aplicado este código";
+                    response.Message = "El usuario ya ha aplicado este código.";
                 }
                 else
                 {
                     response.Code = 0;
                     response.Result = true;
-                    response.Message = "Código aplicable al usuario";
+                    response.Message = "Código aplicable al usuario.";
                 }
             }
             catch (Exception ex)
             {
                 response.Code = 67823458215373;
-                response.Message = "Ocurrió un error inesperado al verificar el código aplicado";
+                response.Message = "Ocurrió un error inesperado al verificar el código aplicado.";
 
                 logger.Error(IMDSerialize.Serialize(67823458215373, $"Error en {metodo}(int piIdCupon, string psEmail): {ex.Message}", piIdCupon, psEmail, ex, response));
             }
@@ -608,13 +605,13 @@ namespace IMD.Admin.Conekta.Business
                 lstCodigos = lstCodigos.GroupBy(x => x).Select(x => x.Key).OrderBy(x => x).ToList();
 
                 response.Code = 0;
-                response.Message = "Códigos obtenidos";
+                response.Message = "Códigos obtenidos.";
                 response.Result = lstCodigos;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458237129;
-                response.Message = "Ocurrió un error inesperado al consultar los códigos";
+                response.Message = "Ocurrió un error inesperado al consultar los códigos.";
 
                 logger.Error(IMDSerialize.Serialize(67823458237129, $"Error en {metodo}(): {ex.Message}", ex, response));
             }

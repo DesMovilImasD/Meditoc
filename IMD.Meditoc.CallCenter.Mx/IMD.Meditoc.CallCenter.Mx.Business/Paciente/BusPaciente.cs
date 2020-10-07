@@ -6,9 +6,6 @@ using log4net;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IMD.Meditoc.CallCenter.Mx.Business.Paciente
 {
@@ -49,7 +46,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Paciente
             catch (Exception ex)
             {
                 response.Code = 67823458421278;
-                response.Message = "Ocurrió un error inesperado al guardar los datos del paciente";
+                response.Message = "Ocurrió un error inesperado al guardar los datos del paciente.";
 
                 logger.Error(IMDSerialize.Serialize(67823458421278, $"Error en {metodo}(EntPaciente entPaciente): {ex.Message}", entPaciente, ex, response));
             }
@@ -100,14 +97,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Paciente
                 }
 
                 response.Code = 0;
-                response.Message = "Pacientes consultados";
+                response.Message = lstPacientes.Count == 0 ? "No se encontraron pacientes en la lista." : "La lista de pacientes ha sido obtenida.";
                 response.Result = lstPacientes;
 
             }
             catch (Exception ex)
             {
                 response.Code = 67823458517626;
-                response.Message = "Ocurrió un error inesperado al obtener la lista de pacientes";
+                response.Message = "Ocurrió un error inesperado al obtener la lista de pacientes.";
 
                 logger.Error(IMDSerialize.Serialize(67823458517626, $"Error en {metodo}(int? piIdPaciente = null, int? piIdFolio = null): {ex.Message}", piIdPaciente, piIdFolio, ex, response));
             }
@@ -126,7 +123,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Paciente
                 if (entUpdPaciente == null)
                 {
                     response.Code = -443768723647;
-                    response.Message = "No se ingresaron datos";
+                    response.Message = "No se ingresaron datos del paciente.";
                     return response;
                 }
 
@@ -146,13 +143,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Paciente
                 }
 
                 response.Code = 0;
-                response.Message = "Datos del paciente actualizados";
+                response.Message = "Los datos del paciente han sido actualizados.";
                 response.Result = true;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458579786;
-                response.Message = "Ocurrió un error inesperado al actualizar los datos del paciente";
+                response.Message = "Ocurrió un error inesperado al actualizar los datos del paciente.";
 
                 logger.Error(IMDSerialize.Serialize(67823458579786, $"Error en {metodo}(EntUpdPaciente entUpdPaciente): {ex.Message}", entUpdPaciente, ex, response));
             }

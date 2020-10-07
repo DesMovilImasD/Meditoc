@@ -8,11 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IMD.Meditoc.CallCenter.Mx.Business.Correo
 {
@@ -25,7 +22,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Correo
             datCorreo = new DatCorreo();
         }
 
-        public EntCorreo oEnvioMail = new EntCorreo();
+        public EntCorreo entCorreo = new EntCorreo();
 
         /// <summary>
         /// Método para el envio de correos
@@ -34,16 +31,16 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Correo
         /// <param name="sMailTo">Correo destino</param>
         /// <param name="formatos">Lista de archivos a adjuntar para enviar</param>
 
-        private void m_DatosEnvioMailINC(string sTipo, string sUsuario, string sClave, string sAsunto, string sMensaje)
+        private void BDatosEnvioMailINC(string sTipo, string sUsuario, string sClave, string sAsunto, string sMensaje)
         {
             try
             {
 
-                oEnvioMail.sServerMail = ConfigurationManager.AppSettings["ServerMail"].ToString();
+                entCorreo.sServerMail = ConfigurationManager.AppSettings["ServerMail"].ToString();
 
-                oEnvioMail.bSSLMail = Convert.ToBoolean(ConfigurationManager.AppSettings["SSLMail"]);
+                entCorreo.bSSLMail = Convert.ToBoolean(ConfigurationManager.AppSettings["SSLMail"]);
 
-                oEnvioMail.iPortMail = Convert.ToInt16(ConfigurationManager.AppSettings["PortMail"]);
+                entCorreo.iPortMail = Convert.ToInt16(ConfigurationManager.AppSettings["PortMail"]);
 
 
                 sUsuario = ConfigurationManager.AppSettings["UserMail_GENERAL"];
@@ -51,11 +48,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Correo
                 sClave = ConfigurationManager.AppSettings["PassMail_GENERAL"];
 
 
-                oEnvioMail.sUserMail = sUsuario;
-                oEnvioMail.sPassMail = sClave;
-                oEnvioMail.sAsuntoMail = sAsunto;
-                oEnvioMail.sMensajeMail = sMensaje;
-                oEnvioMail.bAdjuntarFile = true;
+                entCorreo.sUserMail = sUsuario;
+                entCorreo.sPassMail = sClave;
+                entCorreo.sAsuntoMail = sAsunto;
+                entCorreo.sMensajeMail = sMensaje;
+                entCorreo.bAdjuntarFile = true;
             }
             catch (Exception a)
             {
@@ -63,17 +60,17 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Correo
             }
         }
 
-        public IMDResponse<bool> m_EnviarEmail(string sTipo, string sUsuario, string sClave, string sAsunto, string sMensaje, string sMailTo, string sFile, string sContentType)
+        public IMDResponse<bool> BEnviarEmail(string sTipo, string sUsuario, string sClave, string sAsunto, string sMensaje, string sMailTo, string sFile, string sContentType)
         {
-            oEnvioMail.sFile = sFile;
+            entCorreo.sFile = sFile;
             IMDResponse<bool> response = new IMDResponse<bool>();
 
             try
             {
 
-                this.m_DatosEnvioMailINC(sTipo, sUsuario, sClave, sAsunto, sMensaje);
+                this.BDatosEnvioMailINC(sTipo, sUsuario, sClave, sAsunto, sMensaje);
                 MailMessage correo = new MailMessage();
-                correo.From = new MailAddress(oEnvioMail.sUserMail);
+                correo.From = new MailAddress(entCorreo.sUserMail);
                 correo.To.Add(sMailTo);
 
                 correo.Subject = sAsunto;
@@ -81,15 +78,15 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Correo
                 correo.IsBodyHtml = true;
                 correo.Priority = MailPriority.Normal;
 
-                correo.Headers.Add("Disposition-Notification-To", oEnvioMail.sUserMail);
+                correo.Headers.Add("Disposition-Notification-To", entCorreo.sUserMail);
 
                 SmtpClient smtp = new SmtpClient();
-                smtp.Host = oEnvioMail.sServerMail;
-                smtp.Port = oEnvioMail.iPortMail;
-                smtp.Credentials = new NetworkCredential(oEnvioMail.sUserMail, oEnvioMail.sPassMail);
-                smtp.EnableSsl = oEnvioMail.bSSLMail;
+                smtp.Host = entCorreo.sServerMail;
+                smtp.Port = entCorreo.iPortMail;
+                smtp.Credentials = new NetworkCredential(entCorreo.sUserMail, entCorreo.sPassMail);
+                smtp.EnableSsl = entCorreo.bSSLMail;
 
-                logger.Info(IMDSerialize.Serialize(66823458253448, $"Inicia Envio de coreos", oEnvioMail));
+                logger.Info(IMDSerialize.Serialize(66823458253448, $"Inicia Envio de coreos", entCorreo));
                 //logger.Info(IMDSerialize.Serialize(66823458253447, $"Inicia Envio de coreos", smtp));
                 logger.Info(IMDSerialize.Serialize(66823458253445, $"Inicia Envio de coreos", correo));
 
@@ -101,22 +98,23 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Correo
             }
             catch (Exception Ex)
             {
-                logger.Info(IMDSerialize.Serialize(66823458253449, $"Error Envio de coreos", Ex));
                 response.Code = 66823458253449;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al enviar el correo electrónico.";
+
+                logger.Info(IMDSerialize.Serialize(66823458253449, $"Error Envio de coreos", Ex, response));
             }
 
             return response;
         }
 
 
-        public void m_EnviarMailArchivo(string sTipo, string sUsuario, string sClave, string sAsunto, string sMensaje, string sMailTo, List<string> sFile, string sContentType, bool bfile)
+        public void BEnviarMailArchivo(string sTipo, string sUsuario, string sClave, string sAsunto, string sMensaje, string sMailTo, List<string> sFile, string sContentType, bool bfile)
         {
             try
             {
-                this.m_DatosEnvioMailINC(sTipo, sUsuario, sClave, sAsunto, sMensaje);
+                this.BDatosEnvioMailINC(sTipo, sUsuario, sClave, sAsunto, sMensaje);
                 MailMessage correo = new MailMessage();
-                correo.From = new MailAddress(oEnvioMail.sUserMail);
+                correo.From = new MailAddress(entCorreo.sUserMail);
                 correo.To.Add(sMailTo);
 
                 if (bfile)
@@ -134,18 +132,18 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Correo
                     }
 
                 }
-                correo.Subject = oEnvioMail.sAsuntoMail;
-                correo.Body = oEnvioMail.sMensajeMail;
+                correo.Subject = entCorreo.sAsuntoMail;
+                correo.Body = entCorreo.sMensajeMail;
                 correo.IsBodyHtml = true;
                 correo.Priority = MailPriority.Normal;
 
-                correo.Headers.Add("Disposition-Notification-To", oEnvioMail.sUserMail);
+                correo.Headers.Add("Disposition-Notification-To", entCorreo.sUserMail);
 
                 SmtpClient smtp = new SmtpClient();
-                smtp.Host = oEnvioMail.sServerMail;
-                smtp.Port = oEnvioMail.iPortMail;
-                smtp.Credentials = new NetworkCredential(oEnvioMail.sUserMail, oEnvioMail.sPassMail);
-                smtp.EnableSsl = oEnvioMail.bSSLMail;
+                smtp.Host = entCorreo.sServerMail;
+                smtp.Port = entCorreo.iPortMail;
+                smtp.Credentials = new NetworkCredential(entCorreo.sUserMail, entCorreo.sPassMail);
+                smtp.EnableSsl = entCorreo.bSSLMail;
 
 
 
@@ -158,7 +156,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Correo
             }
         }
 
-        public string cargatxt(string path, ref string serror)
+        public string BCargaTxt(string path, ref string serror)
         {
             string texto = null;
             try
@@ -183,10 +181,21 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Correo
 
             try
             {
-                if (!string.IsNullOrWhiteSpace(psOrderId))
+                if (string.IsNullOrWhiteSpace(psOrderId))
                 {
-                    return datCorreo.DSaveCorreo(psOrderId, psBody, psTo, psSubject);
+                    response.Code = -3468763467;
+                    response.Message = "No se ingresó la orden para guardar el correo.";
+                    return response;
                 }
+                IMDResponse<bool> resSaveCorreo = datCorreo.DSaveCorreo(psOrderId, psBody, psTo, psSubject);
+                if (resSaveCorreo.Code != 0)
+                {
+                    return resSaveCorreo;
+                }
+
+                response.Code = 0;
+                response.Message = "El correo de la orden ha sido guardada correctamente.";
+                response.Result = true;
             }
             catch (Exception ex)
             {
@@ -210,7 +219,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Correo
                 if (string.IsNullOrWhiteSpace(psOrderId))
                 {
                     response.Code = -345673;
-                    response.Message = "No se especificó la orden";
+                    response.Message = "No se especificó la orden para guardar el correo.";
                     return response;
                 }
 
@@ -223,7 +232,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Correo
                 if (resGetData.Result.Rows.Count != 1)
                 {
                     response.Code = -345673;
-                    response.Message = "No se encontró la orden";
+                    response.Message = "La orden no existe en el registro de correos del sistema.";
                     return response;
                 }
 
@@ -237,21 +246,21 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Correo
                     sTo = dr.ConvertTo<string>("sTo"),
                 };
 
-                IMDResponse<bool> resEnviar = this.m_EnviarEmail("", "", "", entOrderEmail.sSubject + " (Reenviado)", entOrderEmail.sBody, entOrderEmail.sTo, "", "");
+                IMDResponse<bool> resEnviar = this.BEnviarEmail("", "", "", entOrderEmail.sSubject + " (Reenviado)", entOrderEmail.sBody, entOrderEmail.sTo, "", "");
                 if (resEnviar.Code != 0)
                 {
                     return resEnviar;
                 }
 
                 response.Code = 0;
-                response.Message = $"Se ha reenviado el detalle de la orden a {entOrderEmail.sTo}";
+                response.Message = $"Se ha reenviado el detalle de la orden a {entOrderEmail.sTo}.";
                 response.Result = true;
 
             }
             catch (Exception ex)
             {
                 response.Code = 67823458629514;
-                response.Message = "Ocurrió un error inesperado al reenviar el correo del cliente";
+                response.Message = "Ocurrió un error inesperado al reenviar el correo de la orden al cliente";
 
                 logger.Error(IMDSerialize.Serialize(67823458629514, $"Error en {metodo}(string psOrderId): {ex.Message}", psOrderId, ex, response));
             }

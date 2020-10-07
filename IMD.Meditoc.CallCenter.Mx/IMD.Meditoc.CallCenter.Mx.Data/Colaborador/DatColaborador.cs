@@ -5,12 +5,8 @@ using IMD.Meditoc.CallCenter.Mx.Entities.Colaborador;
 using log4net;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
 {
@@ -19,13 +15,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
         private static readonly ILog logger = LogManager.GetLogger(typeof(DatColaborador));
         private Database database;
         IMDCommonData imdCommonData;
-        string saveColaborador;
-        string getColaborador;
-        string saveColaboradorFoto;
-        string getColaboradorFoto;
-        string deleteColaboradorFoto;
-        string getColaboradorDirectorio;
-        string getObtenerSala;
+        string spSaveColaborador;
+        string spGetColaborador;
+        string spSaveColaboradorFoto;
+        string spGetColaboradorFoto;
+        string spDeleteColaboradorFoto;
+        string spGetColaboradorDirectorio;
+        string spGetObtenerSala;
 
         public DatColaborador()
         {
@@ -33,13 +29,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
             string FsConnectionString = "cnxMeditoc";
             database = imdCommonData.DGetDatabase(FsConnectionString, "MeditocComercial", "Meditoc1");
 
-            saveColaborador = "sva_meditoc_save_colaborador";
-            getColaborador = "svc_meditoc_colaboradores";
-            saveColaboradorFoto = "sva_meditoc_save_colaboradorfoto";
-            getColaboradorFoto = "svc_meditoc_colaboradorfoto";
-            deleteColaboradorFoto = "sva_meditoc_del_colaboradorfoto";
-            getColaboradorDirectorio = "svc_meditoc_colaboradordirectorio";
-            getObtenerSala = "svc_app_ObtenerSala";
+            spSaveColaborador = "sva_meditoc_save_colaborador";
+            spGetColaborador = "svc_meditoc_colaboradores";
+            spSaveColaboradorFoto = "sva_meditoc_save_colaboradorfoto";
+            spGetColaboradorFoto = "svc_meditoc_colaboradorfoto";
+            spDeleteColaboradorFoto = "sva_meditoc_del_colaboradorfoto";
+            spGetColaboradorDirectorio = "svc_meditoc_colaboradordirectorio";
+            spGetObtenerSala = "svc_app_ObtenerSala";
         }
 
         public IMDResponse<bool> DSaveColaborador(EntCreateColaborador entCreateColaborador)
@@ -51,7 +47,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(saveColaborador))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spSaveColaborador))
                 {
                     database.AddInParameter(dbCommand, "piIdColaborador", DbType.Int32, entCreateColaborador.iIdColaborador);
                     database.AddInParameter(dbCommand, "piIdTipoDoctor", DbType.Int32, entCreateColaborador.iIdTipoDoctor);
@@ -79,7 +75,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
             catch (Exception ex)
             {
                 response.Code = 67823458457020;
-                response.Message = "Ocurrió un error inesperado en la base de datos al guardar el colaborador";
+                response.Message = "Ocurrió un error inesperado en la base de datos al guardar el colaborador.";
 
                 logger.Error(IMDSerialize.Serialize(67823458457020, $"Error en {metodo}(EntCreateColaborador entCreateColaborador): {ex.Message}", entCreateColaborador, ex, response));
             }
@@ -95,7 +91,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(getColaborador))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spGetColaborador))
                 {
                     database.AddInParameter(dbCommand, "piIdColaborador", DbType.Int32, piIdColaborador);
                     database.AddInParameter(dbCommand, "piIdTipoDoctor", DbType.Int32, piIdTipoDoctor);
@@ -108,7 +104,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
             catch (Exception ex)
             {
                 response.Code = 67823458471006;
-                response.Message = "Ocurrió un error inesperado en la base de datos al consultar los colaboradores";
+                response.Message = "Ocurrió un error inesperado en la base de datos al consultar los colaboradores.";
 
                 logger.Error(IMDSerialize.Serialize(67823458471006, $"Error en {metodo}(int? piIdColaborador = null, int? piIdTipoDoctor = null, int? piIdEspecialidad = null, int? piIdUsuarioCGU = null): {ex.Message}", piIdColaborador, piIdTipoDoctor, piIdEspecialidad, piIdUsuarioCGU, ex, response));
             }
@@ -124,7 +120,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(saveColaboradorFoto))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spSaveColaboradorFoto))
                 {
                     database.AddInParameter(dbCommand, "piIdColaborador", DbType.Int32, piIdColaborador);
                     database.AddInParameter(dbCommand, "piIdUsuarioMod", DbType.Int32, piIdUsuarioMod);
@@ -136,7 +132,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
             catch (Exception ex)
             {
                 response.Code = 67823458478776;
-                response.Message = "Ocurrió un error inesperado en la base de datos al guardar la foto del colaborador";
+                response.Message = "Ocurrió un error inesperado en la base de datos al guardar la foto del colaborador.";
 
                 logger.Error(IMDSerialize.Serialize(67823458478776, $"Error en {metodo}(int piIdColaborador, int piIdUsuarioMod, byte[] pFoto): {ex.Message}", piIdColaborador, piIdUsuarioMod, ex, response));
             }
@@ -152,7 +148,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(getColaboradorFoto))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spGetColaboradorFoto))
                 {
                     database.AddInParameter(dbCommand, "piIdColaborador", DbType.Int32, piIdColaborador);
 
@@ -178,7 +174,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(deleteColaboradorFoto))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spDeleteColaboradorFoto))
                 {
                     database.AddInParameter(dbCommand, "piIdColaborador", DbType.Int32, piIdColaborador);
                     database.AddInParameter(dbCommand, "piIdUsuarioMod", DbType.Int32, piIdUsuarioMod);
@@ -189,7 +185,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
             catch (Exception ex)
             {
                 response.Code = 67823458492762;
-                response.Message = "Ocurrió un error inesperado en la base de datos al eliminar la foto del colaborador";
+                response.Message = "Ocurrió un error inesperado en la base de datos al eliminar la foto del colaborador.";
 
                 logger.Error(IMDSerialize.Serialize(67823458492762, $"Error en {metodo}(int piIdColaborador, int piIdUsuarioMod): {ex.Message}", piIdColaborador, piIdUsuarioMod, ex, response));
             }
@@ -205,7 +201,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(getColaboradorDirectorio))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spGetColaboradorDirectorio))
                 {
                     database.AddInParameter(dbCommand, "piIdEspecialidad", DbType.Int32, piIdEspecialidad);
                     database.AddInParameter(dbCommand, "psBuscador", DbType.String, psBuscador);
@@ -218,7 +214,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
             catch (Exception ex)
             {
                 response.Code = 67823458497424;
-                response.Message = "Ocurrió un error inesperado en la base de datos al consultar el directorio de médicos";
+                response.Message = "Ocurrió un error inesperado en la base de datos al consultar el directorio de médicos.";
 
                 logger.Error(IMDSerialize.Serialize(67823458497424, $"Error en {metodo}(int? piIdEspecialidad = null, string psBuscador = null, int piLimitInit = 0, int piLimitEnd = 0): {ex.Message}", piIdEspecialidad, psBuscador, piLimitInit, piLimitEnd, ex, response));
             }
@@ -235,7 +231,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(getObtenerSala))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spGetObtenerSala))
                 {
                     database.AddInParameter(dbCommand, "pbEsAgendada", DbType.Boolean, bAgendada);
                     database.AddInParameter(dbCommand, "piIdUsuario", DbType.String, iIdUsuario);
@@ -247,7 +243,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
             catch (Exception ex)
             {
                 response.Code = 67823458593772;
-                response.Message = "Ocurrió un error inesperado en la base de datos al obtener la sala del colaborador";
+                response.Message = "Ocurrió un error inesperado en la base de datos al obtener la sala del colaborador.";
 
                 logger.Error(IMDSerialize.Serialize(67823458593772, $"Error en {metodo}(bool? bAgendada = null, int? iIdUsuario = null, DateTime? dtFechaConsulta = null): {ex.Message}", bAgendada, iIdUsuario, dtFechaConsulta, ex, response));
             }

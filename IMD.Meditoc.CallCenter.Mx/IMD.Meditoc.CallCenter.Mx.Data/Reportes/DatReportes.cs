@@ -4,12 +4,8 @@ using IMD.Admin.Utilities.Entities;
 using log4net;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IMD.Meditoc.CallCenter.Mx.Data.Reportes
 {
@@ -81,7 +77,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Reportes
             catch (Exception ex)
             {
                 response.Code = 67823458559584;
-                response.Message = "Ocurrió un error inesperado al consultar el detalle de los folios";
+                response.Message = "Ocurrió un error inesperado al consultar el detalle de los folios.";
 
                 logger.Error(IMDSerialize.Serialize(67823458559584, $"Error en {metodo}: {ex.Message}(string psFolio = null, string psIdEmpresa = null, string psIdProducto = null, string psIdTipoProducto = null, string psIdOrigen = null, string psOrderId = null, string psStatus = null, string psCupon = null, DateTime? pdtFechaInicio = null, DateTime? pdtFechaFinal = null, DateTime? pdtFechaVencimiento = null)", psFolio, psIdEmpresa, psIdProducto, psIdTipoProducto, psIdOrigen, psOrderId, psStatus, psCupon, psTipoPago, pdtFechaInicio, pdtFechaFinal, pdtFechaVencimiento, ex, response));
             }
@@ -142,7 +138,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Reportes
             catch (Exception ex)
             {
                 response.Code = 67823458561138;
-                response.Message = "Ocurrió un error inesperado al consultar el detalle de las consultas de doctores";
+                response.Message = "Ocurrió un error inesperado al consultar el detalle de las consultas de doctores.";
 
                 logger.Error(IMDSerialize.Serialize(67823458561138, $"Error en {metodo}: {ex.Message}(string psIdColaborador = null, string psColaborador = null, string psIdTipoDoctor = null, string psIdEspecialidad = null, string psIdConsulta = null,string psIdEstatusConsulta = null, string psRFC = null, string psNumSala = null, DateTime ? pdtFechaProgramadaInicio = null, DateTime ? pdtFechaProgramadaFinal = null,DateTime ? pdtFechaConsultaInicio = null, DateTime ? pdtFechaConsultaFin = null)", psIdColaborador, psColaborador, psIdTipoDoctor, psIdEspecialidad, psIdConsulta, psIdEstatusConsulta, psRFC, psNumSala, pdtFechaProgramadaInicio, pdtFechaProgramadaFinal, pdtFechaConsultaInicio, pdtFechaConsultaFin, ex, response));
             }

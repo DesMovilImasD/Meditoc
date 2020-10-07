@@ -1,6 +1,6 @@
 //
 // Title: IceLink for JavaScript
-// Version: 3.8.0.22151
+// Version: 3.9.2.31084
 // Copyright Frozen Mountain Software 2011+
 //
 declare namespace fm {
@@ -713,6 +713,8 @@ declare namespace fm.icelink.websync4 {
         private static setRemoteDescription;
         /** @hidden */
         private static __fmicelinkwebsync4ClientExtensionsInitialized;
+        /** @hidden */
+        private static __fmicelinkwebsync4ClientExtensionsInitializing;
         /** @hidden */
         static fmicelinkwebsync4ClientExtensionsInitialize(): void;
     }

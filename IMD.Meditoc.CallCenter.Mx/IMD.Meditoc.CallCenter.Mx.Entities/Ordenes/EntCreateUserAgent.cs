@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace IMD.Admin.Conekta.Entities
+namespace IMD.Meditoc.CallCenter.Mx.Entities.Ordenes
 {
     public class EntCreateUserAgent
     {

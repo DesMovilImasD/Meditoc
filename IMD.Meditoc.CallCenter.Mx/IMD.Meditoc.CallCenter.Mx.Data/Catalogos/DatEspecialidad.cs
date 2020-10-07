@@ -4,12 +4,8 @@ using IMD.Admin.Utilities.Entities;
 using log4net;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IMD.Meditoc.CallCenter.Mx.Data.Catalogos
 {
@@ -18,8 +14,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Catalogos
         private static readonly ILog logger = LogManager.GetLogger(typeof(DatEspecialidad));
         private Database database;
         IMDCommonData imdCommonData;
-        string saveEspecialidad;
-        string getEspecialidad;
+        string spSaveEspecialidad;
+        string spGetEspecialidad;
 
         public DatEspecialidad()
         {
@@ -27,8 +23,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Catalogos
             string FsConnectionString = "cnxMeditoc";
             database = imdCommonData.DGetDatabase(FsConnectionString, "MeditocComercial", "Meditoc1");
 
-            saveEspecialidad = "sva_cat_save_especialidad";
-            getEspecialidad = "svc_cat_especialidades";
+            spSaveEspecialidad = "sva_cat_save_especialidad";
+            spGetEspecialidad = "svc_cat_especialidades";
         }
 
         public IMDResponse<bool> DSaveEspecialidad(int piIdEspecialidad, string psNombre, int piIdUsuarioMod, bool pbActivo, bool pbBaja)
@@ -40,7 +36,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Catalogos
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(saveEspecialidad))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spSaveEspecialidad))
                 {
                     database.AddInParameter(dbCommand, "piIdEspecialidad", DbType.Int32, piIdEspecialidad);
                     database.AddInParameter(dbCommand, "psNombre", DbType.String, psNombre);
@@ -54,7 +50,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Catalogos
             catch (Exception ex)
             {
                 response.Code = 67823458447696;
-                response.Message = "Ocurrió un error inesperado en la base de datos al guardar la especialidad";
+                response.Message = "Ocurrió un error inesperado en la base de datos al guardar la especialidad.";
 
                 logger.Error(IMDSerialize.Serialize(67823458447696, $"Error en {metodo}(int piIdEspecialidad, string psNombre, int piIdUsuarioMod, bool pbActivo, bool pbBaja): {ex.Message}", piIdEspecialidad, psNombre, piIdUsuarioMod, pbActivo, pbBaja, ex, response));
             }
@@ -71,7 +67,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Catalogos
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(getEspecialidad))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spGetEspecialidad))
                 {
                     database.AddInParameter(dbCommand, "piIdEspecialidad", DbType.Int32, piIdEspecialidad);
 
@@ -81,7 +77,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Catalogos
             catch (Exception ex)
             {
                 response.Code = 67823458449250;
-                response.Message = "Ocurrió un error inesperado en la base de datos al consultar las especialidades";
+                response.Message = "Ocurrió un error inesperado en la base de datos al consultar las especialidades.";
 
                 logger.Error(IMDSerialize.Serialize(67823458449250, $"Error en {metodo}(int? piIdEspecialidad = null): {ex.Message}", piIdEspecialidad, ex, response));
             }

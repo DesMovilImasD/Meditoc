@@ -1,17 +1,14 @@
-﻿using IMD.Admin.Conekta.Data;
-using IMD.Admin.Conekta.Entities.Orders;
-using IMD.Admin.Conekta.Entities.WebHooks;
-using IMD.Admin.Utilities.Business;
+﻿using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
+using IMD.Meditoc.CallCenter.Mx.Data.Ordenes;
+using IMD.Meditoc.CallCenter.Mx.Entities.Ordenes;
 using log4net;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace IMD.Admin.Conekta.Business
+namespace IMD.Meditoc.CallCenter.Mx.Business.Ordenes
 {
     public class BusWebHook
     {
@@ -51,7 +48,7 @@ namespace IMD.Admin.Conekta.Business
                 if (entWebHook == null)
                 {
                     response.Code = 65723765236345;
-                    response.Message = "No se ingresó información de la orden";
+                    response.Message = "No se ingresó información de la orden.";
                     return response;
                 }
                 IMDResponse<Guid> respuestaObtenerUID = new IMDResponse<Guid>();
@@ -76,7 +73,7 @@ namespace IMD.Admin.Conekta.Business
                     else
                     {
                         response.Code = 68763459686234;
-                        response.Message = "El tipo de objeto no es ORDER ó CHARGE";
+                        response.Message = "El tipo de objeto no es ORDER ni CHARGE.";
                         return response;
                     }
                 }
@@ -114,11 +111,11 @@ namespace IMD.Admin.Conekta.Business
                     IMDResponse<bool> respuestaGuardarCargo = datOrder.DSaveCharge(uId, entOrder.charges.data.First(), origin);
                     if (respuestaGuardarOrden.Code != 0 || respuestaGuardarCargo.Code != 0)
                     {
-                        mensajeErrorGuardado = ". No a sido posible guardar en la base de datos";
+                        mensajeErrorGuardado = " No a sido posible guardar en la base de datos.";
                     }
 
                     response.Code = 0;
-                    response.Message = $"Se actualizó la orden con uID {uId} a: {status}{mensajeErrorGuardado}";
+                    response.Message = $"Se actualizó la orden con uID {uId} a: {status}.{mensajeErrorGuardado}";
                     response.Result = true;
                 }
                 else
@@ -147,7 +144,7 @@ namespace IMD.Admin.Conekta.Business
                     if (string.IsNullOrWhiteSpace(statusOrder))
                     {
                         response.Code = 687634596456434;
-                        response.Message = "No se pudo determinar el status de la orden";
+                        response.Message = "No se pudo determinar el status de la orden.";
                         return response;
                     }
 
@@ -182,18 +179,18 @@ namespace IMD.Admin.Conekta.Business
                     IMDResponse<bool> respuestaGuardarCargo = datOrder.DSaveCharge(uId, entOrder.charges.data.First(), origin);
                     if (respuestaGuardarOrden.Code != 0 || respuestaGuardarCargo.Code != 0)
                     {
-                        mensajeErrorGuardado = ". No a sido posible guardar en la base de datos";
+                        mensajeErrorGuardado = " No a sido posible guardar en la base de datos.";
                     }
 
                     response.Code = 0;
-                    response.Message = $"Se actualizó la orden con uID {uId} a: {statusOrder}{mensajeErrorGuardado}";
+                    response.Message = $"Se actualizó la orden con uID {uId} a: {statusOrder}.{mensajeErrorGuardado}";
                     response.Result = true;
                 }
             }
             catch (Exception ex)
             {
                 response.Code = 67823458159429;
-                response.Message = "Ocurrió un error al procesar la información de la orden";
+                response.Message = "Ocurrió un error al procesar la información de la orden.";
 
                 logger.Error(IMDSerialize.Serialize(67823458159429, $"Error en {metodo}(EntWebHook entWebHook): {ex.Message}", entWebHook, ex, response));
             }

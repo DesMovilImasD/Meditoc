@@ -39,7 +39,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Tests
                 sNombre = "Usuarios"
             };
 
-            BusSubModulo busSubModulo = new BusSubModulo();
+            BusSubmodulo busSubModulo = new BusSubmodulo();
             var res = busSubModulo.BSaveSubModulo(entModulo);
         }
 

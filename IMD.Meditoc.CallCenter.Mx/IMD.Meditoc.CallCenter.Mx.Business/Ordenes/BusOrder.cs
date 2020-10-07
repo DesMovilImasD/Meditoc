@@ -1,12 +1,10 @@
-﻿using IMD.Admin.Conekta.Data;
-using IMD.Admin.Conekta.Entities;
-using IMD.Admin.Conekta.Entities.Orders;
-using IMD.Admin.Conekta.Entities.Promotions;
-using IMD.Admin.Conekta.Services;
-using IMD.Admin.Conekta.Web.Business;
-using IMD.Admin.Utilities.Business;
+﻿using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
+using IMD.Meditoc.CallCenter.Mx.Business.Promociones;
+using IMD.Meditoc.CallCenter.Mx.Data.Ordenes;
 using IMD.Meditoc.CallCenter.Mx.Entities.Ordenes;
+using IMD.Meditoc.CallCenter.Mx.Entities.Promociones;
+using IMD.Meditoc.CallCenter.Mx.Services;
 using log4net;
 using Newtonsoft.Json;
 using System;
@@ -15,10 +13,8 @@ using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace IMD.Admin.Conekta.Business
+namespace IMD.Meditoc.CallCenter.Mx.Business.Ordenes
 {
     public class BusOrder
     {
@@ -67,28 +63,28 @@ namespace IMD.Admin.Conekta.Business
                 if (entCreateOrder == null)
                 {
                     response.Code = 67823458112809;
-                    response.Message = "No se ingresaron datos de la compra";
+                    response.Message = "No se ingresaron datos de la compra.";
                     return response;
                 }
 
                 if (string.IsNullOrWhiteSpace(entCreateOrder.currency))
                 {
                     response.Code = 67823458217704;
-                    response.Message = "No se ingresó el tipo de moneda";
+                    response.Message = "No se ingresó el tipo de moneda.";
                     return response;
                 }
 
                 if (string.IsNullOrWhiteSpace(entCreateOrder.customer_info?.email))
                 {
                     response.Code = 67823458113586;
-                    response.Message = "El correo electrónico es requerido";
+                    response.Message = "El correo electrónico es requerido.";
                     return response;
                 }
 
                 if (string.IsNullOrWhiteSpace(entCreateOrder.customer_info.name))
                 {
                     response.Code = 45654345434543;
-                    response.Message = "El nombre del cliente es requerido";
+                    response.Message = "El nombre del cliente es requerido.";
                     return response;
                 }
 
@@ -102,7 +98,7 @@ namespace IMD.Admin.Conekta.Business
                     if (entCreateOrder.customer_info.phone.Length != 10)
                     {
                         response.Code = 67823458114363;
-                        response.Message = "El número de teléfono proporcionado debe tener 10 dígitos";
+                        response.Message = "El número de teléfono proporcionado debe tener 10 dígitos.";
                         return response;
                     }
                     else
@@ -115,7 +111,7 @@ namespace IMD.Admin.Conekta.Business
                 if (entCreateOrder.line_items?.Count == 0 || entCreateOrder.line_items == null)
                 {
                     response.Code = 67823458114363;
-                    response.Message = "No se ingresaron artículos para generar la orden";
+                    response.Message = "No se ingresaron artículos para generar la orden.";
                     return response;
                 }
 
@@ -124,12 +120,12 @@ namespace IMD.Admin.Conekta.Business
                     if (string.IsNullOrWhiteSpace(articulo?.name) || articulo?.quantity <= 0 || articulo?.unit_price <= 0)
                     {
                         response.Code = 67823458115140;
-                        response.Message = "La información de los artículos es incompleta";
+                        response.Message = "La información de los artículos es incompleta.";
                         return response;
                     }
                 }
 
-                string mensajeErrorMetodoPago = "No se ingresó información de pago";
+                string mensajeErrorMetodoPago = "No se ingresó información de pago.";
 
                 if (entCreateOrder.charges?.Count == 0)
                 {
@@ -328,7 +324,7 @@ namespace IMD.Admin.Conekta.Business
                     IMDResponse<bool> respuestaGuardarBD = this.BSaveOrder(entOrder, entCreateOrder);
                     if (respuestaGuardarBD.Code != 0)
                     {
-                        logger.Error(IMDSerialize.Serialize(67823458119802, $"Error en guardado en base de datos de orden Conekta", entOrder, respuestaGuardarBD));
+                        logger.Error(IMDSerialize.Serialize(67823458119802, $"Error en guardado en base de datos de orden Conekta.", entOrder, respuestaGuardarBD));
                     }
                 }
                 if (respuestaServicioCrearOrden.Code == -1500000)
@@ -344,14 +340,14 @@ namespace IMD.Admin.Conekta.Business
                         IMDResponse<bool> respuestaAplicarCupon = busPromociones.BAplicarCupon((int)entCreateOrder.coupon);
                         if (respuestaAplicarCupon.Code != 0)
                         {
-                            logger.Error(IMDSerialize.Serialize(67823458119803, $"Error en aplicar promoción", entCreateOrder));
+                            logger.Error(IMDSerialize.Serialize(67823458119803, $"Error en aplicar promoción.", entCreateOrder));
 
                         }
                     }
 
                     response.Code = 0;
                     response.Result = entOrder;
-                    response.Message = "Orden creada";
+                    response.Message = "Orden creada.";
                 }
             }
             catch (Exception ex)
@@ -383,7 +379,7 @@ namespace IMD.Admin.Conekta.Business
                 if (string.IsNullOrWhiteSpace(orderId))
                 {
                     response.Code = 67823458120579;
-                    response.Message = "No se ingresó el id de la orden";
+                    response.Message = "No se ingresó el id de la orden.";
                     return response;
                 }
 
@@ -414,12 +410,12 @@ namespace IMD.Admin.Conekta.Business
 
                 response.Code = 0;
                 response.Result = entOrder;
-                response.Message = entOrder == null ? respuestaServicioConsultarOrden.Result : "Orden obtenida";
+                response.Message = entOrder == null ? respuestaServicioConsultarOrden.Result : "Orden obtenida.";
             }
             catch (Exception ex)
             {
                 response.Code = 67823458110478;
-                response.Message = "Ocurrió un error inesperado al recopilar la información de la orden";
+                response.Message = "Ocurrió un error inesperado al recopilar la información de la orden.";
 
                 logger.Error(IMDSerialize.Serialize(67823458110478, $"Error en {metodo}(string orderId): {ex.Message}", orderId, ex, response));
             }
@@ -490,7 +486,7 @@ namespace IMD.Admin.Conekta.Business
             catch (Exception ex)
             {
                 response.Code = 67823458112032;
-                response.Message = "Ocurrió un error inesperado al guardar la información en la base de datos";
+                response.Message = "Ocurrió un error inesperado al guardar la información en la base de datos.";
 
                 logger.Error(IMDSerialize.Serialize(67823458112032, $"Error en {metodo}(EntOrder entOrder, int? piIdCupon = null): {ex.Message}", entOrder, entCreateOrder, ex, response));
             }
@@ -516,7 +512,7 @@ namespace IMD.Admin.Conekta.Business
                 if (string.IsNullOrEmpty(psOrderId))
                 {
                     response.Code = 67823458219258;
-                    response.Message = "No se ha podido determinar el ID de la orden";
+                    response.Message = "No se ha podido determinar el ID de la orden.";
                     return response;
                 }
 
@@ -528,7 +524,7 @@ namespace IMD.Admin.Conekta.Business
                 if (respuestaGetOrderDB.Result.Rows.Count < 1)
                 {
                     response.Code = 67823458220035;
-                    response.Message = "No se encontró la orden en la base de datos";
+                    response.Message = "No se encontró la orden en la base de datos.";
                     return response;
                 }
 
@@ -541,7 +537,7 @@ namespace IMD.Admin.Conekta.Business
             catch (Exception ex)
             {
                 response.Code = 67823458160983;
-                response.Message = "Ocurrió un error inesperado al consultar el detalle de orden";
+                response.Message = "Ocurrió un error inesperado al consultar el detalle de orden.";
 
                 logger.Error(IMDSerialize.Serialize(67823458160983, $"Error en {metodo}(string psOrderId): {ex.Message}", psOrderId, ex, response));
             }

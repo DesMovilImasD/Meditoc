@@ -4,12 +4,8 @@ using IMD.Admin.Utilities.Entities;
 using log4net;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IMD.Meditoc.CallCenter.Mx.Data.CallCenter
 {
@@ -18,7 +14,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CallCenter
         private static readonly ILog logger = LogManager.GetLogger(typeof(DatCallCenter));
         private Database database;
         IMDCommonData imdCommonData;
-        string svaCallCenterOnline;
+        string spCallCenterOnline;
 
         public DatCallCenter()
         {
@@ -26,7 +22,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CallCenter
             string FsConnectionString = "cnxMeditoc";
             database = imdCommonData.DGetDatabase(FsConnectionString, "MeditocComercial", "Meditoc1");
 
-            svaCallCenterOnline = "sva_meditoc_callcenter_online";
+            spCallCenterOnline = "sva_meditoc_callcenter_online";
         }
 
         public IMDResponse<bool> DCallCenterOnline(int piIdColaborador, bool pbOnline, bool pbOcupado, int piIdUsuarioMod)
@@ -38,7 +34,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CallCenter
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(svaCallCenterOnline))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spCallCenterOnline))
                 {
                     database.AddInParameter(dbCommand, "piIdColaborador", DbType.Int32, piIdColaborador);
                     database.AddInParameter(dbCommand, "pbOnline", DbType.Boolean, pbOnline);

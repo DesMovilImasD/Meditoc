@@ -12,9 +12,6 @@ using IMD.Meditoc.CallCenter.Mx.Web.Tokens;
 using log4net;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
@@ -65,7 +62,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458512964;
-                response.Message = "Ocurrió un error inesperado en el servicio al iniciar la consulta";
+                response.Message = "Ocurrió un error inesperado en el servicio al iniciar la consulta.";
 
                 logger.Error(IMDSerialize.Serialize(67823458512964, $"Error en {metodo}([FromUri]int iIdColaborador, [FromUri]string sFolio, [FromUri]int iIdUsuarioMod): {ex.Message}", iIdColaborador, sFolio, iIdUsuarioMod, ex, response));
             }
@@ -89,7 +86,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458522288;
-                response.Message = "Ocurrió un error inesperado en el servicio al guardar la consulta";
+                response.Message = "Ocurrió un error inesperado en el servicio al guardar la consulta.";
 
                 logger.Error(IMDSerialize.Serialize(67823458522288, $"Error en {metodo}([FromBody]EntConsulta entConsulta): {ex.Message}", entConsulta, ex, response));
             }
@@ -113,7 +110,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458533166;
-                response.Message = "Ocurrió un error inesperado en el servicio al obtener el detalle de la consulta";
+                response.Message = "Ocurrió un error inesperado en el servicio al obtener el detalle de la consulta.";
 
                 logger.Error(IMDSerialize.Serialize(67823458533166, $"Error en {metodo}([FromUri]int? piIdConsulta = null, [FromUri]int? piIdPaciente = null, [FromUri]int? piIdColaborador = null, [FromUri]int? piIdEstatusConsulta = null, [FromUri]DateTime? pdtFechaProgramadaInicio = null, [FromUri]DateTime? pdtFechaProgramadaFin = null, [FromUri]DateTime? pdtFechaConsultaInicio = null, [FromUri]DateTime? pdtFechaConsultaFin = null): {ex.Message}", piIdConsulta, piIdPaciente, piIdColaborador, piIdEstatusConsulta, pdtFechaProgramadaInicio, pdtFechaProgramadaFin, pdtFechaConsultaInicio, pdtFechaConsultaFin, ex, response));
             }
@@ -137,7 +134,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458539382;
-                response.Message = "Ocurrió un error inesperado en el servicio al generar un nuevo folio de consulta";
+                response.Message = "Ocurrió un error inesperado en el servicio al generar un nuevo folio de consulta.";
 
                 logger.Error(IMDSerialize.Serialize(67823458539382, $"Error en {metodo}([FromBody]EntNuevaConsulta entNuevaConsulta): {ex.Message}", entNuevaConsulta, ex, response));
             }
@@ -161,7 +158,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458554922;
-                response.Message = "Ocurrió un error inesperado en el servicio al cancelar la consulta del paciente";
+                response.Message = "Ocurrió un error inesperado en el servicio al cancelar la consulta del paciente.";
 
                 logger.Error(IMDSerialize.Serialize(67823458554922, $"Error en {metodo}([FromBody]EntNuevaConsulta entNuevaConsulta): {ex.Message}", entNuevaConsulta, ex, response));
             }
@@ -233,7 +230,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458581340;
-                response.Message = "Ocurrió un error inesperado en el servicio al guardar los datos del paciente";
+                response.Message = "Ocurrió un error inesperado en el servicio al guardar los datos del paciente.";
 
                 logger.Error(IMDSerialize.Serialize(67823458581340, $"Error en {metodo}([FromBody]EntUpdPaciente entUpdPaciente): {ex.Message}", entUpdPaciente, ex, response));
             }
@@ -257,7 +254,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             catch (Exception ex)
             {
                 response.Code = 67823458586002;
-                response.Message = "Ocurrió un error inesperado en el servicio al guardar el historial clínico del paciente";
+                response.Message = "Ocurrió un error inesperado en el servicio al guardar el historial clínico del paciente.";
 
                 logger.Error(IMDSerialize.Serialize(67823458586002, $"Error en {metodo}([FromBody]EntHistorialClinico entHistorialClinico): {ex.Message}", entHistorialClinico, ex, response));
             }
