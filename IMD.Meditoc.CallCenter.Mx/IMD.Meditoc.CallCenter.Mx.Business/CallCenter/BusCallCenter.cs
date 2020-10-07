@@ -57,7 +57,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                 if (entOnlineMod == null)
                 {
                     response.Code = 767872123751097;
-                    response.Message = "No se ingresó información del colaborador";
+                    response.Message = "No se ingresó información del colaborador.";
                     return response;
                 }
 
@@ -69,13 +69,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
 
                 response.Code = 0;
                 response.Result = true;
-                response.Message = entOnlineMod.bOnline ? "Se ha cambiado el estatus a EN LÍNEA" + (entOnlineMod.bOcupado ? " - OCUPADO" : " - DISPONIBLE") : "Se ha cambiado el estatus a FUERA DE LÍNEA";
+                response.Message = entOnlineMod.bOnline ? "Se ha cambiado el estatus a EN LÍNEA" + (entOnlineMod.bOcupado ? " - OCUPADO." : " - DISPONIBLE.") : "Se ha cambiado el estatus a FUERA DE LÍNEA.";
 
             }
             catch (Exception ex)
             {
                 response.Code = 67823458509856;
-                response.Message = "Ocurrió un error inesperado al intentar actualizar el estatus";
+                response.Message = "Ocurrió un error inesperado al intentar actualizar el estatus.";
 
                 logger.Error(IMDSerialize.Serialize(67823458509856, $"Error en {metodo}(EntOnlineMod entOnlineMod): {ex.Message}", entOnlineMod, ex, response));
             }
@@ -108,7 +108,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                 if (resGetColaborador.Result.Count != 1)
                 {
                     response.Code = -88793457892374;
-                    response.Message = "El colaborador no existe";
+                    response.Message = "No se encontró la información del colaborador.";
                     return response;
                 }
 
@@ -122,7 +122,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                 if (resGetFolio.Result.Count != 1)
                 {
                     response.Code = -23459710761984;
-                    response.Message = "El folio no existe o ha expirado";
+                    response.Message = "No se encontró el folio solicitado.";
                     return response;
                 }
 
@@ -147,7 +147,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                 if (resGetPaciente.Result.Count != 1)
                 {
                     response.Code = -2345771987764112;
-                    response.Message = "El paciente no existe";
+                    response.Message = "No se encontró información del paciente.";
                     return response;
                 }
 
@@ -158,14 +158,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                     if (entCallCenter.entFolio.iIdOrigen == (int)EnumOrigen.Particular)
                     {
                         response.Code = -19854873834598;
-                        response.Message = "El folio proporcionado solo es válido para consultas programadas con Especialistas";
+                        response.Message = "El folio proporcionado solo es válido para consultas programadas con Especialistas.";
                         return response;
                     }
 
-                    if(!entCallCenter.entFolio.bActivo || entCallCenter.entFolio.bBaja)
+                    if (!entCallCenter.entFolio.bActivo || entCallCenter.entFolio.bBaja)
                     {
                         response.Code = -8634576876234;
-                        response.Message = "El folio ha expirado o ha sido dado de baja";
+                        response.Message = "El folio ha expirado o ha sido dado de baja.";
                         return response;
                     }
                     EntConsulta entConsulta = new EntConsulta
@@ -195,7 +195,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                     if (resVerificarConsulta.Result.Count < 1)
                     {
                         response.Code = -56878843909375;
-                        response.Message = $"No se encontró una consulta programada para el paciente. La tolerancia para el horario programado de la consulta es de {ConfigurationManager.AppSettings["iMinToleraciaConsultaInicio"]} minutos antes de la hora y {ConfigurationManager.AppSettings["iMinToleraciaConsultaFin"]} minutos después de la hora de consulta";
+                        response.Message = $"No se encontró una consulta programada para el paciente. La tolerancia para el horario programado de la consulta es de {ConfigurationManager.AppSettings["iMinToleraciaConsultaInicio"]} minutos antes de la hora.";
                         return response;
                     }
 
@@ -221,14 +221,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                         if (entDetalleConsulta.iIdEstatusConsulta == (int)EnumEstatusConsulta.Cancelado)
                         {
                             response.Code = -978912879598735;
-                            response.Message = $"La consulta fue cancelada";
+                            response.Message = $"La consulta ya fue cancelada.";
                             return response;
                         }
 
                         if (entDetalleConsulta.iIdEstatusConsulta == (int)EnumEstatusConsulta.Finalizado)
                         {
                             response.Code = -4498871498234;
-                            response.Message = $"La consulta ya ha finalizado";
+                            response.Message = $"La consulta ya ha finalizado.";
                             return response;
                         }
                     }
@@ -236,7 +236,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                 else
                 {
                     response.Code = -3338296867623;
-                    response.Message = $"No se puede determinar el tipo de cuenta del usuario";
+                    response.Message = $"No se puede determinar el tipo de cuenta del usuario.";
                     return response;
                 }
 
@@ -250,13 +250,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
 
                 response.Code = 0;
                 response.Result = entCallCenter;
-                response.Message = "Consulta obtenida";
+                response.Message = "Se ha accedido a la consulta.";
 
             }
             catch (Exception ex)
             {
                 response.Code = 67823458514518;
-                response.Message = "Ocurrió un error inesperado al acceder a la consulta del paciente";
+                response.Message = "Ocurrió un error inesperado al acceder a la consulta del paciente.";
 
                 logger.Error(IMDSerialize.Serialize(67823458514518, $"Error en {metodo}(int iIdColaborador, string sFolio, int iIdUsuarioMod): {ex.Message}", iIdColaborador, sFolio, iIdUsuarioMod, ex, response));
             }
@@ -282,7 +282,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                 if (iIdConsulta == 0)
                 {
                     response.Code = -8793487583457;
-                    response.Message = "La consulta no existe";
+                    response.Message = "La información para iniciar la consulta está incompleta.";
                     return response;
                 }
 
@@ -300,13 +300,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                 }
 
                 response.Code = 0;
-                response.Message = "Consulta iniciada. ";
+                response.Message = "La consulta ha iniciado.";
                 response.Result = true;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458526950;
-                response.Message = "Ocurrió un error inesperado al iniciar la consulta";
+                response.Message = "Ocurrió un error inesperado al iniciar la consulta.";
 
                 logger.Error(IMDSerialize.Serialize(67823458526950, $"Error en {metodo}(int iIdConsulta, int iIdColaborador, int iIdUsuarioMod): {ex.Message}", iIdConsulta, iIdColaborador, iIdUsuarioMod, ex, response));
             }
@@ -332,7 +332,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                 if (iIdConsulta == 0)
                 {
                     response.Code = -676363680712478;
-                    response.Message = "La consulta no existe";
+                    response.Message = "La información para finalizar la consulta está incompleta.";
                     return response;
                 }
 
@@ -346,7 +346,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                 if (resGetConsulta.Result.Count < 1)
                 {
                     response.Code = -87812314544512;
-                    response.Message = "La consulta no existe";
+                    response.Message = "No se encontró la consulta.";
                     return response;
                 }
 
@@ -401,13 +401,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                 }
 
                 response.Code = 0;
-                response.Message = "Consulta finalizada.";
+                response.Message = "La consulta ha finalizado.";
                 response.Result = true;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458528504;
-                response.Message = "Ocurrió un error inesperado al intentar finalizar la consulta";
+                response.Message = "Ocurrió un error inesperado al intentar finalizar la consulta.";
 
                 logger.Error(IMDSerialize.Serialize(67823458528504, $"Error en {metodo}(int iIdConsulta, int iIdColaborador, int iIdUsuarioMod): {ex.Message}", iIdConsulta, iIdColaborador, iIdUsuarioMod, ex, response));
             }

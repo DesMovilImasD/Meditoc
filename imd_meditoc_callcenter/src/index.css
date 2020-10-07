@@ -320,7 +320,7 @@ code {
     height: 100%;
     background-color: var(--color-primary-blue);
     display: grid;
-    align-self: center;
+    align-content: center;
     color: var(--color-unset);
 }
 
@@ -331,7 +331,7 @@ code {
 }
 @media only screen and (max-width: 959px) {
     .login-form-back {
-        height: 520px;
+        height: 600px;
         padding-top: 20px;
         display: block;
         box-sizing: border-box;

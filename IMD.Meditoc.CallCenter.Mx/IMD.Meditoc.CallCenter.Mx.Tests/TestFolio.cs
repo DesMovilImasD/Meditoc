@@ -1,5 +1,6 @@
 ﻿using System;
 using IMD.Admin.Utilities.Entities;
+using IMD.Meditoc.CallCenter.Mx.Business.Correo;
 using IMD.Meditoc.CallCenter.Mx.Business.Folio;
 using IMD.Meditoc.CallCenter.Mx.Entities.Folio;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -20,6 +21,15 @@ namespace IMD.Meditoc.CallCenter.Mx.Tests
             IMDResponse<EntFolio> res = busFolio.BLoginApp(folio, pass);
 
             string json = JsonConvert.SerializeObject(res, Formatting.Indented);
+        }
+
+        [TestMethod]
+        public void ReenviarCorreo()
+        {
+            string order = "ord_2oWfa4A6DPweWLKre";
+
+            BusCorreo busCorreo = new BusCorreo();
+            var res = busCorreo.BReenviarCorreo(order);
         }
     }
 }

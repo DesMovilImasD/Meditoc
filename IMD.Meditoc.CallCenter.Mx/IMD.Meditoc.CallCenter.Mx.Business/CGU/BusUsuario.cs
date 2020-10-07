@@ -1,11 +1,14 @@
 ﻿using IMD.Admin.Utilities.Business;
 using IMD.Admin.Utilities.Entities;
+using IMD.Meditoc.CallCenter.Mx.Business.Correo;
 using IMD.Meditoc.CallCenter.Mx.Data.CGU;
 using IMD.Meditoc.CallCenter.Mx.Entities.CGU;
 using log4net;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
+using System.Linq;
 
 namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 {
@@ -31,7 +34,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 if (entUsuario == null)
                 {
                     response.Code = 67823458345132;
-                    response.Message = "No se ingresó ningun usuario.";
+                    response.Message = "No se ingresó información del usuario.";
                     return response;
                 }
 
@@ -60,20 +63,20 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 entUsuario.iIdUsuario = dr.ConvertTo<int>("iIdUsuario");
 
                 response.Code = 0;
-                response.Message = "El usuario se guardó correctamente";
+                response.Message = entUsuario.iIdUsuario == 0 ? "El usuario ha sido guardado correctamente." : !entUsuario.bActivo ? "El usuario ha sido eliminado correctamente." : "El usuario ha sido actualizado correctamente.";
                 response.Result = entUsuario;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458345132;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al guardar los datos del usuario.";
 
                 logger.Error(IMDSerialize.Serialize(67823458345132, $"Error en {metodo}(EntUsuario entUsuario): {ex.Message}", entUsuario, ex, response));
             }
             return response;
         }
 
-        public IMDResponse<List<EntUsuario>> BObtenerUsuario(int? iIdUsuario, int? iIdTipoCuenta, int? iIdPerfil, string sUsuario, string sPassword, bool? bActivo, bool? bBaja)
+        public IMDResponse<List<EntUsuario>> BObtenerUsuario(int? iIdUsuario = null, int? iIdTipoCuenta = null, int? iIdPerfil = null, string sUsuario = null, string sPassword = null, bool? bActivo = null, bool? bBaja = null, string psCorreo = null)
         {
             IMDResponse<List<EntUsuario>> response = new IMDResponse<List<EntUsuario>>();
 
@@ -83,7 +86,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             try
             {
 
-                IMDResponse<DataTable> dtUsuario = datUsuario.DObtenerUsuario(iIdUsuario, iIdTipoCuenta, iIdPerfil, sUsuario, sPassword, bActivo, bBaja);
+                IMDResponse<DataTable> dtUsuario = datUsuario.DObtenerUsuario(iIdUsuario, iIdTipoCuenta, iIdPerfil, sUsuario, sPassword, bActivo, bBaja, psCorreo);
                 if (dtUsuario.Code != 0)
                 {
                     return dtUsuario.GetResponse<List<EntUsuario>>();
@@ -119,13 +122,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 }
 
 
-                response.Message = "Lista de usuarios";
+                response.Message = "Los usuarios del sistema han sido obtenidos.";
                 response.Result = lstUsuario;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458363003;
-                response.Message = "Ocurrió un error inesperado al consultar los usuarios del sistema";
+                response.Message = "Ocurrió un error inesperado al consultar los usuarios del sistema.";
 
                 logger.Error(IMDSerialize.Serialize(67823458363003, $"Error en {metodo}(int? iIdUsuario, int? iIdTipoCuenta, int? iIdPerfil, string sUsuario, string sPassword, bool bActivo, bool bBaja): {ex.Message}", iIdUsuario, iIdTipoCuenta, iIdPerfil, sUsuario, sPassword, bActivo, bBaja, ex, response));
             }
@@ -144,7 +147,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 if (string.IsNullOrWhiteSpace(entUsuario.sNombres))
                 {
                     response.Code = 67823458345132;
-                    response.Message = "El nombre no puede ser vacio.";
+                    response.Message = "El nombre del usuario no puede ser vacío";
                     response.Result = false;
 
                     return response;
@@ -153,7 +156,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 if (entUsuario.iIdPerfil == 0)
                 {
                     response.Code = 67823458345132;
-                    response.Message = "Debe tener asignado un perfil.";
+                    response.Message = "No se ha especificado un perfil para el usuario.";
                     response.Result = false;
 
                     return response;
@@ -163,7 +166,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 if (string.IsNullOrWhiteSpace(entUsuario.sUsuario))
                 {
                     response.Code = 67823458345132;
-                    response.Message = "El nombre del usuario no puede ser vacio.";
+                    response.Message = "El nombre de usuario de acceso no puede ser vacío.";
                     response.Result = false;
 
                     return response;
@@ -176,7 +179,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     if (!response.Result)
                     {
                         response.Code = 67823458345132;
-                        response.Message = "Ya existe un usuario registrado.";
+                        response.Message = "Ya existe un usuario registrado con el nombre de usuario de acceso proporcionado.";
                         response.Result = false;
 
                         return response;
@@ -188,7 +191,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     if (entUsuario.iIdUsuario == 0)
                     {
                         response.Code = 67823458345132;
-                        response.Message = "La contraseña del usuario no puede ser vacio.";
+                        response.Message = "La contraseña del usuario no puede ser vacío.";
                         response.Result = false;
 
                         return response;
@@ -198,7 +201,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 if (string.IsNullOrWhiteSpace(entUsuario.sApellidoPaterno))
                 {
                     response.Code = 67823458345132;
-                    response.Message = "El apellido paterno del usuario no puede ser vacio.";
+                    response.Message = "El apellido paterno del usuario no puede ser vacío.";
                     response.Result = false;
 
                     return response;
@@ -216,7 +219,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 if (string.IsNullOrWhiteSpace(entUsuario.sCorreo))
                 {
                     response.Code = 67823458345132;
-                    response.Message = "El correo del usuario no puede ser vacio.";
+                    response.Message = "El correo del usuario no puede ser vacío.";
                     response.Result = false;
 
                     return response;
@@ -230,7 +233,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                         if (!response.Result)
                         {
                             response.Code = 67823458345132;
-                            response.Message = "Ya existe un correo registrado.";
+                            response.Message = "Ya existe un usuario registrado con el correo electrónico proporcionado.";
                             response.Result = false;
 
                             return response;
@@ -243,7 +246,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             catch (Exception ex)
             {
                 response.Code = 67823458342024;
-                response.Message = "Ocurrió un error al intentar guardar el perfil.";
+                response.Message = "Ocurrió un error al intentar validar los datos del usuario.";
 
                 logger.Error(IMDSerialize.Serialize(67823458341247, $"Error en {metodo}(EntUsuario entUsuario): {ex.Message}", entUsuario, ex, response));
             }
@@ -266,19 +269,16 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 
                 if (response.Code != 0)
                 {
-                    response.Message = "Ocurrio un error al modificar la contraseña";
-                    response.Result = false;
-
                     return response;
                 }
 
                 response.Result = true;
-                response.Message = "La contraseña se modifico correctamente";
+                response.Message = "La contraseña ha sido actualizada correctamente.";
             }
             catch (Exception ex)
             {
                 response.Code = 67823458370773;
-                response.Message = "Ocurrió un error inesperado al cambiar la contraseña";
+                response.Message = "Ocurrió un error inesperado al intentar actualizar la contraseña.";
 
                 logger.Error(IMDSerialize.Serialize(67823458370773, $"Error en {metodo}(int iIdUsuario, string sPassword, int iIdUsuarioUltMod): {ex.Message}", iIdUsuario, sPassword, iIdUsuarioUltMod, ex, response));
             }
@@ -437,6 +437,70 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 logger.Error(IMDSerialize.Serialize(67823458367665, $"Error en {metodo}(string sCadena, string sKey, string sVector): {ex.Message}", sCadena, sKey, sVector, ex, response));
             }
             return sCadena;
+        }
+
+        public IMDResponse<bool> BRecuperarPassword(string psCorreo)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.BRecuperarPassword);
+            logger.Info(IMDSerialize.Serialize(67823458631845, $"Inicia {metodo}(string psCorreo)", psCorreo));
+
+            try
+            {
+                if (string.IsNullOrWhiteSpace(psCorreo))
+                {
+                    response.Code = -23746876326;
+                    response.Message = "El correo electrónico es requerido";
+                    return response;
+                }
+
+                IMDResponse<List<EntUsuario>> resGetUser = this.BObtenerUsuario(psCorreo: psCorreo);
+                if (resGetUser.Code != 0)
+                {
+                    return resGetUser.GetResponse<bool>();
+                }
+
+                if (resGetUser.Result.Count < 1)
+                {
+                    response.Code = -8767263467;
+                    response.Message = "El correo electrónico no se encuentra registrado en el sistema";
+                    return response;
+                }
+
+                string plantillaUsuario = string.Empty;
+
+                foreach (EntUsuario user in resGetUser.Result)
+                {
+                    string pass = this.BDeCodePassWord(user.sPassword);
+                    plantillaUsuario += $"<tr class=\"font-table bold normal center table-border-b\"><td>{user.sTipoCuenta}</td><td>{user.sUsuario}</td><td>{pass}</td></tr>";
+                }
+
+                EntUsuario entUsuario = resGetUser.Result.First();
+
+                string asunto = "Meditoc - Recuperación de cuenta";
+                string plantillaBody = "<!DOCTYPE html><html><head><meta charset=\"utf-8;\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" /><link href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap\" rel=\"stylesheet\" /><style>body {font-family: Roboto, \"Segoe UI\", Tahoma, Geneva, Verdana, sans-serif;margin: 0;}.center {text-align: center !important;}.light {font-weight: 300;}.normal {font-weight: normal;}.bold {font-weight: 500;}.small {font-size: 12px;}.large {font-size: 15px;}.font-default {color: #707070;}.font-secondary {color: #115c8a;}.font-unset {color: #ffffff;}.font-table {color: #878787;}.table {margin: auto;width: 100%;max-width: 800px;border: 1px solid #dddddd;border-spacing: 0px;border-collapse: 0px;}.table td {padding: 6px 0px;}.logo-head {background-color: #11b6ca;padding: 5px 0px;}.table-content {margin: auto;width: 90%;border-collapse: collapse;}.table-detail {margin: auto;width: 100%;border-collapse: collapse;}.table-detail td {padding: 8px;}.head-detail {background-color: #115c8a;}.divider {height: 1px;border: 0;background-color: #989898;}.link {text-decoration: none;}.link:hover {text-decoration: underline;}.link-none {text-decoration: none;}.table-border-b td {border-bottom: 1px solid #ccc;}</style></head><body><table class=\"table\"><tr><td class=\"logo-head center\"><img alt=\"logo-meditoc\" src=\"sLogoMeditoc\" height=\"50px\" /></td></tr><tr><td><table class=\"table-content\"><tr><td class=\"center\"><span class=\"font-default bold large\"> Recuperación de cuenta </span></td></tr><tr class=\"center\"><td><span class=\"font-default normal large\">Se ha solicitado la recuperación de las credenciales de acceso al portal de MeditocCallCenter:</span></td></tr><tr><td><table class=\"table-detail\"><tr class=\"head-detail font-unset bold small center\"><td colspan=\"3\">ACCESO</td></tr><tr><td><table class=\"table-detail\"><thead><tr class=\"font-table bold small font-secondary\"><th>Tipo de cuenta</th><th>Usuario</th><th>Contraseña</th></tr></thead><tbody>data.Cuentas</tbody></table></td></tr></table></td></tr><tr class=\"center\"><td><p><span class=\"font-default normal large\">Le sugerimos cambiar la contraseña en su próximo ingreso al portal de MeditocCallCenter.</span></p></td></tr><tr><td><hr class=\"divider\" /></td></tr><tr><td><span class=\"font-default light small\">De conformidad con la ley federal de protección de datos personales en posesión delos particulares, ponemos a su disposición nuestro&nbsp;<a href=\"sAvisoPrivacidad\" class=\"link font-secondary normal\"> Aviso de Privacidad </a>&nbsp;y&nbsp;<a href=\"sTerminosCondiciones\" class=\"link font-secondary normal\"> Términos y Condiciones. </a></span></td></tr></table></td></tr></table></body></html>";
+
+                plantillaBody = plantillaBody.Replace("data.Cuentas", plantillaUsuario);
+                plantillaBody = plantillaBody.Replace("sLogoMeditoc", ConfigurationManager.AppSettings["sLogoMeditoc"]);
+                plantillaBody = plantillaBody.Replace("sAvisoPrivacidad", ConfigurationManager.AppSettings["sAvisoDePrivacidad"]);
+                plantillaBody = plantillaBody.Replace("sTerminosCondiciones", ConfigurationManager.AppSettings["sTerminosYCondiciones"]);
+
+                BusCorreo busCorreo = new BusCorreo();
+                busCorreo.m_EnviarEmail("", "", "", asunto, plantillaBody, entUsuario.sCorreo, "", "");
+
+                response.Code = 0;
+                response.Result = true;
+                response.Message = "Las credenciales se han enviado al correo proporcionado";
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458632622;
+                response.Message = "Ocurrió un error inesperado al recuperar la contraseña. Intenta más tarder.";
+
+                logger.Error(IMDSerialize.Serialize(67823458632622, $"Error en {metodo}(string psCorreo): {ex.Message}", psCorreo, ex, response));
+            }
+            return response;
         }
     }
 }

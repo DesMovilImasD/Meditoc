@@ -40,7 +40,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Catalogos
                 if (entEspecialidad == null)
                 {
                     response.Code = -876348289919;
-                    response.Message = "No se ingresó información completa";
+                    response.Message = "La información para guardar la especialidad está incompleta.";
                     return response;
                 }
 
@@ -49,7 +49,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Catalogos
                     if (string.IsNullOrWhiteSpace(entEspecialidad.sNombre))
                     {
                         response.Code = -398763241989882;
-                        response.Message = "No se ingresó el nombre de la especialidad";
+                        response.Message = "No se ha ingresado el nombre de la especialidad.";
                         return response;
                     }
                 }
@@ -61,13 +61,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Catalogos
                 }
 
                 response.Code = 0;
-                response.Message = "La especialidad se guardó correctamente";
+                response.Message = "La especialidad se guardó correctamente.";
                 response.Result = true;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458450804;
-                response.Message = "Ocurrió un error inesperado al guardar la especialidad";
+                response.Message = "Ocurrió un error inesperado al guardar la especialidad.";
 
                 logger.Error(IMDSerialize.Serialize(67823458450804, $"Error en {metodo}(EntEspecialidad entEspecialidad): {ex.Message}", entEspecialidad, ex, response));
             }
@@ -114,13 +114,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Catalogos
                 }
 
                 response.Code = 0;
-                response.Message = "Especialidades consultadas";
+                response.Message = "Las especialidades han sido obtenidas.";
                 response.Result = lstEspecialidades;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458452358;
-                response.Message = "Ocurrió un error inesperado al consultar las especialidades";
+                response.Message = "Ocurrió un error inesperado al consultar las especialidades.";
 
                 logger.Error(IMDSerialize.Serialize(67823458452358, $"Error en {metodo}(int? piIdEspecialidad = null): {ex.Message}", piIdEspecialidad, ex, response));
             }

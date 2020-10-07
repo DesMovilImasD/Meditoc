@@ -914,6 +914,19 @@ const FormColaborador = (props) => {
                                             label="Correo electrónico personal:"
                                             fullWidth
                                             required
+                                            InputProps={{
+                                                endAdornment: (
+                                                    <Tooltip
+                                                        title="El correo proporcionado será usado para la recuperación de las credenciales."
+                                                        arrow
+                                                        placement="top"
+                                                    >
+                                                        <IconButton>
+                                                            <InfoIcon />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                ),
+                                            }}
                                             value={formColaborador.txtCorreoElectronico}
                                             onChange={handleChangeFormColaborador}
                                             error={!formColaboradorOK.txtCorreoElectronico}

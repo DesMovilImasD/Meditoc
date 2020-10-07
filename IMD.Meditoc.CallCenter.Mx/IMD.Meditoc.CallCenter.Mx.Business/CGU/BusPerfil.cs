@@ -36,7 +36,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 if (entPerfil == null)
                 {
                     response.Code = -88678716283680;
-                    response.Message = "No se ingresó ningun submódulo.";
+                    response.Message = "No se ingresó información para guardar el perfil.";
                     response.Result = false;
                     return response;
                 }
@@ -55,7 +55,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 }
 
                 response.Code = 0;
-                response.Message = entPerfil.iIdPerfil == 0 ? "El perfil se guardó correctamente" : "El perfil se actualizo correctamente";
+                response.Message = entPerfil.iIdPerfil == 0 ? "El perfil ha sido guardado correctamente." : !entPerfil.bActivo ? "El perfil ha sido eliminado correctamente." : "El perfil ha sido actualizado correctamente.";
                 response.Result = true;
             }
             catch (Exception ex)
@@ -89,7 +89,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 if (dtPerfil.Code != 0)
                 {
                     response.Code = -71470986457102;
-                    response.Message = "No se encuentran perfiles";
+                    response.Message = "El sistema no cuenta con perfiles activos.";
                     return response;
                 }
 
@@ -108,12 +108,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 }
 
                 response.Result = lstPerfiles;
-                response.Message = "Lista de perfiles.";
+                response.Message = "Los perfiles del sistema han sido obtenidos.";
             }
             catch (Exception ex)
             {
                 response.Code = 67823458358341;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al consultar los perfiles del sistema.";
 
                 logger.Error(IMDSerialize.Serialize(67823458358341, $"Error en {metodo}(int? iIdPerfil, bool bActivo, bool bBaja): {ex.Message}", iIdPerfil, bActivo, bBaja, ex, response));
             }
@@ -138,7 +138,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     if (string.IsNullOrWhiteSpace(entPerfil.sNombre))
                     {
                         response.Code = -51256872819328;
-                        response.Message = "El nombre del perfil no puede ser vacio.";
+                        response.Message = "El nombre del perfil no puede ser vacío.";
                         response.Result = false;
 
                         return response;

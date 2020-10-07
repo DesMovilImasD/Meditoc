@@ -74,7 +74,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
             return response;
         }
 
-        public IMDResponse<DataTable> DObtenerUsuario(int? iIdUsuario, int? iIdTipoCuenta, int? iIdPerfil, string sUsuario, string sPassword, bool? bActivo, bool? bBaja)
+        public IMDResponse<DataTable> DObtenerUsuario(int? iIdUsuario, int? iIdTipoCuenta, int? iIdPerfil, string sUsuario, string sPassword, bool? bActivo, bool? bBaja, string psCorreo = null)
         {
             IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
@@ -89,6 +89,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
                     database.AddInParameter(dbCommand, "piIdTipoCuenta", DbType.Int32, iIdTipoCuenta);
                     database.AddInParameter(dbCommand, "piIdPerfil", DbType.Int32, iIdPerfil);
                     database.AddInParameter(dbCommand, "psUsuario", DbType.String, sUsuario);
+                    database.AddInParameter(dbCommand, "psCorreo", DbType.String, psCorreo);
                     database.AddInParameter(dbCommand, "psPassword", DbType.String, sPassword);
                     database.AddInParameter(dbCommand, "pbActivo", DbType.Boolean, bActivo);
                     database.AddInParameter(dbCommand, "pbBaja", DbType.Boolean, bBaja);

@@ -5,6 +5,7 @@ import CGUController from "../../../../controllers/CGUController";
 import { DatePicker } from "@material-ui/pickers";
 import DateRangeIcon from "@material-ui/icons/DateRange";
 import { EnumPerfilesPrincipales } from "../../../../configurations/enumConfig";
+import InfoIcon from "@material-ui/icons/Info";
 import MeditocInputPhone from "../../../utilidades/MeditocInputPhone";
 import MeditocModal from "../../../utilidades/MeditocModal";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
@@ -426,6 +427,19 @@ const FormUsuario = (props) => {
                             value={formUsuario.txtCorreoElectronico}
                             onChange={handleChangeFormulario}
                             required
+                            InputProps={{
+                                endAdornment: (
+                                    <Tooltip
+                                        title="El correo proporcionado será usado para la recuperación de las credenciales."
+                                        arrow
+                                        placement="top"
+                                    >
+                                        <IconButton>
+                                            <InfoIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                ),
+                            }}
                             error={!formUsuarioOK.txtCorreoElectronico}
                             helperText={
                                 !formUsuarioOK.txtCorreoElectronico

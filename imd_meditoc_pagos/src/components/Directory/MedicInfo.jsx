@@ -1,4 +1,4 @@
-import { Button, Grid, Hidden } from "@material-ui/core";
+import { Button, Grid, Hidden, Link } from "@material-ui/core";
 
 import { MdAccountBox } from "react-icons/md";
 import PropTypes from "prop-types";
@@ -105,14 +105,19 @@ const MedicInfo = (props) => {
                             <br />
                             <span className="directory-doctor-value">
                                 {rxUrl.test(entColaborador.sURL) ? (
-                                    <a
-                                        href={"//" + entColaborador.sURL}
-                                        className="directory-link"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
+                                    <Link
+                                        href={
+                                            entColaborador.sURL.startsWith("http://")
+                                                ? entColaborador.sURL
+                                                : entColaborador.sURL.startsWith("https://")
+                                                ? entColaborador.sURL
+                                                : "//" + entColaborador.sURL
+                                        }
+                                        target="_target"
+                                        rel="noreferrer"
                                     >
                                         {entColaborador.sURL}
-                                    </a>
+                                    </Link>
                                 ) : (
                                     entColaborador.sURL
                                 )}

@@ -122,6 +122,7 @@ const FormCambiarPassword = (props) => {
     };
 
     const [verPassword, setVerPassword] = useState(false);
+    const [verPassword2, setVerPassword2] = useState(false);
 
     return (
         <MeditocModal title="Cambiar contraseña" size="small" open={open} setOpen={setOpen}>
@@ -133,28 +134,11 @@ const FormCambiarPassword = (props) => {
                             name="txtNuevoPasswordMeditoc"
                             variant="outlined"
                             label="Nueva contraseña:"
-                            type="password"
+                            type={verPassword ? "text" : "password"}
                             autoComplete="new-password"
                             autoFocus
                             fullWidth
                             value={formCambiarPassword.txtNuevoPasswordMeditoc}
-                            onChange={handleChangeFormCambiarPassword}
-                            error={!formCambiarPasswordOK.txtNuevoPasswordMeditoc || passwordNoCoinciden}
-                            helperText={
-                                !formCambiarPasswordOK.txtNuevoPasswordMeditoc ? "Ingrese la nueva contraseña" : ""
-                            }
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            id="txtConfirmarPasswordMeditoc"
-                            name="txtConfirmarPasswordMeditoc"
-                            variant="outlined"
-                            label="Confirmar contraseña:"
-                            type={verPassword ? "text" : "password"}
-                            autoComplete="new-password"
-                            fullWidth
-                            value={formCambiarPassword.txtConfirmarPasswordMeditoc}
                             onChange={handleChangeFormCambiarPassword}
                             InputProps={{
                                 endAdornment: (
@@ -168,6 +152,39 @@ const FormCambiarPassword = (props) => {
                                             onMouseUp={() => setVerPassword(false)}
                                         >
                                             {verPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                        </IconButton>
+                                    </Tooltip>
+                                ),
+                            }}
+                            error={!formCambiarPasswordOK.txtNuevoPasswordMeditoc || passwordNoCoinciden}
+                            helperText={
+                                !formCambiarPasswordOK.txtNuevoPasswordMeditoc ? "Ingrese la nueva contraseña" : ""
+                            }
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            id="txtConfirmarPasswordMeditoc"
+                            name="txtConfirmarPasswordMeditoc"
+                            variant="outlined"
+                            label="Confirmar contraseña:"
+                            type={verPassword2 ? "text" : "password"}
+                            autoComplete="new-password"
+                            fullWidth
+                            value={formCambiarPassword.txtConfirmarPasswordMeditoc}
+                            onChange={handleChangeFormCambiarPassword}
+                            InputProps={{
+                                endAdornment: (
+                                    <Tooltip
+                                        title={verPassword2 ? "Ocultar contraseña" : "Ver contraseña"}
+                                        arrow
+                                        placement="top"
+                                    >
+                                        <IconButton
+                                            onMouseDown={() => setVerPassword2(true)}
+                                            onMouseUp={() => setVerPassword2(false)}
+                                        >
+                                            {verPassword2 ? <VisibilityIcon /> : <VisibilityOffIcon />}
                                         </IconButton>
                                     </Tooltip>
                                 ),

@@ -38,7 +38,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 if (entPermisos == null)
                 {
                     response.Code = -76823947687234;
-                    response.Message = "No se ingresó ningun permiso.";
+                    response.Message = "No se ingresó información de los permisos.";
                     return response;
                 }
 
@@ -55,7 +55,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     if (response.Code != 0)
                     {
                         response.Code = -823487677772384;
-                        response.Message = "No se pudieron guardar todos los permisos. Actualice la página antes de intentar de nuevo";
+                        response.Message = "No se pudieron guardar todos los permisos. Recargue la página antes de intentar de nuevo.";
                         return response;
                     }
                 }
@@ -179,7 +179,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             catch (Exception ex)
             {
                 response.Code = 67823458355233;
-                response.Message = "Ocurrió un error inesperado al consultar los permisos";
+                response.Message = "Ocurrió un error inesperado al consultar los permisos.";
 
                 logger.Error(IMDSerialize.Serialize(67823458355233, $"Error en {metodo}(int? iIdPermiso): {ex.Message}", iIdPermiso, ex, response));
             }
@@ -203,7 +203,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 if (entPermiso.iIdPerfil == 0)
                 {
                     response.Code = -987876827364;
-                    response.Message = "El id de perfil no puede ser 0";
+                    response.Message = "La información para guardar el permiso está incompleta. No se especificó el perfil.";
                     response.Result = false;
 
                     return response;
@@ -212,7 +212,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 if (entPermiso.iIdModulo == 0)
                 {
                     response.Code = -767819247987123;
-                    response.Message = "El id de módulo no puede ser 0";
+                    response.Message = "La información para guardar el permiso está incompleta.";
                     response.Result = false;
 
                     return response;
@@ -224,7 +224,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             catch (Exception ex)
             {
                 response.Code = 67823458349794;
-                response.Message = "Ocurrió un error inesperado al validar los permisos solicitados";
+                response.Message = "Ocurrió un error inesperado al validar los permisos solicitados.";
 
                 logger.Error(IMDSerialize.Serialize(67823458349794, $"Error en {metodo}(EntPermiso entPermiso): {ex.Message}", entPermiso, ex, response));
             }

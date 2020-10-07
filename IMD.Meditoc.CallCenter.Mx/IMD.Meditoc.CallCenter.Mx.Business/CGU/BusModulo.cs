@@ -39,7 +39,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 if (entModulo == null)
                 {
                     response.Code = -877656732870195;
-                    response.Message = "No se ingresó ningun módulo.";
+                    response.Message = "No se ingresó información para guardar el módulo.";
                     return response;
                 }
 
@@ -48,7 +48,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     if (string.IsNullOrWhiteSpace(entModulo.sNombre))
                     {
                         response.Code = -59928366733867;
-                        response.Message = "El nombre no puede ser vacio.";
+                        response.Message = "El nombre del módulo no puede ser vacío.";
                         return response;
                     }
                 }
@@ -60,7 +60,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 }
 
                 response.Code = 0;
-                response.Message = entModulo.iIdModulo == 0 ? "El módulo se guardó correctamente" : "El módulo se actualizo correctamente";
+                response.Message = entModulo.iIdModulo == 0 ? "El módulo ha sido guardado correctamente." : !entModulo.bActivo ? "El módulo ha sido eliminado correctamente." : "El módulo ha sido actualizado correctamente.";
                 response.Result = true;
             }
             catch (Exception ex)

@@ -68,5 +68,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Tests
 
             var json = JsonConvert.SerializeObject(res, Formatting.Indented);
         }
+
+        [TestMethod]
+        public void TRecuperar()
+        {
+            BusUsuario busUsuario = new BusUsuario();
+
+            var res = busUsuario.BRecuperarPassword("g098@live.com.mx");
+            var json = JsonConvert.SerializeObject(res, Formatting.Indented);
+        }
     }
 }

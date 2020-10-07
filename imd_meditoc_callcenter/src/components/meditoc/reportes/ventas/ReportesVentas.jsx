@@ -310,10 +310,14 @@ const ReportesVentas = (props) => {
                             />
                             <MeditocTabBody index={tabIndex} setIndex={setTabIndex}>
                                 <MeditocTabPanel id={EnumReportesTabs.Conekta} index={tabIndex}>
-                                    <ResumenConekta entVentas={entVentas} />
+                                    <ResumenConekta
+                                        entVentas={entVentas}
+                                        funcAlert={funcAlert}
+                                        funcLoader={funcLoader}
+                                    />
                                 </MeditocTabPanel>
                                 <MeditocTabPanel id={EnumReportesTabs.Administrativo} index={tabIndex}>
-                                    <ResumenAdmin entVentas={entVentas} />
+                                    <ResumenAdmin entVentas={entVentas} funcAlert={funcAlert} funcLoader={funcLoader} />
                                 </MeditocTabPanel>
                             </MeditocTabBody>
                         </Grid>

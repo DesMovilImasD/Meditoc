@@ -9,6 +9,7 @@ import InsertPhotoIcon from "@material-ui/icons/InsertPhoto";
 import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 import MeditocHeader3 from "../../../utilidades/MeditocHeader3";
 import MeditocModal from "../../../utilidades/MeditocModal";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import PropTypes from "prop-types";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -93,9 +94,12 @@ const FotoColaborador = (props) => {
 
         if (response.Code === 0) {
             setFotoColaboradorB64(response.Result);
+        } else if (response.Code === -1000) {
+            funcAlert(response.Message, "warning");
         } else {
             funcAlert(response.Message);
         }
+
         funcLoader();
     };
 
@@ -157,9 +161,10 @@ const FotoColaborador = (props) => {
                                 className="foto-colaborador"
                             />
                         ) : (
-                            <BrokenImageIcon style={{ fontSize: 180, color: "e6e6e6" }} />
+                            <BrokenImageIcon style={{ fontSize: 180, color: "#e6e6e6" }} />
                         )}
                     </Grid>
+                    <MeditocModalBotones okMessage="Cerrar vista de foto" setOpen={setOpen} hideCancel />
                 </Grid>
             </MeditocModal>
             <MeditocConfirmacion

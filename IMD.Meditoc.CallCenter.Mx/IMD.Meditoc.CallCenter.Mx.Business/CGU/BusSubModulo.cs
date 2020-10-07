@@ -34,7 +34,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 if (entSubModulo == null)
                 {
                     response.Code = -87687687263498;
-                    response.Message = "No se ingresó ningun sub módulo.";
+                    response.Message = "No se ingresó información para guardar el submódulo.";
                     response.Result = false;
                     return response;
                 }
@@ -53,13 +53,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 }
 
                 response.Code = 0;
-                response.Message = entSubModulo.iIdSubModulo == 0 ? "El sub módulo se guardó correctamente" : "El sub módulo se actualizo correctamente";
+                response.Message = entSubModulo.iIdSubModulo == 0 ? "El submódulo ha sido guardado correctamente." : !entSubModulo.bActivo ? "El submódulo ha sido eliminado correctamente." : "El submódulo ha sido actualizado correctamente.";
                 response.Result = true;
             }
             catch (Exception ex)
             {
                 response.Code = 67823458190509;
-                response.Message = "Ocurrió un error al intentar guardar el módulo.";
+                response.Message = "Ocurrió un error al intentar guardar el submódulo.";
 
                 logger.Error(IMDSerialize.Serialize(67823458190509, $"Error en {metodo}(EntSubModulo entSubModulo): {ex.Message}", entSubModulo, ex, response));
             }
@@ -82,7 +82,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 if (entSubModulo.iIdModulo == 0)
                 {
                     response.Code = -768276382360982;
-                    response.Message = "Debe asignarle un módulo.";
+                    response.Message = "No se ha especificado el módulo conetenedor.";
                     response.Result = false;
                     return response;
                 }
@@ -92,7 +92,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     if (string.IsNullOrWhiteSpace(entSubModulo.sNombre))
                     {
                         response.Code = -227619869874;
-                        response.Message = "El nombre del submodulo no puede ser vacío";
+                        response.Message = "El nombre del submódulo no puede ser vacío.";
                         response.Result = false;
 
                         return response;

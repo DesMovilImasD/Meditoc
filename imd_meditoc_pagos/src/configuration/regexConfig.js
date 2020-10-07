@@ -19,6 +19,6 @@ const rxJcbIcon = /^(?:2131|1800|35\d{3})\d+$/;
 export { rxVisaIcon, rxMasterIcon, rxAmexIcon, rxDinersIcon, rxDiscoverIcon, rxJcbIcon };
 
 const rxEmail = /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/;
-const rxUrl = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)$/;
+const rxUrl = /^(https?:\/\/)?(www\.)?(?![https?://]|\.)[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)$/;
 
 export { rxEmail, rxUrl };

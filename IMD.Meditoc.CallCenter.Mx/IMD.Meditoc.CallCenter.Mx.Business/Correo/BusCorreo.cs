@@ -237,7 +237,15 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Correo
                     sTo = dr.ConvertTo<string>("sTo"),
                 };
 
-                response = this.m_EnviarEmail("", "", "", entOrderEmail.sSubject, entOrderEmail.sBody, entOrderEmail.sTo, "", "");
+                IMDResponse<bool> resEnviar = this.m_EnviarEmail("", "", "", entOrderEmail.sSubject + " (Reenviado)", entOrderEmail.sBody, entOrderEmail.sTo, "", "");
+                if (resEnviar.Code != 0)
+                {
+                    return resEnviar;
+                }
+
+                response.Code = 0;
+                response.Message = $"Se ha reenviado el detalle de la orden a {entOrderEmail.sTo}";
+                response.Result = true;
 
             }
             catch (Exception ex)

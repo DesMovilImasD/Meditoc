@@ -1528,12 +1528,17 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     }
                     else
                     {
-                        IMDResponse<bool> resSetVigencia = this.BLoginAppUpdVigencia(entFolio.iIdFolio);
+                        IMDResponse<DateTime> resSetVigencia = this.BLoginAppUpdVigencia(entFolio.iIdFolio);
                         if (resSetVigencia.Code != 0)
                         {
                             return resSetVigencia.GetResponse<EntFolio>();
                         }
+                        entFolio.dtFechaVencimiento = resSetVigencia.Result;
                     }
+                }
+                else
+                {
+                    entFolio.dtFechaVencimiento = DateTime.Now.AddHours(1);
                 }
 
                 response.Code = 0;
@@ -1550,19 +1555,20 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             return response;
         }
 
-        public IMDResponse<bool> BLoginAppUpdVigencia(int piIdFolio)
+        public IMDResponse<DateTime> BLoginAppUpdVigencia(int piIdFolio)
         {
-            IMDResponse<bool> response = new IMDResponse<bool>();
+            IMDResponse<DateTime> response = new IMDResponse<DateTime>();
 
             string metodo = nameof(this.BLoginAppUpdVigencia);
             logger.Info(IMDSerialize.Serialize(67823458622521, $"Inicia {metodo}"));
 
             try
             {
+                DateTime nuevaFechaVencimiento = new DateTime();
                 IMDResponse<List<EntFolioReporte>> resGetData = this.BGetFolios(piIdFolio);
                 if (resGetData.Code != 0)
                 {
-                    return resGetData.GetResponse<bool>();
+                    return resGetData.GetResponse<DateTime>();
                 }
 
                 if (resGetData.Result.Count != 1)
@@ -1575,7 +1581,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 if (Enum.IsDefined(typeof(EnumProductos), folio.iIdProducto) && folio.iIdProducto != (int)EnumProductos.OrientacionEspecialistaID)
                 {
-                    DateTime nuevaFechaVencimiento;
                     if (folio.iMesVigenciaProducto == 0)
                     {
                         nuevaFechaVencimiento = DateTime.Now.AddDays(Convert.ToInt16(ConfigurationManager.AppSettings["iDiasDespuesVencimiento"]));
@@ -1599,12 +1604,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     IMDResponse<bool> resUpdVigencia = this.BUpdFechaVencimiento(entFolioFV);
                     if (resUpdVigencia.Code != 0)
                     {
-                        return resUpdVigencia;
+                        return resUpdVigencia.GetResponse<DateTime>();
                     }
 
                     response.Code = 0;
                     response.Message = "Se actualizó la vigencia del folio";
-                    response.Result = true;
+                    response.Result = nuevaFechaVencimiento;
                 }
             }
             catch (Exception ex)

@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 
 import { EnumStatusConekta } from "../../../../configurations/enumConfig";
+import FolioController from "../../../../controllers/FolioController";
 import { Grid } from "@material-ui/core";
 import MeditocInfoField from "../../../utilidades/MeditocInfoField";
 import MeditocInfoResumen from "../../../utilidades/MeditocInfoResumen";
@@ -11,13 +12,26 @@ import MeditocTableSimple from "../../../utilidades/MeditocTableSimple";
 import PropTypes from "prop-types";
 
 const DetalleConekta = (props) => {
-    const { entOrden, open, setOpen } = props;
+    const { entOrden, open, setOpen, funcLoader, funcAlert } = props;
 
     const columnas = [
         { title: "Folio", field: "sFolio", align: "center" },
         { title: "Confirmado", field: "bConfirmado", align: "center" },
         { title: "Vencimiento", field: "sFechaVencimiento", align: "center" },
     ];
+
+    const handleClickReenviarCorreo = async () => {
+        funcLoader(true, "Reenviando correo de orden...");
+
+        const folioController = new FolioController();
+        const response = await folioController.funcReenviarCorreoOrden(entOrden.sOrderId);
+        if (response.Code === 0) {
+            funcAlert(response.Message, "success");
+        } else {
+            funcAlert(response.Message);
+        }
+        funcLoader();
+    };
 
     return (
         <MeditocModal title={"Detalle de orden " + entOrden.sOrderId} size="normal" open={open} setOpen={setOpen}>
@@ -104,7 +118,13 @@ const DetalleConekta = (props) => {
                         </Fragment>
                     ))}
                 </Grid>
-                <MeditocModalBotones cancelMessage="Cerrar detalle de órden" setOpen={setOpen} hideOk />
+                <MeditocModalBotones
+                    cancelMessage="Cerrar detalle de órden"
+                    okMessage="Reenviar correo de órden"
+                    setOpen={setOpen}
+                    okFunc={handleClickReenviarCorreo}
+                    hideOk={entOrden.sPaymentStatus === EnumStatusConekta.Declined}
+                />
             </Grid>
         </MeditocModal>
     );

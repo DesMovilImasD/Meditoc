@@ -34,21 +34,21 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 if (entBoton == null)
                 {
                     response.Code = -8769879283478;
-                    response.Message = "No se ingresó ningun botón.";
+                    response.Message = "No se ingresó información del botón.";
                     return response;
                 }
 
                 if (entBoton.iIdModulo == 0)
                 {
                     response.Code = -776723458769823;
-                    response.Message = "Debe contener un módulo agregado.";
+                    response.Message = "El botón debe tener un módulo contenedor.";
                     return response;
                 }
 
                 if (entBoton.iIdSubModulo == 0)
                 {
                     response.Code = -33345899238987;
-                    response.Message = "Debe contener un submodulo agregado.";
+                    response.Message = "El botón debe tener un submódulo contenedor.";
                     return response;
                 }
 
@@ -58,7 +58,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     {
 
                         response.Code = -66723454387234;
-                        response.Message = "El nombre no puede ser vacio.";
+                        response.Message = "El nombre del botón no puede ser vacío.";
                         return response;
                     }
                 }
@@ -70,7 +70,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 }
 
                 response.Code = 0;
-                response.Message = entBoton.iIdBoton == 0 ? "El botón se guardó correctamente" : "El botón se actualizo correctamente";
+                response.Message = entBoton.iIdBoton == 0 ? "El botón ha sido guardado correctamente" : !entBoton.bActivo ? "El botón ha sido eliminado correctamente." : "El botón ha sido actualizado correctamente";
                 response.Result = true;
             }
             catch (Exception ex)

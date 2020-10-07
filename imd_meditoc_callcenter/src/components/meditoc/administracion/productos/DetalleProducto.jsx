@@ -33,7 +33,15 @@ const DetalleProducto = (props) => {
                     <MeditocInfoField label="Meses de vigencia:" value={entProducto.iMesVigencia} />
                 </Grid>
                 <Grid item sm={6} xs={12}>
-                    <MeditocInfoField label="Ícono:" value={entProducto.sIcon} />
+                    <MeditocInfoField
+                        label="Ícono:"
+                        value={
+                            <i
+                                className="icon size-20"
+                                dangerouslySetInnerHTML={{ __html: `&#x${entProducto.sIcon};` }}
+                            />
+                        }
+                    />
                 </Grid>
                 <Grid item sm={6} xs={12}>
                     <MeditocInfoField label="Comercial:" value={entProducto.sComercial} />

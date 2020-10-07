@@ -19,7 +19,8 @@ class CGUController {
         this.apiGetPerfiles = "Api/CGU/Get/Perfiles";
         this.apiGetUsuarios = "Api/CGU/Get/Usuarios";
         this.apiCambiarPassword = "Api/CGU/Create/CambiarContrasenia";
-        this.apiGetLogin = "Api/CGU/Get/Login";
+        this.apiGetLogin = "Api/CGU/User/Login";
+        this.apiRecuperarPassword = "Api/CGU/Recuperar/Password";
     }
 
     async funcSaveModulo(entCreateModulo) {
@@ -191,18 +192,40 @@ class CGUController {
         return response;
     }
 
-    async funcGetLogin(sUsuario = "", sPassword = "") {
+    async funcGetLogin(entUsuario) {
         let response = { Code: 0, Message: "", Result: {} };
         try {
-            const apiResponse = await fetch(
-                `${serverMain}${this.apiGetLogin}?sUsuario=${sUsuario}&sPassword=${sPassword}`,
-                { method: "POST" }
-            );
+            const apiResponse = await fetch(`${serverMain}${this.apiGetLogin}`, {
+                method: "POST",
+                body: JSON.stringify(entUsuario),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
 
             response = await apiResponse.json();
         } catch (error) {
             response.Code = -1;
             response.Message = "Ocurrió un error al validar los datos de sesión";
+        }
+        return response;
+    }
+
+    async funcRecuperarPassword(entUsuario) {
+        let response = { Code: 0, Message: "", Result: false };
+        try {
+            const apiResponse = await fetch(`${serverMain}${this.apiRecuperarPassword}`, {
+                method: "POST",
+                body: JSON.stringify(entUsuario),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            response = await apiResponse.json();
+        } catch (error) {
+            response.Code = -1;
+            response.Message = "Ocurrió un error al enviar el correo de recuperación";
         }
         return response;
     }

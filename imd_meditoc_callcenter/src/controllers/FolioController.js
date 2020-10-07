@@ -13,6 +13,7 @@ class FolioController {
         this.apiDescargarPlantilla = "Api/Folio/Get/Folio/VentaCalle/Plantilla";
         this.apiVerificarArchivo = "Api/Folio/Verificar/Archivo";
         this.apiGenerarFolioArchivo = "Api/Folio/Generar/Folio/Archivo";
+        this.apiReenviarCorreoOrden = "Api/Folio/Reenviar/Orden/Correo";
     }
 
     async funcCrearFoliosEmpresa(entFolioEmpresa) {
@@ -193,6 +194,22 @@ class FolioController {
         } catch (error) {
             response.Code = -1;
             response.Message = errorMessage;
+        }
+        return response;
+    }
+
+    async funcReenviarCorreoOrden(psOrderId) {
+        let response = { Code: 0, Message: "", Result: false };
+        try {
+            const apiResponse = await fetch(`${serverMain}${this.apiReenviarCorreoOrden}?psOrderId=${psOrderId}`, {
+                method: "POST",
+                headers: MeditocHeaders,
+            });
+
+            response = await apiResponse.json();
+        } catch (error) {
+            response.Code = -1;
+            response.Message = "Ocurrió un error al intentar reenviar el correo";
         }
         return response;
     }

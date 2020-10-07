@@ -11,7 +11,7 @@ import MeditocTable from "../../../utilidades/MeditocTable";
 import PropTypes from "prop-types";
 
 const ResumenConekta = (props) => {
-    const { entVentas } = props;
+    const { entVentas, funcLoader, funcAlert } = props;
 
     const columnas = [
         { title: "Orden", field: "sOrderId", align: "center" },
@@ -109,7 +109,6 @@ const ResumenConekta = (props) => {
                         }))}
                         rowClick={false}
                         mainField="sOrderId"
-                        search={false}
                     />
                 </Grid>
             </Grid>
@@ -117,6 +116,8 @@ const ResumenConekta = (props) => {
                 entOrden={ordenSeleccionada}
                 open={modalDetalleOrdenOpen}
                 setOpen={setModalDetalleOrdenOpen}
+                funcAlert={funcAlert}
+                funcLoader={funcLoader}
             />
         </Fragment>
     );

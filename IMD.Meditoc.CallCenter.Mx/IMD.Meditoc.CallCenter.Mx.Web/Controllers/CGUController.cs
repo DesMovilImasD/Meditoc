@@ -211,18 +211,18 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         }
 
         [HttpPost]
-        [Route("Api/CGU/Get/Login")]
-        public IMDResponse<EntUsuario> CLogin([FromUri] string sUsuario, string sPassword)
+        [Route("Api/CGU/User/Login")]
+        public IMDResponse<EntUsuario> CLogin([FromBody] EntUsuario entUsuario)
         {
             IMDResponse<EntUsuario> response = new IMDResponse<EntUsuario>();
 
             string metodo = nameof(this.CLogin);
-            logger.Info(IMDSerialize.Serialize(67823458376212, $"Inicia {metodo}([FromUri] string sUsuario, string sPassword)", sUsuario, sPassword));
+            logger.Info(IMDSerialize.Serialize(67823458376212, $"Inicia {metodo}([FromUri] string sUsuario, string sPassword)", entUsuario));
 
             try
             {
                 BusUsuario busUsuario = new BusUsuario();
-                response = busUsuario.BLogin(sUsuario, sPassword);
+                response = busUsuario.BLogin(entUsuario.sUsuario, entUsuario.sPassword);
 
             }
             catch (Exception ex)
@@ -230,7 +230,31 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
                 response.Code = 67823458376989;
                 response.Message = "Ocurrió un error inesperado en el servicio al validar los datos de la cuenta.";
 
-                logger.Error(IMDSerialize.Serialize(67823458376989, $"Error en {metodo}([FromUri] string sUsuario, string sPassword): {ex.Message}", sUsuario, sPassword, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458376989, $"Error en {metodo}([FromUri] string sUsuario, string sPassword): {ex.Message}", entUsuario, ex, response));
+            }
+            return response;
+        }
+
+        [HttpPost]
+        [Route("Api/CGU/Recuperar/Password")]
+        public IMDResponse<bool> CRecuperarPassword([FromBody]EntUsuario entUsuario)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.CRecuperarPassword);
+            logger.Info(IMDSerialize.Serialize(67823458633399, $"Inicia {metodo}"));
+
+            try
+            {
+                BusUsuario busUsuario = new BusUsuario();
+                response = busUsuario.BRecuperarPassword(entUsuario.sCorreo);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458634176;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458634176, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }

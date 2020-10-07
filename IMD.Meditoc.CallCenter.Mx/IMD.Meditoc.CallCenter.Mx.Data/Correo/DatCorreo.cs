@@ -69,7 +69,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Correo
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(spInsCorreo))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spGetCorreo))
                 {
                     database.AddInParameter(dbCommand, "psOrderId", DbType.String, psOrderId);
 
