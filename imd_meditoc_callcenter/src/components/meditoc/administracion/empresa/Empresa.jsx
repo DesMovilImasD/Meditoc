@@ -13,9 +13,10 @@ import ProductoController from "../../../../controllers/ProductoController";
 import PropTypes from "prop-types";
 import ReplayIcon from "@material-ui/icons/Replay";
 import WorkRoundedIcon from "@material-ui/icons/WorkRounded";
+import { emptyFunc } from "../../../../configurations/preventConfig";
 
 const Empresa = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert, title } = props;
+    const { usuarioSesion, permisos, funcLoader, funcAlert } = props;
 
     const empresaController = new EmpresaController();
     const productoController = new ProductoController();
@@ -106,27 +107,35 @@ const Empresa = (props) => {
 
     return (
         <Fragment>
-            <MeditocHeader1 title={title}>
-                <Tooltip title="Nueva empresa" arrow>
-                    <IconButton onClick={handleClickNuevaEmpresa}>
-                        <AddRoundedIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Editar datos de empresa" arrow>
-                    <IconButton onClick={handleClickEditarEmpresa}>
-                        <EditIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Administrar folios de empresa" arrow>
-                    <IconButton onClick={handleClickFoliosEmpresa}>
-                        <WorkRoundedIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Actualizar tabla" arrow>
-                    <IconButton onClick={funcGetData}>
-                        <ReplayIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
+            <MeditocHeader1 title={permisos.Nombre}>
+                {permisos.Botones["1"] !== undefined && ( //Nueva empresa
+                    <Tooltip title={permisos.Botones["1"].Nombre} arrow>
+                        <IconButton onClick={handleClickNuevaEmpresa}>
+                            <AddRoundedIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["2"] !== undefined && ( //Editar datos de empresa
+                    <Tooltip title={permisos.Botones["2"].Nombre} arrow>
+                        <IconButton onClick={handleClickEditarEmpresa}>
+                            <EditIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["3"] !== undefined && ( //Administrar folios de empresa
+                    <Tooltip title={permisos.Botones["3"].Nombre} arrow>
+                        <IconButton onClick={handleClickFoliosEmpresa}>
+                            <WorkRoundedIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["4"] !== undefined && ( //Actualizar tabla
+                    <Tooltip title={permisos.Botones["4"].Nombre} arrow>
+                        <IconButton onClick={funcGetData}>
+                            <ReplayIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
             </MeditocHeader1>
             <MeditocBody>
                 <MeditocTable
@@ -135,7 +144,7 @@ const Empresa = (props) => {
                     rowSelected={empresaSeleccionada}
                     setRowSelected={setEmpresaSeleccionada}
                     mainField="iIdEmpresa"
-                    doubleClick={handleClickFoliosEmpresa}
+                    doubleClick={permisos.Botones["3"] !== undefined ? handleClickFoliosEmpresa : emptyFunc}
                 />
             </MeditocBody>
             <FormEmpresa
@@ -153,6 +162,7 @@ const Empresa = (props) => {
                 setOpen={setModalFoliosEmpresaOpen}
                 listaProductos={listaProductos}
                 usuarioSesion={usuarioSesion}
+                permisos={permisos}
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
             />

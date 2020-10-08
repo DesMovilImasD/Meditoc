@@ -9,11 +9,12 @@ import MeditocTable from "../../utilidades/MeditocTable";
 import PropTypes from "prop-types";
 import ReplayIcon from "@material-ui/icons/Replay";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import { emptyFunc } from "../../../configurations/preventConfig";
 import { useEffect } from "react";
 import { useState } from "react";
 
 const Folios = (props) => {
-    const { funcLoader, funcAlert, title } = props;
+    const { permisos, funcLoader, funcAlert } = props;
 
     const foliosController = new FolioController();
 
@@ -61,17 +62,21 @@ const Folios = (props) => {
 
     return (
         <Fragment>
-            <MeditocHeader1 title={title}>
-                <Tooltip title="Detalle de folio" arrow>
-                    <IconButton onClick={handleClickDetalleFolio}>
-                        <VisibilityIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Actualizar tabla" arrow>
-                    <IconButton onClick={funcGetFolios}>
-                        <ReplayIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
+            <MeditocHeader1 title={permisos.Nombre}>
+                {permisos.Botones["1"] !== undefined && ( //Detalle de folio
+                    <Tooltip title={permisos.Botones["1"].Nombre} arrow>
+                        <IconButton onClick={handleClickDetalleFolio}>
+                            <VisibilityIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["2"] !== undefined && ( //Actualizar tabla
+                    <Tooltip title={permisos.Botones["2"].Nombre} arrow>
+                        <IconButton onClick={funcGetFolios}>
+                            <ReplayIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
             </MeditocHeader1>
             <MeditocBody>
                 <MeditocTable
@@ -80,7 +85,7 @@ const Folios = (props) => {
                     rowSelected={folioSeleccionado}
                     setRowSelected={setFolioSeleccionado}
                     mainField="sFolio"
-                    doubleClick={handleClickDetalleFolio}
+                    doubleClick={permisos.Botones["1"] !== undefined ? handleClickDetalleFolio : emptyFunc}
                 />
             </MeditocBody>
             <DetalleFolio

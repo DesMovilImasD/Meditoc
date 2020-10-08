@@ -44,7 +44,15 @@ const useStyles = makeStyles({
  * Invocado desde: SistemaModulo
  *************************************************************/
 const SistemaSubmodulo = (props) => {
-    const { entSubmodulo, usuarioSesion, funcGetPermisosXPerfil, funcLoader, funcAlert } = props;
+    const {
+        entSubmodulo,
+        usuarioSesion,
+        funcGetPermisosXPerfil,
+        funcUpdSystemInfo,
+        permisos,
+        funcLoader,
+        funcAlert,
+    } = props;
 
     const classes = useStyles();
 
@@ -107,7 +115,7 @@ const SistemaSubmodulo = (props) => {
         if (response.Code === 0) {
             setModalEliminarSubmoduloOpen(false);
             await funcGetPermisosXPerfil();
-
+            await funcUpdSystemInfo();
             funcAlert(response.Message, "success");
         } else {
             funcAlert(response.Message);
@@ -133,21 +141,39 @@ const SistemaSubmodulo = (props) => {
                             {entSubmodulo.sNombre} ({entSubmodulo.iIdSubModulo})
                         </span>
                     </div>
-                    <Tooltip title={`Agregar un botón nuevo a ${entSubmodulo.sNombre}`} placement="top" arrow>
-                        <IconButton onClick={handleClickNuevoBoton}>
-                            <AddIcon className={colorClass} />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title={`Editar el submódulo ${entSubmodulo.sNombre}`} placement="top" arrow>
-                        <IconButton onClick={handleClickEditarSubmodulo}>
-                            <EditIcon className={colorClass} />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title={`Eliminar el submódulo ${entSubmodulo.sNombre}`} placement="top" arrow>
-                        <IconButton onClick={handleClickEliminarSubmodulo}>
-                            <DeleteIcon className={colorClass} />
-                        </IconButton>
-                    </Tooltip>
+                    {permisos.Botones["6"] !== undefined && ( //Editar el submódulo
+                        <Tooltip
+                            title={`${permisos.Botones["6"].Nombre} ${entSubmodulo.sNombre}`}
+                            placement="top"
+                            arrow
+                        >
+                            <IconButton onClick={handleClickEditarSubmodulo}>
+                                <EditIcon className={colorClass} />
+                            </IconButton>
+                        </Tooltip>
+                    )}
+                    {permisos.Botones["7"] !== undefined && ( //Eliminar el submódulo
+                        <Tooltip
+                            title={`${permisos.Botones["7"].Nombre} ${entSubmodulo.sNombre}`}
+                            placement="top"
+                            arrow
+                        >
+                            <IconButton onClick={handleClickEliminarSubmodulo}>
+                                <DeleteIcon className={colorClass} />
+                            </IconButton>
+                        </Tooltip>
+                    )}
+                    {permisos.Botones["8"] !== undefined && ( //Agregar un botón nuevo a
+                        <Tooltip
+                            title={`${permisos.Botones["8"].Nombre} ${entSubmodulo.sNombre}`}
+                            placement="top"
+                            arrow
+                        >
+                            <IconButton onClick={handleClickNuevoBoton}>
+                                <AddIcon className={colorClass} />
+                            </IconButton>
+                        </Tooltip>
+                    )}
                 </AccordionSummary>
                 <AccordionDetails>
                     <div className="acc-content">
@@ -161,6 +187,8 @@ const SistemaSubmodulo = (props) => {
                                                 entBoton={boton}
                                                 usuarioSesion={usuarioSesion}
                                                 funcGetPermisosXPerfil={funcGetPermisosXPerfil}
+                                                funcUpdSystemInfo={funcUpdSystemInfo}
+                                                permisos={permisos}
                                                 funcLoader={funcLoader}
                                                 funcAlert={funcAlert}
                                             />
@@ -180,6 +208,7 @@ const SistemaSubmodulo = (props) => {
                 setOpen={setModalEditarSubmoduloOpen}
                 usuarioSesion={usuarioSesion}
                 funcGetPermisosXPerfil={funcGetPermisosXPerfil}
+                funcUpdSystemInfo={funcUpdSystemInfo}
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
             />
@@ -197,6 +226,7 @@ const SistemaSubmodulo = (props) => {
                 setOpen={setModalNuevoBotonOpen}
                 usuarioSesion={usuarioSesion}
                 funcGetPermisosXPerfil={funcGetPermisosXPerfil}
+                funcUpdSystemInfo={funcUpdSystemInfo}
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
             />

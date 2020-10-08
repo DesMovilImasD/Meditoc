@@ -15,6 +15,7 @@ import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import PropTypes from "prop-types";
 import ReplayIcon from "@material-ui/icons/Replay";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import { emptyFunc } from "../../../../configurations/preventConfig";
 import { useEffect } from "react";
 import { useState } from "react";
 
@@ -25,7 +26,7 @@ import { useState } from "react";
  * Invocado desde: ContentMain
  *************************************************************/
 const Usuarios = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert, title } = props;
+    const { usuarioSesion, permisos, funcLoader, funcAlert } = props;
 
     //Servicios API
     const cguController = new CGUController();
@@ -221,32 +222,42 @@ const Usuarios = (props) => {
 
     return (
         <Fragment>
-            <MeditocHeader1 title={title}>
-                <Tooltip title="Nuevo usuario" arrow>
-                    <IconButton onClick={handleClickNuevoUsuario}>
-                        <PersonAddIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Detalle de usuario" arrow>
-                    <IconButton onClick={handleClickDetalleUsuario}>
-                        <VisibilityIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Editar usuario" arrow>
-                    <IconButton onClick={handleClickEditarUsuario}>
-                        <EditIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Eliminar usuario" arrow>
-                    <IconButton onClick={handleClickEliminarUsuario}>
-                        <DeleteIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Actualizar tabla" arrow>
-                    <IconButton onClick={getData}>
-                        <ReplayIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
+            <MeditocHeader1 title={permisos.Nombre}>
+                {permisos.Botones["1"] !== undefined && ( //Nuevo usuario
+                    <Tooltip title={permisos.Botones["1"].Nombre} arrow>
+                        <IconButton onClick={handleClickNuevoUsuario}>
+                            <PersonAddIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["2"] !== undefined && ( //Detalle usuario
+                    <Tooltip title={permisos.Botones["2"].Nombre} arrow>
+                        <IconButton onClick={handleClickDetalleUsuario}>
+                            <VisibilityIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["3"] !== undefined && ( //Editar usuario
+                    <Tooltip title={permisos.Botones["3"].Nombre} arrow>
+                        <IconButton onClick={handleClickEditarUsuario}>
+                            <EditIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["4"] !== undefined && ( //Eliminar usuario
+                    <Tooltip title={permisos.Botones["4"].Nombre} arrow>
+                        <IconButton onClick={handleClickEliminarUsuario}>
+                            <DeleteIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["5"] !== undefined && ( //Actualizar tabla
+                    <Tooltip title={permisos.Botones["5"].Nombre} arrow>
+                        <IconButton onClick={getData}>
+                            <ReplayIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
             </MeditocHeader1>
             <MeditocBody>
                 <MeditocTable
@@ -255,7 +266,7 @@ const Usuarios = (props) => {
                     rowSelected={usuarioSeleccionado}
                     setRowSelected={setUsuarioSeleccionado}
                     mainField="iIdUsuario"
-                    doubleClick={handleClickDetalleUsuario}
+                    doubleClick={permisos.Botones["2"] !== undefined ? handleClickDetalleUsuario : emptyFunc}
                 />
             </MeditocBody>
             <FormUsuario

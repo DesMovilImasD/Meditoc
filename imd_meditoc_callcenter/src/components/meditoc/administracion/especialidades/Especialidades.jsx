@@ -13,11 +13,13 @@ import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
 import MeditocTable from "../../../utilidades/MeditocTable";
 import PropTypes from "prop-types";
 import ReplayIcon from "@material-ui/icons/Replay";
+import { emptyFunc } from "../../../../configurations/preventConfig";
 import { useEffect } from "react";
 import { useState } from "react";
 
 const Especialidades = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert, title } = props;
+    const { usuarioSesion, permisos, funcLoader, funcAlert } = props;
+
     const especialidadController = new EspecialidadController();
     const especialidadEntidadVacia = { iIdEspecialidad: 0, sNombre: "" };
 
@@ -104,27 +106,35 @@ const Especialidades = (props) => {
     }, []);
     return (
         <Fragment>
-            <MeditocHeader1 title={title}>
-                <Tooltip title="Añadir nueva especialidad" arrow>
-                    <IconButton onClick={handleClickNuevaEspecialidad}>
-                        <AddRoundedIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Editar especialidad" arrow>
-                    <IconButton onClick={handleClickEditarEspecialidad}>
-                        <EditIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Eliminar especialidad" arrow>
-                    <IconButton onClick={handleClickEliminarEspecialidad}>
-                        <DeleteIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Actualizar tabla" arrow>
-                    <IconButton onClick={funcGetEspecialidades}>
-                        <ReplayIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
+            <MeditocHeader1 title={permisos.Nombre}>
+                {permisos.Botones["1"] !== undefined && ( //Añadir nueva especialidad
+                    <Tooltip title={permisos.Botones["1"].Nombre} arrow>
+                        <IconButton onClick={handleClickNuevaEspecialidad}>
+                            <AddRoundedIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["2"] !== undefined && ( //Editar especialidad
+                    <Tooltip title={permisos.Botones["2"].Nombre} arrow>
+                        <IconButton onClick={handleClickEditarEspecialidad}>
+                            <EditIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["3"] !== undefined && ( //Eliminar especialidad
+                    <Tooltip title={permisos.Botones["3"].Nombre} arrow>
+                        <IconButton onClick={handleClickEliminarEspecialidad}>
+                            <DeleteIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["4"] !== undefined && ( //Actualizar tabla
+                    <Tooltip title={permisos.Botones["4"].Nombre} arrow>
+                        <IconButton onClick={funcGetEspecialidades}>
+                            <ReplayIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
             </MeditocHeader1>
             <MeditocBody>
                 <MeditocTable
@@ -133,7 +143,7 @@ const Especialidades = (props) => {
                     rowSelected={especialidadSeleccionada}
                     setRowSelected={setEspecialidadSeleccionada}
                     mainField="iIdEspecialidad"
-                    doubleClick={handleClickEditarEspecialidad}
+                    doubleClick={permisos.Botones["2"] !== undefined ? handleClickEditarEspecialidad : emptyFunc}
                 />
             </MeditocBody>
             <FormEspecialidad

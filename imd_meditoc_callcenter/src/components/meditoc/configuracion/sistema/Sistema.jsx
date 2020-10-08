@@ -18,7 +18,7 @@ import SistemaModulo from "./SistemaModulo";
  * Invocado desde: ContentMain
  *************************************************************/
 const Sistema = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert, title } = props;
+    const { usuarioSesion, permisos, setUsuarioPermisos, funcLoader, funcAlert } = props;
 
     //Servicios API
     const cguController = new CGUController();
@@ -49,6 +49,18 @@ const Sistema = (props) => {
         funcLoader();
     };
 
+    const funcUpdSystemInfo = async () => {
+        funcLoader(true, "Actualizando portal...");
+
+        const response = await cguController.funcGetPermisosUsuario(usuarioSesion.iIdPerfil);
+        if (response.Code === 0) {
+            setUsuarioPermisos(response.Result);
+        } else {
+            funcAlert("Es necesario recargar la página para actualizar la información del sistema.", "warning");
+        }
+        funcLoader();
+    };
+
     //Funcion para mostrar el formulario para crear módulos
     const handleAgregarModuloOpen = () => {
         setModalAgregarModuloOpen(true);
@@ -63,17 +75,21 @@ const Sistema = (props) => {
 
     return (
         <Fragment>
-            <MeditocHeader1 title={title}>
-                <Tooltip title="Agregar un nuevo módulo" arrow>
-                    <IconButton onClick={handleAgregarModuloOpen}>
-                        <AddRoundedIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Actualizar información del sistema" arrow>
-                    <IconButton onClick={funcGetPermisosXPerfil}>
-                        <ReplayIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
+            <MeditocHeader1 title={permisos.Nombre}>
+                {permisos.Botones["1"] !== undefined && ( //Agregar un nuevo módulo
+                    <Tooltip title={permisos.Botones["1"].Nombre} arrow>
+                        <IconButton onClick={handleAgregarModuloOpen}>
+                            <AddRoundedIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["2"] !== undefined && ( //Actualizar información del sistema
+                    <Tooltip title={permisos.Botones["2"].Nombre} arrow>
+                        <IconButton onClick={funcGetPermisosXPerfil}>
+                            <ReplayIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
             </MeditocHeader1>
 
             <MeditocBody>
@@ -84,6 +100,8 @@ const Sistema = (props) => {
                             entModulo={modulo}
                             usuarioSesion={usuarioSesion}
                             funcGetPermisosXPerfil={funcGetPermisosXPerfil}
+                            funcUpdSystemInfo={funcUpdSystemInfo}
+                            permisos={permisos}
                             funcLoader={funcLoader}
                             funcAlert={funcAlert}
                         />
@@ -101,6 +119,7 @@ const Sistema = (props) => {
                 setOpen={setModalAgregarModuloOpen}
                 usuarioSesion={usuarioSesion}
                 funcGetPermisosXPerfil={funcGetPermisosXPerfil}
+                funcUpdSystemInfo={funcUpdSystemInfo}
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
             />

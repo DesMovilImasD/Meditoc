@@ -23,7 +23,15 @@ const useStyles = makeStyles({
  * Invocado desde: SistemaSubmodulo
  *************************************************************/
 const SistemaBoton = (props) => {
-    const { entBoton, usuarioSesion, funcGetPermisosXPerfil, funcLoader, funcAlert } = props;
+    const {
+        entBoton,
+        usuarioSesion,
+        funcGetPermisosXPerfil,
+        funcUpdSystemInfo,
+        permisos,
+        funcLoader,
+        funcAlert,
+    } = props;
 
     const classes = useStyles();
 
@@ -70,6 +78,7 @@ const SistemaBoton = (props) => {
         if (response.Code === 0) {
             setModalEliminarBotonOpen(false);
             await funcGetPermisosXPerfil();
+            await funcUpdSystemInfo();
             funcAlert(response.Message, "success");
         } else {
             funcAlert(response.Message);
@@ -88,16 +97,20 @@ const SistemaBoton = (props) => {
                     </span>
                 </TableCell>
                 <TableCell classes={{ sizeSmall: classes.cell }} align="right">
-                    <Tooltip title={`Editar el botón ${entBoton.sNombre}`} placement="top" arrow>
-                        <IconButton onClick={handleClickEditarBoton}>
-                            <EditIcon />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title={`Eliminar el botón ${entBoton.sNombre}`} placement="top" arrow>
-                        <IconButton onClick={handleClickEliminarBoton}>
-                            <DeleteIcon />
-                        </IconButton>
-                    </Tooltip>
+                    {permisos.Botones["9"] !== undefined && ( //Editar el botón
+                        <Tooltip title={`${permisos.Botones["9"].Nombre} ${entBoton.sNombre}`} placement="top" arrow>
+                            <IconButton onClick={handleClickEditarBoton}>
+                                <EditIcon />
+                            </IconButton>
+                        </Tooltip>
+                    )}
+                    {permisos.Botones["10"] !== undefined && ( //Eliminar el botón
+                        <Tooltip title={`${permisos.Botones["10"].Nombre} ${entBoton.sNombre}`} placement="top" arrow>
+                            <IconButton onClick={handleClickEliminarBoton}>
+                                <DeleteIcon />
+                            </IconButton>
+                        </Tooltip>
+                    )}
                 </TableCell>
             </TableRow>
             <FormBoton
@@ -106,6 +119,7 @@ const SistemaBoton = (props) => {
                 setOpen={setModalEditarBotonOpen}
                 usuarioSesion={usuarioSesion}
                 funcGetPermisosXPerfil={funcGetPermisosXPerfil}
+                funcUpdSystemInfo={funcUpdSystemInfo}
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
             />

@@ -30,7 +30,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const CallCenter = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert, setFuncCerrarTodo } = props;
+    const { usuarioSesion, permisos, funcLoader, funcAlert, setFuncCerrarTodo } = props;
 
     const classes = useStyles();
 
@@ -417,52 +417,64 @@ const CallCenter = (props) => {
                             {temporizadorState.minuto.toLocaleString("en", { minimumIntegerDigits: 2 })}:
                             {temporizadorState.segundo.toLocaleString("en", { minimumIntegerDigits: 2 })}
                         </span>
-                        {consultaIniciada === false && entCallCenter === null ? (
+                        {consultaIniciada === false && entCallCenter === null
+                            ? permisos.Botones["2"] !== undefined && ( //Iniciar consulta
+                                  <Button
+                                      variant="contained"
+                                      className={classes.button}
+                                      onClick={handleClickIniciarConsulta}
+                                      disabled={usuarioColaborador === null}
+                                  >
+                                      {permisos.Botones["2"].Nombre}
+                                  </Button>
+                              )
+                            : permisos.Botones["3"] !== undefined && ( //Finalizar consulta
+                                  <Button
+                                      variant="contained"
+                                      className={classes.button}
+                                      onClick={() => handleClickFinalizarConsulta(false)}
+                                      disabled={usuarioColaborador === null}
+                                  >
+                                      {permisos.Botones["3"].Nombre}
+                                  </Button>
+                              )}
+                        {permisos.Botones["4"] !== undefined && ( //Reiniciar Chat
                             <Button
                                 variant="contained"
                                 className={classes.button}
-                                onClick={handleClickIniciarConsulta}
-                                disabled={usuarioColaborador === null}
+                                onClick={() => funcLimpiarChat()}
+                                disabled={usuarioColaborador === null || consultaIniciada === true}
                             >
-                                Iniciar consulta
-                            </Button>
-                        ) : (
-                            <Button
-                                variant="contained"
-                                className={classes.button}
-                                onClick={() => handleClickFinalizarConsulta(false)}
-                                disabled={usuarioColaborador === null}
-                            >
-                                Finalizar consulta
+                                {permisos.Botones["4"].Nombre}
                             </Button>
                         )}
-                        <Button
-                            variant="contained"
-                            className={classes.button}
-                            onClick={() => funcLimpiarChat()}
-                            disabled={usuarioColaborador === null || consultaIniciada === true}
-                        >
-                            Reiniciar Chat
-                        </Button>
-                        <Button variant="contained" className={classes.button} onClick={handleClickDirectorio}>
-                            Directorio médico
-                        </Button>
+                        {permisos.Botones["5"] !== undefined && ( //Directorio
+                            <Button variant="contained" className={classes.button} onClick={handleClickDirectorio}>
+                                {permisos.Botones["5"].Nombre}
+                            </Button>
+                        )}
                     </Fragment>
                 }
             >
-                Estatus: {colaboradorDisponible ? "DISPONIBLE" : "OCUPADO"}
-                <MeditocSwitch
-                    checked={colaboradorDisponible}
-                    onChange={() => funcOnlineMod(!colaboradorDisponible)}
-                    name="swtEstatusDoctor"
-                    disabled={usuarioColaborador === null}
-                />
+                {permisos.Botones["1"] !== undefined && ( //Estatus
+                    <Fragment>
+                        Estatus: {colaboradorDisponible ? "DISPONIBLE" : "OCUPADO"}
+                        <MeditocSwitch
+                            checked={colaboradorDisponible}
+                            onChange={() => funcOnlineMod(!colaboradorDisponible)}
+                            name="swtEstatusDoctor"
+                            disabled={usuarioColaborador === null}
+                        />
+                    </Fragment>
+                )}
             </MeditocHeader1>
-            <HelperStatus
-                popoverOcupadoInicio={popoverOcupadoInicio}
-                handleClosePopoverOcupado={handleClosePopoverOcupado}
-                handleClickPopoverDisponible={handleClickPopoverDisponible}
-            />
+            {permisos.Botones["1"] !== undefined && ( //Estatus
+                <HelperStatus
+                    popoverOcupadoInicio={popoverOcupadoInicio}
+                    handleClosePopoverOcupado={handleClosePopoverOcupado}
+                    handleClickPopoverDisponible={handleClickPopoverDisponible}
+                />
+            )}
             <MeditocBody>
                 <Grid container spacing={3}>
                     <Grid item md={5} xs={12}>

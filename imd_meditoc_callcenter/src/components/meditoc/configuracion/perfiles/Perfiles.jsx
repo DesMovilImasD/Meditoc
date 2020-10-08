@@ -15,6 +15,7 @@ import Permisos from "./Permisos";
 import PropTypes from "prop-types";
 import ReplayIcon from "@material-ui/icons/Replay";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
+import { emptyFunc } from "../../../../configurations/preventConfig";
 
 /*************************************************************
  * Descripcion: Submódulo para la vista principal "PERFILES" del portal Meditoc
@@ -23,7 +24,7 @@ import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
  * Invocado desde: ContentMain
  *************************************************************/
 const Perfiles = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert, title } = props;
+    const { usuarioSesion, permisos, funcLoader, funcAlert } = props;
 
     //Servicios API
     const cguController = new CGUController();
@@ -176,32 +177,42 @@ const Perfiles = (props) => {
 
     return (
         <Fragment>
-            <MeditocHeader1 title={title}>
-                <Tooltip title="Nuevo perfil" arrow>
-                    <IconButton onClick={handleClickNuevoPerfil}>
-                        <AddRoundedIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Editar perfil" arrow>
-                    <IconButton onClick={handleClickEditarPerfil}>
-                        <EditIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Eliminar perfil" arrow>
-                    <IconButton onClick={handleClickEliminarPerfil}>
-                        <DeleteIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Administrar permisos del perfil" arrow>
-                    <IconButton onClick={handleClickPermisosPerfil}>
-                        <VerifiedUserIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Actualizar tabla" arrow>
-                    <IconButton onClick={getData}>
-                        <ReplayIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
+            <MeditocHeader1 title={permisos.Nombre}>
+                {permisos.Botones["1"] !== undefined && ( //Nuevo perfil
+                    <Tooltip title={permisos.Botones["1"].Nombre} arrow>
+                        <IconButton onClick={handleClickNuevoPerfil}>
+                            <AddRoundedIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["2"] !== undefined && ( //Editar perfil
+                    <Tooltip title={permisos.Botones["2"].Nombre} arrow>
+                        <IconButton onClick={handleClickEditarPerfil}>
+                            <EditIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["3"] !== undefined && ( //Eliminar perfil
+                    <Tooltip title={permisos.Botones["3"].Nombre} arrow>
+                        <IconButton onClick={handleClickEliminarPerfil}>
+                            <DeleteIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["4"] !== undefined && ( //Administrar permisos del perfil
+                    <Tooltip title={permisos.Botones["4"].Nombre} arrow>
+                        <IconButton onClick={handleClickPermisosPerfil}>
+                            <VerifiedUserIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["5"] !== undefined && ( //Actualizar tabla
+                    <Tooltip title={permisos.Botones["5"].Nombre} arrow>
+                        <IconButton onClick={getData}>
+                            <ReplayIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
             </MeditocHeader1>
             <MeditocBody>
                 <MeditocTable
@@ -211,7 +222,7 @@ const Perfiles = (props) => {
                     setRowSelected={setPerfilSeleccionado}
                     mainField="iIdPerfil"
                     isLoading={false}
-                    doubleClick={handleClickPermisosPerfil}
+                    doubleClick={permisos.Botones["4"] !== undefined ? handleClickPermisosPerfil : emptyFunc}
                 />
             </MeditocBody>
             <FormPerfil
@@ -237,6 +248,7 @@ const Perfiles = (props) => {
                 open={modalFormPermisosOpen}
                 setOpen={setModalFormPermisosOpen}
                 usuarioSesion={usuarioSesion}
+                permisos={permisos}
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
             />

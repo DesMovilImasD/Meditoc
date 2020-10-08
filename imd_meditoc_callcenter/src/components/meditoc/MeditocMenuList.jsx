@@ -54,44 +54,44 @@ const MenuList = (props) => {
 
     return (
         <List component="div">
-            {usuarioPermisos.configuracion.set === true && (
+            {usuarioPermisos["1"] !== undefined && (
                 <Fragment>
                     <ListItem button onClick={() => setOpenConfiguracion(!openConfiguracion)}>
                         <ListItemIcon>
                             <SettingsIcon className="color-0" />
                         </ListItemIcon>
-                        <ListItemText primary={usuarioPermisos.configuracion.name} />
+                        <ListItemText primary={usuarioPermisos["1"].Nombre} />
                         {openConfiguracion ? <ExpandLess /> : <ExpandMore />}
                     </ListItem>
                     <Collapse in={openConfiguracion} unmountOnExit>
                         <List component="div">
-                            {usuarioPermisos.configuracion.usuarios.set === true && (
+                            {usuarioPermisos["1"].Submodulos["1"] !== undefined && (
                                 <Link to={urlSystem.configuracion.usuarios} className={classes.link}>
                                     <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
                                         <ListItemIcon>
                                             <GroupIcon className="color-0" />
                                         </ListItemIcon>
-                                        <ListItemText primary={usuarioPermisos.configuracion.usuarios.name} />
+                                        <ListItemText primary={usuarioPermisos["1"].Submodulos["1"].Nombre} />
                                     </ListItem>
                                 </Link>
                             )}
-                            {usuarioPermisos.configuracion.perfiles.set === true && (
+                            {usuarioPermisos["1"].Submodulos["2"] !== undefined && (
                                 <Link to={urlSystem.configuracion.perfiles} className={classes.link}>
                                     <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
                                         <ListItemIcon>
                                             <VerifiedUserIcon className="color-0" />
                                         </ListItemIcon>
-                                        <ListItemText primary={usuarioPermisos.configuracion.perfiles.name} />
+                                        <ListItemText primary={usuarioPermisos["1"].Submodulos["2"].Nombre} />
                                     </ListItem>
                                 </Link>
                             )}
-                            {usuarioPermisos.configuracion.sistema.set === true && (
+                            {usuarioPermisos["1"].Submodulos["3"] !== undefined && (
                                 <Link to={urlSystem.configuracion.sistema} className={classes.link}>
                                     <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
                                         <ListItemIcon>
                                             <AccountTreeIcon className="color-0" />
                                         </ListItemIcon>
-                                        <ListItemText primary={usuarioPermisos.configuracion.sistema.name} />
+                                        <ListItemText primary={usuarioPermisos["1"].Submodulos["3"].Nombre} />
                                     </ListItem>
                                 </Link>
                             )}
@@ -99,64 +99,64 @@ const MenuList = (props) => {
                     </Collapse>
                 </Fragment>
             )}
-            {usuarioPermisos.administracion.set === true && (
+            {usuarioPermisos["2"] !== undefined && (
                 <Fragment>
                     <ListItem button onClick={() => setOpenAdministracion(!openAdministracion)}>
                         <ListItemIcon>
                             <WorkIcon className="color-0" />
                         </ListItemIcon>
-                        <ListItemText primary={usuarioPermisos.administracion.name} />
+                        <ListItemText primary={usuarioPermisos["2"].Nombre} />
                         {openAdministracion ? <ExpandLess /> : <ExpandMore />}
                     </ListItem>
                     <Collapse in={openAdministracion} unmountOnExit>
                         <List component="div">
-                            {usuarioPermisos.administracion.colaboradores.set === true && (
+                            {usuarioPermisos["2"].Submodulos["1"] !== undefined && (
                                 <Link to={urlSystem.administracion.colaboradores} className={classes.link}>
                                     <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
                                         <ListItemIcon>
                                             <AssignmentIndIcon className="color-0" />
                                         </ListItemIcon>
-                                        <ListItemText primary={usuarioPermisos.administracion.colaboradores.name} />
+                                        <ListItemText primary={usuarioPermisos["2"].Submodulos["1"].Nombre} />
                                     </ListItem>
                                 </Link>
                             )}
-                            {usuarioPermisos.administracion.empresa.set === true && (
+                            {usuarioPermisos["2"].Submodulos["2"] !== undefined && (
                                 <Link to={urlSystem.administracion.institucion} className={classes.link}>
                                     <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
                                         <ListItemIcon>
                                             <BusinessIcon className="color-0" />
                                         </ListItemIcon>
-                                        <ListItemText primary={usuarioPermisos.administracion.empresa.name} />
+                                        <ListItemText primary={usuarioPermisos["2"].Submodulos["2"].Nombre} />
                                     </ListItem>
                                 </Link>
                             )}
-                            {usuarioPermisos.administracion.productos.set === true && (
+                            {usuarioPermisos["2"].Submodulos["3"] !== undefined && (
                                 <Link to={urlSystem.administracion.productos} className={classes.link}>
                                     <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
                                         <ListItemIcon>
                                             <ShoppingCartIcon className="color-0" />
                                         </ListItemIcon>
-                                        <ListItemText primary={usuarioPermisos.administracion.productos.name} />
+                                        <ListItemText primary={usuarioPermisos["2"].Submodulos["3"].Nombre} />
                                     </ListItem>
                                 </Link>
                             )}
-                            {usuarioPermisos.administracion.cupones.set === true && (
+                            {usuarioPermisos["2"].Submodulos["4"] !== undefined && (
                                 <Link to={urlSystem.administracion.cupones} className={classes.link}>
                                     <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
                                         <ListItemIcon>
                                             <LoyaltyIcon className="color-0" />
                                         </ListItemIcon>
-                                        <ListItemText primary={usuarioPermisos.administracion.cupones.name} />
+                                        <ListItemText primary={usuarioPermisos["2"].Submodulos["4"].Nombre} />
                                     </ListItem>
                                 </Link>
                             )}
-                            {usuarioPermisos.administracion.especialidades.set === true && (
+                            {usuarioPermisos["2"].Submodulos["5"] !== undefined && (
                                 <Link to={urlSystem.administracion.especialidades} className={classes.link}>
                                     <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
                                         <ListItemIcon>
                                             <EmojiObjectsIcon className="color-0" />
                                         </ListItemIcon>
-                                        <ListItemText primary={usuarioPermisos.administracion.especialidades.name} />
+                                        <ListItemText primary={usuarioPermisos["2"].Submodulos["5"].Nombre} />
                                     </ListItem>
                                 </Link>
                             )}
@@ -165,24 +165,24 @@ const MenuList = (props) => {
                 </Fragment>
             )}
 
-            {usuarioPermisos.folios.set === true && (
+            {usuarioPermisos["3"] !== undefined && (
                 <Fragment>
                     <ListItem button onClick={() => setOpenFolios(!openFolios)}>
                         <ListItemIcon>
                             <GradeIcon className="color-0" />
                         </ListItemIcon>
-                        <ListItemText primary={usuarioPermisos.folios.name} />
+                        <ListItemText primary={usuarioPermisos["3"].Nombre} />
                         {openFolios ? <ExpandLess /> : <ExpandMore />}
                     </ListItem>
                     <Collapse in={openFolios} unmountOnExit>
                         <List component="div">
-                            {usuarioPermisos.folios.folios.set === true && (
+                            {usuarioPermisos["3"].Submodulos["1"] !== undefined && (
                                 <Link to={urlSystem.folios.folios} className={classes.link}>
                                     <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
                                         <ListItemIcon>
                                             <CardMembershipIcon className="color-0" />
                                         </ListItemIcon>
-                                        <ListItemText primary={usuarioPermisos.folios.folios.name} />
+                                        <ListItemText primary={usuarioPermisos["3"].Submodulos["1"].Nombre} />
                                     </ListItem>
                                 </Link>
                             )}
@@ -191,35 +191,35 @@ const MenuList = (props) => {
                 </Fragment>
             )}
 
-            {usuarioPermisos.callcenter.set === true && (
+            {usuarioPermisos["4"] !== undefined && (
                 <Fragment>
                     <ListItem button onClick={() => setOpenCallCenter(!openCallCenter)}>
                         <ListItemIcon>
                             <CallIcon className="color-0" />
                         </ListItemIcon>
-                        <ListItemText primary={usuarioPermisos.callcenter.name} />
+                        <ListItemText primary={usuarioPermisos["4"].Nombre} />
                         {openCallCenter ? <ExpandLess /> : <ExpandMore />}
                     </ListItem>
                     <Collapse in={openCallCenter} unmountOnExit>
                         <List component="div">
-                            {usuarioPermisos.callcenter.consultas.set === true && (
+                            {usuarioPermisos["4"].Submodulos["1"] !== undefined && (
                                 <Link to={urlSystem.callcenter.consultas} className={classes.link}>
                                     <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
                                         <ListItemIcon>
                                             <ContactPhoneIcon className="color-0" />
                                         </ListItemIcon>
-                                        <ListItemText primary={usuarioPermisos.callcenter.consultas.name} />
+                                        <ListItemText primary={usuarioPermisos["4"].Submodulos["1"].Nombre} />
                                     </ListItem>
                                 </Link>
                             )}
 
-                            {usuarioPermisos.callcenter.administrarconsultas.set === true && (
+                            {usuarioPermisos["4"].Submodulos["2"] !== undefined && (
                                 <Link to={urlSystem.callcenter.administrarConsultas} className={classes.link}>
                                     <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
                                         <ListItemIcon>
                                             <AddIcCallIcon className="color-0" />
                                         </ListItemIcon>
-                                        <ListItemText primary={usuarioPermisos.callcenter.administrarconsultas.name} />
+                                        <ListItemText primary={usuarioPermisos["4"].Submodulos["2"].Nombre} />
                                     </ListItem>
                                 </Link>
                             )}
@@ -228,35 +228,35 @@ const MenuList = (props) => {
                 </Fragment>
             )}
 
-            {usuarioPermisos.reportes.set === true && (
+            {usuarioPermisos["5"] !== undefined && (
                 <Fragment>
                     <ListItem button onClick={() => setOpenReportes(!openReportes)}>
                         <ListItemIcon>
                             <PrintIcon className="color-0" />
                         </ListItemIcon>
-                        <ListItemText primary={usuarioPermisos.reportes.name} />
+                        <ListItemText primary={usuarioPermisos["5"].Nombre} />
                         {openReportes ? <ExpandLess /> : <ExpandMore />}
                     </ListItem>
                     <Collapse in={openReportes} unmountOnExit>
                         <List component="div">
-                            {usuarioPermisos.reportes.ventas.set === true && (
+                            {usuarioPermisos["5"].Submodulos["1"] !== undefined && (
                                 <Link to={urlSystem.reportes.ordenes} className={classes.link}>
                                     <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
                                         <ListItemIcon>
                                             <LocalMallIcon className="color-0" />
                                         </ListItemIcon>
-                                        <ListItemText primary={usuarioPermisos.reportes.ventas.name} />
+                                        <ListItemText primary={usuarioPermisos["5"].Submodulos["1"].Nombre} />
                                     </ListItem>
                                 </Link>
                             )}
 
-                            {usuarioPermisos.reportes.doctores.set === true && (
+                            {usuarioPermisos["5"].Submodulos["2"] !== undefined && (
                                 <Link to={urlSystem.reportes.doctores} className={classes.link}>
                                     <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
                                         <ListItemIcon>
                                             <LocalHospitalIcon className="color-0" />
                                         </ListItemIcon>
-                                        <ListItemText primary={usuarioPermisos.reportes.doctores.name} />
+                                        <ListItemText primary={usuarioPermisos["5"].Submodulos["2"].Nombre} />
                                     </ListItem>
                                 </Link>
                             )}

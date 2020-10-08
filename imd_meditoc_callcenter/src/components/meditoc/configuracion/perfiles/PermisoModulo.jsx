@@ -2,7 +2,6 @@ import { Accordion, AccordionDetails, AccordionSummary, IconButton, Tooltip } fr
 import React, { Fragment, useEffect, useState } from "react";
 
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
-import AddIcon from "@material-ui/icons/Add";
 import BlockIcon from "@material-ui/icons/Block";
 import CGUController from "../../../../controllers/CGUController";
 import ExpandMore from "@material-ui/icons/ExpandMore";
@@ -10,6 +9,7 @@ import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 import PermisoSubmodulo from "./PermisoSubmodulo";
 import PropTypes from "prop-types";
 import SeleccionarSubmodulo from "./SeleccionarSubmodulo";
+import SettingsIcon from "@material-ui/icons/Settings";
 import { makeStyles } from "@material-ui/core/styles";
 import theme from "../../../../configurations/themeConfig";
 
@@ -40,6 +40,7 @@ const PermisoModulo = (props) => {
         listaPermisosPerfil,
         funcGetPermisosXPerfil,
         usuarioSesion,
+        permisos,
         funcLoader,
         funcAlert,
     } = props;
@@ -137,17 +138,20 @@ const PermisoModulo = (props) => {
                             {entModulo.sNombre} ({entModulo.iIdModulo})
                         </span>
                     </div>
-
-                    <Tooltip title={`Agregar permisos a submódulos de ${entModulo.sNombre}`} placement="top" arrow>
-                        <IconButton onClick={handleClickAgregarSubmodulo}>
-                            <AddIcon className={colorClass} />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title={`Quitar permiso para el módulo ${entModulo.sNombre}`} placement="top" arrow>
-                        <IconButton onClick={handleClickEliminarPermisoModulo}>
-                            <BlockIcon className={colorClass} />
-                        </IconButton>
-                    </Tooltip>
+                    {permisos.Botones["8"] !== undefined && ( //Agregar permisos a submódulos de
+                        <Tooltip title={`${permisos.Botones["8"].Nombre} ${entModulo.sNombre}`} placement="top" arrow>
+                            <IconButton onClick={handleClickAgregarSubmodulo}>
+                                <SettingsIcon className={colorClass} />
+                            </IconButton>
+                        </Tooltip>
+                    )}
+                    {permisos.Botones["7"] !== undefined && ( //Quitar permiso para el módulo
+                        <Tooltip title={`${permisos.Botones["7"].Nombre} ${entModulo.sNombre}`} placement="top" arrow>
+                            <IconButton onClick={handleClickEliminarPermisoModulo}>
+                                <BlockIcon className={colorClass} />
+                            </IconButton>
+                        </Tooltip>
+                    )}
                 </AccordionSummary>
                 <AccordionDetails>
                     <div className="acc-content">
@@ -161,6 +165,7 @@ const PermisoModulo = (props) => {
                                     lstSubmodulosPerfil={lstSubmodulosPerfil}
                                     funcGetPermisosXPerfil={funcGetPermisosXPerfil}
                                     usuarioSesion={usuarioSesion}
+                                    permisos={permisos}
                                     funcLoader={funcLoader}
                                     funcAlert={funcAlert}
                                 />

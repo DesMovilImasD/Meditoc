@@ -15,6 +15,7 @@ import ProductoController from "../../../../controllers/ProductoController";
 import PropTypes from "prop-types";
 import ReplayIcon from "@material-ui/icons/Replay";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import { emptyFunc } from "../../../../configurations/preventConfig";
 import { useEffect } from "react";
 import { useState } from "react";
 
@@ -25,7 +26,7 @@ import { useState } from "react";
  * Invocado desde: ContentMain
  *************************************************************/
 const Productos = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert, title } = props;
+    const { usuarioSesion, permisos, funcLoader, funcAlert } = props;
 
     const productoController = new ProductoController();
 
@@ -150,32 +151,42 @@ const Productos = (props) => {
 
     return (
         <Fragment>
-            <MeditocHeader1 title={title}>
-                <Tooltip title="Nuevo producto" arrow>
-                    <IconButton onClick={handleClickNuevoProducto}>
-                        <AddIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Ver detalle de producto" arrow>
-                    <IconButton onClick={handleClickDetallesProducto}>
-                        <VisibilityIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Editar producto" arrow>
-                    <IconButton onClick={handleClickEditarProducto}>
-                        <EditIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Eliminar producto" arrow>
-                    <IconButton onClick={handleClickEliminarProducto}>
-                        <DeleteIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Actualizar tabla" arrow>
-                    <IconButton onClick={funcConsultarProductos}>
-                        <ReplayIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
+            <MeditocHeader1 title={permisos.Nombre}>
+                {permisos.Botones["1"] !== undefined && ( //Nuevo producto
+                    <Tooltip title={permisos.Botones["1"].Nombre} arrow>
+                        <IconButton onClick={handleClickNuevoProducto}>
+                            <AddIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["2"] !== undefined && ( //Ver detalle de producto
+                    <Tooltip title={permisos.Botones["2"].Nombre} arrow>
+                        <IconButton onClick={handleClickDetallesProducto}>
+                            <VisibilityIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["3"] !== undefined && ( //Editar producto
+                    <Tooltip title={permisos.Botones["3"].Nombre} arrow>
+                        <IconButton onClick={handleClickEditarProducto}>
+                            <EditIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["4"] !== undefined && ( //Eliminar producto
+                    <Tooltip title={permisos.Botones["4"].Nombre} arrow>
+                        <IconButton onClick={handleClickEliminarProducto}>
+                            <DeleteIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["5"] !== undefined && ( //Actualizar tabla
+                    <Tooltip title={permisos.Botones["5"].Nombre} arrow>
+                        <IconButton onClick={funcConsultarProductos}>
+                            <ReplayIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
             </MeditocHeader1>
             <MeditocBody>
                 <MeditocTable
@@ -184,7 +195,7 @@ const Productos = (props) => {
                     rowSelected={productoSeleccionado}
                     setRowSelected={setProductoSeleccionado}
                     mainField="iIdProducto"
-                    doubleClick={handleClickDetallesProducto}
+                    doubleClick={permisos.Botones["2"] !== undefined ? handleClickDetallesProducto : emptyFunc}
                 />
             </MeditocBody>
             <FormProducto

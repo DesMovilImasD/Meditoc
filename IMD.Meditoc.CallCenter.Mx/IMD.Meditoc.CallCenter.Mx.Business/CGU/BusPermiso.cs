@@ -196,7 +196,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 
             try
             {
-                IMDResponse<List<EntPermisoSistema>> resGetPermisos = this.BObtenerPermisoxPerfil(piIdPerfil);
+                int? perfil = piIdPerfil == (int)EnumPerfilPrincipal.Superadministrador ? (int?)null : piIdPerfil;
+                IMDResponse<List<EntPermisoSistema>> resGetPermisos = this.BObtenerPermisoxPerfil(perfil);
                 if (resGetPermisos.Code != 0)
                 {
                     return resGetPermisos.GetResponse<object>();
@@ -204,7 +205,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 if (resGetPermisos.Result.Count == 0)
                 {
                     response.Code = -23476876345;
-                    response.Message = "El usuario no tiene permisos.";
+                    response.Message = "El perfil del usuario aún no cuenta con permisos.";
                 }
 
                 List<EntPermisoSistema> pr = resGetPermisos.Result;
@@ -218,14 +219,24 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                         JObject objBotones = new JObject();
                         foreach (EntBotonPermiso boton in submodulo.lstBotones)
                         {
-                            JProperty propBoton = new JProperty(boton.sNombre, new JObject());
-                            objBotones.Add(propBoton);
+                            JObject objBoton = new JObject();
+                            objBoton.Add("Nombre", boton.sNombre);
+
+                            objBotones.Add(boton.iIdBoton.ToString(), objBoton);
                         }
-                        JProperty propSubmodulo = new JProperty(submodulo.sNombre, objBotones);
-                        objSubmodulos.Add(propSubmodulo);
+
+                        JObject objSubmodulo = new JObject();
+                        objSubmodulo.Add("Nombre", submodulo.sNombre);
+                        objSubmodulo.Add("Botones", objBotones);
+
+                        objSubmodulos.Add(submodulo.iIdSubModulo.ToString(), objSubmodulo);
                     }
-                    JProperty propModulo = new JProperty(modulo.sNombre, objSubmodulos);
-                    objModulos.Add(propModulo);
+
+                    JObject objModulo = new JObject();
+                    objModulo.Add("Nombre", modulo.sNombre);
+                    objModulo.Add("Submodulos", objSubmodulos);
+
+                    objModulos.Add(modulo.iIdModulo.ToString(), objModulo);
                 }
 
                 object obj = objModulos.ToObject<object>();
@@ -233,11 +244,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 response.Code = 0;
                 response.Message = "Se han obtenido los permisos del usuario.";
                 response.Result = obj;
+
             }
             catch (Exception ex)
             {
                 response.Code = 67823458638838;
-                response.Message = "Ocurrió un error inesperado";
+                response.Message = "Ocurrió un error inesperado al consultar los permisos del usuario.";
 
                 logger.Error(IMDSerialize.Serialize(67823458638838, $"Error en {metodo}: {ex.Message}", ex, response));
             }

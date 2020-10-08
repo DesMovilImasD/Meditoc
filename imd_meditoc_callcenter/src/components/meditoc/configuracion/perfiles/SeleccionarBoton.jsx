@@ -1,5 +1,5 @@
 import { Checkbox, Grid, List, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 import CGUController from "../../../../controllers/CGUController";
 import ExtensionIcon from "@material-ui/icons/Extension";
@@ -27,16 +27,13 @@ const SeleccionarBoton = (props) => {
         funcAlert,
     } = props;
 
-    //Lista de botones para seleccionar
-    const [botonesParaSeleccionar, setBotonesParaSeleccionar] = useState([]);
-
     //Lista de botones seleccionados
     const [botonesSeleccionados, setBotonesSeleccionados] = useState([]);
 
     //Filtrar los botones para mostrar solo los disponibles para seleccionar
     useEffect(() => {
         const listaIdBotonPerfil = lstBotonesPermiso.map((x) => x.iIdBoton);
-        setBotonesParaSeleccionar(lstBotonesSistema.filter((x) => !listaIdBotonPerfil.includes(x.iIdBoton)));
+        setBotonesSeleccionados(lstBotonesSistema.filter((x) => listaIdBotonPerfil.includes(x.iIdBoton)));
 
         // eslint-disable-next-line
     }, [lstBotonesPermiso]);
@@ -51,26 +48,39 @@ const SeleccionarBoton = (props) => {
         } else {
             nuevosBotonesSeleccionados.splice(botonIndex, 1);
         }
-
         setBotonesSeleccionados(nuevosBotonesSeleccionados);
     };
 
     //Consumir servicio para dar permisos a los botones seleccionados
     const funcSavePermisosBotones = async () => {
-        if (botonesSeleccionados.length < 1) {
-            funcAlert("Debe seleccionar al menos un botón para asignar el permiso");
-            return;
-        }
+        let listaPermisosParaGuardar = [];
+        botonesSeleccionados.forEach((x) => {
+            listaPermisosParaGuardar.push({
+                iIdPerfil: entPerfil.iIdPerfil,
+                iIdModulo: entSubmodulo.iIdModulo,
+                iIdSubModulo: entSubmodulo.iIdSubModulo,
+                iIdBoton: x.iIdBoton,
+                iIdUsuarioMod: usuarioSesion.iIdUsuario,
+                bActivo: true,
+                bBaja: false,
+            });
+        });
 
-        const listaPermisosParaGuardar = botonesSeleccionados.map((x) => ({
-            iIdPerfil: entPerfil.iIdPerfil,
-            iIdModulo: entSubmodulo.iIdModulo,
-            iIdSubModulo: entSubmodulo.iIdSubModulo,
-            iIdBoton: x.iIdBoton,
-            iIdUsuarioMod: usuarioSesion.iIdUsuario,
-            bActivo: true,
-            bBaja: false,
-        }));
+        let botonesNoSeleccionados = lstBotonesSistema.filter(
+            (x) => !botonesSeleccionados.map((y) => y.iIdBoton).includes(x.iIdBoton)
+        );
+
+        botonesNoSeleccionados.forEach((x) => {
+            listaPermisosParaGuardar.push({
+                iIdPerfil: entPerfil.iIdPerfil,
+                iIdModulo: entSubmodulo.iIdModulo,
+                iIdSubModulo: entSubmodulo.iIdSubModulo,
+                iIdBoton: x.iIdBoton,
+                iIdUsuarioMod: usuarioSesion.iIdUsuario,
+                bActivo: false,
+                bBaja: true,
+            });
+        });
 
         funcLoader(true, "Guardando permisos para botones...");
 
@@ -80,7 +90,6 @@ const SeleccionarBoton = (props) => {
         if (response.Code === 0) {
             setOpen(false);
             setBotonesSeleccionados([]);
-
             await funcGetPermisosXPerfil();
 
             funcAlert(response.Message, "success");
@@ -91,36 +100,59 @@ const SeleccionarBoton = (props) => {
         funcLoader();
     };
 
+    const [seleccionarTodo, setSeleccionarTodo] = useState(false);
+
+    const handleClickSeleccionarTodo = () => {
+        setSeleccionarTodo(!seleccionarTodo);
+    };
+
+    useEffect(() => {
+        if (seleccionarTodo) {
+            setBotonesSeleccionados(lstBotonesSistema);
+        } else {
+            setBotonesSeleccionados([]);
+        }
+        // eslint-disable-next-line
+    }, [seleccionarTodo]);
+
     return (
-        <MeditocModal title="Seleccionar botones para agregar" size="small" open={open} setOpen={setOpen}>
+        <MeditocModal title="Permisos de botones" size="small" open={open} setOpen={setOpen}>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <List>
-                        {botonesParaSeleccionar.length > 0 ? (
-                            botonesParaSeleccionar.map((boton) => (
-                                <ListItem
-                                    key={boton.iIdSubModulo}
-                                    button
-                                    dense
-                                    onClick={() => handleChangeBotonCheckbox(boton)}
-                                >
+                        {lstBotonesSistema.length > 0 ? (
+                            <Fragment>
+                                <ListItem key={0} button dense onClick={handleClickSeleccionarTodo}>
                                     <ListItemIcon>
-                                        <Checkbox
-                                            edge="start"
-                                            disableRipple
-                                            checked={botonesSeleccionados.indexOf(boton) !== -1}
-                                        />
-                                        <ExtensionIcon className="align-self-center color-3" />
+                                        <Checkbox edge="start" disableRipple checked={seleccionarTodo} />
                                     </ListItemIcon>
-                                    <ListItemText id={boton.iIdBoton} primary={boton.sNombre} />
+                                    <ListItemText id={0} primary="Seleccionar todo" />
                                 </ListItem>
-                            ))
+                                {lstBotonesSistema.map((boton) => (
+                                    <ListItem
+                                        key={boton.iIdBoton}
+                                        button
+                                        dense
+                                        onClick={() => handleChangeBotonCheckbox(boton)}
+                                    >
+                                        <ListItemIcon>
+                                            <Checkbox
+                                                edge="start"
+                                                disableRipple
+                                                checked={botonesSeleccionados.indexOf(boton) !== -1}
+                                            />
+                                            <ExtensionIcon className="align-self-center color-3" />
+                                        </ListItemIcon>
+                                        <ListItemText id={boton.iIdBoton} primary={boton.sNombre} />
+                                    </ListItem>
+                                ))}
+                            </Fragment>
                         ) : (
                             <div className="center">(No hay más botones por agregar)</div>
                         )}
                     </List>
                 </Grid>
-                <MeditocModalBotones okMessage="Agregar botones" okFunc={funcSavePermisosBotones} setOpen={setOpen} />
+                <MeditocModalBotones okMessage="Guardar permisos" okFunc={funcSavePermisosBotones} setOpen={setOpen} />
             </Grid>
         </MeditocModal>
     );

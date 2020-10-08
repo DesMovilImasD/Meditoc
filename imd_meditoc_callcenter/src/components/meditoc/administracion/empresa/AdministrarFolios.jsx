@@ -22,7 +22,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 
 const AdministrarFolios = (props) => {
-    const { entEmpresa, open, setOpen, listaProductos, usuarioSesion, funcLoader, funcAlert } = props;
+    const { entEmpresa, open, setOpen, listaProductos, usuarioSesion, permisos, funcLoader, funcAlert } = props;
 
     const folioController = new FolioController();
 
@@ -132,36 +132,48 @@ const AdministrarFolios = (props) => {
                 />
                 <MeditocBody>
                     <MeditocHeader3 title={`Folios generados: ${listaFoliosEmpresa.length}`}>
-                        <Tooltip title="Crear folios a empresa" arrow>
-                            <IconButton onClick={handleClickAgregarFolios}>
-                                <NoteAddRoundedIcon className="color-1" />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Modificar vigencia a folios seleccionados" arrow>
-                            <IconButton onClick={handleClickModificarVigencia}>
-                                <EventAvailableRoundedIcon className="color-1" />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Cargar folios desde archivo" arrow>
-                            <IconButton onClick={handleClickSubirArchivo}>
-                                <CreateNewFolderIcon className="color-1" />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Descargar plantilla para cargar folios desde archivo" arrow>
-                            <IconButton onClick={handleClickDescargarPlantilla}>
-                                <GetAppIcon className="color-1" />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Eliminar folios seleccionados" arrow>
-                            <IconButton onClick={handleClickEliminarFolios}>
-                                <DeleteIcon className="color-1" />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Actualizar tabla" arrow>
-                            <IconButton onClick={funcGetFoliosEmpresa}>
-                                <ReplayIcon className="color-1" />
-                            </IconButton>
-                        </Tooltip>
+                        {permisos.Botones["5"] !== undefined && ( //Crear folios a empresa
+                            <Tooltip title={permisos.Botones["5"].Nombre} arrow>
+                                <IconButton onClick={handleClickAgregarFolios}>
+                                    <NoteAddRoundedIcon className="color-1" />
+                                </IconButton>
+                            </Tooltip>
+                        )}
+                        {permisos.Botones["6"] !== undefined && ( //Modificar vigencia a folios seleccionados
+                            <Tooltip title={permisos.Botones["6"].Nombre} arrow>
+                                <IconButton onClick={handleClickModificarVigencia}>
+                                    <EventAvailableRoundedIcon className="color-1" />
+                                </IconButton>
+                            </Tooltip>
+                        )}
+                        {permisos.Botones["7"] !== undefined && ( //Cargar folios desde archivo
+                            <Tooltip title={permisos.Botones["7"].Nombre} arrow>
+                                <IconButton onClick={handleClickSubirArchivo}>
+                                    <CreateNewFolderIcon className="color-1" />
+                                </IconButton>
+                            </Tooltip>
+                        )}
+                        {permisos.Botones["8"] !== undefined && ( //Descargar plantilla para cargar folios desde archivo
+                            <Tooltip title={permisos.Botones["8"].Nombre} arrow>
+                                <IconButton onClick={handleClickDescargarPlantilla}>
+                                    <GetAppIcon className="color-1" />
+                                </IconButton>
+                            </Tooltip>
+                        )}
+                        {permisos.Botones["9"] !== undefined && ( //Eliminar folios seleccionados
+                            <Tooltip title={permisos.Botones["9"].Nombre} arrow>
+                                <IconButton onClick={handleClickEliminarFolios}>
+                                    <DeleteIcon className="color-1" />
+                                </IconButton>
+                            </Tooltip>
+                        )}
+                        {permisos.Botones["10"] !== undefined && ( //Actualizar tabla de folios
+                            <Tooltip title={permisos.Botones["10"].Nombre} arrow>
+                                <IconButton onClick={funcGetFoliosEmpresa}>
+                                    <ReplayIcon className="color-1" />
+                                </IconButton>
+                            </Tooltip>
+                        )}
                     </MeditocHeader3>
                     <MeditocTable
                         columns={columns}

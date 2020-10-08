@@ -28,7 +28,15 @@ import { urlSystem } from "../../configurations/urlConfig";
  * Invocado desde: App
  *************************************************************/
 const ContentMain = (props) => {
-    const { usuarioSesion, usuarioPermisos, setUsuarioSesion, setUsuarioActivo, funcLoader, funcAlert } = props;
+    const {
+        usuarioSesion,
+        usuarioPermisos,
+        setUsuarioSesion,
+        setUsuarioActivo,
+        setUsuarioPermisos,
+        funcLoader,
+        funcAlert,
+    } = props;
     const [drawerOpen, setDrawerOpen] = useState(false);
 
     const [funcCerrarTodo, setFuncCerrarTodo] = useState(null);
@@ -49,6 +57,7 @@ const ContentMain = (props) => {
                     toggleDrawer={toggleDrawer}
                     setUsuarioSesion={setUsuarioSesion}
                     setUsuarioActivo={setUsuarioActivo}
+                    setUsuarioPermisos={setUsuarioPermisos}
                     usuarioSesion={usuarioSesion}
                     funcCerrarTodo={funcCerrarTodo}
                     funcLoader={funcLoader}
@@ -64,109 +73,136 @@ const ContentMain = (props) => {
                         <Route exact path="/">
                             <MeditocPortada />
                         </Route>
-                        <Route exact path={urlSystem.configuracion.sistema}>
-                            <Sistema
+                        <Route exact path={urlSystem.configuracion.usuarios}>
+                            <Usuarios
                                 usuarioSesion={usuarioSesion}
+                                permisos={
+                                    usuarioPermisos["1"] === undefined ? {} : usuarioPermisos["1"].Submodulos["1"]
+                                }
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}
-                                title={usuarioPermisos.configuracion.sistema.name}
                             />
                         </Route>
                         <Route exact path={urlSystem.configuracion.perfiles}>
                             <Perfiles
                                 usuarioSesion={usuarioSesion}
+                                permisos={
+                                    usuarioPermisos["1"] === undefined ? {} : usuarioPermisos["1"].Submodulos["2"]
+                                }
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}
-                                title={usuarioPermisos.configuracion.perfiles.name}
                             />
                         </Route>
-                        <Route exact path={urlSystem.configuracion.usuarios}>
-                            <Usuarios
+                        <Route exact path={urlSystem.configuracion.sistema}>
+                            <Sistema
                                 usuarioSesion={usuarioSesion}
+                                permisos={
+                                    usuarioPermisos["1"] === undefined ? {} : usuarioPermisos["1"].Submodulos["3"]
+                                }
+                                setUsuarioPermisos={setUsuarioPermisos}
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}
-                                title={usuarioPermisos.configuracion.usuarios.name}
-                            />
-                        </Route>
-                        <Route exact path={urlSystem.administracion.productos}>
-                            <Productos
-                                usuarioSesion={usuarioSesion}
-                                funcLoader={funcLoader}
-                                funcAlert={funcAlert}
-                                title={usuarioPermisos.administracion.productos.name}
-                            />
-                        </Route>
-                        <Route exact path={urlSystem.administracion.institucion}>
-                            <Empresa
-                                usuarioSesion={usuarioSesion}
-                                funcLoader={funcLoader}
-                                funcAlert={funcAlert}
-                                title={usuarioPermisos.administracion.empresa.name}
-                            />
-                        </Route>
-                        <Route exact path={urlSystem.administracion.cupones}>
-                            <Cupones
-                                usuarioSesion={usuarioSesion}
-                                funcLoader={funcLoader}
-                                funcAlert={funcAlert}
-                                title={usuarioPermisos.administracion.cupones.name}
                             />
                         </Route>
                         <Route exact path={urlSystem.administracion.colaboradores}>
                             <Colaboradores
                                 usuarioSesion={usuarioSesion}
+                                permisos={
+                                    usuarioPermisos["2"] === undefined ? {} : usuarioPermisos["2"].Submodulos["1"]
+                                }
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}
-                                title={usuarioPermisos.administracion.colaboradores.name}
+                            />
+                        </Route>
+                        <Route exact path={urlSystem.administracion.institucion}>
+                            <Empresa
+                                usuarioSesion={usuarioSesion}
+                                permisos={
+                                    usuarioPermisos["2"] === undefined ? {} : usuarioPermisos["2"].Submodulos["2"]
+                                }
+                                funcLoader={funcLoader}
+                                funcAlert={funcAlert}
+                            />
+                        </Route>
+                        <Route exact path={urlSystem.administracion.productos}>
+                            <Productos
+                                usuarioSesion={usuarioSesion}
+                                permisos={
+                                    usuarioPermisos["2"] === undefined ? {} : usuarioPermisos["2"].Submodulos["3"]
+                                }
+                                funcLoader={funcLoader}
+                                funcAlert={funcAlert}
+                            />
+                        </Route>
+                        <Route exact path={urlSystem.administracion.cupones}>
+                            <Cupones
+                                usuarioSesion={usuarioSesion}
+                                permisos={
+                                    usuarioPermisos["2"] === undefined ? {} : usuarioPermisos["2"].Submodulos["4"]
+                                }
+                                funcLoader={funcLoader}
+                                funcAlert={funcAlert}
                             />
                         </Route>
                         <Route exact path={urlSystem.administracion.especialidades}>
                             <Especialidades
                                 usuarioSesion={usuarioSesion}
+                                permisos={
+                                    usuarioPermisos["2"] === undefined ? {} : usuarioPermisos["2"].Submodulos["5"]
+                                }
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}
-                                title={usuarioPermisos.administracion.especialidades.name}
                             />
                         </Route>
                         <Route exact path={urlSystem.folios.folios}>
                             <Folios
                                 usuarioSesion={usuarioSesion}
+                                permisos={
+                                    usuarioPermisos["3"] === undefined ? {} : usuarioPermisos["3"].Submodulos["1"]
+                                }
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}
-                                title={usuarioPermisos.folios.folios.name}
-                            />
-                        </Route>
-                        <Route exact path={urlSystem.callcenter.administrarConsultas}>
-                            <Administrador
-                                usuarioSesion={usuarioSesion}
-                                funcLoader={funcLoader}
-                                funcAlert={funcAlert}
-                                title={usuarioPermisos.callcenter.administrarconsultas.name}
                             />
                         </Route>
                         <Route exact path={urlSystem.callcenter.consultas}>
                             <CallCenter
                                 usuarioSesion={usuarioSesion}
+                                permisos={
+                                    usuarioPermisos["4"] === undefined ? {} : usuarioPermisos["4"].Submodulos["1"]
+                                }
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}
                                 setFuncCerrarTodo={setFuncCerrarTodo}
-                                title={usuarioPermisos.callcenter.consultas.name}
                             />
                         </Route>
-                        <Route exact path={urlSystem.reportes.doctores}>
-                            <ReportesDoctores
+                        <Route exact path={urlSystem.callcenter.administrarConsultas}>
+                            <Administrador
                                 usuarioSesion={usuarioSesion}
+                                permisos={
+                                    usuarioPermisos["4"] === undefined ? {} : usuarioPermisos["4"].Submodulos["2"]
+                                }
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}
-                                title={usuarioPermisos.reportes.doctores.name}
                             />
                         </Route>
                         <Route exact path={urlSystem.reportes.ventas}>
                             <ReportesVentas
                                 usuarioSesion={usuarioSesion}
+                                permisos={
+                                    usuarioPermisos["5"] === undefined ? {} : usuarioPermisos["5"].Submodulos["1"]
+                                }
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}
-                                title={usuarioPermisos.reportes.ventas.name}
+                            />
+                        </Route>
+                        <Route exact path={urlSystem.reportes.doctores}>
+                            <ReportesDoctores
+                                usuarioSesion={usuarioSesion}
+                                permisos={
+                                    usuarioPermisos["5"] === undefined ? {} : usuarioPermisos["5"].Submodulos["2"]
+                                }
+                                funcLoader={funcLoader}
+                                funcAlert={funcAlert}
                             />
                         </Route>
                     </Switch>

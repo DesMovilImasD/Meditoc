@@ -1,14 +1,13 @@
 import { Button, Collapse, Fade, Grid, IconButton, Tooltip, Typography } from "@material-ui/core";
-import { EnumPerfilesPrincipales, EnumSistema } from "../../configurations/enumConfig";
 import { imgLogoLogin, imgLogoMeditocCasa } from "../../configurations/imgConfig";
 
 import CGUController from "../../controllers/CGUController";
+import { EnumPerfilesPrincipales } from "../../configurations/enumConfig";
 import MeditocInputWhite from "../utilidades/MeditocInputWhite";
 import React from "react";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import { makeStyles } from "@material-ui/core/styles";
-import permisosSistema from "../../configurations/systemConfig";
 import { rxCorreo } from "../../configurations/regexConfig";
 import theme from "../../configurations/themeConfig";
 import { urlSystem } from "../../configurations/urlConfig";
@@ -34,9 +33,6 @@ const Login = (props) => {
     const [imgLogoFade, setImgLogoFade] = useState(false);
     const [verPassword, setVerPassword] = useState(false);
 
-    const [usuarioSistema, setUsuarioSistema] = useState([]);
-    const [usuarioPermiso, setusuarioPermiso] = useState({});
-
     const [formLogin, setFormLogin] = useState({
         txtUsuarioMeditoc: "",
         txtPasswordMeditoc: "",
@@ -57,190 +53,50 @@ const Login = (props) => {
             sUsuario: MeditocTkn,
             sPassword: MeditocKey,
         };
-        const response = await cguController.funcGetLogin(entUserSubmit);
+        const responseLogin = await cguController.funcGetLogin(entUserSubmit);
 
         funcLoader();
-        if (response.Code === 0) {
+        if (responseLogin.Code === 0) {
             sessionStorage.setItem("MeditocTkn", MeditocTkn);
             sessionStorage.setItem("MeditocKey", MeditocKey);
 
             funcLoader(true, "Obteniendo permisos..");
-            const responsePerfil = await cguController.funcGetPermisosXPeril(response.Result.iIdPerfil);
+            const responsePermiso = await cguController.funcGetPermisosUsuario(responseLogin.Result.iIdPerfil);
             funcLoader();
 
-            if (responsePerfil.Code === 0) {
-                funcSetPermisos(response.Result.iIdPerfil, responsePerfil.Result);
+            if (responsePermiso.Code === 0) {
+                setUsuarioPermisos(responsePermiso.Result);
+
+                switch (responseLogin.Result.iIdPerfil) {
+                    case EnumPerfilesPrincipales.Superadministrador:
+                        history.push("/");
+                        break;
+                    case EnumPerfilesPrincipales.Administrador:
+                        history.push("/");
+                        break;
+
+                    case EnumPerfilesPrincipales.DoctorCallCenter:
+                        history.push(urlSystem.callcenter.consultas);
+                        break;
+
+                    case EnumPerfilesPrincipales.DoctorEspecialista:
+                        history.push(urlSystem.callcenter.consultas);
+                        break;
+                    case EnumPerfilesPrincipales.AdministradorEspecialiesta:
+                        history.push(urlSystem.callcenter.administrarConsultas);
+                        break;
+
+                    default:
+                        break;
+                }
             }
-            setUsuarioSesion(response.Result);
+            setUsuarioSesion(responseLogin.Result);
             setUsuarioActivo(true);
         } else {
             sessionStorage.removeItem("MeditocTkn");
             sessionStorage.removeItem("MeditocKey");
-            funcAlert(response.Message);
+            funcAlert(responseLogin.Message);
         }
-    };
-
-    const funcSetPermisos = (iIdPerfil = 0, lstPermisos = []) => {
-        let usuarioPermisos = JSON.parse(JSON.stringify(permisosSistema));
-
-        const moduloConfiguracion = lstPermisos.find((x) => x.iIdModulo === EnumSistema.Configuracion); //Configuraciones
-        if (moduloConfiguracion !== undefined) {
-            usuarioPermisos.configuracion.set = true;
-            usuarioPermisos.configuracion.name = moduloConfiguracion.sNombre;
-
-            const submoduloUsuarios = moduloConfiguracion.lstSubModulo.find(
-                (x) => x.iIdSubModulo === EnumSistema.ConfiguracionSM.Usuarios
-            );
-            if (submoduloUsuarios !== undefined) {
-                usuarioPermisos.configuracion.usuarios.set = true;
-                usuarioPermisos.configuracion.usuarios.name = submoduloUsuarios.sNombre;
-            }
-
-            const submoduloPerfiles = moduloConfiguracion.lstSubModulo.find(
-                (x) => x.iIdSubModulo === EnumSistema.ConfiguracionSM.Perfiles
-            );
-            if (submoduloPerfiles !== undefined) {
-                usuarioPermisos.configuracion.perfiles.set = true;
-                usuarioPermisos.configuracion.perfiles.name = submoduloPerfiles.sNombre;
-            }
-
-            const submoduloSistema = moduloConfiguracion.lstSubModulo.find(
-                (x) => x.iIdSubModulo === EnumSistema.ConfiguracionSM.Sistema
-            );
-            if (submoduloSistema !== undefined) {
-                usuarioPermisos.configuracion.sistema.set = true;
-                usuarioPermisos.configuracion.sistema.name = submoduloSistema.sNombre;
-            }
-        }
-
-        const moduloAdministracion = lstPermisos.find((x) => x.iIdModulo === EnumSistema.Administracion); //Administracion
-        if (moduloAdministracion !== undefined) {
-            usuarioPermisos.administracion.set = true;
-            usuarioPermisos.administracion.name = moduloAdministracion.sNombre;
-
-            const submoduloColaboradores = moduloAdministracion.lstSubModulo.find(
-                (x) => x.iIdSubModulo === EnumSistema.AdministracionSM.Colaboradores
-            );
-            if (submoduloColaboradores !== undefined) {
-                usuarioPermisos.administracion.colaboradores.set = true;
-                usuarioPermisos.administracion.colaboradores.name = submoduloColaboradores.sNombre;
-            }
-
-            const submoduloEmpresa = moduloAdministracion.lstSubModulo.find(
-                (x) => x.iIdSubModulo === EnumSistema.AdministracionSM.Empresa
-            );
-            if (submoduloEmpresa !== undefined) {
-                usuarioPermisos.administracion.empresa.set = true;
-                usuarioPermisos.administracion.empresa.name = submoduloEmpresa.sNombre;
-            }
-
-            const submoduloProductos = moduloAdministracion.lstSubModulo.find(
-                (x) => x.iIdSubModulo === EnumSistema.AdministracionSM.Productos
-            );
-            if (submoduloProductos !== undefined) {
-                usuarioPermisos.administracion.productos.set = true;
-                usuarioPermisos.administracion.productos.name = submoduloProductos.sNombre;
-            }
-
-            const submoduloCupones = moduloAdministracion.lstSubModulo.find(
-                (x) => x.iIdSubModulo === EnumSistema.AdministracionSM.Cupones
-            );
-            if (submoduloCupones !== undefined) {
-                usuarioPermisos.administracion.cupones.set = true;
-                usuarioPermisos.administracion.cupones.name = submoduloCupones.sNombre;
-            }
-
-            const submoduloEspecialidades = moduloAdministracion.lstSubModulo.find(
-                (x) => x.iIdSubModulo === EnumSistema.AdministracionSM.Especialidades
-            );
-            if (submoduloEspecialidades !== undefined) {
-                usuarioPermisos.administracion.especialidades.set = true;
-                usuarioPermisos.administracion.especialidades.name = submoduloEspecialidades.sNombre;
-            }
-        }
-
-        const moduloFolios = lstPermisos.find((x) => x.iIdModulo === EnumSistema.Folios); // Folios
-        if (moduloFolios !== undefined) {
-            usuarioPermisos.folios.set = true;
-            usuarioPermisos.folios.name = moduloFolios.sNombre;
-
-            const submoduloFolios = moduloFolios.lstSubModulo.find(
-                (x) => x.iIdSubModulo === EnumSistema.FoliosSM.Folios
-            );
-            if (submoduloFolios !== undefined) {
-                usuarioPermisos.folios.folios.set = true;
-                usuarioPermisos.folios.folios.name = submoduloFolios.sNombre;
-            }
-        }
-
-        const moduloCallCenter = lstPermisos.find((x) => x.iIdModulo === EnumSistema.CallCenter); //CallCenter
-        if (moduloCallCenter !== undefined) {
-            usuarioPermisos.callcenter.set = true;
-            usuarioPermisos.callcenter.name = moduloCallCenter.sNombre;
-
-            const submoduloConsultas = moduloCallCenter.lstSubModulo.find(
-                (x) => x.iIdSubModulo === EnumSistema.CallCenterSM.Consultas
-            );
-            if (submoduloConsultas !== undefined) {
-                usuarioPermisos.callcenter.consultas.set = true;
-                usuarioPermisos.callcenter.consultas.name = submoduloConsultas.sNombre;
-            }
-
-            const submoduloAdministrarConsultas = moduloCallCenter.lstSubModulo.find(
-                (x) => x.iIdSubModulo === EnumSistema.CallCenterSM.AdministrarConsultas
-            );
-            if (submoduloAdministrarConsultas !== undefined) {
-                usuarioPermisos.callcenter.administrarconsultas.set = true;
-                usuarioPermisos.callcenter.administrarconsultas.name = submoduloAdministrarConsultas.sNombre;
-            }
-        }
-
-        const moduloReportes = lstPermisos.find((x) => x.iIdModulo === EnumSistema.Reportes); //Reportes
-        if (moduloReportes !== undefined) {
-            usuarioPermisos.reportes.set = true;
-            usuarioPermisos.reportes.name = moduloReportes.sNombre;
-
-            const submoduloVentas = moduloReportes.lstSubModulo.find(
-                (x) => x.iIdSubModulo === EnumSistema.ReportesSM.Ventas
-            );
-            if (submoduloVentas !== undefined) {
-                usuarioPermisos.reportes.ventas.set = true;
-                usuarioPermisos.reportes.ventas.name = submoduloVentas.sNombre;
-            }
-
-            const submoduloDoctores = moduloReportes.lstSubModulo.find(
-                (x) => x.iIdSubModulo === EnumSistema.ReportesSM.Doctores
-            );
-            if (submoduloDoctores !== undefined) {
-                usuarioPermisos.reportes.doctores.set = true;
-                usuarioPermisos.reportes.doctores.name = submoduloDoctores.sNombre;
-            }
-        }
-
-        switch (iIdPerfil) {
-            case EnumPerfilesPrincipales.Superadministrador:
-                history.push("/");
-                break;
-            case EnumPerfilesPrincipales.Administrador:
-                history.push("/");
-                break;
-
-            case EnumPerfilesPrincipales.DoctorCallCenter:
-                history.push(urlSystem.callcenter.consultas);
-                break;
-
-            case EnumPerfilesPrincipales.DoctorEspecialista:
-                history.push(urlSystem.callcenter.consultas);
-                break;
-            case EnumPerfilesPrincipales.AdministradorEspecialiesta:
-                history.push(urlSystem.callcenter.administrarConsultas);
-                break;
-
-            default:
-                break;
-        }
-
-        setUsuarioPermisos(usuarioPermisos);
     };
 
     const handleSubmitFormLogin = (e) => {

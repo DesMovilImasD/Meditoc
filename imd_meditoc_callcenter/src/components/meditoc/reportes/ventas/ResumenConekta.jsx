@@ -11,7 +11,7 @@ import MeditocTable from "../../../utilidades/MeditocTable";
 import PropTypes from "prop-types";
 
 const ResumenConekta = (props) => {
-    const { entVentas, funcLoader, funcAlert } = props;
+    const { entVentas, funcLoader, funcAlert, permisos } = props;
 
     const columnas = [
         { title: "Orden", field: "sOrderId", align: "center" },
@@ -118,6 +118,7 @@ const ResumenConekta = (props) => {
                 setOpen={setModalDetalleOrdenOpen}
                 funcAlert={funcAlert}
                 funcLoader={funcLoader}
+                permisos={permisos}
             />
         </Fragment>
     );

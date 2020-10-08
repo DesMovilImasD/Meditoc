@@ -1,7 +1,6 @@
 import { IconButton, Tooltip } from "@material-ui/core";
 import React, { Fragment, useEffect, useState } from "react";
 
-import AddIcon from "@material-ui/icons/Add";
 import CGUController from "../../../../controllers/CGUController";
 import MeditocBody from "../../../utilidades/MeditocBody";
 import MeditocFullModal from "../../../utilidades/MeditocFullModal";
@@ -11,6 +10,7 @@ import PermisoModulo from "./PermisoModulo";
 import PropTypes from "prop-types";
 import ReplayIcon from "@material-ui/icons/Replay";
 import SeleccionarModulos from "./SeleccionarModulo";
+import SettingsIcon from "@material-ui/icons/Settings";
 import Simbologia from "../sistema/Simbologia";
 
 /*************************************************************
@@ -20,7 +20,7 @@ import Simbologia from "../sistema/Simbologia";
  * Invocado desde: Perfiles
  *************************************************************/
 const Permisos = (props) => {
-    const { entPerfil, listaSistema, open, setOpen, usuarioSesion, funcLoader, funcAlert } = props;
+    const { entPerfil, listaSistema, open, setOpen, usuarioSesion, permisos, funcLoader, funcAlert } = props;
 
     //Lista de modulos que el perfil tiene permisos para acceder
     const [listaPermisosModulo, setListaPermisosModulo] = useState([]);
@@ -69,16 +69,20 @@ const Permisos = (props) => {
                     <MeditocHeader2 title={"Administrar permisos para " + entPerfil.sNombre} setOpen={setOpen} />
                     <MeditocBody>
                         <MeditocHeader3 title="Accesos permitidos">
-                            <Tooltip title="Agregar permisos a módulos de Meditoc CallCenter" arrow>
-                                <IconButton onClick={handleClickSeleccionarModulos}>
-                                    <AddIcon className="color-1" />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Actualizar información" arrow>
-                                <IconButton onClick={getData}>
-                                    <ReplayIcon className="color-1" />
-                                </IconButton>
-                            </Tooltip>
+                            {permisos.Botones["6"] !== undefined && ( //Agregar permisos a módulos de Meditoc CallCenter
+                                <Tooltip title={permisos.Botones["6"].Nombre} arrow>
+                                    <IconButton onClick={handleClickSeleccionarModulos}>
+                                        <SettingsIcon className="color-1" />
+                                    </IconButton>
+                                </Tooltip>
+                            )}
+                            {permisos.Botones["12"] !== undefined && ( //Actualizar información
+                                <Tooltip title={permisos.Botones["12"].Nombre} arrow>
+                                    <IconButton onClick={getData}>
+                                        <ReplayIcon className="color-1" />
+                                    </IconButton>
+                                </Tooltip>
+                            )}
                         </MeditocHeader3>
                         {listaPermisosModulo.length > 0 ? (
                             listaPermisosModulo.map((modulo) => (
@@ -90,6 +94,7 @@ const Permisos = (props) => {
                                     listaPermisosPerfil={listaPermisosModulo}
                                     funcGetPermisosXPerfil={funcGetPermisosXPerfil}
                                     usuarioSesion={usuarioSesion}
+                                    permisos={permisos}
                                     funcLoader={funcLoader}
                                     funcAlert={funcAlert}
                                 />

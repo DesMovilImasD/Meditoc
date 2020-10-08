@@ -29,6 +29,7 @@ const NavBar = (props) => {
         toggleDrawer,
         setUsuarioSesion,
         setUsuarioActivo,
+        setUsuarioPermisos,
         usuarioSesion,
         funcCerrarTodo,
         funcLoader,
@@ -64,7 +65,8 @@ const NavBar = (props) => {
         }
         history.push("/");
 
-        setUsuarioSesion({});
+        setUsuarioSesion(null);
+        setUsuarioPermisos(null);
         setUsuarioActivo(false);
     };
 

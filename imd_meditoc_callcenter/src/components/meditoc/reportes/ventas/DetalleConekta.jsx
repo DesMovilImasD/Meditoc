@@ -12,7 +12,7 @@ import MeditocTableSimple from "../../../utilidades/MeditocTableSimple";
 import PropTypes from "prop-types";
 
 const DetalleConekta = (props) => {
-    const { entOrden, open, setOpen, funcLoader, funcAlert } = props;
+    const { entOrden, open, setOpen, funcLoader, funcAlert, permisos } = props;
 
     const columnas = [
         { title: "Folio", field: "sFolio", align: "center" },
@@ -123,7 +123,9 @@ const DetalleConekta = (props) => {
                     okMessage="Reenviar correo de órden"
                     setOpen={setOpen}
                     okFunc={handleClickReenviarCorreo}
-                    hideOk={entOrden.sPaymentStatus === EnumStatusConekta.Declined}
+                    hideOk={
+                        entOrden.sPaymentStatus === EnumStatusConekta.Declined || permisos.Botones["3"] === undefined
+                    }
                 />
             </Grid>
         </MeditocModal>

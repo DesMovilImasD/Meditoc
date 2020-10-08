@@ -21,7 +21,7 @@ const useStyles = makeStyles({
  * Invocado desde: PermisoSubmodulo
  *************************************************************/
 const PermisoBoton = (props) => {
-    const { entPerfil, entBoton, usuarioSesion, funcGetPermisosXPerfil, funcLoader, funcAlert } = props;
+    const { entPerfil, entBoton, usuarioSesion, funcGetPermisosXPerfil, permisos, funcLoader, funcAlert } = props;
 
     //Variables para estilos
     const classes = useStyles();
@@ -76,11 +76,13 @@ const PermisoBoton = (props) => {
                     </span>
                 </TableCell>
                 <TableCell classes={{ sizeSmall: classes.cell }} align="right">
-                    <Tooltip title={`Quitar permiso para el botón ${entBoton.sNombre}`} placement="top" arrow>
-                        <IconButton onClick={handleClickEliminarBoton}>
-                            <BlockIcon />
-                        </IconButton>
-                    </Tooltip>
+                    {permisos.Botones["11"] !== undefined && ( //Quitar permiso para el botón
+                        <Tooltip title={`${permisos.Botones["11"].Nombre} ${entBoton.sNombre}`} placement="top" arrow>
+                            <IconButton onClick={handleClickEliminarBoton}>
+                                <BlockIcon />
+                            </IconButton>
+                        </Tooltip>
+                    )}
                 </TableCell>
             </TableRow>
             <MeditocConfirmacion

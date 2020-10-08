@@ -10,7 +10,6 @@ import {
 } from "@material-ui/core";
 import React, { Fragment, useEffect, useState } from "react";
 
-import AddIcon from "@material-ui/icons/Add";
 import BlockIcon from "@material-ui/icons/Block";
 import CGUController from "../../../../controllers/CGUController";
 import ExpandMore from "@material-ui/icons/ExpandMore";
@@ -18,6 +17,7 @@ import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 import PermisoBoton from "./PermisoBoton";
 import PropTypes from "prop-types";
 import SeleccionarBoton from "./SeleccionarBoton";
+import SettingsIcon from "@material-ui/icons/Settings";
 import WebIcon from "@material-ui/icons/Web";
 import { makeStyles } from "@material-ui/core/styles";
 import theme from "../../../../configurations/themeConfig";
@@ -49,6 +49,7 @@ const PermisoSubmodulo = (props) => {
         lstSubmodulosPerfil,
         funcGetPermisosXPerfil,
         usuarioSesion,
+        permisos,
         funcLoader,
         funcAlert,
     } = props;
@@ -148,42 +149,56 @@ const PermisoSubmodulo = (props) => {
                             {entSubmodulo.sNombre} ({entSubmodulo.iIdSubModulo})
                         </span>
                     </div>
-                    <Tooltip title={`Agregar permisos a botones de ${entSubmodulo.sNombre}`} placement="top" arrow>
-                        <IconButton onClick={handleClickSeleccionarBotones}>
-                            <AddIcon className={colorClass} />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title={`Quitar permiso para el submódulo ${entSubmodulo.sNombre}`} placement="top" arrow>
-                        <IconButton onClick={handleClickEliminarPermisoSubmodulo}>
-                            <BlockIcon className={colorClass} />
-                        </IconButton>
-                    </Tooltip>
+                    {permisos.Botones["10"] !== undefined && ( //Agregar permisos a botones de
+                        <Tooltip
+                            title={`${permisos.Botones["10"].Nombre} ${entSubmodulo.sNombre}`}
+                            placement="top"
+                            arrow
+                        >
+                            <IconButton onClick={handleClickSeleccionarBotones}>
+                                <SettingsIcon className={colorClass} />
+                            </IconButton>
+                        </Tooltip>
+                    )}
+
+                    {permisos.Botones["9"] !== undefined && ( //Quitar permiso para el submódulo
+                        <Tooltip
+                            title={`${permisos.Botones["9"].Nombre} ${entSubmodulo.sNombre}`}
+                            placement="top"
+                            arrow
+                        >
+                            <IconButton onClick={handleClickEliminarPermisoSubmodulo}>
+                                <BlockIcon className={colorClass} />
+                            </IconButton>
+                        </Tooltip>
+                    )}
                 </AccordionSummary>
                 <AccordionDetails>
                     <div className="acc-content">
                         <Paper elevation={0}>
-                            <Table size="small">
-                                <TableBody>
-                                    {lstBotonesPermiso.length > 0 ? (
-                                        lstBotonesPermiso.map((boton) => (
+                            {lstBotonesPermiso.length > 0 ? (
+                                <Table size="small">
+                                    <TableBody>
+                                        {lstBotonesPermiso.map((boton) => (
                                             <PermisoBoton
                                                 key={boton.iIdBoton}
                                                 entPerfil={entPerfil}
                                                 entBoton={boton}
                                                 usuarioSesion={usuarioSesion}
                                                 funcGetPermisosXPerfil={funcGetPermisosXPerfil}
+                                                permisos={permisos}
                                                 funcLoader={funcLoader}
                                                 funcAlert={funcAlert}
                                             />
-                                        ))
-                                    ) : (
-                                        <div className="color-3 center">
-                                            (Este submódulo no tiene permisos para acceder a los botones de{" "}
-                                            {entSubmodulo.sNombre})
-                                        </div>
-                                    )}
-                                </TableBody>
-                            </Table>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            ) : (
+                                <div className="color-3 center">
+                                    (Este submódulo no tiene permisos para acceder a los botones de{" "}
+                                    {entSubmodulo.sNombre})
+                                </div>
+                            )}
                         </Paper>
                     </div>
                 </AccordionDetails>

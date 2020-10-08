@@ -14,11 +14,12 @@ import PromocionesController from "../../../../controllers/PromocionesController
 import PropTypes from "prop-types";
 import ReplayIcon from "@material-ui/icons/Replay";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import { emptyFunc } from "../../../../configurations/preventConfig";
 import { useEffect } from "react";
 import { useState } from "react";
 
 const Cupones = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert, title } = props;
+    const { usuarioSesion, permisos, funcLoader, funcAlert } = props;
 
     const promocionesController = new PromocionesController();
 
@@ -64,15 +65,6 @@ const Cupones = (props) => {
         }
         setModalDetalleCuponOpen(true);
     };
-
-    // const handleEditarCupon = () => {
-    //     if (cuponSeleccionado.fiIdCupon === 0) {
-    //         funcAlert("Seleccione un cupón para continuar");
-    //         return;
-    //     }
-    //     setCuponParaModalForm(cuponSeleccionado);
-    //     setModalFormCuponOpen(true);
-    // };
 
     const handleClickEliminarCupon = () => {
         if (cuponSeleccionado.fiIdCupon === 0) {
@@ -123,27 +115,35 @@ const Cupones = (props) => {
 
     return (
         <Fragment>
-            <MeditocHeader1 title={title}>
-                <Tooltip title="Crear un cupón" arrow>
-                    <IconButton onClick={handleClickCrearCupon}>
-                        <AddRoundedIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Detalle de cupón" arrow>
-                    <IconButton onClick={handleClickDetalleCupon}>
-                        <VisibilityIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Eliminar cupón" arrow>
-                    <IconButton onClick={handleClickEliminarCupon}>
-                        <DeleteIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Actualizar tabla" arrow>
-                    <IconButton onClick={funcObtenerCupones}>
-                        <ReplayIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
+            <MeditocHeader1 title={permisos.Nombre}>
+                {permisos.Botones["1"] !== undefined && ( //Crear un cupón
+                    <Tooltip title={permisos.Botones["1"].Nombre} arrow>
+                        <IconButton onClick={handleClickCrearCupon}>
+                            <AddRoundedIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["2"] !== undefined && ( //Detalle de cupón
+                    <Tooltip title={permisos.Botones["2"].Nombre} arrow>
+                        <IconButton onClick={handleClickDetalleCupon}>
+                            <VisibilityIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["3"] !== undefined && ( //Eliminar cupón
+                    <Tooltip title={permisos.Botones["3"].Nombre} arrow>
+                        <IconButton onClick={handleClickEliminarCupon}>
+                            <DeleteIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["4"] !== undefined && ( //Actualizar tabla
+                    <Tooltip title={permisos.Botones["4"].Nombre} arrow>
+                        <IconButton onClick={funcObtenerCupones}>
+                            <ReplayIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
             </MeditocHeader1>
             <MeditocBody>
                 <MeditocTable
@@ -152,7 +152,7 @@ const Cupones = (props) => {
                     rowSelected={cuponSeleccionado}
                     setRowSelected={setCuponSeleccionado}
                     mainField="fiIdCupon"
-                    doubleClick={handleClickDetalleCupon}
+                    doubleClick={permisos.Botones["2"] !== undefined ? handleClickDetalleCupon : emptyFunc}
                 />
             </MeditocBody>
             <FormCupon

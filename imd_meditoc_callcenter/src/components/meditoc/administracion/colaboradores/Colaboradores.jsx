@@ -19,11 +19,12 @@ import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import PropTypes from "prop-types";
 import ReplayIcon from "@material-ui/icons/Replay";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import { emptyFunc } from "../../../../configurations/preventConfig";
 import { useEffect } from "react";
 import { useState } from "react";
 
 const Colaboradores = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert, title } = props;
+    const { usuarioSesion, permisos, funcLoader, funcAlert } = props;
 
     const especialidadController = new EspecialidadController();
     const colaboradorController = new ColaboradorController();
@@ -207,42 +208,56 @@ const Colaboradores = (props) => {
 
     return (
         <Fragment>
-            <MeditocHeader1 title={title}>
-                <Tooltip title="Nuevo Colaborador CallCenter" arrow>
-                    <IconButton onClick={handleClickNuevoColaboradorCallCenter}>
-                        <PersonAddIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Nuevo Colaborador Especialista" arrow>
-                    <IconButton onClick={handleClickNuevoColaboradorEspecialista}>
-                        <GroupAddIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Ver detalles de colaborador" arrow>
-                    <IconButton onClick={handleClickDetalleColaborador}>
-                        <VisibilityIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Editar datos de colaborador" arrow>
-                    <IconButton onClick={handleClickEditarColaborador}>
-                        <EditIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Foto del colaborador" arrow>
-                    <IconButton onClick={handleClickFotoColaborador}>
-                        <InsertPhotoIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Eliminar de colaborador" arrow>
-                    <IconButton onClick={handleClickEliminarColaborador}>
-                        <DeleteIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Actualizar tabla" arrow>
-                    <IconButton onClick={funcGetData}>
-                        <ReplayIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
+            <MeditocHeader1 title={permisos.Nombre}>
+                {permisos.Botones["1"] !== undefined && ( //Nuevo Colaborador CallCenter
+                    <Tooltip title={permisos.Botones["1"].Nombre} arrow>
+                        <IconButton onClick={handleClickNuevoColaboradorCallCenter}>
+                            <PersonAddIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["2"] !== undefined && ( //Nuevo Colaborador Especialista
+                    <Tooltip title={permisos.Botones["2"].Nombre} arrow>
+                        <IconButton onClick={handleClickNuevoColaboradorEspecialista}>
+                            <GroupAddIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["3"] !== undefined && ( //Ver detalles de colaborador
+                    <Tooltip title={permisos.Botones["3"].Nombre} arrow>
+                        <IconButton onClick={handleClickDetalleColaborador}>
+                            <VisibilityIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["4"] !== undefined && ( //Editar datos de colaborador
+                    <Tooltip title={permisos.Botones["4"].Nombre} arrow>
+                        <IconButton onClick={handleClickEditarColaborador}>
+                            <EditIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["5"] !== undefined && ( //Foto del colaborador
+                    <Tooltip title={permisos.Botones["5"].Nombre} arrow>
+                        <IconButton onClick={handleClickFotoColaborador}>
+                            <InsertPhotoIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["6"] !== undefined && ( //Eliminar de colaborador
+                    <Tooltip title={permisos.Botones["6"].Nombre} arrow>
+                        <IconButton onClick={handleClickEliminarColaborador}>
+                            <DeleteIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["7"] !== undefined && ( //Actualizar tabla
+                    <Tooltip title={permisos.Botones["7"].Nombre} arrow>
+                        <IconButton onClick={funcGetData}>
+                            <ReplayIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
             </MeditocHeader1>
             <MeditocBody>
                 <MeditocTable
@@ -251,7 +266,7 @@ const Colaboradores = (props) => {
                     rowSelected={colaboradorSeleccionado}
                     setRowSelected={setColaboradorSeleccionado}
                     mainField="iIdColaborador"
-                    doubleClick={handleClickDetalleColaborador}
+                    doubleClick={permisos.Botones["3"] !== undefined ? handleClickDetalleColaborador : emptyFunc}
                 />
             </MeditocBody>
             <FormColaborador
@@ -274,6 +289,7 @@ const Colaboradores = (props) => {
                 open={modalFotoColaboradorOpen}
                 setOpen={setModalFotoColaboradorOpen}
                 usuarioSesion={usuarioSesion}
+                permisos={permisos}
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
             />

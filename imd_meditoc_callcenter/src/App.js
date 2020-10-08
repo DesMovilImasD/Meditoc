@@ -86,6 +86,7 @@ function App() {
                                 usuarioPermisos={usuarioPermisos}
                                 setUsuarioSesion={setUsuarioSesion}
                                 setUsuarioActivo={setUsuarioActivo}
+                                setUsuarioPermisos={setUsuarioPermisos}
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}
                             />

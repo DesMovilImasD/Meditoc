@@ -18,11 +18,12 @@ import MeditocTable from "../../../utilidades/MeditocTable";
 import PropTypes from "prop-types";
 import React from "react";
 import ReplayIcon from "@material-ui/icons/Replay";
+import { emptyFunc } from "../../../../configurations/preventConfig";
 import { useEffect } from "react";
 import { useState } from "react";
 
 const Administrador = (props) => {
-    const { usuarioSesion, funcLoader, funcAlert, title } = props;
+    const { usuarioSesion, permisos, funcLoader, funcAlert } = props;
 
     const colaboradorController = new ColaboradorController();
     const callcenterController = new CallCenterController();
@@ -180,35 +181,43 @@ const Administrador = (props) => {
 
     return (
         <Fragment>
-            <MeditocHeader1 title={title}>
-                <Tooltip title="Nueva consulta" arrow>
-                    <span>
-                        <IconButton onClick={handleClickNuevaConsulta} disabled={usuarioColaborador === null}>
-                            <AddIcon className="color-0" />
-                        </IconButton>
-                    </span>
-                </Tooltip>
-                <Tooltip title="Reprogramar consulta" arrow>
-                    <span>
-                        <IconButton onClick={handleEditarConsulta} disabled={usuarioColaborador === null}>
-                            <EditIcon className="color-0" />
-                        </IconButton>
-                    </span>
-                </Tooltip>
-                <Tooltip title="Cancelar consulta" arrow>
-                    <span>
-                        <IconButton onClick={handleCancelarConsulta} disabled={usuarioColaborador === null}>
-                            <BlockIcon className="color-0" />
-                        </IconButton>
-                    </span>
-                </Tooltip>
-                <Tooltip title="Actualizar tabla de consultas" arrow>
-                    <span>
-                        <IconButton onClick={funcGetConsultas} disabled={usuarioColaborador === null}>
-                            <ReplayIcon className="color-0" />
-                        </IconButton>
-                    </span>
-                </Tooltip>
+            <MeditocHeader1 title={permisos.Nombre}>
+                {permisos.Botones["1"] !== undefined && ( //Nueva consulta
+                    <Tooltip title={permisos.Botones["1"].Nombre} arrow>
+                        <span>
+                            <IconButton onClick={handleClickNuevaConsulta} disabled={usuarioColaborador === null}>
+                                <AddIcon className="color-0" />
+                            </IconButton>
+                        </span>
+                    </Tooltip>
+                )}
+                {permisos.Botones["2"] !== undefined && ( //Reprogramar consulta
+                    <Tooltip title={permisos.Botones["2"].Nombre} arrow>
+                        <span>
+                            <IconButton onClick={handleEditarConsulta} disabled={usuarioColaborador === null}>
+                                <EditIcon className="color-0" />
+                            </IconButton>
+                        </span>
+                    </Tooltip>
+                )}
+                {permisos.Botones["3"] !== undefined && ( //Cancelar consulta
+                    <Tooltip title={permisos.Botones["3"].Nombre} arrow>
+                        <span>
+                            <IconButton onClick={handleCancelarConsulta} disabled={usuarioColaborador === null}>
+                                <BlockIcon className="color-0" />
+                            </IconButton>
+                        </span>
+                    </Tooltip>
+                )}
+                {permisos.Botones["4"] !== undefined && ( //Actualizar tabla
+                    <Tooltip title={permisos.Botones["4"].Nombre} arrow>
+                        <span>
+                            <IconButton onClick={funcGetConsultas} disabled={usuarioColaborador === null}>
+                                <ReplayIcon className="color-0" />
+                            </IconButton>
+                        </span>
+                    </Tooltip>
+                )}
             </MeditocHeader1>
             <MeditocBody>
                 <Grid container spacing={3}>
@@ -300,7 +309,7 @@ const Administrador = (props) => {
                             rowSelected={consultaSeleccionada}
                             setRowSelected={setConsultaSeleccionada}
                             mainField="iIdConsulta"
-                            doubleClick={handleEditarConsulta}
+                            doubleClick={permisos.Botones["2"] !== undefined ? handleEditarConsulta : emptyFunc}
                         />
                     </Grid>
                 </Grid>

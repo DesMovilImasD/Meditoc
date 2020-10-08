@@ -15,7 +15,16 @@ import { useEffect } from "react";
  * Invocado desde: SistemaModulo (Modificar), Sistema (Agregar)
  *************************************************************/
 const FormModulo = (props) => {
-    const { entModulo, open, setOpen, usuarioSesion, funcGetPermisosXPerfil, funcLoader, funcAlert } = props;
+    const {
+        entModulo,
+        open,
+        setOpen,
+        usuarioSesion,
+        funcGetPermisosXPerfil,
+        funcUpdSystemInfo,
+        funcLoader,
+        funcAlert,
+    } = props;
 
     //Servicios API
     const cguController = new CGUController();
@@ -65,6 +74,7 @@ const FormModulo = (props) => {
         if (response.Code === 0) {
             setOpen(false);
             await funcGetPermisosXPerfil();
+            await funcUpdSystemInfo();
             funcAlert(response.Message, "success");
         } else {
             funcAlert(response.Message);

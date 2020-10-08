@@ -22,7 +22,7 @@ import ResumenConekta from "./ResumenConekta";
 import { useState } from "react";
 
 const ReportesVentas = (props) => {
-    const { funcLoader, funcAlert, title } = props;
+    const { permisos, funcLoader, funcAlert } = props;
 
     const reportesController = new ReportesController();
     const promocionesController = new PromocionesController();
@@ -135,17 +135,21 @@ const ReportesVentas = (props) => {
 
     return (
         <Fragment>
-            <MeditocHeader1 title={title}>
-                <Tooltip title="Descargar Reporte">
-                    <IconButton onClick={funcDescargaReporte}>
-                        <CloudDownloadIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Actualizar todos los datos">
-                    <IconButton onClick={getData}>
-                        <ReplayIcon className="color-0" />
-                    </IconButton>
-                </Tooltip>
+            <MeditocHeader1 title={permisos.Nombre}>
+                {permisos.Botones["1"] !== undefined && ( //Descargar Reporte
+                    <Tooltip title={permisos.Botones["1"].Nombre} arrow>
+                        <IconButton onClick={funcDescargaReporte}>
+                            <CloudDownloadIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["2"] !== undefined && ( //Actualizar Reporte
+                    <Tooltip title={permisos.Botones["2"].Nombre} arrow>
+                        <IconButton onClick={getData}>
+                            <ReplayIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
             </MeditocHeader1>
             {entVentas !== null && (
                 <MeditocBody>
@@ -314,10 +318,16 @@ const ReportesVentas = (props) => {
                                         entVentas={entVentas}
                                         funcAlert={funcAlert}
                                         funcLoader={funcLoader}
+                                        permisos={permisos}
                                     />
                                 </MeditocTabPanel>
                                 <MeditocTabPanel id={EnumReportesTabs.Administrativo} index={tabIndex}>
-                                    <ResumenAdmin entVentas={entVentas} funcAlert={funcAlert} funcLoader={funcLoader} />
+                                    <ResumenAdmin
+                                        entVentas={entVentas}
+                                        funcAlert={funcAlert}
+                                        funcLoader={funcLoader}
+                                        permisos={permisos}
+                                    />
                                 </MeditocTabPanel>
                             </MeditocTabBody>
                         </Grid>

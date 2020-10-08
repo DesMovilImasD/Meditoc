@@ -15,7 +15,7 @@ const MeditocHeader1 = (props) => {
         <Paper elevation={2}>
             <div className="bar-main">
                 <div className="flx-grw-1 align-self-center">{children}</div>
-                <div className="ops-nor bold size-25 align-self-center">
+                <div className="ops-nor bold size-25 align-self-center" style={{ marginTop: 10, marginBottom: 10 }}>
                     {typeof title === "string" ? title.toUpperCase() : title}
                 </div>
             </div>

@@ -12,4 +12,6 @@ const blurPrevent = () => {
     }
 };
 
-export { funcPrevent, blurPrevent };
+const emptyFunc = () => {};
+
+export { funcPrevent, blurPrevent, emptyFunc };
