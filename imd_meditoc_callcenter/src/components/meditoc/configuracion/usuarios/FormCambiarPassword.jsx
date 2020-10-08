@@ -1,11 +1,11 @@
 import { Grid, IconButton, TextField, Tooltip } from "@material-ui/core";
+import React, { useEffect } from "react";
 import { blurPrevent, funcPrevent } from "../../../../configurations/preventConfig";
 
 import CGUController from "../../../../controllers/CGUController";
 import MeditocModal from "../../../utilidades/MeditocModal";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import PropTypes from "prop-types";
-import React from "react";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import { useState } from "react";
@@ -25,6 +25,18 @@ const FormCambiarPassword = (props) => {
 
     const [formCambiarPasswordOK, setFormCambiarPasswordOK] = useState(validacionFormulario);
     const [passwordNoCoinciden, setPasswordNoCoinciden] = useState(false);
+
+    useEffect(() => {
+        if (open) {
+            setFormCambiarPassword({
+                txtNuevoPasswordMeditoc: "",
+                txtConfirmarPasswordMeditoc: "",
+            });
+            setPasswordNoCoinciden(false);
+            setFormCambiarPasswordOK(validacionFormulario);
+        }
+        // eslint-disable-next-line
+    }, [open]);
 
     const handleChangeFormCambiarPassword = (e) => {
         const nombreCampo = e.target.name;

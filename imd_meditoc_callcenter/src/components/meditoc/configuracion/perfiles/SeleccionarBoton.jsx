@@ -32,11 +32,12 @@ const SeleccionarBoton = (props) => {
 
     //Filtrar los botones para mostrar solo los disponibles para seleccionar
     useEffect(() => {
-        const listaIdBotonPerfil = lstBotonesPermiso.map((x) => x.iIdBoton);
-        setBotonesSeleccionados(lstBotonesSistema.filter((x) => listaIdBotonPerfil.includes(x.iIdBoton)));
-
+        if (open) {
+            const listaIdBotonPerfil = lstBotonesPermiso.map((x) => x.iIdBoton);
+            setBotonesSeleccionados(lstBotonesSistema.filter((x) => listaIdBotonPerfil.includes(x.iIdBoton)));
+        }
         // eslint-disable-next-line
-    }, [lstBotonesPermiso]);
+    }, [open]);
 
     //Funcion para capturar los botones que selecciona el usuario
     const handleChangeBotonCheckbox = (botonSeleccionado) => {

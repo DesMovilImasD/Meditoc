@@ -31,11 +31,13 @@ const SeleccionarModulos = (props) => {
 
     //Filtrar los modulos para mostrar solo los disponibles para seleccionar
     useEffect(() => {
-        const listaIdModulo = listaPermisosPerfil.map((x) => x.iIdModulo);
-        setModulosSeleccionados(listaSistema.filter((x) => listaIdModulo.includes(x.iIdModulo)));
+        if (open) {
+            const listaIdModulo = listaPermisosPerfil.map((x) => x.iIdModulo);
+            setModulosSeleccionados(listaSistema.filter((x) => listaIdModulo.includes(x.iIdModulo)));
+        }
 
         // eslint-disable-next-line
-    }, [listaPermisosPerfil]);
+    }, [open]);
 
     //Función para capturar los modulos que el usuario seleccione
     const handleChangeModuloCheckbox = (moduloSeleccionado) => {

@@ -32,11 +32,15 @@ const SeleccionarSubmodulo = (props) => {
 
     //Filtrar los submodulos para mostrar solo los disponibles para seleccionar
     useEffect(() => {
-        const listaIdSubmoduloPerfil = lstSubmodulosPerfil.map((x) => x.iIdSubModulo);
-        setSubmodulosSeleccionados(lstSubmodulosSistema.filter((x) => listaIdSubmoduloPerfil.includes(x.iIdSubModulo)));
+        if (open) {
+            const listaIdSubmoduloPerfil = lstSubmodulosPerfil.map((x) => x.iIdSubModulo);
+            setSubmodulosSeleccionados(
+                lstSubmodulosSistema.filter((x) => listaIdSubmoduloPerfil.includes(x.iIdSubModulo))
+            );
+        }
 
         // eslint-disable-next-line
-    }, [lstSubmodulosPerfil]);
+    }, [open]);
 
     //Funcion para capturar los submodulos que el usuario seleccione
     const handleChangeSubmoduloCheckbox = (submoduloSeleccionado) => {

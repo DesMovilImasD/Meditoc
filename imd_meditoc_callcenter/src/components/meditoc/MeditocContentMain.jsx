@@ -185,21 +185,21 @@ const ContentMain = (props) => {
                                 funcAlert={funcAlert}
                             />
                         </Route>
-                        <Route exact path={urlSystem.reportes.ventas}>
-                            <ReportesVentas
-                                usuarioSesion={usuarioSesion}
-                                permisos={
-                                    usuarioPermisos["5"] === undefined ? {} : usuarioPermisos["5"].Submodulos["1"]
-                                }
-                                funcLoader={funcLoader}
-                                funcAlert={funcAlert}
-                            />
-                        </Route>
                         <Route exact path={urlSystem.reportes.doctores}>
                             <ReportesDoctores
                                 usuarioSesion={usuarioSesion}
                                 permisos={
                                     usuarioPermisos["5"] === undefined ? {} : usuarioPermisos["5"].Submodulos["2"]
+                                }
+                                funcLoader={funcLoader}
+                                funcAlert={funcAlert}
+                            />
+                        </Route>
+                        <Route exact path={urlSystem.reportes.ventas}>
+                            <ReportesVentas
+                                usuarioSesion={usuarioSesion}
+                                permisos={
+                                    usuarioPermisos["5"] === undefined ? {} : usuarioPermisos["5"].Submodulos["1"]
                                 }
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}
@@ -214,62 +214,13 @@ const ContentMain = (props) => {
 };
 
 ContentMain.propTypes = {
-    funcAlert: PropTypes.func,
-    funcLoader: PropTypes.func,
+    funcAlert: PropTypes.any,
+    funcLoader: PropTypes.any,
     setUsuarioActivo: PropTypes.any,
+    setUsuarioPermisos: PropTypes.any,
     setUsuarioSesion: PropTypes.any,
-    usuarioPermisos: PropTypes.shape({
-        administracion: PropTypes.shape({
-            colaboradores: PropTypes.shape({
-                name: PropTypes.any,
-            }),
-            cupones: PropTypes.shape({
-                name: PropTypes.any,
-            }),
-            empresa: PropTypes.shape({
-                name: PropTypes.any,
-            }),
-            especialidades: PropTypes.shape({
-                name: PropTypes.any,
-            }),
-            productos: PropTypes.shape({
-                name: PropTypes.any,
-            }),
-        }),
-        callcenter: PropTypes.shape({
-            administrarconsultas: PropTypes.shape({
-                name: PropTypes.any,
-            }),
-            consultas: PropTypes.shape({
-                name: PropTypes.any,
-            }),
-        }),
-        configuracion: PropTypes.shape({
-            perfiles: PropTypes.shape({
-                name: PropTypes.any,
-            }),
-            sistema: PropTypes.shape({
-                name: PropTypes.any,
-            }),
-            usuarios: PropTypes.shape({
-                name: PropTypes.any,
-            }),
-        }),
-        folios: PropTypes.shape({
-            folios: PropTypes.shape({
-                name: PropTypes.any,
-            }),
-        }),
-        reportes: PropTypes.shape({
-            doctores: PropTypes.shape({
-                name: PropTypes.any,
-            }),
-            ventas: PropTypes.shape({
-                name: PropTypes.any,
-            }),
-        }),
-    }),
-    usuarioSesion: PropTypes.object,
+    usuarioPermisos: PropTypes.any,
+    usuarioSesion: PropTypes.any,
 };
 
 export default ContentMain;

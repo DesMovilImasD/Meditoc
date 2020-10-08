@@ -175,7 +175,7 @@ const ReportesDoctores = (props) => {
                     <MeditocBody>
                         <Grid container spacing={3}>
                             <Grid item xs={12}>
-                                <MeditocSubtitulo title="FOLIOS" />
+                                <MeditocSubtitulo title="FILTROS" />
                             </Grid>
                             <Grid item sm={6} xs={12}>
                                 <DatePicker
@@ -344,7 +344,10 @@ const ReportesDoctores = (props) => {
 ReportesDoctores.propTypes = {
     funcAlert: PropTypes.func,
     funcLoader: PropTypes.func,
-    title: PropTypes.any,
+    permisos: PropTypes.shape({
+        Botones: PropTypes.any,
+        Nombre: PropTypes.any,
+    }),
 };
 
 export default ReportesDoctores;
