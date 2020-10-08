@@ -1,5 +1,6 @@
 import { Dialog, Slide } from "@material-ui/core";
 
+import MeditocFooter from "../meditoc/MeditocFooter";
 import PropTypes from "prop-types";
 import React from "react";
 import { forwardRef } from "react";
@@ -18,7 +19,11 @@ const MeditocFullModal = (props) => {
 
     return (
         <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
-            {children}
+            <div className="flx-grw-1 pos-rel">
+                {children}
+                <div style={{ height: 30 }}></div>
+            </div>
+            <MeditocFooter />
         </Dialog>
     );
 };
