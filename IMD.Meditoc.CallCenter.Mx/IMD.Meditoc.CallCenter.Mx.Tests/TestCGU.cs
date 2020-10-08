@@ -77,5 +77,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Tests
             var res = busUsuario.BRecuperarPassword("g098@live.com.mx");
             var json = JsonConvert.SerializeObject(res, Formatting.Indented);
         }
+
+        [TestMethod]
+        public void TGetPermisos2()
+        {
+            BusPermiso busPermiso = new BusPermiso();
+            var res = busPermiso.BGetUsuarioPermisos(1);
+            var json = JsonConvert.SerializeObject(res, Formatting.Indented);
+        }
     }
 }

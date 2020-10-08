@@ -34,6 +34,9 @@ const Login = (props) => {
     const [imgLogoFade, setImgLogoFade] = useState(false);
     const [verPassword, setVerPassword] = useState(false);
 
+    const [usuarioSistema, setUsuarioSistema] = useState([]);
+    const [usuarioPermiso, setusuarioPermiso] = useState({});
+
     const [formLogin, setFormLogin] = useState({
         txtUsuarioMeditoc: "",
         txtPasswordMeditoc: "",

@@ -21,6 +21,7 @@ class CGUController {
         this.apiCambiarPassword = "Api/CGU/Create/CambiarContrasenia";
         this.apiGetLogin = "Api/CGU/User/Login";
         this.apiRecuperarPassword = "Api/CGU/Recuperar/Password";
+        this.apiGetPermisosUsuario = "Api/CGU/Get/Usuarios/Permisos";
     }
 
     async funcSaveModulo(entCreateModulo) {
@@ -226,6 +227,21 @@ class CGUController {
         } catch (error) {
             response.Code = -1;
             response.Message = "Ocurrió un error al enviar el correo de recuperación";
+        }
+        return response;
+    }
+
+    async funcGetPermisosUsuario(piIdPerfil) {
+        let response = { Code: 0, Message: "", Result: {} };
+        try {
+            const apiResponse = await fetch(`${serverMain}${this.apiGetPermisosUsuario}?piIdPerfil=${piIdPerfil}`, {
+                headers: MeditocHeaders,
+            });
+
+            response = await apiResponse.json();
+        } catch (error) {
+            response.Code = -1;
+            response.Message = "Ocurrió un error al intentar obtener los permisos del usuario.";
         }
         return response;
     }

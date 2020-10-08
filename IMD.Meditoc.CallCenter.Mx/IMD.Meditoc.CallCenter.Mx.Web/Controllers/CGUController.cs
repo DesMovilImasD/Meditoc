@@ -290,6 +290,31 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         }
 
         [MeditocAuthentication]
+        [HttpGet]
+        [Route("Api/CGU/Get/Usuarios/Permisos")]
+        public IMDResponse<object> CGetUsuarioPermisos([FromUri]int piIdPerfil)
+        {
+            IMDResponse<object> response = new IMDResponse<object>();
+
+            string metodo = nameof(this.CGetUsuarioPermisos);
+            logger.Info(IMDSerialize.Serialize(67823458639615, $"Inicia {metodo}"));
+
+            try
+            {
+                BusPermiso busPermiso = new BusPermiso();
+                response = busPermiso.BGetUsuarioPermisos(piIdPerfil);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458640392;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458640392, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        [MeditocAuthentication]
         [HttpPost]
         [Route("Api/CGU/Create/Permiso")]
         public IMDResponse<bool> CCreatePermiso([FromBody] List<EntPermiso> entPermisos)

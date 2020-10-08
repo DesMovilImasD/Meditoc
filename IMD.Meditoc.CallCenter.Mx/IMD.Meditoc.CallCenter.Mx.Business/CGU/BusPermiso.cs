@@ -3,6 +3,8 @@ using IMD.Admin.Utilities.Entities;
 using IMD.Meditoc.CallCenter.Mx.Data.CGU;
 using IMD.Meditoc.CallCenter.Mx.Entities.CGU;
 using log4net;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -77,18 +79,18 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
         /// <summary>
         /// Obtener los permisos del sistema o de un perfil proporcionado
         /// </summary>
-        /// <param name="iIdPermiso"></param>
+        /// <param name="iIdPerfil"></param>
         /// <returns></returns>
-        public IMDResponse<List<EntPermisoSistema>> BObtenerPermisoxPerfil(int? iIdPermiso)
+        public IMDResponse<List<EntPermisoSistema>> BObtenerPermisoxPerfil(int? iIdPerfil)
         {
             IMDResponse<List<EntPermisoSistema>> response = new IMDResponse<List<EntPermisoSistema>>();
 
             string metodo = nameof(this.BObtenerPermisoxPerfil);
-            logger.Info(IMDSerialize.Serialize(67823458354456, $"Inicia {metodo}(int? iIdPermiso)", iIdPermiso));
+            logger.Info(IMDSerialize.Serialize(67823458354456, $"Inicia {metodo}(int? iIdPermiso)", iIdPerfil));
 
             try
             {
-                IMDResponse<DataSet> dtPermisos = datPermiso.DObtenerPermisosPorPerfil(iIdPermiso);
+                IMDResponse<DataSet> dtPermisos = datPermiso.DObtenerPermisosPorPerfil(iIdPerfil);
                 if (dtPermisos.Code != 0)
                 {
                     return dtPermisos.GetResponse<List<EntPermisoSistema>>();
@@ -180,7 +182,64 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 response.Code = 67823458355233;
                 response.Message = "Ocurrió un error inesperado al consultar los permisos.";
 
-                logger.Error(IMDSerialize.Serialize(67823458355233, $"Error en {metodo}(int? iIdPermiso): {ex.Message}", iIdPermiso, ex, response));
+                logger.Error(IMDSerialize.Serialize(67823458355233, $"Error en {metodo}(int? iIdPermiso): {ex.Message}", iIdPerfil, ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<object> BGetUsuarioPermisos(int piIdPerfil)
+        {
+            IMDResponse<object> response = new IMDResponse<Object>();
+
+            string metodo = nameof(this.BGetUsuarioPermisos);
+            logger.Info(IMDSerialize.Serialize(67823458638061, $"Inicia {metodo}"));
+
+            try
+            {
+                IMDResponse<List<EntPermisoSistema>> resGetPermisos = this.BObtenerPermisoxPerfil(piIdPerfil);
+                if (resGetPermisos.Code != 0)
+                {
+                    return resGetPermisos.GetResponse<object>();
+                }
+                if (resGetPermisos.Result.Count == 0)
+                {
+                    response.Code = -23476876345;
+                    response.Message = "El usuario no tiene permisos.";
+                }
+
+                List<EntPermisoSistema> pr = resGetPermisos.Result;
+                JObject objModulos = new JObject();
+
+                foreach (EntPermisoSistema modulo in resGetPermisos.Result)
+                {
+                    JObject objSubmodulos = new JObject();
+                    foreach (EntSubModuloPermiso submodulo in modulo.lstSubModulo)
+                    {
+                        JObject objBotones = new JObject();
+                        foreach (EntBotonPermiso boton in submodulo.lstBotones)
+                        {
+                            JProperty propBoton = new JProperty(boton.sNombre, new JObject());
+                            objBotones.Add(propBoton);
+                        }
+                        JProperty propSubmodulo = new JProperty(submodulo.sNombre, objBotones);
+                        objSubmodulos.Add(propSubmodulo);
+                    }
+                    JProperty propModulo = new JProperty(modulo.sNombre, objSubmodulos);
+                    objModulos.Add(propModulo);
+                }
+
+                object obj = objModulos.ToObject<object>();
+
+                response.Code = 0;
+                response.Message = "Se han obtenido los permisos del usuario.";
+                response.Result = obj;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458638838;
+                response.Message = "Ocurrió un error inesperado";
+
+                logger.Error(IMDSerialize.Serialize(67823458638838, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }
