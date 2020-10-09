@@ -1,5 +1,15 @@
+import {
+    Checkbox,
+    FormControlLabel,
+    Grid,
+    IconButton,
+    InputAdornment,
+    MenuItem,
+    TextField,
+    Tooltip,
+    Typography,
+} from "@material-ui/core";
 import { EnumEspecialidadPrincipal, EnumTipoDoctor } from "../../../../configurations/enumConfig";
-import { Grid, IconButton, InputAdornment, MenuItem, TextField, Tooltip, Typography } from "@material-ui/core";
 import React, { Fragment } from "react";
 import { blurPrevent, funcPrevent } from "../../../../configurations/preventConfig";
 import { rxCorreo, rxUrl } from "../../../../configurations/regexConfig";
@@ -33,6 +43,8 @@ const FormColaborador = (props) => {
         funcAlert,
     } = props;
 
+    const [tabIndex, setTabIndex] = useState(0);
+
     const [formColaborador, setFormColaborador] = useState({
         txtNombreDirectorio: "",
         txtCedulaProfesional: "",
@@ -57,6 +69,8 @@ const FormColaborador = (props) => {
         txtPasswordTitular: "",
         txtUsuarioAdministrativo: "",
         txtPasswordAdministrativo: "",
+        txtAdministrativo: false,
+        txtAcceso: true,
     });
 
     const validacionesFormulario = {
@@ -83,6 +97,8 @@ const FormColaborador = (props) => {
         txtPasswordTitular: true,
         txtUsuarioAdministrativo: true,
         txtPasswordAdministrativo: true,
+        txtAdministrativo: true,
+        txtAcceso: true,
     };
 
     const [formColaboradorOK, setFormColaboradorOK] = useState(validacionesFormulario);
@@ -116,12 +132,13 @@ const FormColaborador = (props) => {
             txtDomicilio: entColaborador.sDomicilioDoctor === null ? "" : entColaborador.sDomicilioDoctor,
             txtUsuarioTitular: entColaborador.sUsuarioTitular,
             txtUsuarioAdministrativo: entColaborador.sUsuarioAdministrativo,
+            txtAcceso: entColaborador.bAcceso,
+            txtAdministrativo: entColaborador.bAdministrador,
         });
         setFormColaboradorOK(validacionesFormulario);
+        setTabIndex(0);
         // eslint-disable-next-line
     }, [entColaborador]);
-
-    const [tabIndex, setTabIndex] = useState(0);
 
     // const [sclTipoColaborador, setSclTipoColaborador] = useState("1");
 
@@ -513,6 +530,8 @@ const FormColaborador = (props) => {
             sCorreoDoctor: formColaborador.txtCorreoElectronico,
             sDomicilioDoctor: formColaborador.txtDomicilio,
             iIdUsuarioMod: usuarioSesion.iIdUsuario,
+            bAcceso: formColaborador.txtAcceso,
+            bAdministrador: formColaborador.txtAdministrativo,
             bActivo: true,
             bBaja: false,
         };
@@ -1085,6 +1104,40 @@ const FormColaborador = (props) => {
                                             </Grid>
                                         </Fragment>
                                     ) : null}
+                                    <Grid item xs={12} className="center">
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox
+                                                    checked={formColaborador.txtAcceso}
+                                                    onChange={(e) => {
+                                                        setFormColaborador({
+                                                            ...formColaborador,
+                                                            txtAcceso: e.target.checked,
+                                                        });
+                                                    }}
+                                                />
+                                            }
+                                            label="Dar permisos de acceso al Portal Meditoc CallCenter"
+                                        />
+                                    </Grid>
+                                    {entColaborador.iIdTipoDoctor !== EnumTipoDoctor.Especialista && (
+                                        <Grid item xs={12} className="center">
+                                            <FormControlLabel
+                                                control={
+                                                    <Checkbox
+                                                        checked={formColaborador.txtAdministrativo}
+                                                        onChange={(e) => {
+                                                            setFormColaborador({
+                                                                ...formColaborador,
+                                                                txtAdministrativo: e.target.checked,
+                                                            });
+                                                        }}
+                                                    />
+                                                }
+                                                label="Dar permisos administrativos como Director"
+                                            />
+                                        </Grid>
+                                    )}
                                 </Grid>
                             </MeditocTabPanel>
                         </MeditocTabBody>

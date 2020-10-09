@@ -48,6 +48,7 @@ const Usuarios = (props) => {
         sCorreo: "",
         sDomicilio: "",
         iIdUsuarioMod: 0,
+        bAcceso: true,
         bActivo: false,
         bBaja: false,
     };
@@ -55,11 +56,12 @@ const Usuarios = (props) => {
     //Columnas de la tabla de usuarios
     const columns = [
         { title: "ID", field: "iIdUsuario", align: "center", hidden: true },
+        { title: "Usuario", field: "sUsuario", align: "center" },
         { title: "Tipo de cuenta", field: "sTipoCuenta", align: "center" },
         { title: "Perfil", field: "sPerfil", align: "center" },
-        { title: "Usuario", field: "sUsuario", align: "center" },
-        { title: "Nombre", field: "sNombres", align: "center" },
-        { title: "Apellido", field: "sApellidoPaterno", align: "center" },
+        //{ title: "Nombre", field: "sNombres", align: "center" },
+        //{ title: "Apellido", field: "sApellidoPaterno", align: "center" },
+        { title: "Registrado", field: "sFechaCreacion", align: "center" },
     ];
 
     //Lista de usuarios activos del portal

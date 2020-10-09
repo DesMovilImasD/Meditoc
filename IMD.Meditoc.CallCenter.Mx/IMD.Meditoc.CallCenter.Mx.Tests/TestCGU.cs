@@ -74,7 +74,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Tests
         {
             BusUsuario busUsuario = new BusUsuario();
 
-            var res = busUsuario.BRecuperarPassword("g098@live.com.mx");
+            var res = busUsuario.BEnviarCredenciales("g098@live.com.mx", EnumEmailActionPass.Recuperar);
             var json = JsonConvert.SerializeObject(res, Formatting.Indented);
         }
 

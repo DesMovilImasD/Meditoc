@@ -32,4 +32,6 @@ const urlSystem = {
     },
 };
 
-export { urlBase, urlSystem };
+const urlDefault = "/";
+
+export { urlBase, urlSystem, urlDefault };

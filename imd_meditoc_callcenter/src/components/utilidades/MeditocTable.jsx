@@ -2,6 +2,7 @@ import MaterialTable, { MTableBodyRow } from "material-table";
 
 import PropTypes from "prop-types";
 import React from "react";
+import { emptyFunc } from "../../configurations/preventConfig";
 import tableIcons from "../../configurations/dataTableIconsConfig";
 import theme from "../../configurations/themeConfig";
 
@@ -15,11 +16,13 @@ const MeditocTable = (props) => {
     const {
         columns,
         data,
+        setData,
         rowSelected,
         setRowSelected,
         mainField,
         doubleClick,
         selection,
+        rowsSelected,
         setRowsSelected,
         cellEditable,
         onCellEditable,
@@ -46,6 +49,39 @@ const MeditocTable = (props) => {
 
     const mtRowClick = rowClick === undefined ? true : rowClick;
 
+    const handleRowClickNoSelection = (e, row) => {
+        mtSetRowSelected(row);
+    };
+
+    const handleRowClickSelection = (e, row) => {
+        if (rowsSelected !== undefined) {
+            const index = rowsSelected.indexOf(row);
+            const rowsSelectedCopy = [...rowsSelected];
+
+            const indexData = data.indexOf(row);
+            const dataCopy = [...data];
+
+            if (index === -1) {
+                rowsSelectedCopy.push(row);
+                dataCopy[indexData].tableData.checked = true;
+            } else {
+                rowsSelectedCopy.splice(index, 1);
+                dataCopy[indexData].tableData.checked = false;
+            }
+            mtSetRowsSelected(rowsSelectedCopy);
+            setData(dataCopy);
+        }
+    };
+
+    const handleSelectionChange = (rows) => {
+        mtSetRowsSelected(rows);
+    };
+
+    const handleDoubleClick = () => {
+        //mtSetRowSelected(props.data);
+        funcDoubleClick();
+    };
+
     return (
         <MaterialTable
             columns={columns}
@@ -54,19 +90,9 @@ const MeditocTable = (props) => {
             title=""
             //actions={actions}
             onRowClick={
-                mtSelection === false && mtRowClick === true
-                    ? (e, rowData) => {
-                          mtSetRowSelected(rowData);
-                      }
-                    : null
+                mtSelection === false && mtRowClick === true ? handleRowClickNoSelection : handleRowClickSelection
             }
-            onSelectionChange={
-                mtSelection === true
-                    ? (rows) => {
-                          mtSetRowsSelected(rows);
-                      }
-                    : () => {}
-            }
+            onSelectionChange={mtSelection === true ? handleSelectionChange : emptyFunc}
             // onFilterChange={(filter) => {
             //     if (filter.length > 0) {
             //         filter.forEach((f) => {
@@ -111,17 +137,7 @@ const MeditocTable = (props) => {
                 //     </tr>
                 // ),
                 Row: (props) => (
-                    <MTableBodyRow
-                        {...props}
-                        onDoubleClick={
-                            mtSelection === false
-                                ? () => {
-                                      mtSetRowSelected(props.data);
-                                      funcDoubleClick();
-                                  }
-                                : () => {}
-                        }
-                    />
+                    <MTableBodyRow {...props} onDoubleClick={mtSelection === false ? handleDoubleClick : emptyFunc} />
                 ),
             }}
             cellEditable={
@@ -130,7 +146,10 @@ const MeditocTable = (props) => {
                           onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
                               return new Promise((resolve) => {
                                   mtOnCellEditable(newValue, oldValue, rowData, columnDef.field);
-                                  resolve(() => {});
+                                  if (mtSelection) {
+                                      handleRowClickSelection(null, rowData);
+                                  }
+                                  resolve(emptyFunc);
                               });
                           },
                       }

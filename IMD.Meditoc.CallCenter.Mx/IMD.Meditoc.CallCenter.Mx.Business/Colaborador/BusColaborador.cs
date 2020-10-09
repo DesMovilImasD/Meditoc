@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.IO;
+using System.Linq;
 
 namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
 {
@@ -50,14 +51,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
 
                 //using (TransactionScope scope = new TransactionScope())
                 //{
-                if (entCreateColaborador.iIdTipoDoctor == (int)EnumTipoDoctor.MedicoCallCenter)
+                if (entCreateColaborador.iIdTipoDoctor == (int)EnumTipoDoctor.MedicoCallCenter || entCreateColaborador.iIdTipoDoctor == (int)EnumTipoDoctor.MedicoAdministrativo)
                 {
                     EntUsuario entUsuario = new EntUsuario
                     {
                         bActivo = entCreateColaborador.bActivo,
                         bBaja = entCreateColaborador.bBaja,
                         dtFechaNacimiento = entCreateColaborador.dtFechaNacimientoDoctor,
-                        iIdPerfil = (int)EnumPerfilPrincipal.DoctorCallCenter,
+                        iIdPerfil = entCreateColaborador.bAdministrador ? (int)EnumPerfilPrincipal.DoctorAdministrador : (int)EnumPerfilPrincipal.DoctorCallCenter,
                         iIdTipoCuenta = (int)EnumTipoCuenta.Titular,
                         iIdUsuario = entCreateColaborador.iIdUsuarioCGU,
                         iIdUsuarioMod = entCreateColaborador.iIdUsuarioMod,
@@ -68,10 +69,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                         sNombres = entCreateColaborador.sNombresDoctor,
                         sPassword = entCreateColaborador.sPasswordTitular,
                         sTelefono = entCreateColaborador.sTelefonoDoctor,
-                        sUsuario = entCreateColaborador.sUsuarioTitular
+                        sUsuario = entCreateColaborador.sUsuarioTitular,
+                        bAcceso = entCreateColaborador.bAcceso
                     };
 
-                    IMDResponse<EntUsuario> respuestaGuardarUsuarioCGU = busUsuario.BSaveUsuario(entUsuario);
+                    IMDResponse<EntUsuario> respuestaGuardarUsuarioCGU = busUsuario.BSaveUsuario(entUsuario, true);
                     if (respuestaGuardarUsuarioCGU.Code != 0)
                     {
                         return respuestaGuardarUsuarioCGU.GetResponse<bool>();
@@ -80,6 +82,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                     entCreateColaborador.iIdEspecialidad = (int)EnumEspecialidadPrincipal.MedicinaGeneral;
                     entCreateColaborador.iIdUsuarioCGU = (int)respuestaGuardarUsuarioCGU.Result.iIdUsuario;
                     entCreateColaborador.iIdTipoCuenta = (int)EnumTipoCuenta.Titular;
+                    entCreateColaborador.iIdTipoDoctor = entCreateColaborador.bAdministrador ? (int)EnumTipoDoctor.MedicoAdministrativo : entCreateColaborador.iIdTipoDoctor;
 
                     IMDResponse<bool> respuestaGuardarColaborador = datColaborador.DSaveColaborador(entCreateColaborador);
                     if (respuestaGuardarColaborador.Code != 0)
@@ -101,7 +104,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                         if (string.IsNullOrWhiteSpace(entCreateColaborador.sUsuarioAdministrativo))
                         {
                             response.Code = -7234869627782;
-                            response.Message = "No se han especificado los datos de cuenta administrativa";
+                            response.Message = "No se han especificado los datos de cuenta administrativa.";
                             return response;
                         }
 
@@ -129,7 +132,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                         sNombres = entCreateColaborador.sNombresDoctor,
                         sPassword = entCreateColaborador.sPasswordTitular,
                         sTelefono = entCreateColaborador.sTelefonoDoctor,
-                        sUsuario = entCreateColaborador.sUsuarioTitular
+                        sUsuario = entCreateColaborador.sUsuarioTitular,
+                        bAcceso = entCreateColaborador.bAcceso
                     };
 
                     EntUsuario entUsuarioAdministrativo = new EntUsuario
@@ -148,7 +152,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                         sNombres = entCreateColaborador.sNombresDoctor,
                         sPassword = entCreateColaborador.sPasswordAdministrativo,
                         sTelefono = entCreateColaborador.sTelefonoDoctor,
-                        sUsuario = entCreateColaborador.sUsuarioAdministrativo
+                        sUsuario = entCreateColaborador.sUsuarioAdministrativo,
+                        bAcceso = entCreateColaborador.bAcceso
                     };
 
 
@@ -167,11 +172,33 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                         }
                     }
 
+
+                    bool activacionUsuario = false;
+                    if (entCreateColaborador.bAcceso)
+                    {
+                        if (entCreateColaborador.iIdColaborador != 0)
+                        {
+                            IMDResponse<List<EntColaborador>> resGetColaborador = this.BGetColaborador(entCreateColaborador.iIdColaborador);
+                            if (resGetColaborador.Code == 0)
+                            {
+                                if (resGetColaborador.Result.Count == 1)
+                                {
+                                    EntColaborador colaborador = resGetColaborador.Result.First();
+                                    if (!colaborador.bAcceso)
+                                    {
+                                        activacionUsuario = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     IMDResponse<EntUsuario> respuestaGuardarUsuarioCGU = busUsuario.BSaveUsuario(entUsuarioTitular);
                     if (respuestaGuardarUsuarioCGU.Code != 0)
                     {
                         return respuestaGuardarUsuarioCGU.GetResponse<bool>();
                     }
+
 
                     respuestaGuardarUsuarioCGU = busUsuario.BSaveUsuario(entUsuarioAdministrativo);
                     if (respuestaGuardarUsuarioCGU.Code != 0)
@@ -186,11 +213,20 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                     {
                         return respuestaGuardarColaborador;
                     }
+                    if (entCreateColaborador.bAcceso)
+                    {
+
+                        if ((entCreateColaborador.bActivo && !entCreateColaborador.bBaja && (!string.IsNullOrWhiteSpace(entCreateColaborador.sPasswordTitular) || !string.IsNullOrWhiteSpace(entCreateColaborador.sPasswordAdministrativo))) || activacionUsuario)
+                        {
+                            List<string> users = new List<string> { entCreateColaborador.sUsuarioTitular, entCreateColaborador.sUsuarioAdministrativo };
+                            IMDResponse<bool> resEnviarCredenciales = busUsuario.BEnviarCredenciales(entCreateColaborador.sCorreoDoctor, entCreateColaborador.iIdColaborador == 0 ? EnumEmailActionPass.Crear : EnumEmailActionPass.Modificar, users);
+                        }
+                    }
                 }
                 else
                 {
                     response.Code = -72348767232323;
-                    response.Message = "No ha especificado el tipo de médico colaborador.";
+                    response.Message = "No se ha especificado el tipo de médico colaborador.";
                     return response;
                 }
                 //    scope.Complete();
@@ -243,6 +279,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                     {
                         bActivo = Convert.ToBoolean(dr.ConvertTo<int>("bActivo")),
                         bBaja = Convert.ToBoolean(dr.ConvertTo<int>("bBaja")),
+                        bAcceso = Convert.ToBoolean(dr.ConvertTo<int>("bAcceso")),
                         bOcupado = Convert.ToBoolean(dr.ConvertTo<int>("bOcupado")),
                         bOnline = Convert.ToBoolean(dr.ConvertTo<int>("bOnline")),
                         dtFechaCreacion = dr.ConvertTo<DateTime>("dtFechaCreacion"),
@@ -282,6 +319,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
 
                     colaborador.sFechaCreacion = colaborador.dtFechaCreacion.ToString("dd/MM/yyyy HH:mm");
                     colaborador.sFechaNacimientoDoctor = colaborador.dtFechaNacimientoDoctor.ToString("dd/MM/yyyy");
+                    colaborador.sAcceso = colaborador.bAcceso ? "SI" : "NO";
+                    colaborador.bAdministrador = colaborador.iIdTipoDoctor == (int)EnumTipoDoctor.MedicoAdministrativo;
 
                     lstColaboradores.Add(colaborador);
                 }
@@ -524,7 +563,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
         /// <param name="piPage"></param>
         /// <param name="piPageSize"></param>
         /// <returns></returns>
-        public IMDResponse<EntDirectorio> BGetDirectorio(int? piIdEspecialidad = null, string psBuscador = null, int piPage = 0, int piPageSize = 0)
+        public IMDResponse<EntDirectorio> BGetDirectorio(int? piIdEspecialidad = null, string psBuscador = null, int piPage = 0, int piPageSize = 0, bool? pbAcceso = null)
         {
             IMDResponse<EntDirectorio> response = new IMDResponse<EntDirectorio>();
 
@@ -536,7 +575,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                 int piLimitInit = (piPage * piPageSize - piPageSize);
                 int piLimitEnd = piPage * piPageSize - 1;
 
-                IMDResponse<DataTable> resGetDirectorio = datColaborador.DGetDirectorio(piIdEspecialidad, psBuscador, piLimitInit, piLimitEnd);
+                IMDResponse<DataTable> resGetDirectorio = datColaborador.DGetDirectorio(piIdEspecialidad, psBuscador, piLimitInit, piLimitEnd, pbAcceso);
                 if (resGetDirectorio.Code != 0)
                 {
                     return resGetDirectorio.GetResponse<EntDirectorio>();

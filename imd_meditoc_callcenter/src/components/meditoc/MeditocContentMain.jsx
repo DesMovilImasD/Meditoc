@@ -172,6 +172,7 @@ const ContentMain = (props) => {
                                 }
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}
+                                funcCerrarTodo={funcCerrarTodo}
                                 setFuncCerrarTodo={setFuncCerrarTodo}
                             />
                         </Route>

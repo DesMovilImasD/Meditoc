@@ -404,6 +404,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Promociones
                     cupon.fsDescripcion = dr.ConvertTo<string>("sDescripcion");
                     cupon.fsDescripcionCategoria = dr.ConvertTo<string>("sDescripcionCategoria");
 
+                    cupon.bVencido = cupon.fdtFechaVencimiento != null ? cupon.fiTotalCanjeado >= cupon.fiTotalLanzamiento : DateTime.Now > cupon.fdtFechaVencimiento;
+
                     listaCupones.Add(cupon);
                 }
 

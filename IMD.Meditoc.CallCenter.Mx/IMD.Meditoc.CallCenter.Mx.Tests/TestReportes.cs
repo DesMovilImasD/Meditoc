@@ -13,7 +13,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Tests
         {
             BusReportes busReportes = new BusReportes();
 
-            var res = busReportes.BReporteGlobalVentas();
+            var res = busReportes.BReporteGlobalVentas(psIdOrigen: "1, 2");
 
             string json = JsonConvert.SerializeObject(res, Formatting.Indented);
         }

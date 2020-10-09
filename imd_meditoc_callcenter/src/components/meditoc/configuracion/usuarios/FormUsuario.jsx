@@ -1,4 +1,13 @@
-import { Grid, IconButton, InputAdornment, MenuItem, TextField, Tooltip } from "@material-ui/core";
+import {
+    Checkbox,
+    FormControlLabel,
+    Grid,
+    IconButton,
+    InputAdornment,
+    MenuItem,
+    TextField,
+    Tooltip,
+} from "@material-ui/core";
 import { blurPrevent, funcPrevent } from "../../../../configurations/preventConfig";
 
 import CGUController from "../../../../controllers/CGUController";
@@ -49,6 +58,7 @@ const FormUsuario = (props) => {
         txtDomicilio: "",
         txtUsuario: "",
         txtPassword: "",
+        txtAcceso: true,
     });
 
     const validacionFormulario = {
@@ -246,6 +256,7 @@ const FormUsuario = (props) => {
             sCorreo: formUsuario.txtCorreoElectronico,
             sDomicilio: formUsuario.txtDomicilio === "" ? null : formUsuario.txtDomicilio,
             iIdUsuarioMod: usuarioSesion.iIdUsuario,
+            bAcceso: formUsuario.txtAcceso,
             bActivo: true,
             bBaja: false,
         };
@@ -284,6 +295,7 @@ const FormUsuario = (props) => {
             txtDomicilio: entUsuario.sDomicilio,
             txtUsuario: entUsuario.sUsuario,
             txtPassword: "",
+            txtAcceso: entUsuario.bAcceso,
         });
         setFormUsuarioOK(validacionFormulario);
         // eslint-disable-next-line
@@ -501,6 +513,19 @@ const FormUsuario = (props) => {
                                     </Tooltip>
                                 ),
                             }}
+                        />
+                    </Grid>
+                    <Grid item xs={12} className="center">
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={formUsuario.txtAcceso}
+                                    onChange={(e) => {
+                                        setFormUsuario({ ...formUsuario, txtAcceso: e.target.checked });
+                                    }}
+                                />
+                            }
+                            label="Dar permisos de acceso al Portal Meditoc CallCenter"
                         />
                     </Grid>
                     <MeditocModalBotones open={open} setOpen={setOpen} okMessage="Guardar" okFunc={funcSaveUsuario} />

@@ -1,10 +1,12 @@
 import { IconButton, Tooltip, Typography } from "@material-ui/core";
 import React, { Fragment } from "react";
 
+import CGUController from "../../../../controllers/CGUController";
 import ColaboradorController from "../../../../controllers/ColaboradorController";
 import DeleteIcon from "@material-ui/icons/Delete";
 import DetalleColaborador from "./DetalleColaborador";
 import EditIcon from "@material-ui/icons/Edit";
+import EmailIcon from "@material-ui/icons/Email";
 import { EnumTipoDoctor } from "../../../../configurations/enumConfig";
 import EspecialidadController from "../../../../controllers/EspecialidadController";
 import FormColaborador from "./FormColaborador";
@@ -36,6 +38,7 @@ const Colaboradores = (props) => {
         { title: "Nombre", field: "sNombreDirectorio", align: "center" },
         { title: "Usuario", field: "sUsuarioTitular", align: "center" },
         { title: "Sala", field: "iNumSala", align: "center" },
+        { title: "Acceso", field: "sAcceso", align: "center" },
     ];
 
     const colaboradorCallCenterEntidadVacia = {
@@ -62,6 +65,8 @@ const Colaboradores = (props) => {
         sDomicilioDoctor: "",
         sUsuarioTitular: "",
         sUsuarioAdministrativo: "",
+        bAdministrador: false,
+        bAcceso: true,
     };
 
     const colaboradorEspecialistaEntidadVacia = {
@@ -88,6 +93,8 @@ const Colaboradores = (props) => {
         sDomicilioDoctor: "",
         sUsuarioTitular: "",
         sUsuarioAdministrativo: "",
+        bAdministrador: false,
+        bAcceso: true,
     };
 
     const [modalNuevoColaboradorOpen, setModalNuevoColaboradorOpen] = useState(false);
@@ -196,6 +203,28 @@ const Colaboradores = (props) => {
         funcLoader();
     };
 
+    const handleClickReenviarCredenciales = async () => {
+        if (colaboradorSeleccionado.iIdColaborador === 0) {
+            funcAlert("Seleccione un colaborador de la tabla para continuar");
+            return;
+        }
+
+        funcLoader(true, "Reenviando credenciales...");
+
+        const entUsuarioReenviar = {
+            sCorreo: colaboradorSeleccionado.sCorreoDoctor,
+        };
+
+        const cguController = new CGUController();
+        const response = await cguController.funcRecuperarPassword(entUsuarioReenviar);
+        if (response.Code === 0) {
+            funcAlert(response.Message, "success");
+        } else {
+            funcAlert(response.Message);
+        }
+        funcLoader();
+    };
+
     const funcGetData = async () => {
         await funcGetColaboradores();
         await funcGetEspecialidades();
@@ -255,6 +284,13 @@ const Colaboradores = (props) => {
                     <Tooltip title={permisos.Botones["7"].Nombre} arrow>
                         <IconButton onClick={funcGetData}>
                             <ReplayIcon className="color-0" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {permisos.Botones["10"] !== undefined && ( //Reenviar credenciales
+                    <Tooltip title={permisos.Botones["10"].Nombre} arrow>
+                        <IconButton onClick={handleClickReenviarCredenciales}>
+                            <EmailIcon className="color-0" />
                         </IconButton>
                     </Tooltip>
                 )}

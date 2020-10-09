@@ -45,5 +45,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Colaborador
         public string sFechaCreacion { get; set; }
         public bool bActivo { get; set; }
         public bool bBaja { get; set; }
+        public bool bAcceso { get; set; }
+        public string sAcceso { get; set; }
+        public bool bAdministrador { get; set; }
     }
 }

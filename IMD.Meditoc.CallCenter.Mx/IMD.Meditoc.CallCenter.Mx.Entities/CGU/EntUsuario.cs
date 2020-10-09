@@ -23,8 +23,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.CGU
         public string sTelefono { get; set; }
         public string sCorreo { get; set; }
         public string sDomicilio { get; set; }
+        public bool? bAcceso { get; set; }
         public int? iIdUsuarioMod { get; set; }
         public bool bActivo { get; set; }
         public bool bBaja { get; set; }
+        public DateTime dtFechaCreacion { get; set; }
+        public string sFechaCreacion { get; set; }
     }
 }

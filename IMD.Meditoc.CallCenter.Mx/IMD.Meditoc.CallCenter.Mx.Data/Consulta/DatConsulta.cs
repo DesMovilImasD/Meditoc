@@ -73,7 +73,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             return response;
         }
 
-        public IMDResponse<DataTable> DGetHistorialMedico(int? piIdHistorialClinico = null, int? piIdConsulta = null, int? piIdPaciente = null, int? piIdColaborador = null, int? piIdFolio = null)
+        public IMDResponse<DataTable> DGetHistorialMedico(int? piIdHistorialClinico = null, int? piIdConsulta = null, int? piIdPaciente = null, int? piIdColaborador = null, int? piIdFolio = null, string psIdTipoDoctor = null)
         {
             IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
@@ -89,6 +89,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
                     database.AddInParameter(dbCommand, "piIdPaciente", DbType.Int32, piIdPaciente);
                     database.AddInParameter(dbCommand, "piIdColaborador", DbType.Int32, piIdColaborador);
                     database.AddInParameter(dbCommand, "piIdFolio", DbType.Int32, piIdFolio);
+                    database.AddInParameter(dbCommand, "psIdTipoDoctor", DbType.String, psIdTipoDoctor);
 
                     response = imdCommonData.DExecuteDT(database, dbCommand);
                 }

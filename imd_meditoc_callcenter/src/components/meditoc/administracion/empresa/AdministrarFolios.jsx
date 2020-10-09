@@ -178,6 +178,8 @@ const AdministrarFolios = (props) => {
                     <MeditocTable
                         columns={columns}
                         data={listaFoliosEmpresa}
+                        setData={setListaFoliosEmpresa}
+                        rowsSelected={foliosEmpresaSeleccionado}
                         setRowsSelected={setFoliosEmpresaSeleccionado}
                         selection={true}
                         mainField="iIdFolio"

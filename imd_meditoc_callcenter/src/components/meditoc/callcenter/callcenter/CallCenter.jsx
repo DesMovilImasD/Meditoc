@@ -30,7 +30,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const CallCenter = (props) => {
-    const { usuarioSesion, permisos, funcLoader, funcAlert, setFuncCerrarTodo } = props;
+    const { usuarioSesion, permisos, funcLoader, funcAlert, funcCerrarTodo, setFuncCerrarTodo } = props;
 
     const classes = useStyles();
 
@@ -235,6 +235,13 @@ const CallCenter = (props) => {
         localStorage.removeItem("DisplayName");
         funcGetColaboradorUser();
 
+        return () => {
+            if (typeof funcCerrarTodo === "function") {
+                console.log("saliendo---");
+                funcCerrarTodo();
+            }
+        };
+
         // eslint-disable-next-line
     }, []);
 
@@ -272,12 +279,12 @@ const CallCenter = (props) => {
             };
 
             window.onunload = () => {
-                funcCerrarTodo();
+                funcCerrarTodoCallCenter();
             };
 
             window.onhashchange = (e) => {
                 if (e.oldURL.includes(urlSystem.callcenter.consultas.replace("/", ""))) {
-                    funcCerrarTodo();
+                    funcCerrarTodoCallCenter();
                 }
             };
         }
@@ -386,7 +393,7 @@ const CallCenter = (props) => {
         setModalDirectorioOpen(true);
     };
 
-    const funcCerrarTodo = async () => {
+    const funcCerrarTodoCallCenter = async () => {
         await funcOnlineMod(false, false, false);
         if (consultaIniciada) {
             await handleClickFinalizarConsulta(true);
@@ -397,9 +404,10 @@ const CallCenter = (props) => {
     };
 
     useEffect(() => {
-        setFuncCerrarTodo(() => funcCerrarTodo);
+        setFuncCerrarTodo(() => funcCerrarTodoCallCenter);
         // eslint-disable-next-line
-    }, [entCallCenter, consultaIniciada, usuarioSesion, usuarioColaborador]);
+    }, [colaboradorDisponible, entCallCenter, consultaIniciada, usuarioSesion, usuarioColaborador]);
+    //}, [colaboradorDisponible]);
 
     useEffect(() => {
         funcPrepararSalaCallCenterInicio();

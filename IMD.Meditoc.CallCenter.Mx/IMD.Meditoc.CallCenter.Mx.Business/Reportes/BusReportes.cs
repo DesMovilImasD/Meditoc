@@ -285,7 +285,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                         iIdProducto = p.Select(r => r.iIdProducto).FirstOrDefault(),
                         iIdTipoProducto = p.Select(r => r.iIdTipoProducto).FirstOrDefault(),
                         iQuantity = p.Select(r => r.iQuantity).FirstOrDefault(),
-                        nUnitPrice = p.Select(r => r.nUnitPrice / 100).FirstOrDefault(),
+                        nUnitPrice = p.Select(r => r.nUnitPrice / 100d).FirstOrDefault(),
                         sItemId = p.Select(r => r.sItemId).FirstOrDefault(),
                         sNombre = p.Select(r => r.sItemName).FirstOrDefault(),
                         sTipoProducto = p.Select(r => r.sTipoProducto).FirstOrDefault(),
@@ -300,19 +300,20 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                         }).ToList()
                     }).ToList(),
                     iIdCupon = o.Select(r => r.iIdCupon).FirstOrDefault(),
-                    nAmount = o.Select(r => r.nAmount / 100).FirstOrDefault(),
-                    nAmountDiscount = o.Select(r => r.nAmountDiscount / 100).FirstOrDefault(),
-                    nAmountPaid = o.Select(r => r.nAmountPaid / 100).FirstOrDefault(),
-                    nAmountTax = o.Select(r => r.nAmountTax / 100).FirstOrDefault(),
+                    nAmount = o.Select(r => r.nAmount / 100d).FirstOrDefault(),
+                    nAmountDiscount = o.Select(r => r.nAmountDiscount / 100d).FirstOrDefault(),
+                    nAmountPaid = o.Select(r => r.nAmountPaid / 100d).FirstOrDefault(),
+                    nAmountTax = o.Select(r => r.nAmountTax / 100d).FirstOrDefault(),
                     sCodigo = o.Select(r => r.sCodigo).FirstOrDefault(),
                     sPaymentStatus = o.Select(r => r.sPaymentStatus).FirstOrDefault(),
                     sRegisterDate = o.Select(r => r.sRegisterDate).FirstOrDefault(),
+                    dtRegisterDate = o.Select(r => r.dtRegisterDate).FirstOrDefault(),
                     iIdOrigen = o.Select(r => r.iIdOrigen).FirstOrDefault(),
                     sOrigen = o.Select(r => r.sOrigen).FirstOrDefault(),
                     uId = o.Select(r => r.uId).FirstOrDefault(),
                 }).ToList();
 
-                List<EntReporteOrden> ordenesAdmin = respuestaObtenerFolios.Result.Where(x => x.iIdOrigen == (int)EnumOrigen.PanelAdministrativo || x.iIdOrigen == (int)EnumOrigen.ArchivoExterno).GroupBy(o => o.sOrderId).Select(o => new EntReporteOrden
+                List<EntReporteOrden> ordenesAdmin = respuestaObtenerFolios.Result.Where(x => (x.iIdOrigen == (int)EnumOrigen.PanelAdministrativo || x.iIdOrigen == (int)EnumOrigen.ArchivoExterno) && x.iIdEmpresa != (int)EnumEmpresas.VentaCalle).GroupBy(o => o.sOrderId).Select(o => new EntReporteOrden
                 {
                     sOrderId = o.Key,
                     iIdEmpresa = o.Select(r => r.iIdEmpresa).FirstOrDefault(),
@@ -337,7 +338,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                         iIdProducto = p.Select(r => r.iIdProducto).FirstOrDefault(),
                         iIdTipoProducto = p.Select(r => r.iIdTipoProducto).FirstOrDefault(),
                         iQuantity = p.Select(r => r.iQuantity).FirstOrDefault(),
-                        nUnitPrice = p.Select(r => r.nUnitPrice / 100).FirstOrDefault(),
+                        nUnitPrice = p.Select(r => r.nUnitPrice / 100d).FirstOrDefault(),
                         sItemId = p.Select(r => r.sItemId).FirstOrDefault(),
                         sNombre = p.Select(r => r.sItemName).FirstOrDefault(),
                         sTipoProducto = p.Select(r => r.sTipoProducto).FirstOrDefault(),
@@ -352,17 +353,76 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                         }).ToList()
                     }).ToList(),
                     iIdCupon = o.Select(r => r.iIdCupon).FirstOrDefault(),
-                    nAmount = o.Select(r => r.nAmount / 100).FirstOrDefault(),
-                    nAmountDiscount = o.Select(r => r.nAmountDiscount / 100).FirstOrDefault(),
-                    nAmountPaid = o.Select(r => r.nAmountPaid / 100).FirstOrDefault(),
-                    nAmountTax = o.Select(r => r.nAmountTax / 100).FirstOrDefault(),
+                    nAmount = o.Select(r => r.nAmount / 100d).FirstOrDefault(),
+                    nAmountDiscount = o.Select(r => r.nAmountDiscount / 100d).FirstOrDefault(),
+                    nAmountPaid = o.Select(r => r.nAmountPaid / 100d).FirstOrDefault(),
+                    nAmountTax = o.Select(r => r.nAmountTax / 100d).FirstOrDefault(),
                     sCodigo = o.Select(r => r.sCodigo).FirstOrDefault(),
                     sPaymentStatus = o.Select(r => r.sPaymentStatus).FirstOrDefault(),
                     sRegisterDate = o.Select(r => r.sRegisterDate).FirstOrDefault(),
+                    dtRegisterDate = o.Select(r => r.dtRegisterDate).FirstOrDefault(),
                     iIdOrigen = o.Select(r => r.iIdOrigen).FirstOrDefault(),
                     sOrigen = o.Select(r => r.sOrigen).FirstOrDefault(),
                     uId = o.Select(r => r.uId).FirstOrDefault(),
                 }).ToList();
+
+                List<EntReporteOrden> ordenesVentaCalle = respuestaObtenerFolios.Result.Where(x => (x.iIdOrigen == (int)EnumOrigen.PanelAdministrativo || x.iIdOrigen == (int)EnumOrigen.ArchivoExterno) && x.iIdEmpresa == (int)EnumEmpresas.VentaCalle && x.bConfirmado).GroupBy(o => o.sOrderId).Select(o => new EntReporteOrden
+                {
+                    sOrderId = o.Key,
+                    iIdEmpresa = o.Select(r => r.iIdEmpresa).FirstOrDefault(),
+                    sCorreo = o.Select(r => r.sCorreo).FirstOrDefault(),
+                    sFolioEmpresa = o.Select(r => r.sFolioEmpresa).FirstOrDefault(),
+                    sNombre = o.Select(r => r.sEmpresa).FirstOrDefault(),
+                    charges = o.Select(c => new EntChargeReporte
+                    {
+                        sAuthCode = c.sAuthCode,
+                        sChargeId = c.sChargeId,
+                        sType = c.sType
+                    }).FirstOrDefault(),
+                    customer_info = o.Select(u => new EntCustomerInfo
+                    {
+                        email = u.email,
+                        name = u.name,
+                        phone = u.phone
+                    }).FirstOrDefault(),
+                    lstProductos = o.GroupBy(p => p.iConsecutive).Select(p => new EntReporteProducto
+                    {
+                        iConsecutivo = p.Key,
+                        iIdProducto = p.Select(r => r.iIdProducto).FirstOrDefault(),
+                        iIdTipoProducto = p.Select(r => r.iIdTipoProducto).FirstOrDefault(),
+                        iQuantity = p.Select(r => r.iQuantity).FirstOrDefault(),
+                        nUnitPrice = p.Select(r => r.nUnitPrice / 100d).FirstOrDefault(),
+                        sItemId = p.Select(r => r.sItemId).FirstOrDefault(),
+                        sNombre = p.Select(r => r.sItemName).FirstOrDefault(),
+                        sTipoProducto = p.Select(r => r.sTipoProducto).FirstOrDefault(),
+                        lstFolios = p.Select(x => x.sPaymentStatus).First() == "declined" ? new List<EntReporteFolio>() : p.GroupBy(f => f.iIdFolio).Select(f => new EntReporteFolio
+                        {
+                            iIdFolio = f.Key,
+                            sFolio = f.Select(r => r.sFolio).FirstOrDefault(),
+                            bTerminosYCondiciones = f.Select(r => r.bTerminosYCondiciones).FirstOrDefault(),
+                            sFechaVencimiento = f.Select(r => r.sFechaVencimiento).FirstOrDefault(),
+                            bConfirmado = f.Select(r => r.bConfirmado ? "SI" : "NO").FirstOrDefault(),
+                            sTerminosYCondiciones = f.Select(r => r.bTerminosYCondiciones).FirstOrDefault() ? "SI" : "NO"
+                        }).ToList()
+                    }).ToList(),
+                    iIdCupon = o.Select(r => r.iIdCupon).FirstOrDefault(),
+                    //nAmount = o.Select(r => r.nAmount / 100).FirstOrDefault(),
+                    //nAmountDiscount = o.Select(r => r.nAmountDiscount / 100).FirstOrDefault(),
+                    //nAmountPaid = o.Select(r => r.nAmountPaid / 100).FirstOrDefault(),
+                    //nAmountTax = o.Select(r => r.nAmountTax / 100).FirstOrDefault(),
+                    sCodigo = o.Select(r => r.sCodigo).FirstOrDefault(),
+                    sPaymentStatus = o.Select(r => r.sPaymentStatus).FirstOrDefault(),
+                    sRegisterDate = o.Select(r => r.sRegisterDate).FirstOrDefault(),
+                    dtRegisterDate = o.Select(r => r.dtRegisterDate).FirstOrDefault(),
+                    iIdOrigen = o.Select(r => r.iIdOrigen).FirstOrDefault(),
+                    sOrigen = o.Select(r => r.sOrigen).FirstOrDefault(),
+                    uId = o.Select(r => r.uId).FirstOrDefault(),
+                    nAmount = o.Sum(x => x.nUnitPrice) / 100d,
+                    nAmountTax = (o.Sum(x => x.nUnitPrice) * dIVA) / 100d,
+                    nAmountPaid = (o.Sum(x => x.nUnitPrice) * (1d + dIVA)) / 100d,
+                }).ToList();
+
+                ordenesAdmin.AddRange(ordenesVentaCalle);
 
                 //List<EntReporteEmpresa> empresas = respuestaObtenerFolios.Result.Where(x => x.iIdOrigen == (int)EnumOrigen.PanelAdministrativo).GroupBy(x => x.iIdEmpresa).Select(e => new EntReporteEmpresa
                 //{
@@ -404,7 +464,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                 {
                     ResumenOrdenesAdmin = new EntResumenOrdenes
                     {
-                        lstOrdenes = ordenesAdmin,
+                        lstOrdenes = ordenesAdmin.OrderByDescending(x => x.sRegisterDate).ToList(),
                         dTotalDescontado = ordenesAdmin.Where(x => x.sPaymentStatus != "declined").Sum(x => x.nAmountDiscount),
                         dTotalVendido = ordenesAdmin.Where(x => x.sPaymentStatus != "declined").Sum(x => x.nAmountPaid),
                         iTotalCuponesAplicados = ordenesAdmin.Where(x => !string.IsNullOrEmpty(x.sCodigo) && x.sPaymentStatus != "declined").Count(),
@@ -414,7 +474,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Reportes
                     },
                     ResumenOrdenes = new EntResumenOrdenes
                     {
-                        lstOrdenes = ordenes,
+                        lstOrdenes = ordenes.OrderByDescending(x => x.sRegisterDate).ToList(),
                         dTotalDescontado = ordenes.Where(x => x.sPaymentStatus != "declined").Sum(x => x.nAmountDiscount),
                         dTotalVendido = ordenes.Where(x => x.sPaymentStatus != "declined").Sum(x => x.nAmountPaid),
                         iTotalCuponesAplicados = ordenes.Where(x => !string.IsNullOrEmpty(x.sCodigo) && x.sPaymentStatus != "declined").Count(),

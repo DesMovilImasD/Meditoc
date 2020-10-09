@@ -4,6 +4,7 @@ const EnumPerfilesPrincipales = {
     DoctorCallCenter: 3,
     DoctorEspecialista: 4,
     AdministradorEspecialiesta: 5,
+    DoctorAdministrador: 6,
 };
 
 const EnumTipoCuenta = {
@@ -45,6 +46,7 @@ const EnumSistema = {
 const EnumTipoDoctor = {
     CallCenter: 1,
     Especialista: 2,
+    Administrativo: 3,
 };
 
 const EnumCuponCategoria = {

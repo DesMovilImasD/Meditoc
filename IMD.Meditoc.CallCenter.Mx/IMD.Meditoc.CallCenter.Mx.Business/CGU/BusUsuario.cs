@@ -22,7 +22,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             datUsuario = new DatUsuario();
         }
 
-        public IMDResponse<EntUsuario> BSaveUsuario(EntUsuario entUsuario)
+        public IMDResponse<EntUsuario> BSaveUsuario(EntUsuario entUsuario, bool bEnviarCredenciales = false)
         {
             IMDResponse<EntUsuario> response = new IMDResponse<EntUsuario>();
 
@@ -57,6 +57,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 if (resSaveUsuario.Code != 0)
                 {
                     return resSaveUsuario.GetResponse<EntUsuario>();
+                }
+
+                if (bEnviarCredenciales && (entUsuario.iIdUsuario == 0 || !string.IsNullOrWhiteSpace(entUsuario.sPassword)))
+                {
+                    List<string> users = new List<string> { entUsuario.sUsuario };
+                    IMDResponse<bool> resEnviarCredenciales = this.BEnviarCredenciales(entUsuario.sCorreo, entUsuario.iIdUsuario == 0 ? EnumEmailActionPass.Crear : EnumEmailActionPass.Modificar, users);
                 }
 
                 IMDDataRow dr = new IMDDataRow(resSaveUsuario.Result.Rows[0]);
@@ -109,14 +115,17 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     entUsuario.sNombres = dr.ConvertTo<string>("sNombres");
                     entUsuario.sApellidoPaterno = dr.ConvertTo<string>("sApellidoPaterno");
                     entUsuario.sApellidoMaterno = dr.ConvertTo<string>("sApellidoMaterno");
-                    entUsuario.dtFechaNacimiento = dr.ConvertTo<DateTime>("dtFechaNacimiento");
+                    entUsuario.dtFechaNacimiento = dr.ConvertTo<DateTime?>("dtFechaNacimiento");
                     entUsuario.sFechaNacimiento = entUsuario.dtFechaNacimiento?.ToString("dd/MM/yyyy");
+                    entUsuario.dtFechaCreacion = dr.ConvertTo<DateTime>("dtFechaCreacion");
+                    entUsuario.sFechaCreacion = entUsuario.dtFechaCreacion.ToString("dd/MM/yyyy HH:mm");
                     entUsuario.sTelefono = dr.ConvertTo<string>("sTelefono");
                     entUsuario.sCorreo = dr.ConvertTo<string>("sCorreo");
                     entUsuario.sDomicilio = dr.ConvertTo<string>("sDomicilio");
                     entUsuario.iIdUsuarioMod = dr.ConvertTo<int>("iIdUsuarioMod");
-                    entUsuario.bActivo = dr.ConvertTo<bool>("bActivo");
-                    entUsuario.bBaja = dr.ConvertTo<bool>("bBaja");
+                    entUsuario.bAcceso = Convert.ToBoolean(dr.ConvertTo<int>("bAcceso"));
+                    entUsuario.bActivo = Convert.ToBoolean(dr.ConvertTo<int>("bActivo"));
+                    entUsuario.bBaja = Convert.ToBoolean(dr.ConvertTo<int>("bBaja"));
 
                     lstUsuario.Add(entUsuario);
                 }
@@ -173,7 +182,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 }
 
 
-                if (entUsuario.iIdUsuario == 0)
+                if (entUsuario.iIdUsuario == 0 && entUsuario.bAcceso == true)
                 {
                     response = datUsuario.DValidaUsuarioYCorreo(entUsuario.sUsuario, "", true);
                     if (!response.Result)
@@ -188,7 +197,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 
                 if (string.IsNullOrWhiteSpace(entUsuario.sPassword))
                 {
-                    if (entUsuario.iIdUsuario == 0)
+                    if (entUsuario.iIdUsuario == 0 && entUsuario.bAcceso == true)
                     {
                         response.Code = 67823458345132;
                         response.Message = "La contraseña del usuario no puede ser vacío.";
@@ -227,7 +236,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 
                 if (entUsuario.iIdTipoCuenta == (int)EnumTipoCuenta.Titular)
                 {
-                    if (entUsuario.iIdUsuario == 0)
+                    if (entUsuario.iIdUsuario == 0 && entUsuario.bAcceso == true)
                     {
                         response = datUsuario.DValidaUsuarioYCorreo("", entUsuario.sCorreo, false);
                         if (!response.Result)
@@ -439,11 +448,44 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             return sCadena;
         }
 
-        public IMDResponse<bool> BRecuperarPassword(string psCorreo)
+        //public IMDResponse<bool> BEnviarCredenciales(EntUsuario entUsuario)
+        //{
+        //    IMDResponse<bool> response = new IMDResponse<bool>();
+
+        //    string metodo = nameof(this.BEnviarCredenciales);
+        //    logger.Info(IMDSerialize.Serialize(67823458641169, $"Inicia {metodo}(EntUsuario entUsuario)", entUsuario));
+
+        //    try
+        //    {
+        //        if (entUsuario == null)
+        //        {
+        //            response.Code = -2348987987234;
+        //            response.Message = "No se ingresó la información del usuario.";
+        //            return response;
+        //        }
+
+        //        if (entUsuario.bActivo && !entUsuario.bBaja)
+
+        //            if (!string.IsNullOrWhiteSpace(entUsuario.sPassword))
+        //            {
+
+        //            }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        response.Code = 67823458641946;
+        //        response.Message = "El usuario se generó correctamente pero ocurrió un error al enviar las credenciales.";
+
+        //        logger.Error(IMDSerialize.Serialize(67823458641946, $"Error en {metodo}: {ex.Message}(EntUsuario entUsuario)", entUsuario, ex, response));
+        //    }
+        //    return response;
+        //}
+
+        public IMDResponse<bool> BEnviarCredenciales(string psCorreo, EnumEmailActionPass enumEmail, List<string> users = null)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
-            string metodo = nameof(this.BRecuperarPassword);
+            string metodo = nameof(this.BEnviarCredenciales);
             logger.Info(IMDSerialize.Serialize(67823458631845, $"Inicia {metodo}(string psCorreo)", psCorreo));
 
             try
@@ -451,7 +493,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 if (string.IsNullOrWhiteSpace(psCorreo))
                 {
                     response.Code = -23746876326;
-                    response.Message = "El correo electrónico es requerido";
+                    response.Message = "El correo electrónico es requerido.";
                     return response;
                 }
 
@@ -468,20 +510,66 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     return response;
                 }
 
-                string plantillaUsuario = string.Empty;
-
-                foreach (EntUsuario user in resGetUser.Result)
+                string cuenta = string.Empty;
+                List<EntUsuario> currentUsers = resGetUser.Result;
+                if (users != null)
                 {
+                    currentUsers = currentUsers.Where(x => users.Contains(x.sUsuario)).ToList();
+                }
+
+                foreach (EntUsuario user in currentUsers)
+                {
+                    if (user.bAcceso == null || user.bAcceso == false || !user.bActivo || user.bBaja)
+                    {
+                        continue;
+                    }
                     string pass = this.BDeCodePassWord(user.sPassword);
-                    plantillaUsuario += $"<tr class=\"font-table bold normal center table-border-b\"><td>{user.sTipoCuenta}</td><td>{user.sUsuario}</td><td>{pass}</td></tr>";
+                    cuenta += $"<tr class=\"font-table bold small center table-border-b\"><td>{user.sTipoCuenta}</td><td>{user.sUsuario}</td><td>{pass}</td></tr>";
+                }
+
+                if (string.IsNullOrWhiteSpace(cuenta))
+                {
+                    response.Code = -834787687623;
+                    response.Message = "No se encontraron cuentas activas para el usuario.";
+                    return response;
                 }
 
                 EntUsuario entUsuario = resGetUser.Result.First();
 
-                string asunto = "Meditoc - Recuperación de cuenta";
-                string plantillaBody = "<!DOCTYPE html><html><head><meta charset=\"utf-8;\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" /><link href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap\" rel=\"stylesheet\" /><style>body {font-family: Roboto, \"Segoe UI\", Tahoma, Geneva, Verdana, sans-serif;margin: 0;}.center {text-align: center !important;}.light {font-weight: 300;}.normal {font-weight: normal;}.bold {font-weight: 500;}.small {font-size: 12px;}.large {font-size: 15px;}.font-default {color: #707070;}.font-secondary {color: #115c8a;}.font-unset {color: #ffffff;}.font-table {color: #878787;}.table {margin: auto;width: 100%;max-width: 800px;border: 1px solid #dddddd;border-spacing: 0px;border-collapse: 0px;}.table td {padding: 6px 0px;}.logo-head {background-color: #11b6ca;padding: 5px 0px;}.table-content {margin: auto;width: 90%;border-collapse: collapse;}.table-detail {margin: auto;width: 100%;border-collapse: collapse;}.table-detail td {padding: 8px;}.head-detail {background-color: #115c8a;}.divider {height: 1px;border: 0;background-color: #989898;}.link {text-decoration: none;}.link:hover {text-decoration: underline;}.link-none {text-decoration: none;}.table-border-b td {border-bottom: 1px solid #ccc;}</style></head><body><table class=\"table\"><tr><td class=\"logo-head center\"><img alt=\"logo-meditoc\" src=\"sLogoMeditoc\" height=\"50px\" /></td></tr><tr><td><table class=\"table-content\"><tr><td class=\"center\"><span class=\"font-default bold large\"> Recuperación de cuenta </span></td></tr><tr class=\"center\"><td><span class=\"font-default normal large\">Se ha solicitado la recuperación de las credenciales de acceso al portal de MeditocCallCenter:</span></td></tr><tr><td><table class=\"table-detail\"><tr class=\"head-detail font-unset bold small center\"><td colspan=\"3\">ACCESO</td></tr><tr><td><table class=\"table-detail\"><thead><tr class=\"font-table bold small font-secondary\"><th>Tipo de cuenta</th><th>Usuario</th><th>Contraseña</th></tr></thead><tbody>data.Cuentas</tbody></table></td></tr></table></td></tr><tr class=\"center\"><td><p><span class=\"font-default normal large\">Le sugerimos cambiar la contraseña en su próximo ingreso al portal de MeditocCallCenter.</span></p></td></tr><tr><td><hr class=\"divider\" /></td></tr><tr><td><span class=\"font-default light small\">De conformidad con la ley federal de protección de datos personales en posesión delos particulares, ponemos a su disposición nuestro&nbsp;<a href=\"sAvisoPrivacidad\" class=\"link font-secondary normal\"> Aviso de Privacidad </a>&nbsp;y&nbsp;<a href=\"sTerminosCondiciones\" class=\"link font-secondary normal\"> Términos y Condiciones. </a></span></td></tr></table></td></tr></table></body></html>";
+                string asunto = string.Empty;
+                string titulo = string.Empty;
+                string header = string.Empty;
+                string footer = string.Empty;
+                switch (enumEmail)
+                {
+                    case EnumEmailActionPass.Crear:
+                        asunto = "Meditoc - Credenciales de acceso";
+                        titulo = "Bienvenido a Meditoc Call Center";
+                        header = "Se han creado las credenciales de acceso al portal de MeditocCallCenter:";
+                        footer = "Le sugerimos cambiar la contraseña en su próximo ingreso al portal de MeditocCallCenter.";
+                        break;
+                    case EnumEmailActionPass.Modificar:
+                        asunto = "Meditoc - Cambio en las credenciales";
+                        titulo = "Modificación en las credenciales de acceso";
+                        header = "Se han modificado las credenciales de acceso al portal de MeditocCallCenter:";
+                        footer = "Si no realizó esta acción, cambie sus credenciales en su próximo ingreso o contacte a su administrador.";
+                        break;
+                    case EnumEmailActionPass.Recuperar:
+                        asunto = "Meditoc - Recuperación de cuenta";
+                        titulo = "Recuperación de la cuenta";
+                        header = "Se ha solicitado la recuperación de las credenciales de acceso al portal de MeditocCallCenter:";
+                        footer = "Le sugerimos cambiar la contraseña en su próximo ingreso al portal de MeditocCallCenter.";
+                        break;
+                    default:
+                        break;
+                }
 
-                plantillaBody = plantillaBody.Replace("data.Cuentas", plantillaUsuario);
+                string plantillaBody = "<!DOCTYPE html><html><head><meta charset=\"utf-8;\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" /><link href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap\" rel=\"stylesheet\" /><style>body {font-family: Roboto, \"Segoe UI\", Tahoma, Geneva, Verdana, sans-serif;margin: 0;}.center {text-align: center !important;}.light {font-weight: 300;}.normal {font-weight: normal;}.bold {font-weight: 500;}.small {font-size: 12px;}.large {font-size: 15px;}.font-default {color: #707070;}.font-secondary {color: #115c8a;}.font-unset {color: #ffffff;}.font-table {color: #878787;}.table {margin: auto;width: 100%;max-width: 800px;border: 1px solid #dddddd;border-spacing: 0px;border-collapse: 0px;}.table td {padding: 6px 0px;}.logo-head {background-color: #11b6ca;padding: 5px 0px;}.table-content {margin: auto;width: 90%;border-collapse: collapse;}.table-detail {margin: auto;width: 100%;border-collapse: collapse;}.table-detail td {padding: 8px;}.head-detail {background-color: #115c8a;}.divider {height: 1px;border: 0;background-color: #989898;}.link {text-decoration: none;}.link:hover {text-decoration: underline;}.link-none {text-decoration: none;}.table-border-b td {border-bottom: 1px solid #ccc;}</style></head><body><table class=\"table\"><tr><td class=\"logo-head center\"><img alt=\"logo-meditoc\" src=\"sLogoMeditoc\" height=\"50px\" /></td></tr><tr><td><table class=\"table-content\"><tr><td class=\"center\"><span class=\"font-default bold large\">data.titulo</span></td></tr><tr class=\"center\"><td><span class=\"font-default normal large\">data.header</span></td></tr><tr><td><table class=\"table-detail\"><tr class=\"head-detail font-unset bold small center\"><td colspan=\"3\">ACCESO</td></tr><tr><td><table class=\"table-detail\"><thead><tr class=\"font-table bold small font-secondary\"><th>Tipo de cuenta</th><th>Usuario</th><th>Contraseña</th></tr></thead><tbody>data.cuenta</tbody></table></td></tr></table></td></tr><tr class=\"center\"><td><p><span class=\"font-default normal large\">data.footer</span></p></td></tr><tr><td><hr class=\"divider\" /></td></tr><tr><td><span class=\"font-default light small\">De conformidad con la ley federal de protección de datos personales en posesión delos particulares, ponemos a su disposición nuestro&nbsp;<a href=\"sAvisoPrivacidad\" class=\"link font-secondary normal\"> Aviso de Privacidad </a>&nbsp;y&nbsp;<a href=\"sTerminosCondiciones\" class=\"link font-secondary normal\"> Términos y Condiciones. </a></span></td></tr></table></td></tr></table></body></html>";
+
+                plantillaBody = plantillaBody.Replace("data.cuenta", cuenta);
+                plantillaBody = plantillaBody.Replace("data.titulo", titulo);
+                plantillaBody = plantillaBody.Replace("data.header", header);
+                plantillaBody = plantillaBody.Replace("data.footer", footer);
                 plantillaBody = plantillaBody.Replace("sLogoMeditoc", ConfigurationManager.AppSettings["sLogoMeditoc"]);
                 plantillaBody = plantillaBody.Replace("sAvisoPrivacidad", ConfigurationManager.AppSettings["sAvisoDePrivacidad"]);
                 plantillaBody = plantillaBody.Replace("sTerminosCondiciones", ConfigurationManager.AppSettings["sTerminosYCondiciones"]);
@@ -491,12 +579,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 
                 response.Code = 0;
                 response.Result = true;
-                response.Message = "Las credenciales se han enviado al correo proporcionado";
+                response.Message = "Las credenciales se han enviado al correo proporcionado.";
             }
             catch (Exception ex)
             {
                 response.Code = 67823458632622;
-                response.Message = "Ocurrió un error inesperado al recuperar la contraseña. Intenta más tarder.";
+                response.Message = "Ocurrió un error inesperado al recuperar la contraseña. Intenta más tarde.";
 
                 logger.Error(IMDSerialize.Serialize(67823458632622, $"Error en {metodo}(string psCorreo): {ex.Message}", psCorreo, ex, response));
             }

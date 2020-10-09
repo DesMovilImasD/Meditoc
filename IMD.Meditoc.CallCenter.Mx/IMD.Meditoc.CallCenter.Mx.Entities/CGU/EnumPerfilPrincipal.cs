@@ -12,6 +12,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.CGU
         Administrador,
         DoctorCallCenter,
         DoctorEspecialista,
-        AdministradorEspecialista
+        AdministradorEspecialista,
+        DoctorAdministrador
     }
 }

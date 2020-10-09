@@ -151,7 +151,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
 
                 entCallCenter.entPaciente = resGetPaciente.Result.First();
 
-                if (entCallCenter.entColaborador.iIdTipoDoctor == (int)EnumTipoDoctor.MedicoCallCenter)
+                if (entCallCenter.entColaborador.iIdTipoDoctor == (int)EnumTipoDoctor.MedicoCallCenter || entCallCenter.entColaborador.iIdTipoDoctor == (int)EnumTipoDoctor.MedicoAdministrativo)
                 {
                     if (entCallCenter.entFolio.iIdOrigen == (int)EnumOrigen.Particular)
                     {
@@ -181,6 +181,16 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                     }
 
                     entCallCenter.entConsulta = resSaveConsulta.Result;
+
+                    List<int> doctoresCallCenter = new List<int> { (int)EnumTipoDoctor.MedicoCallCenter, (int)EnumTipoDoctor.MedicoAdministrativo };
+
+                    IMDResponse<List<EntHistorialClinico>> resGetHistorial = busConsulta.BGetHistorialMedico(piIdFolio: entCallCenter.entFolio.iIdFolio, psIdTipoDoctor: string.Join(",", doctoresCallCenter));
+                    if (resGetHistorial.Code != 0)
+                    {
+                        return resGetHistorial.GetResponse<EntCallCenter>();
+                    }
+
+                    entCallCenter.lstHistorialClinico = resGetHistorial.Result;
                 }
                 else if (entCallCenter.entColaborador.iIdTipoDoctor == (int)EnumTipoDoctor.MedicoEspecialista)
                 {
@@ -230,6 +240,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                             return response;
                         }
                     }
+
+                    IMDResponse<List<EntHistorialClinico>> resGetHistorial = busConsulta.BGetHistorialMedico(piIdFolio: entCallCenter.entFolio.iIdFolio, piIdColaborador: entCallCenter.entColaborador.iIdColaborador) ;
+                    if (resGetHistorial.Code != 0)
+                    {
+                        return resGetHistorial.GetResponse<EntCallCenter>();
+                    }
+
+                    entCallCenter.lstHistorialClinico = resGetHistorial.Result;
                 }
                 else
                 {
@@ -238,13 +256,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                     return response;
                 }
 
-                IMDResponse<List<EntHistorialClinico>> resGetHistorial = busConsulta.BGetHistorialMedico(piIdFolio: entCallCenter.entFolio.iIdFolio);
-                if (resGetHistorial.Code != 0)
-                {
-                    return resGetHistorial.GetResponse<EntCallCenter>();
-                }
-
-                entCallCenter.lstHistorialClinico = resGetHistorial.Result;
+                
 
                 response.Code = 0;
                 response.Result = entCallCenter;
@@ -375,7 +387,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                         }
                 };
 
-                if (consulta.iIdTipoDoctor == (int)EnumTipoDoctor.MedicoCallCenter)
+                if (consulta.iIdTipoDoctor == (int)EnumTipoDoctor.MedicoCallCenter || consulta.iIdTipoDoctor == (int)EnumTipoDoctor.MedicoAdministrativo)
                 {
                     if (consulta.iIdTipoProducto == (int)EnumTipoProducto.Servicio)
                     {

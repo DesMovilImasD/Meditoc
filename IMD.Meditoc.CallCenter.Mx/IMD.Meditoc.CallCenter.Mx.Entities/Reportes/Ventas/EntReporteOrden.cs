@@ -28,5 +28,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Reportes.Ventas
         public List<EntReporteProducto> lstProductos { get; set; }
         public EntChargeReporte charges { get; set; }
         public string sRegisterDate { get; set; }
+        public DateTime dtRegisterDate { get; set; }
     }
 }

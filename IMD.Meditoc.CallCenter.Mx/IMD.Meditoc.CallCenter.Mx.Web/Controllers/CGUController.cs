@@ -144,7 +144,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             try
             {
                 BusUsuario busUsuario = new BusUsuario();
-                response = busUsuario.BSaveUsuario(entUsuario);
+                response = busUsuario.BSaveUsuario(entUsuario, true);
             }
             catch (Exception ex)
             {
@@ -247,7 +247,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             try
             {
                 BusUsuario busUsuario = new BusUsuario();
-                response = busUsuario.BRecuperarPassword(entUsuario.sCorreo);
+                response = busUsuario.BEnviarCredenciales(entUsuario.sCorreo, EnumEmailActionPass.Recuperar);
             }
             catch (Exception ex)
             {

@@ -1,5 +1,6 @@
 import { Button, Collapse, Fade, Grid, IconButton, Tooltip, Typography } from "@material-ui/core";
 import { imgLogoLogin, imgLogoMeditocCasa } from "../../configurations/imgConfig";
+import { urlDefault, urlSystem } from "../../configurations/urlConfig";
 
 import CGUController from "../../controllers/CGUController";
 import { EnumPerfilesPrincipales } from "../../configurations/enumConfig";
@@ -10,7 +11,6 @@ import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import { makeStyles } from "@material-ui/core/styles";
 import { rxCorreo } from "../../configurations/regexConfig";
 import theme from "../../configurations/themeConfig";
-import { urlSystem } from "../../configurations/urlConfig";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
@@ -69,10 +69,10 @@ const Login = (props) => {
 
                 switch (responseLogin.Result.iIdPerfil) {
                     case EnumPerfilesPrincipales.Superadministrador:
-                        history.push("/");
+                        history.push(urlDefault);
                         break;
                     case EnumPerfilesPrincipales.Administrador:
-                        history.push("/");
+                        history.push(urlDefault);
                         break;
 
                     case EnumPerfilesPrincipales.DoctorCallCenter:
@@ -87,6 +87,7 @@ const Login = (props) => {
                         break;
 
                     default:
+                        history.push(urlDefault);
                         break;
                 }
             }

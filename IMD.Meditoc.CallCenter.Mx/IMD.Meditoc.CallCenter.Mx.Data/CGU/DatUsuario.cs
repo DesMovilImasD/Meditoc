@@ -57,6 +57,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.CGU
                     database.AddInParameter(dbCommand, "psTelefono", DbType.String, entUsuario.sTelefono);
                     database.AddInParameter(dbCommand, "psCorreo", DbType.String, entUsuario.sCorreo);
                     database.AddInParameter(dbCommand, "psDomicilio", DbType.String, entUsuario.sDomicilio);
+                    database.AddInParameter(dbCommand, "pbAcceso", DbType.Boolean, entUsuario.bAcceso);
                     database.AddInParameter(dbCommand, "piIdUsuarioMod", DbType.Int32, entUsuario.iIdUsuarioMod);
                     database.AddInParameter(dbCommand, "pbActivo", DbType.Boolean, entUsuario.bActivo);
                     database.AddInParameter(dbCommand, "pbBaja", DbType.Boolean, entUsuario.bBaja);

@@ -35,6 +35,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Colaborador
         public string sTelefonoDoctor { get; set; }
         public string sCorreoDoctor { get; set; }
         public string sDomicilioDoctor { get; set; }
+        public bool bAdministrador { get; set; }
+        public bool bAcceso { get; set; }
         public int iIdUsuarioMod { get; set; }
         public bool bActivo { get; set; }
         public bool bBaja { get; set; }

@@ -180,6 +180,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
+        [MeditocAuthentication]
         [HttpGet]
         [Route("Api/Colaborador/Get/Directorio/Especialistas")]
         public IMDResponse<EntDirectorio> CGetDirectorio([FromUri]int? piIdEspecialidad = null, [FromUri]string psBuscador = null, [FromUri]int piPage = 0, [FromUri]int piPageSize = 0)
@@ -200,6 +201,30 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
                 response.Message = "Ocurrió un error inesperado en el servicio al consultar el directorio de médicos.";
 
                 logger.Error(IMDSerialize.Serialize(67823458506748, $"Error en {metodo}([FromUri]int? piIdEspecialidad = null, [FromUri]string psBuscador = null, [FromUri]int piPage = 0, [FromUri]int piPageSize = 0): {ex.Message}", piIdEspecialidad, psBuscador, piPage, piPageSize, ex, response));
+            }
+            return response;
+        }
+
+        [HttpGet]
+        [Route("Api/Colaborador/Get/Directorio/Especialistas/Publico")]
+        public IMDResponse<EntDirectorio> CGetDirectorioPublico([FromUri]int? piIdEspecialidad = null, [FromUri]string psBuscador = null, [FromUri]int piPage = 0, [FromUri]int piPageSize = 0)
+        {
+            IMDResponse<EntDirectorio> response = new IMDResponse<EntDirectorio>();
+
+            string metodo = nameof(this.CGetDirectorio);
+            logger.Info(IMDSerialize.Serialize(67823458505981, $"Inicia {metodo}([FromUri]int? piIdEspecialidad = null, [FromUri]string psBuscador = null, [FromUri]int piPage = 0, [FromUri]int piPageSize = 0)", piIdEspecialidad, psBuscador, piPage, piPageSize));
+
+            try
+            {
+                BusColaborador busColaborador = new BusColaborador();
+                response = busColaborador.BGetDirectorio(piIdEspecialidad, psBuscador, piPage, piPageSize, true);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458506758;
+                response.Message = "Ocurrió un error inesperado en el servicio al consultar el directorio de médicos.";
+
+                logger.Error(IMDSerialize.Serialize(67823458506758, $"Error en {metodo}([FromUri]int? piIdEspecialidad = null, [FromUri]string psBuscador = null, [FromUri]int piPage = 0, [FromUri]int piPageSize = 0): {ex.Message}", piIdEspecialidad, psBuscador, piPage, piPageSize, ex, response));
             }
             return response;
         }

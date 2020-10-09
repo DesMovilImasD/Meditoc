@@ -124,6 +124,22 @@ const CrearFolios = (props) => {
         // eslint-disable-next-line
     }, [listaProductosEmpresa, listaProductosSeleccionados]);
 
+    useEffect(() => {
+        if (open) {
+            setListaProductosSeleccionados([]);
+            setListaProductosEmpresa(
+                listaProductos.map((producto) => ({
+                    iIdProducto: producto.iIdProducto,
+                    sNombre: producto.sNombre,
+                    fCosto: producto.fCosto,
+                    sCosto: producto.sCosto,
+                    iCantidad: 0,
+                }))
+            );
+        }
+        // eslint-disable-next-line
+    }, [open]);
+
     return (
         <MeditocModal
             title={`Crear folios para ${entEmpresa.sNombre} (${entEmpresa.sFolioEmpresa})`}
@@ -142,6 +158,8 @@ const CrearFolios = (props) => {
                     <MeditocTable
                         columns={columns}
                         data={listaProductosEmpresa}
+                        setData={setListaProductosEmpresa}
+                        rowsSelected={listaProductosSeleccionados}
                         setRowsSelected={setListaProductosSeleccionados}
                         selection={true}
                         mainField="iIdProducto"

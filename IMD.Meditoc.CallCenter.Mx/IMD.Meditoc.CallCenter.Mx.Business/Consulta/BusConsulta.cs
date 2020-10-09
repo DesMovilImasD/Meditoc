@@ -87,7 +87,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
         }
 
         //Obtiene el historial clinico del paciente
-        public IMDResponse<List<EntHistorialClinico>> BGetHistorialMedico(int? piIdHistorialClinico = null, int? piIdConsulta = null, int? piIdPaciente = null, int? piIdColaborador = null, int? piIdFolio = null)
+        public IMDResponse<List<EntHistorialClinico>> BGetHistorialMedico(int? piIdHistorialClinico = null, int? piIdConsulta = null, int? piIdPaciente = null, int? piIdColaborador = null, int? piIdFolio = null, string psIdTipoDoctor = null)
         {
             IMDResponse<List<EntHistorialClinico>> response = new IMDResponse<List<EntHistorialClinico>>();
 
@@ -96,7 +96,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
 
             try
             {
-                IMDResponse<DataTable> resGetHistorialClinico = datConsulta.DGetHistorialMedico(piIdHistorialClinico, piIdConsulta, piIdPaciente, piIdColaborador, piIdFolio);
+                IMDResponse<DataTable> resGetHistorialClinico = datConsulta.DGetHistorialMedico(piIdHistorialClinico, piIdConsulta, piIdPaciente, piIdColaborador, piIdFolio, psIdTipoDoctor);
                 if (resGetHistorialClinico.Code != 0)
                 {
                     return resGetHistorialClinico.GetResponse<List<EntHistorialClinico>>();

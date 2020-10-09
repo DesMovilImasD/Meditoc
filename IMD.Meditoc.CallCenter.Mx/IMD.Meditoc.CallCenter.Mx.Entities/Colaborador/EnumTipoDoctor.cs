@@ -9,6 +9,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Colaborador
     public enum EnumTipoDoctor
     {
         MedicoCallCenter = 1,
-        MedicoEspecialista
+        MedicoEspecialista,
+        MedicoAdministrativo
     }
 }
