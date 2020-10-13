@@ -107,7 +107,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
         }
 
 
-        public IMDResponse<DataTable> DGetFolios(int? piIdFolio = null, int? piIdEmpresa = null, int? piIdProducto = null, int? piIdOrigen = null, string psFolio = null, string psOrdenConekta = null, bool? pbTerminosYCondiciones = null, bool? pbActivo = true, bool? pbBaja = false)
+        public IMDResponse<DataTable> DGetFolios(int? piIdFolio = null, int? piIdEmpresa = null, int? piIdProducto = null, int? piIdOrigen = null, string psFolio = null, string psOrdenConekta = null, bool? pbTerminosYCondiciones = null, bool? pbActivo = true, bool? pbBaja = false, bool? pbVigente = null)
         {
             IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
@@ -127,6 +127,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
                     database.AddInParameter(dbCommand, "pbTerminosYCondiciones", DbType.Boolean, pbTerminosYCondiciones);
                     database.AddInParameter(dbCommand, "pbActivo", DbType.Boolean, pbActivo);
                     database.AddInParameter(dbCommand, "pbBaja", DbType.Boolean, pbBaja);
+                    database.AddInParameter(dbCommand, "pbVigente", DbType.Boolean, pbVigente);
 
                     response = imdCommonData.DExecuteDT(database, dbCommand);
                 }

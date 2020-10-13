@@ -114,7 +114,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         [MeditocAuthentication]
         [HttpGet]
         [Route("api/promociones/obtener/cupones")]
-        public IMDResponse<List<EntCupon>> CObtenerCupones([FromUri]int? piIdCupon = null, [FromUri]int? piIdCuponCategoria = null, [FromUri]string psDescripcion = null, [FromUri]string psCodigo = null, [FromUri]DateTime? pdtFechaVencimientoInicio = null, [FromUri]DateTime? pdtFechaVencimientoFin = null, [FromUri]DateTime? pdtFechaCreacionInicio = null, [FromUri]DateTime? pdtFechaCreacionFin = null, [FromUri]bool? pbActivo = true, [FromUri]bool? pbBaja = false)
+        public IMDResponse<List<EntCupon>> CObtenerCupones([FromUri]int? piIdCupon = null, [FromUri]int? piIdCuponCategoria = null, [FromUri]string psDescripcion = null, [FromUri]string psCodigo = null, [FromUri]DateTime? pdtFechaVencimientoInicio = null, [FromUri]DateTime? pdtFechaVencimientoFin = null, [FromUri]DateTime? pdtFechaCreacionInicio = null, [FromUri]DateTime? pdtFechaCreacionFin = null, [FromUri]bool? pbActivo = true, [FromUri]bool? pbBaja = false, [FromUri]bool? pbVigente = null)
         {
             IMDResponse<List<EntCupon>> response = new IMDResponse<List<EntCupon>>();
 
@@ -123,7 +123,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 
             try
             {
-                response = busPromociones.BObtenerCupones(piIdCupon, piIdCuponCategoria, psDescripcion, psCodigo, pdtFechaVencimientoInicio, pdtFechaVencimientoFin, pdtFechaCreacionInicio, pdtFechaCreacionFin, pbActivo, pbBaja);
+                response = busPromociones.BObtenerCupones(piIdCupon, piIdCuponCategoria, psDescripcion, psCodigo, pdtFechaVencimientoInicio, pdtFechaVencimientoFin, pdtFechaCreacionInicio, pdtFechaCreacionFin, pbActivo, pbBaja, pbVigente);
             }
             catch (Exception ex)
             {

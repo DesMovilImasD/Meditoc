@@ -1,38 +1,28 @@
-import { Button, Grid } from "@material-ui/core";
-import React, { Fragment, useState } from "react";
+import { Grid, IconButton, Tooltip } from "@material-ui/core";
+import React, { Fragment, useEffect, useState } from "react";
 import { green, red } from "@material-ui/core/colors";
 
 import CloseIcon from "@material-ui/icons/Close";
-import DetalleConekta from "./DetalleConekta";
+import DetalleOrden from "./DetalleOrden";
 import DoneIcon from "@material-ui/icons/Done";
 import { EnumStatusConekta } from "../../../../configurations/enumConfig";
 import MeditocInfoNumber from "../../../utilidades/MeditocInfoNumber";
 import MeditocTable from "../../../utilidades/MeditocTable";
 import PropTypes from "prop-types";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import { cellProps } from "../../../../configurations/dataTableIconsConfig";
 
 const ResumenAdmin = (props) => {
     const { entVentas, funcLoader, funcAlert, permisos } = props;
 
     const columnas = [
-        { title: "Orden", field: "sOrderId", align: "center" },
-        { title: "Folio de empresa", field: "sFolioEmpresa", align: "center" },
-        { title: "Total", field: "nAmountPaid", align: "center" },
-        { title: "Nombre", field: "sNombre", align: "center" },
-        //{ title: "Total", field: "dTotal", align: "center" },
-        //{ title: "Folios generados", field: "iTotalFolios", align: "center" },
-        { title: "Fecha", field: "sRegisterDate", align: "center" },
-        { title: "Ver", field: "sDetalle", align: "center" },
+        { ...cellProps, title: "Orden", field: "sOrderId" },
+        { ...cellProps, title: "Folio de empresa", field: "sFolioEmpresa" },
+        { ...cellProps, title: "Total", field: "nAmountPaid" },
+        { ...cellProps, title: "Nombre", field: "sNombre" },
+        { ...cellProps, title: "Fecha", field: "sRegisterDate" },
+        { ...cellProps, title: "Detalle", field: "sDetalle", sorting: false },
     ];
-
-    // const [empresaSeleccionada, setEmpresaSeleccionada] = useState({
-    //     sFolioEmpresa: "",
-    //     sCorreo: "",
-    //     dTotalSinIva: 0,
-    //     dTotalIva: 0,
-    //     dTotal: 0,
-    //     iTotalFolios: 0,
-    //     lstProductos: [],
-    // });
 
     const [ordenSeleccionada, setOrdenSeleccionada] = useState({
         sOrderId: "",
@@ -45,49 +35,54 @@ const ResumenAdmin = (props) => {
         lstProductos: [],
     });
 
-    // const [modalDetalleEmpresaOpen, setModalDetalleEmpresaOpen] = useState(false);
-
-    // const handleClickDetalle = (sFolioEmpresa) => {
-    //     setEmpresaSeleccionada(entVentas.ResumenEmpresas.lstEmpresas.find((x) => x.sFolioEmpresa === sFolioEmpresa));
-    //     setModalDetalleEmpresaOpen(true);
-    // };
-
     const [modalDetalleOrdenOpen, setModalDetalleOrdenOpen] = useState(false);
+
+    const [listaOrdenesAdmin, setListaOrgenesAdmin] = useState([]);
+
+    const handleClickVerDetalle = () => {
+        if (ordenSeleccionada.sOrderId === "") {
+            funcAlert("Seleccione una orden para continuar");
+            return;
+        }
+
+        setModalDetalleOrdenOpen(true);
+    };
 
     const handleClickDetalle = (sOrderId) => {
         setOrdenSeleccionada(entVentas.ResumenOrdenesAdmin.lstOrdenes.find((x) => x.sOrderId === sOrderId));
         setModalDetalleOrdenOpen(true);
     };
 
+    useEffect(() => {
+        setListaOrgenesAdmin(
+            entVentas.ResumenOrdenesAdmin.lstOrdenes.map((orden) => ({
+                ...orden,
+                nAmountPaid: "$" + orden.nAmountPaid.toLocaleString("en", { minimumFractionDigits: 2 }),
+                sDetalle: (
+                    <Tooltip title="Ver detalle" arrow placement="top">
+                        <IconButton onClick={handleClickDetalle}>
+                            <VisibilityIcon className="color-2" />
+                        </IconButton>
+                    </Tooltip>
+                ),
+                sPaymentStatusWI: (
+                    <span>
+                        {orden.sPaymentStatus}
+                        {orden.sPaymentStatus === EnumStatusConekta.Declined ? (
+                            <CloseIcon style={{ color: red[500], verticalAlign: "middle" }} />
+                        ) : (
+                            <DoneIcon style={{ color: green[500], verticalAlign: "middle" }} />
+                        )}
+                    </span>
+                ),
+            }))
+        );
+        // eslint-disable-next-line
+    }, [entVentas]);
+
     return (
         <Fragment>
             <Grid container spacing={3}>
-                {/* <Grid item md={4} sm={6} xs={12} className="center">
-                    <ResumeNumero
-                        label="TOTAL DE VENTA"
-                        value={
-                            "$" +
-                            entVentas.ResumenEmpresas.dTotalVendido.toLocaleString("en", {
-                                minimumFractionDigits: 2,
-                            })
-                        }
-                        color="color-1"
-                    />
-                </Grid>
-                <Grid item md={4} sm={6} xs={12} className="center">
-                    <ResumeNumero
-                        label="TOTAL DE EMPRESAS"
-                        value={entVentas.ResumenEmpresas.iTotalEmpresas}
-                        color="color-3"
-                    />
-                </Grid>
-                <Grid item md={4} sm={6} xs={12} className="center">
-                    <ResumeNumero
-                        label="FOLIOS GENERADOS"
-                        value={entVentas.ResumenEmpresas.iTotalFolios}
-                        color="color-3"
-                    />
-                </Grid> */}
                 <Grid item sm={4} xs={12} className="center">
                     <MeditocInfoNumber
                         label="TOTAL DE VENTA"
@@ -115,61 +110,17 @@ const ResumenAdmin = (props) => {
                     />
                 </Grid>
                 <Grid item xs={12} className="center">
-                    {/* <MeditocTable
-                        columns={columnas}
-                        data={entVentas.ResumenEmpresas.lstEmpresas.map((empresa) => ({
-                            ...empresa,
-                            dTotal: "$" + empresa.dTotal.toLocaleString("en", { minimumFractionDigits: 2 }),
-                            sDetalle: (
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={() => handleClickDetalle(empresa.sFolioEmpresa)}
-                                >
-                                    Detalle
-                                </Button>
-                            ),
-                        }))}
-                        rowClick={false}
-                        mainField="sFolioEmpresa"
-                        search={false}
-                    /> */}
                     <MeditocTable
                         columns={columnas}
-                        data={entVentas.ResumenOrdenesAdmin.lstOrdenes.map((orden) => ({
-                            ...orden,
-                            nAmountPaid: "$" + orden.nAmountPaid.toLocaleString("en", { minimumFractionDigits: 2 }),
-                            sDetalle: (
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={() => handleClickDetalle(orden.sOrderId)}
-                                >
-                                    Detalle
-                                </Button>
-                            ),
-                            sPaymentStatusWI: (
-                                <span>
-                                    {orden.sPaymentStatus}
-                                    {orden.sPaymentStatus === EnumStatusConekta.Declined ? (
-                                        <CloseIcon style={{ color: red[500], verticalAlign: "middle" }} />
-                                    ) : (
-                                        <DoneIcon style={{ color: green[500], verticalAlign: "middle" }} />
-                                    )}
-                                </span>
-                            ),
-                        }))}
-                        rowClick={false}
+                        data={listaOrdenesAdmin}
+                        rowSelected={ordenSeleccionada}
+                        setRowSelected={setOrdenSeleccionada}
+                        doubleClick={handleClickVerDetalle}
                         mainField="sOrderId"
                     />
                 </Grid>
             </Grid>
-            {/* <ResumenEmpresaDetalle
-                entEmpresa={empresaSeleccionada}
-                open={modalDetalleEmpresaOpen}
-                setOpen={setModalDetalleEmpresaOpen}
-            /> */}
-            <DetalleConekta
+            <DetalleOrden
                 entOrden={ordenSeleccionada}
                 open={modalDetalleOrdenOpen}
                 setOpen={setModalDetalleOrdenOpen}

@@ -18,6 +18,7 @@ import MeditocTable from "../../../utilidades/MeditocTable";
 import PropTypes from "prop-types";
 import React from "react";
 import ReplayIcon from "@material-ui/icons/Replay";
+import { cellProps } from "../../../../configurations/dataTableIconsConfig";
 import { emptyFunc } from "../../../../configurations/preventConfig";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -29,13 +30,13 @@ const Administrador = (props) => {
     const callcenterController = new CallCenterController();
 
     const columns = [
-        { title: "ID", field: "iIdConsulta", align: "center", hidden: true },
-        { title: "Inicio", field: "sFechaProgramadaInicio", align: "center" },
-        { title: "Fin", field: "sFechaProgramadaFin", align: "center" },
-        { title: "Paciente", field: "sNombrePaciente", align: "center" },
-        { title: "Folio", field: "sFolio", align: "center" },
-        { title: "Estatus", field: "sEstatusConsulta", align: "center" },
-        { title: "Creado", field: "sFechaCreacion", align: "center" },
+        { title: "ID", field: "iIdConsulta", ...cellProps, hidden: true },
+        { title: "Inicio", field: "sFechaProgramadaInicio", ...cellProps },
+        { title: "Fin", field: "sFechaProgramadaFin", ...cellProps },
+        { title: "Paciente", field: "sNombrePaciente", ...cellProps },
+        { title: "Folio", field: "sFolio", ...cellProps },
+        { title: "Estatus", field: "sEstatusConsulta", ...cellProps },
+        { title: "Creado", field: "sFechaCreacion", ...cellProps },
     ];
 
     const consultaEntidadVacia = {

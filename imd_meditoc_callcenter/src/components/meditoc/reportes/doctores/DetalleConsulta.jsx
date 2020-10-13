@@ -11,7 +11,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 
 const DetalleConsulta = (props) => {
-    const { iIdConsulta, open, setOpen, funcLoader, funcAlert } = props;
+    const { entConsultaSeleccionada, open, setOpen, funcLoader, funcAlert } = props;
 
     const callcenterController = new CallCenterController();
 
@@ -21,7 +21,7 @@ const DetalleConsulta = (props) => {
     const funcGetDetalle = async () => {
         funcLoader(true, "Consultando detalles...");
 
-        const response = await callcenterController.funcGetConsulta(iIdConsulta);
+        const response = await callcenterController.funcGetConsulta(entConsultaSeleccionada.iIdConsulta);
 
         if (response.Code === 0) {
             setEntConsulta(response.Result[0]);
@@ -35,7 +35,7 @@ const DetalleConsulta = (props) => {
     const funcGetHistorial = async () => {
         funcLoader(true, "Consultando historial clínico...");
 
-        const response = await callcenterController.funcGetHistorial(null, iIdConsulta);
+        const response = await callcenterController.funcGetHistorial(null, entConsultaSeleccionada.iIdConsulta);
 
         if (response.Code === 0) {
             setLstHistorialClinico(response.Result);
@@ -52,11 +52,11 @@ const DetalleConsulta = (props) => {
     };
 
     useEffect(() => {
-        if (iIdConsulta !== 0) {
+        if (entConsultaSeleccionada.iIdConsulta !== 0 && open === true) {
             funcGetData();
         }
         // eslint-disable-next-line
-    }, [iIdConsulta]);
+    }, [entConsultaSeleccionada, open]);
 
     return (
         <MeditocModal title="Detalle de consulta" size="normal" open={open} setOpen={setOpen} level={2}>

@@ -10,20 +10,28 @@ import {
     RadioGroup,
     TextField,
 } from "@material-ui/core";
-import { EnumGrupoProducto, EnumTipoProducto } from "../../../../configurations/enumConfig";
 import { blurPrevent, funcPrevent } from "../../../../configurations/preventConfig";
 
+import { EnumTipoProducto } from "../../../../configurations/enumConfig";
 import MeditocModal from "../../../utilidades/MeditocModal";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import ProductoController from "../../../../controllers/ProductoController";
 import PropTypes from "prop-types";
 import React from "react";
-import { listIconsMedicalProducts } from "../../../../configurations/iconProductConfig";
 import { useEffect } from "react";
 import { useState } from "react";
 
 const FormProducto = (props) => {
-    const { entProducto, open, setOpen, funcConsultarProductos, usuarioSesion, funcLoader, funcAlert } = props;
+    const {
+        entProducto,
+        open,
+        setOpen,
+        funcConsultarProductos,
+        usuarioSesion,
+        entCatalogos,
+        funcLoader,
+        funcAlert,
+    } = props;
 
     const [formProducto, setFormProducto] = useState({
         rdTipoProducto: EnumTipoProducto.Membresia.toString(),
@@ -300,9 +308,11 @@ const FormProducto = (props) => {
                             required
                             select
                         >
-                            <MenuItem value={EnumGrupoProducto.MeditocProducts}>Productos Meditoc 360</MenuItem>
-                            <MenuItem value={EnumGrupoProducto.NutritionalProducts}>Productos Nutricionales</MenuItem>
-                            <MenuItem value={EnumGrupoProducto.PsychologyProducts}>Productos Psicología</MenuItem>
+                            {entCatalogos.catGrupoProducto.map((grupo) => (
+                                <MenuItem key={grupo.fiId} value={grupo.fiId}>
+                                    {grupo.fsDescripcion}
+                                </MenuItem>
+                            ))}
                         </TextField>
                     </Grid>
                     <Grid item sm={6} xs={12}>
@@ -314,16 +324,14 @@ const FormProducto = (props) => {
                                 value={formProducto.rdTipoProducto}
                                 onChange={handleChangeFormProducto}
                             >
-                                <FormControlLabel
-                                    value={EnumTipoProducto.Membresia.toString()}
-                                    control={<Radio />}
-                                    label="Membresía"
-                                />
-                                <FormControlLabel
-                                    value={EnumTipoProducto.Servicio.toString()}
-                                    control={<Radio />}
-                                    label="Servicio"
-                                />
+                                {entCatalogos.catTipoProducto.map((tipo) => (
+                                    <FormControlLabel
+                                        key={tipo.fiId}
+                                        value={tipo.fiId.toString()}
+                                        control={<Radio />}
+                                        label={tipo.fsDescripcion}
+                                    />
+                                ))}
                             </RadioGroup>
                         </FormControl>
                     </Grid>
@@ -390,12 +398,15 @@ const FormProducto = (props) => {
                             error={!formProductoOK.txtIcono}
                             helperText={!formProductoOK.txtIcono ? "Seleccione un ícono para el producto" : ""}
                         >
-                            {listIconsMedicalProducts.map((icon) => (
-                                <MenuItem key={icon.key} value={icon.key}>
+                            {entCatalogos.catIcon.map((icon) => (
+                                <MenuItem key={icon.fiId} value={icon.fsDescripcion}>
                                     <i
                                         className="icon size-20 color-2"
-                                        dangerouslySetInnerHTML={{ __html: icon.htmlIcon }}
+                                        dangerouslySetInnerHTML={{
+                                            __html: `&#x${icon.fsDescripcion};&nbsp;&nbsp;&nbsp;`,
+                                        }}
                                     />
+                                    {icon.fsDescripcion}
                                 </MenuItem>
                             ))}
                         </TextField>

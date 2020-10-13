@@ -26,6 +26,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Promociones
         public string sFechaCreacion { get; set; }
         public string sMontoDescuento { get; set; }
         public string sPorcentajeDescuento { get; set; }
-        public bool bVencido { get; set; }
+        public bool fbVigente { get; set; }
     }
 }

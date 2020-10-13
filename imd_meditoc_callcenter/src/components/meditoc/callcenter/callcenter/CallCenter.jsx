@@ -11,11 +11,13 @@ import FormCallCenter from "./FormCallCenter";
 import HelperStatus from "./HelperStatus";
 import MeditocBody from "../../../utilidades/MeditocBody";
 import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
+import MeditocHelper from "../../../utilidades/MeditocHelper";
 import MeditocSwitch from "../../../utilidades/MeditocSwitch";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import theme from "../../../../configurations/themeConfig";
 import { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { useState } from "react";
 
 const useStyles = makeStyles(() => ({
@@ -30,6 +32,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const CallCenter = (props) => {
+    const history = useHistory();
     const { usuarioSesion, permisos, funcLoader, funcAlert, funcCerrarTodo, setFuncCerrarTodo } = props;
 
     const classes = useStyles();
@@ -41,6 +44,8 @@ const CallCenter = (props) => {
     const [consultaIniciada, setConsultaIniciada] = useState(false);
     const [entCallCenter, setEntCallCenter] = useState(null);
     const [folioEncontrado, setFolioEncontrado] = useState(null);
+
+    const [inicioAutomatico, setInicioAutomatico] = useState(true);
 
     const [usuarioColaborador, setUsuarioColaborador] = useState(null);
     const [salaIceLink, setSalaIceLink] = useState(null);
@@ -65,6 +70,7 @@ const CallCenter = (props) => {
     const [interTemporizador, setInterTemporizador] = useState(0);
 
     const [popoverOcupadoInicio, setPopoverOcupadoInicio] = useState(false);
+
     const handleClosePopoverOcupado = () => {
         setPopoverOcupadoInicio(false);
     };
@@ -107,18 +113,22 @@ const CallCenter = (props) => {
 
             if (response.Code === 0) {
                 if (response.Result.length === 1) {
+                    setInicioAutomatico(true);
                     setFolioEncontrado(response.Result[0]);
                 } else {
+                    setInicioAutomatico(false);
                     setFolioEncontrado(null);
                     funcAlert("No se encontró el folio o ha expirado");
                 }
             } else {
+                setInicioAutomatico(false);
                 setFolioEncontrado(null);
                 funcAlert(response.Message);
             }
 
             funcLoader();
         } else {
+            setInicioAutomatico(false);
             setFolioEncontrado(null);
         }
         setModalBuscarFolioOpen(true);
@@ -163,7 +173,22 @@ const CallCenter = (props) => {
 
         if (response.Code === 0) {
             if (response.Result.length > 0) {
-                setUsuarioColaborador(response.Result[0]);
+                const entUsuarioColaboradorObtenido = response.Result[0];
+                if (entUsuarioColaboradorObtenido.bAcceso === false) {
+                    funcAlert(
+                        "Aún no cuenta con acceso a las consultas de Meditoc Call Cennter. Contacte con su administrador."
+                    );
+                    funcLoader();
+                    return;
+                }
+                if (entUsuarioColaboradorObtenido.iNumSala === null || entUsuarioColaboradorObtenido.iNumSala === 0) {
+                    funcAlert(
+                        "No hay un número de sala asignado a esta cuenta. Por favor, contacte con su administrador para asignarle un número de sala."
+                    );
+                    funcLoader();
+                    return;
+                }
+                setUsuarioColaborador(entUsuarioColaboradorObtenido);
                 return;
             } else {
                 funcAlert("No se ha ingresado con una cuenta de colaborador");
@@ -227,24 +252,6 @@ const CallCenter = (props) => {
         funcLoader();
     };
 
-    useEffect(() => {
-        localStorage.removeItem("name");
-        localStorage.removeItem("SalaID");
-        localStorage.removeItem("screen");
-        localStorage.removeItem("sessionId");
-        localStorage.removeItem("DisplayName");
-        funcGetColaboradorUser();
-
-        return () => {
-            if (typeof funcCerrarTodo === "function") {
-                console.log("saliendo---");
-                funcCerrarTodo();
-            }
-        };
-
-        // eslint-disable-next-line
-    }, []);
-
     const funcPrepararSalaCallCenterInicio = async () => {
         if (usuarioColaborador !== null) {
             localStorage.setItem("name", usuarioColaborador.sNombreDirectorio);
@@ -290,19 +297,27 @@ const CallCenter = (props) => {
         }
     };
 
-    const funcLimpiarChat = async (finalizandoSesion = false) => {
+    const funcReiniciarChat = async (finalizandoSesion = false) => {
         const iframeickelink = document.getElementById("iframeickelink");
+
         if (iframeickelink !== null) {
-            if (typeof iframeickelink.contentWindow.CallBack === "function") {
-                iframeickelink.contentWindow.CallBack();
-            }
-            if (typeof iframeickelink.contentWindow.CallBacks.FinalizarConsulta === "function") {
-                iframeickelink.contentWindow.CallBacks.FinalizarConsulta();
+            if (iframeickelink.contentWindow) {
+                if (typeof iframeickelink.contentWindow.CallBack === "function") {
+                    iframeickelink.contentWindow.CallBack();
+                    console.log("CallBack");
+                }
+
+                if (iframeickelink.contentWindow.CallBacks) {
+                    if (typeof iframeickelink.contentWindow.CallBacks.FinalizarConsulta === "function") {
+                        iframeickelink.contentWindow.CallBacks.FinalizarConsulta();
+                        console.log("FinalizarConsulta");
+                    }
+                }
             }
         }
 
         if (finalizandoSesion === false) {
-            await funcOnlineMod(true, true);
+            await funcOnlineMod(false, true);
         }
 
         localStorage.removeItem("sFolio");
@@ -328,7 +343,7 @@ const CallCenter = (props) => {
                 setFolioEncontrado(null);
             }
 
-            funcLimpiarChat(true);
+            funcReiniciarChat(true);
             funcAlert(response.Message, "success");
         } else {
             funcAlert(response.Message);
@@ -399,21 +414,47 @@ const CallCenter = (props) => {
             await handleClickFinalizarConsulta(true);
         }
         if (localStorage.getItem("sFolio") !== null) {
-            funcLimpiarChat();
+            funcReiniciarChat();
         }
     };
 
+    //Actualizar función para cerrar la sala o finalizar la sala al cerrar la sesión o cambiar a otro módulo/submódulo
     useEffect(() => {
-        setFuncCerrarTodo(() => funcCerrarTodoCallCenter);
+        funcCerrarTodo.e();
+        const f = {};
+        f.e = history.listen((ltn, action) => {
+            //console.log(ltn, action);
+            if (action !== "REPLACE") {
+                funcCerrarTodoCallCenter();
+            }
+        });
+        setFuncCerrarTodo(f);
+
         // eslint-disable-next-line
-    }, [colaboradorDisponible, entCallCenter, consultaIniciada, usuarioSesion, usuarioColaborador]);
-    //}, [colaboradorDisponible]);
+    }, [entCallCenter, consultaIniciada, usuarioSesion, usuarioColaborador]);
 
     useEffect(() => {
         funcPrepararSalaCallCenterInicio();
 
         // eslint-disable-next-line
     }, [usuarioColaborador]);
+
+    useEffect(() => {
+        localStorage.removeItem("name");
+        localStorage.removeItem("SalaID");
+        localStorage.removeItem("screen");
+        localStorage.removeItem("sessionId");
+        localStorage.removeItem("DisplayName");
+        funcGetColaboradorUser();
+        // eslint-disable-next-line
+    }, []);
+
+    useEffect(() => {
+        return () => {
+            funcReiniciarChat(true);
+        };
+        // eslint-disable-next-line
+    }, []);
 
     return (
         <Fragment>
@@ -450,7 +491,7 @@ const CallCenter = (props) => {
                             <Button
                                 variant="contained"
                                 className={classes.button}
-                                onClick={() => funcLimpiarChat()}
+                                onClick={() => funcReiniciarChat()}
                                 disabled={usuarioColaborador === null || consultaIniciada === true}
                             >
                                 {permisos.Botones["4"].Nombre}
@@ -518,6 +559,7 @@ const CallCenter = (props) => {
                 funcReiniciarTemporizador={funcReiniciarTemporizador}
                 folioEncontrado={folioEncontrado}
                 setFolioEncontrado={setFolioEncontrado}
+                inicioAutomatico={inicioAutomatico}
             />
             <DirectorioMedico
                 open={modalDirectorioOpen}
@@ -525,6 +567,47 @@ const CallCenter = (props) => {
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
             />
+            <MeditocHelper title="Información de botones:">
+                <div>
+                    <span className="bold">Iniciar consulta:</span>
+                </div>
+                <div>
+                    <ul>
+                        <li>
+                            Inicia la consulta del paciente conectado en el chat, llamada o videollamada. Podrá acceder
+                            a la consulta y el historial clínico del paciente.
+                        </li>
+                        <li>
+                            Las consultas NO inician automáticamente al conectarse el paciente. Confirme con su paciente
+                            antes de iniciar la consulta.
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <span className="bold">Finalizar consulta:</span>
+                </div>
+                <div>
+                    <ul>
+                        <li>
+                            Finaliza la consulta del paciente. El diagnóstico y tratamiento será guardado en el
+                            historial clínico del paciente.
+                        </li>
+                        <li>Para orientaciones únicas, el folio del paciente quedará inhabilitado.</li>
+                    </ul>
+                </div>
+                <div>
+                    <span className="bold">Reiniciar Chat:</span>
+                </div>
+                <div>
+                    <ul>
+                        <li>
+                            Reinicie el chat cuando no le sea posible atender al paciente y necesite expulsarlo de la
+                            sala.
+                        </li>
+                        <li>IMPORTANTE: No es posible reiniciar el chat cuando ha iniciado la consulta.</li>
+                    </ul>
+                </div>
+            </MeditocHelper>
         </Fragment>
     );
 };

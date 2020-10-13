@@ -5,6 +5,8 @@ import { urlDefault, urlSystem } from "../../configurations/urlConfig";
 import CGUController from "../../controllers/CGUController";
 import { EnumPerfilesPrincipales } from "../../configurations/enumConfig";
 import MeditocInputWhite from "../utilidades/MeditocInputWhite";
+import PoliticasController from "../../controllers/PoliticasController";
+import PropTypes from "prop-types";
 import React from "react";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
@@ -22,23 +24,36 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
+/*************************************************************
+ * Descripcion: Contenido del Login principal de Meditoc
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ * Invocado desde: App
+ *************************************************************/
 const Login = (props) => {
-    const { setUsuarioSesion, setUsuarioActivo, setUsuarioPermisos, funcLoader, funcAlert } = props;
+    const { setUsuarioSesion, setUsuarioActivo, setUsuarioPermisos, setEntCatalogos, funcLoader, funcAlert } = props;
 
+    //-----------------------Hooks
     const classes = useStyles();
     const history = useHistory();
 
+    //-----------------------Controllers
     const cguController = new CGUController();
+    const politicasController = new PoliticasController();
 
-    const [imgLogoFade, setImgLogoFade] = useState(false);
-    const [verPassword, setVerPassword] = useState(false);
+    //-----------------------States
+    const [mostrarPortadaLogin, setMostrarPortadaLogin] = useState(false);
+    const [mostrarPassword, setMostrarPassword] = useState(false);
+    const [mostrarFormLogin, setMostrarFormLogin] = useState(true);
 
     const [formLogin, setFormLogin] = useState({
         txtUsuarioMeditoc: "",
         txtPasswordMeditoc: "",
-        txtRecuperacion: "",
+        txtCorreoRecuperacion: "",
     });
 
+    //-----------------------Handlers
+    //Capturar inputs del login
     const handleChangeFormLogin = (e) => {
         setFormLogin({
             ...formLogin,
@@ -46,6 +61,61 @@ const Login = (props) => {
         });
     };
 
+    //Enviar formulario
+    const handleSubmitFormLogin = (e) => {
+        e.preventDefault();
+
+        if (formLogin.txtUsuarioMeditoc === "" || formLogin.txtPasswordMeditoc === "") {
+            funcAlert("Por favor, ingrese todos los datos", "warning");
+            return;
+        }
+
+        funcApiLogin(formLogin.txtUsuarioMeditoc, formLogin.txtPasswordMeditoc);
+    };
+
+    //Alternar vista Iniciar sesión/recuperar credenciales
+    const handleClickLoginMode = () => {
+        setMostrarFormLogin(!mostrarFormLogin);
+    };
+
+    //Consumir servicio para enviar las credenciales por correo
+    const handleClickRecuperarCredenciales = async (e) => {
+        e.preventDefault();
+
+        if (formLogin.txtCorreoRecuperacion === "") {
+            funcAlert("Por favor, ingrese su correo de recuperación", "warning");
+            return;
+        }
+
+        if (!rxCorreo.test(formLogin.txtCorreoRecuperacion)) {
+            funcAlert("Por favor, ingrese un correo válido", "warning");
+            return;
+        }
+
+        const entUsuarioSubmit = {
+            sCorreo: formLogin.txtCorreoRecuperacion,
+        };
+
+        funcLoader(true, "Enviando correo...");
+
+        const response = await cguController.funcRecuperarPassword(entUsuarioSubmit);
+
+        if (response.Code === 0) {
+            setFormLogin({
+                txtUsuarioMeditoc: "",
+                txtPasswordMeditoc: "",
+                txtCorreoRecuperacion: "",
+            });
+            setMostrarFormLogin(true);
+            funcAlert(response.Message, "success");
+        } else {
+            funcAlert(response.Message);
+        }
+        funcLoader();
+    };
+
+    //-----------------------Functions
+    //Consumir API para iniciar sesión
     const funcApiLogin = async (MeditocTkn, MeditocKey) => {
         funcLoader(true, "Validando datos de sesión...");
 
@@ -91,6 +161,9 @@ const Login = (props) => {
                         break;
                 }
             }
+
+            await fnObtenerCatalogos();
+
             setUsuarioSesion(responseLogin.Result);
             setUsuarioActivo(true);
         } else {
@@ -100,18 +173,20 @@ const Login = (props) => {
         }
     };
 
-    const handleSubmitFormLogin = (e) => {
-        e.preventDefault();
+    //Obtener los catálogos del sistema
+    const fnObtenerCatalogos = async () => {
+        funcLoader(true, "Consultando información del sistema...");
 
-        if (formLogin.txtUsuarioMeditoc === "" || formLogin.txtPasswordMeditoc === "") {
-            funcAlert("Por favor, ingrese todos los datos", "warning");
-            return;
+        const response = await politicasController.funcGetCatalogos();
+        if (response.Code === 0) {
+            setEntCatalogos(response.Result);
         }
 
-        funcApiLogin(formLogin.txtUsuarioMeditoc, formLogin.txtPasswordMeditoc);
+        funcLoader();
     };
 
-    const funcValidarSesion = () => {
+    //Validar los datos de sesión guardados en el sesionStorage
+    const fnValidarSesionGuardada = () => {
         const MeditocTkn = sessionStorage.getItem("MeditocTkn");
         const MeditocKey = sessionStorage.getItem("MeditocKey");
 
@@ -120,66 +195,27 @@ const Login = (props) => {
         }
     };
 
+    //-----------------------Effects
+    //Validar sesión guardada en el sesionStorage al cargar el Login
     useEffect(() => {
-        setImgLogoFade(true);
-        funcValidarSesion();
+        setMostrarPortadaLogin(true);
+        fnValidarSesionGuardada();
         // eslint-disable-next-line
     }, []);
-
-    const [loginMode, setLoginMode] = useState(true);
-
-    const handleClickLoginMode = () => {
-        setLoginMode(!loginMode);
-    };
-
-    const handleClickRecuperarCredenciales = async (e) => {
-        e.preventDefault();
-
-        if (formLogin.txtRecuperacion === "") {
-            funcAlert("Por favor, ingrese su correo de recuperación", "warning");
-            return;
-        }
-
-        if (!rxCorreo.test(formLogin.txtRecuperacion)) {
-            funcAlert("Por favor, ingrese un correo válido", "warning");
-            return;
-        }
-
-        const entUsuarioSubmit = {
-            sCorreo: formLogin.txtRecuperacion,
-        };
-
-        funcLoader(true, "Enviando correo...");
-
-        const response = await cguController.funcRecuperarPassword(entUsuarioSubmit);
-
-        if (response.Code === 0) {
-            setFormLogin({
-                txtUsuarioMeditoc: "",
-                txtPasswordMeditoc: "",
-                txtRecuperacion: "",
-            });
-            setLoginMode(true);
-            funcAlert(response.Message, "success");
-        } else {
-            funcAlert(response.Message);
-        }
-        funcLoader();
-    };
 
     return (
         <div className="login-container">
             <Grid container spacing={0} className="login-page">
                 <Grid item md={8} xs={12} className="align-self-center">
                     <div className="login-logo-container">
-                        <Fade in={imgLogoFade} timeout={1500}>
+                        <Fade in={mostrarPortadaLogin} timeout={1500}>
                             <img src={imgLogoLogin} alt="LOGOLOGIN" className="login-logo-img" />
                         </Fade>
                     </div>
                 </Grid>
                 <Grid item md={4} xs={12} className="login-form-back">
                     <div>
-                        <Collapse in={loginMode}>
+                        <Collapse in={mostrarFormLogin}>
                             <form className="login-form-container" onSubmit={handleSubmitFormLogin}>
                                 <Grid container spacing={4}>
                                     <Grid item xs={12}>
@@ -197,6 +233,7 @@ const Login = (props) => {
                                             name="txtUsuarioMeditoc"
                                             variant="outlined"
                                             fullWidth
+                                            autoFocus
                                             autoComplete="off"
                                             label="Usuario:"
                                             value={formLogin.txtUsuarioMeditoc}
@@ -210,19 +247,21 @@ const Login = (props) => {
                                             fullWidth
                                             autoComplete="new-password"
                                             label="Contraseña:"
-                                            type={verPassword ? "text" : "password"}
+                                            type={mostrarPassword ? "text" : "password"}
                                             InputProps={{
                                                 endAdornment: (
                                                     <Tooltip
-                                                        title={verPassword ? "Ocultar contraseña" : "Ver contraseña"}
+                                                        title={
+                                                            mostrarPassword ? "Ocultar contraseña" : "Ver contraseña"
+                                                        }
                                                         arrow
                                                         placement="top"
                                                     >
                                                         <IconButton
-                                                            onMouseDown={() => setVerPassword(true)}
-                                                            onMouseUp={() => setVerPassword(false)}
+                                                            onMouseDown={() => setMostrarPassword(true)}
+                                                            onMouseUp={() => setMostrarPassword(false)}
                                                         >
-                                                            {verPassword ? (
+                                                            {mostrarPassword ? (
                                                                 <VisibilityIcon className="color-0" />
                                                             ) : (
                                                                 <VisibilityOffIcon className="color-0" />
@@ -257,7 +296,7 @@ const Login = (props) => {
                                 </Grid>
                             </form>
                         </Collapse>
-                        <Collapse in={!loginMode}>
+                        <Collapse in={!mostrarFormLogin}>
                             <form
                                 className="login-form-container"
                                 onSubmit={handleClickRecuperarCredenciales}
@@ -280,7 +319,7 @@ const Login = (props) => {
                                             fullWidth
                                             autoComplete="off"
                                             label="Correo de recuperación:"
-                                            value={formLogin.txtRecuperacion}
+                                            value={formLogin.txtCorreoRecuperacion}
                                             onChange={handleChangeFormLogin}
                                         />
                                     </Grid>
@@ -308,6 +347,15 @@ const Login = (props) => {
             </Grid>
         </div>
     );
+};
+
+Login.propTypes = {
+    funcAlert: PropTypes.func,
+    funcLoader: PropTypes.func,
+    setEntCatalogos: PropTypes.func,
+    setUsuarioActivo: PropTypes.func,
+    setUsuarioPermisos: PropTypes.func,
+    setUsuarioSesion: PropTypes.func,
 };
 
 export default Login;

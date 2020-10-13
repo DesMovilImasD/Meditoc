@@ -171,14 +171,16 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     return response;
                 }
 
-
-                if (string.IsNullOrWhiteSpace(entUsuario.sUsuario))
+                if (entUsuario.bAcceso == true)
                 {
-                    response.Code = 67823458345132;
-                    response.Message = "El nombre de usuario de acceso no puede ser vacío.";
-                    response.Result = false;
+                    if (string.IsNullOrWhiteSpace(entUsuario.sUsuario))
+                    {
+                        response.Code = 67823458345132;
+                        response.Message = "El nombre de usuario de acceso no puede ser vacío.";
+                        response.Result = false;
 
-                    return response;
+                        return response;
+                    }
                 }
 
 

@@ -16,7 +16,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Colaborador
         public int iIdUsuarioCGU { get; set; }
         public int iIdTipoCuenta { get; set; }
         public string sTipoCuenta { get; set; }
-        public int iNumSala { get; set; }
+        public int? iNumSala { get; set; }
         public string sNombreDirectorio { get; set; }
         public string sNombreConsultorio { get; set; }
         public string sCedulaProfecional { get; set; }

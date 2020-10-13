@@ -4,15 +4,16 @@ import React, { Fragment } from "react";
 import DetalleHistorialClinico from "./DetalleHistorialClinico";
 import MeditocTable from "../../../utilidades/MeditocTable";
 import PropTypes from "prop-types";
+import { cellProps } from "../../../../configurations/dataTableIconsConfig";
 import { useState } from "react";
 
 const HistorialClinico = (props) => {
     const { lstHistorialClinico } = props;
     const columns = [
-        { title: "ID", field: "iIdHistorialClinico", align: "center", hidden: true },
-        { title: "Fecha", field: "sFechaCreacion", align: "center" },
-        { title: "Duración", field: "sDuracionConsulta", align: "center" },
-        { title: "Detalle", field: "sDetalle", align: "center" },
+        { title: "ID", field: "iIdHistorialClinico", ...cellProps, hidden: true },
+        { title: "Fecha", field: "sFechaCreacion", ...cellProps },
+        { title: "Duración", field: "sDuracionConsulta", ...cellProps },
+        { title: "Detalle", field: "sDetalle", ...cellProps },
     ];
 
     const [historialClinicoDetalle, setHistorialClinicoDetalle] = useState({ iIdHistorialClinico: 0 });

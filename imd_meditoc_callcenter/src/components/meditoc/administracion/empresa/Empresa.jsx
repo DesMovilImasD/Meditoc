@@ -13,20 +13,21 @@ import ProductoController from "../../../../controllers/ProductoController";
 import PropTypes from "prop-types";
 import ReplayIcon from "@material-ui/icons/Replay";
 import WorkRoundedIcon from "@material-ui/icons/WorkRounded";
+import { cellProps } from "../../../../configurations/dataTableIconsConfig";
 import { emptyFunc } from "../../../../configurations/preventConfig";
 
 const Empresa = (props) => {
-    const { usuarioSesion, permisos, funcLoader, funcAlert } = props;
+    const { usuarioSesion, permisos, entCatalogos, funcLoader, funcAlert } = props;
 
     const empresaController = new EmpresaController();
     const productoController = new ProductoController();
 
     let columns = [
-        { title: "ID", field: "iIdEmpresa", align: "center", hidden: true },
-        { title: "Nombre", field: "sNombre", align: "center" },
-        { title: "Folio", field: "sFolioEmpresa", align: "center" },
-        { title: "Correo", field: "sCorreo", align: "center" },
-        { title: "Fecha", field: "sFechaCreacion", align: "center" },
+        { title: "ID", field: "iIdEmpresa", ...cellProps, hidden: true },
+        { title: "Nombre", field: "sNombre", ...cellProps },
+        { title: "Folio", field: "sFolioEmpresa", ...cellProps },
+        { title: "Correo", field: "sCorreo", ...cellProps },
+        { title: "Fecha", field: "sFechaCreacion", ...cellProps },
     ];
 
     const empresaEntidadVacia = {
@@ -162,6 +163,7 @@ const Empresa = (props) => {
                 setOpen={setModalFoliosEmpresaOpen}
                 listaProductos={listaProductos}
                 usuarioSesion={usuarioSesion}
+                entCatalogos={entCatalogos}
                 permisos={permisos}
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}

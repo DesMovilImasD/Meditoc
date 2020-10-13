@@ -270,7 +270,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
         /// <param name="pdtFechaProgramadaInicio"></param>
         /// <param name="pdtFechaProgramadaFin"></param>
         /// <returns></returns>
-        public IMDResponse<List<EntDetalleConsulta>> BGetDisponibilidadConsulta(int piIdColaborador, int piIdConsulta, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null)
+        public IMDResponse<List<EntDetalleConsulta>> BGetDisponibilidadConsulta(int? piIdColaborador = null, int? piIdConsulta = null, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null)
         {
             IMDResponse<List<EntDetalleConsulta>> response = new IMDResponse<List<EntDetalleConsulta>>();
 

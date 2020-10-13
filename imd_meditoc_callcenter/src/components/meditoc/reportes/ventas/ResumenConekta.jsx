@@ -1,26 +1,28 @@
-import { Button, Grid } from "@material-ui/core";
-import React, { Fragment, useState } from "react";
+import { Grid, IconButton, Tooltip } from "@material-ui/core";
+import React, { Fragment, useEffect, useState } from "react";
 import { green, red } from "@material-ui/core/colors";
 
 import CloseIcon from "@material-ui/icons/Close";
-import DetalleConekta from "./DetalleConekta";
+import DetalleOrden from "./DetalleOrden";
 import DoneIcon from "@material-ui/icons/Done";
 import { EnumStatusConekta } from "../../../../configurations/enumConfig";
 import MeditocInfoNumber from "../../../utilidades/MeditocInfoNumber";
 import MeditocTable from "../../../utilidades/MeditocTable";
 import PropTypes from "prop-types";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import { cellProps } from "../../../../configurations/dataTableIconsConfig";
 
 const ResumenConekta = (props) => {
     const { entVentas, funcLoader, funcAlert, permisos } = props;
 
     const columnas = [
-        { title: "Orden", field: "sOrderId", align: "center" },
-        { title: "Origen", field: "sOrigen", align: "center" },
-        { title: "Total", field: "nAmountPaid", align: "center" },
-        { title: "Cupón", field: "sCodigo", align: "center" },
-        { title: "Estatus", field: "sPaymentStatusWI", align: "center" },
-        { title: "Fecha", field: "sRegisterDate", align: "center" },
-        { title: "Ver", field: "sDetalle", align: "center" },
+        { ...cellProps, title: "Orden", field: "sOrderId" },
+        { ...cellProps, title: "Origen", field: "sOrigen" },
+        { ...cellProps, title: "Total", field: "nAmountPaid" },
+        { ...cellProps, title: "Cupón", field: "sCodigo" },
+        { ...cellProps, title: "Estatus", field: "sPaymentStatusWI" },
+        { ...cellProps, title: "Fecha", field: "sRegisterDate" },
+        { ...cellProps, title: "Detalle", field: "sDetalle", sorting: false },
     ];
 
     const [ordenSeleccionada, setOrdenSeleccionada] = useState({
@@ -34,12 +36,53 @@ const ResumenConekta = (props) => {
         lstProductos: [],
     });
 
+    const [listaOrgenesConekta, setListaOrgenesConekta] = useState([]);
+
     const [modalDetalleOrdenOpen, setModalDetalleOrdenOpen] = useState(false);
+
+    const handleClickVerDetalle = () => {
+        if (ordenSeleccionada.sOrderId === "") {
+            funcAlert("Seleccione una orden para continuar");
+            return;
+        }
+
+        setModalDetalleOrdenOpen(true);
+    };
 
     const handleClickDetalle = (sOrderId) => {
         setOrdenSeleccionada(entVentas.ResumenOrdenes.lstOrdenes.find((x) => x.sOrderId === sOrderId));
         setModalDetalleOrdenOpen(true);
     };
+
+    useEffect(() => {
+        setListaOrgenesConekta(
+            entVentas.ResumenOrdenes.lstOrdenes.map((orden) => ({
+                ...orden,
+                nAmount: "$" + orden.nAmount.toLocaleString("en", { minimumFractionDigits: 2 }),
+                nAmountDiscount: "$" + orden.nAmountDiscount.toLocaleString("en", { minimumFractionDigits: 2 }),
+                nAmountTax: "$" + orden.nAmountTax.toLocaleString("en", { minimumFractionDigits: 2 }),
+                nAmountPaid: "$" + orden.nAmountPaid.toLocaleString("en", { minimumFractionDigits: 2 }),
+                sDetalle: (
+                    <Tooltip title="Ver detalle" arrow placement="top">
+                        <IconButton onClick={handleClickDetalle}>
+                            <VisibilityIcon className="color-2" />
+                        </IconButton>
+                    </Tooltip>
+                ),
+                sPaymentStatusWI: (
+                    <span>
+                        {orden.sPaymentStatus}
+                        {orden.sPaymentStatus === EnumStatusConekta.Declined ? (
+                            <CloseIcon style={{ color: red[500], verticalAlign: "middle" }} />
+                        ) : (
+                            <DoneIcon style={{ color: green[500], verticalAlign: "middle" }} />
+                        )}
+                    </span>
+                ),
+            }))
+        );
+        // eslint-disable-next-line
+    }, [entVentas]);
 
     return (
         <Fragment>
@@ -80,39 +123,15 @@ const ResumenConekta = (props) => {
                 <Grid item xs={12}>
                     <MeditocTable
                         columns={columnas}
-                        data={entVentas.ResumenOrdenes.lstOrdenes.map((orden) => ({
-                            ...orden,
-                            nAmount: "$" + orden.nAmount.toLocaleString("en", { minimumFractionDigits: 2 }),
-                            nAmountDiscount:
-                                "$" + orden.nAmountDiscount.toLocaleString("en", { minimumFractionDigits: 2 }),
-                            nAmountTax: "$" + orden.nAmountTax.toLocaleString("en", { minimumFractionDigits: 2 }),
-                            nAmountPaid: "$" + orden.nAmountPaid.toLocaleString("en", { minimumFractionDigits: 2 }),
-                            sDetalle: (
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={() => handleClickDetalle(orden.sOrderId)}
-                                >
-                                    Detalle
-                                </Button>
-                            ),
-                            sPaymentStatusWI: (
-                                <span>
-                                    {orden.sPaymentStatus}
-                                    {orden.sPaymentStatus === EnumStatusConekta.Declined ? (
-                                        <CloseIcon style={{ color: red[500], verticalAlign: "middle" }} />
-                                    ) : (
-                                        <DoneIcon style={{ color: green[500], verticalAlign: "middle" }} />
-                                    )}
-                                </span>
-                            ),
-                        }))}
-                        rowClick={false}
+                        data={listaOrgenesConekta}
+                        rowSelected={ordenSeleccionada}
+                        setRowSelected={setOrdenSeleccionada}
+                        doubleClick={handleClickVerDetalle}
                         mainField="sOrderId"
                     />
                 </Grid>
             </Grid>
-            <DetalleConekta
+            <DetalleOrden
                 entOrden={ordenSeleccionada}
                 open={modalDetalleOrdenOpen}
                 setOpen={setModalDetalleOrdenOpen}

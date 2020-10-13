@@ -10,14 +10,15 @@ import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import MeditocSubtitulo from "../../../utilidades/MeditocSubtitulo";
 import MeditocTableSimple from "../../../utilidades/MeditocTableSimple";
 import PropTypes from "prop-types";
+import { cellProps } from "../../../../configurations/dataTableIconsConfig";
 
-const DetalleConekta = (props) => {
+const DetalleOrden = (props) => {
     const { entOrden, open, setOpen, funcLoader, funcAlert, permisos } = props;
 
     const columnas = [
-        { title: "Folio", field: "sFolio", align: "center" },
-        { title: "Confirmado", field: "bConfirmado", align: "center" },
-        { title: "Vencimiento", field: "sFechaVencimiento", align: "center" },
+        { title: "Folio", field: "sFolio", ...cellProps },
+        { title: "Confirmado", field: "bConfirmado", ...cellProps },
+        { title: "Vencimiento", field: "sFechaVencimiento", ...cellProps },
     ];
 
     const handleClickReenviarCorreo = async () => {
@@ -39,19 +40,19 @@ const DetalleConekta = (props) => {
                 <Grid item xs={12}>
                     <MeditocInfoResumen
                         label="Subtotal"
-                        value={"$" + entOrden.nAmount.toLocaleString("en", { minimumFractionDigits: 2 })}
+                        value={entOrden.nAmount.toLocaleString("en", { minimumFractionDigits: 2 })}
                     />
                     <MeditocInfoResumen
                         label="Descuento"
-                        value={"- $" + entOrden.nAmountDiscount.toLocaleString("en", { minimumFractionDigits: 2 })}
+                        value={"- " + entOrden.nAmountDiscount.toLocaleString("en", { minimumFractionDigits: 2 })}
                     />
                     <MeditocInfoResumen
                         label="IVA"
-                        value={"+ $" + entOrden.nAmountTax.toLocaleString("en", { minimumFractionDigits: 2 })}
+                        value={"+ " + entOrden.nAmountTax.toLocaleString("en", { minimumFractionDigits: 2 })}
                     />
                     <MeditocInfoResumen
                         label="Total pagado"
-                        value={"$" + entOrden.nAmountPaid.toLocaleString("en", { minimumFractionDigits: 2 })}
+                        value={entOrden.nAmountPaid.toLocaleString("en", { minimumFractionDigits: 2 })}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -132,7 +133,7 @@ const DetalleConekta = (props) => {
     );
 };
 
-DetalleConekta.propTypes = {
+DetalleOrden.propTypes = {
     entOrden: PropTypes.shape({
         charges: PropTypes.shape({
             sAuthCode: PropTypes.any,
@@ -167,4 +168,4 @@ DetalleConekta.propTypes = {
     setOpen: PropTypes.any,
 };
 
-export default DetalleConekta;
+export default DetalleOrden;

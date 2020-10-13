@@ -1,5 +1,5 @@
-import React, { Fragment, useState } from "react";
-import { Route, Switch } from "react-router-dom";
+import React, { Fragment, useEffect, useState } from "react";
+import { Route, Switch, useHistory } from "react-router-dom";
 
 import Administrador from "./callcenter/administrador/Administrador";
 import CallCenter from "./callcenter/callcenter/CallCenter";
@@ -12,6 +12,7 @@ import MeditocDrawerLeft from "./MeditocDrawerLeft";
 import MeditocFooter from "./MeditocFooter";
 import MeditocNavBar from "./MeditocNavBar";
 import MeditocPortada from "./MeditocPortada";
+import MisConsultas from "./callcenter/misconsultas/MisConsultas";
 import Perfiles from "./configuracion/perfiles/Perfiles";
 import Productos from "./administracion/productos/Productos";
 import PropTypes from "prop-types";
@@ -34,12 +35,58 @@ const ContentMain = (props) => {
         setUsuarioSesion,
         setUsuarioActivo,
         setUsuarioPermisos,
+        entCatalogos,
         funcLoader,
         funcAlert,
     } = props;
+
+    const history = useHistory();
+
     const [drawerOpen, setDrawerOpen] = useState(false);
 
-    const [funcCerrarTodo, setFuncCerrarTodo] = useState(null);
+    const f = {};
+    f.e = () => {};
+    const [funcCerrarTodo, setFuncCerrarTodo] = useState(f);
+
+    const h = {};
+    h.e = () => {};
+    const [funcHistory, setFuncHistory] = useState(h);
+
+    const [locat, setLocat] = useState(null);
+
+    const [removeCallCenterLister, setRemoveCallCenterLister] = useState(false);
+
+    useEffect(() => {
+        const h1 = {};
+        h1.e = history.listen((lcn) => {
+            setLocat(lcn);
+        });
+        setFuncHistory(h1);
+        return () => {
+            funcHistory.e();
+        };
+        // eslint-disable-next-line
+    }, []);
+
+    useEffect(() => {
+        if (locat !== null) {
+            if (locat.pathname === urlSystem.callcenter.consultas) {
+                setRemoveCallCenterLister(true);
+            } else if (locat.pathname === "/" || locat.pathname === urlSystem.login) {
+                funcCerrarTodo.e();
+                sessionStorage.removeItem("MeditocTkn");
+                sessionStorage.removeItem("MeditocKey");
+
+                setUsuarioSesion(null);
+                setUsuarioActivo(false);
+                setUsuarioPermisos(null);
+            } else if (locat.pathname !== urlSystem.login && removeCallCenterLister) {
+                funcCerrarTodo.e();
+                setRemoveCallCenterLister(false);
+            }
+        }
+        // eslint-disable-next-line
+    }, [locat]);
 
     //Desplegar/Ocultar menu lateral izquerdo
     const toggleDrawer = (open) => (event) => {
@@ -55,11 +102,7 @@ const ContentMain = (props) => {
             <div className="flx-grw-1 pos-rel">
                 <MeditocNavBar
                     toggleDrawer={toggleDrawer}
-                    setUsuarioSesion={setUsuarioSesion}
-                    setUsuarioActivo={setUsuarioActivo}
-                    setUsuarioPermisos={setUsuarioPermisos}
                     usuarioSesion={usuarioSesion}
-                    funcCerrarTodo={funcCerrarTodo}
                     funcLoader={funcLoader}
                     funcAlert={funcAlert}
                 />
@@ -71,6 +114,10 @@ const ContentMain = (props) => {
                 <div>
                     <Switch>
                         <Route exact path="/">
+                            <MeditocPortada />
+                        </Route>
+                        {/* FAKE LOGIN COMPONENT */}
+                        <Route exact path={urlSystem.login}>
                             <MeditocPortada />
                         </Route>
                         <Route exact path={urlSystem.configuracion.usuarios}>
@@ -120,6 +167,7 @@ const ContentMain = (props) => {
                                 permisos={
                                     usuarioPermisos["2"] === undefined ? {} : usuarioPermisos["2"].Submodulos["2"]
                                 }
+                                entCatalogos={entCatalogos}
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}
                             />
@@ -130,6 +178,7 @@ const ContentMain = (props) => {
                                 permisos={
                                     usuarioPermisos["2"] === undefined ? {} : usuarioPermisos["2"].Submodulos["3"]
                                 }
+                                entCatalogos={entCatalogos}
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}
                             />
@@ -140,6 +189,7 @@ const ContentMain = (props) => {
                                 permisos={
                                     usuarioPermisos["2"] === undefined ? {} : usuarioPermisos["2"].Submodulos["4"]
                                 }
+                                entCatalogos={entCatalogos}
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}
                             />
@@ -160,6 +210,7 @@ const ContentMain = (props) => {
                                 permisos={
                                     usuarioPermisos["3"] === undefined ? {} : usuarioPermisos["3"].Submodulos["1"]
                                 }
+                                entCatalogos={entCatalogos}
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}
                             />
@@ -186,9 +237,21 @@ const ContentMain = (props) => {
                                 funcAlert={funcAlert}
                             />
                         </Route>
+                        <Route exact path={urlSystem.callcenter.misconsultas}>
+                            <MisConsultas
+                                usuarioSesion={usuarioSesion}
+                                permisos={
+                                    usuarioPermisos["4"] === undefined ? {} : usuarioPermisos["4"].Submodulos["3"]
+                                }
+                                entCatalogos={entCatalogos}
+                                funcLoader={funcLoader}
+                                funcAlert={funcAlert}
+                            />
+                        </Route>
                         <Route exact path={urlSystem.reportes.doctores}>
                             <ReportesDoctores
                                 usuarioSesion={usuarioSesion}
+                                entCatalogos={entCatalogos}
                                 permisos={
                                     usuarioPermisos["5"] === undefined ? {} : usuarioPermisos["5"].Submodulos["2"]
                                 }
@@ -202,6 +265,7 @@ const ContentMain = (props) => {
                                 permisos={
                                     usuarioPermisos["5"] === undefined ? {} : usuarioPermisos["5"].Submodulos["1"]
                                 }
+                                entCatalogos={entCatalogos}
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}
                             />

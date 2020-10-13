@@ -13,7 +13,7 @@ import { blurPrevent, funcPrevent } from "../../../../configurations/preventConf
 import CGUController from "../../../../controllers/CGUController";
 import { DatePicker } from "@material-ui/pickers";
 import DateRangeIcon from "@material-ui/icons/DateRange";
-import { EnumPerfilesPrincipales } from "../../../../configurations/enumConfig";
+import { EnumListPerfilesColaboradores } from "../../../../configurations/enumConfig";
 import InfoIcon from "@material-ui/icons/Info";
 import MeditocInputPhone from "../../../utilidades/MeditocInputPhone";
 import MeditocModal from "../../../utilidades/MeditocModal";
@@ -369,12 +369,7 @@ const FormUsuario = (props) => {
                             helperText={!formUsuarioOK.txtPerfil ? "Seleccione un perfil para el usuario" : null}
                         >
                             {listaPerfiles
-                                .filter(
-                                    (x) =>
-                                        x.iIdPerfil !== EnumPerfilesPrincipales.DoctorCallCenter &&
-                                        x.iIdPerfil !== EnumPerfilesPrincipales.DoctorEspecialista &&
-                                        x.iIdPerfil !== EnumPerfilesPrincipales.AdministradorEspecialiesta
-                                )
+                                .filter((perfil) => !EnumListPerfilesColaboradores.includes(perfil.iIdPerfil))
                                 .map((perfil) => (
                                     <MenuItem key={perfil.iIdPerfil} value={perfil.iIdPerfil}>
                                         {perfil.sNombre}

@@ -1,50 +1,47 @@
-import { Grid, IconButton, InputAdornment, MenuItem, TextField, Tooltip } from "@material-ui/core";
-import React, { Fragment, useEffect } from "react";
+import { Button, Grid, IconButton, InputAdornment, MenuItem, TextField, Tooltip } from "@material-ui/core";
+import React, { Fragment, useEffect, useState } from "react";
 
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
+import ColaboradorController from "../../../../controllers/ColaboradorController";
 import { DatePicker } from "@material-ui/pickers";
 import DateRangeIcon from "@material-ui/icons/DateRange";
-import DetalleDoctor from "./DetalleDoctor";
-import EspecialidadController from "../../../../controllers/EspecialidadController";
+import DetalleConsulta from "../../reportes/doctores/DetalleConsulta";
 import MeditocBody from "../../../utilidades/MeditocBody";
 import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
 import MeditocInfoNumber from "../../../utilidades/MeditocInfoNumber";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import MeditocSubtitulo from "../../../utilidades/MeditocSubtitulo";
 import MeditocTable from "../../../utilidades/MeditocTable";
-import PropTypes from "prop-types";
 import ReplayIcon from "@material-ui/icons/Replay";
 import ReportesController from "../../../../controllers/ReportesController";
-import VisibilityIcon from "@material-ui/icons/Visibility";
 import { cellProps } from "../../../../configurations/dataTableIconsConfig";
-import { useState } from "react";
 
-const ReportesDoctores = (props) => {
-    const { permisos, entCatalogos, funcLoader, funcAlert } = props;
-
-    const reportesController = new ReportesController();
-    const especialidadController = new EspecialidadController();
-
-    const [listaEspecialidades, setListaEspecialidades] = useState([]);
+const MisConsultas = (props) => {
+    const { usuarioSesion, permisos, entCatalogos, funcLoader, funcAlert } = props;
 
     const columnas = [
-        { title: "ID", field: "iIdDoctor", ...cellProps },
-        { title: "Nombre", field: "sNombre", ...cellProps },
-        { title: "Tipo de doctor", field: "sTipoDoctor", ...cellProps },
-        { title: "Especialidad", field: "sEspecialidad", ...cellProps },
-        { title: "Consultas", field: "iTotalConsultas", ...cellProps },
-        { title: "Ver", field: "sDetalle", ...cellProps, sorting: false },
+        { title: "ID", field: "iIdConsulta", ...cellProps },
+        { title: "Consulta inicio", field: "sFechaConsultaInicio", ...cellProps },
+        { title: "Consulta fin", field: "sFechaConsultaFin", ...cellProps },
+        { title: "Nombre", field: "name", ...cellProps },
+        { title: "Estatus de consulta", field: "sEstatusConsulta", ...cellProps },
+        { title: "Detalle", field: "sDetalle", ...cellProps },
     ];
+
+    const reportesController = new ReportesController();
+    const colaboradorController = new ColaboradorController();
 
     const formFiltroVacio = {
         txtFechaDe: null,
         txtFechaA: null,
-        txtTipoDoctor: "",
-        txtEspecialidad: "",
         txtEstatusConsulta: "",
     };
 
     const [filtroForm, setFiltroForm] = useState(formFiltroVacio);
+    const [usuarioColaborador, setUsuarioColaborador] = useState(null);
+    const [reporteDoctor, setReporteDoctor] = useState(null);
+
+    const [listaConsultas, setListaConsultas] = useState([]);
 
     const handleChangeFiltro = (e) => {
         setFiltroForm({
@@ -53,36 +50,39 @@ const ReportesDoctores = (props) => {
         });
     };
 
-    const [entDoctores, setEntDoctores] = useState(null);
+    const funcGetColaboradorUser = async () => {
+        funcLoader(true, "Obteniendo usuario administrativo");
 
-    const [doctorSeleccionado, setDoctorSeleccionado] = useState({
-        iIdDoctor: 0,
-        lstConsultas: [],
-    });
+        const response = await colaboradorController.funcGetColaboradores(null, null, null, usuarioSesion.iIdUsuario);
 
-    const [modalDetalleDoctorOpen, setModalDetalleDoctorOpen] = useState(false);
-
-    const [listaDoctores, setListaDoctores] = useState([]);
-
-    const handleClickVerDetalle = () => {
-        if (doctorSeleccionado.iIdDoctor === 0) {
-            funcAlert("Seleccione una orden para continuar");
-            return;
+        if (response.Code === 0) {
+            if (response.Result.length > 0) {
+                setUsuarioColaborador(response.Result[0]);
+                return;
+            } else {
+                funcAlert("No se ha ingresado con una cuenta de colaborador");
+            }
+        } else {
+            funcAlert(response.Message);
         }
-
-        setModalDetalleDoctorOpen(true);
+        funcLoader();
     };
 
-    const funcGetDoctores = async (clean = false) => {
+    useEffect(() => {
+        funcGetColaboradorUser();
+        // eslint-disable-next-line
+    }, []);
+
+    const funcGetReporte = async (clean = false) => {
         funcLoader(true, "Obteniendo lista de doctores...");
         let response;
 
         if (!clean) {
             response = await reportesController.funcObtenerReporteDoctores(
+                usuarioColaborador.iIdColaborador,
                 "",
                 "",
-                filtroForm.txtTipoDoctor,
-                filtroForm.txtEspecialidad,
+                "",
                 filtroForm.txtEstatusConsulta,
                 "",
                 "",
@@ -92,12 +92,20 @@ const ReportesDoctores = (props) => {
                 filtroForm.txtFechaA === null ? null : filtroForm.txtFechaA.toISOString()
             );
         } else {
-            response = await reportesController.funcObtenerReporteDoctores();
+            response = await reportesController.funcObtenerReporteDoctores(usuarioColaborador.iIdColaborador);
             setFiltroForm(formFiltroVacio);
         }
 
         if (response.Code === 0) {
-            setEntDoctores(response.Result);
+            if (response.Result.lstDoctores !== null) {
+                if (response.Result.lstDoctores.length > 0) {
+                    setReporteDoctor(response.Result);
+                } else {
+                    funcAlert("No se encontró información de consultas.");
+                }
+            } else {
+                funcAlert("No se encontró información del colaborador");
+            }
         } else {
             funcAlert(response.Message);
         }
@@ -108,10 +116,10 @@ const ReportesDoctores = (props) => {
     const funcDescargaReporte = async () => {
         funcLoader(true, "Descargando reporte de doctores...");
         const response = await reportesController.funcDescargarReporteDoctores(
+            usuarioColaborador.iIdColaborador,
             "",
             "",
-            filtroForm.txtTipoDoctor,
-            filtroForm.txtEspecialidad,
+            "",
             filtroForm.txtEstatusConsulta,
             "",
             "",
@@ -128,57 +136,53 @@ const ReportesDoctores = (props) => {
             link.click();
             link.remove();
 
-            funcAlert("El reporte de doctores se descargó exitosamente", "success");
+            funcAlert("El reporte se descargó exitosamente.", "success");
         } else {
-            funcAlert("Ocurrió un error al descargar el reporte de doctores");
+            funcAlert("Ocurrió un error al descargar el reporte.");
         }
         funcLoader();
-    };
-
-    const funcGetEspecialidades = async () => {
-        funcLoader(true, "Consultando especialidades...");
-
-        const response = await especialidadController.funcGetEspecialidad();
-
-        if (response.Code === 0) {
-            setListaEspecialidades(response.Result);
-        } else {
-            funcAlert(response.Message);
-        }
-
-        funcLoader();
-    };
-
-    const handleClickDetalle = () => {
-        setModalDetalleDoctorOpen(true);
-    };
-
-    const getData = async () => {
-        await funcGetDoctores(false);
-        await funcGetEspecialidades();
     };
 
     useEffect(() => {
-        getData();
+        if (usuarioColaborador !== null) {
+            funcGetReporte();
+        }
         // eslint-disable-next-line
-    }, []);
+    }, [usuarioColaborador]);
 
     useEffect(() => {
-        if (entDoctores !== null) {
-            setListaDoctores(
-                entDoctores.lstDoctores.map((doctor) => ({
-                    ...doctor,
+        if (reporteDoctor !== null) {
+            setListaConsultas(
+                reporteDoctor.lstDoctores[0].lstConsultas.map((consulta) => ({
+                    ...consulta,
+                    name: consulta.entPaciente.name,
+                    sFechaConsultaInicio:
+                        consulta.sEstatusConsulta === "Creado/Programado" || consulta.sEstatusConsulta === "Cancelado"
+                            ? consulta.sFechaProgramadaInicio
+                            : consulta.sFechaConsultaInicio,
+                    sFechaConsultaFin:
+                        consulta.sEstatusConsulta === "Creado/Programado" || consulta.sEstatusConsulta === "Cancelado"
+                            ? consulta.sFechaProgramadaFin
+                            : consulta.sEstatusConsulta === "En consulta"
+                            ? "Consultando"
+                            : consulta.sFechaConsultaFin,
                     sDetalle: (
-                        <Tooltip title="Ver detalle" arrow placement="top">
-                            <IconButton onClick={handleClickDetalle}>
-                                <VisibilityIcon className="color-1" />
-                            </IconButton>
-                        </Tooltip>
+                        <Button variant="contained" color="primary" onClick={handleClickDetalleConsulta}>
+                            DETALLE
+                        </Button>
                     ),
                 }))
             );
         }
-    }, [entDoctores]);
+    }, [reporteDoctor]);
+
+    const [modalDetalleConsultaOpen, setModalDetalleConsultaOpen] = useState(false);
+    const [consultaSeleccionada, setConsultaSeleccionada] = useState({ iIdConsulta: 0 });
+
+    const handleClickDetalleConsulta = (id) => {
+        //setIIdConsulta(id);
+        setModalDetalleConsultaOpen(true);
+    };
 
     return (
         <Fragment>
@@ -192,20 +196,20 @@ const ReportesDoctores = (props) => {
                 )}
                 {permisos.Botones["2"] !== undefined && ( //Actualizar Reporte
                     <Tooltip title={permisos.Botones["2"].Nombre} arrow>
-                        <IconButton onClick={getData}>
+                        <IconButton onClick={() => funcGetReporte(true)}>
                             <ReplayIcon className="color-0" />
                         </IconButton>
                     </Tooltip>
                 )}
             </MeditocHeader1>
-            {entDoctores !== null && (
+            {usuarioColaborador !== null && reporteDoctor !== null && (
                 <Fragment>
                     <MeditocBody>
                         <Grid container spacing={3}>
                             <Grid item xs={12}>
                                 <MeditocSubtitulo title="FILTROS" />
                             </Grid>
-                            <Grid item sm={6} xs={12}>
+                            <Grid item sm={4} xs={12}>
                                 <DatePicker
                                     name="txtFechaDe"
                                     variant="inline"
@@ -229,7 +233,7 @@ const ReportesDoctores = (props) => {
                                     value={filtroForm.txtFechaDe}
                                 />
                             </Grid>
-                            <Grid item sm={6} xs={12}>
+                            <Grid item sm={4} xs={12}>
                                 <DatePicker
                                     name="txtFechaA"
                                     variant="inline"
@@ -253,24 +257,6 @@ const ReportesDoctores = (props) => {
                             </Grid>
                             <Grid item sm={4} xs={12}>
                                 <TextField
-                                    name="txtTipoDoctor"
-                                    label="Tipo de doctor:"
-                                    variant="outlined"
-                                    fullWidth
-                                    select
-                                    onChange={handleChangeFiltro}
-                                    value={filtroForm.txtTipoDoctor}
-                                >
-                                    <MenuItem value="">Todos</MenuItem>
-                                    {entCatalogos.catTipoDoctor.map((tipoDoctor) => (
-                                        <MenuItem key={tipoDoctor.fiId} value={tipoDoctor.fiId}>
-                                            {tipoDoctor.fsDescripcion}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                            <Grid item sm={4} xs={12}>
-                                <TextField
                                     name="txtEstatusConsulta"
                                     label="Estatus de consulta:"
                                     variant="outlined"
@@ -287,89 +273,49 @@ const ReportesDoctores = (props) => {
                                     ))}
                                 </TextField>
                             </Grid>
-                            <Grid item sm={4} xs={12}>
-                                <TextField
-                                    name="txtEspecialidad"
-                                    label="Especialidad:"
-                                    variant="outlined"
-                                    fullWidth
-                                    select
-                                    SelectProps={{ MenuProps: { PaperProps: { style: { maxHeight: 300 } } } }}
-                                    onChange={handleChangeFiltro}
-                                    value={filtroForm.txtEspecialidad}
-                                >
-                                    <MenuItem value="">Todas las especialidades</MenuItem>
-                                    {listaEspecialidades
-                                        .sort((a, b) => (a.sNombre > b.sNombre ? 1 : -1))
-                                        .map((especialidad) => (
-                                            <MenuItem
-                                                key={especialidad.iIdEspecialidad}
-                                                value={especialidad.iIdEspecialidad.toString()}
-                                            >
-                                                {especialidad.sNombre}
-                                            </MenuItem>
-                                        ))}
-                                </TextField>
-                            </Grid>
                             <MeditocModalBotones
                                 okMessage="FILTRAR"
-                                okFunc={() => funcGetDoctores(false)}
+                                okFunc={() => funcGetReporte(false)}
                                 cancelMessage="LIMPIAR"
-                                cancelFunc={() => funcGetDoctores(true)}
+                                cancelFunc={() => funcGetReporte(true)}
                             />
-                            <Grid item md={4} sm={6} xs={12} className="center">
-                                <MeditocInfoNumber
-                                    label="TOTAL DE DOCTORES"
-                                    value={entDoctores.iTotalDoctores}
-                                    color="color-2"
-                                />
-                            </Grid>
-                            <Grid item md={4} sm={6} xs={12} className="center">
+                            <Grid item sm={6} xs={12} className="center">
                                 <MeditocInfoNumber
                                     label="TOTAL DE CONSULTAS"
-                                    value={entDoctores.iTotalConsultas}
+                                    value={reporteDoctor.iTotalConsultas}
                                     color="color-1"
                                 />
                             </Grid>
-                            <Grid item md={4} sm={6} xs={12} className="center">
+                            <Grid item sm={6} xs={12} className="center">
                                 <MeditocInfoNumber
                                     label="TOTAL DE PACIENTES"
-                                    value={entDoctores.iTotalPacientes}
+                                    value={reporteDoctor.iTotalPacientes}
                                     color="color-3"
                                 />
                             </Grid>
                             <Grid item xs={12} className="center">
                                 <MeditocTable
                                     columns={columnas}
-                                    data={listaDoctores}
-                                    rowSelected={doctorSeleccionado}
-                                    setRowSelected={setDoctorSeleccionado}
-                                    mainField="iIdDoctor"
-                                    doubleClick={handleClickVerDetalle}
+                                    data={listaConsultas}
+                                    rowSelected={consultaSeleccionada}
+                                    setRowSelected={setConsultaSeleccionada}
+                                    mainField="iIdConsulta"
+                                    doubleClick={handleClickDetalleConsulta}
                                 />
                             </Grid>
                         </Grid>
                     </MeditocBody>
-                    <DetalleDoctor
-                        entDoctor={doctorSeleccionado}
-                        open={modalDetalleDoctorOpen}
-                        setOpen={setModalDetalleDoctorOpen}
-                        funcLoader={funcLoader}
-                        funcAlert={funcAlert}
-                    />
                 </Fragment>
             )}
+            <DetalleConsulta
+                entConsultaSeleccionada={consultaSeleccionada}
+                open={modalDetalleConsultaOpen}
+                setOpen={setModalDetalleConsultaOpen}
+                funcLoader={funcLoader}
+                funcAlert={funcAlert}
+            />
         </Fragment>
     );
 };
 
-ReportesDoctores.propTypes = {
-    funcAlert: PropTypes.func,
-    funcLoader: PropTypes.func,
-    permisos: PropTypes.shape({
-        Botones: PropTypes.any,
-        Nombre: PropTypes.any,
-    }),
-};
-
-export default ReportesDoctores;
+export default MisConsultas;

@@ -26,7 +26,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 
             try
             {
-                BusEspecialidad busEspecialidad = new BusEspecialidad();
+                BusCatalogo busEspecialidad = new BusCatalogo();
                 response = busEspecialidad.BSaveEspecialidad(entEspecialidad);
             }
             catch (Exception ex)
@@ -50,7 +50,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
 
             try
             {
-                BusEspecialidad busEspecialidad = new BusEspecialidad();
+                BusCatalogo busEspecialidad = new BusCatalogo();
                 response = busEspecialidad.BGetEspecialidad(piIdEspecialidad);
             }
             catch (Exception ex)

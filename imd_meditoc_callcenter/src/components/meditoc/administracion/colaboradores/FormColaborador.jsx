@@ -1,5 +1,6 @@
 import {
     Checkbox,
+    Collapse,
     FormControlLabel,
     Grid,
     IconButton,
@@ -31,7 +32,14 @@ import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import { useEffect } from "react";
 import { useState } from "react";
 
+/*************************************************************
+ * Descripcion: Modal crear/editar un colaborador
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ * Invocado desde: Colaboradores
+ *************************************************************/
 const FormColaborador = (props) => {
+    //PROPS
     const {
         entColaborador,
         open,
@@ -43,36 +51,7 @@ const FormColaborador = (props) => {
         funcAlert,
     } = props;
 
-    const [tabIndex, setTabIndex] = useState(0);
-
-    const [formColaborador, setFormColaborador] = useState({
-        txtNombreDirectorio: "",
-        txtCedulaProfesional: "",
-        txtRFC: "",
-        txtTelefonoContacto: "",
-        txtWhatsApp: "",
-        txtCorreoElectronicoContacto: "",
-        txtEspecialidad: "",
-        txtNumeroSala: "",
-        txtNombreConsultorio: "",
-        txtDireccionConsultorio: "",
-        txtUrlDoctor: "",
-        txtMapsDoctor: "",
-        txtNombreDoctor: "",
-        txtApellidoPaterno: "",
-        txtApellidoMaterno: "",
-        txtFechaNacimiento: null,
-        txtTelefono: "",
-        txtCorreoElectronico: "",
-        txtDomicilio: "",
-        txtUsuarioTitular: "",
-        txtPasswordTitular: "",
-        txtUsuarioAdministrativo: "",
-        txtPasswordAdministrativo: "",
-        txtAdministrativo: false,
-        txtAcceso: true,
-    });
-
+    //CONSTANTES
     const validacionesFormulario = {
         txtNombreDirectorio: true,
         txtCedulaProfesional: true,
@@ -101,226 +80,219 @@ const FormColaborador = (props) => {
         txtAcceso: true,
     };
 
-    const [formColaboradorOK, setFormColaboradorOK] = useState(validacionesFormulario);
+    //STATES
+    const [mostrarPasswordTitular, setMostrarPasswordTitular] = useState(false);
+    const [mostrarPasswordAdministrativo, setMostrarPasswordAdministrativo] = useState(false);
 
-    useEffect(() => {
-        setFormColaborador({
-            ...formColaborador,
-            txtNombreDirectorio: entColaborador.sNombreDirectorio,
-            txtCedulaProfesional: entColaborador.sCedulaProfecional,
-            txtRFC: entColaborador.sRFC,
-            txtTelefonoContacto: entColaborador.sTelefonoDirectorio,
-            txtWhatsApp: entColaborador.sWhatsApp === null ? "" : entColaborador.sWhatsApp,
-            txtCorreoElectronicoContacto: entColaborador.sCorreoDirectorio,
-            txtEspecialidad: entColaborador.iIdEspecialidad,
-            txtNumeroSala: entColaborador.iNumSala,
-            txtNombreConsultorio: entColaborador.sNombreConsultorio === null ? "" : entColaborador.sNombreConsultorio,
-            txtDireccionConsultorio:
-                entColaborador.sDireccionConsultorio === null ? "" : entColaborador.sDireccionConsultorio,
-            txtUrlDoctor: entColaborador.sURL === null ? "" : entColaborador.sURL,
-            txtMapsDoctor: entColaborador.sMaps === null ? "" : entColaborador.sMaps,
-            txtNombreDoctor: entColaborador.sNombresDoctor,
-            txtApellidoPaterno: entColaborador.sApellidoPaternoDoctor,
-            txtApellidoMaterno:
-                entColaborador.sApellidoMaternoDoctor === null ? "" : entColaborador.sApellidoMaternoDoctor,
-            txtFechaNacimiento:
-                entColaborador.dtFechaNacimientoDoctor === null
-                    ? null
-                    : new Date(entColaborador.dtFechaNacimientoDoctor),
-            txtTelefono: entColaborador.sTelefonoDoctor,
-            txtCorreoElectronico: entColaborador.sCorreoDoctor,
-            txtDomicilio: entColaborador.sDomicilioDoctor === null ? "" : entColaborador.sDomicilioDoctor,
-            txtUsuarioTitular: entColaborador.sUsuarioTitular,
-            txtUsuarioAdministrativo: entColaborador.sUsuarioAdministrativo,
-            txtAcceso: entColaborador.bAcceso,
-            txtAdministrativo: entColaborador.bAdministrador,
-        });
-        setFormColaboradorOK(validacionesFormulario);
-        setTabIndex(0);
-        // eslint-disable-next-line
-    }, [entColaborador]);
+    const [indiceTabForm, setIndiceTabForm] = useState(0);
 
-    // const [sclTipoColaborador, setSclTipoColaborador] = useState("1");
+    const [formularioValidado, setFormularioValidado] = useState(validacionesFormulario);
+    const [formColaborador, setFormColaborador] = useState({
+        txtNombreDirectorio: "",
+        txtCedulaProfesional: "",
+        txtRFC: "",
+        txtTelefonoContacto: "",
+        txtWhatsApp: "",
+        txtCorreoElectronicoContacto: "",
+        txtEspecialidad: "",
+        txtNumeroSala: "",
+        txtNombreConsultorio: "",
+        txtDireccionConsultorio: "",
+        txtUrlDoctor: "",
+        txtMapsDoctor: "",
+        txtNombreDoctor: "",
+        txtApellidoPaterno: "",
+        txtApellidoMaterno: "",
+        txtFechaNacimiento: null,
+        txtTelefono: "",
+        txtCorreoElectronico: "",
+        txtDomicilio: "",
+        txtUsuarioTitular: "",
+        txtPasswordTitular: "",
+        txtUsuarioAdministrativo: "",
+        txtPasswordAdministrativo: "",
+        txtAdministrativo: false,
+        txtAcceso: true,
+    });
 
-    // const handleChangeTipoColaborador = (e) => {
-    //     setSclTipoColaborador(e.target.value);
-    // };
+    //HANDLERS
 
+    //Capturar los inputs del formulario
     const handleChangeFormColaborador = (e) => {
-        const campoNombre = e.target.name;
-        const campoValor = e.target.value;
+        const nombreCampo = e.target.name;
+        const valorCampo = e.target.value;
 
-        switch (campoNombre) {
+        switch (nombreCampo) {
             case "txtNombreDirectorio":
-                if (!formColaboradorOK.txtNombreDirectorio) {
-                    if (campoValor !== "") {
-                        setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
+                if (!formularioValidado.txtNombreDirectorio) {
+                    if (valorCampo !== "") {
+                        setFormularioValidado({ ...formularioValidado, [nombreCampo]: true });
                     }
                 }
                 break;
 
             case "txtCedulaProfesional":
-                if (campoValor % 1 !== 0) {
+                if (valorCampo % 1 !== 0) {
                     return;
                 }
-                if (!formColaboradorOK.txtCedulaProfesional) {
-                    if (campoValor !== "") {
-                        setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
+                if (!formularioValidado.txtCedulaProfesional) {
+                    if (valorCampo !== "") {
+                        setFormularioValidado({ ...formularioValidado, [nombreCampo]: true });
                     }
                 }
                 break;
 
             case "txtRFC":
-                if (!formColaboradorOK.txtRFC) {
-                    if (campoValor !== "") {
-                        setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
+                if (!formularioValidado.txtRFC) {
+                    if (valorCampo !== "") {
+                        setFormularioValidado({ ...formularioValidado, [nombreCampo]: true });
                     }
                 }
                 break;
 
             case "txtTelefonoContacto":
-                if (!formColaboradorOK.txtTelefonoContacto) {
-                    const telefonoValidacion = campoValor.replace(/ /g, "");
+                if (!formularioValidado.txtTelefonoContacto) {
+                    const telefonoValidacion = valorCampo.replace(/ /g, "");
                     if (telefonoValidacion !== "" && telefonoValidacion.length === 10) {
-                        setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
+                        setFormularioValidado({ ...formularioValidado, [nombreCampo]: true });
                     }
                 }
                 break;
             case "txtWhatsApp":
-                if (!formColaboradorOK.txtWhatsApp) {
-                    const telefonoValidacion = campoValor.replace(/ /g, "");
+                if (!formularioValidado.txtWhatsApp) {
+                    const telefonoValidacion = valorCampo.replace(/ /g, "");
                     if (telefonoValidacion === "" || telefonoValidacion.length === 10) {
-                        setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
+                        setFormularioValidado({ ...formularioValidado, [nombreCampo]: true });
                     }
                 }
                 break;
 
             case "txtCorreoElectronicoContacto":
-                if (!formColaboradorOK.txtCorreoElectronicoContacto) {
-                    if (campoValor !== "" && rxCorreo.test(campoValor)) {
-                        setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
+                if (!formularioValidado.txtCorreoElectronicoContacto) {
+                    if (valorCampo !== "" && rxCorreo.test(valorCampo)) {
+                        setFormularioValidado({ ...formularioValidado, [nombreCampo]: true });
                     }
                 }
                 break;
 
             case "txtEspecialidad":
                 if (
-                    !formColaboradorOK.txtEspecialidad &&
+                    !formularioValidado.txtEspecialidad &&
                     entColaborador.iIdTipoDoctor === EnumTipoDoctor.Especialista
                 ) {
-                    if (campoValor !== "" && campoValor !== 0) {
-                        setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
+                    if (valorCampo !== "" && valorCampo !== 0) {
+                        setFormularioValidado({ ...formularioValidado, [nombreCampo]: true });
                     }
                 }
                 break;
 
             case "txtNumeroSala":
-                if (!formColaboradorOK.txtNumeroSala) {
-                    if (campoValor !== "") {
-                        setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
+                if (!formularioValidado.txtNumeroSala) {
+                    if (valorCampo !== "") {
+                        setFormularioValidado({ ...formularioValidado, [nombreCampo]: true });
                     }
                 }
                 break;
 
             case "txtUrlDoctor":
-                if (!formColaboradorOK.txtUrlDoctor) {
-                    if (campoValor === "" || rxUrl.test(campoValor)) {
-                        setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
+                if (!formularioValidado.txtUrlDoctor) {
+                    if (valorCampo === "" || rxUrl.test(valorCampo)) {
+                        setFormularioValidado({ ...formularioValidado, [nombreCampo]: true });
                     }
                 }
                 break;
 
             case "txtMapsDoctor":
-                if (!formColaboradorOK.txtMapsDoctor) {
-                    if (campoValor === "" || rxUrl.test(campoValor)) {
-                        setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
+                if (!formularioValidado.txtMapsDoctor) {
+                    if (valorCampo === "" || rxUrl.test(valorCampo)) {
+                        setFormularioValidado({ ...formularioValidado, [nombreCampo]: true });
                     }
                 }
                 break;
 
             case "txtNombreDoctor":
-                if (!formColaboradorOK.txtNombreDoctor) {
-                    if (campoValor !== "") {
-                        setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
+                if (!formularioValidado.txtNombreDoctor) {
+                    if (valorCampo !== "") {
+                        setFormularioValidado({ ...formularioValidado, [nombreCampo]: true });
                     }
                 }
                 break;
 
             case "txtApellidoPaterno":
-                if (!formColaboradorOK.txtApellidoPaterno) {
-                    if (campoValor !== "") {
-                        setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
+                if (!formularioValidado.txtApellidoPaterno) {
+                    if (valorCampo !== "") {
+                        setFormularioValidado({ ...formularioValidado, [nombreCampo]: true });
                     }
                 }
                 break;
 
             case "txtFechaNacimiento":
-                if (!formColaboradorOK.txtFechaNacimiento) {
-                    if (campoValor !== "" && campoValor !== null) {
-                        setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
+                if (!formularioValidado.txtFechaNacimiento) {
+                    if (valorCampo !== "" && valorCampo !== null) {
+                        setFormularioValidado({ ...formularioValidado, [nombreCampo]: true });
                     }
                 }
 
                 break;
 
             case "txtTelefono":
-                if (!formColaboradorOK.txtTelefono) {
-                    const telefonoValidacion = campoValor.replace(/ /g, "");
+                if (!formularioValidado.txtTelefono) {
+                    const telefonoValidacion = valorCampo.replace(/ /g, "");
                     if (telefonoValidacion !== "" && telefonoValidacion.length === 10) {
-                        setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
+                        setFormularioValidado({ ...formularioValidado, [nombreCampo]: true });
                     }
                 }
                 break;
 
             case "txtCorreoElectronico":
-                if (!formColaboradorOK.txtCorreoElectronico) {
-                    if (campoValor !== "" && rxCorreo.test(campoValor)) {
-                        setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
+                if (!formularioValidado.txtCorreoElectronico) {
+                    if (valorCampo !== "" && rxCorreo.test(valorCampo)) {
+                        setFormularioValidado({ ...formularioValidado, [nombreCampo]: true });
                     }
                 }
                 break;
 
             case "txtTipoColaborador":
-                if (!formColaboradorOK.txtTipoColaborador) {
-                    if (campoValor !== "") {
-                        setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
+                if (!formularioValidado.txtTipoColaborador) {
+                    if (valorCampo !== "") {
+                        setFormularioValidado({ ...formularioValidado, [nombreCampo]: true });
                     }
                 }
                 break;
 
             case "txtUsuarioTitular":
-                if (!formColaboradorOK.txtUsuarioTitular) {
-                    if (campoValor !== "") {
-                        setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
+                if (!formularioValidado.txtUsuarioTitular) {
+                    if (valorCampo !== "") {
+                        setFormularioValidado({ ...formularioValidado, [nombreCampo]: true });
                     }
                 }
                 break;
 
             case "txtPasswordTitular":
-                if (!formColaboradorOK.txtPasswordTitular) {
-                    if (campoValor !== "") {
-                        setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
+                if (!formularioValidado.txtPasswordTitular) {
+                    if (valorCampo !== "") {
+                        setFormularioValidado({ ...formularioValidado, [nombreCampo]: true });
                     }
                 }
                 break;
             case "txtUsuarioAdministrativo":
                 if (
-                    !formColaboradorOK.txtUsuarioAdministrativo &&
+                    !formularioValidado.txtUsuarioAdministrativo &&
                     entColaborador.iIdTipoDoctor === EnumTipoDoctor.Especialista
                 ) {
-                    if (campoValor !== "") {
-                        setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
+                    if (valorCampo !== "") {
+                        setFormularioValidado({ ...formularioValidado, [nombreCampo]: true });
                     }
                 }
                 break;
 
             case "txtPasswordAdministrativo":
                 if (
-                    !formColaboradorOK.txtPasswordAdministrativo &&
+                    !formularioValidado.txtPasswordAdministrativo &&
                     entColaborador.iIdTipoDoctor === EnumTipoDoctor.Especialista
                 ) {
-                    if (campoValor !== "") {
-                        setFormColaboradorOK({ ...formColaboradorOK, [campoNombre]: true });
+                    if (valorCampo !== "") {
+                        setFormularioValidado({ ...formularioValidado, [nombreCampo]: true });
                     }
                 }
                 break;
@@ -328,23 +300,24 @@ const FormColaborador = (props) => {
             default:
                 break;
         }
-
         setFormColaborador({
             ...formColaborador,
-            [e.target.name]: e.target.value,
+            [nombreCampo]: valorCampo,
         });
     };
 
+    //Capturar la fecha de nacimiento
     const handleChangeFechaNacimiento = (date) => {
-        if (!formColaboradorOK.txtFechaNacimiento) {
+        if (!formularioValidado.txtFechaNacimiento) {
             if (date !== "" && date !== null) {
-                setFormColaboradorOK({ ...formColaboradorOK, txtFechaNacimiento: true });
+                setFormularioValidado({ ...formularioValidado, txtFechaNacimiento: true });
             }
         }
 
         setFormColaborador({ ...formColaborador, txtFechaNacimiento: date });
     };
 
+    //Consumir API para guardar los datos del colaborador
     const handleClickGuardarColaborador = async (e) => {
         funcPrevent(e);
         let formColaboradorOKValidacion = { ...validacionesFormulario };
@@ -396,11 +369,6 @@ const FormColaborador = (props) => {
             errorDatosDoctor = true;
         }
 
-        if (formColaborador.txtNumeroSala === "") {
-            formColaboradorOKValidacion.txtNumeroSala = false;
-            errorDatosDoctor = true;
-        }
-
         if (formColaborador.txtUrlDoctor !== "") {
             if (!rxUrl.test(formColaborador.txtUrlDoctor)) {
                 formColaboradorOKValidacion.txtUrlDoctor = false;
@@ -447,32 +415,42 @@ const FormColaborador = (props) => {
             errorUsuarioPassword = true;
         }
 
-        if (formColaborador.txtUsuarioTitular === "") {
-            formColaboradorOKValidacion.txtUsuarioTitular = false;
-            errorUsuarioPassword = true;
-        }
-
-        if (formColaborador.txtPasswordTitular === "") {
-            if (entColaborador.iIdColaborador === 0) {
-                formColaboradorOKValidacion.txtPasswordTitular = false;
+        if (formColaborador.txtAcceso === true) {
+            if (formColaborador.txtUsuarioTitular === "") {
+                formColaboradorOKValidacion.txtUsuarioTitular = false;
                 errorUsuarioPassword = true;
             }
-        }
 
-        if (entColaborador.iIdTipoDoctor === EnumTipoDoctor.Especialista) {
-            if (formColaborador.txtUsuarioAdministrativo === "") {
-                formColaboradorOKValidacion.txtUsuarioAdministrativo = false;
-                errorUsuarioPassword = true;
-            }
-            if (formColaborador.txtPasswordAdministrativo === "") {
-                if (entColaborador.iIdColaborador === 0) {
-                    formColaboradorOKValidacion.txtPasswordAdministrativo = false;
+            if (formColaborador.txtPasswordTitular === "") {
+                if (
+                    entColaborador.iIdColaborador === 0 ||
+                    entColaborador.sUsuarioTitular === "" ||
+                    entColaborador.sUsuarioTitular === null
+                ) {
+                    formColaboradorOKValidacion.txtPasswordTitular = false;
                     errorUsuarioPassword = true;
+                }
+            }
+
+            if (entColaborador.iIdTipoDoctor === EnumTipoDoctor.Especialista) {
+                if (formColaborador.txtUsuarioAdministrativo === "") {
+                    formColaboradorOKValidacion.txtUsuarioAdministrativo = false;
+                    errorUsuarioPassword = true;
+                }
+                if (formColaborador.txtPasswordAdministrativo === "") {
+                    if (
+                        entColaborador.iIdColaborador === 0 ||
+                        entColaborador.sUsuarioAdministrativo === "" ||
+                        entColaborador.sUsuarioAdministrativo === null
+                    ) {
+                        formColaboradorOKValidacion.txtPasswordAdministrativo = false;
+                        errorUsuarioPassword = true;
+                    }
                 }
             }
         }
 
-        setFormColaboradorOK(formColaboradorOKValidacion);
+        setFormularioValidado(formColaboradorOKValidacion);
 
         if (errorUsuarioPassword || errorDatosCuenta || errorDatosDoctor) {
             let regresarTab = 2;
@@ -487,7 +465,7 @@ const FormColaborador = (props) => {
             if (errorDatosDoctor) {
                 regresarTab = 0;
             }
-            setTabIndex(regresarTab);
+            setIndiceTabForm(regresarTab);
             return;
         }
 
@@ -510,11 +488,13 @@ const FormColaborador = (props) => {
             sRFC: formColaborador.txtRFC,
             sURL: formColaborador.txtUrlDoctor,
             sMaps: formColaborador.txtMapsDoctor,
-            sUsuarioTitular: formColaborador.txtUsuarioTitular,
+            sUsuarioTitular: formColaborador.txtUsuarioTitular === "" ? null : formColaborador.txtUsuarioTitular,
             sPasswordTitular: formColaborador.txtPasswordTitular === "" ? null : formColaborador.txtPasswordTitular,
             sUsuarioAdministrativo:
                 entColaborador.iIdTipoDoctor === EnumTipoDoctor.Especialista
-                    ? formColaborador.txtUsuarioAdministrativo
+                    ? formColaborador.txtUsuarioAdministrativo === ""
+                        ? null
+                        : formColaborador.txtUsuarioAdministrativo
                     : null,
             sPasswordAdministrativo:
                 entColaborador.iIdTipoDoctor === EnumTipoDoctor.Especialista
@@ -554,8 +534,45 @@ const FormColaborador = (props) => {
         blurPrevent();
     };
 
-    const [verPasswordTitular, setVerPasswordTitular] = useState(false);
-    const [verPasswordAdministrativo, setVerPasswordAdministrativo] = useState(false);
+    //EFFECTS
+    //Actualizar el formulario al modicar la entidad de los props
+    useEffect(() => {
+        setFormColaborador({
+            ...formColaborador,
+            txtNombreDirectorio: entColaborador.sNombreDirectorio,
+            txtCedulaProfesional: entColaborador.sCedulaProfecional,
+            txtRFC: entColaborador.sRFC,
+            txtTelefonoContacto: entColaborador.sTelefonoDirectorio,
+            txtWhatsApp: entColaborador.sWhatsApp === null ? "" : entColaborador.sWhatsApp,
+            txtCorreoElectronicoContacto: entColaborador.sCorreoDirectorio,
+            txtEspecialidad: entColaborador.iIdEspecialidad,
+            txtNumeroSala: entColaborador.iNumSala,
+            txtNombreConsultorio: entColaborador.sNombreConsultorio === null ? "" : entColaborador.sNombreConsultorio,
+            txtDireccionConsultorio:
+                entColaborador.sDireccionConsultorio === null ? "" : entColaborador.sDireccionConsultorio,
+            txtUrlDoctor: entColaborador.sURL === null ? "" : entColaborador.sURL,
+            txtMapsDoctor: entColaborador.sMaps === null ? "" : entColaborador.sMaps,
+            txtNombreDoctor: entColaborador.sNombresDoctor,
+            txtApellidoPaterno: entColaborador.sApellidoPaternoDoctor,
+            txtApellidoMaterno:
+                entColaborador.sApellidoMaternoDoctor === null ? "" : entColaborador.sApellidoMaternoDoctor,
+            txtFechaNacimiento:
+                entColaborador.dtFechaNacimientoDoctor === null
+                    ? null
+                    : new Date(entColaborador.dtFechaNacimientoDoctor),
+            txtTelefono: entColaborador.sTelefonoDoctor,
+            txtCorreoElectronico: entColaborador.sCorreoDoctor,
+            txtDomicilio: entColaborador.sDomicilioDoctor === null ? "" : entColaborador.sDomicilioDoctor,
+            txtUsuarioTitular: entColaborador.sUsuarioTitular === null ? "" : entColaborador.sUsuarioTitular,
+            txtUsuarioAdministrativo:
+                entColaborador.sUsuarioAdministrativo === null ? "" : entColaborador.sUsuarioAdministrativo,
+            txtAcceso: entColaborador.bAcceso,
+            txtAdministrativo: entColaborador.bAdministrador,
+        });
+        setFormularioValidado(validacionesFormulario);
+        setIndiceTabForm(0);
+        // eslint-disable-next-line
+    }, [entColaborador]);
 
     return (
         <MeditocModal
@@ -571,13 +588,13 @@ const FormColaborador = (props) => {
             <form id="form-colaborador" onSubmit={handleClickGuardarColaborador} noValidate>
                 <MeditocTabHeader
                     tabs={["DATOS DEL DOCTOR", "DATOS DE CUENTA", "USUARIO Y CONTRASEÑA"]}
-                    index={tabIndex}
-                    setIndex={setTabIndex}
+                    index={indiceTabForm}
+                    setIndex={setIndiceTabForm}
                 />
                 <Grid container spacing={0}>
                     <Grid item xs={12}>
-                        <MeditocTabBody index={tabIndex} setIndex={setTabIndex}>
-                            <MeditocTabPanel id={0} index={tabIndex}>
+                        <MeditocTabBody index={indiceTabForm} setIndex={setIndiceTabForm}>
+                            <MeditocTabPanel id={0} index={indiceTabForm}>
                                 <Grid container spacing={3}>
                                     <Grid item xs={12}>
                                         <Typography variant="caption">
@@ -595,9 +612,9 @@ const FormColaborador = (props) => {
                                             autoFocus
                                             value={formColaborador.txtNombreDirectorio}
                                             onChange={handleChangeFormColaborador}
-                                            error={!formColaboradorOK.txtNombreDirectorio}
+                                            error={!formularioValidado.txtNombreDirectorio}
                                             helperText={
-                                                !formColaboradorOK.txtNombreDirectorio
+                                                !formularioValidado.txtNombreDirectorio
                                                     ? "El nombre para el directorio médico es requerido"
                                                     : ""
                                             }
@@ -612,9 +629,9 @@ const FormColaborador = (props) => {
                                             required
                                             value={formColaborador.txtCedulaProfesional}
                                             onChange={handleChangeFormColaborador}
-                                            error={!formColaboradorOK.txtCedulaProfesional}
+                                            error={!formularioValidado.txtCedulaProfesional}
                                             helperText={
-                                                !formColaboradorOK.txtCedulaProfesional
+                                                !formularioValidado.txtCedulaProfesional
                                                     ? "La cédula profesional es requerida"
                                                     : ""
                                             }
@@ -629,8 +646,8 @@ const FormColaborador = (props) => {
                                             required
                                             value={formColaborador.txtRFC}
                                             onChange={handleChangeFormColaborador}
-                                            error={!formColaboradorOK.txtRFC}
-                                            helperText={!formColaboradorOK.txtRFC ? "El RFC es requerido" : ""}
+                                            error={!formularioValidado.txtRFC}
+                                            helperText={!formularioValidado.txtRFC ? "El RFC es requerido" : ""}
                                         />
                                     </Grid>
                                     <Grid item sm={6} xs={12}>
@@ -645,9 +662,9 @@ const FormColaborador = (props) => {
                                             required
                                             value={formColaborador.txtTelefonoContacto}
                                             onChange={handleChangeFormColaborador}
-                                            error={!formColaboradorOK.txtTelefonoContacto}
+                                            error={!formularioValidado.txtTelefonoContacto}
                                             helperText={
-                                                !formColaboradorOK.txtTelefonoContacto
+                                                !formularioValidado.txtTelefonoContacto
                                                     ? "El teléfono de contacto es requerido"
                                                     : ""
                                             }
@@ -664,13 +681,13 @@ const FormColaborador = (props) => {
                                             }}
                                             value={formColaborador.txtWhatsApp}
                                             onChange={handleChangeFormColaborador}
-                                            error={!formColaboradorOK.txtWhatsApp}
+                                            error={!formularioValidado.txtWhatsApp}
                                             helperText={
-                                                !formColaboradorOK.txtWhatsApp ? "Ingrese un número válido" : ""
+                                                !formularioValidado.txtWhatsApp ? "Ingrese un número válido" : ""
                                             }
                                         />
                                     </Grid>
-                                    <Grid item xs={12}>
+                                    <Grid item sm={6} xs={12}>
                                         <TextField
                                             name="txtCorreoElectronicoContacto"
                                             label="Correo electrónico de contacto:"
@@ -679,9 +696,9 @@ const FormColaborador = (props) => {
                                             required
                                             value={formColaborador.txtCorreoElectronicoContacto}
                                             onChange={handleChangeFormColaborador}
-                                            error={!formColaboradorOK.txtCorreoElectronicoContacto}
+                                            error={!formularioValidado.txtCorreoElectronicoContacto}
                                             helperText={
-                                                !formColaboradorOK.txtCorreoElectronicoContacto
+                                                !formularioValidado.txtCorreoElectronicoContacto
                                                     ? "El correo electrónico de contacto es requerido"
                                                     : ""
                                             }
@@ -701,9 +718,9 @@ const FormColaborador = (props) => {
                                                 required
                                                 value={formColaborador.txtEspecialidad}
                                                 onChange={handleChangeFormColaborador}
-                                                error={!formColaboradorOK.txtEspecialidad}
+                                                error={!formularioValidado.txtEspecialidad}
                                                 helperText={
-                                                    !formColaboradorOK.txtEspecialidad
+                                                    !formularioValidado.txtEspecialidad
                                                         ? "La especialidad es requerida"
                                                         : ""
                                                 }
@@ -727,23 +744,22 @@ const FormColaborador = (props) => {
                                         </Grid>
                                     ) : null}
 
-                                    <Grid item sm={6} xs={12}>
+                                    {/* <Grid item sm={6} xs={12}>
                                         <TextField
                                             name="txtNumeroSala"
                                             label="Número de sala IceLink:"
                                             variant="outlined"
                                             fullWidth
-                                            required
                                             value={formColaborador.txtNumeroSala}
                                             onChange={handleChangeFormColaborador}
-                                            error={!formColaboradorOK.txtNumeroSala}
+                                            error={!formularioValidado.txtNumeroSala}
                                             helperText={
-                                                !formColaboradorOK.txtNumeroSala
+                                                !formularioValidado.txtNumeroSala
                                                     ? "El número de asignación de sala es requerido"
                                                     : ""
                                             }
                                         />
-                                    </Grid>
+                                    </Grid> */}
                                     <Grid
                                         item
                                         sm={entColaborador.iIdTipoDoctor === EnumTipoDoctor.CallCenter ? 6 : 12}
@@ -776,9 +792,9 @@ const FormColaborador = (props) => {
                                             fullWidth
                                             value={formColaborador.txtUrlDoctor}
                                             onChange={handleChangeFormColaborador}
-                                            error={!formColaboradorOK.txtUrlDoctor}
+                                            error={!formularioValidado.txtUrlDoctor}
                                             helperText={
-                                                !formColaboradorOK.txtUrlDoctor
+                                                !formularioValidado.txtUrlDoctor
                                                     ? "Ingrese una URL válida. Debe comenzar con http o https."
                                                     : ""
                                             }
@@ -793,9 +809,9 @@ const FormColaborador = (props) => {
                                             fullWidth
                                             value={formColaborador.txtMapsDoctor}
                                             onChange={handleChangeFormColaborador}
-                                            error={!formColaboradorOK.txtMapsDoctor}
+                                            error={!formularioValidado.txtMapsDoctor}
                                             helperText={
-                                                !formColaboradorOK.txtMapsDoctor
+                                                !formularioValidado.txtMapsDoctor
                                                     ? "Ingrese una URL de Google Maps válida. Debe comenzar con http o https."
                                                     : ""
                                             }
@@ -829,7 +845,7 @@ const FormColaborador = (props) => {
                                     </Grid>
                                 </Grid>
                             </MeditocTabPanel>
-                            <MeditocTabPanel id={1} index={tabIndex}>
+                            <MeditocTabPanel id={1} index={indiceTabForm}>
                                 <Grid container spacing={3}>
                                     <Grid item xs={12}>
                                         <TextField
@@ -840,9 +856,9 @@ const FormColaborador = (props) => {
                                             required
                                             value={formColaborador.txtNombreDoctor}
                                             onChange={handleChangeFormColaborador}
-                                            error={!formColaboradorOK.txtNombreDoctor}
+                                            error={!formularioValidado.txtNombreDoctor}
                                             helperText={
-                                                !formColaboradorOK.txtNombreDoctor
+                                                !formularioValidado.txtNombreDoctor
                                                     ? "El nombre del doctor es requerido"
                                                     : ""
                                             }
@@ -857,9 +873,9 @@ const FormColaborador = (props) => {
                                             required
                                             value={formColaborador.txtApellidoPaterno}
                                             onChange={handleChangeFormColaborador}
-                                            error={!formColaboradorOK.txtApellidoPaterno}
+                                            error={!formularioValidado.txtApellidoPaterno}
                                             helperText={
-                                                !formColaboradorOK.txtApellidoPaterno
+                                                !formularioValidado.txtApellidoPaterno
                                                     ? "El apellido paterno del doctor es requerido"
                                                     : ""
                                             }
@@ -898,9 +914,9 @@ const FormColaborador = (props) => {
                                             required
                                             value={formColaborador.txtFechaNacimiento}
                                             onChange={handleChangeFechaNacimiento}
-                                            error={!formColaboradorOK.txtFechaNacimiento}
+                                            error={!formularioValidado.txtFechaNacimiento}
                                             helperText={
-                                                !formColaboradorOK.txtFechaNacimiento
+                                                !formularioValidado.txtFechaNacimiento
                                                     ? "La fecha de nacimiento es requerida"
                                                     : ""
                                             }
@@ -918,9 +934,9 @@ const FormColaborador = (props) => {
                                             required
                                             value={formColaborador.txtTelefono}
                                             onChange={handleChangeFormColaborador}
-                                            error={!formColaboradorOK.txtTelefono}
+                                            error={!formularioValidado.txtTelefono}
                                             helperText={
-                                                !formColaboradorOK.txtTelefono
+                                                !formularioValidado.txtTelefono
                                                     ? "El teléfono personal es requerido"
                                                     : ""
                                             }
@@ -948,9 +964,9 @@ const FormColaborador = (props) => {
                                             }}
                                             value={formColaborador.txtCorreoElectronico}
                                             onChange={handleChangeFormColaborador}
-                                            error={!formColaboradorOK.txtCorreoElectronico}
+                                            error={!formularioValidado.txtCorreoElectronico}
                                             helperText={
-                                                !formColaboradorOK.txtCorreoElectronico
+                                                !formularioValidado.txtCorreoElectronico
                                                     ? "El correo electrónico personal es requerido"
                                                     : ""
                                             }
@@ -968,142 +984,8 @@ const FormColaborador = (props) => {
                                     </Grid>
                                 </Grid>
                             </MeditocTabPanel>
-                            <MeditocTabPanel id={2} index={tabIndex}>
+                            <MeditocTabPanel id={2} index={indiceTabForm}>
                                 <Grid container spacing={3}>
-                                    <Grid item xs={12}>
-                                        <MeditocSubtitulo title="USUARIO TITULAR" />
-                                    </Grid>
-                                    <Grid item sm={6} xs={12}>
-                                        <TextField
-                                            variant="outlined"
-                                            label="Usuario:"
-                                            autoComplete="new-password"
-                                            fullWidth
-                                            name="txtUsuarioTitular"
-                                            required
-                                            value={formColaborador.txtUsuarioTitular}
-                                            onChange={handleChangeFormColaborador}
-                                            error={!formColaboradorOK.txtUsuarioTitular}
-                                            helperText={
-                                                !formColaboradorOK.txtUsuarioTitular
-                                                    ? "El usuario titular es requerido"
-                                                    : ""
-                                            }
-                                        />
-                                    </Grid>
-                                    <Grid item sm={6} xs={12}>
-                                        <TextField
-                                            variant="outlined"
-                                            label="Contraseña:"
-                                            type={verPasswordTitular ? "text" : "password"}
-                                            autoComplete="new-password"
-                                            fullWidth
-                                            name="txtPasswordTitular"
-                                            required
-                                            value={formColaborador.txtPasswordTitular}
-                                            onChange={handleChangeFormColaborador}
-                                            error={!formColaboradorOK.txtPasswordTitular}
-                                            helperText={
-                                                !formColaboradorOK.txtPasswordTitular
-                                                    ? "La contraseña titular es requerida"
-                                                    : ""
-                                            }
-                                            InputProps={{
-                                                endAdornment: (
-                                                    <Tooltip
-                                                        title={
-                                                            verPasswordTitular ? "Ocultar contraseña" : "Ver contraseña"
-                                                        }
-                                                        arrow
-                                                        placement="top"
-                                                    >
-                                                        <IconButton
-                                                            onMouseDown={() => setVerPasswordTitular(true)}
-                                                            onMouseUp={() => setVerPasswordTitular(false)}
-                                                        >
-                                                            {verPasswordTitular ? (
-                                                                <VisibilityIcon />
-                                                            ) : (
-                                                                <VisibilityOffIcon />
-                                                            )}
-                                                        </IconButton>
-                                                    </Tooltip>
-                                                ),
-                                            }}
-                                        />
-                                    </Grid>
-                                    {entColaborador.iIdTipoDoctor === EnumTipoDoctor.Especialista ? (
-                                        <Fragment>
-                                            <Grid item xs={12}>
-                                                <MeditocSubtitulo title="USUARIO ADMINISTRATIVO" />
-                                            </Grid>
-                                            <Grid item sm={6} xs={12}>
-                                                <TextField
-                                                    variant="outlined"
-                                                    label="Usuario:"
-                                                    autoComplete="new-password"
-                                                    fullWidth
-                                                    name="txtUsuarioAdministrativo"
-                                                    required
-                                                    value={formColaborador.txtUsuarioAdministrativo}
-                                                    onChange={handleChangeFormColaborador}
-                                                    error={!formColaboradorOK.txtUsuarioAdministrativo}
-                                                    helperText={
-                                                        !formColaboradorOK.txtUsuarioAdministrativo
-                                                            ? "El usuario administrativo es requerido"
-                                                            : ""
-                                                    }
-                                                />
-                                            </Grid>
-                                            <Grid item sm={6} xs={12}>
-                                                <TextField
-                                                    variant="outlined"
-                                                    label="Contraseña:"
-                                                    type={verPasswordAdministrativo ? "text" : "password"}
-                                                    autoComplete="new-password"
-                                                    fullWidth
-                                                    name="txtPasswordAdministrativo"
-                                                    required
-                                                    value={formColaborador.txtPasswordAdministrativo}
-                                                    onChange={handleChangeFormColaborador}
-                                                    error={!formColaboradorOK.txtPasswordAdministrativo}
-                                                    helperText={
-                                                        !formColaboradorOK.txtPasswordAdministrativo
-                                                            ? "La contraseña administrativa es requerida"
-                                                            : ""
-                                                    }
-                                                    InputProps={{
-                                                        endAdornment: (
-                                                            <Tooltip
-                                                                title={
-                                                                    verPasswordAdministrativo
-                                                                        ? "Ocultar contraseña"
-                                                                        : "Ver contraseña"
-                                                                }
-                                                                arrow
-                                                                placement="top"
-                                                            >
-                                                                <IconButton
-                                                                    onMouseDown={() =>
-                                                                        setVerPasswordAdministrativo(true)
-                                                                    }
-                                                                    onMouseUp={() =>
-                                                                        setVerPasswordAdministrativo(false)
-                                                                    }
-                                                                >
-                                                                    {verPasswordAdministrativo ? (
-                                                                        <VisibilityIcon />
-                                                                    ) : (
-                                                                        <VisibilityOffIcon />
-                                                                    )}
-                                                                </IconButton>
-                                                            </Tooltip>
-                                                        ),
-                                                    }}
-                                                />
-                                            </Grid>
-                                        </Fragment>
-                                    ) : null}
                                     <Grid item xs={12} className="center">
                                         <FormControlLabel
                                             control={
@@ -1120,24 +1002,177 @@ const FormColaborador = (props) => {
                                             label="Dar permisos de acceso al Portal Meditoc CallCenter"
                                         />
                                     </Grid>
-                                    {entColaborador.iIdTipoDoctor !== EnumTipoDoctor.Especialista && (
-                                        <Grid item xs={12} className="center">
-                                            <FormControlLabel
-                                                control={
-                                                    <Checkbox
-                                                        checked={formColaborador.txtAdministrativo}
-                                                        onChange={(e) => {
-                                                            setFormColaborador({
-                                                                ...formColaborador,
-                                                                txtAdministrativo: e.target.checked,
-                                                            });
+                                    <Grid item xs={12}>
+                                        <Collapse in={formColaborador.txtAcceso}>
+                                            <Grid container spacing={3}>
+                                                <Grid item xs={12}>
+                                                    <MeditocSubtitulo title="USUARIO TITULAR" />
+                                                </Grid>
+                                                <Grid item sm={6} xs={12}>
+                                                    <TextField
+                                                        variant="outlined"
+                                                        label="Usuario:"
+                                                        autoComplete="new-password"
+                                                        fullWidth
+                                                        name="txtUsuarioTitular"
+                                                        required={formColaborador.txtAcceso}
+                                                        value={formColaborador.txtUsuarioTitular}
+                                                        onChange={handleChangeFormColaborador}
+                                                        error={!formularioValidado.txtUsuarioTitular}
+                                                        helperText={
+                                                            !formularioValidado.txtUsuarioTitular
+                                                                ? "El usuario titular es requerido"
+                                                                : ""
+                                                        }
+                                                    />
+                                                </Grid>
+                                                <Grid item sm={6} xs={12}>
+                                                    <TextField
+                                                        variant="outlined"
+                                                        label="Contraseña:"
+                                                        type={mostrarPasswordTitular ? "text" : "password"}
+                                                        autoComplete="new-password"
+                                                        fullWidth
+                                                        name="txtPasswordTitular"
+                                                        required={formColaborador.txtAcceso}
+                                                        value={formColaborador.txtPasswordTitular}
+                                                        onChange={handleChangeFormColaborador}
+                                                        error={!formularioValidado.txtPasswordTitular}
+                                                        helperText={
+                                                            !formularioValidado.txtPasswordTitular
+                                                                ? "La contraseña titular es requerida"
+                                                                : ""
+                                                        }
+                                                        InputProps={{
+                                                            endAdornment: (
+                                                                <Tooltip
+                                                                    title={
+                                                                        mostrarPasswordTitular
+                                                                            ? "Ocultar contraseña"
+                                                                            : "Ver contraseña"
+                                                                    }
+                                                                    arrow
+                                                                    placement="top"
+                                                                >
+                                                                    <IconButton
+                                                                        onMouseDown={() =>
+                                                                            setMostrarPasswordTitular(true)
+                                                                        }
+                                                                        onMouseUp={() =>
+                                                                            setMostrarPasswordTitular(false)
+                                                                        }
+                                                                    >
+                                                                        {mostrarPasswordTitular ? (
+                                                                            <VisibilityIcon />
+                                                                        ) : (
+                                                                            <VisibilityOffIcon />
+                                                                        )}
+                                                                    </IconButton>
+                                                                </Tooltip>
+                                                            ),
                                                         }}
                                                     />
-                                                }
-                                                label="Dar permisos administrativos como Director"
-                                            />
-                                        </Grid>
-                                    )}
+                                                </Grid>
+                                                {entColaborador.iIdTipoDoctor === EnumTipoDoctor.Especialista ? (
+                                                    <Fragment>
+                                                        <Grid item xs={12}>
+                                                            <MeditocSubtitulo title="USUARIO ADMINISTRATIVO" />
+                                                        </Grid>
+                                                        <Grid item sm={6} xs={12}>
+                                                            <TextField
+                                                                variant="outlined"
+                                                                label="Usuario:"
+                                                                autoComplete="new-password"
+                                                                fullWidth
+                                                                name="txtUsuarioAdministrativo"
+                                                                required={formColaborador.txtAcceso}
+                                                                value={formColaborador.txtUsuarioAdministrativo}
+                                                                onChange={handleChangeFormColaborador}
+                                                                error={!formularioValidado.txtUsuarioAdministrativo}
+                                                                helperText={
+                                                                    !formularioValidado.txtUsuarioAdministrativo
+                                                                        ? "El usuario administrativo es requerido"
+                                                                        : ""
+                                                                }
+                                                            />
+                                                        </Grid>
+                                                        <Grid item sm={6} xs={12}>
+                                                            <TextField
+                                                                variant="outlined"
+                                                                label="Contraseña:"
+                                                                type={
+                                                                    mostrarPasswordAdministrativo ? "text" : "password"
+                                                                }
+                                                                autoComplete="new-password"
+                                                                fullWidth
+                                                                name="txtPasswordAdministrativo"
+                                                                required={formColaborador.txtAcceso}
+                                                                value={formColaborador.txtPasswordAdministrativo}
+                                                                onChange={handleChangeFormColaborador}
+                                                                error={!formularioValidado.txtPasswordAdministrativo}
+                                                                helperText={
+                                                                    !formularioValidado.txtPasswordAdministrativo
+                                                                        ? "La contraseña administrativa es requerida"
+                                                                        : ""
+                                                                }
+                                                                InputProps={{
+                                                                    endAdornment: (
+                                                                        <Tooltip
+                                                                            title={
+                                                                                mostrarPasswordAdministrativo
+                                                                                    ? "Ocultar contraseña"
+                                                                                    : "Ver contraseña"
+                                                                            }
+                                                                            arrow
+                                                                            placement="top"
+                                                                        >
+                                                                            <IconButton
+                                                                                onMouseDown={() =>
+                                                                                    setMostrarPasswordAdministrativo(
+                                                                                        true
+                                                                                    )
+                                                                                }
+                                                                                onMouseUp={() =>
+                                                                                    setMostrarPasswordAdministrativo(
+                                                                                        false
+                                                                                    )
+                                                                                }
+                                                                            >
+                                                                                {mostrarPasswordAdministrativo ? (
+                                                                                    <VisibilityIcon />
+                                                                                ) : (
+                                                                                    <VisibilityOffIcon />
+                                                                                )}
+                                                                            </IconButton>
+                                                                        </Tooltip>
+                                                                    ),
+                                                                }}
+                                                            />
+                                                        </Grid>
+                                                    </Fragment>
+                                                ) : null}
+
+                                                {entColaborador.iIdTipoDoctor !== EnumTipoDoctor.Especialista && (
+                                                    <Grid item xs={12} className="center">
+                                                        <FormControlLabel
+                                                            control={
+                                                                <Checkbox
+                                                                    checked={formColaborador.txtAdministrativo}
+                                                                    onChange={(e) => {
+                                                                        setFormColaborador({
+                                                                            ...formColaborador,
+                                                                            txtAdministrativo: e.target.checked,
+                                                                        });
+                                                                    }}
+                                                                />
+                                                            }
+                                                            label="Dar permisos administrativos como Director"
+                                                        />
+                                                    </Grid>
+                                                )}
+                                            </Grid>
+                                        </Collapse>
+                                    </Grid>
                                 </Grid>
                             </MeditocTabPanel>
                         </MeditocTabBody>
@@ -1151,40 +1186,41 @@ const FormColaborador = (props) => {
 
 FormColaborador.propTypes = {
     entColaborador: PropTypes.shape({
-        dtFechaNacimientoDoctor: PropTypes.any,
+        bAcceso: PropTypes.bool,
+        bAdministrador: PropTypes.bool,
+        dtFechaNacimientoDoctor: PropTypes.object,
         iIdColaborador: PropTypes.number,
-        iIdEspecialidad: PropTypes.any,
-        iIdTipoDoctor: PropTypes.any,
-        iIdUsuarioCGU: PropTypes.any,
-        iNumSala: PropTypes.any,
-        sApellidoMaternoDoctor: PropTypes.any,
-        sApellidoPaternoDoctor: PropTypes.any,
-        sCedulaProfecional: PropTypes.any,
-        sCorreoDirectorio: PropTypes.any,
-        sCorreoDoctor: PropTypes.any,
-        sDireccionConsultorio: PropTypes.any,
-        sDomicilioDoctor: PropTypes.any,
-        sMaps: PropTypes.any,
-        sNombreDirectorio: PropTypes.any,
-        sNombresDoctor: PropTypes.any,
-        sRFC: PropTypes.any,
-        sTelefonoDirectorio: PropTypes.any,
-        sTelefonoDoctor: PropTypes.any,
-        sURL: PropTypes.any,
-        sUsuarioAdministrativo: PropTypes.any,
-        sUsuarioTitular: PropTypes.any,
-        sWhatsApp: PropTypes.any,
+        iIdEspecialidad: PropTypes.number,
+        iIdTipoDoctor: PropTypes.number,
+        iIdUsuarioCGU: PropTypes.number,
+        iNumSala: PropTypes.number,
+        sApellidoMaternoDoctor: PropTypes.string,
+        sApellidoPaternoDoctor: PropTypes.string,
+        sCedulaProfecional: PropTypes.string,
+        sCorreoDirectorio: PropTypes.string,
+        sCorreoDoctor: PropTypes.string,
+        sDireccionConsultorio: PropTypes.string,
+        sDomicilioDoctor: PropTypes.string,
+        sMaps: PropTypes.string,
+        sNombreConsultorio: PropTypes.string,
+        sNombreDirectorio: PropTypes.string,
+        sNombresDoctor: PropTypes.string,
+        sRFC: PropTypes.string,
+        sTelefonoDirectorio: PropTypes.string,
+        sTelefonoDoctor: PropTypes.string,
+        sURL: PropTypes.string,
+        sUsuarioAdministrativo: PropTypes.string,
+        sUsuarioTitular: PropTypes.string,
+        sWhatsApp: PropTypes.string,
     }),
     funcAlert: PropTypes.func,
     funcGetColaboradores: PropTypes.func,
     funcLoader: PropTypes.func,
-    listaEspecialidades: PropTypes.shape({
-        filter: PropTypes.func,
-    }),
-    open: PropTypes.any,
+    listaEspecialidades: PropTypes.array,
+    open: PropTypes.bool,
     setOpen: PropTypes.func,
     usuarioSesion: PropTypes.shape({
-        iIdUsuario: PropTypes.any,
+        iIdUsuario: PropTypes.number,
     }),
 };
 

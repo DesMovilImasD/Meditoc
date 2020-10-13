@@ -135,7 +135,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Promociones
         /// <param name="pbActivo">Cupón activo</param>
         /// <param name="pbBaja">Cupón inactivo</param>
         /// <returns></returns>
-        public IMDResponse<DataTable> DGetCupones(int? piIdCupon = null, int? piIdCuponCategoria = null, string psDescripcion = null, string psCodigo = null, DateTime? pdtFechaVencimientoInicio = null, DateTime? pdtFechaVencimientoFin = null, DateTime? pdtFechaCreacionInicio = null, DateTime? pdtFechaCreacionFin = null, bool? pbActivo = true, bool? pbBaja = false)
+        public IMDResponse<DataTable> DGetCupones(int? piIdCupon = null, int? piIdCuponCategoria = null, bool? pbVigente = null, string psDescripcion = null, string psCodigo = null, DateTime? pdtFechaVencimientoInicio = null, DateTime? pdtFechaVencimientoFin = null, DateTime? pdtFechaCreacionInicio = null, DateTime? pdtFechaCreacionFin = null, bool? pbActivo = true, bool? pbBaja = false)
         {
             IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 
@@ -156,6 +156,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Promociones
                     database.AddInParameter(dbCommand, "pdtFechaCreacionFin", DbType.DateTime, pdtFechaCreacionFin);
                     database.AddInParameter(dbCommand, "pbActivo", DbType.Boolean, pbActivo);
                     database.AddInParameter(dbCommand, "pbBaja", DbType.Boolean, pbBaja);
+                    database.AddInParameter(dbCommand, "pbVigente", DbType.Boolean, pbVigente);
 
                     response = imdCommonData.DExecuteDT(database, dbCommand);
                 }

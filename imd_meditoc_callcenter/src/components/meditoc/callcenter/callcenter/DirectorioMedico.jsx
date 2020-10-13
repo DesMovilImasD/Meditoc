@@ -7,6 +7,7 @@ import DetalleDirectorioMeditoc from "./DetalleDirectorioMeditoc";
 import EspecialidadController from "../../../../controllers/EspecialidadController";
 import FindInPageIcon from "@material-ui/icons/FindInPage";
 import MeditocModal from "../../../utilidades/MeditocModal";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import Pagination from "@material-ui/lab/Pagination";
 import PropTypes from "prop-types";
 import SearchIcon from "@material-ui/icons/Search";
@@ -186,6 +187,7 @@ const DirectorioMedico = (props) => {
                         </div>
                     )}
                 </Grid>
+                <MeditocModalBotones hideCancel okMessage="Cerrar directorio" setOpen={setOpen} />
             </Grid>
         </MeditocModal>
     );

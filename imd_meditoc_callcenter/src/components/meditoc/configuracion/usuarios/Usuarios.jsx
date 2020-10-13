@@ -15,6 +15,7 @@ import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import PropTypes from "prop-types";
 import ReplayIcon from "@material-ui/icons/Replay";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import { cellProps } from "../../../../configurations/dataTableIconsConfig";
 import { emptyFunc } from "../../../../configurations/preventConfig";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -55,13 +56,13 @@ const Usuarios = (props) => {
 
     //Columnas de la tabla de usuarios
     const columns = [
-        { title: "ID", field: "iIdUsuario", align: "center", hidden: true },
-        { title: "Usuario", field: "sUsuario", align: "center" },
-        { title: "Tipo de cuenta", field: "sTipoCuenta", align: "center" },
-        { title: "Perfil", field: "sPerfil", align: "center" },
-        //{ title: "Nombre", field: "sNombres", align: "center" },
-        //{ title: "Apellido", field: "sApellidoPaterno", align: "center" },
-        { title: "Registrado", field: "sFechaCreacion", align: "center" },
+        { title: "ID", field: "iIdUsuario", hidden: true, ...cellProps },
+        { title: "Usuario", field: "sUsuario", ...cellProps },
+        { title: "Tipo de cuenta", field: "sTipoCuenta", ...cellProps },
+        { title: "Perfil", field: "sPerfil", ...cellProps },
+        //{ title: "Nombre", field: "sNombres", ...cellProps },
+        //{ title: "Apellido", field: "sApellidoPaterno", ...cellProps },
+        { title: "Registrado", field: "sFechaCreacion", ...cellProps },
     ];
 
     //Lista de usuarios activos del portal

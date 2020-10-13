@@ -22,7 +22,7 @@ const apiGetServices = "Api/Producto/Get/ObtenerServicio";
 const apiGetPolicies = "Api/Politicas/Get/Politicas";
 const apiRevalidateCoupon = "api/promociones/validar/cupon/email";
 const apiValidateCoupon = "api/promociones/validar/cupon";
-const apiGetDirectorio = "Api/Colaborador/Get/Directorio/Especialistas";
+const apiGetDirectorio = "Api/Colaborador/Get/Directorio/Especialistas/Publico";
 const apiGetEspecialidades = "Api/Especialidad/Get/Registros";
 
 export {

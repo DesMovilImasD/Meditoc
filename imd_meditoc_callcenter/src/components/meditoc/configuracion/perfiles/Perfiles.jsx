@@ -15,6 +15,7 @@ import Permisos from "./Permisos";
 import PropTypes from "prop-types";
 import ReplayIcon from "@material-ui/icons/Replay";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
+import { cellProps } from "../../../../configurations/dataTableIconsConfig";
 import { emptyFunc } from "../../../../configurations/preventConfig";
 
 /*************************************************************
@@ -34,8 +35,8 @@ const Perfiles = (props) => {
 
     //Columnas a mostrar en la tabla
     const columns = [
-        { title: "ID Perfil", field: "iIdPerfil", align: "center" },
-        { title: "Descripción", field: "sNombre", align: "center" },
+        { title: "ID Perfil", field: "iIdPerfil", ...cellProps },
+        { title: "Descripción", field: "sNombre", ...cellProps },
     ];
 
     //Lista de todos los elementos del sistema (módulos, submódulos y botones)

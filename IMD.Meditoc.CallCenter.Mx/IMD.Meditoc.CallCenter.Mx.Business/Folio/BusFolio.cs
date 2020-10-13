@@ -962,6 +962,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 DateTime? buscadorConsultaProgramadaInicio = entNuevaConsulta?.consulta?.dtFechaProgramadaInicio?.AddMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["iMinToleraciaConsultaInicio"]) * -1);
                 DateTime? buscadorConsultaProgramadaFin = entNuevaConsulta?.consulta?.dtFechaProgramadaFin?.AddMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["iMinToleraciaConsultaFin"]));
 
+
                 IMDResponse<List<EntDetalleConsulta>> resGetConsultas = busConsulta.BGetDisponibilidadConsulta((int)entNuevaConsulta.consulta.iIdColaborador, entNuevaConsulta.consulta.iIdConsulta, buscadorConsultaProgramadaInicio, buscadorConsultaProgramadaFin);
                 if (resGetConsultas.Code != 0)
                 {
@@ -978,6 +979,25 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                             response.Message = $"Ya hay una consulta programada de {consulta.dtFechaProgramadaInicio?.ToString("h:mm tt")} a {consulta.dtFechaProgramadaFin?.ToString("h:mm tt")} para el folio {consulta.sFolio}. El tiempo de espera entre consultas es de {ConfigurationManager.AppSettings["iMinToleraciaConsultaFin"]} min.";
                             return response;
                         }
+                    }
+                }
+
+                if (!string.IsNullOrWhiteSpace(entNuevaConsulta.sFolio))
+                {
+
+                    IMDResponse<List<EntDetalleConsulta>> resVerificarFolioSinConsulta = busConsulta.BGetDisponibilidadConsulta(null, entNuevaConsulta.consulta.iIdConsulta, buscadorConsultaProgramadaInicio, buscadorConsultaProgramadaFin);
+                    if (resVerificarFolioSinConsulta.Code != 0)
+                    {
+                        return resVerificarFolioSinConsulta.GetResponse<EntDetalleCompra>();
+                    }
+
+                    List<EntDetalleConsulta> consultas = resVerificarFolioSinConsulta.Result.Where(x => x.sFolio == entNuevaConsulta.sFolio.Trim() && (x.iIdEstatusConsulta != (int)EnumEstatusConsulta.Cancelado || x.iIdEstatusConsulta != (int)EnumEstatusConsulta.Finalizado)).ToList();
+                    if (consultas.Count > 0)
+                    {
+                        EntDetalleConsulta consulta = consultas.First();
+                        response.Code = -23479878234;
+                        response.Message = $"El folio ya cuenta con una consulta programada con otro colaborador de {consulta.dtFechaProgramadaInicio?.ToString("h:mm tt")} a {consulta.dtFechaProgramadaFin?.ToString("h:mm tt")}";
+                        return response;
                     }
                 }
 
@@ -1530,7 +1550,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             return response;
         }
 
-        public IMDResponse<List<EntFolioReporte>> BGetFolios(int? piIdFolio = null, int? piIdEmpresa = null, int? piIdProducto = null, int? piIdOrigen = null, string psFolio = null, string psOrdenConekta = null, bool? pbTerminosYCondiciones = null, bool? pbActivo = true, bool? pbBaja = false)
+        public IMDResponse<List<EntFolioReporte>> BGetFolios(int? piIdFolio = null, int? piIdEmpresa = null, int? piIdProducto = null, int? piIdOrigen = null, string psFolio = null, string psOrdenConekta = null, bool? pbTerminosYCondiciones = null, bool? pbActivo = true, bool? pbBaja = false, bool? pbVigente = null)
         {
             IMDResponse<List<EntFolioReporte>> response = new IMDResponse<List<EntFolioReporte>>();
 
@@ -1539,7 +1559,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
             try
             {
-                IMDResponse<DataTable> respuestaObtenerFolios = datFolio.DGetFolios(piIdFolio, piIdEmpresa, piIdProducto, piIdOrigen, psFolio, psOrdenConekta, pbTerminosYCondiciones, pbActivo, pbBaja);
+                IMDResponse<DataTable> respuestaObtenerFolios = datFolio.DGetFolios(piIdFolio, piIdEmpresa, piIdProducto, piIdOrigen, psFolio, psOrdenConekta, pbTerminosYCondiciones, pbActivo, pbBaja, pbVigente);
                 if (respuestaObtenerFolios.Code != 0)
                 {
                     return respuestaObtenerFolios.GetResponse<List<EntFolioReporte>>();
@@ -1555,6 +1575,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                         bTerminosYCondiciones = Convert.ToBoolean(dr.ConvertTo<int>("bTerminosYCondiciones")),
                         bActivo = Convert.ToBoolean(dr.ConvertTo<int>("bActivo")),
                         bBaja = Convert.ToBoolean(dr.ConvertTo<int>("bBaja")),
+                        bVigente = Convert.ToBoolean(dr.ConvertTo<int>("bVigente")),
                         dtFechaCreacion = dr.ConvertTo<DateTime>("dtFechaCreacion"),
                         dtFechaVencimiento = dr.ConvertTo<DateTime?>("dtFechaVencimiento"),
                         iConsecutivo = dr.ConvertTo<int>("iConsecutivo"),

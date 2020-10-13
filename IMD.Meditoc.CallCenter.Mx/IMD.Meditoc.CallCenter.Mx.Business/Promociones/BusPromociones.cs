@@ -364,7 +364,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Promociones
         /// <param name="pbActivo">Cupón activo</param>
         /// <param name="pbBaja">Cupón inactivo</param>
         /// <returns></returns>
-        public IMDResponse<List<EntCupon>> BObtenerCupones(int? piIdCupon = null, int? piIdCuponCategoria = null, string psDescripcion = null, string psCodigo = null, DateTime? pdtFechaVencimientoInicio = null, DateTime? pdtFechaVencimientoFin = null, DateTime? pdtFechaCreacionInicio = null, DateTime? pdtFechaCreacionFin = null, bool? pbActivo = true, bool? pbBaja = false)
+        public IMDResponse<List<EntCupon>> BObtenerCupones(int? piIdCupon = null, int? piIdCuponCategoria = null, string psDescripcion = null, string psCodigo = null, DateTime? pdtFechaVencimientoInicio = null, DateTime? pdtFechaVencimientoFin = null, DateTime? pdtFechaCreacionInicio = null, DateTime? pdtFechaCreacionFin = null, bool? pbActivo = true, bool? pbBaja = false, bool? pbVigente = null)
         {
             IMDResponse<List<EntCupon>> response = new IMDResponse<List<EntCupon>>();
 
@@ -373,7 +373,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Promociones
 
             try
             {
-                IMDResponse<DataTable> respuestaObtenerCupones = datPromociones.DGetCupones(piIdCupon, piIdCuponCategoria, psDescripcion, psCodigo, pdtFechaVencimientoInicio, pdtFechaVencimientoFin, pdtFechaCreacionInicio, pdtFechaCreacionFin, pbActivo, pbBaja);
+                IMDResponse<DataTable> respuestaObtenerCupones = datPromociones.DGetCupones(piIdCupon, piIdCuponCategoria, pbVigente, psDescripcion, psCodigo, pdtFechaVencimientoInicio, pdtFechaVencimientoFin, pdtFechaCreacionInicio, pdtFechaCreacionFin, pbActivo, pbBaja);
                 if (respuestaObtenerCupones.Code != 0)
                 {
                     return respuestaObtenerCupones.GetResponse<List<EntCupon>>();
@@ -387,6 +387,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Promociones
 
                     cupon.fbActivo = Convert.ToBoolean(dr.ConvertTo<int>("bActivo"));
                     cupon.fbBaja = Convert.ToBoolean(dr.ConvertTo<int>("bBaja"));
+                    cupon.fbVigente = Convert.ToBoolean(dr.ConvertTo<int>("bVigente"));
                     cupon.fdtFechaVencimiento = dr.ConvertTo<DateTime?>("dtFechaVencimiento");
                     cupon.sFechaVencimiento = cupon.fdtFechaVencimiento == null ? "Hasta agotar" : ((DateTime)cupon.fdtFechaVencimiento).ToString("dd/MM/yy HH:mm");
                     cupon.dtFechaCreacion = dr.ConvertTo<DateTime?>("dtFechaCreacion");
@@ -403,8 +404,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Promociones
                     cupon.fsCodigo = dr.ConvertTo<string>("sCodigo");
                     cupon.fsDescripcion = dr.ConvertTo<string>("sDescripcion");
                     cupon.fsDescripcionCategoria = dr.ConvertTo<string>("sDescripcionCategoria");
-
-                    cupon.bVencido = cupon.fdtFechaVencimiento != null ? cupon.fiTotalCanjeado >= cupon.fiTotalLanzamiento : DateTime.Now > cupon.fdtFechaVencimiento;
 
                     listaCupones.Add(cupon);
                 }

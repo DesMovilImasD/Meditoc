@@ -104,7 +104,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
         [MeditocAuthentication]
         [HttpGet]
         [Route("Api/Folios/Get/Report")]
-        public IMDResponse<List<EntFolioReporte>> CGetFolios([FromUri]int? piIdFolio = null, [FromUri]int? piIdEmpresa = null, [FromUri]int? piIdProducto = null, [FromUri]int? piIdOrigen = null, [FromUri]string psFolio = null, [FromUri]string psOrdenConekta = null, [FromUri]bool? pbTerminosYCondiciones = null, [FromUri]bool? pbActivo = true, [FromUri]bool? pbBaja = false)
+        public IMDResponse<List<EntFolioReporte>> CGetFolios([FromUri]int? piIdFolio = null, [FromUri]int? piIdEmpresa = null, [FromUri]int? piIdProducto = null, [FromUri]int? piIdOrigen = null, [FromUri]string psFolio = null, [FromUri]string psOrdenConekta = null, [FromUri]bool? pbTerminosYCondiciones = null, [FromUri]bool? pbActivo = true, [FromUri]bool? pbBaja = false, [FromUri]bool? pbVigente = null)
         {
             IMDResponse<List<EntFolioReporte>> response = new IMDResponse<List<EntFolioReporte>>();
 
@@ -114,7 +114,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             try
             {
                 BusFolio busFolio = new BusFolio();
-                response = busFolio.BGetFolios(piIdFolio, piIdEmpresa, piIdProducto, piIdOrigen, psFolio, psOrdenConekta, pbTerminosYCondiciones, pbActivo, pbBaja);
+                response = busFolio.BGetFolios(piIdFolio, piIdEmpresa, piIdProducto, piIdOrigen, psFolio, psOrdenConekta, pbTerminosYCondiciones, pbActivo, pbBaja, pbVigente);
             }
             catch (Exception ex)
             {

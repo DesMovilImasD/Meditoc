@@ -188,7 +188,7 @@ const FormCargarArchivo = (props) => {
             setArchivoCargado(null);
             setEntArchivoVerificado(null);
             setOpen(false);
-            await funcGetFoliosEmpresa();
+            await funcGetFoliosEmpresa(true);
             funcAlert(response.Message, "success");
         } else {
             funcAlert(response.Message);

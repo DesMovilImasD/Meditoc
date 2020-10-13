@@ -14,19 +14,31 @@ import PropTypes from "prop-types";
 import { useEffect } from "react";
 import { useState } from "react";
 
+/*************************************************************
+ * Descripcion: Modal para administrar la foto del colaborador seleccionado
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ * Invocado desde: Colaboradores
+ *************************************************************/
 const FotoColaborador = (props) => {
+    //PROPS
     const { entColaborador, open, setOpen, usuarioSesion, permisos, funcLoader, funcAlert } = props;
 
+    //CONTROLLERS
     const colaboradorController = new ColaboradorController();
 
+    //STATES
     const [fotoColaboradorB64, setFotoColaboradorB64] = useState("");
-    const [modalEliminarFotoOpen, setModalEliminarFotoOpen] = useState(false);
+    const [openEliminarFoto, setOpenEliminarFoto] = useState(false);
 
-    const handleClickLEiminarFoto = () => {
-        setModalEliminarFotoOpen(true);
+    //HANDLERS
+    //Pedir confirmacion para eliminar la foto del colaborador
+    const handleClickEliminarFoto = () => {
+        setOpenEliminarFoto(true);
     };
 
-    const funcSaveColaboradorFoto = () => {
+    //Seleccionar la foto nueva para agregar o cambiar
+    const handleClickCambiarFoto = () => {
         let input = document.createElement("input");
         input.type = "file";
         input.value = "";
@@ -74,7 +86,7 @@ const FotoColaborador = (props) => {
                 );
 
                 if (response.Code === 0) {
-                    await funcGetColaboradorFoto();
+                    await fnObtenerFotoColaborador();
                     funcAlert(response.Message, "success");
                 } else {
                     funcAlert(response.Message);
@@ -87,7 +99,9 @@ const FotoColaborador = (props) => {
         input.remove();
     };
 
-    const funcGetColaboradorFoto = async () => {
+    //FUNCIONES
+    //Consumir API para obtener la foto del colaborador
+    const fnObtenerFotoColaborador = async () => {
         funcLoader(true, "Consultando foto de colaborador...");
 
         const response = await colaboradorController.funcGetColaboradorFoto(entColaborador.iIdColaborador);
@@ -103,7 +117,8 @@ const FotoColaborador = (props) => {
         funcLoader();
     };
 
-    const funcDeleteColaboradorFoto = async () => {
+    //Consumir API para borrar la foto del colaborador
+    const fnBorrarFotoColaborador = async () => {
         funcLoader(true, "Eliminando foto de colaborador...");
 
         const response = await colaboradorController.funcDeleteColaboradorFoto(
@@ -113,7 +128,7 @@ const FotoColaborador = (props) => {
 
         if (response.Code === 0) {
             setFotoColaboradorB64("");
-            setModalEliminarFotoOpen(false);
+            setOpenEliminarFoto(false);
             funcAlert(response.Message, "success");
         } else {
             funcAlert(response.Message);
@@ -121,10 +136,12 @@ const FotoColaborador = (props) => {
         funcLoader();
     };
 
+    //EFFECTS
+    //Obtener la foto al abrir el modal
     useEffect(() => {
         setFotoColaboradorB64("");
         if (open === true) {
-            funcGetColaboradorFoto();
+            fnObtenerFotoColaborador();
         }
         // eslint-disable-next-line
     }, [entColaborador]);
@@ -144,7 +161,7 @@ const FotoColaborador = (props) => {
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title={permisos.Botones["8"].Nombre} arrow>
-                                <IconButton onClick={funcSaveColaboradorFoto}>
+                                <IconButton onClick={handleClickCambiarFoto}>
                                     <InsertPhotoIcon className="color-1" />
                                 </IconButton>
                             </Tooltip>
@@ -152,7 +169,7 @@ const FotoColaborador = (props) => {
                     )}
                     {permisos.Botones["9"] !== undefined && ( //Eliminar foto
                         <Tooltip title={permisos.Botones["9"].Nombre} arrow>
-                            <IconButton onClick={handleClickLEiminarFoto}>
+                            <IconButton onClick={handleClickEliminarFoto}>
                                 <DeleteIcon className="color-1" />
                             </IconButton>
                         </Tooltip>
@@ -175,9 +192,9 @@ const FotoColaborador = (props) => {
             </MeditocModal>
             <MeditocConfirmacion
                 title="Eliminar foto"
-                open={modalEliminarFotoOpen}
-                setOpen={setModalEliminarFotoOpen}
-                okFunc={funcDeleteColaboradorFoto}
+                open={openEliminarFoto}
+                setOpen={setOpenEliminarFoto}
+                okFunc={fnBorrarFotoColaborador}
             >
                 ¿Desea eliminar la foto del colaborador?
             </MeditocConfirmacion>

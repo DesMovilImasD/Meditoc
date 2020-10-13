@@ -9,22 +9,48 @@ using System.Data.Common;
 
 namespace IMD.Meditoc.CallCenter.Mx.Data.Catalogos
 {
-    public class DatEspecialidad
+    public class DatCatalogo
     {
-        private static readonly ILog logger = LogManager.GetLogger(typeof(DatEspecialidad));
+        private static readonly ILog logger = LogManager.GetLogger(typeof(DatCatalogo));
         private Database database;
         IMDCommonData imdCommonData;
+        string spGetCatalogos;
         string spSaveEspecialidad;
         string spGetEspecialidad;
 
-        public DatEspecialidad()
+        public DatCatalogo()
         {
             imdCommonData = new IMDCommonData();
             string FsConnectionString = "cnxMeditoc";
             database = imdCommonData.DGetDatabase(FsConnectionString, "MeditocComercial", "Meditoc1");
 
+            spGetCatalogos = "svc_get_catalogos";
             spSaveEspecialidad = "sva_cat_save_especialidad";
             spGetEspecialidad = "svc_cat_especialidades";
+        }
+
+        public IMDResponse<DataSet> DGetCatalogos()
+        {
+            IMDResponse<DataSet> response = new IMDResponse<DataSet>();
+
+            string metodo = nameof(this.DGetCatalogos);
+            logger.Info(IMDSerialize.Serialize(67823458642723, $"Inicia {metodo}"));
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spGetCatalogos))
+                {
+                    response = imdCommonData.DExecuteDS(database, dbCommand);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458643500;
+                response.Message = "Ocurrió un error inesperado en la base de datos al consultar los catalogos del sistema.";
+
+                logger.Error(IMDSerialize.Serialize(67823458643500, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
         }
 
         public IMDResponse<bool> DSaveEspecialidad(int piIdEspecialidad, string psNombre, int piIdUsuarioMod, bool pbActivo, bool pbBaja)

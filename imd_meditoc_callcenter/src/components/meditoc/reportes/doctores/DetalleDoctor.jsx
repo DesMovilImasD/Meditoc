@@ -1,5 +1,5 @@
 import { Button, Grid } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import DetalleConsulta from "./DetalleConsulta";
 import MeditocInfoField from "../../../utilidades/MeditocInfoField";
@@ -7,34 +7,62 @@ import MeditocModal from "../../../utilidades/MeditocModal";
 import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import MeditocTable from "../../../utilidades/MeditocTable";
 import PropTypes from "prop-types";
+import { cellProps } from "../../../../configurations/dataTableIconsConfig";
 
 const DetalleDoctor = (props) => {
     const { entDoctor, open, setOpen, funcLoader, funcAlert } = props;
 
     const columnas = [
-        { title: "ID", field: "iIdConsulta", align: "center" },
-        {
-            title: "Consulta inicio",
-            field: "sFechaConsultaInicio",
-            align: "center",
-        },
-        { title: "Consulta fin", field: "sFechaConsultaFin", align: "center" },
-        { title: "Nombre", field: "name", align: "center" },
-        {
-            title: "Estatus de consulta",
-            field: "sEstatusConsulta",
-            align: "center",
-        },
-        { title: "Detalle", field: "sDetalle", align: "center" },
+        { title: "ID", field: "iIdConsulta", ...cellProps },
+        { title: "Consulta inicio", field: "sFechaConsultaInicio", ...cellProps },
+        { title: "Consulta fin", field: "sFechaConsultaFin", ...cellProps },
+        { title: "Nombre", field: "name", ...cellProps },
+        { title: "Estatus de consulta", field: "sEstatusConsulta", ...cellProps },
+        { title: "Detalle", field: "sDetalle", ...cellProps },
     ];
 
     const [modalDetalleConsultaOpen, setModalDetalleConsultaOpen] = useState(false);
-    const [iIdConsulta, setIIdConsulta] = useState(0);
+    const [consultaSeleccionada, setConsultaSeleccionada] = useState({ iIdConsulta: 0 });
 
-    const handleClickDetalleConsulta = (id) => {
-        setIIdConsulta(id);
+    const [listaConsultas, setListaConsultas] = useState([]);
+
+    // eslint-disable-next-line
+    const hadleClickVerDetalle = () => {
+        if (consultaSeleccionada.iIdConsulta === 0) {
+            funcAlert("Seleccione una consulta para continuar");
+            return;
+        }
         setModalDetalleConsultaOpen(true);
     };
+
+    const handleClickDetalleConsulta = () => {
+        //setIIdConsulta(id);
+        setModalDetalleConsultaOpen(true);
+    };
+
+    useEffect(() => {
+        setListaConsultas(
+            entDoctor.lstConsultas.map((consulta) => ({
+                ...consulta,
+                name: consulta.entPaciente.name,
+                sFechaConsultaInicio:
+                    consulta.sEstatusConsulta === "Creado/Programado" || consulta.sEstatusConsulta === "Cancelado"
+                        ? consulta.sFechaProgramadaInicio
+                        : consulta.sFechaConsultaInicio,
+                sFechaConsultaFin:
+                    consulta.sEstatusConsulta === "Creado/Programado" || consulta.sEstatusConsulta === "Cancelado"
+                        ? consulta.sFechaProgramadaFin
+                        : consulta.sEstatusConsulta === "En consulta"
+                        ? "Consultando"
+                        : consulta.sFechaConsultaFin,
+                sDetalle: (
+                    <Button variant="contained" color="primary" onClick={handleClickDetalleConsulta}>
+                        DETALLE
+                    </Button>
+                ),
+            }))
+        );
+    }, [entDoctor]);
 
     return (
         <MeditocModal title="Detalle de doctor" size="large" open={open} setOpen={setOpen}>
@@ -66,39 +94,17 @@ const DetalleDoctor = (props) => {
                 <Grid item xs={12}>
                     <MeditocTable
                         columns={columnas}
-                        data={entDoctor.lstConsultas.map((consulta) => ({
-                            ...consulta,
-                            name: consulta.entPaciente.name,
-                            sFechaConsultaInicio:
-                                consulta.sEstatusConsulta === "Creado/Programado" ||
-                                consulta.sEstatusConsulta === "Cancelado"
-                                    ? consulta.sFechaProgramadaInicio
-                                    : consulta.sFechaConsultaInicio,
-                            sFechaConsultaFin:
-                                consulta.sEstatusConsulta === "Creado/Programado" ||
-                                consulta.sEstatusConsulta === "Cancelado"
-                                    ? consulta.sFechaProgramadaFin
-                                    : consulta.sEstatusConsulta === "En consulta"
-                                    ? "Consultando"
-                                    : consulta.sFechaConsultaFin,
-                            sDetalle: (
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={() => handleClickDetalleConsulta(consulta.iIdConsulta)}
-                                >
-                                    DETALLE
-                                </Button>
-                            ),
-                        }))}
-                        rowClick={false}
+                        data={listaConsultas}
+                        rowSelected={consultaSeleccionada}
+                        setRowSelected={setConsultaSeleccionada}
                         mainField="iIdConsulta"
+                        doubleClick={handleClickDetalleConsulta}
                     />
                 </Grid>
                 <MeditocModalBotones cancelMessage="Cerrar detalle de doctor" setOpen={setOpen} hideOk />
             </Grid>
             <DetalleConsulta
-                iIdConsulta={iIdConsulta}
+                entConsultaSeleccionada={consultaSeleccionada}
                 open={modalDetalleConsultaOpen}
                 setOpen={setModalDetalleConsultaOpen}
                 funcLoader={funcLoader}

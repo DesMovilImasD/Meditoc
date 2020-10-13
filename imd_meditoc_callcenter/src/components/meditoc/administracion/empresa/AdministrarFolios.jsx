@@ -1,4 +1,5 @@
-import { IconButton, Tooltip } from "@material-ui/core";
+import { Grid, IconButton, MenuItem, TextField, Tooltip, makeStyles } from "@material-ui/core";
+import { green, red } from "@material-ui/core/colors";
 
 import CrearFolios from "./CrearFolios";
 import CreateNewFolderIcon from "@material-ui/icons/CreateNewFolder";
@@ -12,28 +13,68 @@ import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 import MeditocFullModal from "../../../utilidades/MeditocFullModal";
 import MeditocHeader2 from "../../../utilidades/MeditocHeader2";
 import MeditocHeader3 from "../../../utilidades/MeditocHeader3";
+import MeditocHelper from "../../../utilidades/MeditocHelper";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
 import MeditocTable from "../../../utilidades/MeditocTable";
 import ModificarVigencia from "./ModificarVigencia";
 import NoteAddRoundedIcon from "@material-ui/icons/NoteAddRounded";
 import PropTypes from "prop-types";
 import React from "react";
 import ReplayIcon from "@material-ui/icons/Replay";
+import StopIcon from "@material-ui/icons/Stop";
+import { cellProps } from "../../../../configurations/dataTableIconsConfig";
+import theme from "../../../../configurations/themeConfig";
 import { useEffect } from "react";
 import { useState } from "react";
 
+const useStyles = makeStyles({
+    root: {
+        backgroundColor: theme.palette.primary.main,
+        color: "#fff",
+    },
+});
+
 const AdministrarFolios = (props) => {
-    const { entEmpresa, open, setOpen, listaProductos, usuarioSesion, permisos, funcLoader, funcAlert } = props;
+    const {
+        entEmpresa,
+        open,
+        setOpen,
+        listaProductos,
+        entCatalogos,
+        usuarioSesion,
+        permisos,
+        funcLoader,
+        funcAlert,
+    } = props;
+
+    const classes = useStyles();
 
     const folioController = new FolioController();
 
     const columns = [
-        { title: "ID", field: "iIdFolio", align: "center", hidden: true },
-        { title: "Folio", field: "sFolio", align: "center" },
-        { title: "Producto", field: "sNombreProducto", align: "center" },
-        { title: "Origen", field: "sOrigen", align: "center" },
-        { title: "Creado", field: "sFechaCreacion", align: "center" },
-        { title: "Vencimiento", field: "sFechaVencimiento", align: "center" },
+        { title: "ID", field: "iIdFolio", ...cellProps, hidden: true },
+        { title: "", field: "sStatus", ...cellProps, sorting: false },
+        { title: "Folio", field: "sFolio", ...cellProps },
+        { title: "Producto", field: "sNombreProducto", ...cellProps },
+        { title: "Origen", field: "sOrigen", ...cellProps },
+        { title: "Creado", field: "sFechaCreacion", ...cellProps },
+        { title: "Vencimiento", field: "sFechaVencimiento", ...cellProps },
     ];
+
+    const filtrosVacios = {
+        txtOrigen: "",
+        txtProducto: "",
+        txtVigente: "",
+    };
+
+    const [filtroFolios, setFiltroFolios] = useState(filtrosVacios);
+
+    const handleChangeFiltroFolio = (e) => {
+        setFiltroFolios({
+            ...filtroFolios,
+            [e.target.name]: e.target.value,
+        });
+    };
 
     const [listaFoliosEmpresa, setListaFoliosEmpresa] = useState([]);
     const [foliosEmpresaSeleccionado, setFoliosEmpresaSeleccionado] = useState([]);
@@ -67,13 +108,45 @@ const AdministrarFolios = (props) => {
         setModalEliminarFoliosOpen(true);
     };
 
-    const funcGetFoliosEmpresa = async () => {
+    const funcGetFoliosEmpresa = async (clean = false) => {
         funcLoader(true, "Consultando folios de empresa...");
-
-        const response = await folioController.funcGetFolios(null, entEmpresa.iIdEmpresa);
+        let response;
+        if (clean === false) {
+            response = await folioController.funcGetFolios(
+                null,
+                entEmpresa.iIdEmpresa,
+                filtroFolios.txtProducto,
+                filtroFolios.txtOrigen,
+                "",
+                "",
+                null,
+                "",
+                "",
+                filtroFolios.txtVigente
+            );
+        } else {
+            response = await folioController.funcGetFolios(null, entEmpresa.iIdEmpresa);
+            setFiltroFolios(filtrosVacios);
+        }
 
         if (response.Code === 0) {
-            setListaFoliosEmpresa(response.Result);
+            setListaFoliosEmpresa(
+                response.Result.map((folio) => ({
+                    ...folio,
+                    sStatus: (
+                        <span>
+                            <i
+                                className="icon size-20"
+                                style={{
+                                    color: folio.bVigente === true ? green[500] : red[500],
+                                    verticalAlign: "middle",
+                                }}
+                                dangerouslySetInnerHTML={{ __html: `&#x${folio.sIcon}` }}
+                            />
+                        </span>
+                    ),
+                }))
+            );
         } else {
             funcAlert(response.Message);
         }
@@ -96,7 +169,7 @@ const AdministrarFolios = (props) => {
             setFoliosEmpresaSeleccionado([]);
             setModalEliminarFoliosOpen(false);
             funcAlert(response.Message, "success");
-            await funcGetFoliosEmpresa();
+            await funcGetFoliosEmpresa(true);
         } else {
             funcAlert(response.Message);
         }
@@ -116,9 +189,20 @@ const AdministrarFolios = (props) => {
         funcLoader();
     };
 
+    const handleClickActualizarTabla = () => {
+        funcGetFoliosEmpresa(true);
+    };
+
+    useEffect(() => {
+        if (filtroFolios !== filtrosVacios) {
+            funcGetFoliosEmpresa(false);
+        }
+        // eslint-disable-next-line
+    }, [filtroFolios]);
+
     useEffect(() => {
         if (open === true) {
-            funcGetFoliosEmpresa();
+            funcGetFoliosEmpresa(true);
         }
         // eslint-disable-next-line
     }, [entEmpresa]);
@@ -131,59 +215,136 @@ const AdministrarFolios = (props) => {
                     setOpen={setOpen}
                 />
                 <MeditocBody>
-                    <MeditocHeader3 title={`Folios generados: ${listaFoliosEmpresa.length}`}>
-                        {permisos.Botones["5"] !== undefined && ( //Crear folios a empresa
-                            <Tooltip title={permisos.Botones["5"].Nombre} arrow>
-                                <IconButton onClick={handleClickAgregarFolios}>
-                                    <NoteAddRoundedIcon className="color-1" />
-                                </IconButton>
-                            </Tooltip>
-                        )}
-                        {permisos.Botones["6"] !== undefined && ( //Modificar vigencia a folios seleccionados
-                            <Tooltip title={permisos.Botones["6"].Nombre} arrow>
-                                <IconButton onClick={handleClickModificarVigencia}>
-                                    <EventAvailableRoundedIcon className="color-1" />
-                                </IconButton>
-                            </Tooltip>
-                        )}
-                        {permisos.Botones["7"] !== undefined && ( //Cargar folios desde archivo
-                            <Tooltip title={permisos.Botones["7"].Nombre} arrow>
-                                <IconButton onClick={handleClickSubirArchivo}>
-                                    <CreateNewFolderIcon className="color-1" />
-                                </IconButton>
-                            </Tooltip>
-                        )}
-                        {permisos.Botones["8"] !== undefined && ( //Descargar plantilla para cargar folios desde archivo
-                            <Tooltip title={permisos.Botones["8"].Nombre} arrow>
-                                <IconButton onClick={handleClickDescargarPlantilla}>
-                                    <GetAppIcon className="color-1" />
-                                </IconButton>
-                            </Tooltip>
-                        )}
-                        {permisos.Botones["9"] !== undefined && ( //Eliminar folios seleccionados
-                            <Tooltip title={permisos.Botones["9"].Nombre} arrow>
-                                <IconButton onClick={handleClickEliminarFolios}>
-                                    <DeleteIcon className="color-1" />
-                                </IconButton>
-                            </Tooltip>
-                        )}
-                        {permisos.Botones["10"] !== undefined && ( //Actualizar tabla de folios
-                            <Tooltip title={permisos.Botones["10"].Nombre} arrow>
-                                <IconButton onClick={funcGetFoliosEmpresa}>
-                                    <ReplayIcon className="color-1" />
-                                </IconButton>
-                            </Tooltip>
-                        )}
-                    </MeditocHeader3>
-                    <MeditocTable
-                        columns={columns}
-                        data={listaFoliosEmpresa}
-                        setData={setListaFoliosEmpresa}
-                        rowsSelected={foliosEmpresaSeleccionado}
-                        setRowsSelected={setFoliosEmpresaSeleccionado}
-                        selection={true}
-                        mainField="iIdFolio"
-                    />
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            <MeditocHeader3 title={`Folios generados: ${listaFoliosEmpresa.length}`}>
+                                {permisos.Botones["5"] !== undefined && ( //Crear folios a empresa
+                                    <Tooltip title={permisos.Botones["5"].Nombre} arrow>
+                                        <IconButton onClick={handleClickAgregarFolios}>
+                                            <NoteAddRoundedIcon className="color-1" />
+                                        </IconButton>
+                                    </Tooltip>
+                                )}
+                                {permisos.Botones["6"] !== undefined && ( //Modificar vigencia a folios seleccionados
+                                    <Tooltip title={permisos.Botones["6"].Nombre} arrow>
+                                        <IconButton onClick={handleClickModificarVigencia}>
+                                            <EventAvailableRoundedIcon className="color-1" />
+                                        </IconButton>
+                                    </Tooltip>
+                                )}
+                                {permisos.Botones["7"] !== undefined && ( //Cargar folios desde archivo
+                                    <Tooltip title={permisos.Botones["7"].Nombre} arrow>
+                                        <IconButton onClick={handleClickSubirArchivo}>
+                                            <CreateNewFolderIcon className="color-1" />
+                                        </IconButton>
+                                    </Tooltip>
+                                )}
+                                {permisos.Botones["8"] !== undefined && ( //Descargar plantilla para cargar folios desde archivo
+                                    <Tooltip title={permisos.Botones["8"].Nombre} arrow>
+                                        <IconButton onClick={handleClickDescargarPlantilla}>
+                                            <GetAppIcon className="color-1" />
+                                        </IconButton>
+                                    </Tooltip>
+                                )}
+                                {permisos.Botones["9"] !== undefined && ( //Eliminar folios seleccionados
+                                    <Tooltip title={permisos.Botones["9"].Nombre} arrow>
+                                        <IconButton onClick={handleClickEliminarFolios}>
+                                            <DeleteIcon className="color-1" />
+                                        </IconButton>
+                                    </Tooltip>
+                                )}
+                                {permisos.Botones["10"] !== undefined && ( //Actualizar tabla de folios
+                                    <Tooltip title={permisos.Botones["10"].Nombre} arrow>
+                                        <IconButton onClick={handleClickActualizarTabla}>
+                                            <ReplayIcon className="color-1" />
+                                        </IconButton>
+                                    </Tooltip>
+                                )}
+                            </MeditocHeader3>
+                        </Grid>
+                        <Grid item sm={4} xs={12}>
+                            <TextField
+                                name="txtOrigen"
+                                label="Origen de folio:"
+                                variant="outlined"
+                                select
+                                fullWidth
+                                value={filtroFolios.txtOrigen}
+                                onChange={handleChangeFiltroFolio}
+                            >
+                                <MenuItem value="">Todos</MenuItem>
+                                {entCatalogos.catOrigen.map((origen) => (
+                                    <MenuItem value={origen.fiId.toString()}>{origen.fsDescripcion}</MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
+                        <Grid item sm={4} xs={12}>
+                            <TextField
+                                name="txtProducto"
+                                label="Producto:"
+                                variant="outlined"
+                                select
+                                SelectProps={{
+                                    MenuProps: {
+                                        classes: {
+                                            paper: classes.root,
+                                        },
+                                        PaperProps: {
+                                            style: { maxHeight: 400 },
+                                        },
+                                    },
+                                }}
+                                fullWidth
+                                value={filtroFolios.txtProducto}
+                                onChange={handleChangeFiltroFolio}
+                            >
+                                <MenuItem value="">Todos los productos</MenuItem>
+                                {listaProductos.map((producto) => (
+                                    <MenuItem key={producto.iIdProducto} value={producto.iIdProducto.toString()}>
+                                        <i
+                                            className="icon size-20"
+                                            dangerouslySetInnerHTML={{
+                                                __html: `&#x${producto.sIcon};&nbsp;&nbsp;&nbsp;`,
+                                            }}
+                                        />
+                                        {"   "}
+                                        {producto.sNombre}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
+                        <Grid item sm={4} xs={12}>
+                            <TextField
+                                name="txtVigente"
+                                label="Estatus de folio:"
+                                variant="outlined"
+                                select
+                                fullWidth
+                                value={filtroFolios.txtVigente}
+                                onChange={handleChangeFiltroFolio}
+                            >
+                                <MenuItem value="">Todos los folios</MenuItem>
+                                <MenuItem value="true">Folio activo</MenuItem>
+                                <MenuItem value="false">Folio inactivo/vencido</MenuItem>
+                            </TextField>
+                        </Grid>
+                        <MeditocModalBotones
+                            okMessage="LIMPIAR FILTRO"
+                            hideCancel
+                            okFunc={handleClickActualizarTabla}
+                        />
+                        <Grid item xs={12}>
+                            <MeditocTable
+                                columns={columns}
+                                data={listaFoliosEmpresa}
+                                setData={setListaFoliosEmpresa}
+                                rowsSelected={foliosEmpresaSeleccionado}
+                                setRowsSelected={setFoliosEmpresaSeleccionado}
+                                selection={true}
+                                mainField="iIdFolio"
+                            />
+                        </Grid>
+                    </Grid>
                 </MeditocBody>
             </div>
             <CrearFolios
@@ -224,6 +385,18 @@ const AdministrarFolios = (props) => {
             >
                 ¿Desea eliminar los folios seleccionados?
             </MeditocConfirmacion>
+            <MeditocHelper title="Estatus de folio:">
+                <div>
+                    <StopIcon style={{ color: green[500], verticalAlign: "middle" }} />
+                    {"  "}
+                    Folio activo
+                </div>
+                <div>
+                    <StopIcon style={{ color: red[500], verticalAlign: "middle" }} />
+                    {"  "}
+                    Folio inactivo
+                </div>
+            </MeditocHelper>
         </MeditocFullModal>
     );
 };

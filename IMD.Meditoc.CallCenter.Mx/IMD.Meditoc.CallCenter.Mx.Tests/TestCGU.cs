@@ -1,4 +1,5 @@
 ﻿using System;
+using IMD.Meditoc.CallCenter.Mx.Business.Catalogos;
 using IMD.Meditoc.CallCenter.Mx.Business.CGU;
 using IMD.Meditoc.CallCenter.Mx.Entities.CGU;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -83,6 +84,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Tests
         {
             BusPermiso busPermiso = new BusPermiso();
             var res = busPermiso.BGetUsuarioPermisos(1);
+            var json = JsonConvert.SerializeObject(res, Formatting.Indented);
+        }
+
+        [TestMethod]
+        public void TGetCatalogos()
+        {
+            BusCatalogo busCatalogo = new BusCatalogo();
+            var res = busCatalogo.BGetCatalogos();
             var json = JsonConvert.SerializeObject(res, Formatting.Indented);
         }
     }

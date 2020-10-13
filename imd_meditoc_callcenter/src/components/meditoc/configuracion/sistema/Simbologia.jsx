@@ -1,30 +1,8 @@
-import { Fab, Paper, Zoom } from "@material-ui/core";
-import React, { useState } from "react";
-
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
 import ExtensionIcon from "@material-ui/icons/Extension";
-import LiveHelpIcon from "@material-ui/icons/LiveHelp";
+import MeditocHelper from "../../../utilidades/MeditocHelper";
+import React from "react";
 import WebIcon from "@material-ui/icons/Web";
-import { makeStyles } from "@material-ui/core/styles";
-import theme from "../../../../configurations/themeConfig";
-
-const useStyles = makeStyles({
-    absolute: {
-        position: "absolute",
-        top: theme.spacing(20),
-        right: theme.spacing(3),
-        zIndex: theme.zIndex.appBar + 1,
-    },
-    absoluteDiv: {
-        padding: "10px 30px 20px",
-        position: "absolute",
-        top: theme.spacing(20),
-        right: theme.spacing(12),
-        lineHeight: 2.3,
-        width: 120,
-        zIndex: theme.zIndex.appBar + 1,
-    },
-});
 
 /*************************************************************
  * Descripcion: Boton de ayuda para mostrar la simbología de los
@@ -34,44 +12,24 @@ const useStyles = makeStyles({
  * Invocado desde: Sistema, Permisos
  *************************************************************/
 const Simbologia = () => {
-    const classes = useStyles();
-
-    //Guardar state (Mostrar/Ocultar) de la simbología
-    const [fabOpen, setFabOpen] = useState(false);
-
     return (
-        <div style={{ position: "fixed", right: "10px", top: "0%" }}>
+        <MeditocHelper title="Simbología:">
             <div>
-                <Fab
-                    color="secondary"
-                    className={classes.absolute}
-                    onMouseEnter={() => setFabOpen(true)}
-                    onMouseLeave={() => setFabOpen(false)}
-                    onClick={() => setFabOpen(true)}
-                >
-                    <LiveHelpIcon />
-                </Fab>
-                <Zoom in={fabOpen}>
-                    <Paper className={classes.absoluteDiv} elevation={10}>
-                        <div>
-                            <span className="rob-nor bold size-15 color-3">Simbología:</span>
-                        </div>
-                        <div>
-                            <AccountTreeIcon className={"color-1 vertical-align-middle"} />
-                            <span className={"color-1 size-15"}>Módulos</span>
-                        </div>
-                        <div>
-                            <WebIcon className={"color-2 vertical-align-middle"} />
-                            <span className={"color-2 size-15"}>Submódulos</span>
-                        </div>
-                        <div>
-                            <ExtensionIcon className={"color-3 vertical-align-middle"} />
-                            <span className={"color-3 size-15"}>Botones</span>
-                        </div>
-                    </Paper>
-                </Zoom>
+                <AccountTreeIcon className={"color-1 vertical-align-middle"} />
+                {"  "}
+                Módulos
             </div>
-        </div>
+            <div>
+                <WebIcon className={"color-2 vertical-align-middle"} />
+                {"  "}
+                Submódulos
+            </div>
+            <div>
+                <ExtensionIcon className={"color-3 vertical-align-middle"} />
+                {"  "}
+                Botones
+            </div>
+        </MeditocHelper>
     );
 };
 

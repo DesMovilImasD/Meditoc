@@ -1,4 +1,4 @@
-import { EnumOrigen, EnumReportesTabs, EnumStatusConekta, EnumTipoPago } from "../../../../configurations/enumConfig";
+import { EnumReportesTabs, EnumStatusConekta, EnumTipoPago } from "../../../../configurations/enumConfig";
 import { Grid, IconButton, InputAdornment, MenuItem, TextField, Tooltip } from "@material-ui/core";
 import React, { Fragment, useEffect } from "react";
 
@@ -22,7 +22,7 @@ import ResumenConekta from "./ResumenConekta";
 import { useState } from "react";
 
 const ReportesVentas = (props) => {
-    const { permisos, funcLoader, funcAlert } = props;
+    const { permisos, entCatalogos, funcLoader, funcAlert } = props;
 
     const reportesController = new ReportesController();
     const promocionesController = new PromocionesController();
@@ -98,14 +98,14 @@ const ReportesVentas = (props) => {
         funcLoader(true, "Descargando reporte de venta...");
         const response = await reportesController.funcDescargarReporteVentas(
             filtroForm.txtFolio,
-            tabIndex === EnumReportesTabs.Conekta ? "" : filtroForm.txtFolioEmpresa,
+            filtroForm.txtFolioEmpresa,
             "",
             "",
-            tabIndex === EnumReportesTabs.Administrativo ? "" : filtroForm.txtOrigen,
-            tabIndex === EnumReportesTabs.Administrativo ? "" : filtroForm.txtOrden,
-            tabIndex === EnumReportesTabs.Administrativo ? "" : filtroForm.txtEstatus,
-            tabIndex === EnumReportesTabs.Administrativo ? "" : filtroForm.txtCupon === null ? "" : filtroForm.txtCupon,
-            tabIndex === EnumReportesTabs.Administrativo ? "" : filtroForm.txtTipoPago,
+            filtroForm.txtOrigen,
+            filtroForm.txtOrden,
+            filtroForm.txtEstatus,
+            filtroForm.txtCupon === null ? "" : filtroForm.txtCupon,
+            filtroForm.txtTipoPago,
             filtroForm.txtFechaDe === null ? null : filtroForm.txtFechaDe.toISOString(),
             filtroForm.txtFechaA === null ? null : filtroForm.txtFechaA.toISOString()
         );
@@ -208,22 +208,21 @@ const ReportesVentas = (props) => {
                                 variant="outlined"
                                 fullWidth
                                 select
-                                disabled={tabIndex === EnumReportesTabs.Administrativo}
                                 onChange={handleChangeFiltro}
                                 value={filtroForm.txtOrigen}
                             >
                                 <MenuItem value="">Todos</MenuItem>
-                                <MenuItem value={EnumOrigen.APP}>APP</MenuItem>
-                                <MenuItem value={EnumOrigen.WEB}>WEB</MenuItem>
-                                <MenuItem value={EnumOrigen.PanelAdministrativo}>
-                                    Panel administrativo (Empresas)
-                                </MenuItem>
+                                {entCatalogos.catOrigen.map((origen) => (
+                                    <MenuItem key={origen.fiId} value={origen.fiId}>
+                                        {origen.fsDescripcion}
+                                    </MenuItem>
+                                ))}
                             </TextField>
                         </Grid>
                         <Grid item sm={4} xs={12}>
                             <TextField
                                 name="txtEstatus"
-                                label="Estatus:"
+                                label="Estatus de pago:"
                                 variant="outlined"
                                 disabled={tabIndex === EnumReportesTabs.Administrativo}
                                 fullWidth
@@ -270,12 +269,11 @@ const ReportesVentas = (props) => {
                         <Grid item sm={4} xs={12}>
                             <TextField
                                 name="txtOrden"
-                                label="Órden Conekta:"
+                                label="Órden:"
                                 variant="outlined"
                                 fullWidth
                                 onChange={handleChangeFiltro}
                                 value={filtroForm.txtOrden}
-                                disabled={tabIndex === EnumReportesTabs.Administrativo}
                             />
                         </Grid>
                         <Grid item sm={4} xs={12}>

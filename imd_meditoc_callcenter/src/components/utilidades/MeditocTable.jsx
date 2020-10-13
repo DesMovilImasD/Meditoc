@@ -73,6 +73,23 @@ const MeditocTable = (props) => {
         }
     };
 
+    const handleRowClickSelectionOnEditable = (row) => {
+        if (rowsSelected !== undefined) {
+            const index = rowsSelected.indexOf(row);
+            const rowsSelectedCopy = [...rowsSelected];
+
+            const indexData = data.indexOf(row);
+            const dataCopy = [...data];
+
+            if (index === -1) {
+                rowsSelectedCopy.push(row);
+                dataCopy[indexData].tableData.checked = true;
+            }
+            mtSetRowsSelected(rowsSelectedCopy);
+            setData(dataCopy);
+        }
+    };
+
     const handleSelectionChange = (rows) => {
         mtSetRowsSelected(rows);
     };
@@ -147,7 +164,7 @@ const MeditocTable = (props) => {
                               return new Promise((resolve) => {
                                   mtOnCellEditable(newValue, oldValue, rowData, columnDef.field);
                                   if (mtSelection) {
-                                      handleRowClickSelection(null, rowData);
+                                      handleRowClickSelectionOnEditable(rowData);
                                   }
                                   resolve(emptyFunc);
                               });
@@ -231,7 +248,7 @@ const MeditocTable = (props) => {
                 hideFilterIcons: true,
                 emptyRowsWhenPaging: false,
                 padding: "dense",
-                headerStyle: { color: theme.palette.primary.main, fontSize: 18 },
+                headerStyle: { color: theme.palette.primary.main, fontSize: 18, zIndex: 0 },
                 sorting: true,
                 showTextRowsSelected: false,
                 showSelectAllCheckbox: true,

@@ -38,5 +38,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Folio
         public string sFechaCreacion { get; set; }
         public bool bActivo { get; set; }
         public bool bBaja { get; set; }
+        public bool bVigente { get; set; }
     }
 }

@@ -101,14 +101,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                             return response;
                         }
 
-                        if (string.IsNullOrWhiteSpace(entCreateColaborador.sUsuarioAdministrativo))
+                        if (string.IsNullOrWhiteSpace(entCreateColaborador.sUsuarioAdministrativo) && entCreateColaborador.bAcceso)
                         {
                             response.Code = -7234869627782;
                             response.Message = "No se han especificado los datos de cuenta administrativa.";
                             return response;
                         }
 
-                        if (entCreateColaborador.iIdColaborador == 0 && string.IsNullOrWhiteSpace(entCreateColaborador.sPasswordAdministrativo))
+                        if (entCreateColaborador.iIdColaborador == 0 && string.IsNullOrWhiteSpace(entCreateColaborador.sPasswordAdministrativo) && entCreateColaborador.bAcceso)
                         {
                             response.Code = -324778287623;
                             response.Message = "No se han especificado los datos de cuenta administrativa.";
@@ -199,6 +199,10 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                         return respuestaGuardarUsuarioCGU.GetResponse<bool>();
                     }
 
+                    entCreateColaborador.iIdUsuarioCGU = (int)respuestaGuardarUsuarioCGU.Result.iIdUsuario;
+                    entCreateColaborador.iIdTipoCuenta = (int)EnumTipoCuenta.Titular;
+
+                    entUsuarioAdministrativo.iIdUsuario = respuestaGuardarUsuarioCGU.Result.iIdUsuario;
 
                     respuestaGuardarUsuarioCGU = busUsuario.BSaveUsuario(entUsuarioAdministrativo);
                     if (respuestaGuardarUsuarioCGU.Code != 0)
@@ -206,8 +210,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                         return respuestaGuardarUsuarioCGU.GetResponse<bool>();
                     }
 
-                    entCreateColaborador.iIdUsuarioCGU = (int)respuestaGuardarUsuarioCGU.Result.iIdUsuario;
-                    entCreateColaborador.iIdTipoCuenta = (int)EnumTipoCuenta.Titular;
                     IMDResponse<bool> respuestaGuardarColaborador = datColaborador.DSaveColaborador(entCreateColaborador);
                     if (respuestaGuardarColaborador.Code != 0)
                     {
@@ -219,7 +221,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                         if ((entCreateColaborador.bActivo && !entCreateColaborador.bBaja && (!string.IsNullOrWhiteSpace(entCreateColaborador.sPasswordTitular) || !string.IsNullOrWhiteSpace(entCreateColaborador.sPasswordAdministrativo))) || activacionUsuario)
                         {
                             List<string> users = new List<string> { entCreateColaborador.sUsuarioTitular, entCreateColaborador.sUsuarioAdministrativo };
-                            IMDResponse<bool> resEnviarCredenciales = busUsuario.BEnviarCredenciales(entCreateColaborador.sCorreoDoctor, entCreateColaborador.iIdColaborador == 0 ? EnumEmailActionPass.Crear : EnumEmailActionPass.Modificar, users);
+                            IMDResponse<bool> resEnviarCredenciales = busUsuario.BEnviarCredenciales(entCreateColaborador.sCorreoDoctor, entCreateColaborador.iIdColaborador == 0 || activacionUsuario ? EnumEmailActionPass.Crear : EnumEmailActionPass.Modificar, users);
                         }
                     }
                 }
@@ -289,7 +291,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                         iIdTipoCuenta = dr.ConvertTo<int>("iIdTipoCuenta"),
                         iIdTipoDoctor = dr.ConvertTo<int>("iIdTipoDoctor"),
                         iIdUsuarioCGU = dr.ConvertTo<int>("iIdUsuarioCGU"),
-                        iNumSala = dr.ConvertTo<int>("iNumSala"),
+                        iNumSala = dr.ConvertTo<int?>("iNumSala"),
                         sApellidoMaternoDoctor = dr.ConvertTo<string>("sApellidoMaternoDoctor"),
                         sApellidoPaternoDoctor = dr.ConvertTo<string>("sApellidoPaternoDoctor"),
                         sCedulaProfecional = dr.ConvertTo<string>("sCedulaProfecional"),
@@ -688,14 +690,21 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                     oColaborador = new EntColaborador
                     {
                         iIdColaborador = rows.ConvertTo<int>("iIdColaborador"),
-                        iNumSala = rows.ConvertTo<int>("iNumSala")
+                        iNumSala = rows.ConvertTo<int?>("iNumSala")
 
                     };
 
                 }
+                string medicosOcupados = "Todos los médicos se encuentran ocupados en este momento.";
+                if (oColaborador.iNumSala == null)
+                {
+                    response.Code = -7262876723423;
+                    response.Message = medicosOcupados;
+                    return response;
+                }
 
                 response.Code = 0;
-                response.Message = dtColaborador.Result.Rows.Count > 0 ? "Se ha encontrado un sala disponible." : "Todos los médicos se encuentran ocupados en este momento.";
+                response.Message = dtColaborador.Result.Rows.Count > 0 ? "Se ha encontrado un sala disponible." : medicosOcupados;
                 response.Result = oColaborador;
             }
             catch (Exception ex)

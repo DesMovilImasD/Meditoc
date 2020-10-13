@@ -6,11 +6,18 @@ import MeditocSubtitulo from "../../../utilidades/MeditocSubtitulo";
 import PropTypes from "prop-types";
 import React from "react";
 
+/*************************************************************
+ * Descripcion: Modal para visualizar el detalle de un colaborador seleccionado
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ * Invocado desde: Colaboradores
+ *************************************************************/
 const DetalleColaborador = (props) => {
+    //PROPS
     const { entColaborador, open, setOpen } = props;
 
     return (
-        <MeditocModal title="Detalle de colaborador" size="small" open={open} setOpen={setOpen}>
+        <MeditocModal title="Detalle de colaborador" size="normal" open={open} setOpen={setOpen}>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <MeditocSubtitulo title="DATOS DEL DIRECTORIO MÉDICO" />
@@ -92,29 +99,30 @@ const DetalleColaborador = (props) => {
 
 DetalleColaborador.propTypes = {
     entColaborador: PropTypes.shape({
-        iNumSala: PropTypes.any,
-        sApellidoMaternoDoctor: PropTypes.any,
-        sApellidoPaternoDoctor: PropTypes.any,
-        sCedulaProfecional: PropTypes.any,
-        sCorreoDirectorio: PropTypes.any,
-        sCorreoDoctor: PropTypes.any,
-        sDireccionConsultorio: PropTypes.any,
-        sDomicilioDoctor: PropTypes.any,
-        sEspecialidad: PropTypes.any,
-        sFechaNacimientoDoctor: PropTypes.any,
-        sMaps: PropTypes.any,
-        sNombreDirectorio: PropTypes.any,
-        sNombresDoctor: PropTypes.any,
-        sRFC: PropTypes.any,
-        sTelefonoDirectorio: PropTypes.any,
-        sTelefonoDoctor: PropTypes.any,
-        sURL: PropTypes.any,
-        sUsuarioAdministrativo: PropTypes.any,
-        sUsuarioTitular: PropTypes.any,
-        sWhatsApp: PropTypes.any,
+        iNumSala: PropTypes.number,
+        sApellidoMaternoDoctor: PropTypes.string,
+        sApellidoPaternoDoctor: PropTypes.string,
+        sCedulaProfecional: PropTypes.string,
+        sCorreoDirectorio: PropTypes.string,
+        sCorreoDoctor: PropTypes.string,
+        sDireccionConsultorio: PropTypes.string,
+        sDomicilioDoctor: PropTypes.string,
+        sEspecialidad: PropTypes.string,
+        sFechaNacimientoDoctor: PropTypes.string,
+        sMaps: PropTypes.string,
+        sNombreConsultorio: PropTypes.string,
+        sNombreDirectorio: PropTypes.string,
+        sNombresDoctor: PropTypes.string,
+        sRFC: PropTypes.string,
+        sTelefonoDirectorio: PropTypes.string,
+        sTelefonoDoctor: PropTypes.string,
+        sURL: PropTypes.string,
+        sUsuarioAdministrativo: PropTypes.string,
+        sUsuarioTitular: PropTypes.string,
+        sWhatsApp: PropTypes.string,
     }),
-    open: PropTypes.any,
-    setOpen: PropTypes.any,
+    open: PropTypes.bool,
+    setOpen: PropTypes.func,
 };
 
 export default DetalleColaborador;

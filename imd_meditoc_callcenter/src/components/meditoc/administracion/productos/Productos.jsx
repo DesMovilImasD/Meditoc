@@ -15,6 +15,7 @@ import ProductoController from "../../../../controllers/ProductoController";
 import PropTypes from "prop-types";
 import ReplayIcon from "@material-ui/icons/Replay";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import { cellProps } from "../../../../configurations/dataTableIconsConfig";
 import { emptyFunc } from "../../../../configurations/preventConfig";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -26,18 +27,18 @@ import { useState } from "react";
  * Invocado desde: ContentMain
  *************************************************************/
 const Productos = (props) => {
-    const { usuarioSesion, permisos, funcLoader, funcAlert } = props;
+    const { usuarioSesion, permisos, entCatalogos, funcLoader, funcAlert } = props;
 
     const productoController = new ProductoController();
 
     const columns = [
-        { title: "ID", field: "iIdProducto", align: "center", hidden: true },
-        { title: "Nombre", field: "sNombre", align: "center" },
-        { title: "Tipo", field: "sTipoProducto", align: "center" },
-        { title: "Grupo de productos", field: "sGrupoProducto", align: "center" },
-        { title: "Costo", field: "sCosto", align: "center" },
-        { title: "Duración de vigencia (Meses)", field: "iMesVigencia", align: "center" },
-        { title: "Comercial", field: "sComercial", align: "center" },
+        { title: "ID", field: "iIdProducto", ...cellProps, hidden: true },
+        { title: "Nombre", field: "sNombre", ...cellProps },
+        { title: "Tipo", field: "sTipoProducto", ...cellProps },
+        { title: "Grupo de productos", field: "sGrupoProducto", ...cellProps },
+        { title: "Costo", field: "sCosto", ...cellProps },
+        { title: "Duración de vigencia (Meses)", field: "iMesVigencia", ...cellProps },
+        { title: "Comercial", field: "sComercial", ...cellProps },
     ];
 
     const productoEntidadVacia = {
@@ -204,6 +205,7 @@ const Productos = (props) => {
                 setOpen={setModalFormProductoOpen}
                 funcConsultarProductos={funcConsultarProductos}
                 usuarioSesion={usuarioSesion}
+                entCatalogos={entCatalogos}
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
             />

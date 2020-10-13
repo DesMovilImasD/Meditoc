@@ -82,7 +82,7 @@
     <Compile Include="Promociones\BusPromociones.cs" />
     <Compile Include="Ordenes\BusWebHook.cs" />
     <Compile Include="CallCenter\BusCallCenter.cs" />
-    <Compile Include="Catalogos\BusEspecialidad.cs" />
+    <Compile Include="Catalogos\BusCatalogo.cs" />
     <Compile Include="CGU\BusBoton.cs" />
     <Compile Include="CGU\BusModulo.cs" />
     <Compile Include="CGU\BusPerfil.cs" />

@@ -7,7 +7,7 @@ import theme from "../../configurations/themeConfig";
 
 const useStyles = makeStyles({
     drawerColor: {
-        backgroundColor: "rgb(254 254 254 / 0.6)",
+        backgroundColor: "rgb(254 254 254 / 0.5)",
     },
     paperColor: {
         backgroundColor: theme.palette.primary.main,

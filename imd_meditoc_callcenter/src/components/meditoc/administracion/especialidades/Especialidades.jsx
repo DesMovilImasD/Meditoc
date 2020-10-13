@@ -13,6 +13,7 @@ import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
 import MeditocTable from "../../../utilidades/MeditocTable";
 import PropTypes from "prop-types";
 import ReplayIcon from "@material-ui/icons/Replay";
+import { cellProps } from "../../../../configurations/dataTableIconsConfig";
 import { emptyFunc } from "../../../../configurations/preventConfig";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -24,9 +25,9 @@ const Especialidades = (props) => {
     const especialidadEntidadVacia = { iIdEspecialidad: 0, sNombre: "" };
 
     const columns = [
-        { title: "ID", field: "iIdEspecialidad", align: "center", hidden: true },
-        { title: "Descripción", field: "sNombre", align: "center" },
-        { title: "Creado", field: "sFechaCreacion", align: "center" },
+        { title: "ID", field: "iIdEspecialidad", ...cellProps, hidden: true },
+        { title: "Descripción", field: "sNombre", ...cellProps },
+        { title: "Creado", field: "sFechaCreacion", ...cellProps },
     ];
 
     const [listaEspecialidades, setListaEspecialidades] = useState([]);

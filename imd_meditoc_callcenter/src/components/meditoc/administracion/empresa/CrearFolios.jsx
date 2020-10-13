@@ -24,20 +24,13 @@ const CrearFolios = (props) => {
 
     const columns = [
         { title: "ID", field: "iIdProducto", align: "left", editable: "never", hidden: true },
+        { title: "", field: "sIconStatus", align: "left", editable: "never", sorting: false },
         { title: "Nombre", field: "sNombre", align: "left", editable: "never" },
         { title: "Precio", field: "sCosto", align: "left", editable: "never" },
         { title: "Cantidad", field: "iCantidad", align: "left" },
     ];
 
-    const [listaProductosEmpresa, setListaProductosEmpresa] = useState(
-        listaProductos.map((producto) => ({
-            iIdProducto: producto.iIdProducto,
-            sNombre: producto.sNombre,
-            fCosto: producto.fCosto,
-            sCosto: producto.sCosto,
-            iCantidad: 0,
-        }))
-    );
+    const [listaProductosEmpresa, setListaProductosEmpresa] = useState([]);
 
     const [listaProductosSeleccionados, setListaProductosSeleccionados] = useState([]);
 
@@ -102,10 +95,18 @@ const CrearFolios = (props) => {
                     fCosto: producto.fCosto,
                     sCosto: producto.sCosto,
                     iCantidad: 0,
+                    sIconStatus: (
+                        <span>
+                            <i
+                                className="icon size-20 color-1"
+                                dangerouslySetInnerHTML={{ __html: `&#x${producto.sIcon}` }}
+                            />
+                        </span>
+                    ),
                 }))
             );
             setListaProductosSeleccionados([]);
-            await funcGetFoliosEmpresa();
+            await funcGetFoliosEmpresa(true);
             funcAlert(response.Message, "success");
         } else {
             funcAlert(response.Message);
@@ -134,6 +135,14 @@ const CrearFolios = (props) => {
                     fCosto: producto.fCosto,
                     sCosto: producto.sCosto,
                     iCantidad: 0,
+                    sIconStatus: (
+                        <span>
+                            <i
+                                className="icon size-20 color-1"
+                                dangerouslySetInnerHTML={{ __html: `&#x${producto.sIcon}` }}
+                            />
+                        </span>
+                    ),
                 }))
             );
         }

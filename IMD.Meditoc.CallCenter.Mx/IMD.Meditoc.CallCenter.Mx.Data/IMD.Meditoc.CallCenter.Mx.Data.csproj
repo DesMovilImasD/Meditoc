@@ -58,7 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CallCenter\DatCallCenter.cs" />
-    <Compile Include="Catalogos\DatEspecialidad.cs" />
+    <Compile Include="Catalogos\DatCatalogo.cs" />
     <Compile Include="CGU\DatBoton.cs" />
     <Compile Include="CGU\DatModulo.cs" />
     <Compile Include="CGU\DatPerfil.cs" />

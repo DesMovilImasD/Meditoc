@@ -34,20 +34,21 @@ class FolioController {
     }
 
     async funcGetFolios(
-        piIdFolio = null,
-        piIdEmpresa = null,
-        piIdProducto = null,
-        piIdOrigen = null,
+        piIdFolio = "",
+        piIdEmpresa = "",
+        piIdProducto = "",
+        piIdOrigen = "",
         psFolio = "",
         psOrdenConekta = "",
-        pbTerminosYCondiciones = null,
+        pbTerminosYCondiciones = "",
         pbActivo = true,
-        pbBaja = false
+        pbBaja = false,
+        pbVigente = ""
     ) {
         let response = { Code: 0, Message: "", Result: [] };
         try {
             const apiResponse = await fetch(
-                `${serverMain}${this.apiObtenerFolios}?piIdFolio=${piIdFolio}&piIdEmpresa=${piIdEmpresa}&piIdProducto=${piIdProducto}&piIdOrigen=${piIdOrigen}&psFolio=${psFolio}&psOrdenConekta=${psOrdenConekta}&pbTerminosYCondiciones=${pbTerminosYCondiciones}&pbActivo=${pbActivo}&pbBaja=${pbBaja}`,
+                `${serverMain}${this.apiObtenerFolios}?piIdFolio=${piIdFolio}&piIdEmpresa=${piIdEmpresa}&piIdProducto=${piIdProducto}&piIdOrigen=${piIdOrigen}&psFolio=${psFolio}&psOrdenConekta=${psOrdenConekta}&pbTerminosYCondiciones=${pbTerminosYCondiciones}&pbActivo=${pbActivo}&pbBaja=${pbBaja}&pbVigente=${pbVigente}`,
                 {
                     headers: MeditocHeaders,
                 }

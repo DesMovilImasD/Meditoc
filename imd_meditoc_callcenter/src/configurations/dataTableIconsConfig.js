@@ -42,4 +42,10 @@ const tableIcons = {
     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
+const cellProps = {
+    align: "center",
+    cellStyle: { whiteSpace: "nowrap" },
+};
+
 export default tableIcons;
+export { cellProps };

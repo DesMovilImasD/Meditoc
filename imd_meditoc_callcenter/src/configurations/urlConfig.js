@@ -7,6 +7,7 @@
 const urlBase = "/MeditocCallCenter";
 
 const urlSystem = {
+    login: "/login",
     configuracion: {
         usuarios: "/usuarios",
         perfiles: "/perfiles",
@@ -25,9 +26,10 @@ const urlSystem = {
     callcenter: {
         consultas: "/consultas",
         administrarConsultas: "/administrar",
+        misconsultas: "/misconsultas",
     },
     reportes: {
-        ordenes: "/ordenes",
+        ordenes: "/orden",
         doctores: "/doctores",
     },
 };

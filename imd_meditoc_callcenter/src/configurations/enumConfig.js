@@ -7,6 +7,13 @@ const EnumPerfilesPrincipales = {
     DoctorAdministrador: 6,
 };
 
+const EnumListPerfilesColaboradores = [
+    EnumPerfilesPrincipales.DoctorAdministrador,
+    EnumPerfilesPrincipales.DoctorCallCenter,
+    EnumPerfilesPrincipales.DoctorEspecialista,
+    EnumPerfilesPrincipales.AdministradorEspecialiesta,
+];
+
 const EnumTipoCuenta = {
     Titular: 1,
     Administrativa: 2,
@@ -128,8 +135,15 @@ const EnumGrupoProducto = {
     PsychologyProducts: 3,
 };
 
+const EnumEstatusCupon = {
+    todos: "todos",
+    activo: "activo",
+    inactivo: "inactivo",
+};
+
 export {
     EnumPerfilesPrincipales,
+    EnumListPerfilesColaboradores,
     EnumTipoCuenta,
     EnumSistema,
     EnumTipoDoctor,
@@ -145,5 +159,6 @@ export {
     EnumReportesTabs,
     EnumProductos,
     EnumGrupoProducto,
+    EnumEstatusCupon,
     ListProductos,
 };

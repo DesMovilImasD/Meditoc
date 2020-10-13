@@ -25,6 +25,7 @@ const FormBuscarFolio = (props) => {
         funcReiniciarTemporizador,
         folioEncontrado,
         setFolioEncontrado,
+        inicioAutomatico,
     } = props;
 
     const folioController = new FolioController();
@@ -112,7 +113,9 @@ const FormBuscarFolio = (props) => {
                     folioEncontrado.sTelefonoPaciente === null ? "" : folioEncontrado.sTelefonoPaciente,
                 txtBuscarCorreoPaciente: folioEncontrado.sCorreoPaciente,
             });
-            handleClickIniciarConsulta();
+            if (inicioAutomatico === true) {
+                handleClickIniciarConsulta();
+            }
         } else {
             setFormBuscarFolio({
                 txtBuscarFolio: "",
@@ -151,7 +154,6 @@ const FormBuscarFolio = (props) => {
         } else {
             funcAlert(response.Message);
         }
-
         funcLoader();
     };
 

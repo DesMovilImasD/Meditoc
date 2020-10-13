@@ -21,24 +21,34 @@ import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import PropTypes from "prop-types";
 import ReplayIcon from "@material-ui/icons/Replay";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import { cellProps } from "../../../../configurations/dataTableIconsConfig";
 import { emptyFunc } from "../../../../configurations/preventConfig";
 import { useEffect } from "react";
 import { useState } from "react";
 
+/*************************************************************
+ * Descripcion: Contenido de la vista principal de Colaboradores
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ * Invocado desde: ContentMain
+ *************************************************************/
 const Colaboradores = (props) => {
+    //PROPS
     const { usuarioSesion, permisos, funcLoader, funcAlert } = props;
 
+    //CONTROLLERS
     const especialidadController = new EspecialidadController();
     const colaboradorController = new ColaboradorController();
 
+    //CONSTANTES
     const columns = [
-        { title: "ID", field: "iIdColaborador", align: "center", hidden: true },
-        { title: "Tipo de doctor", field: "sTipoDoctor", align: "center" },
-        { title: "Especialidad", field: "sEspecialidad", align: "center" },
-        { title: "Nombre", field: "sNombreDirectorio", align: "center" },
-        { title: "Usuario", field: "sUsuarioTitular", align: "center" },
-        { title: "Sala", field: "iNumSala", align: "center" },
-        { title: "Acceso", field: "sAcceso", align: "center" },
+        { title: "ID", field: "iIdColaborador", hidden: true, ...cellProps },
+        { title: "Tipo de doctor", field: "sTipoDoctor", ...cellProps },
+        { title: "Especialidad", field: "sEspecialidad", ...cellProps },
+        { title: "Nombre", field: "sNombreDirectorio", ...cellProps },
+        { title: "Usuario", field: "sUsuarioTitular", ...cellProps },
+        { title: "Sala", field: "iNumSala", ...cellProps },
+        { title: "Acceso", field: "sAcceso", ...cellProps },
     ];
 
     const colaboradorCallCenterEntidadVacia = {
@@ -66,7 +76,7 @@ const Colaboradores = (props) => {
         sUsuarioTitular: "",
         sUsuarioAdministrativo: "",
         bAdministrador: false,
-        bAcceso: true,
+        bAcceso: false,
     };
 
     const colaboradorEspecialistaEntidadVacia = {
@@ -94,115 +104,73 @@ const Colaboradores = (props) => {
         sUsuarioTitular: "",
         sUsuarioAdministrativo: "",
         bAdministrador: false,
-        bAcceso: true,
+        bAcceso: false,
     };
 
-    const [modalNuevoColaboradorOpen, setModalNuevoColaboradorOpen] = useState(false);
-    const [modalDetalleColaboradorOpen, setModalDetalleColaboradorOpen] = useState(false);
-    const [modalEliminarColaboradorOpen, setModalEliminarColaboradorOpen] = useState(false);
-    const [modalFotoColaboradorOpen, setModalFotoColaboradorOpen] = useState(false);
+    //STATES
+    const [openNuevoColaborador, setOpenNuevoColaborador] = useState(false);
+    const [openDetalleColaborador, setOpenDetalleColaborador] = useState(false);
+    const [openEliminarColaborador, setOpenEliminarColaborador] = useState(false);
+    const [openFotoColaborador, setOpenFotoColaborador] = useState(false);
 
     const [listaEspecialidades, setListaEspecialidades] = useState([]);
     const [listaColaboradores, setListaColaboradores] = useState([]);
 
     const [colaboradorSeleccionado, setColaboradorSeleccionado] = useState(colaboradorCallCenterEntidadVacia);
-    const [colaboradorParaModal, setColaboradorParaModal] = useState(colaboradorCallCenterEntidadVacia);
+    const [colaboradorCrearEditar, setColaboradorCrearEditar] = useState(colaboradorCallCenterEntidadVacia);
 
+    //HANDLERS
+    //Nuevo colaborador callcenter
     const handleClickNuevoColaboradorCallCenter = () => {
-        setColaboradorParaModal(colaboradorCallCenterEntidadVacia);
-        setModalNuevoColaboradorOpen(true);
+        setColaboradorCrearEditar(colaboradorCallCenterEntidadVacia);
+        setOpenNuevoColaborador(true);
     };
 
+    //Nuevo colaborador especialista
     const handleClickNuevoColaboradorEspecialista = () => {
-        setColaboradorParaModal(colaboradorEspecialistaEntidadVacia);
-        setModalNuevoColaboradorOpen(true);
+        setColaboradorCrearEditar(colaboradorEspecialistaEntidadVacia);
+        setOpenNuevoColaborador(true);
     };
 
+    //Ver deralle del colaborador
     const handleClickDetalleColaborador = () => {
         if (colaboradorSeleccionado.iIdColaborador === 0) {
             funcAlert("Seleccione un colaborador de la tabla para continuar");
             return;
         }
-        setModalDetalleColaboradorOpen(true);
+        setOpenDetalleColaborador(true);
     };
 
+    //Editar los datos del colaborador
     const handleClickEditarColaborador = () => {
         if (colaboradorSeleccionado.iIdColaborador === 0) {
             funcAlert("Seleccione un colaborador de la tabla para continuar");
             return;
         }
-        setColaboradorParaModal(colaboradorSeleccionado);
-        setModalNuevoColaboradorOpen(true);
+        setColaboradorCrearEditar(colaboradorSeleccionado);
+        setOpenNuevoColaborador(true);
     };
 
+    //Abrir administrador de foto del colaborador
     const handleClickFotoColaborador = () => {
         if (colaboradorSeleccionado.iIdColaborador === 0) {
             funcAlert("Seleccione un colaborador de la tabla para continuar");
             return;
         }
-        setModalFotoColaboradorOpen(true);
-        setColaboradorParaModal(colaboradorSeleccionado);
+        setOpenFotoColaborador(true);
+        setColaboradorCrearEditar(colaboradorSeleccionado);
     };
 
+    //Eliminar un colaborador
     const handleClickEliminarColaborador = () => {
         if (colaboradorSeleccionado.iIdColaborador === 0) {
             funcAlert("Seleccione un colaborador de la tabla para continuar");
             return;
         }
-        setModalEliminarColaboradorOpen(true);
+        setOpenEliminarColaborador(true);
     };
 
-    const funcGetEspecialidades = async () => {
-        funcLoader(true, "Consultando especialidades...");
-
-        const response = await especialidadController.funcGetEspecialidad();
-
-        if (response.Code === 0) {
-            // let especialidades = [...response.Result];
-            // especialidades.sor
-            setListaEspecialidades(response.Result);
-        } else {
-            funcAlert(response.Message);
-        }
-
-        funcLoader();
-    };
-
-    const funcGetColaboradores = async () => {
-        funcLoader(true, "Consultando colaboradores...");
-
-        const response = await colaboradorController.funcGetColaboradores();
-        if (response.Code === 0) {
-            setListaColaboradores(response.Result);
-        } else {
-            funcAlert(response.Message);
-        }
-        funcLoader();
-    };
-
-    const funcEliminarColaborador = async () => {
-        funcLoader(true, "Eliminando colaboradores...");
-
-        const response = await colaboradorController.funcSaveColaborador({
-            iIdColaborador: colaboradorSeleccionado.iIdColaborador,
-            iIdTipoDoctor: colaboradorSeleccionado.iIdTipoDoctor,
-            iIdUsuarioCGU: colaboradorSeleccionado.iIdUsuarioCGU,
-            iIdUsuarioMod: usuarioSesion.iIdUsuario,
-            bActivo: false,
-            bBaja: true,
-        });
-
-        if (response.Code === 0) {
-            setModalEliminarColaboradorOpen(false);
-            setColaboradorSeleccionado(colaboradorCallCenterEntidadVacia);
-            await funcGetColaboradores();
-            funcAlert(response.Message, "success");
-        } else {
-            funcAlert(response.Message);
-        }
-        funcLoader();
-    };
-
+    //Reenviar las credenciales del colaborador
     const handleClickReenviarCredenciales = async () => {
         if (colaboradorSeleccionado.iIdColaborador === 0) {
             funcAlert("Seleccione un colaborador de la tabla para continuar");
@@ -225,13 +193,71 @@ const Colaboradores = (props) => {
         funcLoader();
     };
 
-    const funcGetData = async () => {
-        await funcGetColaboradores();
-        await funcGetEspecialidades();
+    //Obtener el registro de colaboradores y especialidades
+    const handleClickGetData = async () => {
+        await fnObtenerColaboradores();
+        await fnObtenerEspecialidades();
     };
 
+    //FUNCIONES
+    //Consumir API para consultar las especialidades activas
+    const fnObtenerEspecialidades = async () => {
+        funcLoader(true, "Consultando especialidades...");
+
+        const response = await especialidadController.funcGetEspecialidad();
+
+        if (response.Code === 0) {
+            // let especialidades = [...response.Result];
+            // especialidades.sor
+            setListaEspecialidades(response.Result);
+        } else {
+            funcAlert(response.Message);
+        }
+
+        funcLoader();
+    };
+
+    //Consumir API para obtener la lista de colaboradores
+    const fnObtenerColaboradores = async () => {
+        funcLoader(true, "Consultando colaboradores...");
+
+        const response = await colaboradorController.funcGetColaboradores();
+        if (response.Code === 0) {
+            setListaColaboradores(response.Result);
+        } else {
+            funcAlert(response.Message);
+        }
+        funcLoader();
+    };
+
+    //Consumir API para eliminar la foto del colaborador
+    const fnEliminarColaborador = async () => {
+        funcLoader(true, "Eliminando colaboradores...");
+
+        const response = await colaboradorController.funcSaveColaborador({
+            iIdColaborador: colaboradorSeleccionado.iIdColaborador,
+            iIdTipoDoctor: colaboradorSeleccionado.iIdTipoDoctor,
+            iIdUsuarioCGU: colaboradorSeleccionado.iIdUsuarioCGU,
+            iIdUsuarioMod: usuarioSesion.iIdUsuario,
+            bActivo: false,
+            bBaja: true,
+        });
+
+        if (response.Code === 0) {
+            setOpenEliminarColaborador(false);
+            setColaboradorSeleccionado(colaboradorCallCenterEntidadVacia);
+            await fnObtenerColaboradores();
+            funcAlert(response.Message, "success");
+        } else {
+            funcAlert(response.Message);
+        }
+        funcLoader();
+    };
+
+    //EFFECTS
+    //Consultar información al cargar esta vista
     useEffect(() => {
-        funcGetData();
+        handleClickGetData();
         // eslint-disable-next-line
     }, []);
 
@@ -282,7 +308,7 @@ const Colaboradores = (props) => {
                 )}
                 {permisos.Botones["7"] !== undefined && ( //Actualizar tabla
                     <Tooltip title={permisos.Botones["7"].Nombre} arrow>
-                        <IconButton onClick={funcGetData}>
+                        <IconButton onClick={handleClickGetData}>
                             <ReplayIcon className="color-0" />
                         </IconButton>
                     </Tooltip>
@@ -306,24 +332,24 @@ const Colaboradores = (props) => {
                 />
             </MeditocBody>
             <FormColaborador
-                entColaborador={colaboradorParaModal}
-                open={modalNuevoColaboradorOpen}
-                setOpen={setModalNuevoColaboradorOpen}
+                entColaborador={colaboradorCrearEditar}
+                open={openNuevoColaborador}
+                setOpen={setOpenNuevoColaborador}
                 listaEspecialidades={listaEspecialidades}
-                funcGetColaboradores={funcGetColaboradores}
+                funcGetColaboradores={fnObtenerColaboradores}
                 usuarioSesion={usuarioSesion}
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
             />
             <DetalleColaborador
                 entColaborador={colaboradorSeleccionado}
-                open={modalDetalleColaboradorOpen}
-                setOpen={setModalDetalleColaboradorOpen}
+                open={openDetalleColaborador}
+                setOpen={setOpenDetalleColaborador}
             />
             <FotoColaborador
-                entColaborador={colaboradorParaModal}
-                open={modalFotoColaboradorOpen}
-                setOpen={setModalFotoColaboradorOpen}
+                entColaborador={colaboradorCrearEditar}
+                open={openFotoColaborador}
+                setOpen={setOpenFotoColaborador}
                 usuarioSesion={usuarioSesion}
                 permisos={permisos}
                 funcLoader={funcLoader}
@@ -331,9 +357,9 @@ const Colaboradores = (props) => {
             />
             <MeditocConfirmacion
                 title="Eliminar colaborador"
-                open={modalEliminarColaboradorOpen}
-                setOpen={setModalEliminarColaboradorOpen}
-                okFunc={funcEliminarColaborador}
+                open={openEliminarColaborador}
+                setOpen={setOpenEliminarColaborador}
+                okFunc={fnEliminarColaborador}
             >
                 ¿Desea eliminar el colaborador seleccionado?
                 <br />
@@ -347,9 +373,12 @@ const Colaboradores = (props) => {
 Colaboradores.propTypes = {
     funcAlert: PropTypes.func,
     funcLoader: PropTypes.func,
-    title: PropTypes.any,
+    permisos: PropTypes.shape({
+        Botones: PropTypes.object,
+        Nombre: PropTypes.string,
+    }),
     usuarioSesion: PropTypes.shape({
-        iIdUsuario: PropTypes.any,
+        iIdUsuario: PropTypes.number,
     }),
 };
 

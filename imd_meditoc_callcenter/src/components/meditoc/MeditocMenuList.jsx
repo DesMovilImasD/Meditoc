@@ -3,6 +3,7 @@ import React, { Fragment, useState } from "react";
 
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
 import AddIcCallIcon from "@material-ui/icons/AddIcCall";
+import AssignmentIcon from "@material-ui/icons/Assignment";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import BusinessIcon from "@material-ui/icons/Business";
 import CallIcon from "@material-ui/icons/Call";
@@ -220,6 +221,16 @@ const MenuList = (props) => {
                                             <AddIcCallIcon className="color-0" />
                                         </ListItemIcon>
                                         <ListItemText primary={usuarioPermisos["4"].Submodulos["2"].Nombre} />
+                                    </ListItem>
+                                </Link>
+                            )}
+                            {usuarioPermisos["4"].Submodulos["3"] !== undefined && (
+                                <Link to={urlSystem.callcenter.misconsultas} className={classes.link}>
+                                    <ListItem button onClick={toggleDrawer(false)} className={classes.nested}>
+                                        <ListItemIcon>
+                                            <AssignmentIcon className="color-0" />
+                                        </ListItemIcon>
+                                        <ListItemText primary={usuarioPermisos["4"].Submodulos["3"].Nombre} />
                                     </ListItem>
                                 </Link>
                             )}

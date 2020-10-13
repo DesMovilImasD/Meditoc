@@ -1,5 +1,6 @@
-import { IconButton, Tooltip } from "@material-ui/core";
+import { Grid, IconButton, MenuItem, TextField, Tooltip } from "@material-ui/core";
 import React, { Fragment } from "react";
+import { green, red } from "@material-ui/core/colors";
 
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -9,29 +10,40 @@ import FormCupon from "./FormCupon";
 import MeditocBody from "../../../utilidades/MeditocBody";
 import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
+import MeditocHelper from "../../../utilidades/MeditocHelper";
+import MeditocModalBotones from "../../../utilidades/MeditocModalBotones";
+import MeditocSubtitulo from "../../../utilidades/MeditocSubtitulo";
 import MeditocTable from "../../../utilidades/MeditocTable";
 import PromocionesController from "../../../../controllers/PromocionesController";
 import PropTypes from "prop-types";
+import RedeemIcon from "@material-ui/icons/Redeem";
 import ReplayIcon from "@material-ui/icons/Replay";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import { cellProps } from "../../../../configurations/dataTableIconsConfig";
 import { emptyFunc } from "../../../../configurations/preventConfig";
 import { useEffect } from "react";
 import { useState } from "react";
 
+/*************************************************************
+ * Descripcion: Contenido de la vista principal de Cupones
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ * Invocado desde: ContentMain
+ *************************************************************/
 const Cupones = (props) => {
-    const { usuarioSesion, permisos, funcLoader, funcAlert } = props;
+    const { usuarioSesion, permisos, entCatalogos, funcLoader, funcAlert } = props;
 
-    const promocionesController = new PromocionesController();
-
+    //CONSTANTES
     const columns = [
-        { title: "ID", field: "fiIdCupon", align: "center", hidden: true },
-        { title: "Código", field: "fsCodigo", align: "center" },
-        { title: "Monto descuento", field: "sMontoDescuento", align: "center" },
-        { title: "Porcentaje descuento", field: "sPorcentajeDescuento", align: "center" },
-        { title: "Total", field: "fiTotalLanzamiento", align: "center" },
-        { title: "Canjeado", field: "fiTotalCanjeado", align: "center" },
-        { title: "Creado", field: "sFechaCreacion", align: "center" },
-        { title: "Vencimiento", field: "sFechaVencimiento", align: "center" },
+        { title: "ID", field: "fiIdCupon", ...cellProps, hidden: true },
+        { title: "", field: "sStatus", ...cellProps, sorting: false },
+        { title: "Código", field: "fsCodigo", ...cellProps },
+        { title: "Monto descuento", field: "sMontoDescuento", ...cellProps },
+        { title: "Porcentaje descuento", field: "sPorcentajeDescuento", ...cellProps },
+        { title: "Total", field: "fiTotalLanzamiento", ...cellProps },
+        { title: "Canjeado", field: "fiTotalCanjeado", ...cellProps },
+        { title: "Creado", field: "sFechaCreacion", ...cellProps },
+        { title: "Vencimiento", field: "sFechaVencimiento", ...cellProps },
     ];
 
     const cuponEntidadVacia = {
@@ -46,41 +58,99 @@ const Cupones = (props) => {
         fiDiasActivo: 0,
     };
 
+    const filtrosVacios = {
+        txtTipoCupon: "",
+        txtVigente: "",
+    };
+
+    //CONTROLLERS
+    const promocionesController = new PromocionesController();
+
+    //STATES
+    const [formFiltroCupon, setFormFiltroCupon] = useState(filtrosVacios);
+
     const [listaCupones, setListaCupones] = useState([]);
     const [cuponSeleccionado, setCuponSeleccionado] = useState(cuponEntidadVacia);
-    const [cuponParaModalForm, setCuponParaModalForm] = useState(cuponEntidadVacia);
+    const [cuponCrearEditar, setCuponEditarCrear] = useState(cuponEntidadVacia);
 
-    const [modalFormCuponOpen, setModalFormCuponOpen] = useState(false);
-    const [modalEliminarCuponOpen, setModalEliminarCuponOpen] = useState(false);
-    const [modalDetalleCuponOpen, setModalDetalleCuponOpen] = useState(false);
+    const [openFormCupon, setOpenFormCupon] = useState(false);
+    const [openEliminarCupon, setOpenEliminarCupon] = useState(false);
+    const [openDetalleCupon, setOpenDetalleCupon] = useState(false);
 
+    //HANDLERS
+    //Capturar cuandoun filtro es modificado
+    const handleChangeFiltroCupon = (e) => {
+        setFormFiltroCupon({
+            ...formFiltroCupon,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    //Crear un cupon nuevo
     const handleClickCrearCupon = () => {
-        setCuponParaModalForm(cuponEntidadVacia);
-        setModalFormCuponOpen(true);
+        setCuponEditarCrear(cuponEntidadVacia);
+        setOpenFormCupon(true);
     };
     const handleClickDetalleCupon = () => {
         if (cuponSeleccionado.fiIdCupon === 0) {
             funcAlert("Seleccione un cupón para continuar");
             return;
         }
-        setModalDetalleCuponOpen(true);
+        setOpenDetalleCupon(true);
     };
 
+    //Eliminar un cupon seleccionado
     const handleClickEliminarCupon = () => {
         if (cuponSeleccionado.fiIdCupon === 0) {
             funcAlert("Seleccione un cupón para continuar");
             return;
         }
-        setModalEliminarCuponOpen(true);
+        setOpenEliminarCupon(true);
     };
 
-    const funcObtenerCupones = async () => {
+    //Actualizar los datos de la tabla
+    const handleClickActualizarTabla = () => {
+        fnObtenerCupones(true);
+    };
+
+    //FUNCIONES
+    //Consumir API para obtener la lista de cupones
+    const fnObtenerCupones = async (clean = false) => {
         funcLoader(true, "Consultando cupones");
 
-        const response = await promocionesController.funcObtenerCupones();
+        let response;
+        if (clean === false) {
+            response = await promocionesController.funcObtenerCupones(
+                "",
+                formFiltroCupon.txtTipoCupon,
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                true,
+                false,
+                formFiltroCupon.txtVigente
+            );
+        } else {
+            response = await promocionesController.funcObtenerCupones();
+            setFormFiltroCupon(filtrosVacios);
+        }
 
         if (response.Code === 0) {
-            setListaCupones(response.Result);
+            let resListaCupones = response.Result.map((cupon) => ({
+                ...cupon,
+                sStatus: (
+                    <span>
+                        <RedeemIcon
+                            style={{ color: cupon.fbVigente === true ? green[500] : red[500], verticalAlign: "middle" }}
+                        />
+                    </span>
+                ),
+            }));
+            setListaCupones(resListaCupones);
+            //setListaCuponesFilter(resListaCupones);
         } else {
             funcAlert(response.Message);
         }
@@ -88,7 +158,8 @@ const Cupones = (props) => {
         funcLoader();
     };
 
-    const funcDesactivarCupon = async () => {
+    //Consumir API para eliminar un cupon
+    const fnEliminarCupon = async () => {
         funcLoader(true, "Desactivando cupón..");
 
         const response = await promocionesController.funcDesactivarCupon(
@@ -97,8 +168,8 @@ const Cupones = (props) => {
         );
 
         if (response.Code === 0) {
-            setModalEliminarCuponOpen(false);
-            await funcObtenerCupones();
+            setOpenEliminarCupon(false);
+            await fnObtenerCupones();
             setCuponSeleccionado(cuponEntidadVacia);
             funcAlert(response.Message, "success");
         } else {
@@ -108,10 +179,13 @@ const Cupones = (props) => {
         funcLoader();
     };
 
+    //EFFECTS
+
+    //OBtener los cupones al cargar la vista
     useEffect(() => {
-        funcObtenerCupones();
+        fnObtenerCupones();
         // eslint-disable-next-line
-    }, []);
+    }, [formFiltroCupon]);
 
     return (
         <Fragment>
@@ -139,54 +213,109 @@ const Cupones = (props) => {
                 )}
                 {permisos.Botones["4"] !== undefined && ( //Actualizar tabla
                     <Tooltip title={permisos.Botones["4"].Nombre} arrow>
-                        <IconButton onClick={funcObtenerCupones}>
+                        <IconButton onClick={handleClickActualizarTabla}>
                             <ReplayIcon className="color-0" />
                         </IconButton>
                     </Tooltip>
                 )}
             </MeditocHeader1>
             <MeditocBody>
-                <MeditocTable
-                    columns={columns}
-                    data={listaCupones}
-                    rowSelected={cuponSeleccionado}
-                    setRowSelected={setCuponSeleccionado}
-                    mainField="fiIdCupon"
-                    doubleClick={permisos.Botones["2"] !== undefined ? handleClickDetalleCupon : emptyFunc}
-                />
+                <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                        <MeditocSubtitulo title="FILTRAR CUPONES" />
+                    </Grid>
+                    <Grid item sm={6} xs={12}>
+                        <TextField
+                            name="txtTipoCupon"
+                            label="Tipo de descuento del cupón:"
+                            variant="outlined"
+                            select
+                            fullWidth
+                            value={formFiltroCupon.txtTipoCupon}
+                            onChange={handleChangeFiltroCupon}
+                        >
+                            <MenuItem value="">Todos los cupones</MenuItem>
+                            {entCatalogos.catCuponCategoria.map((cupon) => (
+                                <MenuItem key={cupon.fiId} value={cupon.fiId}>
+                                    {cupon.fsDescripcion}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                    </Grid>
+                    <Grid item sm={6} xs={12}>
+                        <TextField
+                            name="txtVigente"
+                            label="Estatus del cupón:"
+                            variant="outlined"
+                            select
+                            fullWidth
+                            value={formFiltroCupon.txtVigente}
+                            onChange={handleChangeFiltroCupon}
+                        >
+                            <MenuItem value="">Todos los cupones</MenuItem>
+                            <MenuItem value="true">Cupón activo</MenuItem>
+                            <MenuItem value="false">Cupón inactivo/vencido</MenuItem>
+                        </TextField>
+                    </Grid>
+                    <MeditocModalBotones okMessage="LIMPIAR FILTRO" hideCancel okFunc={handleClickActualizarTabla} />
+                    <Grid item xs={12}>
+                        <MeditocTable
+                            columns={columns}
+                            data={listaCupones}
+                            rowSelected={cuponSeleccionado}
+                            setRowSelected={setCuponSeleccionado}
+                            mainField="fiIdCupon"
+                            doubleClick={permisos.Botones["2"] !== undefined ? handleClickDetalleCupon : emptyFunc}
+                        />
+                    </Grid>
+                </Grid>
             </MeditocBody>
             <FormCupon
-                entCupon={cuponParaModalForm}
-                open={modalFormCuponOpen}
-                setOpen={setModalFormCuponOpen}
-                funcObtenerCupones={funcObtenerCupones}
+                entCupon={cuponCrearEditar}
+                open={openFormCupon}
+                setOpen={setOpenFormCupon}
+                funcObtenerCupones={fnObtenerCupones}
                 usuarioSesion={usuarioSesion}
                 funcLoader={funcLoader}
                 funcAlert={funcAlert}
             />
-            <DetalleCupon
-                entCupon={cuponSeleccionado}
-                open={modalDetalleCuponOpen}
-                setOpen={setModalDetalleCuponOpen}
-            />
+            <DetalleCupon entCupon={cuponSeleccionado} open={openDetalleCupon} setOpen={setOpenDetalleCupon} />
             <MeditocConfirmacion
                 title="Eliminar cupón"
-                open={modalEliminarCuponOpen}
-                setOpen={setModalEliminarCuponOpen}
-                okFunc={funcDesactivarCupon}
+                open={openEliminarCupon}
+                setOpen={setOpenEliminarCupon}
+                okFunc={fnEliminarCupon}
             >
                 ¿Desea eliminar el cupón con código {cuponSeleccionado.fsCodigo}?
             </MeditocConfirmacion>
+            <MeditocHelper title="Estatus de cupón:">
+                <div>
+                    <RedeemIcon style={{ color: green[500], verticalAlign: "middle" }} />
+                    {"  "}
+                    Cupón activo
+                </div>
+                <div>
+                    <RedeemIcon style={{ color: red[500], verticalAlign: "middle" }} />
+                    {"  "}
+                    Cupón inactivo
+                </div>
+            </MeditocHelper>
         </Fragment>
     );
 };
 
 Cupones.propTypes = {
+    entCatalogos: PropTypes.shape({
+        catCuponCategoria: PropTypes.array,
+    }),
     funcAlert: PropTypes.func,
     funcLoader: PropTypes.func,
-    title: PropTypes.any,
+    permisos: PropTypes.shape({
+        Botones: PropTypes.object,
+        Nombre: PropTypes.string,
+    }),
     usuarioSesion: PropTypes.shape({
-        iIdUsuario: PropTypes.any,
+        iIdUsuario: PropTypes.number,
     }),
 };
 

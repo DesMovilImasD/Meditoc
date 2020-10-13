@@ -76,7 +76,7 @@ const MeditocModal = (props) => {
             //BackdropComponent={Backdrop}
             BackdropProps={{
                 timeout: 300,
-                style: { backgroundColor: "rgb(255 255 255 / 0.7)" },
+                style: { backgroundColor: "rgb(255 255 255 / 0.5)" },
             }}
             scroll="body"
             // PaperComponent={(props) => (

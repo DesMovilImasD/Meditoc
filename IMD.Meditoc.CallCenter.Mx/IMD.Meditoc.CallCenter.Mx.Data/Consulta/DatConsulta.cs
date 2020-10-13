@@ -137,7 +137,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Consulta
             return response;
         }
 
-        public IMDResponse<DataTable> DGetDisponibilidadConsulta(int piIdColaborador, int piIdConsulta, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null)
+        public IMDResponse<DataTable> DGetDisponibilidadConsulta(int? piIdColaborador = null, int? piIdConsulta = null, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null)
         {
             IMDResponse<DataTable> response = new IMDResponse<DataTable>();
 

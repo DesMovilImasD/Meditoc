@@ -3,18 +3,23 @@ import React, { Fragment, useState } from "react";
 
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import FormCambiarPassword from "./configuracion/usuarios/FormCambiarPassword";
+import { Link } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
 import PersonIcon from "@material-ui/icons/Person";
 import PropTypes from "prop-types";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import { imgLogoMeditoc } from "../../configurations/imgConfig";
 import theme from "../../configurations/themeConfig";
-import { useHistory } from "react-router-dom";
+import { urlSystem } from "../../configurations/urlConfig";
 
 const useStyles = makeStyles({
     root: {
         backgroundColor: theme.palette.primary.main,
         color: "#fff",
+    },
+    link: {
+        textDecoration: "none",
+        color: "inherit",
     },
 });
 
@@ -25,19 +30,8 @@ const useStyles = makeStyles({
  * Invocado desde: ContentMain
  *************************************************************/
 const NavBar = (props) => {
-    const {
-        toggleDrawer,
-        setUsuarioSesion,
-        setUsuarioActivo,
-        setUsuarioPermisos,
-        usuarioSesion,
-        funcCerrarTodo,
-        funcLoader,
-        funcAlert,
-    } = props;
+    const { toggleDrawer, usuarioSesion, funcLoader, funcAlert } = props;
     const classes = useStyles();
-
-    const history = useHistory();
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [modalCambiarPasswordOpen, setModalCambiarPasswordOpen] = useState(false);
@@ -54,20 +48,6 @@ const NavBar = (props) => {
 
     const handleClickCambiarPassword = () => {
         setModalCambiarPasswordOpen(true);
-    };
-
-    const handleClickCerrarSesion = () => {
-        sessionStorage.removeItem("MeditocTkn");
-        sessionStorage.removeItem("MeditocKey");
-
-        if (typeof funcCerrarTodo === "function") {
-            funcCerrarTodo();
-        }
-        history.push("/");
-
-        setUsuarioSesion(null);
-        setUsuarioPermisos(null);
-        setUsuarioActivo(false);
     };
 
     return (
@@ -101,12 +81,14 @@ const NavBar = (props) => {
                                 </ListItemIcon>
                                 Cambiar contraseña
                             </MenuItem>
-                            <MenuItem onClick={handleClickCerrarSesion}>
-                                <ListItemIcon>
-                                    <ExitToAppIcon className="color-0" />
-                                </ListItemIcon>
-                                Cerrar sesión
-                            </MenuItem>
+                            <Link to={urlSystem.login} className={classes.link}>
+                                <MenuItem>
+                                    <ListItemIcon>
+                                        <ExitToAppIcon className="color-0" />
+                                    </ListItemIcon>
+                                    Cerrar sesión
+                                </MenuItem>
+                            </Link>
                         </Menu>
                     </Toolbar>
                 </AppBar>

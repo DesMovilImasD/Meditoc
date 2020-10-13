@@ -59,6 +59,8 @@
     <Compile Include="CallCenter\EntCallCenter.cs" />
     <Compile Include="CallCenter\EntNuevaConsulta.cs" />
     <Compile Include="CallCenter\EntOnlineMod.cs" />
+    <Compile Include="Catalogos\EntCatalogo.cs" />
+    <Compile Include="Catalogos\EntCatalogos.cs" />
     <Compile Include="Catalogos\EntEspecialidad.cs" />
     <Compile Include="Catalogos\EnumEspecialidadPrincipal.cs" />
     <Compile Include="Catalogos\EnumOrigen.cs" />

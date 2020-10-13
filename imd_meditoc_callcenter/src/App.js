@@ -24,6 +24,7 @@ function App() {
 
     const [usuarioPermisos, setUsuarioPermisos] = useState(null);
     const [usuarioActivo, setUsuarioActivo] = useState(false);
+    const [entCatalogos, setEntCatalogos] = useState(null);
 
     //Guardar valores de estado del loader
     const [entLoader, setEntLoader] = useState({
@@ -80,10 +81,14 @@ function App() {
                     <BrowserRouter basename={urlBase}>
                         <MeditocLoader entLoader={entLoader} />
                         <MeditocAlert entAlert={entAlert} />
-                        {usuarioActivo === true && usuarioSesion !== null && usuarioPermisos !== null ? (
+                        {usuarioActivo === true &&
+                        usuarioSesion !== null &&
+                        usuarioPermisos !== null &&
+                        entCatalogos !== null ? (
                             <MeditocContentMain
                                 usuarioSesion={usuarioSesion}
                                 usuarioPermisos={usuarioPermisos}
+                                entCatalogos={entCatalogos}
                                 setUsuarioSesion={setUsuarioSesion}
                                 setUsuarioActivo={setUsuarioActivo}
                                 setUsuarioPermisos={setUsuarioPermisos}
@@ -95,6 +100,7 @@ function App() {
                                 setUsuarioSesion={setUsuarioSesion}
                                 setUsuarioActivo={setUsuarioActivo}
                                 setUsuarioPermisos={setUsuarioPermisos}
+                                setEntCatalogos={setEntCatalogos}
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}
                             />

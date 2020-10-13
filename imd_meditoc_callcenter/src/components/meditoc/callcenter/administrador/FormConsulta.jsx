@@ -65,6 +65,7 @@ const Consulta = (props) => {
                 entConsulta.dtFechaProgramadaFin === undefined ? null : new Date(entConsulta.dtFechaProgramadaFin),
         });
         setFormConsultaOK(validacionFormulario);
+        setYaCuentoConFolio(entConsulta.iIdConsulta !== 0);
         // eslint-disable-next-line
     }, [entConsulta]);
 
@@ -331,7 +332,8 @@ const Consulta = (props) => {
                     <FormControlLabel
                         control={
                             <Checkbox
-                                checked={yaCuentoConFolio}
+                                checked={yaCuentoConFolio || entConsulta.iIdConsulta !== 0}
+                                disabled={entConsulta.iIdConsulta !== 0}
                                 onChange={handleChangeCuentoConFolio}
                                 name="chkCuentoConFolio"
                             />
@@ -359,17 +361,19 @@ const Consulta = (props) => {
                                     helperText={!formConsultaOK.txtFolio ? "El folio es requerido" : ""}
                                 />
                             </Grid>
-                            <MeditocModalBotones
-                                okMessage="Validar folio"
-                                okFunc={funcValidarFolio}
-                                cancelMessage="Limpiar"
-                                cancelFunc={funcLimpiarValidarFolio}
-                            />
+                            {entConsulta.iIdConsulta === 0 && (
+                                <MeditocModalBotones
+                                    okMessage="Validar folio"
+                                    okFunc={funcValidarFolio}
+                                    cancelMessage="Limpiar"
+                                    cancelFunc={funcLimpiarValidarFolio}
+                                />
+                            )}
                         </Grid>
                     </Collapse>
                 </Grid>
                 <Grid item xs={12}>
-                    <Collapse in={!yaCuentoConFolio || folioValidado}>
+                    <Collapse in={!yaCuentoConFolio || folioValidado || entConsulta.iIdConsulta !== 0}>
                         <Grid container spacing={3}>
                             <Grid item xs={12}>
                                 <MeditocSubtitulo title="DATOS DEL PACIENTE" />
@@ -487,7 +491,7 @@ const Consulta = (props) => {
                     okMessage="GUARDAR CONSULTA"
                     setOpen={setOpen}
                     okFunc={handleClickSaveConsulta}
-                    okDisabled={yaCuentoConFolio === true && folioValidado === false}
+                    okDisabled={yaCuentoConFolio === true && folioValidado === false && entConsulta.iIdConsulta === 0}
                 />
             </Grid>
         </MeditocModal>
