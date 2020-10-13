@@ -198,5 +198,58 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Catalogos
             }
             return response;
         }
+
+        /// <summary>
+        /// Obtener la lista de las especialidades que solo contienen especialidades con doctores registrados
+        /// </summary>
+        /// <param name="piIdEspecialidad"></param>
+        /// <returns></returns>
+        public IMDResponse<List<EntEspecialidad>> BGetEspecialidadFiltrado(int? piIdEspecialidad = null)
+        {
+            IMDResponse<List<EntEspecialidad>> response = new IMDResponse<List<EntEspecialidad>>();
+
+            string metodo = nameof(this.BGetEspecialidad);
+            logger.Info(IMDSerialize.Serialize(67823458451581, $"Inicia {metodo}(int? piIdEspecialidad = null)", piIdEspecialidad));
+
+            try
+            {
+                IMDResponse<DataTable> respuestaGetEspecialidades = datEspecialidad.DGetEspecialidadFiltrado(piIdEspecialidad);
+                if (respuestaGetEspecialidades.Code != 0)
+                {
+                    return respuestaGetEspecialidades.GetResponse<List<EntEspecialidad>>();
+                }
+
+                List<EntEspecialidad> lstEspecialidades = new List<EntEspecialidad>();
+                foreach (DataRow drEspecialidad in respuestaGetEspecialidades.Result.Rows)
+                {
+                    IMDDataRow dr = new IMDDataRow(drEspecialidad);
+
+                    EntEspecialidad especialidad = new EntEspecialidad
+                    {
+                        bActivo = dr.ConvertTo<bool>("bActivo"),
+                        bBaja = dr.ConvertTo<bool>("bBaja"),
+                        dtFechaCreacion = dr.ConvertTo<DateTime>("dtFechaCreacion"),
+                        iIdEspecialidad = dr.ConvertTo<int>("iIdEspecialidad"),
+                        sNombre = dr.ConvertTo<string>("sNombre")
+                    };
+
+                    especialidad.sFechaCreacion = especialidad.dtFechaCreacion.ToString("dd/MM/yyyy HH:mm");
+
+                    lstEspecialidades.Add(especialidad);
+                }
+
+                response.Code = 0;
+                response.Message = "Las especialidades han sido obtenidas.";
+                response.Result = lstEspecialidades;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458452358;
+                response.Message = "Ocurrió un error inesperado al consultar las especialidades.";
+
+                logger.Error(IMDSerialize.Serialize(67823458452358, $"Error en {metodo}(int? piIdEspecialidad = null): {ex.Message}", piIdEspecialidad, ex, response));
+            }
+            return response;
+        }
     }
 }
