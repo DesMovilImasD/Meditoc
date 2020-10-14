@@ -31,7 +31,15 @@ const useStyles = makeStyles(() => ({
  * Invocado desde: App
  *************************************************************/
 const Login = (props) => {
-    const { setUsuarioSesion, setUsuarioActivo, setUsuarioPermisos, setEntCatalogos, funcLoader, funcAlert } = props;
+    const {
+        setUsuarioSesion,
+        setUsuarioActivo,
+        setUsuarioPermisos,
+        setEntCatalogos,
+        setRutaActual,
+        funcLoader,
+        funcAlert,
+    } = props;
 
     //-----------------------Hooks
     const classes = useStyles();
@@ -134,30 +142,24 @@ const Login = (props) => {
             const responsePermiso = await cguController.funcGetPermisosUsuario(responseLogin.Result.iIdPerfil);
             funcLoader();
 
+            let ruta = urlDefault;
             if (responsePermiso.Code === 0) {
                 setUsuarioPermisos(responsePermiso.Result);
 
                 switch (responseLogin.Result.iIdPerfil) {
-                    case EnumPerfilesPrincipales.Superadministrador:
-                        history.push(urlDefault);
-                        break;
-                    case EnumPerfilesPrincipales.Administrador:
-                        history.push(urlDefault);
-                        break;
-
                     case EnumPerfilesPrincipales.DoctorCallCenter:
-                        history.push(urlSystem.callcenter.consultas);
+                        ruta = urlSystem.callcenter.consultas;
                         break;
 
                     case EnumPerfilesPrincipales.DoctorEspecialista:
-                        history.push(urlSystem.callcenter.consultas);
+                        ruta = urlSystem.callcenter.consultas;
                         break;
                     case EnumPerfilesPrincipales.AdministradorEspecialiesta:
-                        history.push(urlSystem.callcenter.administrarConsultas);
+                        ruta = urlSystem.callcenter.administrarConsultas;
                         break;
 
                     default:
-                        history.push(urlDefault);
+                        ruta = urlDefault;
                         break;
                 }
             }
@@ -166,6 +168,8 @@ const Login = (props) => {
 
             setUsuarioSesion(responseLogin.Result);
             setUsuarioActivo(true);
+            setRutaActual(ruta);
+            history.push(ruta);
         } else {
             sessionStorage.removeItem("MeditocTkn");
             sessionStorage.removeItem("MeditocKey");

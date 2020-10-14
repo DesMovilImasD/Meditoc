@@ -1,3 +1,5 @@
+const tiempoSalirCallCenter = 500;
+
 const permisosSistema = {
     configuracion: {
         name: "",
@@ -74,3 +76,4 @@ const permisosSistema = {
 };
 
 export default permisosSistema;
+export { tiempoSalirCallCenter };

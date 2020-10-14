@@ -26,6 +26,8 @@ function App() {
     const [usuarioActivo, setUsuarioActivo] = useState(false);
     const [entCatalogos, setEntCatalogos] = useState(null);
 
+    const [rutaActual, setRutaActual] = useState(null);
+
     //Guardar valores de estado del loader
     const [entLoader, setEntLoader] = useState({
         open: false,
@@ -92,6 +94,8 @@ function App() {
                                 setUsuarioSesion={setUsuarioSesion}
                                 setUsuarioActivo={setUsuarioActivo}
                                 setUsuarioPermisos={setUsuarioPermisos}
+                                rutaActual={rutaActual}
+                                setRutaActual={setRutaActual}
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}
                             />
@@ -101,6 +105,7 @@ function App() {
                                 setUsuarioActivo={setUsuarioActivo}
                                 setUsuarioPermisos={setUsuarioPermisos}
                                 setEntCatalogos={setEntCatalogos}
+                                setRutaActual={setRutaActual}
                                 funcLoader={funcLoader}
                                 funcAlert={funcAlert}
                             />

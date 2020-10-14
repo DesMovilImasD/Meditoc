@@ -1,4 +1,5 @@
 import { Button, Grid, IconButton, InputAdornment, Tooltip } from "@material-ui/core";
+import { blue, green, red, yellow } from "@material-ui/core/colors";
 
 import AddIcon from "@material-ui/icons/Add";
 import BlockIcon from "@material-ui/icons/Block";
@@ -6,6 +7,7 @@ import CallCenterController from "../../../../controllers/CallCenterController";
 import ColaboradorController from "../../../../controllers/ColaboradorController";
 import { DatePicker } from "@material-ui/pickers";
 import DateRangeIcon from "@material-ui/icons/DateRange";
+import DoneIcon from "@material-ui/icons/Done";
 import EditIcon from "@material-ui/icons/Edit";
 import { EnumEstatusConsulta } from "../../../../configurations/enumConfig";
 import FormConsulta from "./FormConsulta";
@@ -13,11 +15,15 @@ import { Fragment } from "react";
 import MeditocBody from "../../../utilidades/MeditocBody";
 import MeditocConfirmacion from "../../../utilidades/MeditocConfirmacion";
 import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
+import MeditocHelper from "../../../utilidades/MeditocHelper";
 import MeditocSubtitulo from "../../../utilidades/MeditocSubtitulo";
 import MeditocTable from "../../../utilidades/MeditocTable";
 import PropTypes from "prop-types";
+import QueryBuilderIcon from "@material-ui/icons/QueryBuilder";
 import React from "react";
 import ReplayIcon from "@material-ui/icons/Replay";
+import TimerIcon from "@material-ui/icons/Timer";
+import UpdateIcon from "@material-ui/icons/Update";
 import { cellProps } from "../../../../configurations/dataTableIconsConfig";
 import { emptyFunc } from "../../../../configurations/preventConfig";
 import { useEffect } from "react";
@@ -31,6 +37,7 @@ const Administrador = (props) => {
 
     const columns = [
         { title: "ID", field: "iIdConsulta", ...cellProps, hidden: true },
+        { title: "", field: "sIconStatus", ...cellProps, sorting: false },
         { title: "Inicio", field: "sFechaProgramadaInicio", ...cellProps },
         { title: "Fin", field: "sFechaProgramadaFin", ...cellProps },
         { title: "Paciente", field: "sNombrePaciente", ...cellProps },
@@ -95,7 +102,23 @@ const Administrador = (props) => {
         );
 
         if (response.Code === 0) {
-            setListaConsultas(response.Result);
+            setListaConsultas(
+                response.Result.map((consulta) => ({
+                    ...consulta,
+                    sIconStatus:
+                        consulta.iIdEstatusConsulta === EnumEstatusConsulta.CreadoProgramado ? (
+                            <QueryBuilderIcon style={{ color: blue[500] }} />
+                        ) : consulta.iIdEstatusConsulta === EnumEstatusConsulta.Reprogramado ? (
+                            <UpdateIcon style={{ color: blue[500] }} />
+                        ) : consulta.iIdEstatusConsulta === EnumEstatusConsulta.EnConsulta ? (
+                            <TimerIcon style={{ color: yellow[500] }} />
+                        ) : consulta.iIdEstatusConsulta === EnumEstatusConsulta.Finalizado ? (
+                            <DoneIcon style={{ color: green[500] }} />
+                        ) : consulta.iIdEstatusConsulta === EnumEstatusConsulta.Cancelado ? (
+                            <BlockIcon style={{ color: red[500] }} />
+                        ) : null,
+                }))
+            );
         } else {
             funcAlert(response.Message);
         }
@@ -338,6 +361,33 @@ const Administrador = (props) => {
                 <br />
                 Las consultas canceladas ya no pueden reprogramarse
             </MeditocConfirmacion>
+            <MeditocHelper title="Estatus de consulta">
+                <div>
+                    <QueryBuilderIcon style={{ color: blue[500], verticalAlign: "middle" }} />
+                    {"  "}
+                    Creado/Programado
+                </div>
+                <div>
+                    <UpdateIcon style={{ color: blue[500], verticalAlign: "middle" }} />
+                    {"  "}
+                    Reprogramado
+                </div>
+                <div>
+                    <TimerIcon style={{ color: yellow[500], verticalAlign: "middle" }} />
+                    {"  "}
+                    En consulta
+                </div>
+                <div>
+                    <DoneIcon style={{ color: green[500], verticalAlign: "middle" }} />
+                    {"  "}
+                    Finalizado
+                </div>
+                <div>
+                    <BlockIcon style={{ color: red[500], verticalAlign: "middle" }} />
+                    {"  "}
+                    Cancelado
+                </div>
+            </MeditocHelper>
         </Fragment>
     );
 };

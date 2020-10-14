@@ -35,58 +35,20 @@ const ContentMain = (props) => {
         setUsuarioSesion,
         setUsuarioActivo,
         setUsuarioPermisos,
+        rutaActual,
+        setRutaActual,
         entCatalogos,
         funcLoader,
         funcAlert,
     } = props;
 
-    const history = useHistory();
+    //const history = useHistory();
 
     const [drawerOpen, setDrawerOpen] = useState(false);
 
     const f = {};
     f.e = () => {};
     const [funcCerrarTodo, setFuncCerrarTodo] = useState(f);
-
-    const h = {};
-    h.e = () => {};
-    const [funcHistory, setFuncHistory] = useState(h);
-
-    const [locat, setLocat] = useState(null);
-
-    const [removeCallCenterLister, setRemoveCallCenterLister] = useState(false);
-
-    useEffect(() => {
-        const h1 = {};
-        h1.e = history.listen((lcn) => {
-            setLocat(lcn);
-        });
-        setFuncHistory(h1);
-        return () => {
-            funcHistory.e();
-        };
-        // eslint-disable-next-line
-    }, []);
-
-    useEffect(() => {
-        if (locat !== null) {
-            if (locat.pathname === urlSystem.callcenter.consultas) {
-                setRemoveCallCenterLister(true);
-            } else if (locat.pathname === "/" || locat.pathname === urlSystem.login) {
-                funcCerrarTodo.e();
-                sessionStorage.removeItem("MeditocTkn");
-                sessionStorage.removeItem("MeditocKey");
-
-                setUsuarioSesion(null);
-                setUsuarioActivo(false);
-                setUsuarioPermisos(null);
-            } else if (locat.pathname !== urlSystem.login && removeCallCenterLister) {
-                funcCerrarTodo.e();
-                setRemoveCallCenterLister(false);
-            }
-        }
-        // eslint-disable-next-line
-    }, [locat]);
 
     //Desplegar/Ocultar menu lateral izquerdo
     const toggleDrawer = (open) => (event) => {
@@ -105,11 +67,20 @@ const ContentMain = (props) => {
                     usuarioSesion={usuarioSesion}
                     funcLoader={funcLoader}
                     funcAlert={funcAlert}
+                    funcCerrarTodo={funcCerrarTodo}
+                    setUsuarioSesion={setUsuarioSesion}
+                    setUsuarioActivo={setUsuarioActivo}
+                    setUsuarioPermisos={setUsuarioPermisos}
+                    rutaActual={rutaActual}
+                    setRutaActual={setRutaActual}
                 />
                 <MeditocDrawerLeft
                     drawerOpen={drawerOpen}
                     usuarioPermisos={usuarioPermisos}
                     toggleDrawer={toggleDrawer}
+                    funcCerrarTodo={funcCerrarTodo}
+                    rutaActual={rutaActual}
+                    setRutaActual={setRutaActual}
                 />
                 <div>
                     <Switch>

@@ -24,7 +24,7 @@ const useStyles = makeStyles({
  * Invocado desde: ContentMain
  *************************************************************/
 const DrawerMenu = (props) => {
-    const { drawerOpen, toggleDrawer, usuarioPermisos } = props;
+    const { drawerOpen, toggleDrawer, funcCerrarTodo, rutaActual, setRutaActual, usuarioPermisos } = props;
 
     const classes = useStyles();
 
@@ -42,7 +42,13 @@ const DrawerMenu = (props) => {
                 //onClick={toggleDrawer(false)}
                 onKeyDown={toggleDrawer(false)}
             >
-                <MeditocMenuList toggleDrawer={toggleDrawer} usuarioPermisos={usuarioPermisos} />
+                <MeditocMenuList
+                    toggleDrawer={toggleDrawer}
+                    usuarioPermisos={usuarioPermisos}
+                    funcCerrarTodo={funcCerrarTodo}
+                    rutaActual={rutaActual}
+                    setRutaActual={setRutaActual}
+                />
             </div>
         </Drawer>
     );

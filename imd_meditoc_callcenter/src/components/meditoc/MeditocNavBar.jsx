@@ -1,16 +1,17 @@
 import { AppBar, Button, IconButton, ListItemIcon, Menu, MenuItem, Toolbar, makeStyles } from "@material-ui/core";
-import React, { Fragment, useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import React, { Fragment, useEffect, useState } from "react";
+import { urlDefault, urlSystem } from "../../configurations/urlConfig";
 
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import FormCambiarPassword from "./configuracion/usuarios/FormCambiarPassword";
-import { Link } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
 import PersonIcon from "@material-ui/icons/Person";
 import PropTypes from "prop-types";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import { imgLogoMeditoc } from "../../configurations/imgConfig";
 import theme from "../../configurations/themeConfig";
-import { urlSystem } from "../../configurations/urlConfig";
+import { tiempoSalirCallCenter } from "../../configurations/systemConfig";
 
 const useStyles = makeStyles({
     root: {
@@ -30,7 +31,18 @@ const useStyles = makeStyles({
  * Invocado desde: ContentMain
  *************************************************************/
 const NavBar = (props) => {
-    const { toggleDrawer, usuarioSesion, funcLoader, funcAlert } = props;
+    const {
+        toggleDrawer,
+        usuarioSesion,
+        setUsuarioSesion,
+        setUsuarioActivo,
+        setUsuarioPermisos,
+        funcCerrarTodo,
+        funcLoader,
+        funcAlert,
+        rutaActual,
+        setRutaActual,
+    } = props;
     const classes = useStyles();
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -38,8 +50,39 @@ const NavBar = (props) => {
 
     const isMenuOpen = Boolean(anchorEl);
 
+    const history = useHistory();
+
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
+    };
+
+    const handleCerrarSesion = async () => {
+        if (rutaActual === urlSystem.callcenter.consultas) {
+            if (funcCerrarTodo) {
+                if (typeof funcCerrarTodo.e === "function") {
+                    await funcCerrarTodo.e();
+                }
+            }
+
+            //Esperar para reiniciar el chat
+            setTimeout(() => {
+                funcBorrarDatosUsuario();
+            }, tiempoSalirCallCenter);
+        } else {
+            funcBorrarDatosUsuario();
+        }
+    };
+
+    const funcBorrarDatosUsuario = () => {
+        sessionStorage.removeItem("MeditocTkn");
+        sessionStorage.removeItem("MeditocKey");
+
+        setUsuarioSesion(null);
+        setUsuarioActivo(false);
+        setUsuarioPermisos(null);
+
+        setRutaActual(urlDefault);
+        history.push(urlDefault);
     };
 
     const handleMenuClose = () => {
@@ -81,14 +124,12 @@ const NavBar = (props) => {
                                 </ListItemIcon>
                                 Cambiar contraseña
                             </MenuItem>
-                            <Link to={urlSystem.login} className={classes.link}>
-                                <MenuItem>
-                                    <ListItemIcon>
-                                        <ExitToAppIcon className="color-0" />
-                                    </ListItemIcon>
-                                    Cerrar sesión
-                                </MenuItem>
-                            </Link>
+                            <MenuItem onClick={handleCerrarSesion}>
+                                <ListItemIcon>
+                                    <ExitToAppIcon className="color-0" />
+                                </ListItemIcon>
+                                Cerrar sesión
+                            </MenuItem>
                         </Menu>
                     </Toolbar>
                 </AppBar>

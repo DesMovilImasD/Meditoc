@@ -288,36 +288,24 @@ const CallCenter = (props) => {
             window.onunload = () => {
                 funcCerrarTodoCallCenter();
             };
-
-            window.onhashchange = (e) => {
-                if (e.oldURL.includes(urlSystem.callcenter.consultas.replace("/", ""))) {
-                    funcCerrarTodoCallCenter();
-                }
-            };
         }
     };
 
-    const funcReiniciarChat = async (finalizandoSesion = false) => {
+    const funcReiniciarChat = async () => {
         const iframeickelink = document.getElementById("iframeickelink");
 
         if (iframeickelink !== null) {
             if (iframeickelink.contentWindow) {
                 if (typeof iframeickelink.contentWindow.CallBack === "function") {
                     iframeickelink.contentWindow.CallBack();
-                    console.log("CallBack");
                 }
 
                 if (iframeickelink.contentWindow.CallBacks) {
                     if (typeof iframeickelink.contentWindow.CallBacks.FinalizarConsulta === "function") {
                         iframeickelink.contentWindow.CallBacks.FinalizarConsulta();
-                        console.log("FinalizarConsulta");
                     }
                 }
             }
-        }
-
-        if (finalizandoSesion === false) {
-            await funcOnlineMod(false, true);
         }
 
         localStorage.removeItem("sFolio");
@@ -343,7 +331,7 @@ const CallCenter = (props) => {
                 setFolioEncontrado(null);
             }
 
-            funcReiniciarChat(true);
+            funcReiniciarChat();
             funcAlert(response.Message, "success");
         } else {
             funcAlert(response.Message);
@@ -408,26 +396,23 @@ const CallCenter = (props) => {
         setModalDirectorioOpen(true);
     };
 
+    const handleClickReiniciarChat = async () => {
+        funcReiniciarChat();
+        await funcOnlineMod(false, true);
+    };
+
     const funcCerrarTodoCallCenter = async () => {
         await funcOnlineMod(false, false, false);
         if (consultaIniciada) {
             await handleClickFinalizarConsulta(true);
         }
-        if (localStorage.getItem("sFolio") !== null) {
-            funcReiniciarChat();
-        }
+        funcReiniciarChat();
     };
 
     //Actualizar función para cerrar la sala o finalizar la sala al cerrar la sesión o cambiar a otro módulo/submódulo
     useEffect(() => {
-        funcCerrarTodo.e();
         const f = {};
-        f.e = history.listen((ltn, action) => {
-            //console.log(ltn, action);
-            if (action !== "REPLACE") {
-                funcCerrarTodoCallCenter();
-            }
-        });
+        f.e = funcCerrarTodoCallCenter;
         setFuncCerrarTodo(f);
 
         // eslint-disable-next-line
@@ -448,14 +433,6 @@ const CallCenter = (props) => {
         funcGetColaboradorUser();
         // eslint-disable-next-line
     }, []);
-
-    useEffect(() => {
-        return () => {
-            funcReiniciarChat(true);
-        };
-        // eslint-disable-next-line
-    }, []);
-
     return (
         <Fragment>
             <MeditocHeader1
@@ -491,7 +468,7 @@ const CallCenter = (props) => {
                             <Button
                                 variant="contained"
                                 className={classes.button}
-                                onClick={() => funcReiniciarChat()}
+                                onClick={handleClickReiniciarChat}
                                 disabled={usuarioColaborador === null || consultaIniciada === true}
                             >
                                 {permisos.Botones["4"].Nombre}
