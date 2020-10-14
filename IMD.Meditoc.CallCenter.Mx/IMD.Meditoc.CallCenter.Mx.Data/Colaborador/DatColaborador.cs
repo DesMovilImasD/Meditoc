@@ -22,6 +22,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
         string spDeleteColaboradorFoto;
         string spGetColaboradorDirectorio;
         string spGetObtenerSala;
+        string spGetColaboradorStatus;
 
         public DatColaborador()
         {
@@ -36,6 +37,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
             spDeleteColaboradorFoto = "sva_meditoc_del_colaboradorfoto";
             spGetColaboradorDirectorio = "svc_meditoc_colaboradordirectorio";
             spGetObtenerSala = "svc_app_ObtenerSala";
+            spGetColaboradorStatus = "svc_meditoc_colaborador_status";
         }
 
         public IMDResponse<bool> DSaveColaborador(EntCreateColaborador entCreateColaborador)
@@ -247,6 +249,32 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Colaborador
                 response.Message = "Ocurrió un error inesperado en la base de datos al obtener la sala del colaborador.";
 
                 logger.Error(IMDSerialize.Serialize(67823458593772, $"Error en {metodo}(bool? bAgendada = null, int? iIdUsuario = null, DateTime? dtFechaConsulta = null): {ex.Message}", bAgendada, iIdUsuario, dtFechaConsulta, ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<DataTable> DGetColaboradorStatus(int piIdColaborador)
+        {
+            IMDResponse<DataTable> response = new IMDResponse<DataTable>();
+
+            string metodo = nameof(this.DGetColaboradorStatus);
+            logger.Info(IMDSerialize.Serialize(67823458647385, $"Inicia {metodo}(int piIdColaborador)", piIdColaborador));
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spGetColaboradorStatus))
+                {
+                    database.AddInParameter(dbCommand, "piIdColaborador", DbType.Int32, piIdColaborador);
+
+                    response = imdCommonData.DExecuteDT(database, dbCommand);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458648162;
+                response.Message = "Ocurrió un error inesperado en la base de datos el consultar el status del colaborador.";
+
+                logger.Error(IMDSerialize.Serialize(67823458648162, $"Error en {metodo}(int piIdColaborador): {ex.Message}", piIdColaborador, ex, response));
             }
             return response;
         }

@@ -76,6 +76,7 @@
     <Compile Include="CGU\EnumTipoCuenta.cs" />
     <Compile Include="Colaborador\EntColaborador.cs" />
     <Compile Include="Colaborador\EntColaboradorDirectorio.cs" />
+    <Compile Include="Colaborador\EntColaboradorStatus.cs" />
     <Compile Include="Colaborador\EntCreateColaborador.cs" />
     <Compile Include="Colaborador\EntDirectorio.cs" />
     <Compile Include="Colaborador\EnumTipoDoctor.cs" />

@@ -34,7 +34,14 @@ const useStyles = makeStyles({
     },
 });
 
+/*************************************************************
+ * Descripcion: Modal para administrar los folios de una empresa seleccionada
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ * Invocado desde: Empresa
+ *************************************************************/
 const AdministrarFolios = (props) => {
+    //=================================PROPS=================================
     const {
         entEmpresa,
         open,
@@ -47,9 +54,8 @@ const AdministrarFolios = (props) => {
         funcAlert,
     } = props;
 
+    //=================================VARIABLES=================================
     const classes = useStyles();
-
-    const folioController = new FolioController();
 
     const columns = [
         { title: "ID", field: "iIdFolio", ...cellProps, hidden: true },
@@ -67,15 +73,11 @@ const AdministrarFolios = (props) => {
         txtVigente: "",
     };
 
+    //=================================CONTROLLERS=================================
+    const folioController = new FolioController();
+
+    //=================================STATES=================================
     const [filtroFolios, setFiltroFolios] = useState(filtrosVacios);
-
-    const handleChangeFiltroFolio = (e) => {
-        setFiltroFolios({
-            ...filtroFolios,
-            [e.target.name]: e.target.value,
-        });
-    };
-
     const [listaFoliosEmpresa, setListaFoliosEmpresa] = useState([]);
     const [foliosEmpresaSeleccionado, setFoliosEmpresaSeleccionado] = useState([]);
 
@@ -84,14 +86,26 @@ const AdministrarFolios = (props) => {
     const [modalEliminarFoliosOpen, setModalEliminarFoliosOpen] = useState(false);
 
     const [formSubirArchivoOpen, setFormSubirArchivoOpen] = useState(false);
+    //=================================HANDLERS=================================
+    //Capturar los cambios del filtro
+    const handleChangeFiltroFolio = (e) => {
+        setFiltroFolios({
+            ...filtroFolios,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    //Abrir form para cargar un archivo
     const handleClickSubirArchivo = () => {
         setFormSubirArchivoOpen(true);
     };
 
+    //Abrir form para crear nuevos folios
     const handleClickAgregarFolios = () => {
         setModalAgregarFoliosOpen(true);
     };
 
+    //Abrir form para modificar la vigencia
     const handleClickModificarVigencia = () => {
         if (foliosEmpresaSeleccionado.length < 1) {
             funcAlert("Seleccione al menos un folio de la tabla para continuar");
@@ -100,6 +114,7 @@ const AdministrarFolios = (props) => {
         setModalAgregarVigenciaOpen(true);
     };
 
+    //Eliminar los folios seleccionados
     const handleClickEliminarFolios = () => {
         if (foliosEmpresaSeleccionado.length < 1) {
             funcAlert("Seleccione al menos un folio de la tabla para continuar");
@@ -108,6 +123,27 @@ const AdministrarFolios = (props) => {
         setModalEliminarFoliosOpen(true);
     };
 
+    //Descargar la plantilla para cargar folios desde archivo
+    const handleClickDescargarPlantilla = async () => {
+        funcLoader(true, "Descargando plantilla...");
+
+        const response = await folioController.funcDescargarPlantilla();
+
+        if (response.Code === 0) {
+            funcAlert(response.Message, "success");
+        } else {
+            funcAlert(response.Message);
+        }
+        funcLoader();
+    };
+
+    //Actualizar la tabla
+    const handleClickActualizarTabla = () => {
+        funcGetFoliosEmpresa(true);
+    };
+
+    //=================================FUNCTIONS=================================
+    //Consumir API para consultar los folios de la empresa actual
     const funcGetFoliosEmpresa = async (clean = false) => {
         funcLoader(true, "Consultando folios de empresa...");
         let response;
@@ -154,6 +190,7 @@ const AdministrarFolios = (props) => {
         funcLoader();
     };
 
+    //Consumir API para eliminar los folios seleccionados
     const funcEliminarFolios = async () => {
         funcLoader(true, "Eliminando folios...");
 
@@ -176,23 +213,8 @@ const AdministrarFolios = (props) => {
         funcLoader();
     };
 
-    const handleClickDescargarPlantilla = async () => {
-        funcLoader(true, "Descargando plantilla...");
-
-        const response = await folioController.funcDescargarPlantilla();
-
-        if (response.Code === 0) {
-            funcAlert(response.Message, "success");
-        } else {
-            funcAlert(response.Message);
-        }
-        funcLoader();
-    };
-
-    const handleClickActualizarTabla = () => {
-        funcGetFoliosEmpresa(true);
-    };
-
+    //=================================EFFECT HOOKS=================================
+    //Consultar los folios cuando se cambian los filtros
     useEffect(() => {
         if (filtroFolios !== filtrosVacios) {
             funcGetFoliosEmpresa(false);
@@ -200,6 +222,7 @@ const AdministrarFolios = (props) => {
         // eslint-disable-next-line
     }, [filtroFolios]);
 
+    //Consultar los folios de la empresa cuando se abre este modal
     useEffect(() => {
         if (open === true) {
             funcGetFoliosEmpresa(true);
@@ -402,18 +425,24 @@ const AdministrarFolios = (props) => {
 };
 
 AdministrarFolios.propTypes = {
+    entCatalogos: PropTypes.shape({
+        catOrigen: PropTypes.array,
+    }),
     entEmpresa: PropTypes.shape({
-        iIdEmpresa: PropTypes.any,
-        sFolioEmpresa: PropTypes.any,
-        sNombre: PropTypes.any,
+        iIdEmpresa: PropTypes.number,
+        sFolioEmpresa: PropTypes.string,
+        sNombre: PropTypes.string,
     }),
     funcAlert: PropTypes.func,
     funcLoader: PropTypes.func,
-    listaProductos: PropTypes.any,
+    listaProductos: PropTypes.array,
     open: PropTypes.bool,
-    setOpen: PropTypes.any,
+    permisos: PropTypes.shape({
+        Botones: PropTypes.object,
+    }),
+    setOpen: PropTypes.func,
     usuarioSesion: PropTypes.shape({
-        iIdUsuario: PropTypes.any,
+        iIdUsuario: PropTypes.number,
     }),
 };
 

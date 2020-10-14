@@ -716,5 +716,56 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
             }
             return response;
         }
+
+        public IMDResponse<EntColaboradorStatus> BGetColaboradorStatus(int piIdColaborador)
+        {
+            IMDResponse<EntColaboradorStatus> response = new IMDResponse<EntColaboradorStatus>();
+
+            string metodo = nameof(this.BGetColaboradorStatus);
+            logger.Info(IMDSerialize.Serialize(67823458648939, $"Inicia {metodo}(int piIdColaborador)", piIdColaborador));
+
+            try
+            {
+                if (piIdColaborador < 1)
+                {
+                    response.Code = -345687324773;
+                    response.Message = "No se especificó el colaborador.";
+                    return response;
+                }
+
+                IMDResponse<DataTable> resGetStatus = datColaborador.DGetColaboradorStatus(piIdColaborador);
+                if (resGetStatus.Code != 0)
+                {
+                    return resGetStatus.GetResponse<EntColaboradorStatus>();
+                }
+
+                if (resGetStatus.Result.Rows.Count != 1)
+                {
+                    response.Code = -345687324773;
+                    response.Message = "No se encontró el colaborador especificado.";
+                    return response;
+                }
+
+                IMDDataRow dr = new IMDDataRow(resGetStatus.Result.Rows[0]);
+
+                EntColaboradorStatus entColaboradorStatus = new EntColaboradorStatus
+                {
+                    bOcupado = Convert.ToBoolean(dr.ConvertTo<int>("bOcupado")),
+                    bOnline = Convert.ToBoolean(dr.ConvertTo<int>("bOnline")),
+                };
+
+                response.Code = 0;
+                response.Message = "Se ha consultado el estatus del colaborador.";
+                response.Result = entColaboradorStatus;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458649716;
+                response.Message = "Ocurrió un error inesperado al consultar el status del colaborador.";
+
+                logger.Error(IMDSerialize.Serialize(67823458649716, $"Error en {metodo}(int piIdColaborador): {ex.Message}", piIdColaborador, ex, response));
+            }
+            return response;
+        }
     }
 }

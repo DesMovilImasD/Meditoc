@@ -254,5 +254,30 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             }
             return response;
         }
+
+        [MeditocAuthentication]
+        [HttpGet]
+        [Route("Api/Colaborador/Get/Colaborador/Status")]
+        public IMDResponse<EntColaboradorStatus> CGetColaboradorStatus([FromUri]int piIdColaborador)
+        {
+            IMDResponse<EntColaboradorStatus> response = new IMDResponse<EntColaboradorStatus>();
+
+            string metodo = nameof(this.CGetColaboradorStatus);
+            logger.Info(IMDSerialize.Serialize(67823458650493, $"Inicia {metodo}([FromUri]int piIdColaborador)", piIdColaborador));
+
+            try
+            {
+                BusColaborador busColaborador = new BusColaborador();
+                response = busColaborador.BGetColaboradorStatus(piIdColaborador);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458651270;
+                response.Message = "Ocurrió un error inesperado en el servicio al consultar el estatus del colaborador.";
+
+                logger.Error(IMDSerialize.Serialize(67823458651270, $"Error en {metodo}([FromUri]int piIdColaborador): {ex.Message}", piIdColaborador, ex, response));
+            }
+            return response;
+        }
     }
 }
