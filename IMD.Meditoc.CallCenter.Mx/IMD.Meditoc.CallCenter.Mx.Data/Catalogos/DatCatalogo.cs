@@ -17,6 +17,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Catalogos
         string spGetCatalogos;
         string spSaveEspecialidad;
         string spGetEspecialidad;
+        string spGetEspecialidadFiltrado;
 
         public DatCatalogo()
         {
@@ -27,6 +28,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Catalogos
             spGetCatalogos = "svc_get_catalogos";
             spSaveEspecialidad = "sva_cat_save_especialidad";
             spGetEspecialidad = "svc_cat_especialidades";
+            spGetEspecialidadFiltrado = "svc_cat_especialidades_filtro";
         }
 
         public IMDResponse<DataSet> DGetCatalogos()
@@ -94,6 +96,33 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Catalogos
             try
             {
                 using (DbCommand dbCommand = database.GetStoredProcCommand(spGetEspecialidad))
+                {
+                    database.AddInParameter(dbCommand, "piIdEspecialidad", DbType.Int32, piIdEspecialidad);
+
+                    response = imdCommonData.DExecuteDT(database, dbCommand);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458449250;
+                response.Message = "Ocurrió un error inesperado en la base de datos al consultar las especialidades.";
+
+                logger.Error(IMDSerialize.Serialize(67823458449250, $"Error en {metodo}(int? piIdEspecialidad = null): {ex.Message}", piIdEspecialidad, ex, response));
+            }
+            return response;
+        }
+
+
+        public IMDResponse<DataTable> DGetEspecialidadFiltrado(int? piIdEspecialidad = null)
+        {
+            IMDResponse<DataTable> response = new IMDResponse<DataTable>();
+
+            string metodo = nameof(this.DGetEspecialidad);
+            logger.Info(IMDSerialize.Serialize(67823458448473, $"Inicia {metodo}(int? piIdEspecialidad = null)", piIdEspecialidad));
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spGetEspecialidadFiltrado))
                 {
                     database.AddInParameter(dbCommand, "piIdEspecialidad", DbType.Int32, piIdEspecialidad);
 

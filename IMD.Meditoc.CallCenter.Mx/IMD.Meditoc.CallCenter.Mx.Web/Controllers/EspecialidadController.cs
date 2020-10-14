@@ -62,5 +62,29 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             }
             return response;
         }
+
+        [HttpGet]
+        [Route("Api/Especialidad/Get/RegistrosFiltrados")]
+        public IMDResponse<List<EntEspecialidad>> CGetEspecialidadFiltrado([FromUri] int? piIdEspecialidad = null)
+        {
+            IMDResponse<List<EntEspecialidad>> response = new IMDResponse<List<EntEspecialidad>>();
+
+            string metodo = nameof(this.CGetEspecialidad);
+            logger.Info(IMDSerialize.Serialize(67823458453135, $"Inicia {metodo}([FromUri]int? piIdEspecialidad = null)", piIdEspecialidad));
+
+            try
+            {
+                BusCatalogo busEspecialidad = new BusCatalogo();                
+                response = busEspecialidad.BGetEspecialidadFiltrado(piIdEspecialidad);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458453912;
+                response.Message = "Ocurrió un error inesperado en el servicio al consultar las especialidades médicas";
+
+                logger.Error(IMDSerialize.Serialize(67823458453912, $"Error en {metodo}([FromUri]int? piIdEspecialidad = null): {ex.Message}", piIdEspecialidad, ex, response));
+            }
+            return response;
+        }
     }
 }
