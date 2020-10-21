@@ -13,6 +13,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Catalogos
         APP = 3,
         Particular = 4,
         PanelAdministrativo = 5,
-        WEBNutricionalPsicologia = 6
+        WEBNutricionalPsicologia = 6,
+        Locutorios = 7
     }
 }

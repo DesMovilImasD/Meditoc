@@ -33,7 +33,14 @@ const useStyles = makeStyles({
     },
 });
 
+/*************************************************************
+ * Descripcion: Formulario para cargar un archivo contenedor de folios
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ * Invocado desde: AdministrarFolios
+ *************************************************************/
 const FormCargarArchivo = (props) => {
+    //=================================PROPS=================================
     const {
         entEmpresa,
         listaProductos,
@@ -45,26 +52,29 @@ const FormCargarArchivo = (props) => {
         funcAlert,
     } = props;
 
+    //=================================VARIABLES=================================
     const classes = useStyles();
-
-    const folioController = new FolioController();
-
-    const [archivoCargado, setArchivoCargado] = useState(null);
-    const [formCargarArchivo, setFormCargarArchivo] = useState({
-        txtProducto: "",
-        txtArchivoFolios: "",
-    });
 
     const validacionFormulario = {
         txtProducto: true,
         txtArchivoFolios: true,
     };
 
-    const [formCargarArchivoOK, setFormCargarArchivoOK] = useState(validacionFormulario);
+    //=================================CONTROLLERS=================================
+    const folioController = new FolioController();
 
+    //=================================STATES=================================
+    const [archivoCargado, setArchivoCargado] = useState(null);
+    const [formCargarArchivoOK, setFormCargarArchivoOK] = useState(validacionFormulario);
     const [entArchivoVerificado, setEntArchivoVerificado] = useState(null);
     const [modalDetalleArchivoVerificado, setModalDetalleArchivoVerificado] = useState(false);
+    const [formCargarArchivo, setFormCargarArchivo] = useState({
+        txtProducto: "",
+        txtArchivoFolios: "",
+    });
 
+    //=================================HANDLERS=================================
+    //Capturar cuando se selecciona un producto de la lista
     const handleChangeProducto = (e) => {
         const valorCampo = e.target.value;
         setFormCargarArchivo({ ...formCargarArchivo, txtProducto: valorCampo });
@@ -74,6 +84,7 @@ const FormCargarArchivo = (props) => {
         setEntArchivoVerificado(null);
     };
 
+    //Capturar cuando un archivo es cargado
     const handleClickCargarArchivo = () => {
         let input = document.createElement("input");
         input.type = "file";
@@ -95,7 +106,6 @@ const FormCargarArchivo = (props) => {
 
             setArchivoCargado(archivo);
             setEntArchivoVerificado(null);
-            //setArchivoVerificadoDetalleFolios(archivoVeridicadoEntidadVacia);
             setFormCargarArchivo({ ...formCargarArchivo, txtArchivoFolios: archivo.name });
             setFormCargarArchivoOK({ ...formCargarArchivoOK, txtArchivoFolios: true });
         });
@@ -103,17 +113,19 @@ const FormCargarArchivo = (props) => {
         input.remove();
     };
 
+    //Ver el detalle de los folios del archivo cargado
     const handleClickVerDetalleArchivoVerificado = () => {
         setModalDetalleArchivoVerificado(true);
     };
 
+    //Borrar campo del archivo agregado
     const handleClickLimpiarArchivo = () => {
         setArchivoCargado(null);
         setEntArchivoVerificado(null);
-        //setArchivoVerificadoDetalleFolios(archivoVeridicadoEntidadVacia);
         setFormCargarArchivo({ ...formCargarArchivo, txtArchivoFolios: "" });
     };
 
+    //Consumir API para verificar los folios del archivo cargado
     const handleClickVerificarArchivoFolios = async () => {
         let formCargarArchivoOKValidacion = { ...validacionFormulario };
 
@@ -151,6 +163,7 @@ const FormCargarArchivo = (props) => {
         funcLoader();
     };
 
+    //Consumir API para guardar los folios verificados del archivo
     const handleClickSubirArchivo = async () => {
         let formCargarArchivoOKValidacion = { ...validacionFormulario };
 
@@ -196,6 +209,8 @@ const FormCargarArchivo = (props) => {
         funcLoader();
     };
 
+    //=================================EFFECT HOOKS=================================
+    //Resetear formulario al cargar el modal
     useEffect(() => {
         if (open === true) {
             setFormCargarArchivo({

@@ -40,7 +40,7 @@ const Colaboradores = (props) => {
     const especialidadController = new EspecialidadController();
     const colaboradorController = new ColaboradorController();
 
-    //CONSTANTES
+    //VARIABLES
     const columns = [
         { title: "ID", field: "iIdColaborador", hidden: true, ...cellProps },
         { title: "Tipo de doctor", field: "sTipoDoctor", ...cellProps },

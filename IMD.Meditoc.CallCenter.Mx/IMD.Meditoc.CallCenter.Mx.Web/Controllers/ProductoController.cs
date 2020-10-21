@@ -142,5 +142,55 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             }
             return response;
         }
+
+        [MeditocAuthentication]
+        [HttpGet]
+        [Route("Api/Producto/Get/Empresa/Comercial")]
+        public IMDResponse<List<EntProducto>> CGetProductoEmpresaExterna()
+        {
+            IMDResponse<List<EntProducto>> response = new IMDResponse<List<EntProducto>>();
+
+            string metodo = nameof(this.CGetProductoEmpresaExterna);
+            logger.Info(IMDSerialize.Serialize(67823458655155, $"Inicia {metodo}"));
+
+            try
+            {
+                BusProducto busProducto = new BusProducto();
+                response = busProducto.BGetProductoEmpresaExterna();
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458655932;
+                response.Message = "Ocurrió un error inesperado en el servicio al consultar los productos Meditoc.";
+
+                logger.Error(IMDSerialize.Serialize(67823458655932, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        [MeditocAuthentication]
+        [HttpGet]
+        [Route("Api/Producto/Get/Cliente/Comercial/Locutorios")]
+        public IMDResponse<EntOrientacionIVA> CGetOrientacionesPonleMas()
+        {
+            IMDResponse<EntOrientacionIVA> response = new IMDResponse<EntOrientacionIVA>();
+
+            string metodo = nameof(this.CGetOrientacionesPonleMas);
+            logger.Info(IMDSerialize.Serialize(67823458659817, $"Inicia {metodo}"));
+
+            try
+            {
+                BusProducto busProducto = new BusProducto();
+                response = busProducto.BGetOrientacionesLocutorios();
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458660594;
+                response.Message = "Ocurrió un error inesperado en el servicio al consultar los productos Meditoc.";
+
+                logger.Error(IMDSerialize.Serialize(67823458660594, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
     }
 }

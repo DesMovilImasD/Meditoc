@@ -156,6 +156,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                         bAcceso = entCreateColaborador.bAcceso
                     };
 
+                    if (entUsuarioTitular.sUsuario == entUsuarioAdministrativo.sUsuario && !string.IsNullOrWhiteSpace(entUsuarioTitular.sUsuario) && !string.IsNullOrWhiteSpace(entUsuarioAdministrativo.sUsuario))
+                    {
+                        response.Code = -2345674657;
+                        response.Message = "El usuario titular no puede ser el mismo que el usuario administrativo.";
+                        return response;
+                    }
+
 
                     if (entCreateColaborador.bActivo && !entCreateColaborador.bBaja)
                     {

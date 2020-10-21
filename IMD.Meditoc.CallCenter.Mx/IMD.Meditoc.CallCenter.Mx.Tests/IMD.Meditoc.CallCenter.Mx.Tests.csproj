@@ -73,6 +73,7 @@
     <Compile Include="TestReportes.cs" />
     <Compile Include="TestFolio.cs" />
     <Compile Include="TestColaborador.cs" />
+    <Compile Include="TestProducto.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

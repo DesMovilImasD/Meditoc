@@ -87,6 +87,7 @@
     <Compile Include="Correo\EntOrderEmail.cs" />
     <Compile Include="Empresa\EntEmpresa.cs" />
     <Compile Include="Empresa\EntEmpresaDetalleFolio.cs" />
+    <Compile Include="Empresa\EntEmpresaExterna.cs" />
     <Compile Include="Empresa\EnumEmpresas.cs" />
     <Compile Include="EntConecktaPago.cs" />
     <Compile Include="Correo\EntCorreo.cs" />
@@ -94,7 +95,9 @@
     <Compile Include="EntPoliticas.cs" />
     <Compile Include="Folio\EntFolio.cs" />
     <Compile Include="Folio\EntFolioFV.cs" />
+    <Compile Include="Folio\EntFolioLocutorios.cs" />
     <Compile Include="Folio\EntFolioReporte.cs" />
+    <Compile Include="Folio\EntFolioSMS.cs" />
     <Compile Include="Folio\EntFolioUser.cs" />
     <Compile Include="Folio\EntFolioVentaCalle.cs" />
     <Compile Include="Folio\EntFolioVerificarCarga.cs" />
@@ -122,6 +125,7 @@
     <Compile Include="Ordenes\EntWebHookLog.cs" />
     <Compile Include="Paciente\EntPaciente.cs" />
     <Compile Include="Paciente\EntUpdPaciente.cs" />
+    <Compile Include="Producto\EntOrientacionIVA.cs" />
     <Compile Include="Producto\EntProducto.cs" />
     <Compile Include="Producto\EntProductosNutricionalPsicologia.cs" />
     <Compile Include="Producto\EnumGrupoProducto.cs" />

@@ -94,5 +94,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Tests
             var res = busCatalogo.BGetCatalogos();
             var json = JsonConvert.SerializeObject(res, Formatting.Indented);
         }
+
+        [TestMethod]
+        public void TLogin()
+        {
+            BusUsuario busUsuario = new BusUsuario();
+            var res = busUsuario.BLogin("Alejandra Erguera", "ale.erguera");
+
+            var json = JsonConvert.SerializeObject(res, Formatting.Indented);
+        }
     }
 }

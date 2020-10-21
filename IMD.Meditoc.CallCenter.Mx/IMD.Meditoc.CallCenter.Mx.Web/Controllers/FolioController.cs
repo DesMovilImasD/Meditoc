@@ -2,6 +2,7 @@
 using IMD.Admin.Utilities.Entities;
 using IMD.Meditoc.CallCenter.Mx.Business.Correo;
 using IMD.Meditoc.CallCenter.Mx.Business.Folio;
+using IMD.Meditoc.CallCenter.Mx.Entities.Empresa;
 using IMD.Meditoc.CallCenter.Mx.Entities.Folio;
 using IMD.Meditoc.CallCenter.Mx.Entities.Ordenes;
 using IMD.Meditoc.CallCenter.Mx.Web.Tokens;
@@ -337,6 +338,56 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
                 response = Request.CreateResponse(HttpStatusCode.InternalServerError, "Ocurrió un error al obtener la plantilla de carga de folios.");
 
                 logger.Error(IMDSerialize.Serialize(67823458612420, $"Error en {metodo}(): {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        [MeditocAuthentication]
+        [HttpPost]
+        [Route("Api/Folio/Save/Folio/Empresa/Comercial")]
+        public IMDResponse<bool> CNuevoFolioEmpresaExterna([FromBody]EntEmpresaExterna entEmpresa)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.CNuevoFolioEmpresaExterna);
+            logger.Info(IMDSerialize.Serialize(67823458656709, $"Inicia {metodo}([FromBody]EntEmpresaExterna entEmpresa)", entEmpresa));
+
+            try
+            {
+                BusFolio busFolio = new BusFolio();
+                response = busFolio.BNuevoFolioEmpresaExterna(entEmpresa);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458657486;
+                response.Message = "Ocurrió un error inesperado en el servicio al procesar la compra.";
+
+                logger.Error(IMDSerialize.Serialize(67823458657486, $"Error en {metodo}([FromBody]EntEmpresaExterna entEmpresa): {ex.Message}", entEmpresa, ex, response));
+            }
+            return response;
+        }
+
+        [MeditocAuthentication]
+        [HttpPost]
+        [Route("Api/Folio/Save/Folio/Cliente/Locutorios")]
+        public IMDResponse<EntFolioSMS> CNuevoFolioLocutorios([FromBody]EntFolioLocutorios entFolio)
+        {
+            IMDResponse<EntFolioSMS> response = new IMDResponse<EntFolioSMS>();
+
+            string metodo = nameof(this.CNuevoFolioLocutorios);
+            logger.Info(IMDSerialize.Serialize(67823458662925, $"Inicia {metodo}([FromBody]EntFolioLocutorios entFolio)", entFolio));
+
+            try
+            {
+                BusFolio busFolio = new BusFolio();
+                response = busFolio.BNuevoFolioLocutorios(entFolio);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458663702;
+                response.Message = "Ocurrió un error inesperado en el servicio al procesar la compra.";
+
+                logger.Error(IMDSerialize.Serialize(67823458663702, $"Error en {metodo}([FromBody]EntFolioLocutorios entFolio): {ex.Message}", entFolio, ex, response));
             }
             return response;
         }

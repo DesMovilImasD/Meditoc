@@ -8,6 +8,7 @@ import DirectorioMedico from "./DirectorioMedico";
 import FolioController from "../../../../controllers/FolioController";
 import FormBuscarFolio from "./FormBuscarFolio";
 import FormCallCenter from "./FormCallCenter";
+import HelperConsulta from "./HelperConsulta";
 import HelperStatus from "./HelperStatus";
 import MeditocBody from "../../../utilidades/MeditocBody";
 import MeditocHeader1 from "../../../utilidades/MeditocHeader1";
@@ -16,6 +17,7 @@ import MeditocSwitch from "../../../utilidades/MeditocSwitch";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import theme from "../../../../configurations/themeConfig";
+import { tiempoValidarEstatusColaborador } from "../../../../configurations/systemConfig";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
@@ -51,6 +53,15 @@ const CallCenter = (props) => {
     const [salaIceLink, setSalaIceLink] = useState(null);
 
     const [colaboradorDisponible, setColaboradorDisponible] = useState(false);
+    const [intervalColaboradorStatus, setIntervalColaboradorStatus] = useState(0);
+
+    const [helperMessage, setHelperMessage] = useState(
+        <Fragment>
+            Cambia tu estatus a DISPONIBLE para comenzar a
+            <br />
+            recibir videollamadas y chats de tus pacientes
+        </Fragment>
+    );
 
     const [modalBuscarFolioOpen, setModalBuscarFolioOpen] = useState(false);
     const [modalDirectorioOpen, setModalDirectorioOpen] = useState(false);
@@ -70,14 +81,24 @@ const CallCenter = (props) => {
     const [interTemporizador, setInterTemporizador] = useState(0);
 
     const [popoverOcupadoInicio, setPopoverOcupadoInicio] = useState(false);
+    const [popoverConsulta, setPopoverConsulta] = useState(false);
 
     const handleClosePopoverOcupado = () => {
         setPopoverOcupadoInicio(false);
     };
 
+    const handleClosePopoverConsulta = () => {
+        setPopoverConsulta(false);
+    };
+
     const handleClickPopoverDisponible = async () => {
         await funcOnlineMod(true);
         handleClosePopoverOcupado();
+    };
+
+    const handleClickPopoverConsultaReiniciar = async () => {
+        funcReiniciarChat();
+        handleClosePopoverConsulta();
     };
 
     const formularioDiagnosticoYTratamientoVacia = {
@@ -95,6 +116,7 @@ const CallCenter = (props) => {
     );
 
     const handleClickIniciarConsulta = async () => {
+        setPopoverConsulta(false);
         const folioLocalStorage = localStorage.getItem("sFolio");
         if (folioLocalStorage !== null && folioLocalStorage !== undefined && folioLocalStorage !== "") {
             funcLoader(true, "Buscando folio...");
@@ -243,6 +265,9 @@ const CallCenter = (props) => {
                 if (state === true) {
                     setColaboradorDisponible(disponible);
                 }
+            }
+            if (disponible === true) {
+                funcReiniciarChat();
             }
             funcAlert(response.Message, "success");
         } else {
@@ -424,6 +449,52 @@ const CallCenter = (props) => {
         // eslint-disable-next-line
     }, [usuarioColaborador]);
 
+    const funcComprobarColaboradorStatus = async () => {
+        const response = await colaboradorController.funcGetColaboradorStatus(usuarioColaborador.iIdColaborador);
+        if (response.Code === 0) {
+            if (response.Result.bOcupado === true) {
+                await funcOnlineMod(false, true);
+                const sFolioGuardado = localStorage.getItem("sFolio");
+                if (sFolioGuardado) {
+                    setPopoverConsulta(true);
+                } else {
+                    setPopoverOcupadoInicio(true);
+                    setHelperMessage(
+                        <Fragment>
+                            Un paciente intentó entrar a tu sala pero <br />
+                            la conexión no fue exitosa.
+                            <br />
+                            <br />
+                            Cambia tu estatus a DISPONIBLE para
+                            <br />
+                            continuar recibiendo llamadas.
+                        </Fragment>
+                    );
+                }
+                window.clearInterval(intervalColaboradorStatus);
+            }
+        }
+    };
+
+    useEffect(() => {
+        return () => {
+            window.clearInterval(intervalColaboradorStatus);
+        };
+    }, [intervalColaboradorStatus]);
+
+    useEffect(() => {
+        if (usuarioColaborador) {
+            if (colaboradorDisponible === true) {
+                const intervalCol = window.setInterval(() => {
+                    funcComprobarColaboradorStatus();
+                }, tiempoValidarEstatusColaborador);
+                setIntervalColaboradorStatus(intervalCol);
+            } else {
+                window.clearInterval(intervalColaboradorStatus);
+            }
+        }
+    }, [colaboradorDisponible]);
+
     useEffect(() => {
         localStorage.removeItem("name");
         localStorage.removeItem("SalaID");
@@ -495,11 +566,20 @@ const CallCenter = (props) => {
                 )}
             </MeditocHeader1>
             {permisos.Botones["1"] !== undefined && ( //Estatus
-                <HelperStatus
-                    popoverOcupadoInicio={popoverOcupadoInicio}
-                    handleClosePopoverOcupado={handleClosePopoverOcupado}
-                    handleClickPopoverDisponible={handleClickPopoverDisponible}
-                />
+                <Fragment>
+                    <HelperStatus
+                        helperMessage={helperMessage}
+                        popoverOcupadoInicio={popoverOcupadoInicio}
+                        handleClosePopoverOcupado={handleClosePopoverOcupado}
+                        handleClickPopoverDisponible={handleClickPopoverDisponible}
+                    />
+                    <HelperConsulta
+                        popoverConsulta={popoverConsulta}
+                        handleClosePopoverConsulta={handleClosePopoverConsulta}
+                        handleClickPopoverConsultaReiniciar={handleClickPopoverConsultaReiniciar}
+                        handleClickIniciarConsulta={handleClickIniciarConsulta}
+                    />
+                </Fragment>
             )}
             <MeditocBody>
                 <Grid container spacing={3}>

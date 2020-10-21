@@ -10,7 +10,14 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 
+/*************************************************************
+ * Descripcion: Modal para generar folios nuevos de la lista de productos
+ * Creado: Cristopher Noh
+ * Fecha: 26/08/2020
+ * Invocado desde: AdministrarFolios
+ *************************************************************/
 const CrearFolios = (props) => {
+    //=================================PROPS=================================
     const {
         entEmpresa,
         open,
@@ -22,6 +29,7 @@ const CrearFolios = (props) => {
         funcAlert,
     } = props;
 
+    //=================================VARIABLES=================================
     const columns = [
         { title: "ID", field: "iIdProducto", align: "left", editable: "never", hidden: true },
         { title: "", field: "sIconStatus", align: "left", editable: "never", sorting: false },
@@ -30,6 +38,10 @@ const CrearFolios = (props) => {
         { title: "Cantidad", field: "iCantidad", align: "left" },
     ];
 
+    //=================================CONTROLLERS=================================
+    const folioController = new FolioController();
+
+    //=================================STATES=================================
     const [listaProductosEmpresa, setListaProductosEmpresa] = useState([]);
 
     const [listaProductosSeleccionados, setListaProductosSeleccionados] = useState([]);
@@ -37,23 +49,8 @@ const CrearFolios = (props) => {
     const [subtotal, setSubtotal] = useState(0);
     const [montoIva, setMontoIva] = useState(0);
 
-    const handleCellEditable = (newValue, oldValue, productoEditado, columna) => {
-        if (isNaN(newValue)) {
-            return;
-        }
-
-        if (newValue < 0) {
-            return;
-        }
-
-        const cantidad = Math.round(newValue);
-
-        const listaProductosEmpresaCopia = [...listaProductosEmpresa];
-        const index = listaProductosEmpresaCopia.indexOf(productoEditado);
-        listaProductosEmpresaCopia[index].iCantidad = cantidad;
-        setListaProductosEmpresa(listaProductosEmpresaCopia);
-    };
-
+    //=================================HANDLERS=================================
+    //Consumir API para crear los folios de la empresa
     const handleClickCrearFolios = async () => {
         if (listaProductosSeleccionados.length < 1) {
             funcAlert(
@@ -71,8 +68,6 @@ const CrearFolios = (props) => {
         }
 
         funcLoader(true, "Generando folios nuevos...");
-
-        const folioController = new FolioController();
 
         const entFoliosEmpresaSubmit = {
             iIdEmpresa: entEmpresa.iIdEmpresa,
@@ -115,6 +110,26 @@ const CrearFolios = (props) => {
         funcLoader();
     };
 
+    //Capturar cuando se selecciona un archivo de la lista
+    const handleCellEditable = (newValue, oldValue, productoEditado, columna) => {
+        if (isNaN(newValue)) {
+            return;
+        }
+
+        if (newValue < 0) {
+            return;
+        }
+
+        const cantidad = Math.round(newValue);
+
+        const listaProductosEmpresaCopia = [...listaProductosEmpresa];
+        const index = listaProductosEmpresaCopia.indexOf(productoEditado);
+        listaProductosEmpresaCopia[index].iCantidad = cantidad;
+        setListaProductosEmpresa(listaProductosEmpresaCopia);
+    };
+
+    //=================================EFFECT HOOKS=================================
+    //Recalcular los totales cuando se agrega, cambia o quita un producto de la lista
     useEffect(() => {
         const calcSubtotal = listaProductosSeleccionados.reduce((a, b) => a + b.iCantidad * b.fCosto, 0);
 
@@ -125,6 +140,7 @@ const CrearFolios = (props) => {
         // eslint-disable-next-line
     }, [listaProductosEmpresa, listaProductosSeleccionados]);
 
+    //Resetear la lista de productos seleccionados cuando se abre este modal
     useEffect(() => {
         if (open) {
             setListaProductosSeleccionados([]);
@@ -225,18 +241,19 @@ const CrearFolios = (props) => {
 
 CrearFolios.propTypes = {
     entEmpresa: PropTypes.shape({
-        iIdEmpresa: PropTypes.any,
-        sFolioEmpresa: PropTypes.any,
-        sNombre: PropTypes.any,
+        iIdEmpresa: PropTypes.number,
+        sFolioEmpresa: PropTypes.string,
+        sNombre: PropTypes.string,
     }),
     funcAlert: PropTypes.func,
     funcGetFoliosEmpresa: PropTypes.func,
     funcLoader: PropTypes.func,
-    listaProductos: PropTypes.shape({
-        map: PropTypes.func,
-    }),
-    open: PropTypes.any,
+    listaProductos: PropTypes.array,
+    open: PropTypes.bool,
     setOpen: PropTypes.func,
+    usuarioSesion: PropTypes.shape({
+        iIdUsuario: PropTypes.number,
+    }),
 };
 
 export default CrearFolios;

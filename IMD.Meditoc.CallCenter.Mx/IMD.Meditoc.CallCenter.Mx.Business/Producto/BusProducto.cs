@@ -5,6 +5,7 @@ using IMD.Meditoc.CallCenter.Mx.Entities.Producto;
 using log4net;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 
@@ -306,6 +307,90 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Producto
                 response.Message = "Ocurrió un error inesperado al consultar los productos disponibles.";
 
                 logger.Error(IMDSerialize.Serialize(67823458635730, $"Error en {metodo}(): {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<List<EntProducto>> BGetProductoEmpresaExterna()
+        {
+            IMDResponse<List<EntProducto>> response = new IMDResponse<List<EntProducto>>();
+
+            string metodo = nameof(this.BGetProductoEmpresaExterna);
+            logger.Info(IMDSerialize.Serialize(67823458653601, $"Inicia {metodo}"));
+
+            try
+            {
+                IMDResponse<List<EntProducto>> resGetProducts = this.BObtenerProductos(null);
+                if (resGetProducts.Code != 0)
+                {
+                    return resGetProducts.GetResponse<List<EntProducto>>();
+                }
+
+                List<EntProducto> productos = resGetProducts.Result.Where(x => x.bActivo && !x.bBaja && x.bComercial).OrderBy(x => x.iIdGrupoProducto).ThenByDescending(x => x.iIdTipoProducto).ThenBy(x => x.fCosto).ToList();
+
+                if (productos.Count < 1)
+                {
+                    response.Code = -24376876873456;
+                    response.Message = "No se encontraron productos de Meditoc.";
+                    return response;
+                }
+
+                response.Code = 0;
+                response.Message = "Se han consultado los productos Meditoc.";
+                response.Result = productos;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458654378;
+                response.Message = "Ocurrió un error inesperado al consultar los productos de Meditoc.";
+
+                logger.Error(IMDSerialize.Serialize(67823458654378, $"Error en {metodo}: {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<EntOrientacionIVA> BGetOrientacionesLocutorios()
+        {
+            IMDResponse<EntOrientacionIVA> response = new IMDResponse<EntOrientacionIVA>();
+
+            string metodo = nameof(this.BGetOrientacionesLocutorios);
+            logger.Info(IMDSerialize.Serialize(67823458658263, $"Inicia {metodo}"));
+
+            try
+            {
+                IMDResponse<List<EntProducto>> resGetProducts = this.BObtenerProductos(null);
+                if (resGetProducts.Code != 0)
+                {
+                    return resGetProducts.GetResponse<EntOrientacionIVA>();
+                }
+
+                List<EntProducto> productos = resGetProducts.Result.Where(x => x.bActivo && !x.bBaja && x.iIdTipoProducto == (int)EnumTipoProducto.Servicio && x.iIdGrupoProducto == (int)EnumGrupoProducto.ProdutosLocutorios).OrderBy(x => x.iIdGrupoProducto).ThenByDescending(x => x.iIdTipoProducto).ThenBy(x => x.fCosto).ToList();
+
+                if (productos.Count < 1)
+                {
+                    response.Code = -24376876873456;
+                    response.Message = "No hay productos disponibles para venta.";
+                    return response;
+                }
+
+                double taxIVA = Convert.ToDouble(ConfigurationManager.AppSettings["CONEKTA_IMPUESTO"]);
+
+                EntOrientacionIVA entOrientacionIVA = new EntOrientacionIVA
+                {
+                    dIva = taxIVA,
+                    lstProductos = productos
+                };
+
+                response.Code = 0;
+                response.Message = "Se han consultado los productos Meditoc.";
+                response.Result = entOrientacionIVA;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458659040;
+                response.Message = "Ocurrió un error inesperado al consultar los productos de Meditoc.";
+
+                logger.Error(IMDSerialize.Serialize(67823458659040, $"Error en {metodo}: {ex.Message}", ex, response));
             }
             return response;
         }

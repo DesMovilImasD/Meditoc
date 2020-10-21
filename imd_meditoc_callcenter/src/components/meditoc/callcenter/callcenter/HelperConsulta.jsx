@@ -5,8 +5,13 @@ import PropTypes from "prop-types";
 import React from "react";
 import theme from "../../../../configurations/themeConfig";
 
-const HelperStatus = (props) => {
-    const { helperMessage, popoverOcupadoInicio, handleClosePopoverOcupado, handleClickPopoverDisponible } = props;
+const HelperConsulta = (props) => {
+    const {
+        popoverConsulta,
+        handleClosePopoverConsulta,
+        handleClickPopoverConsultaReiniciar,
+        handleClickIniciarConsulta,
+    } = props;
 
     return (
         <Popover
@@ -20,8 +25,8 @@ const HelperStatus = (props) => {
                 vertical: "top",
                 horizontal: "left",
             }}
-            open={popoverOcupadoInicio}
-            onClose={handleClosePopoverOcupado}
+            open={popoverConsulta}
+            onClose={handleClosePopoverConsulta}
         >
             <div style={{ padding: 30, textAlign: "center" }}>
                 <div>
@@ -29,16 +34,17 @@ const HelperStatus = (props) => {
                 </div>
                 <div>
                     <Typography variant="body2" paragraph>
-                        TU ESTATUS ACTUAL ES OCUPADO.
+                        SE HA CAMBIADO TU ESTATUS A OCUPADO.
                     </Typography>
                     <Typography variant="body2" paragraph>
-                        {helperMessage}
+                        Un paciente ha entrado a tu sala pero <br />
+                        aún no has iniciado la consulta.
                     </Typography>
-                    <Button color="default" style={{ color: "#888" }} onClick={handleClosePopoverOcupado}>
-                        <Typography variant="body2">CONTINUAR OCUPADO</Typography>
+                    <Button color="default" style={{ color: "#888" }} onClick={handleClickPopoverConsultaReiniciar}>
+                        <Typography variant="body2">REINICIAR CHAT</Typography>
                     </Button>
-                    <Button color="primary" onClick={handleClickPopoverDisponible}>
-                        <Typography variant="body2">CAMBIAR A DISPONIBLE</Typography>
+                    <Button color="primary" onClick={handleClickIniciarConsulta}>
+                        <Typography variant="body2">INICIAR CONSULTA</Typography>
                     </Button>
                 </div>
             </div>
@@ -46,10 +52,11 @@ const HelperStatus = (props) => {
     );
 };
 
-HelperStatus.propTypes = {
-    handleClickPopoverDisponible: PropTypes.any,
-    handleClosePopoverOcupado: PropTypes.any,
-    popoverOcupadoInicio: PropTypes.any,
+HelperConsulta.propTypes = {
+    handleClickIniciarConsulta: PropTypes.func,
+    handleClickPopoverConsultaReiniciar: PropTypes.func,
+    handleClosePopoverConsulta: PropTypes.func,
+    popoverConsulta: PropTypes.bool,
 };
 
-export default HelperStatus;
+export default HelperConsulta;

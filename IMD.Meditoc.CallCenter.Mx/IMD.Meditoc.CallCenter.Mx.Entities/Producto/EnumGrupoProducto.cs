@@ -10,6 +10,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Producto
     {
         Meditoc360Products = 1,
         NutritionalProducts = 2,
-        PsychologyProducts = 3
+        PsychologyProducts = 3,
+        ProdutosLocutorios = 4,
     }
 }

@@ -9,6 +9,7 @@ class ColaboradorController {
         this.apiGetColaboradorFoto = "Api/Colaborador/Get/Foto";
         this.apiDeleteColaboradorFoto = "Api/Colaborador/Eliminar/Foto";
         this.apiGetDirectorio = "Api/Colaborador/Get/Directorio/Especialistas";
+        this.apiGetColaboradorStatus = "Api/Colaborador/Get/Colaborador/Status";
     }
 
     async funcSaveColaborador(entColaborador) {
@@ -122,6 +123,24 @@ class ColaboradorController {
         } catch (error) {
             response.Code = -1;
             response.Message = "Ocurrió un error al intentar obtener el directorio médico";
+        }
+        return response;
+    }
+
+    async funcGetColaboradorStatus(piIdColaborador = 0) {
+        let response = { Code: 0, Message: "", Result: [] };
+        try {
+            const apiResponse = await fetch(
+                `${serverMain}${this.apiGetColaboradorStatus}?piIdColaborador=${piIdColaborador}`,
+                {
+                    headers: MeditocHeaders,
+                }
+            );
+
+            response = await apiResponse.json();
+        } catch (error) {
+            response.Code = -1;
+            response.Message = "Ocurrió un error al intentar consultar el estatus del colaborador.";
         }
         return response;
     }
