@@ -8,7 +8,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Folio
 {
     public class EntFolioLocutorios
     {
-        public string sNombre { get; set; }
         public string sTelefono { get; set; }
         public int iIdOrigen { get; set; }
         public int iIdProducto { get; set; }

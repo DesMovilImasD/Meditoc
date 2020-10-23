@@ -97,6 +97,7 @@
     <Compile Include="Folio\EntFolioFV.cs" />
     <Compile Include="Folio\EntFolioLocutorios.cs" />
     <Compile Include="Folio\EntFolioReporte.cs" />
+    <Compile Include="Folio\EntFolioRequest.cs" />
     <Compile Include="Folio\EntFolioSMS.cs" />
     <Compile Include="Folio\EntFolioUser.cs" />
     <Compile Include="Folio\EntFolioVentaCalle.cs" />

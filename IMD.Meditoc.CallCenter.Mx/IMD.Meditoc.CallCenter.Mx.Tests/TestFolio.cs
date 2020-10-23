@@ -72,8 +72,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Tests
             {
                 iIdOrigen = (int)EnumOrigen.Locutorios,
                 iIdProducto = 40,
-                sNombre = "CristopherGe",
-                sTelefono = "+52 999 297 44 46"
+                sTelefono = "8634437345"
             };
 
             string req = JsonConvert.SerializeObject(entFolio, Formatting.Indented);

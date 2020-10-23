@@ -23,6 +23,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
         string spUpdTerminosYCondiciones;
         string spUpdPassword;
         string spSaveFolioVC;
+        string spSaveFolioRequest;
+        string spGetFolioRequest;
 
         public DatFolio()
         {
@@ -38,7 +40,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             spUpdTerminosYCondiciones = "svc_meditoc_upd_terminosyCondiciones";
             spUpdPassword = "svc_meditoc_upd_updPassword";
             spSaveFolioVC = "sva_meditoc_save_foliovc";
-
+            spSaveFolioRequest = "sva_meditoc_save_folio_request";
+            spGetFolioRequest = "svc_meditoc_folio_request";
         }
 
 
@@ -285,6 +288,67 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
                 response.Message = "Ocurrió un error inesperado en la base de datos al guardar el folio de venta calle.";
 
                 logger.Error(IMDSerialize.Serialize(67823458604650, $"Error en {metodo}(int piIdEmpresa, int piIdProducto, int piIdOrigen, string psFolio, string psPassword, int piIdUsuarioMod): {ex.Message}", piIdEmpresa, piIdProducto, piIdOrigen, psFolio, psPassword, piIdUsuarioMod, ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<bool> DSaveFolioRequest(int piIdRequest, string psNumberPhone = null, string psFolio = null, string psPassword = null, DateTime? pdtFechaVencimiento = null, int? piIdOrigen = null, int? piIdProducto = null)
+        {
+            IMDResponse<bool> response = new IMDResponse<bool>();
+
+            string metodo = nameof(this.DSaveFolioRequest);
+            logger.Info(IMDSerialize.Serialize(67823458664479, $"Inicia {metodo}(int piIdRequest, string psNumberPhone = null, string psFolio = null, string psPassword = null, DateTime? pdtFechaVencimiento = null)", piIdRequest, psNumberPhone, psFolio, psPassword, pdtFechaVencimiento));
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spSaveFolioRequest))
+                {
+                    database.AddInParameter(dbCommand, "piIdRequest", DbType.Int32, piIdRequest);
+                    database.AddInParameter(dbCommand, "piIdOrigen", DbType.Int32, piIdOrigen);
+                    database.AddInParameter(dbCommand, "piIdProducto", DbType.Int32, piIdProducto);
+                    database.AddInParameter(dbCommand, "psNumberPhone", DbType.String, psNumberPhone?.Trim());
+                    database.AddInParameter(dbCommand, "psFolio", DbType.String, psFolio?.Trim());
+                    database.AddInParameter(dbCommand, "psPassword", DbType.String, psPassword?.Trim());
+                    database.AddInParameter(dbCommand, "pdtFechaVencimiento", DbType.DateTime, pdtFechaVencimiento);
+
+                    response = imdCommonData.DExecute(database, dbCommand);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458665256;
+                response.Message = "Ocurrió un error inesperado en la base de datos al guardar la petición de folio.";
+
+                logger.Error(IMDSerialize.Serialize(67823458665256, $"Error en {metodo}(int piIdRequest, string psNumberPhone = null, string psFolio = null, string psPassword = null, DateTime? pdtFechaVencimiento = null): {ex.Message}", piIdRequest, psNumberPhone, psFolio, psPassword, pdtFechaVencimiento, ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<DataTable> DGetFolioRequest(string psNumberPhone, int piIdOrigen, int piIdProducto, int piMinutos)
+        {
+            IMDResponse<DataTable> response = new IMDResponse<DataTable>();
+
+            string metodo = nameof(this.DGetFolioRequest);
+            logger.Info(IMDSerialize.Serialize(67823458666033, $"Inicia {metodo}(string psNumberPhone, string piMinutos)", psNumberPhone, piMinutos));
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(spGetFolioRequest))
+                {
+                    database.AddInParameter(dbCommand, "piMinutos", DbType.Int32, piMinutos);
+                    database.AddInParameter(dbCommand, "piIdOrigen", DbType.Int32, piIdOrigen);
+                    database.AddInParameter(dbCommand, "piIdProducto", DbType.Int32, piIdProducto);
+                    database.AddInParameter(dbCommand, "psNumberPhone", DbType.String, psNumberPhone?.Trim());
+
+                    response = imdCommonData.DExecuteDT(database, dbCommand);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458666810;
+                response.Message = "Ocurrió un error inesperado en la base de datos al consultar las peticiones de folio.";
+
+                logger.Error(IMDSerialize.Serialize(67823458666810, $"Error en {metodo}(string psNumberPhone, string piMinutos): {ex.Message}", psNumberPhone, piMinutos, ex, response));
             }
             return response;
         }

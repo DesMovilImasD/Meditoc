@@ -751,13 +751,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     return response;
                 }
 
-                if (string.IsNullOrWhiteSpace(entFolioLocutorios.sNombre))
-                {
-                    response.Code = -34567542357;
-                    response.Message = "No se ingresó el nombre del cliente.";
-                    return response;
-                }
-                entFolioLocutorios.sTelefono = entFolioLocutorios.sTelefono?.Replace("+52", "")?.Replace(" ", "");
+                //if (string.IsNullOrWhiteSpace(entFolioLocutorios.sNombre))
+                //{
+                //    response.Code = -34567542357;
+                //    response.Message = "No se ingresó el nombre del cliente.";
+                //    return response;
+                //}
+                entFolioLocutorios.sTelefono = entFolioLocutorios.sTelefono?.Replace("+52", "")?.Replace(" ", "")?.Replace("(", "")?.Replace(")", "")?.Replace("-", "")?.Replace("#", "")?.Replace("*", "");
                 if (string.IsNullOrWhiteSpace(entFolioLocutorios.sTelefono) || entFolioLocutorios.sTelefono?.Length != 10)
                 {
                     response.Code = -34567542357;
@@ -787,46 +787,53 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     return response;
                 }
 
-                BusEmpresa busEmpresa = new BusEmpresa();
-                IMDResponse<List<EntEmpresa>> respuestaObtenerEmpresas = busEmpresa.BGetEmpresas(null, entFolioLocutorios.sTelefono);
-
-                if (respuestaObtenerEmpresas.Code != 0)
+                IMDResponse<EntFolioRequest> resConsultarPeticionesAnteriores = this.BGetFolioRequest(entFolioLocutorios.sTelefono, entFolioLocutorios.iIdOrigen, entFolioLocutorios.iIdProducto);
+                if (resConsultarPeticionesAnteriores.Code != 0 && resConsultarPeticionesAnteriores.Code != -100)
                 {
-                    return respuestaObtenerEmpresas.GetResponse<EntFolioSMS>();
+                    return resConsultarPeticionesAnteriores.GetResponse<EntFolioSMS>();
                 }
-
-                EntEmpresa empresa = new EntEmpresa();
-                if (respuestaObtenerEmpresas.Result.Count > 0)
+                else if (resConsultarPeticionesAnteriores.Code == -100)
                 {
-                    empresa = respuestaObtenerEmpresas.Result.FirstOrDefault();
-                }
-                else
-                {
-                    EntEmpresa entEmpresa = new EntEmpresa()
-                    {
-                        iIdEmpresa = 0,
-                        sNombre = entFolioLocutorios.sNombre,
-                        sCorreo = entFolioLocutorios.sTelefono,
-                        iIdUsuarioMod = 0,
-                        bActivo = true,
-                        bBaja = false
-                    };
+                    BusEmpresa busEmpresa = new BusEmpresa();
+                    IMDResponse<List<EntEmpresa>> respuestaObtenerEmpresas = busEmpresa.BGetEmpresas(null, entFolioLocutorios.sTelefono);
 
-                    IMDResponse<EntEmpresa> respuestaSaveEmpresa = busEmpresa.BSaveEmpresa(entEmpresa);
-                    if (respuestaSaveEmpresa.Code != 0)
+                    if (respuestaObtenerEmpresas.Code != 0)
                     {
-                        return respuestaSaveEmpresa.GetResponse<EntFolioSMS>();
+                        return respuestaObtenerEmpresas.GetResponse<EntFolioSMS>();
                     }
 
-                    empresa = respuestaSaveEmpresa.Result;
-                }
+                    EntEmpresa empresa = new EntEmpresa();
+                    if (respuestaObtenerEmpresas.Result.Count > 0)
+                    {
+                        empresa = respuestaObtenerEmpresas.Result.FirstOrDefault();
+                    }
+                    else
+                    {
+                        EntEmpresa entEmpresa = new EntEmpresa()
+                        {
+                            iIdEmpresa = 0,
+                            sNombre = $"Cliente No. {entFolioLocutorios.sTelefono}",
+                            sCorreo = entFolioLocutorios.sTelefono,
+                            iIdUsuarioMod = 0,
+                            bActivo = true,
+                            bBaja = false
+                        };
 
-                EntFolioxEmpresa entFolioxEmpresa = new EntFolioxEmpresa
-                {
-                    iIdEmpresa = empresa.iIdEmpresa,
-                    iIdOrigen = entFolioLocutorios.iIdOrigen,
-                    iIdUsuarioMod = 0,
-                    lstLineItems = new List<line_items>()
+                        IMDResponse<EntEmpresa> respuestaSaveEmpresa = busEmpresa.BSaveEmpresa(entEmpresa);
+                        if (respuestaSaveEmpresa.Code != 0)
+                        {
+                            return respuestaSaveEmpresa.GetResponse<EntFolioSMS>();
+                        }
+
+                        empresa = respuestaSaveEmpresa.Result;
+                    }
+
+                    EntFolioxEmpresa entFolioxEmpresa = new EntFolioxEmpresa
+                    {
+                        iIdEmpresa = empresa.iIdEmpresa,
+                        iIdOrigen = entFolioLocutorios.iIdOrigen,
+                        iIdUsuarioMod = 0,
+                        lstLineItems = new List<line_items>()
                     {
                         new line_items
                         {
@@ -834,75 +841,98 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                             quantity = 1
                         }
                     }
-                };
+                    };
 
-                IMDResponse<List<EntProducto>> lstProductos = busProducto.BObtenerProductos(null);
+                    IMDResponse<List<EntProducto>> lstProductos = busProducto.BObtenerProductos(null);
 
-                if (lstProductos.Result == null)
-                {
-                    return response = lstProductos.GetResponse<EntFolioSMS>();
-                }
-
-                for (int i = 0; i < entFolioxEmpresa.lstLineItems.Count; i++)
-                {
-                    EntProducto oProducto = lstProductos.Result
-                        .Find(x => x.iIdProducto == entFolioxEmpresa.lstLineItems[i].product_id);
-
-                    if (oProducto == null)
+                    if (lstProductos.Result == null)
                     {
-                        response.Code = -73249876234999;
-                        response.Message = "El producto no es válido.";
-                        return response;
+                        return response = lstProductos.GetResponse<EntFolioSMS>();
                     }
 
-                    entFolioxEmpresa.lstLineItems[i].monthsExpiration = oProducto.iMesVigencia;
-                    entFolioxEmpresa.lstLineItems[i].name = oProducto.sNombre;
-                    entFolioxEmpresa.lstLineItems[i].unit_price = (int)(oProducto.fCosto * 100);
-                }
-
-                EntFolio entFolio = new EntFolio();
-                entFolio.iIdEmpresa = entFolioxEmpresa.iIdEmpresa;
-                entFolio.iIdOrigen = entFolioxEmpresa.iIdOrigen;
-                entFolio.bTerminosYCondiciones = false;
-                entFolio.iIdUsuarioMod = entFolioxEmpresa.iIdUsuarioMod;
-
-                //Se crea el paciente
-                EntPaciente entPaciente = new EntPaciente();
-
-                entPaciente.iIdPaciente = 0;
-                entPaciente.iIdFolio = entFolio.iIdFolio;
-                entPaciente.iIdUsuarioMod = entFolioxEmpresa.iIdUsuarioMod;
-                entPaciente.sTelefono = entFolioLocutorios.sTelefono;
-                entPaciente.sNombre = entFolioLocutorios.sNombre;
-
-                this.BSaveOrderEmpresa(entFolioxEmpresa, empresa);
-
-                entFolio.sOrdenConekta = entFolioxEmpresa.uid;
-
-                foreach (line_items item in entFolioxEmpresa.lstLineItems)
-                {
-                    for (int i = 0; i < item.quantity; i++)
+                    for (int i = 0; i < entFolioxEmpresa.lstLineItems.Count; i++)
                     {
-                        IMDResponse<bool> resGenerarFolio = this.BGenerarFolioEmpresa(entFolio, entPaciente, item, lstArticulosDetalle, i);
-                        if (resGenerarFolio.Code != 0)
+                        EntProducto oProducto = lstProductos.Result
+                            .Find(x => x.iIdProducto == entFolioxEmpresa.lstLineItems[i].product_id);
+
+                        if (oProducto == null)
                         {
-                            return resGenerarFolio.GetResponse<EntFolioSMS>();
+                            response.Code = -73249876234999;
+                            response.Message = "El producto no es válido.";
+                            return response;
+                        }
+
+                        entFolioxEmpresa.lstLineItems[i].monthsExpiration = oProducto.iMesVigencia;
+                        entFolioxEmpresa.lstLineItems[i].name = oProducto.sNombre;
+                        entFolioxEmpresa.lstLineItems[i].unit_price = (int)(oProducto.fCosto * 100);
+                    }
+
+                    EntFolio entFolio = new EntFolio();
+                    entFolio.iIdEmpresa = entFolioxEmpresa.iIdEmpresa;
+                    entFolio.iIdOrigen = entFolioxEmpresa.iIdOrigen;
+                    entFolio.bTerminosYCondiciones = false;
+                    entFolio.iIdUsuarioMod = entFolioxEmpresa.iIdUsuarioMod;
+
+                    //Se crea el paciente
+                    EntPaciente entPaciente = new EntPaciente();
+
+                    entPaciente.iIdPaciente = 0;
+                    entPaciente.iIdFolio = entFolio.iIdFolio;
+                    entPaciente.iIdUsuarioMod = entFolioxEmpresa.iIdUsuarioMod;
+                    entPaciente.sTelefono = entFolioLocutorios.sTelefono;
+                    //entPaciente.sNombre = entFolioLocutorios.sNombre;
+
+                    this.BSaveOrderEmpresa(entFolioxEmpresa, empresa);
+
+                    entFolio.sOrdenConekta = entFolioxEmpresa.uid;
+
+                    foreach (line_items item in entFolioxEmpresa.lstLineItems)
+                    {
+                        for (int i = 0; i < item.quantity; i++)
+                        {
+                            IMDResponse<bool> resGenerarFolio = this.BGenerarFolioEmpresa(entFolio, entPaciente, item, lstArticulosDetalle, i, true);
+                            if (resGenerarFolio.Code != 0)
+                            {
+                                return resGenerarFolio.GetResponse<EntFolioSMS>();
+                            }
                         }
                     }
+
+                    EntFolioSMS entFolioSMS = new EntFolioSMS
+                    {
+                        dtFechaVencimiento = entFolio.dtFechaVencimiento,
+                        sFolio = entFolio.sFolio,
+                        sPassword = lstArticulosDetalle.FirstOrDefault()?.sPass
+                    };
+
+                    entFolioSMS.sFechaVencimiento = entFolioSMS.dtFechaVencimiento?.ToString("dd/MM/yyyy - h:mm tt");
+                    entFolioSMS.bReprocesado = false;
+
+                    response.Code = 0;
+                    response.Message = "La orden ha sido procesada exitosamente.";
+                    response.Result = entFolioSMS;
+
                 }
-
-                EntFolioSMS entFolioSMS = new EntFolioSMS
+                else
                 {
-                    dtFechaVencimiento = entFolio.dtFechaVencimiento,
-                    sFolio = entFolio.sFolio,
-                    sPassword = lstArticulosDetalle.FirstOrDefault()?.sPass
-                };
+                    EntFolioRequest folioRequest = resConsultarPeticionesAnteriores.Result;
 
-                entFolioSMS.sFechaVencimiento = entFolioSMS.dtFechaVencimiento?.ToString("dd/MM/yyyy - h:mm tt");
+                    EntFolioSMS entFolioSMS = new EntFolioSMS
+                    {
+                        dtFechaVencimiento = folioRequest.dtFechaVencimiento,
+                        sFolio = folioRequest.sFolio,
+                        sPassword = busUsuario.BDeCodePassWord(folioRequest.sPassword)
+                    };
 
-                response.Code = 0;
-                response.Message = "La orden ha sido procesada exitosamente.";
-                response.Result = entFolioSMS;
+                    entFolioSMS.sFechaVencimiento = entFolioSMS.dtFechaVencimiento?.ToString("dd/MM/yyyy - h:mm tt");
+                    entFolioSMS.bReprocesado = true;
+
+                    IMDResponse<bool> resSaveRequest = datFolio.DSaveFolioRequest(folioRequest.iIdRequest);
+
+                    response.Code = 0;
+                    response.Message = "La orden ha sido reprocesada exitosamente.";
+                    response.Result = entFolioSMS;
+                }
             }
             catch (Exception ex)
             {
@@ -1039,7 +1069,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             return response;
         }
 
-        public IMDResponse<bool> BGenerarFolioEmpresa(EntFolio entFolio, EntPaciente entPaciente, line_items item, List<EntDetalleCompraArticulo> lstArticulosDetalle, int i)
+        public IMDResponse<bool> BGenerarFolioEmpresa(EntFolio entFolio, EntPaciente entPaciente, line_items item, List<EntDetalleCompraArticulo> lstArticulosDetalle, int i, bool saveRequest = false)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
@@ -1082,7 +1112,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 entFolio.sPassword = busGenerate.BGenerate(6);
 
+
                 entFolio.sPassword = busUsuario.BEncodePassword(entFolio.sPassword);
+
 
                 //Se agrega el folio
 
@@ -1110,6 +1142,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 if (responsePaciente.Code != 0)
                 {
                     return response = responsePaciente.GetResponse<bool>();
+                }
+
+                if (saveRequest)
+                {
+                    IMDResponse<bool> resSaveRequest = datFolio.DSaveFolioRequest(0, entPaciente.sTelefono, entFolio.sFolio, entFolio.sPassword, entFolio.dtFechaVencimiento, entFolio.iIdOrigen, entFolio.iIdProducto);
                 }
 
                 EntDetalleCompraArticulo clsDetalleCompraArticulo = new EntDetalleCompraArticulo();
@@ -2498,6 +2535,64 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 response.Message = "Ocurrió un error inesperado al descargar la plantilla.";
 
                 logger.Error(IMDSerialize.Serialize(67823458610866, $"Error en {metodo}(): {ex.Message}", ex, response));
+            }
+            return response;
+        }
+
+        public IMDResponse<EntFolioRequest> BGetFolioRequest(string psNumberPhone, int piIdOrigen, int piIdProducto)
+        {
+            IMDResponse<EntFolioRequest> response = new IMDResponse<EntFolioRequest>();
+
+            string metodo = nameof(this.BGetFolioRequest);
+            logger.Info(IMDSerialize.Serialize(67823458667587, $"Inicia {metodo}(string psNumberPhone)", psNumberPhone));
+
+            try
+            {
+                if (string.IsNullOrWhiteSpace(psNumberPhone))
+                {
+                    response.Code = -34587687346;
+                    response.Message = "No se ingresó el número de teléfono.";
+                    return response;
+                }
+
+                int iMinFolioRequestLimit = Convert.ToInt32(ConfigurationManager.AppSettings["iMinFolioRequestLimit"]);
+
+                IMDResponse<DataTable> resGet = datFolio.DGetFolioRequest(psNumberPhone, piIdOrigen, piIdProducto, iMinFolioRequestLimit);
+                if (resGet.Code != 0)
+                {
+                    return resGet.GetResponse<EntFolioRequest>();
+                }
+                if (resGet.Result.Rows.Count == 0)
+                {
+                    //No cambiar Code
+                    response.Code = -100;
+                    response.Message = "No se encontraron peticiones anteriores.";
+                    return response;
+                }
+
+                IMDDataRow dr = new IMDDataRow(resGet.Result.Rows[0]);
+
+                EntFolioRequest entFolioRequest = new EntFolioRequest
+                {
+                    dtLastRequest = dr.ConvertTo<DateTime?>("dtLastRequest"),
+                    dtFechaVencimiento = dr.ConvertTo<DateTime?>("dtFechaVencimiento"),
+                    dtRequested = dr.ConvertTo<DateTime>("dtRequested"),
+                    iIdRequest = dr.ConvertTo<int>("iIdRequest"),
+                    sFolio = dr.ConvertTo<string>("sFolio"),
+                    sNumberPhone = dr.ConvertTo<string>("sNumberPhone"),
+                    sPassword = dr.ConvertTo<string>("sPassword"),
+                };
+
+                response.Code = 0;
+                response.Message = "Se ha encontrado una petición anterior";
+                response.Result = entFolioRequest;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 67823458668364;
+                response.Message = "Ocurrió un error inesperado al consultar las peticiones del folio.";
+
+                logger.Error(IMDSerialize.Serialize(67823458668364, $"Error en {metodo}: {ex.Message}(string psNumberPhone)", psNumberPhone, ex, response));
             }
             return response;
         }
