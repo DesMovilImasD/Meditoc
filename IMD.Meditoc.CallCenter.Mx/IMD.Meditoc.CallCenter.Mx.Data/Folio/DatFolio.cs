@@ -292,7 +292,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
             return response;
         }
 
-        public IMDResponse<bool> DSaveFolioRequest(int piIdRequest, string psNumberPhone = null, string psFolio = null, string psPassword = null, DateTime? pdtFechaVencimiento = null, int? piIdOrigen = null, int? piIdProducto = null)
+        public IMDResponse<bool> DSaveFolioRequest(int piIdRequest, int? piNoAuto = null, string psNumberPhone = null, string psFolio = null, string psPassword = null, DateTime? pdtFechaVencimiento = null, int? piIdOrigen = null, int? piIdProducto = null)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
 
@@ -304,6 +304,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Data.Folio
                 using (DbCommand dbCommand = database.GetStoredProcCommand(spSaveFolioRequest))
                 {
                     database.AddInParameter(dbCommand, "piIdRequest", DbType.Int32, piIdRequest);
+                    database.AddInParameter(dbCommand, "piNoAuto", DbType.Int32, piNoAuto);
                     database.AddInParameter(dbCommand, "piIdOrigen", DbType.Int32, piIdOrigen);
                     database.AddInParameter(dbCommand, "piIdProducto", DbType.Int32, piIdProducto);
                     database.AddInParameter(dbCommand, "psNumberPhone", DbType.String, psNumberPhone?.Trim());

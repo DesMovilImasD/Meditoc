@@ -3,7 +3,10 @@
 //const urlBase = '/servicios'
 
 //locutorios
-const urlBase = "/MeditocStore";
+//const urlBase = "/MeditocStore";
+
+//Prod
+const urlBase = "/store";
 
 const urlProducts = "/meditoc_products";
 const urlPayments = "/meditoc_payments";

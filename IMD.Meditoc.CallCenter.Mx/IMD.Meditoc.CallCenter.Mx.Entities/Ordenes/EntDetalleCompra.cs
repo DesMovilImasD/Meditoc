@@ -27,6 +27,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Ordenes
     public class EntDetalleCompraArticulo
     {
         public string sFolio { get; set; }
+        public int iIdFolio { get; set; }
         public string sPass { get; set; }
         public string sDescripcion { get; set; }
         public double nPrecio { get; set; }

@@ -142,9 +142,9 @@ function App() {
                     <Route exact path={urlPayments}>
                         <Pays appInfo={appInfo} funcLoader={funcLoader} />
                     </Route>
-                    {/* <Route exact path={urlDirectory}>
+                    <Route exact path={urlDirectory}>
                         <Directories appInfo={appInfo} funcLoader={funcLoader} />
-                    </Route> */}
+                    </Route>
                 </Switch>
             </BrowserRouter>
         </ThemeProvider>

@@ -1,8 +1,10 @@
 {
   "connectionString": "Datasource=172.16.0.76;Database=meditoc_db;Uid=root;Pwd=ImasD2018#",
+  "connectionStringProd": "Server=localhost; Database=meditoc_db; User id=root; Password=ImasD2020#;",
   "Key": "MeditocComercial",
   "Vector": "Meditoc1",
   "cifrado": "61Cb4qdXrbIPL8az9svQS9NpHT6a0CjLrB3waEkXKz6zqKiBv+K6dlRiIKlTACBBl9ESxHsDpvAo138vwBQwTbWioAY4D1QXqA+m1lPwTW0=",
+  "cifradoProd": "nf/NJYtfBPeIHkV7txYwZ/XhIhUBEV65pwn/FR2wIuTR/FEaPl5FjkjkG/y0UyKM2Pcc7QWBGGJI4zZ7RzIfVGf3DJzXM9QYZYhptYeHNeM=",
   "SemillaPassword": "M3diT0cPassword1",
   "VectorPassword": "Evector1",
   "Headers": {
@@ -43,6 +45,10 @@
     "172.16.0.76": {
       "ruta": "C:\\SrvWeb\\Callcenter20\\MeditocWS\\Files\\Cargar_folios_plantilla.xlsx",
       "encr": "+jenmOXbi1YqsXEMIvgp9dYR8L9Uf6+VYW7W8wzBZA8prkzjBNKL83C9kq8mcRMgd9wgTpe9B3mC2mcTI+qClkR0fRSHjySvTGKZ7+V3bBBr5sR9pPLFsCsmj22F57qjzCYoLclvY8CyLlqkzQ2mk3oMmot+I4t73gkrPWxFWdg="
+    },
+    "PROD": {
+      "ruta": "C:\\SvrWeb\\WEB\\MeditocWS\\Files\\Cargar_folios_plantilla.xlsx",
+      "encr": "dix9V6csEn2syfUkUQnaRrRu1snD652+jh4jnMZzjz0ob2zX7L3dymWlUTTPGRiYbFbiTWQc+c8tU0i/Y5h9CQ=="
     }
   }
 }

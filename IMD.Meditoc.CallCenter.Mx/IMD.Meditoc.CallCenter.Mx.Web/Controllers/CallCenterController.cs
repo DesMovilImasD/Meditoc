@@ -57,7 +57,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             try
             {
                 BusCallCenter busCallCenter = new BusCallCenter();
-                response = busCallCenter.BCallCenterStartWithFolio(iIdColaborador, sFolio, iIdUsuarioMod);
+                response = busCallCenter.BAccesoConsulta(iIdColaborador, sFolio, iIdUsuarioMod);
             }
             catch (Exception ex)
             {

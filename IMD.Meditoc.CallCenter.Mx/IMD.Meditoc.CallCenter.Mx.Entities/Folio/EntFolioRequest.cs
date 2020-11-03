@@ -9,6 +9,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Folio
     public class EntFolioRequest
     {
         public int iIdRequest { get; set; }
+        public int iNoAuto { get; set; }
         public string sNumberPhone { get; set; }
         public string sFolio { get; set; }
         public string sPassword { get; set; }

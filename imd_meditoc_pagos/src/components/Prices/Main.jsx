@@ -35,7 +35,7 @@ const Main = (props) => {
                 lstMembershipProducts={lstMembershipProducts}
                 setLstMembershipProducts={setLstMembershipProducts}
             />
-            {/* <Directory /> */}
+            <Directory />
             <Footer appInfo={appInfo} />
         </Fragment>
     );

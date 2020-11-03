@@ -902,7 +902,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     {
                         dtFechaVencimiento = entFolio.dtFechaVencimiento,
                         sFolio = entFolio.sFolio,
-                        sPassword = lstArticulosDetalle.FirstOrDefault()?.sPass
+                        sPassword = lstArticulosDetalle.FirstOrDefault()?.sPass,
+                        iNoAuto = lstArticulosDetalle.FirstOrDefault()?.iIdFolio
                     };
 
                     entFolioSMS.sFechaVencimiento = entFolioSMS.dtFechaVencimiento?.ToString("dd/MM/yyyy - h:mm tt");
@@ -921,11 +922,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     {
                         dtFechaVencimiento = folioRequest.dtFechaVencimiento,
                         sFolio = folioRequest.sFolio,
-                        sPassword = busUsuario.BDeCodePassWord(folioRequest.sPassword)
+                        sPassword = busUsuario.BDeCodePassWord(folioRequest.sPassword),
+                        iNoAuto = folioRequest.iNoAuto,
+                        bReprocesado = true
                     };
 
                     entFolioSMS.sFechaVencimiento = entFolioSMS.dtFechaVencimiento?.ToString("dd/MM/yyyy - h:mm tt");
-                    entFolioSMS.bReprocesado = true;
 
                     IMDResponse<bool> resSaveRequest = datFolio.DSaveFolioRequest(folioRequest.iIdRequest);
 
@@ -1146,7 +1148,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
 
                 if (saveRequest)
                 {
-                    IMDResponse<bool> resSaveRequest = datFolio.DSaveFolioRequest(0, entPaciente.sTelefono, entFolio.sFolio, entFolio.sPassword, entFolio.dtFechaVencimiento, entFolio.iIdOrigen, entFolio.iIdProducto);
+                    IMDResponse<bool> resSaveRequest = datFolio.DSaveFolioRequest(0, entFolio.iIdFolio, entPaciente.sTelefono, entFolio.sFolio, entFolio.sPassword, entFolio.dtFechaVencimiento, entFolio.iIdOrigen, entFolio.iIdProducto);
                 }
 
                 EntDetalleCompraArticulo clsDetalleCompraArticulo = new EntDetalleCompraArticulo();
@@ -1158,6 +1160,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 clsDetalleCompraArticulo.dtFechaVencimiento = entFolio.dtFechaVencimiento;
                 clsDetalleCompraArticulo.iIdProducto = item.product_id;
                 clsDetalleCompraArticulo.iIndex = i + 1;
+                clsDetalleCompraArticulo.iIdFolio = entFolio.iIdFolio;
 
                 lstArticulosDetalle.Add(clsDetalleCompraArticulo);
 
@@ -2578,6 +2581,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     dtFechaVencimiento = dr.ConvertTo<DateTime?>("dtFechaVencimiento"),
                     dtRequested = dr.ConvertTo<DateTime>("dtRequested"),
                     iIdRequest = dr.ConvertTo<int>("iIdRequest"),
+                    iNoAuto = dr.ConvertTo<int>("iNoAuto"),
                     sFolio = dr.ConvertTo<string>("sFolio"),
                     sNumberPhone = dr.ConvertTo<string>("sNumberPhone"),
                     sPassword = dr.ConvertTo<string>("sPassword"),

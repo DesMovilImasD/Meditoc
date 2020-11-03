@@ -13,5 +13,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities.Folio
         public DateTime? dtFechaVencimiento { get; set; }
         public string sFechaVencimiento { get; set; }
         public bool bReprocesado { get; set; }
+        public int? iNoAuto { get; set; }
     }
 }

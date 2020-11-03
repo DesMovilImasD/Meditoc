@@ -1,6 +1,7 @@
 {
-    "homepage": "http://localhost/MeditocStore",
+    "homepage": "http://localhost/Store",
     "homepageLocutorios": "http://localhost/MeditocStore",
+    "homepageProd": "http://localhost/Store",
     "homepageQa": "http://localhost",
     "name": "imd_meditoc_pagos",
     "version": "0.1.0",

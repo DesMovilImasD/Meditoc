@@ -23,7 +23,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Tests
 
             BusCallCenter busCallCenter = new BusCallCenter();
 
-            IMDResponse<EntCallCenter> res = busCallCenter.BCallCenterStartWithFolio(iIdColaborador, sFolio, 3);
+            IMDResponse<EntCallCenter> res = busCallCenter.BAccesoConsulta(iIdColaborador, sFolio, 3);
 
             string json = JsonConvert.SerializeObject(res, Formatting.Indented);
         }

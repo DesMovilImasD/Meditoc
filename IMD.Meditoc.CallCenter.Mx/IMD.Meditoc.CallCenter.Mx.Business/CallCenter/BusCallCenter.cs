@@ -87,11 +87,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
         /// <param name="sFolio"></param>
         /// <param name="iIdUsuarioMod"></param>
         /// <returns></returns>
-        public IMDResponse<EntCallCenter> BCallCenterStartWithFolio(int iIdColaborador, string sFolio, int iIdUsuarioMod)
+        public IMDResponse<EntCallCenter> BAccesoConsulta(int iIdColaborador, string sFolio, int iIdUsuarioMod)
         {
             IMDResponse<EntCallCenter> response = new IMDResponse<EntCallCenter>();
 
-            string metodo = nameof(this.BCallCenterStartWithFolio);
+            string metodo = nameof(this.BAccesoConsulta);
             logger.Info(IMDSerialize.Serialize(67823458513741, $"Inicia {metodo}(int iIdColaborador, string sFolio, int iIdUsuarioMod)", iIdColaborador, sFolio, iIdUsuarioMod));
 
             try

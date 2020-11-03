@@ -121,7 +121,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data.json" />
-    <Content Include="Files\Cargar_folios_plantilla.xlsx" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Web.Debug.config">

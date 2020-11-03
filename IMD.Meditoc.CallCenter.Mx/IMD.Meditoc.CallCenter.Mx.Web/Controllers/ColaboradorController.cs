@@ -119,7 +119,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Web.Controllers
             return response;
         }
 
-        [MeditocAuthentication]
+        //[MeditocAuthentication]
         [HttpGet]
         [Route("Api/Colaborador/Descargar/Foto")]
         public HttpResponseMessage CDescargarColaboradorFoto([FromUri]int piIdColaborador)
