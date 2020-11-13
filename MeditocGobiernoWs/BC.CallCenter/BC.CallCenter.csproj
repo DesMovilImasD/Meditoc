@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8EC6A473-9D43-495F-BCE6-2A976F62F66F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BC.CallCenter</RootNamespace>
+    <AssemblyName>BC.CallCenter</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevOne.Security.Cryptography.BCrypt">
+      <HintPath>DLL\DevOne.Security.Cryptography.BCrypt.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ObjectBuilder, Version=1.0.51206.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\Microsoft.Practices.ObjectBuilder.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SistemaSeguridad">
+      <HintPath>DLL\SistemaSeguridad.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Clases\clsBDPersonalizada.cs" />
+    <Compile Include="Clases\clsBitacora.cs" />
+    <Compile Include="Clases\clsEnums.cs" />
+    <Compile Include="Clases\clsEnvioMail.cs" />
+    <Compile Include="Clases\clsGeneratedPassword.cs" />
+    <Compile Include="Clases\clsLogin.cs" />
+    <Compile Include="Clases\clsDoctores.cs" />
+    <Compile Include="Clases\clsPacientes.cs" />
+    <Compile Include="Clases\clsTblcatlada.cs" />
+    <Compile Include="Clases\clsTblcodigopostal.cs" />
+    <Compile Include="Clases\clsTblpreguntas.cs" />
+    <Compile Include="ClientesService.svc.cs">
+      <DependentUpon>ClientesService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="IServiceClientes.cs" />
+    <Compile Include="Models\BE\clsCometChatBE.cs" />
+    <Compile Include="Models\BE\clsBitacoraBE.cs" />
+    <Compile Include="Models\BE\clsDoctoresBE.cs" />
+    <Compile Include="Models\BE\clsPacientesBE.cs" />
+    <Compile Include="Models\BE\clsLoginBE.cs" />
+    <Compile Include="Models\BE\clsTblcatladaBE.cs" />
+    <Compile Include="Models\BE\clsTblcodigopostalBE.cs" />
+    <Compile Include="Models\BE\clsTblpreguntasBE.cs" />
+    <Compile Include="Models\Info\clsCometChatInfo.cs" />
+    <Compile Include="Models\Info\clsBitacoraInfo.cs" />
+    <Compile Include="Models\Info\clsEnvioMailInfo.cs" />
+    <Compile Include="Models\Info\clsDoctoresInfo.cs" />
+    <Compile Include="Models\Info\clsPacientesInfo.cs" />
+    <Compile Include="Models\Info\clsTblcatladaInformacion.cs" />
+    <Compile Include="Models\Info\clsTblcodigopostalInformacion.cs" />
+    <Compile Include="Models\Info\clsTblpreguntasInformacion.cs" />
+    <Compile Include="Models\Interfaces\IBitacoraRepository.cs" />
+    <Compile Include="Models\Interfaces\ICometChatRepository.cs" />
+    <Compile Include="Models\Interfaces\IDoctoresRepository.cs" />
+    <Compile Include="Models\Interfaces\IGeometriaEstados.cs" />
+    <Compile Include="Models\Interfaces\IPacientesRepository.cs" />
+    <Compile Include="Models\Interfaces\ILoginRepository.cs" />
+    <Compile Include="Models\Interfaces\ITblcatladaRepositorio.cs" />
+    <Compile Include="Models\Interfaces\ITblcodigopostalRepositorio.cs" />
+    <Compile Include="Models\Interfaces\ITblpreguntasRepositorio.cs" />
+    <Compile Include="Models\Repositorios\clsBitacoraRepository.cs" />
+    <Compile Include="Models\Repositorios\clsCometChatRepository.cs" />
+    <Compile Include="Models\Repositorios\clsDoctoresRepository.cs" />
+    <Compile Include="Models\Repositorios\clsPacientesRepository.cs" />
+    <Compile Include="Models\Repositorios\clsLoginRepository.cs" />
+    <Compile Include="Models\Repositorios\clsTblcatladaRepositorio.cs" />
+    <Compile Include="Models\Repositorios\clsTblcodigopostalRepositorio.cs" />
+    <Compile Include="Models\Repositorios\clsTblpreguntasRepositorio.cs" />
+    <Compile Include="NuevaImplementacion\Business\AccesoBusiness.cs" />
+    <Compile Include="NuevaImplementacion\Business\BitacoraBusiness.cs" />
+    <Compile Include="NuevaImplementacion\Business\EncuestaBusiness.cs" />
+    <Compile Include="NuevaImplementacion\Business\TrazadoBusiness.cs" />
+    <Compile Include="NuevaImplementacion\Data\AccesoData.cs" />
+    <Compile Include="NuevaImplementacion\Data\BitacoraData.cs" />
+    <Compile Include="NuevaImplementacion\Data\EncuestaData.cs" />
+    <Compile Include="NuevaImplementacion\Data\LlamadaData.cs" />
+    <Compile Include="NuevaImplementacion\DTO\AccesoDTO.cs" />
+    <Compile Include="NuevaImplementacion\DTO\BitacoraDTO.cs" />
+    <Compile Include="NuevaImplementacion\DTO\EncuestaDTO.cs" />
+    <Compile Include="NuevaImplementacion\DTO\LlamadaDTO.cs" />
+    <Compile Include="NuevaImplementacion\DTO\TrazadoDTO.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ClientesService.svc" />
+    <Content Include="DLL\log4net.dll" />
+    <Content Include="DLL\Microsoft.Practices.EnterpriseLibrary.Common.dll" />
+    <Content Include="DLL\Microsoft.Practices.EnterpriseLibrary.Data.dll" />
+    <Content Include="DLL\Microsoft.Practices.ObjectBuilder.dll" />
+    <Content Include="DLL\Newtonsoft.Json.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BC.CallCenterPortable\BC.CallCenterPortable.csproj">
+      <Project>{183f97f0-b37e-4e47-94a8-7eb5bcb879f2}</Project>
+      <Name>BC.CallCenterPortable</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
