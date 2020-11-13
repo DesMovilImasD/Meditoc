@@ -1,0 +1,518 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FM.IceLink.CallStats</name>
+    </assembly>
+    <members>
+        <member name="T:FM.IceLink.CallStats.ClientBase">
+            <summary>
+            CallStats Client
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.CallStats.ClientBase.AddConnection(FM.IceLink.Connection,System.String,System.String,System.String,System.String)">
+            <summary>
+            Start a new callstats session.
+            </summary>
+            <param name="connection">IceLink connection object.</param>
+            <param name="userId">Local peer identifier.</param>
+            <param name="deviceId">Local device identifier.</param>
+            <param name="confId">Unique conference identifier.</param>
+            <param name="remoteId">Remote peer identifier.</param>
+        </member>
+        <member name="T:FM.IceLink.CallStats.Client">
+            <summary>
+            CallStats Client
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Client.TokenValidity">
+            <summary>
+            Gets or sets the JWT token validity in minutes. [Default: 5 mins]
+            </summary>
+            <value>
+            JWT token validity 
+            </value>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Client.EndPointType">
+            <summary>
+            Gets or sets the endpoint type. [Valid values: "browser", "native", "middlebox", "plugin"]
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Client.EndPointOS">
+            <summary>
+            Gets or sets the endpoint operating system.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Client.EndPointOSVersion">
+            <summary>
+            Gets or sets the endpoint operating system version.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Client.EndPointAppVersion">
+            <summary>
+            Gets or sets the endpoint app version.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Client.EndPointClientName">
+            <summary>
+            Gets or sets the endpoint client name [Example : Chrome, Firefox, Android, Java, NET]
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Client.EndPointClientVersion">
+            <summary>
+            Gets or sets the endpoint client version.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Client.StatsInterval">
+            <summary>
+            Gets or sets the conference stats interval in seconds. [Default: 10 secs]
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.CallStats.Client.#ctor(FM.IceLink.EcdsaKey,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.CallStats.Client"/> class.
+            </summary>
+            <param name="privateKey">ECDSA Private Key.</param>
+            <param name="applicationId">CallStats application identifier.</param>
+            <param name="ecdsaPublicKeyId">CallStats ecdsa public key identifier.</param>
+        </member>
+        <member name="M:FM.IceLink.CallStats.Client.AddConnection(FM.IceLink.Connection,System.String,System.String,System.String,System.String)">
+            <summary>
+            Start a new callstats session.
+            </summary>
+            <param name="connection">IceLink connection object.</param>
+            <param name="userId">Local peer identifier.</param>
+            <param name="confId">Unique conference identifier.</param>
+            <param name="remoteId">Remote peer identifier.</param>
+            <param name="deviceId">Local device identifier.</param>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.CandidateBase.Id">
+            <summary>
+            Required - as defined here: https://www.w3.org/TR/webrtc-stats/
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.CandidateBase.Type">
+            <summary>
+            "remotecandidate" "remote-candidate"
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.CandidateBase.IP">
+            <summary>
+            A valid IPv4 or IPv6 address
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.CandidateBase.Port">
+            <summary>
+            non-zero port
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.CandidateBase.CandidateType">
+            <summary>
+            Valid values : "host", "srflx", "prflx", "relay", "stun", "serverreflexive", "peerreflexive", "turn", "relayed", "local"
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.CandidatePairBase.Id">
+            <summary>
+            Required - as defined here: https://www.w3.org/TR/webrtc-stats/
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.CandidatePairBase.LocalCandidateId">
+            <summary>
+            Local candidate ID
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.CandidatePairBase.RemoteCandidateId">
+            <summary>
+            Remote candidate ID
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.CandidatePairBase.State">
+            <summary>
+            Valid values : "frozen" "waiting" "inprogress" "failed" "succeeded" "cancelled"
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.CandidatePairBase.Priority">
+            <summary>
+            Candidate priority
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.CandidatePairBase.Nominated">
+            <summary>
+            Valid Values "true" "false"
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.CallStats.Data.CandidatePairBase.CandidatePairStateToString(FM.IceLink.CandidatePairState)">
+            <summary>
+            Valid Values : "frozen" "waiting" "inprogress" "failed" "succeeded" "cancelled"
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.Candidate.ProtocolType">
+            <summary>
+            Valid values : "tcp" "udp"
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.Dropped.Request.OriginId">
+            <summary>
+            ID of the endpoint connecting to the middlebox
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.Dropped.Request.RemoteId">
+            <summary>
+            string less than or equal to 128 characters
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.Dropped.Request.ConnectionId">
+            <summary>
+            Unique identifier (example: Hash of Source IP||Source Port||Destination IP||Destination Port||Transport Protocol) of connection between two endpoints. This identifier should remain the same throughout the life-time of the connection.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.Dropped.Request.CurrentIceCandidatePair">
+            <summary>
+            Required
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.Dropped.Request.CurrentIceConnectionState">
+            <summary>
+            Required - Valid values : "failed"
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.Dropped.Request.PreviousIceConnectionState">
+            <summary>
+            Required - Valid values : "disconnected" "completed"
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.Dropped.Request.delay">
+            <summary>
+            Required
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.Action.Request.OriginId">
+            <summary>
+            ID of the endpoint connecting to the middlebox
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.Action.Request.RemoteId">
+            <summary>
+            string less than or equal to 128 characters
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.Action.Request.ConnectionId">
+            <summary>
+            Unique identifier (example: Hash of Source IP||Source Port||Destination IP||Destination Port||Transport Protocol) of connection between two endpoints. This identifier should remain the same throughout the life-time of the connection.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.StateChange.Request.OriginId">
+            <summary>
+            ID of the endpoint connecting to the middlebox
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.StateChange.Request.RemoteId">
+            <summary>
+            string less than or equal to 128 characters
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.StateChange.Request.ConnectionId">
+            <summary>
+            Unique identifier (example: Hash of Source IP||Source Port||Destination IP||Destination Port||Transport Protocol) of connection between two endpoints. This identifier should remain the same throughout the life-time of the connection.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.StateChange.Request.PreviousState">
+            <summary>
+            Required - Valid values : "stable" "have-local-offer" "have-remote-offer" "have-local-pranswer" "have-remote-pranswer" "closed" "new" "connecting" "connected" "disconnected" "failed" "checking" "completed" "gathering" "complete"
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.StateChange.Request.NewState">
+            <summary>
+            Required - Valid values : "stable" "have-local-offer" "have-remote-offer" "have-local-pranswer" "have-remote-pranswer" "closed" "new" "connecting" "connected" "disconnected" "failed" "checking" "completed" "gathering" "complete"
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.StateChange.Request.ChangedState">
+            <summary>
+            Required - Valid values: "signalingState" "connectionState" "iceConnectionState" "iceGatheringState"
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.Terminated.Request.OriginId">
+            <summary>
+            ID of the endpoint connecting to the middlebox
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.Terminated.Request.RemoteId">
+            <summary>
+            string less than or equal to 128 characters
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.Terminated.Request.ConnectionId">
+            <summary>
+            Required - Unique identifier (example: Hash of Source IP||Source Port||Destination IP||Destination Port||Transport Protocol) of connection between two endpoints. This identifier should remain the same throughout the life-time of the connection.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.SetupFailed.Request.OriginId">
+            <summary>
+            ID of the endpoint connecting to the middlebox
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.SetupFailed.Request.Reason">
+            <summary>
+            Required - Valid values : "MediaConfigError" "MediaPermissionError" "MediaDeviceError" "NegotiationFailure" "SDPGenerationError" "TransportFailure" "SignalingError" "IceConnectionFailure"
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.SetupFailed.Request.Name">
+            <summary>
+            Required - Name
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.SetupFailed.Request.Message">
+            <summary>
+            Required - Message
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.SetupFailed.Request.Stack">
+            <summary>
+            Gets or sets the stack.
+            </summary>
+            <value>
+            The stack.
+            </value>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.Setup.Request.OriginId">
+            <summary>
+            ID of the endpoint connecting to the middlebox
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.Setup.Request.RemoteId">
+            <summary>
+            string less than or equal to 128 characters
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.Setup.Request.Delay">
+            <summary>
+            Gets or sets the delay.
+            </summary>
+            <value>
+            The delay.
+            </value>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.Setup.Request.ConnectionId">
+            <summary>
+            Unique identifier (example: Hash of Source IP||Source Port||Destination IP||Destination Port||Transport Protocol) of connection between two endpoints. This identifier should remain the same throughout the life-time of the connection.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.Setup.Request.IceGatheringDelay">
+            <summary>
+            The time taken for the ICE gathering to finish (ICE gathering state from new to complete)
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.Setup.Request.IceConnectivityDelay">
+            <summary>
+            The time taken for the ICE to establish the connectivity (ICE connection state new to connected/completed)
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.Setup.Request.FabricTransmissionDirection">
+            <summary>
+            Valid values: "sendonly" "receiveonly" "sendrecv"
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.Setup.Request.RemoteEndpointType">
+            <summary>
+            Valid values: "peer" "server"
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.Setup.Request.LocalIceCandidates">
+            <summary>
+            Gets or sets the local ice candidates.
+            </summary>
+            <value>
+            The local ice candidates.
+            </value>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.Setup.Request.RemoteIceCandidates">
+            <summary>
+            Gets or sets the remote ice candidates.
+            </summary>
+            <value>
+            The remote ice candidates.
+            </value>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Fabric.Setup.Request.CandidatePairs">
+            <summary>
+            Gets or sets the ice candidate pairs.
+            </summary>
+            <value>
+            The ice candidate pairs.
+            </value>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Special.SDP.Request.OriginId">
+            <summary>
+            ID of the endpoint connecting to the middlebox
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Special.SDP.Request.RemoteId">
+            <summary>
+            string less than or equal to 128 characters
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Special.SDP.Request.ConnectionId">
+            <summary>
+            Unique identifier (example: Hash of Source IP||Source Port||Destination IP||Destination Port||Transport Protocol) of connection between two endpoints. This identifier should remain the same throughout the life-time of the connection.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Special.SSRC.Request.OriginId">
+            <summary>
+            ID of the endpoint connecting to the middlebox
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Special.SSRC.Request.RemoteId">
+            <summary>
+            string less than or equal to 128 characters
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Special.SSRC.Request.ConnectionId">
+            <summary>
+            Unique identifier (example: Hash of Source IP||Source Port||Destination IP||Destination Port||Transport Protocol) of connection between two endpoints. This identifier should remain the same throughout the life-time of the connection.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Stats.CSStatistics.CsId">
+            <summary>
+            Gets or sets callstats id
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Stats.CSStatistics.CsTimestamp">
+            <summary>
+            Gets or sets callstats timestamp
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Stats.CSStatistics.IP">
+            <summary>
+            Gets or sets ip address
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Stats.Conference.Request.OriginId">
+            <summary>
+            Gets or sets the origin identifier.
+            </summary>
+            <value>
+            The origin identifier.
+            </value>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Stats.Conference.Request.RemoteId">
+            <summary>
+            Gets or sets the remote identifier.
+            </summary>
+            <value>
+            The remote identifier.
+            </value>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Stats.Conference.Request.ConnectionId">
+            <summary>
+            Gets or sets the connection identifier.
+            </summary>
+            <value>
+            The connection identifier.
+            </value>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.Stats.Conference.Request.Statistics">
+            <summary>
+            Gets or sets the stats.
+            </summary>
+            <value>
+            The stats.
+            </value>
+        </member>
+        <member name="P:FM.IceLink.CallStats.Data.User.JoinConference.Response.UcId">
+            <summary>
+            Gets or sets the universal client id
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.CallStats.EventType.User_Action_Join_Conference">
+            <summary>
+            Add a new participant to the list of conference participants or start a new conference. 
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.CallStats.EventType.User_Action_Alive">
+            <summary>
+            Makes sure that the user is present in the conference . We recommend you send this event every 10 seconds.
+            If there is no userAlive event from a particular user for more than 30 seconds, we assume that the user has left the conference.
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.CallStats.EventType.User_Action_Details">
+            <summary>
+            You can submit the user details such as username using this event.
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.CallStats.EventType.User_Action_Left">
+            <summary>
+            Must be sent when a user leaves the conference
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.CallStats.EventType.User_Media_ConnectedDevices">
+            <summary>
+            Provides information about the connected and/or active media devices
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.CallStats.EventType.User_Media_Actions">
+            <summary>
+            User events related to media e.g audioMute, audioUnMute, videoPause, videoResume, screenShareStart, screenShareStop
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.CallStats.EventType.Fabric_Setup">
+            <summary>
+            These are connection related events, it should be sent during initial fabric setup phase. After this connection is setup and you can send data)
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.CallStats.EventType.Fabric_Setup_Failed">
+            <summary>
+            These are connection related events, it should be sent when fabric setup fails. This means connection has failed and you cannot send data)
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.CallStats.EventType.Fabric_Terminated">
+            <summary>
+            These are connection related events, it should be sent when fabric is terminated. This means connection has ended and you cannot send data)
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.CallStats.EventType.Fabric_State_Change">
+            <summary>
+            Whenever the ICE connection state changes or ICE gathering state changes or signaling state changes then this event should be sent.
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.CallStats.EventType.Fabric_Dropped">
+            <summary>
+            Whenever the fabric is dropped, this should be notified.
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.CallStats.EventType.Fabric_Action">
+            <summary>
+            When the fabric hold or resume events happen, this event can be submitted
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.CallStats.EventType.Stats_Conference">
+            <summary>
+            All the conference stats inlcuding tracks, candidatePairs,trasnports, msts, dataChannels, codes and timestamps can be submitted using this event. For the time being tracks, candidatePairs and timestamp are mandatory fields.
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.CallStats.EventType.Stats_System">
+            <summary>
+            Submitting System status information for a conference such as battery level, cpu , etc.
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.CallStats.EventType.Special_Feedback">
+            <summary>
+            You can submit overall rating to conference and add comments as well. It is also possible to give separate ratings for audio and video.
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.CallStats.EventType.Special_Dominant_Speaker">
+            <summary>
+            Using this event, you can specify the dominant speaker of the conference. For reference you can check this link: 
+            http://www.sciencedirect.com/science/article/pii/S0885230812000186
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.CallStats.EventType.SSRC_Map">
+            <summary>
+            Whenever new media track appears, for example a new participant joins or new media sources are added, this event should be notified.
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.CallStats.EventType.SDP">
+            <summary>
+            PRO feature: Whenever there is an updated SDP or a pair of local and remote SDPs, this can be sent to callstats.io.
+            </summary>
+        </member>
+    </members>
+</doc>

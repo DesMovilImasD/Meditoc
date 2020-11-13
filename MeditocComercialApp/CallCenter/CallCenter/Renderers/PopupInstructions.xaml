@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage
+    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup" xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CallCenter.Renderers.PopupInstructions">
+    <StackLayout x:Name="stkActivity" IsVisible="true"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" AbsoluteLayout.LayoutBounds= "0,0,5,5"  AbsoluteLayout.LayoutFlags="All">
+        <Image   VerticalOptions="Fill" HorizontalOptions="FillAndExpand"  Source="vyc2.png"></Image>
+    </StackLayout>
+</pages:PopupPage>

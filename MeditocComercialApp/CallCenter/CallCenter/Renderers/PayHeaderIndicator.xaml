@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:CallCenter.Renderers"
+             xmlns:forms9patch="clr-namespace:Forms9Patch;assembly=Forms9Patch"
+             x:Class="CallCenter.Renderers.PayHeaderIndicator">
+        <StackLayout HorizontalOptions="FillAndExpand"
+                     BackgroundColor="#12B6CB"
+                     VerticalOptions="FillAndExpand">
+            <Grid HorizontalOptions="FillAndExpand"
+                  VerticalOptions="FillAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackLayout Grid.Row="0"
+                             Grid.Column="0"
+                             HorizontalOptions="FillAndExpand"
+                             VerticalOptions="FillAndExpand"
+                             BackgroundColor="#12B6CB">
+                    <Grid HorizontalOptions="FillAndExpand"
+                          VerticalOptions="FillAndExpand">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="4"/>
+                        </Grid.RowDefinitions>
+                        <forms9patch:Label
+                               Grid.Row="0"
+                               Margin="20,0,20,0"
+                               FontFamily="CallCenter.Resources.Fonts.CircularStd-Medium.ttf"
+                               TextColor="White"
+                               BackgroundColor="Transparent"
+                               VerticalOptions="FillAndExpand"
+                               HorizontalOptions="FillAndExpand"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="End"
+                               MaxLines="2"
+                               FontSize="Small"
+                               AutoFit="Width"
+                               x:Name="HeaderTabLabel1"/>
+
+                    <StackLayout Grid.Row="1"
+                                 Margin="0,0,0,1"
+                                 BackgroundColor="White"
+                                 VerticalOptions="FillAndExpand"
+                                 HorizontalOptions="FillAndExpand"
+                                 x:Name="TabIndicator1"/>
+                    </Grid>
+                </StackLayout>
+                <StackLayout Grid.Row="0"
+                             Grid.Column="1"
+                             HorizontalOptions="FillAndExpand"
+                             VerticalOptions="FillAndExpand"
+                             BackgroundColor="#12B6CB">
+                    <Grid HorizontalOptions="FillAndExpand"
+                          VerticalOptions="FillAndExpand">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="4"/>
+                        </Grid.RowDefinitions>
+                        <forms9patch:Label
+                               Grid.Row="0"
+                               Margin="20,0,20,0"
+                               FontFamily="CallCenter.Resources.Fonts.CircularStd-Medium.ttf"
+                               TextColor="White"
+                               BackgroundColor="Transparent"
+                               VerticalOptions="FillAndExpand"
+                               HorizontalOptions="FillAndExpand"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="End"
+                               MaxLines="2"
+                               FontSize="Small"
+                               AutoFit="Width"
+                               x:Name="HeaderTabLabel2"/>
+                        <!--<Label Grid.Row="0"
+                               Margin="20,0,20,0"
+                               TextColor="White"
+                               FontSize="Small"
+                               BackgroundColor="Transparent"
+                               FontFamily="{StaticResource CircularStdBold}"
+                               VerticalOptions="FillAndExpand"
+                               HorizontalOptions="FillAndExpand"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="End"
+                               MaxLines="3"
+                               local:AutoFitFontSizeEffectParameters.MaxFontSize="Small"
+                               local:AutoFitFontSizeEffectParameters.MinFontSize="Micro"
+                               LineBreakMode="TailTruncation"
+                               x:Name="HeaderTabLabel2">
+                            <Label.Effects>
+                                <local:AutoFitFontSizeEffect />
+                            </Label.Effects>
+                        </Label>-->
+                    <StackLayout Grid.Row="1"
+                                 Margin="0,0,0,1"
+                                 BackgroundColor="White"
+                                 VerticalOptions="FillAndExpand"
+                                 HorizontalOptions="FillAndExpand"
+                                 x:Name="TabIndicator2"/>
+                    </Grid>
+                </StackLayout>
+        </Grid>
+    </StackLayout>
+</ContentView>

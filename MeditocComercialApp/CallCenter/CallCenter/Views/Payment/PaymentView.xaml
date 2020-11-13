@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CallCenter.Views.Payment.PaymentView"
+             xmlns:local="clr-namespace:CallCenter.Renderers">
+
+        <ContentPage.Resources>
+            <ResourceDictionary>
+                <OnPlatform x:Key="NavBarSize" x:TypeArguments="GridLength" iOS="88" Android="58" />
+                <local:PaymentDataTemplateSelector x:Key="PagesSelector"/>
+            </ResourceDictionary>
+        </ContentPage.Resources>
+
+        <AbsoluteLayout
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="FillAndExpand">
+
+        <Grid AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All"
+            BackgroundColor="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="{StaticResource NavBarSize}" />
+                <RowDefinition Height="*" />
+
+            </Grid.RowDefinitions>
+
+            <StackLayout
+                Grid.Row="0"
+                BackgroundColor="Transparent"
+                HorizontalOptions="FillAndExpand">
+
+                <StackLayout
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="FillAndExpand"
+                    Orientation="Horizontal">
+                    <StackLayout.Padding>
+                        <OnPlatform x:TypeArguments="Thickness" iOS="0, 28, 0, 0" />
+                    </StackLayout.Padding>
+
+                    <Grid HorizontalOptions="FillAndExpand"
+                          VerticalOptions="FillAndExpand">
+                        <Image 
+                            Margin="60,10,10,0"
+                            BackgroundColor="Transparent"
+                            HorizontalOptions="End"
+                            Source="upsideleft.png"
+                            Aspect="AspectFit"
+                            VerticalOptions="Fill">
+                            <Image.HeightRequest>
+                                <OnPlatform x:TypeArguments="x:Double">
+                                    <On Platform="iOS">36</On>
+                                    <On Platform="Android">32</On>
+                                </OnPlatform>
+                            </Image.HeightRequest>
+                        </Image>
+                    </Grid>
+                </StackLayout>
+            </StackLayout>
+
+            <!--contianer-->
+            <RelativeLayout
+                Grid.Row="1"
+                BackgroundColor="Transparent"
+                HorizontalOptions="FillAndExpand">
+                <Image
+                    Margin="0,0,0,0"
+                    Aspect="Fill"
+                    Source="Fondoinicio3.png"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand"
+                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                           ElementName=SearchControlsGrid,
+                                                                           Property=Height,
+                                                                           Factor=1,
+                                                                           Constant=0}"
+                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                          ElementName=SearchControlsGrid,
+                                                                          Property=Width,
+                                                                          Factor=1,
+                                                                          Constant=0}"/>
+
+                <Grid Margin="0,0,0,0"
+                      Padding="8,4,8,0"
+                      ColumnSpacing="0"
+                      RowSpacing="0"
+                      BackgroundColor="Transparent"
+                      HorizontalOptions="FillAndExpand"
+                      VerticalOptions="FillAndExpand">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="70" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <!--disclaimer-->
+                    <Grid Grid.Row="0"
+                          BackgroundColor="Transparent"
+                          ColumnSpacing="0"
+                          HorizontalOptions="FillAndExpand"
+                          RowSpacing="0"
+                          VerticalOptions="FillAndExpand">
+                        <Label Text="Para generar sus credenciales de acceso a Meditoc haga el pago del servicio por medio de una tarjeta de crédito o de débito"
+                               TextColor="White"
+                               Padding="2,0,2,0"
+                               MaxLines="4"
+                               local:AutoFitFontSizeEffectParameters.MaxFontSize="Small"
+                               local:AutoFitFontSizeEffectParameters.MinFontSize="Micro"
+                               LineBreakMode="TailTruncation"
+                               FontFamily="{StaticResource NormalFont}"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center">
+                            <Label.Effects>
+                                <local:AutoFitFontSizeEffect />
+                            </Label.Effects>
+                        </Label>
+                    </Grid>
+                    <!--card-->
+                    <Grid Grid.Row="1"
+                          ColumnSpacing="0"
+                          RowSpacing="0"
+                          BackgroundColor="Transparent"
+                          HorizontalOptions="FillAndExpand"
+                          VerticalOptions="FillAndExpand">
+                        <StackLayout Margin="10,10,10,10">
+                            <Frame HasShadow="True"
+                                   BackgroundColor="White"
+                                   CornerRadius="10"
+                                   IsClippedToBounds="True"
+                                   HorizontalOptions="FillAndExpand"
+                                   VerticalOptions="FillAndExpand">
+                                <!--buttons-->
+                                <StackLayout Margin="-20">
+                                    <local:PayHeaderIndicator
+                                        HeightRequest="50"
+                                        TabLabel1="{Binding DataSource[0].Name}"
+                                        TabLabel2="{Binding DataSource[1].Name}"
+                                        TabEnable1="{Binding ShowTab1}"
+                                        TabEnable2="{Binding ShowTab2}"/>
+                                    <!--carousel-->
+                                    <CarouselView ItemsSource="{Binding DataSource}"
+                                                  x:Name="Carousel"
+                                                  IsSwipeEnabled="{Binding SwipeEnable}"
+                                                  Margin="0,-6,0,0"
+                                                  CurrentItemChanged="Carousel_CurrentItemChanged"
+                                                  PositionChangedCommand="{Binding PositionChangeCommand}"
+                                                  PositionChangedCommandParameter="{Binding Source={RelativeSource Self}, Path=Position}"
+                                                  BackgroundColor="White"
+                                                  HorizontalOptions="FillAndExpand"
+                                                  VerticalOptions="FillAndExpand"
+                                                  ItemTemplate="{StaticResource PagesSelector}">
+                                    </CarouselView>
+                                </StackLayout>
+                            </Frame> 
+                        </StackLayout>
+                    </Grid>
+
+
+                </Grid>
+            </RelativeLayout>
+        </Grid>
+
+        <StackLayout
+            x:Name="stkActivity"
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All"
+            BackgroundColor="#12b6cb"
+            IsVisible="False"
+            Opacity="0.7">
+            <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                <Label Font="Bold,20" TextColor="White">Cargando...</Label>
+                <ActivityIndicator
+                    x:Name="iaIndicator"
+                    IsRunning="False"
+                    Color="Blue" />
+            </StackLayout>
+        </StackLayout>
+
+    </AbsoluteLayout>
+</ContentPage>

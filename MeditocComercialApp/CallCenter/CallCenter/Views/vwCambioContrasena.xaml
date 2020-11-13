@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:CallCenter.Renderers"
+             x:Class="CallCenter.Views.vwCambioContrasena"
+             BackgroundColor="White">
+    <ScrollView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" >
+        <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" >
+
+            <Grid RowSpacing="0" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="80" />
+                    <RowDefinition Height="150" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="70" />
+                </Grid.RowDefinitions>
+                <!--  row background colors  -->
+
+                <BoxView Grid.Row="0" />
+                <BoxView Grid.Row="1"/>
+                <BoxView Grid.Row="2" />
+                <BoxView Grid.Row="3" />
+
+                <Grid Grid.Row="0" ColumnSpacing="5" RowSpacing="5" >
+                    <StackLayout Spacing="10" VerticalOptions="CenterAndExpand">
+                        <Image Source="Logo.png"
+                     VerticalOptions="CenterAndExpand"
+                      HorizontalOptions="CenterAndExpand"
+                      HeightRequest="130"
+                      Aspect="AspectFill"
+                      WidthRequest="130"
+                      ></Image>
+                    </StackLayout>
+                </Grid>
+                <Grid Grid.Row="1" ColumnSpacing="5" RowSpacing="5" >
+                    <StackLayout Spacing="10" VerticalOptions="CenterAndExpand" Padding="10">
+                        <Label Text="CAMBIO DE CONTRASEÑA"  FontFamily="{StaticResource NormalFont}" FontSize="Large" TextColor="#115c8a" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" />
+                        <Label Text="La contraseña debe contener de 6 a 15 caracteres como máximo "   FontFamily="{StaticResource NormalFont}" FontSize="Small" TextColor="#6b6b6b"  HorizontalOptions="CenterAndExpand" />
+                        <!--<Label Text="su contraseña." FontSize="20" TextColor="#00adc1"  HorizontalOptions="CenterAndExpand" />-->
+                    </StackLayout>
+                </Grid>
+                <Grid Grid.Row="2" ColumnSpacing="5" RowSpacing="5">
+                    <StackLayout Orientation="Vertical">
+                        <StackLayout x:Name="stcklblContrasenaNueva" Spacing="5" VerticalOptions="Start" Margin="15,50,15,0">
+                            <Entry x:Name="txtContrasenaNueva"
+                                   BackgroundColor="White"
+                                   FontFamily="{StaticResource NormalFont}"
+                                   Text=""
+                                   TextColor="LightGray"
+                                   HorizontalOptions="FillAndExpand"
+                                   Margin="15,0,15,0"
+                                   IsPassword="True">
+                                <Entry.Behaviors>
+                                    <local:EntryLengthValidatorBehavior MaxLength="15"/>
+                                </Entry.Behaviors>
+                                 <Entry.Effects>  
+                                    <local:ShowHidePassEffect />  
+                                </Entry.Effects>
+                            </Entry>
+                        </StackLayout>
+                        <!--<StackLayout Spacing="5" Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Start" Margin="15,10,15,0">
+                            -->
+                        <!--<Label Text="Aceptar" Margin="10" TextColor="#12b6cb"/>-->
+                        <!--
+                            <Label x:Name="lblTerminosCondiciones" Text="Términos y Condiciones." FontAttributes="Bold" Margin="10" TextColor="#12b6cb"/>
+                            <Switch x:Name="swTerminosCondiciones" ></Switch>
+                        </StackLayout>-->
+                    </StackLayout>
+                </Grid>
+                <Grid Grid.Row="3" >
+                    <StackLayout Padding="5,10,5,0" Spacing="5" Margin="15,0,15,0">
+                        <Button x:Name="btnContrasenaNueva" TextColor="White" BackgroundColor="#115c8a"
+                  BorderRadius="10" ></Button>
+                    </StackLayout>
+                </Grid>
+                <!--</AbsoluteLayout>-->
+            </Grid>
+            <StackLayout x:Name="stkActivity" IsVisible="False"  BackgroundColor = "#12b6cb"  Opacity ="0.7"  AbsoluteLayout.LayoutBounds= "0,0,1,1"  AbsoluteLayout.LayoutFlags="All">
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <Label TextColor="White" Font="Bold,20">Espere un momento</Label>
+                    <ActivityIndicator x:Name="iaIndicator" Color="Blue" IsRunning="False"  ></ActivityIndicator>
+                </StackLayout>
+            </StackLayout>
+        </AbsoluteLayout>
+    </ScrollView>
+</ContentPage>

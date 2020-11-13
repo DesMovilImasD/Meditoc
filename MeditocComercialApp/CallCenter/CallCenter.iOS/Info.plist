@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>UIDeviceFamily</key>
+	<array>
+		<integer>1</integer>
+		<integer>2</integer>
+	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UIRequiresFullScreen</key>
+	<true/>
+	<key>MinimumOSVersion</key>
+	<string>8.0</string>
+	<key>CFBundleDisplayName</key>
+	<string>Meditoc 360</string>
+	<key>CFBundleIdentifier</key>
+	<string>Meditoc.Callcenter.comercial</string>
+	<key>CFBundleVersion</key>
+	<string>1112</string>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>CFBundleName</key>
+	<string>Meditoc 360</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Meditoc necesita acceso a su camara para poder realizar la videollamada con los médicos disponibles.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Meditoc necesita acceso a su microfono para poder realizar la videollamada con los médicos disponibles.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>*Meditoc* would like to access your calender</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>yourdomain.com</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+				<false/>
+			</dict>
+		</dict>
+	</dict>
+	<key>CFBundleShortVersionString</key>
+	<string>1.1.12</string>
+	<key>XSAppIconAssets</key>
+	<string>Assets.xcassets/AppIcon.appiconset</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>La aplicación necesita acceso a su ubicación para redireccionarlo al call center mas cercano.</string>
+	<key>NSLocationAlwaysUsageDescription </key>
+	<string>La aplicación necesita acceso a su ubicación para redireccionarlo al call center mas cercano.</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>fa-regular-400.ttf</string>
+		<string>fa-solid-900.ttf</string>
+		<string>fa-brands-400.ttf</string>
+		<string>Roboto-Bold.ttf</string>
+		<string>Roboto-Light.ttf</string>
+		<string>Roboto-Medium.ttf</string>
+		<string>Roboto-Regular.ttf</string>
+		<string>CircularStd-Black.ttf</string>
+		<string>CircularStd-Bold.ttf</string>
+		<string>CircularStd-Book.ttf</string>
+		<string>CircularStd-Medium.ttf</string>
+		<string>fa-solid-900.otf</string>
+		<string>fa-brands-400.otf</string>
+	</array>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleBlackTranslucent</string>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+</dict>
+</plist>

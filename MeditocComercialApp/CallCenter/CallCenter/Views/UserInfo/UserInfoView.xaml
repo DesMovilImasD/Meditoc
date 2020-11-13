@@ -1,0 +1,612 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ia="clr-namespace:IntelliAbb.Xamarin.Controls;assembly=IntelliAbb.Xamarin.Controls"
+             xmlns:local="clr-namespace:CallCenter.Renderers"
+             xmlns:fastEntry="clr-namespace:XamarinFastEntrySample.FastEntry;assembly=XamarinFastEntry.Behaviors"
+             xmlns:forms9patch="clr-namespace:Forms9Patch;assembly=Forms9Patch"
+             x:Class="CallCenter.Views.UserInfo.UserInfoView">
+
+    <StackLayout Padding="16"
+                 HorizontalOptions="FillAndExpand"
+                 VerticalOptions="FillAndExpand">
+        <ScrollView>
+            <Grid Margin="10,0,10,0"
+                  HorizontalOptions="FillAndExpand"
+                  VerticalOptions="FillAndExpand">
+                <Grid.RowDefinitions>
+                    <!--email-->
+                    <RowDefinition Height="*"/>
+                    <!--name-->
+                    <RowDefinition Height="*"/>
+                    <!--phone-->
+                    <RowDefinition Height="*"/>
+                    <!--card-->
+                    <RowDefinition Height="*"/>
+                    <!--card date-->
+                    <RowDefinition Height="*"/>
+                    <!--card nip-->
+                    <RowDefinition Height="*"/>
+                    <!--pay type-->
+                    <RowDefinition Height="*"/>
+                    <!--termins and conditions-->
+                    <RowDefinition Height="44"/>
+                    <!--space-->
+                    <RowDefinition Height="10"/>
+                    <!--pay button-->
+                    <RowDefinition Height="60"/>
+                </Grid.RowDefinitions>
+
+                <!--Correo-->
+                <Grid Grid.Row="0"
+                      HorizontalOptions="FillAndExpand"
+                      VerticalOptions="FillAndExpand">
+                       <Grid.RowDefinitions>
+                           <RowDefinition Height="28" />
+                           <RowDefinition Height="44" />
+                           <RowDefinition Height="28" />
+                       </Grid.RowDefinitions>
+
+                       <Label Grid.Row="0"
+                              TextColor="#12B6CB"
+                              FontFamily="{StaticResource NormalFont}"
+                              FontAttributes="Bold"
+                              FontSize="18"
+                              HorizontalTextAlignment="Center"
+                              VerticalTextAlignment="Center"
+                              BackgroundColor="Transparent"
+                              HorizontalOptions="FillAndExpand"
+                              VerticalOptions="FillAndExpand"
+                              Text="Correo electrónico *"/>
+                       <forms9patch:Label
+                           Grid.Row="2"
+                           x:Name="UserInfoDTO_EmailError"
+                            IsVisible="False"
+                            TextColor="Red"
+                            MaxLines="0"
+                           AutoFit="Width"
+                           FontSize="Small"
+                            BackgroundColor="Transparent"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center"
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="FillAndExpand"/>
+
+
+                        <local:UnderlineEntry x:Name="emailField"
+                                             Grid.Row="1"
+                                             Margin="10,0,10,0"
+                                             FontSize="18"
+                                             Keyboard="Email"
+                                             TextChanged="UnderlineEntry_TextChanged"
+                                             Text="{Binding Email}"/>
+                </Grid>
+
+                <!--name card--> 
+                <Grid Grid.Row="1"
+                      HorizontalOptions="FillAndExpand"
+                      VerticalOptions="FillAndExpand">
+                       <Grid.RowDefinitions>
+                           <RowDefinition Height="28" />
+                           <RowDefinition Height="44" />
+                           <RowDefinition Height="28" />
+                       </Grid.RowDefinitions>
+
+                       <Label Grid.Row="0"
+                              TextColor="#12B6CB"
+                              FontFamily="{StaticResource NormalFont}"
+                              FontAttributes="Bold"
+                              FontSize="18"
+                              HorizontalTextAlignment="Center"
+                              VerticalTextAlignment="Center"
+                              BackgroundColor="Transparent"
+                              HorizontalOptions="FillAndExpand"
+                              VerticalOptions="FillAndExpand"
+                              Text="Nombre tarjetahabiente *"/>
+                       <!--<Label Grid.Row="2"
+                              x:Name="UserInfoDTO_UserNameError"
+                              IsVisible="False"
+                              TextColor="Red"
+                              MaxLines="2"
+                              local:AutoFitFontSizeEffectParameters.MaxFontSize="Small"
+                              local:AutoFitFontSizeEffectParameters.MinFontSize="Micro"
+                              LineBreakMode="TailTruncation"
+                              BackgroundColor="Transparent"
+                              HorizontalTextAlignment="Center"
+                              VerticalTextAlignment="Center"
+                              HorizontalOptions="FillAndExpand"
+                              VerticalOptions="FillAndExpand">
+                            <Label.Effects>
+                                <local:AutoFitFontSizeEffect />
+                            </Label.Effects>
+                       </Label>-->
+                       <forms9patch:Label
+                           Grid.Row="2"
+                           x:Name="UserInfoDTO_UserNameError"
+                            IsVisible="False"
+                            TextColor="Red"
+                            MaxLines="0"
+                           AutoFit="Width"
+                           FontSize="Small"
+                            BackgroundColor="Transparent"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center"
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="FillAndExpand"/>
+                       <local:UnderlineEntry x:Name="nameField"
+                                             Grid.Row="1"
+                                             TextChanged="UnderlineEntry_TextChanged"
+                                             Margin="10,0,10,0"
+                                             FontSize="18"
+                                             Keyboard="Chat"
+                                             Text="{Binding UserName}"/>
+                </Grid>
+
+                <!--telefono-->
+                <Grid Grid.Row="2"
+                      HorizontalOptions="FillAndExpand"
+                      VerticalOptions="FillAndExpand">
+                       <Grid.RowDefinitions>
+                           <RowDefinition Height="28" />
+                           <RowDefinition Height="44" />
+                           <RowDefinition Height="28" />
+                       </Grid.RowDefinitions>
+
+                       <Label Grid.Row="0"
+                              TextColor="#12B6CB"
+                              FontFamily="{StaticResource NormalFont}"
+                              FontAttributes="Bold"
+                              FontSize="18"
+                              HorizontalTextAlignment="Center"
+                              VerticalTextAlignment="Center"
+                              BackgroundColor="Transparent"
+                              HorizontalOptions="FillAndExpand"
+                              VerticalOptions="FillAndExpand"
+                              Text="Teléfono"/>
+                       <!--<Label Grid.Row="2"
+                              x:Name="UserInfoDTO_PhoneNumberError"
+                              IsVisible="False"
+                              TextColor="Red"
+                              FontSize="Small"
+                              BackgroundColor="Transparent"
+                              HorizontalTextAlignment="Center"
+                              VerticalTextAlignment="Center"
+                              HorizontalOptions="FillAndExpand"
+                              VerticalOptions="FillAndExpand"/>-->
+                    <forms9patch:Label
+                           Grid.Row="2"
+                           x:Name="UserInfoDTO_PhoneNumberError"
+                            IsVisible="False"
+                            TextColor="Red"
+                            MaxLines="0"
+                           AutoFit="Width"
+                           FontSize="Small"
+                            BackgroundColor="Transparent"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center"
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="FillAndExpand"/>
+                        <local:UnderlineEntry Grid.Row="1"
+                                              Margin="60,0,60,0"
+                                              MaxLength="10"
+                                              FontSize="18"
+                                              Keyboard="Telephone"
+                                              Text="{Binding PhoneNumber}"/>
+                </Grid>
+
+                <!--# card-->
+                <Grid Grid.Row="3"
+                      HorizontalOptions="FillAndExpand"
+                      VerticalOptions="FillAndExpand">
+                       <Grid.RowDefinitions>
+                           <RowDefinition Height="28" />
+                           <RowDefinition Height="44" />
+                           <RowDefinition Height="28" />
+                       </Grid.RowDefinitions>
+
+                       <Label Grid.Row="0"
+                              TextColor="#12B6CB"
+                              FontFamily="{StaticResource NormalFont}"
+                              FontAttributes="Bold"
+                              FontSize="18"
+                              HorizontalTextAlignment="Center"
+                              VerticalTextAlignment="Center"
+                              BackgroundColor="Transparent"
+                              HorizontalOptions="FillAndExpand"
+                              VerticalOptions="FillAndExpand"
+                              Text="Número de tarjeta *"/>
+                       <!--<Label Grid.Row="2"
+                              x:Name="UserInfoDTO_CardNumberError"
+                              IsVisible="False"
+                              TextColor="Red"
+                              FontSize="Small"
+                              BackgroundColor="Transparent"
+                              HorizontalTextAlignment="Center"
+                              VerticalTextAlignment="Center"
+                              MaxLines="2"
+                              local:AutoFitFontSizeEffectParameters.MaxFontSize="Small"
+                              local:AutoFitFontSizeEffectParameters.MinFontSize="Micro"
+                              LineBreakMode="TailTruncation"
+                              HorizontalOptions="FillAndExpand"
+                              VerticalOptions="FillAndExpand">
+                           <Label.Effects>
+                                <local:AutoFitFontSizeEffect />
+                            </Label.Effects>
+                       </Label>-->
+                     <forms9patch:Label
+                         Grid.Row="2"
+                         x:Name="UserInfoDTO_CardNumberError"
+                         IsVisible="False"
+                         TextColor="Red"
+                         MaxLines="0"
+                         AutoFit="Width"
+                         FontSize="Small"
+                         BackgroundColor="Transparent"
+                         HorizontalTextAlignment="Center"
+                         VerticalTextAlignment="Center"
+                         HorizontalOptions="FillAndExpand"
+                         VerticalOptions="FillAndExpand"/>
+
+                    <local:UnderlineEntry x:Name="cardPart1Field"
+                                           Grid.Row="1"
+                                          PlaceholderColor="#B1B1B1"
+                                          Margin="10,0,10,0"
+                                          MaxLength="19"
+                                          HeightRequest="44"
+                                          FontSize="18"
+                                          Placeholder=""
+                                          VerticalOptions="FillAndExpand"
+                                          HorizontalOptions="FillAndExpand"
+                                          Keyboard="Numeric"
+                                          PropertyChanged="UnderlineEntry_PropertyChanged"
+                                          TextChanged="UnderlineEntry_TextChanged"
+                                          Text="{Binding CardPart1}">
+                        <Entry.Behaviors>
+                            <fastEntry:XamarinFastEntryBehaviour
+                                Mask="####-####-####-####" MaxLength="19"/>
+                        </Entry.Behaviors>
+                    </local:UnderlineEntry>
+                        <!--<StackLayout Grid.Row="1"
+                              Margin="10,0,10,0"
+                              HeightRequest="44"
+                              HorizontalOptions="FillAndExpand"
+                              VerticalOptions="FillAndExpand">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <local:UnderlineEntry x:Name="cardPart2Field"
+                                                  Grid.Column="1"
+                                                  PlaceholderColor="#B1B1B1"
+                                                  MaxLength="4"
+                                                  FontSize="18"
+                                                  Placeholder="0000"
+                                                  VerticalOptions="FillAndExpand"
+                                                  HorizontalOptions="CenterAndExpand"
+                                                  Keyboard="Numeric"
+                                                  PropertyChanged="UnderlineEntry_PropertyChanged"
+                                                  TextChanged="UnderlineEntry_TextChanged"
+                                                  Text="{Binding CardPart2}"/>
+                            <local:UnderlineEntry x:Name="cardPart3Field"
+                                                  Grid.Column="2"
+                                                  PlaceholderColor="#B1B1B1"
+                                                  MaxLength="4"
+                                                  FontSize="18"
+                                                  Placeholder="0000"
+                                                  VerticalOptions="FillAndExpand"
+                                                  HorizontalOptions="CenterAndExpand"
+                                                  Keyboard="Numeric"
+                                                  PropertyChanged="UnderlineEntry_PropertyChanged"
+                                                  TextChanged="UnderlineEntry_TextChanged"
+                                                  Text="{Binding CardPart3}"/>
+                            <local:UnderlineEntry x:Name="cardPart4Field"
+                                                  Grid.Column="3"
+                                                  PlaceholderColor="#B1B1B1"
+                                                  MaxLength="4"
+                                                  FontSize="18"
+                                                  Placeholder="0000"
+                                                  VerticalOptions="FillAndExpand"
+                                                  HorizontalOptions="CenterAndExpand"
+                                                  Keyboard="Numeric"
+                                                  PropertyChanged="UnderlineEntry_PropertyChanged"
+                                                  TextChanged="UnderlineEntry_TextChanged"
+                                                  Text="{Binding CardPart4}"/>
+                        </StackLayout>-->
+                </Grid>
+               
+                <!--fecha de vencimiento-->
+                <Grid Grid.Row="4"
+                      HorizontalOptions="FillAndExpand"
+                      VerticalOptions="FillAndExpand">
+                       <Grid.RowDefinitions>
+                           <RowDefinition Height="28" />
+                           <RowDefinition Height="44" />
+                           <RowDefinition Height="28" />
+                       </Grid.RowDefinitions>
+
+                       <Label Grid.Row="0"
+                              TextColor="#12B6CB"
+                              HorizontalTextAlignment="Center"
+                              VerticalTextAlignment="Center"
+                              BackgroundColor="Transparent"
+                              HorizontalOptions="FillAndExpand"
+                              VerticalOptions="FillAndExpand"
+                              FontFamily="{StaticResource NormalFont}"
+                              FontAttributes="Bold"
+                              FontSize="18"
+                              Text="Fecha de vencimiento *"/>
+                       <!--<Label Grid.Row="2"
+                              x:Name="UserInfoDTO_CardYearError"
+                              IsVisible="False"
+                              TextColor="Red"
+                              MaxLines="2"
+                              local:AutoFitFontSizeEffectParameters.MaxFontSize="Small"
+                              local:AutoFitFontSizeEffectParameters.MinFontSize="Micro"
+                              LineBreakMode="TailTruncation"
+                              BackgroundColor="Transparent"
+                              HorizontalTextAlignment="Center"
+                              VerticalTextAlignment="Center"
+                              HorizontalOptions="FillAndExpand"
+                              VerticalOptions="FillAndExpand">
+                           <Label.Effects>
+                                <local:AutoFitFontSizeEffect />
+                            </Label.Effects>
+                       </Label>-->
+                    <forms9patch:Label
+                           Grid.Row="2"
+                           x:Name="UserInfoDTO_CardYearError"
+                            IsVisible="False"
+                            TextColor="Red"
+                            MaxLines="0"
+                           AutoFit="Width"
+                           FontSize="Small"
+                            BackgroundColor="Transparent"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center"
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="FillAndExpand"/>
+                        <Grid Grid.Row="1"
+                              Margin="60,0,60,0"
+                              HorizontalOptions="FillAndExpand"
+                              VerticalOptions="FillAndExpand">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <local:UnderlinePicker Grid.Column="0"
+                                                   Title="Mes"
+                                                   FontSize="18"
+                                                   WidthRequest="60"
+                                                   HorizontalOptions="CenterAndExpand"
+                                                   VerticalOptions="FillAndExpand"
+                                                   SelectedItem="{Binding CardMonth}"
+                                                   TitleColor="#B1B1B1">
+                                <local:UnderlinePicker.ItemsSource>
+				                    <x:Array Type="{x:Type x:String}">
+					                    <x:String>01</x:String>
+					                    <x:String>02</x:String>
+                                        <x:String>03</x:String>
+					                    <x:String>04</x:String>
+                                        <x:String>05</x:String>
+					                    <x:String>06</x:String>
+                                        <x:String>07</x:String>
+					                    <x:String>08</x:String>
+                                        <x:String>09</x:String>
+					                    <x:String>10</x:String>
+                                        <x:String>11</x:String>
+					                    <x:String>12</x:String>
+				                    </x:Array>
+			                    </local:UnderlinePicker.ItemsSource>
+                            </local:UnderlinePicker>
+                            
+                            <local:UnderlineEntry x:Name="yearField"
+                                                  Grid.Column="1"
+                                                  TextChanged="UnderlineEntry_TextChanged"
+                                                  Placeholder="Año "
+                                                  MaxLength="4"
+                                                  Keyboard="Numeric"
+                                                  WidthRequest="60"
+                                                  VerticalOptions="FillAndExpand"
+                                                  HorizontalOptions="CenterAndExpand"
+                                                  Text="{Binding CardYear}"
+                                                  PlaceholderColor="#B1B1B1" />
+                        </Grid>
+                </Grid>
+
+                <!--codigo de verificacion-->
+                <Grid Grid.Row="5"
+                      Margin="10,0,10,0"
+                      HorizontalOptions="FillAndExpand"
+                      VerticalOptions="FillAndExpand">
+                       <Grid.RowDefinitions>
+                           <RowDefinition Height="28" />
+                           <RowDefinition Height="44" />
+                           <RowDefinition Height="28" />
+                       </Grid.RowDefinitions>
+
+                       <Label Grid.Row="0"
+                              TextColor="#12B6CB"
+                              HorizontalTextAlignment="Center"
+                              VerticalTextAlignment="Center"
+                              BackgroundColor="Transparent"
+                              HorizontalOptions="FillAndExpand"
+                              VerticalOptions="FillAndExpand"
+                              FontFamily="{StaticResource NormalFont}"
+                              FontAttributes="Bold"
+                              FontSize="18"
+                              Text="Código de seguridad (CVC) *"/>
+                       <!--<Label Grid.Row="2"
+                              x:Name="UserInfoDTO_CardPinError"
+                              IsVisible="False"
+                              TextColor="Red"
+                               MaxLines="2"
+                              local:AutoFitFontSizeEffectParameters.MaxFontSize="Small"
+                              local:AutoFitFontSizeEffectParameters.MinFontSize="Micro"
+                              LineBreakMode="TailTruncation"
+                              BackgroundColor="Transparent"
+                              HorizontalTextAlignment="Center"
+                              VerticalTextAlignment="Center"
+                              HorizontalOptions="FillAndExpand"
+                              VerticalOptions="FillAndExpand">
+                            <Label.Effects>
+                                <local:AutoFitFontSizeEffect />
+                            </Label.Effects>
+                       </Label>-->
+                     <forms9patch:Label
+                           Grid.Row="2"
+                           x:Name="UserInfoDTO_CardPinError"
+                            IsVisible="False"
+                            TextColor="Red"
+                            MaxLines="0"
+                           AutoFit="Width"
+                           FontSize="Small"
+                            BackgroundColor="Transparent"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center"
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="FillAndExpand"/>
+                        <local:UnderlineEntry x:Name="pinField"
+                                              Grid.Row="1"
+                                              Margin="0,0,0,0"
+                                              MaxLength="4"
+                                              FontSize="18"
+                                              WidthRequest="60"
+                                              TextChanged="UnderlineEntry_TextChanged"
+                                              HorizontalOptions="CenterAndExpand"
+                                              VerticalOptions="FillAndExpand"
+                                              IsPassword="True"
+                                              Keyboard="Numeric"
+                                              Placeholder="0000"
+                                              Text="{Binding CardPin}"
+                                              PlaceholderColor="#B1B1B1"/>
+                </Grid>
+
+                <!--pay type-->
+                <Grid Grid.Row="6"
+                       Margin="10,0,10,0"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand">
+                       <Grid.RowDefinitions>
+                           <RowDefinition Height="28" />
+                           <RowDefinition Height="44" />
+                           <RowDefinition Height="28" />
+                       </Grid.RowDefinitions>
+
+                       <Label Grid.Row="0"
+                              TextColor="#12B6CB"
+                              FontFamily="{StaticResource NormalFont}"
+                              FontAttributes="Bold"
+                              FontSize="18"
+                              HorizontalTextAlignment="Center"
+                              VerticalTextAlignment="Center"
+                              BackgroundColor="Transparent"
+                              HorizontalOptions="FillAndExpand"
+                              VerticalOptions="FillAndExpand"
+                              Text="Modalidad de pago *"/>
+                       <!--<Label Grid.Row="2"
+                              x:Name="UserInfoDTO_TypeError"
+                              IsVisible="False"
+                              TextColor="Red"
+                              MaxLines="2"
+                              local:AutoFitFontSizeEffectParameters.MaxFontSize="Small"
+                              local:AutoFitFontSizeEffectParameters.MinFontSize="Micro"
+                              LineBreakMode="TailTruncation"
+                              BackgroundColor="Transparent"
+                              HorizontalTextAlignment="Center"
+                              VerticalTextAlignment="Center"
+                              HorizontalOptions="FillAndExpand"
+                              VerticalOptions="FillAndExpand">
+                            <Label.Effects>
+                                <local:AutoFitFontSizeEffect />
+                            </Label.Effects>
+                       </Label>-->
+                    <forms9patch:Label
+                           Grid.Row="2"
+                           x:Name="UserInfoDTO_TypeError"
+                            IsVisible="False"
+                            TextColor="Red"
+                            MaxLines="0"
+                           AutoFit="Width"
+                           FontSize="Small"
+                            BackgroundColor="Transparent"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center"
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="FillAndExpand"/>
+                        <local:UnderlinePicker x:Name="TypePicker"
+                                               Margin="0,0,0,0"
+                                               FontSize="18"
+                                               MinimumHeightRequest="120"
+                                               Grid.Row="1"
+                                               Title="-- Seleccione --"
+                                               TitleColor="#B1B1B1"
+                                               VerticalOptions="FillAndExpand"
+                                               HorizontalOptions="CenterAndExpand"
+                                               PropertyChanged="TypePicker_PropertyChanged"/>
+
+
+
+                </Grid>
+
+                <!--check -->
+                <StackLayout Grid.Row="7"
+                             BackgroundColor="Transparent"
+                             Orientation="Horizontal"
+                             VerticalOptions="FillAndExpand"
+                             HorizontalOptions="CenterAndExpand">
+                    <ia:Checkbox x:Name="AwesomeCheckbox"
+                                 Margin="0,0,0,0"
+                                 OutlineColor="#B1B1B1"
+                                 FillColor="White"
+                                 CheckColor="#B1B1B1"
+                                 WidthRequest="20"
+                                 VerticalOptions="CenterAndExpand"
+                                 HorizontalOptions="CenterAndExpand"
+                                 IsChecked="{Binding TermsAndConditions}"
+                                 IsCheckedChanged="AwesomeCheckbox_IsCheckedChanged"
+                                 BindingContext="{Binding .}"
+                                 Shape="Circle"/>
+                    <Label Margin="0,0,0,0"
+                           TextColor="#B1B1B1"
+                           MaxLines="2"
+                           VerticalOptions="CenterAndExpand"
+                           HorizontalOptions="CenterAndExpand"
+                           LineBreakMode="WordWrap"
+                           FontSize="Medium"
+                           BackgroundColor="Transparent"
+                           FontAttributes="None"
+                           FontFamily="{StaticResource NormalFont}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Acepto los "/>
+                                <Span Text="Términos y Condiciones" TextDecorations="Underline" FontAttributes="Bold">
+                                     <Span.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>                                
+                                    </Span.GestureRecognizers>
+                                </Span>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </StackLayout>
+                <StackLayout Grid.Row="8"/>
+                <!--button-->
+                <Button Grid.Row="9"
+                        CornerRadius="5"
+                        FontFamily="{StaticResource NormalFont}"
+                        Padding="8"
+                        WidthRequest="120"
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="CenterAndExpand"
+                        TextColor="White"
+                        FontSize="16"
+                        Clicked="Submit_Clicked"
+                        BackgroundColor="#115C8A"
+                        Text="Pagar"/>
+
+            </Grid>
+        </ScrollView>
+    </StackLayout>
+</ContentView>

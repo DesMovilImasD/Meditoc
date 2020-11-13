@@ -1,0 +1,269 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FM.IceLink.WebSync4</name>
+    </assembly>
+    <members>
+        <member name="T:FM.IceLink.WebSync4.PendingRenegotiationProperties">
+            <summary>
+            Contains properties required to conduct delayed renegotiation
+            </summary>
+        </member>
+        <member name="T:FM.IceLink.WebSync4.JoinConferenceArgs">
+            <summary>
+            Arguments for a client joining an IceLink conference.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.WebSync4.JoinConferenceArgs.OnFailure">
+            <summary>
+            Gets or sets the callback to invoke if the request fails.
+            See <see cref="T:FM.IceLink.WebSync4.JoinConferenceFailureArgs"/> for callback argument details.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.WebSync4.JoinConferenceArgs.OnSuccess">
+            <summary>
+            Gets or sets the callback to invoke if the request succeeds.
+            See <see cref="T:FM.IceLink.WebSync4.JoinConferenceSuccessArgs"/> for callback argument details.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.WebSync4.JoinConferenceArgs.OnReceive">
+            <summary>
+            Gets or sets the callback to invoke when data is received on the channel.
+            See <see cref="T:FM.IceLink.WebSync4.JoinConferenceReceiveArgs"/> for callback argument details.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.WebSync4.JoinConferenceArgs.OnRemoteClient">
+            <summary>
+            Gets or sets the callback to invoke when a new remote client needs a connection.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.WebSync4.JoinConferenceArgs.ConferenceChannel">
+            <summary>
+            Gets or sets the conference channel.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.WebSync4.JoinConferenceArgs.UnlinkExistingOnUserJoin">
+            <summary>
+            Gets or sets a value indicating whether this endpoint
+            should drop existing links in favour of new ones
+            when remote peers join the channel.
+            Defaults to <c>true</c>.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.WebSync4.JoinConferenceArgs.UnlinkOnUserLeave">
+            <summary>
+            Gets or sets a value indicating whether this endpoint
+            should initiate an unlink when remote peers leave the channel.
+            Defaults to <c>true</c>.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.WebSync4.JoinConferenceArgs.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.WebSync4.JoinConferenceArgs" /> class.
+            </summary>
+            <param name="conferenceChannel">The conference channel.</param>
+        </member>
+        <member name="T:FM.IceLink.WebSync4.JoinConferenceFailureArgs">
+            <summary>
+            Arguments for join-conference failure callbacks.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.WebSync4.JoinConferenceFailureArgs.ConferenceChannel">
+            <summary>
+            Gets or sets the ID of the conference that failed to be joined.
+            </summary>
+        </member>
+        <member name="T:FM.IceLink.WebSync4.JoinConferenceReceiveArgs">
+            <summary>
+            Arguments for join-conference receive callbacks.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.WebSync4.JoinConferenceReceiveArgs.#ctor(System.String,System.String,System.Byte[],FM.WebSync.ConnectionType,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.WebSync4.JoinConferenceReceiveArgs" /> class.
+            </summary>
+            <param name="channel">The channel over which data was received.</param>
+            <param name="dataJson">The data in JSON format.</param>
+            <param name="dataBytes">The data in binary format.</param>
+            <param name="connectionType">The current connection type.</param>
+            <param name="reconnectAfter">The amount of time in milliseconds to pause before reconnecting to the server.</param>
+        </member>
+        <member name="P:FM.IceLink.WebSync4.JoinConferenceReceiveArgs.PublishingPeer">
+            <summary>
+            Gets the user that published the message.
+            </summary>
+        </member>
+        <member name="T:FM.IceLink.WebSync4.JoinConferenceSuccessArgs">
+            <summary>
+            Arguments for join-conference success callbacks.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.WebSync4.JoinConferenceSuccessArgs.ConferenceChannel">
+            <summary>
+            Gets or sets the ID of the conference that was joined.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.WebSync4.JoinConferenceSuccessArgs.Users">
+            <summary>
+            Gets the array of users in the channel.
+            </summary>
+        </member>
+        <member name="T:FM.IceLink.WebSync4.LeaveConferenceArgs">
+            <summary>
+            Arguments for a client leaving an IceLink conference.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.WebSync4.LeaveConferenceArgs.OnFailure">
+            <summary>
+            Gets or sets the callback to invoke if the request fails.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.WebSync4.LeaveConferenceArgs.OnSuccess">
+            <summary>
+            Gets or sets the callback to invoke if the request succeeds.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.WebSync4.LeaveConferenceArgs.ConferenceChannel">
+            <summary>
+            Gets or sets the conference channel.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.WebSync4.LeaveConferenceArgs.UnlinkAllOnSuccess">
+            <summary>
+            Gets or sets a value indicating whether this endpoint
+            should initiate an unlink from everyone after leaving
+            the channel successfully.
+            Defaults to <c>true</c>.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.WebSync4.LeaveConferenceArgs.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.WebSync4.LeaveConferenceArgs"/> class.
+            </summary>
+            <param name="conferenceChannel">The conference ID.</param>
+        </member>
+        <member name="T:FM.IceLink.WebSync4.LeaveConferenceFailureArgs">
+            <summary>
+            Arguments for leave-conference failure callbacks.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.WebSync4.LeaveConferenceFailureArgs.ConferenceChannel">
+            <summary>
+            Gets or sets the ID of the conference that failed to be left.
+            </summary>
+        </member>
+        <member name="T:FM.IceLink.WebSync4.LeaveConferenceSuccessArgs">
+            <summary>
+            Arguments for leave-conference success callbacks.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.WebSync4.LeaveConferenceSuccessArgs.ConferenceChannel">
+            <summary>
+            Gets or sets the ID of the conference that was left.
+            </summary>
+        </member>
+        <member name="T:FM.IceLink.WebSync4.ClientExtensions">
+            <summary>
+            Extension methods for <see cref="T:FM.WebSync.Client"/> instances.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.WebSync4.ClientExtensions.JoinConference(FM.WebSync.Client,FM.IceLink.WebSync4.JoinConferenceArgs)">
+            <summary>
+            Joins an IceLink conference.
+            </summary>
+            <param name="client">The WebSync client.</param>
+            <param name="args">The arguments.</param>
+            <returns>The WebSync client.</returns>
+        </member>
+        <member name="M:FM.IceLink.WebSync4.ClientExtensions.Renegotiate(FM.WebSync.Client,System.String,FM.IceLink.Connection)">
+            <summary>
+            Commences session description renegotiation for the specified connection.
+            </summary>
+            <param name="client">The WebSync client.</param>
+            <param name="conferenceChannel">Conference channel.</param>
+            <param name="connection">The connection on which to renegotiate.</param>
+        </member>
+        <member name="M:FM.IceLink.WebSync4.ClientExtensions.LeaveConference(FM.WebSync.Client,FM.IceLink.WebSync4.LeaveConferenceArgs)">
+            <summary>
+            Leaves an IceLink conference.
+            </summary>
+            <param name="client">The WebSync client.</param>
+            <param name="args">The arguments.</param>
+            <returns>The WebSync client.</returns>
+        </member>
+        <member name="M:FM.IceLink.WebSync4.ClientExtensions.ReconnectRemoteClient(FM.WebSync.Client,FM.IceLink.WebSync4.PeerClient,FM.IceLink.Connection)">
+            <summary>
+            Reconnects remote client.
+            </summary>
+            <param name="client">The WebSync client.</param>
+            <param name="remoteClient">The remote client.</param>
+            <param name="failedConnection">Failed connection that requires reconnection.</param>
+        </member>
+        <member name="P:FM.IceLink.WebSync4.ConnectionCollection.JoinArgs">
+            <summary>
+            Gets the join arguments.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.WebSync4.ConnectionCollection.#ctor(FM.IceLink.WebSync4.JoinConferenceArgs)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.WebSync4.ConnectionCollection" /> class.
+            </summary>
+            <param name="joinArgs">The join arguments.</param>
+        </member>
+        <member name="M:FM.IceLink.WebSync4.ConnectionCollection.AddSuccess(FM.IceLink.Connection)">
+            <summary>
+            Invoked when an element is added to the collection.
+            </summary>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:FM.IceLink.WebSync4.ConnectionCollection.RemoveSuccess(FM.IceLink.Connection)">
+            <summary>
+            Invoked when an element is removed from the collection.
+            </summary>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:FM.IceLink.WebSync4.ConnectionCollection.GetByRemoteUserId(System.String)">
+            <summary>
+            Gets a connection by remote user ID.
+            </summary>
+            <param name="remoteUserId">The remote user identifier.</param>
+            <returns>The connection, or <c>null</c> if the connection does not exist.</returns>
+        </member>
+        <member name="M:FM.IceLink.WebSync4.ConnectionCollection.TryGetByRemoteUserId(System.String,FM.IceLink.Connection@)">
+            <summary>
+            Tries to get a connection by remote user ID.
+            </summary>
+            <param name="remoteUserId">The remote user identifier.</param>
+            <param name="connection">The connection.</param>
+            <returns>The connection, or <c>null</c> if the connection does not exist.</returns>
+        </member>
+        <member name="M:FM.IceLink.WebSync4.ConnectionCollection.Add(FM.IceLink.Connection)">
+            <summary>
+            Adds a Connection.
+            </summary>
+            <param name="value">Connection to add.</param>
+        </member>
+        <member name="T:FM.IceLink.WebSync4.PeerClient">
+            <summary>
+            Details about a remote WebSync instance.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.WebSync4.PeerClient.InstanceId">
+            <summary>
+            Gets or sets the WebSync instance ID.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.WebSync4.PeerClient.BoundRecords">
+            <summary>
+            Gets or sets the WebSync bound records.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.WebSync4.PeerClient.#ctor(System.String,System.Collections.Generic.Dictionary{System.String,FM.WebSync.Record})">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.WebSync4.PeerClient" /> class.
+            </summary>
+            <param name="instanceId">The WebSync instance ID.</param>
+            <param name="boundRecords">The WebSync bound records.</param>
+        </member>
+    </members>
+</doc>

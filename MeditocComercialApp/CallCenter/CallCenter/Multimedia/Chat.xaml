@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<renderers:CoolTabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                          xmlns:local="clr-namespace:CallCenter.Multimedia"
+                          xmlns:renderers="clr-namespace:CallCenter.Renderers"
+                          x:Class="CallCenter.Multimedia.Chat"
+                          Appearing="TabbedPage_Appearing"
+                          BarBackgroundColor="#5ab7cc"
+                          EnableBackButtonOverride="True"
+                          BarTextColor="LightGray"
+                          Disappearing="TabbedPage_Disappearing">
+    <!--Pages can be added as references or inline-->
+    <local:Text x:Name="chatText" Title="Chat"  Icon="chat"  />
+    <local:Video x:Name="videoTab" Title="Videollamada" Icon="video"/>
+</renderers:CoolTabbedPage>

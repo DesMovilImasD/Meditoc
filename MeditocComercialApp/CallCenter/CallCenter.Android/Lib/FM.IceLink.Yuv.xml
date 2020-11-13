@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FM.IceLink.Yuv</name>
+    </assembly>
+    <members>
+        <member name="T:FM.IceLink.Yuv.FilterMode">
+            <summary>
+            A filter mode.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Yuv.FilterMode.None">
+            <summary>
+            Gets the value indicating no filter (point sample).
+            This is the fastest option, but produces the lowest quality.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Yuv.FilterMode.Linear">
+            <summary>
+            Gets the value indicating linear (horizontal only).
+            This is faster than bilinear, but produces lower quality.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Yuv.FilterMode.Bilinear">
+            <summary>
+            Gets the value indicating bilinear.
+            This is faster than box, but produces lower quality.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Yuv.FilterMode.Box">
+            <summary>
+            Gets the value indicating box.
+            This is the slowest option, but produces the highest quality.
+            </summary>
+        </member>
+        <member name="T:FM.IceLink.Yuv.ImageConverter">
+            <summary>
+            A libyuv-based image converter.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Yuv.ImageConverter.Label">
+            <summary>
+            Gets a label that identifies this class.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Yuv.ImageConverter.FilterMode">
+            <summary>
+            Gets or sets the filter mode.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Yuv.ImageConverter.Alignment">
+            <summary>
+            Gets or sets the alignment.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Yuv.ImageConverter.#ctor(FM.IceLink.VideoFormat)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Yuv.ImageConverter" /> class.
+            </summary>
+            <param name="outputFormat">The output format.</param>
+        </member>
+        <member name="M:FM.IceLink.Yuv.ImageConverter.#ctor(FM.IceLink.VideoFormat,FM.IceLink.VideoFormat)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Yuv.ImageConverter" /> class.
+            </summary>
+            <param name="inputFormat">The input format.</param>
+            <param name="outputFormat">The output format.</param>
+        </member>
+        <member name="M:FM.IceLink.Yuv.ImageConverter.#ctor(FM.IceLink.IVideoOutput,FM.IceLink.VideoFormat)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Yuv.ImageConverter" /> class.
+            </summary>
+            <param name="input">The input.</param>
+            <param name="outputFormat">The output format.</param>
+        </member>
+        <member name="M:FM.IceLink.Yuv.ImageConverter.#ctor(FM.IceLink.IVideoOutput[],FM.IceLink.VideoFormat)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Yuv.ImageConverter" /> class.
+            </summary>
+            <param name="inputs">The inputs.</param>
+            <param name="outputFormat">The output format.</param>
+        </member>
+        <member name="M:FM.IceLink.Yuv.ImageConverter.DoProcessFrame(FM.IceLink.VideoFrame,FM.IceLink.VideoBuffer)">
+            <summary>
+            Processes a frame.
+            </summary>
+            <param name="frame">The frame.</param>
+            <param name="inputBuffer">The input buffer.</param>
+        </member>
+        <member name="M:FM.IceLink.Yuv.ImageConverter.DoDestroy">
+            <summary>
+            Destroys this instance.
+            </summary>
+        </member>
+        <member name="T:FM.IceLink.Yuv.ImageScaler">
+            <summary>
+            A libyuv-based image scaler.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Yuv.ImageScaler.Label">
+            <summary>
+            Gets a label that identifies this class.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Yuv.ImageScaler.FilterMode">
+            <summary>
+            Gets or sets the filter mode.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Yuv.ImageScaler.#ctor(System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Yuv.ImageScaler" /> class.
+            </summary>
+            <param name="scale">The scale.</param>
+        </member>
+        <member name="M:FM.IceLink.Yuv.ImageScaler.#ctor(System.Double,FM.IceLink.IVideoOutput)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Yuv.ImageScaler" /> class.
+            </summary>
+            <param name="scale">The scale.</param>
+            <param name="input">The input.</param>
+        </member>
+        <member name="M:FM.IceLink.Yuv.ImageScaler.#ctor(System.Double,FM.IceLink.IVideoOutput[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Yuv.ImageScaler" /> class.
+            </summary>
+            <param name="scale">The scale.</param>
+            <param name="inputs">The inputs.</param>
+        </member>
+        <member name="M:FM.IceLink.Yuv.ImageScaler.DoProcessFrame(FM.IceLink.VideoFrame,FM.IceLink.VideoBuffer)">
+            <summary>
+            Processes a frame.
+            </summary>
+            <param name="frame">The frame.</param>
+            <param name="inputBuffer">The input buffer.</param>
+        </member>
+        <member name="M:FM.IceLink.Yuv.ImageScaler.DoDestroy">
+            <summary>
+            Destroys this instance.
+            </summary>
+        </member>
+        <member name="T:FM.IceLink.Yuv.Utility">
+            <summary>
+            YUV-related utility functions.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Yuv.Utility.Initialize">
+            <summary>
+            Initializes YUV native libraries.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>{9C99F412-E81A-4FD8-A6BB-B17FBF05FD2E}</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>CallCenter</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)App.xaml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Renderers\AskSurveyCell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Renderers\InputFieldCell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\vwHomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\ContractMembership\ContractMembershipView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\Payment\PaymentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\Dialogs\PayNotification\PayNotificationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\Dialogs\PromotionalCode\PromotionalCodeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Renderers\MainNavigationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Renderers\HomeViewCell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\HomeSwitch\HomeSwitchView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Renderers\PayHeaderIndicator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\UserInfo\UserInfoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\Dialogs\EditQuantity\EditQuantityView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\FakeSplash\FakeSplash.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\UniqueOrientation\UniqueOrientationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\ProductList\ProductListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Fonts\CircularStd-Black.ttf" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Fonts\CircularStd-Bold.ttf">
+      <LogicalName>CallCenter.Resources.Fonts.CircularStd-Bold.ttf</LogicalName>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Fonts\CircularStd-Book.ttf" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Fonts\CircularStd-Medium.ttf">
+      <LogicalName>CallCenter.Resources.Fonts.CircularStd-Medium.ttf</LogicalName>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Fonts\fa-brands-400.ttf" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Fonts\fa-regular-400.ttf" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Fonts\fa-solid-900.ttf" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Fonts\Roboto-Bold.ttf" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Fonts\Roboto-Light.ttf" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Fonts\Roboto-Medium.ttf" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Fonts\Roboto-Regular.ttf" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\MedicDirectory\MeditocDirectoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\MedicDirectory\MedicSpecialityView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ICPFeeds.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\Settings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\BaseModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Item.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\HomeMenuItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\LoginModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\RenewPass.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ResponseModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Multimedia\AecContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Multimedia\AutoSignalling.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Multimedia\Chat.xaml.cs">
+      <DependentUpon>Chat.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Multimedia\Context.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Multimedia\FMRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Multimedia\LocalMedia.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Multimedia\ManualSignalling.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Multimedia\MessageReceivedArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Multimedia\RemoteMedia.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Multimedia\Signalling.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Multimedia\Text.xaml.cs">
+      <DependentUpon>Text.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Multimedia\Video.xaml.cs">
+      <DependentUpon>Video.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Multimedia\XamarinLayoutManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\ConverterBase64ImageSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\EntrySearchBar.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\KeyboardView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\CustomContentPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\IncomingViewCell.xaml.cs">
+      <DependentUpon>IncomingViewCell.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\MyDataTemplateSelector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\MyEntry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\OutgoingViewCell.xaml.cs">
+      <DependentUpon>OutgoingViewCell.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\PopupInstructions.xaml.cs">
+      <DependentUpon>PopupInstructions.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\PopupLoad.xaml.cs">
+      <DependentUpon>PopupLoad.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\SwitchboardButton.xaml.cs">
+      <DependentUpon>SwitchboardButton.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Services\cpFeedService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\IDataStore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\InternetService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\MockDataStore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\wsConnexion.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\BaseViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ChatViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\HomeViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MessageViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\MenuPage.xaml.cs">
+      <DependentUpon>MenuPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\vwLoginPage.xaml.cs">
+      <DependentUpon>vwLoginPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\PhoneLadaValidator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\vwPopupTerminos.xaml.cs">
+      <DependentUpon>vwPopupTerminos.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\vwterminosycondiciones.xaml.cs">
+      <DependentUpon>vwterminosycondiciones.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\IAppInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\String.Extension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LoginViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\FolioEntry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\PermissionValidator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\LocationManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\MultiLineButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\SurveyAsk.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\FolioModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\SurveyTemplateSelector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\AskSurveyCell.xaml.cs">
+      <DependentUpon>AskSurveyCell.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\InputFieldCell.xaml.cs">
+      <DependentUpon>InputFieldCell.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\SurveyEntry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\vwDatosPersona.xaml.cs">
+      <DependentUpon>vwDatosPersona.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\vwCambioContrasena.xaml.cs">
+      <DependentUpon>vwCambioContrasena.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\CambioContrasenaViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\RecuperarContrasenaViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\vwHomePage.xaml.cs">
+      <DependentUpon>vwHomePage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\vwRecuperaContrasena.xaml.cs">
+      <DependentUpon>vwRecuperaContrasena.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\ShowHidePassEffect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\EntryLengthValidatorBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\ContractMembership\ContractMembershipView.xaml.cs">
+      <DependentUpon>ContractMembershipView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Payment\PaymentView.xaml.cs">
+      <DependentUpon>PaymentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Dialogs\PayNotification\PayNotificationView.xaml.cs">
+      <DependentUpon>PayNotificationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Dialogs\PromotionalCode\PromotionalCodeView.xaml.cs">
+      <DependentUpon>PromotionalCodeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\HomeSwitch\HomeSwitchModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\HomeSwitch\MenuSwitchDTO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\RoundedShadowBoxView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\FontAwesomeIcons.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\MainNavigationPage.xaml.cs">
+      <DependentUpon>MainNavigationPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\HomeViewCell.xaml.cs">
+      <DependentUpon>HomeViewCell.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\HomeSwitch\HomeSwitchView.xaml.cs">
+      <DependentUpon>HomeSwitchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\UniqueOrientation\UniqueOrientationModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\UniqueOrientation\UniqueOrientationDTO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\ContractMembership\ContractMembershipDTO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\ContractMembership\ContractMembershipModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Payment\PaymentModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Payment\PaymentDTO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\PayHeaderIndicator.xaml.cs">
+      <DependentUpon>PayHeaderIndicator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\PaymentDataTemplateSelector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\PaymentPageInterface.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\UserInfo\UserInfoDTO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\ProductList\ProductListDTO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\UnderlineEntry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\UnderlinePicker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\GlobalEventSender.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ServiceResponseModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\MembershipResponseModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\CouponResponseModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\BuyProductRequestModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\BuyProductResponseModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\BorderEffect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Validation\ValidationHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\PoliciesResponseModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\ICoolContentPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\CustomTabbedPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Dialogs\EditQuantity\EditQuantityView.xaml.cs">
+      <DependentUpon>EditQuantityView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\UserInfo\UserInfoView.xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\FakeSplash\FakeSplash.xaml.cs">
+      <DependentUpon>FakeSplash.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\UniqueOrientation\UniqueOrientationView.xaml.cs">
+      <DependentUpon>UniqueOrientationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\MasterDetailNavigation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\ProductList\ProductListView.xaml.cs">
+      <DependentUpon>ProductListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\AutoFitFontSizeEffect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\newResponseModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\EntFolio.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\MedicDirectory\MedicDirectoryModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\MedicDirectory\MeditocDirectoryView.xaml.cs">
+      <DependentUpon>MeditocDirectoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\MedicDirectory\specialtyDTO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\MedicDirectory\MedicSpecialityView.xaml.cs">
+      <DependentUpon>MedicSpecialityView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\MedicDirectory\medicSpecialityDTO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\MedicDirectory\medicSpecialityModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\MenuPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\vwLoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\vwPopupTerminos.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\vwterminosycondiciones.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Renderers\PopupInstructions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Renderers\PopupLoad.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Renderers\SwitchboardButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\vwDatosPersona.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\vwCambioContrasena.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)icelink.key">
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Multimedia\Text.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Multimedia\Video.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Multimedia\Chat.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Renderers\IncomingViewCell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Renderers\OutgoingViewCell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)call.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\vwRecuperaContrasena.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Views\HomeSwitch\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Views\UniqueOrientation\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Views\ContractMembership\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Views\Payment\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Views\Dialogs\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Views\Dialogs\PayNotification\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Views\Dialogs\PromotionalCode\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Views\ProductList\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Views\UserInfo\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Validation\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Views\Dialogs\EditQuantity\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Views\FakeSplash\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Views\MedicDirectory\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Resources\Fonts\fa-brands-400.otf" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\Fonts\Font Awesome 5 Free-Regular-400.otf" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\Fonts\fa-solid-900.otf" />
+  </ItemGroup>
+</Project>

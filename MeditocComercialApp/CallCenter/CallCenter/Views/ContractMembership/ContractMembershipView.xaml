@@ -1,0 +1,375 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:forms9patch="clr-namespace:Forms9Patch;assembly=Forms9Patch"
+             xmlns:local="clr-namespace:CallCenter.Renderers"
+             x:Class="CallCenter.Views.ContractMembership.ContractMembershipView">
+            <ContentPage.Resources>
+            <ResourceDictionary>
+                <OnPlatform x:Key="NavBarSize" x:TypeArguments="GridLength" iOS="88" Android="58" />
+                <OnPlatform x:Key="TitleSize" x:TypeArguments="x:Double" iOS="18" Android="22" />
+            </ResourceDictionary>
+        </ContentPage.Resources>
+
+        <AbsoluteLayout
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="FillAndExpand">
+
+        <Grid AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All"
+            BackgroundColor="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="{StaticResource NavBarSize}" />
+                <RowDefinition Height="*" />
+
+            </Grid.RowDefinitions>
+
+            <StackLayout
+                Grid.Row="0"
+                BackgroundColor="Transparent"
+                HorizontalOptions="FillAndExpand">
+
+                <StackLayout
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="FillAndExpand"
+                    Orientation="Horizontal">
+                    <StackLayout.Padding>
+                        <OnPlatform x:TypeArguments="Thickness" iOS="0, 28, 0, 0" />
+                    </StackLayout.Padding>
+
+                    <Grid HorizontalOptions="FillAndExpand"
+                          VerticalOptions="FillAndExpand" >
+                        <!--<Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60"/>
+                        </Grid.RowDefinitions>-->
+                        <Image 
+                            Margin="60,10,10,0"
+                            BackgroundColor="Transparent"
+                            HorizontalOptions="End"
+                            Source="upsideleft.png"
+                            Aspect="AspectFit"
+                            VerticalOptions="Fill">
+                            <Image.HeightRequest>
+                                <OnPlatform x:TypeArguments="x:Double">
+                                    <On Platform="iOS">36</On>
+                                    <On Platform="Android">32</On>
+                                </OnPlatform>
+                            </Image.HeightRequest>
+                        </Image>
+                        <!--<Image
+                            x:Name="tabMenu"
+                            Margin="10,10,0,0"
+                            HeightRequest="28"
+                            HorizontalOptions="Start"
+                            Source="menuicon.png"
+                            VerticalOptions="Start" />-->
+                    </Grid>
+                </StackLayout>
+            </StackLayout>
+
+            <RelativeLayout
+                Grid.Row="1"
+                BackgroundColor="Transparent"
+                HorizontalOptions="FillAndExpand">
+
+
+                <Image
+                    Margin="0,40,0,0"
+                    Aspect="Fill"
+                    Source="Fondoinicio3.png"
+                    HorizontalOptions="FillAndExpand"
+                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                           ElementName=SearchControlsGrid,
+                                                                           Property=Height,
+                                                                           Factor=1,
+                                                                           Constant=0}"
+                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                          ElementName=SearchControlsGrid,
+                                                                          Property=Width,
+                                                                          Factor=1,
+                                                                          Constant=0}"
+                    VerticalOptions="FillAndExpand" />
+
+                <Grid Margin="0,-15,0,0"
+                    BackgroundColor="Transparent"
+                    ColumnSpacing="0"
+                    HorizontalOptions="FillAndExpand"
+                    RowSpacing="0"
+                    VerticalOptions="FillAndExpand">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="170" />
+                        <RowDefinition Height="*" />
+                        <!--<RowDefinition Height="90" />-->
+                    </Grid.RowDefinitions>
+
+                    <Grid
+                        Grid.Row="0"
+                        BackgroundColor="Transparent"
+                        ColumnSpacing="0"
+                        HorizontalOptions="FillAndExpand"
+                        RowSpacing="0"
+                        VerticalOptions="FillAndExpand">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackLayout Grid.Row="0" BackgroundColor="Red">
+                            <!--<Image IsVisible="true" HeightRequest="58"  Source="Logomain.png"></Image>-->
+                        </StackLayout>
+
+                        <StackLayout
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            BackgroundColor="Transparent"
+                            HeightRequest="20"
+                            HorizontalOptions="FillAndExpand" />
+
+                        <Image
+                            x:Name="sImage1"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="0,0,20,0"
+                            Aspect="AspectFit"
+                            BackgroundColor="Transparent"
+                            IsVisible="true"
+                            Source="hombre.png" />
+                        <Image
+                            x:Name="sImage2"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="0,0,20,0"
+                            Aspect="AspectFit"
+                            IsVisible="false"
+                            Source="mujer.png" />
+
+
+                        <StackLayout
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            BackgroundColor="Transparent"
+                            HorizontalOptions="CenterAndExpand"
+                            VerticalOptions="CenterAndExpand">
+
+                            <forms9patch:Label
+                                   HeightRequest="100"
+                                   Margin="20,50,0,0"
+                                   BackgroundColor="Transparent"
+                                   HorizontalTextAlignment="Start"
+                                   Text="Seleccione la membresía que desee"
+                                   TextColor="#ffffff"
+                                   FontSize="Large"
+                                   MaxLines="3"
+                                   AutoFit="Width"
+                                   FontFamily="CallCenter.Resources.Fonts.CircularStd-Medium.ttf"
+                                   VerticalTextAlignment="Start">
+                            </forms9patch:Label>
+
+                        </StackLayout>
+                    </Grid>
+                    <Grid
+                        Grid.Row="1"
+                        BackgroundColor="Transparent"
+                        ColumnSpacing="0"
+                        HorizontalOptions="FillAndExpand"
+                        RowSpacing="0"
+                        VerticalOptions="FillAndExpand">
+
+                        <!--items-->
+
+                        <StackLayout Margin="20,-10,20,10">
+                            <ListView x:Name="orientations"
+                                      BackgroundColor="Transparent"
+                                      SeparatorVisibility="None"
+                                      HasUnevenRows="True"
+                                      RefreshControlColor="Black"
+                                      SelectionMode="None"
+                                      IsPullToRefreshEnabled="True"
+                                      RefreshCommand="{Binding ReloadDataCommand}"
+                                      IsRefreshing="{Binding IsRefreshing}"
+                                      ItemsSource="{Binding DataSource}"
+                                      ItemSelected="OnItemSelected"
+                                      Footer="{Binding .}"
+                                      ItemTapped="OnItemTapped">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <StackLayout Padding="10">
+                                                <Frame CornerRadius="10"
+                                                       Padding="0" Margin="0"
+                                                       IsClippedToBounds="True"
+                                                       BackgroundColor="White"
+                                                       HasShadow="True">
+                                                     <RelativeLayout x:Name="CardGrid"
+                                                                     BackgroundColor="Transparent"
+                                                                     HorizontalOptions="FillAndExpand"
+                                                                     VerticalOptions="FillAndExpand" >
+                                                         
+                                                        <Grid Padding="0"
+                                                              RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0,Constant=0}"
+                                                              RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1,Constant=0}"
+                                                              BackgroundColor="Transparent"
+                                                              HorizontalOptions="FillAndExpand"
+                                                              VerticalOptions="FillAndExpand"
+                                                              Margin="12">
+                                                             <Grid.RowDefinitions>
+                                                                <RowDefinition Height="45" />
+                                                                <RowDefinition Height="1"/>
+                                                                <RowDefinition Height="*" />
+                                                            </Grid.RowDefinitions>
+                                                           
+                                                             <Grid
+                                                                 Grid.Row="0"
+                                                                 BackgroundColor="Transparent"
+                                                                 VerticalOptions="FillAndExpand"
+                                                                 HorizontalOptions="FillAndExpand">
+                                                                   <Grid.ColumnDefinitions>
+                                                                       <ColumnDefinition Width="40"/>
+                                                                       <ColumnDefinition Width="*"/>
+                                                                       <ColumnDefinition Width="70"/>
+                                                                   </Grid.ColumnDefinitions>
+
+                                                                   <Label
+                                                                       Grid.Column="0"
+                                                                        Text="{Binding Icon}"
+                                                                        FontFamily="{StaticResource FontAwesome5Solid}"
+                                                                        FontAttributes="Bold"
+                                                                        BackgroundColor="Transparent"
+                                                                        TextColor="#12B6CB"
+                                                                        FontSize="30"
+                                                                        WidthRequest="30"
+                                                                        VerticalOptions="FillAndExpand"
+                                                                        HorizontalOptions="FillAndExpand"
+                                                                        VerticalTextAlignment="Center"
+                                                                        HorizontalTextAlignment="Center"/>
+
+                                                                   <forms9patch:Label
+                                                                       Grid.Column="1"
+                                                                        HeightRequest="45"
+                                                                        Text="{Binding Title}"
+                                                                        BackgroundColor="Transparent"
+                                                                        TextColor="#12B6CB"
+                                                                        FontSize="Small"
+                                                                        FontFamily="CallCenter.Resources.Fonts.CircularStd-Bold.ttf"
+                                                                        MaxLines="2"
+                                                                        AutoFit="Width"
+                                                                        VerticalOptions="FillAndExpand"
+                                                                        HorizontalOptions="FillAndExpand"
+                                                                        HorizontalTextAlignment="Start"
+                                                                        VerticalTextAlignment="Center"/>
+
+                                                                    <forms9patch:Label
+                                                                        Grid.Column="2"
+                                                                        Text="{Binding Cost}"
+                                                                        BackgroundColor="Transparent"
+                                                                        TextColor="#12B6CB"
+                                                                        FontSize="Small"
+                                                                        FontFamily="CallCenter.Resources.Fonts.CircularStd-Bold.ttf"
+                                                                        MaxLines="1"
+                                                                        AutoFit="Width"
+                                                                        VerticalOptions="FillAndExpand"
+                                                                        HorizontalOptions="EndAndExpand"
+                                                                        VerticalTextAlignment="Center"
+                                                                        HorizontalTextAlignment="End"/>
+                                                             </Grid>
+
+                                                             <StackLayout Grid.Row="1"
+                                                                          Margin="0,0,0,0"
+                                                                          Orientation="Horizontal"
+                                                                          HorizontalOptions="FillAndExpand"
+                                                                          VerticalOptions="FillAndExpand"
+                                                                          BackgroundColor="#B1B1B1" />
+                                                             <Label Grid.Row="2"
+                                                                    TextColor="#B1B1B1"
+                                                                    FontSize="12"
+                                                                    FontFamily="{StaticResource NormalFont}"
+                                                                    VerticalOptions="FillAndExpand"
+                                                                    HorizontalOptions="FillAndExpand"
+                                                                    Text="{Binding Description}"/>
+                                                         </Grid>
+
+                                                         <Label Text="{Binding SelectedIcon}"
+                                                                FontFamily="{StaticResource FontAwesome5Solid}"
+                                                                FontAttributes="Bold"
+                                                                BackgroundColor="{Binding BgColor}"
+                                                                TextColor="Azure"
+                                                                FontSize="26"
+                                                                VerticalTextAlignment="Center"
+                                                                HorizontalTextAlignment="Center"
+                                                                VerticalOptions="FillAndExpand"
+                                                                HorizontalOptions="FillAndExpand"
+                                                                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                           ElementName=SearchControlsGrid,
+                                                                           Property=Height,
+                                                                           Factor=1,
+                                                                           Constant=0}"
+                                                                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                          ElementName=SearchControlsGrid,
+                                                                          Property=Width,
+                                                                          Factor=1,
+                                                                          Constant=0}"/>
+                                                     </RelativeLayout>
+                                                     
+                                                </Frame>
+                                            </StackLayout>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                                <ListView.FooterTemplate>
+                                     <DataTemplate>
+                                         <StackLayout HorizontalOptions="Center"
+                                                      VerticalOptions="Center">
+                                             <Button BackgroundColor="#115C8A"
+                                                     IsVisible="{Binding IsLoadedData}"
+                                                     TextColor="White"
+                                                     Padding="8"
+                                                     VerticalOptions="CenterAndExpand"
+                                                     HorizontalOptions="CenterAndExpand"
+                                                     CornerRadius="10"
+                                                     Text="Continuar"
+                                                     Command="{Binding SubmitCommand}"/>
+                                             <Label Text="No se pudieron cargar los datos, deslice hacia abajo para recargar"
+                                                    IsVisible="{Binding IsEmptyData}"
+                                                    HorizontalOptions="CenterAndExpand"
+                                                    VerticalOptions="CenterAndExpand"
+                                                    HeightRequest="60"
+                                                    Margin="0,10,0,0"
+                                                    TextColor="White"/>
+                                         </StackLayout>
+                                     </DataTemplate>
+                                 </ListView.FooterTemplate>
+                            </ListView>
+                        </StackLayout>
+                    </Grid>
+
+
+                </Grid>
+            </RelativeLayout>
+        </Grid>
+
+        <StackLayout
+            x:Name="stkActivity"
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All"
+            BackgroundColor="#12b6cb"
+            IsVisible="False"
+            Opacity="0.7">
+            <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                <Label Font="Bold,20" TextColor="White">Cargando...</Label>
+                <ActivityIndicator
+                    x:Name="iaIndicator"
+                    IsRunning="False"
+                    Color="Blue" />
+            </StackLayout>
+        </StackLayout>
+
+    </AbsoluteLayout>
+</ContentPage>

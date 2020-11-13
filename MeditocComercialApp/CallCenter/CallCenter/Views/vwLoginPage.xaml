@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<local:CoolContentPage
+    x:Class="CallCenter.Views.vwLoginPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    EnableBackButtonOverride="True"
+    xmlns:local="clr-namespace:CallCenter.Renderers">
+    <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <Image
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All"
+            Aspect="Fill"
+            Source="background.png" />
+
+        <StackLayout VerticalOptions="FillAndExpand">
+             <StackLayout.Padding>
+                <OnPlatform x:TypeArguments="Thickness"
+                            iOS="0, 48, 0, 0"
+                            Android="20,20,20,0" />
+             </StackLayout.Padding>
+            <!--  espacio  -->
+            <!--<StackLayout HeightRequest="100" WidthRequest="120" />-->
+
+            <!--  logo  -->
+
+            <StackLayout Margin="0,0,0,10"
+                         VerticalOptions="FillAndExpand"
+                         HeightRequest="200" >
+                
+                <Image VerticalOptions="CenterAndExpand"
+                       HorizontalOptions="CenterAndExpand"
+                       HeightRequest="140"
+                       Source="logo.png"></Image>
+                
+            </StackLayout>
+
+            <!--  content  -->
+            <StackLayout Margin="0,0,0,0" Spacing="2">
+
+                <Grid Padding="20,5,20,0" Opacity="0.8">
+                    <local:MyEntry
+                        x:Name="txtUserName"
+                        Margin="5"
+                        FontFamily="{StaticResource LightFont}"
+                        HeightRequest="50"
+                        HorizontalTextAlignment="Center"
+                        Keyboard="Text"
+                        Placeholder="Usuario"
+                        PlaceholderColor="White"
+                        TextColor="White"
+                        VerticalOptions="Center" />
+                </Grid>
+
+
+                <Grid Opacity="0.8"  Padding="20,5,20,0">
+                    <local:MyEntry
+                        x:Name="txtPassword"
+                        FontFamily="{StaticResource LightFont}"
+                        TextColor="White"
+                        PlaceholderColor="White"
+                        HorizontalTextAlignment="Center"
+                        VerticalOptions="Center"
+                        HeightRequest="50"
+                        Margin="5"
+                        Placeholder="Contraseña"
+                        local:PassEffect.Hide="hidePassWhite"
+                        local:PassEffect.Show="showPassWhite">
+                        <Entry.Effects>  
+                            <local:ShowHidePassEffect/>  
+                        </Entry.Effects>
+                    </local:MyEntry>
+                </Grid>
+
+                <StackLayout Padding="60,8,60,0">
+                    <Button
+                        x:Name="btnLogin"
+                        BackgroundColor="White"
+                        FontFamily="{StaticResource NormalFont}"
+                        Text="Entrar"
+                        TextColor="#12b6cb" />
+                </StackLayout>
+
+            </StackLayout>
+
+            <!--  espacio  -->
+            <StackLayout HeightRequest="5" WidthRequest="120" />
+
+              <!--recuperar contrasena-->  
+            <!--<StackLayout  x:Name="lblRecuperaConstrena" VerticalOptions="CenterAndExpand" HorizontalOptions="Center" Padding="20,20,20,0"  HeightRequest="40">
+                <Label Text="¿Olvidaste tu contraseña?" FontFamily="{StaticResource NormalFont}" VerticalOptions="Center" TextColor="white" HorizontalOptions="Center" />
+            </StackLayout>-->
+            
+
+        </StackLayout>
+
+        <!--  power by ...  -->
+        <Label x:Name="versionLabel"
+               AbsoluteLayout.LayoutBounds="0.05,1,.3,.05"
+               AbsoluteLayout.LayoutFlags="All"
+               BackgroundColor="Transparent"
+               TextColor="White"
+               Text=""/>
+
+        <StackLayout
+            x:Name="stkActivity"
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All"
+            BackgroundColor="#12b6cb"
+            IsVisible="False"
+            Opacity="0.7">
+            <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                <Label Font="Bold,20" TextColor="White">Cargando...</Label>
+                <ActivityIndicator
+                    x:Name="iaIndicator"
+                    IsRunning="False"
+                    Color="Blue" />
+            </StackLayout>
+        </StackLayout>
+
+    </AbsoluteLayout>
+</local:CoolContentPage>

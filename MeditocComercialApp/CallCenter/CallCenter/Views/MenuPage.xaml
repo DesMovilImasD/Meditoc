@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CallCenter.Views.MenuPage"
+             Title="menu"
+             Icon="menuicon.png">
+
+    <StackLayout BackgroundColor="#115C8A">
+        <ListView x:Name="ListViewMenu"
+              SeparatorVisibility="None"
+              HasUnevenRows="true"
+              BackgroundColor="#115C8A"
+              ItemsSource="{Binding MenuItems}">
+            <ListView.Header>
+                <Grid BackgroundColor="#115C8A">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="0"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0"/>
+                        <RowDefinition Height="200"/>
+                        <RowDefinition Height="Auto"/>
+                       
+                    </Grid.RowDefinitions>
+                    <StackLayout WidthRequest="400" MinimumHeightRequest="200" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Grid.Column="1"  Grid.Row="1" >
+                        <Image Source="logomenu.png" HeightRequest="60" VerticalOptions="CenterAndExpand" Margin="0,0,10,0"  Aspect="AspectFit"></Image>
+                        <Label FontSize="Medium" Text="¡Bienvenido!" FontFamily="{StaticResource NormalFont}" TextColor="#bae9ef"  HorizontalOptions="Center"/>
+                        <!--<Label FontSize="Medium" FontAttributes="Bold" FontFamily="{StaticResource BoldFont}" x:Name="lblUserLogin" HorizontalOptions="Center" TextColor="#bae9ef"/>-->
+                        <BoxView WidthRequest="100" HeightRequest="3" Margin="10,20,20,0" BackgroundColor="White"></BoxView>
+                    </StackLayout>
+                    
+                </Grid>
+            </ListView.Header>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Padding="10">
+                            <Label Text="{Binding Title}" Margin="10,0,0,0" TextColor="White" FontFamily="{StaticResource NormalFont}" FontSize="20"/>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <StackLayout HorizontalOptions="End" Margin="0,0,8,8">
+            
+               <!--power by ... -->
+            <!--<Image Source="Powered.png"
+                   BackgroundColor="Transparent"
+                   WidthRequest="100"
+                   HeightRequest="40"
+                   AbsoluteLayout.LayoutBounds="1,0.99,.4,.05"
+                   AbsoluteLayout.LayoutFlags="All"/>-->
+        </StackLayout>      
+    </StackLayout>
+
+    
+</ContentPage>

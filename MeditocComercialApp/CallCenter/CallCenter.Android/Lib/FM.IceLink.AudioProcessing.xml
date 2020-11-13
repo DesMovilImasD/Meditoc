@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FM.IceLink.AudioProcessing</name>
+    </assembly>
+    <members>
+        <member name="T:FM.IceLink.AudioProcessing.AecProcessor">
+            <summary>
+            A libaudioprocessing-based AEC processor.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.AudioProcessing.AecProcessor.TailLength">
+            <summary>
+            Gets or sets the tail length in milliseconds.
+            Minimum allowed value is 32.
+            Maximum allowed value is 512.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.AudioProcessing.AecProcessor.Label">
+            <summary>
+            Gets a label that identifies this class.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.AudioProcessing.AecProcessor.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.AudioProcessing.AecProcessor" /> class.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.AudioProcessing.AecProcessor.#ctor(FM.IceLink.AudioConfig)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.AudioProcessing.AecProcessor" /> class.
+            </summary>
+            <param name="config">The input/output configuration.</param>
+        </member>
+        <member name="M:FM.IceLink.AudioProcessing.AecProcessor.#ctor(FM.IceLink.AudioFormat)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.AudioProcessing.AecProcessor" /> class.
+            </summary>
+            <param name="format">The input/output format.</param>
+        </member>
+        <member name="M:FM.IceLink.AudioProcessing.AecProcessor.#ctor(FM.IceLink.IAudioOutput)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.AudioProcessing.AecProcessor"/> class.
+            </summary>
+            <param name="microphone">The microphone.</param>
+        </member>
+        <member name="M:FM.IceLink.AudioProcessing.AecProcessor.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.AudioProcessing.AecProcessor" /> class.
+            </summary>
+            <param name="tailLength">The tail length in milliseconds.</param>
+        </member>
+        <member name="M:FM.IceLink.AudioProcessing.AecProcessor.#ctor(FM.IceLink.AudioConfig,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.AudioProcessing.AecProcessor" /> class.
+            </summary>
+            <param name="config">The input/output configuration.</param>
+            <param name="tailLength">The tail length in milliseconds.</param>
+        </member>
+        <member name="M:FM.IceLink.AudioProcessing.AecProcessor.#ctor(FM.IceLink.AudioFormat,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.AudioProcessing.AecProcessor" /> class.
+            </summary>
+            <param name="format">The input/output format.</param>
+            <param name="tailLength">The tail length in milliseconds.</param>
+        </member>
+        <member name="M:FM.IceLink.AudioProcessing.AecProcessor.#ctor(FM.IceLink.IAudioOutput,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.AudioProcessing.AecProcessor"/> class.
+            </summary>
+            <param name="microphone">The microphone.</param>
+            <param name="tailLength">The tail length in milliseconds.</param>
+        </member>
+        <member name="M:FM.IceLink.AudioProcessing.AecProcessor.DoProcessFrame(FM.IceLink.AudioFrame,FM.IceLink.AudioBuffer)">
+            <summary>
+            Processes a frame.
+            </summary>
+            <param name="frame">The frame.</param>
+            <param name="inputBuffer">The input buffer.</param>
+        </member>
+        <member name="M:FM.IceLink.AudioProcessing.AecProcessor.ProcessSpeakerFrame(FM.IceLink.AudioFrame)">
+            <summary>
+            Processes a speaker frame.
+            </summary>
+            <param name="frame">The frame.</param>
+            
+        </member>
+        <member name="M:FM.IceLink.AudioProcessing.AecProcessor.DoDestroy">
+            <summary>
+            Destroys this instance.
+            </summary>
+        </member>
+        <member name="T:FM.IceLink.AudioProcessing.Utility">
+            <summary>
+            AudioProcessing-related utility functions.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.AudioProcessing.Utility.Initialize">
+            <summary>
+            Initializes AudioProcessing native libraries.
+            </summary>
+        </member>
+    </members>
+</doc>

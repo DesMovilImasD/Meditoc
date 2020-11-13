@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:local="clr-namespace:CallCenter.Renderers"
+                 xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                 x:Class="CallCenter.Views.Dialogs.PromotionalCode.PromotionalCodeView"
+                 CloseWhenBackgroundIsClicked="False">
+
+    <StackLayout Margin="24"
+                 Padding="8"
+                 Spacing="24"
+                 BackgroundColor="White"
+                 HorizontalOptions="FillAndExpand"
+                 VerticalOptions="Center">
+
+        <!--title-->
+        <StackLayout x:Name="remarkLabel"
+                     Padding="24,24,24,0">
+                <Label x:Name="gotoLabel"
+                       FontSize="16"
+                       TextColor="#12B6CB"
+                       Text="Ingrese código de descuento"
+                       FontFamily="{StaticResource NormalFont}"
+                       LineBreakMode="WordWrap"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"/>
+        </StackLayout>
+        <StackLayout Padding="24,0,24,0"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand">
+            <local:UnderlineEntry HorizontalOptions="FillAndExpand"
+                                  VerticalOptions="FillAndExpand"
+                                  Placeholder="código"
+                                  HeightRequest="44"
+                                  Text="{Binding Coupon}"
+                                  VerticalTextAlignment="Center"
+                                  HorizontalTextAlignment="Center"
+                                  PlaceholderColor="#B1B1B1"/>
+            <Label x:Name="errors"
+                   HeightRequest="60"
+                   TextColor="Red"
+                   IsVisible="False"
+                   FontSize="Small"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center"
+                   VerticalOptions="FillAndExpand"
+                   HorizontalOptions="FillAndExpand"/>
+        </StackLayout>
+
+         <!--buttons-->
+        <StackLayout x:Name="buttonsLayout"
+                     BackgroundColor="Transparent"
+                     Orientation="Horizontal"
+                     Margin="24,0,24,0"
+                     VerticalOptions="FillAndExpand"
+                     HorizontalOptions="FillAndExpand">
+
+            <Button Text="Cancelar"
+                    BackgroundColor="Transparent"
+                    TextColor="#B1B1B1"
+                    HorizontalOptions="StartAndExpand"
+                    VerticalOptions="FillAndExpand"
+                    Clicked="Cancel_Tapped"
+                    HeightRequest="50"/>
+
+            <Button Text="Aceptar"
+                    BackgroundColor="Transparent"
+                    TextColor="#12B6CB"
+                    HorizontalOptions="EndAndExpand"
+                    VerticalOptions="FillAndExpand"
+                    Clicked="Submit_Tapped"
+                    HeightRequest="50"/>
+
+        </StackLayout>
+        <ActivityIndicator IsVisible="False" x:Name="loadingIndicator" IsRunning="False" Color="#12B6CB"/>
+    </StackLayout>
+</pages:PopupPage>

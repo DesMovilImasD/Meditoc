@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CallCenter.Views.vwDatosPersona"
+             BackgroundColor="White">
+    <Grid RowSpacing="0" Margin="10,10,10,10" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="80" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" ColumnSpacing="5" HorizontalOptions="FillAndExpand"
+                RowSpacing="5" VerticalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Image x:Name="sImage2" IsVisible="True" Grid.Row="0" Grid.Column="0" 
+                   Source="FoundMember2"></Image>
+
+
+        </Grid>
+
+        <Grid Grid.Row="1" ColumnSpacing="5" HorizontalOptions="FillAndExpand"
+                RowSpacing="1" VerticalOptions="FillAndExpand" Margin="0,20">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <StackLayout VerticalOptions="CenterAndExpand" IsVisible="False" HorizontalOptions="StartAndExpand" Grid.Row="0" Grid.Column="0" >
+
+                <Label Text="Institución: "
+                    FontSize="Medium"
+                    FontAttributes="Bold"
+                    
+                    VerticalTextAlignment="Center" 
+                   />
+            </StackLayout>
+
+            <StackLayout VerticalOptions="CenterAndExpand" IsVisible="False" HorizontalOptions="FillAndExpand" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2">
+
+                <Label   x:Name="lblinstitucion"
+                       
+                          FontSize="Medium"
+                         
+                          VerticalTextAlignment="center"
+                      />
+            </StackLayout>
+
+
+            <!--<StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="StartAndExpand" Grid.Row="1" Grid.Column="0" >
+
+                <Label  Margin="0,0,0,0" Text="Nombre: "
+                    FontSize="Medium"
+                    FontAttributes="Bold"
+                    FontFamily="{StaticResource NormalFont}"
+                    VerticalTextAlignment="Center" 
+                    TextColor="Gray"
+                   />
+
+            </StackLayout>-->
+
+            <!--<StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
+
+                <Label  Margin="0,0,0,0"  x:Name="lblNombre"
+                        TextColor="Gray"
+                          FontSize="Medium"
+                         FontFamily="{StaticResource NormalFont}"
+                          VerticalTextAlignment="center"
+                      />
+            </StackLayout>-->
+
+            <StackLayout VerticalOptions="CenterAndExpand" Orientation="Vertical"  HorizontalOptions="CenterAndExpand" Padding="0,30" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Spacing="5">
+
+                <Label Text="Folio"  FontSize="30"
+                         TextColor="#115c8a"
+                       FontFamily="{StaticResource NormalFont}"
+                          VerticalTextAlignment="center"
+                          HorizontalTextAlignment="Center"></Label>
+                <Label  x:Name="lblFolio"
+                        
+                          FontSize="30"
+                         TextColor="#115c8a"
+                        FontFamily="{StaticResource NormalFont}"
+                          VerticalTextAlignment="center"
+                          HorizontalTextAlignment="Center"
+                      />
+            </StackLayout>
+
+        </Grid>
+
+        <Grid Grid.Row="3" ColumnSpacing="5" HorizontalOptions="FillAndExpand"
+                RowSpacing="5" VerticalOptions="FillAndExpand">
+
+            <Button Text="Cambiar contraseña" Clicked="OnButtonClickedChangePassword" VerticalOptions="Center" FontFamily="{StaticResource NormalFont}"
+                        HorizontalOptions="FillAndExpand" Margin="10,0,10,50" TextColor="White" BackgroundColor="#115c8a"
+                  BorderRadius="10"></Button>
+
+            <!--<Button Text="Soporte técnico" Clicked="OnButtonClickeSoporteTecnico"  VerticalOptions="End" 
+                        HorizontalOptions="FillAndExpand" Margin="10,0,10,10" TextColor="White" BackgroundColor="#00adc1"
+                  BorderRadius="20"></Button>-->
+
+        </Grid>
+
+    </Grid>
+</ContentPage>

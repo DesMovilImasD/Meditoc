@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:CallCenter.Renderers"
+              BackgroundImage="background.png"
+             x:Class="CallCenter.Views.vwRecuperaContrasena"
+            >
+
+    <ScrollView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" >
+
+        <AbsoluteLayout  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+
+            <StackLayout Padding="5,10,5,0" HorizontalOptions="CenterAndExpand">
+
+                <StackLayout  HeightRequest="20" WidthRequest="120" ></StackLayout>
+                <Image Margin="5,5,5,5" HeightRequest="38" Source="BackWhite.png" x:Name="btnBack" VerticalOptions="Start" HorizontalOptions="StartAndExpand"></Image>
+                <StackLayout  VerticalOptions="FillAndExpand"  Padding="0,0,15,20" >
+
+                    <Image Source="logo.png" HeightRequest="100" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" ></Image>
+                </StackLayout>
+
+                <StackLayout Margin="20,10,20,10" Spacing="2" >
+
+                    <Grid Opacity="0.8">
+                        <local:MyEntry x:Name="txtUser"  Margin="5" IsVisible="true" Placeholder="Usuario" HorizontalTextAlignment="Center"/>
+                        <local:MyEntry x:Name="txtValidacion" Margin="5" IsVisible="False"  Placeholder="Código." HorizontalTextAlignment="Center"/>
+                    </Grid>
+
+                    <StackLayout Padding="10,20,10,20">
+                        <Button x:Name="btnCambiarContrasena" Text="Cambiar contraseña"  IsVisible="False" TextColor="#68cddb" BackgroundColor="White"></Button>
+                        <Button x:Name="btnRecuperarContrasena" Text="Solicitar Código" IsVisible="true"  TextColor="#68cddb" BackgroundColor="White"></Button>
+
+                    </StackLayout>
+
+                </StackLayout>
+
+            </StackLayout>
+
+            <StackLayout x:Name="stkActivity" IsVisible="False"  BackgroundColor = "#12b6cb"  Opacity ="0.7"  AbsoluteLayout.LayoutBounds= "0,0,1,1"  AbsoluteLayout.LayoutFlags="All">
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <Label TextColor="White" Font="Bold,20">Espere un momento</Label>
+                    <ActivityIndicator x:Name="iaIndicator" Color="Blue" IsRunning="False"  ></ActivityIndicator>
+                </StackLayout>
+            </StackLayout>
+        </AbsoluteLayout>
+    </ScrollView>
+</ContentPage>

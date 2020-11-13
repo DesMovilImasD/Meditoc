@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CallCenter.Renderers.SwitchboardButton">
+
+    <Frame IsClippedToBounds="False"
+        HasShadow="True"
+        CornerRadius="10">
+
+        <StackLayout Orientation="Vertical" VerticalOptions="Center">
+            <StackLayout  Orientation="Vertical" VerticalOptions="Center">
+                <Image x:Name="SwitchboardIcon"
+                         HorizontalOptions="FillAndExpand"
+                         VerticalOptions="FillAndExpand"
+                         Aspect="AspectFit"
+                         MinimumHeightRequest="24"
+                         HeightRequest="96"
+                         Source="{Binding Icon}" />
+            </StackLayout>
+            <StackLayout  HorizontalOptions="Center">
+                <Label x:Name="SwitchboardLabel"
+                       HorizontalOptions="Center" 
+                       HorizontalTextAlignment="Center"
+                       FontSize="Large"
+                       Margin="4"
+                       FontFamily="{StaticResource NormalFont}"
+                       Text="{Binding Label}"
+                       TextColor="#14b0c4" />
+                <Label x:Name="SwitchboardLabelH"
+                       HorizontalOptions="Center" 
+                       HorizontalTextAlignment="Center"
+                       FontSize="Micro"
+                       Margin="2"
+                       IsVisible="false"
+                       FontFamily="{StaticResource NormalFont}"
+                       Text="{Binding LabelH}"
+                       TextColor="LightGray" />
+              <Label x:Name="SwitchboardLabelH2"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"
+                       FontSize="Micro"
+                       Margin="0"
+                       IsVisible="false"
+                       FontFamily="{StaticResource NormalFont}"
+                       Text="{Binding LabelH}"
+                       TextColor="LightGray" />
+            </StackLayout>
+        </StackLayout>
+    </Frame>
+</ContentView>

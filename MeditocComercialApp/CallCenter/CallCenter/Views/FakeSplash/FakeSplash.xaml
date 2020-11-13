@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CallCenter.Views.FakeSplash.FakeSplash">
+    <AbsoluteLayout HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand">
+        <Image AbsoluteLayout.LayoutBounds="0,0,1,1"
+               AbsoluteLayout.LayoutFlags="All"
+               Aspect="Fill"
+               Source="splash.png"/>
+        <Image x:Name="IosLogoImage"
+               AbsoluteLayout.LayoutBounds="0.5, 0.5, -1, -1"
+               AbsoluteLayout.LayoutFlags="PositionProportional"
+               WidthRequest="200"
+               HeightRequest="200"
+               Aspect="AspectFit"
+               Source="logo.png"/>
+    </AbsoluteLayout>
+</ContentPage>

@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:local="clr-namespace:CallCenter.Renderers"
+                 xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                 x:Class="CallCenter.Views.Dialogs.PayNotification.PayNotificationView"
+                 CloseWhenBackgroundIsClicked="False">
+    <RelativeLayout HorizontalOptions="FillAndExpand"
+                     VerticalOptions="CenterAndExpand">
+        <StackLayout Margin="24,70,24,24"
+                     Padding="8,0,8,8"
+                     Spacing="0"
+                     BackgroundColor="White"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="Center">
+        
+            <!--description-->
+            <StackLayout x:Name="remarkLabel"
+                         Padding="24,50,24,0">
+                <Label x:Name="gotoLabel"
+                       FontSize="15"
+                       FontFamily="{StaticResource NormalFont}"
+                       TextColor="#595959"
+                       LineBreakMode="WordWrap"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"> 
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding Line1}" TextColor="#B1B1B1"/>
+                            <Span Text="{Binding LineUser}" TextColor="#B1B1B1"/>
+                            <Span Text="{Binding LineUserData}" TextColor="#12B6CB"/>
+                            <Span Text="{Binding LinePassword}" TextColor="#B1B1B1"/>
+                            <Span Text="{Binding LinePasswordData}" TextColor="#12B6CB"/>
+                            <Span Text="{Binding Line2}" TextColor="#B1B1B1"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </StackLayout>
+  
+            <!--buttons-->
+            <StackLayout x:Name="buttonsLayout"
+                         BackgroundColor="Transparent"
+                         Orientation="Horizontal"
+                         Margin="24,0,24,0"
+                         VerticalOptions="EndAndExpand"
+                         HorizontalOptions="EndAndExpand">
+                <Button Text="Aceptar"
+                        BackgroundColor="Transparent"
+                        TextColor="#00adc1"
+                        HorizontalOptions="EndAndExpand"
+                        VerticalOptions="FillAndExpand"
+                        Clicked="Submit_Tapped"
+                        HeightRequest="50"/>
+
+            </StackLayout>
+        </StackLayout>
+        <StackLayout WidthRequest="100"
+                     Margin="12,0,12,0"
+                     HeightRequest="100"
+                     BackgroundColor="Transparent"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="Center"
+                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=1}"
+                     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.45}">
+            <!--<Button BackgroundColor="#12B6CB"
+                    CornerRadius="40"
+                    HeightRequest="80"
+                    WidthRequest="80"
+                    TextColor="White"
+                    FontSize="28"
+                    IsEnabled="False"
+                    Text="{Binding IconLabel}"
+                    FontFamily="{StaticResource FontAwesome5Solid}"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"/>-->
+            <Button VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    CornerRadius="40"
+                    HeightRequest="80"
+                    WidthRequest="80"
+                    Text="{Binding IconLabel}"
+                    FontFamily="{StaticResource FontAwesome5Solid}"
+                    FontAttributes="Bold"
+                    BackgroundColor="#12B6CB"
+                    BorderColor="Transparent"
+                    TextColor="White"
+                    FontSize="28"/>
+        </StackLayout>
+    </RelativeLayout>
+
+</pages:PopupPage>

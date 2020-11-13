@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms"
+          xmlns:ia="clr-namespace:IntelliAbb.Xamarin.Controls;assembly=IntelliAbb.Xamarin.Controls"
+          xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+          x:Class="CallCenter.Renderers.AskSurveyCell">
+    <ViewCell.View>
+        <StackLayout>
+             <StackLayout HorizontalOptions="FillAndExpand"
+                          Orientation="Horizontal"
+                          Padding="10">
+                 <StackLayout MinimumWidthRequest="40"
+                              MinimumHeightRequest="40"
+                              Padding="8"
+                              HorizontalOptions="Fill"
+                              VerticalOptions="FillAndExpand">
+                     <ia:Checkbox x:Name="AwesomeCheckbox"
+                                  OutlineColor="White"
+                                  IsChecked="{Binding Selected}"
+                                  FillColor="White"
+                                  CheckColor="#00597d"
+                                  
+                                  BindingContext="{Binding .}"
+                                  Shape="Rectangle"/>
+                </StackLayout>
+                <StackLayout Padding="8"
+                             BackgroundColor="Transparent"
+                             HorizontalOptions="FillAndExpand"
+                             VerticalOptions="FillAndExpand">
+                    <Label LineBreakMode="WordWrap"
+                           TextColor="White"
+                           Text="{Binding Ask}" />
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+    </ViewCell.View>
+</ViewCell>

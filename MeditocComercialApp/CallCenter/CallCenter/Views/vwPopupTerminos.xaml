@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage
+    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup" xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                x:Class="CallCenter.Views.vwPopupTerminos"
+             CloseWhenBackgroundIsClicked="False">
+    <StackLayout x:Name="stkActivity" IsVisible="true"  BackgroundColor = "Transparent"    AbsoluteLayout.LayoutBounds= "0,0,5,5"  AbsoluteLayout.LayoutFlags="All">
+        <Frame HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" BackgroundColor="White" Margin="5,5,5,5" OutlineColor="Black" HasShadow="true">
+            <StackLayout>
+
+                <Label TextColor="Black" HorizontalOptions="Center" FontSize="20">
+                    <Label.Text>Términos y Condiciones</Label.Text>
+                </Label>
+
+                <BoxView HeightRequest="1" BackgroundColor="Red" HorizontalOptions="FillAndExpand" />
+
+                <StackLayout HorizontalOptions="StartAndExpand" Padding="5,5,5,0" Spacing="5">
+
+                    <Label x:Name="linkTerminos" LineBreakMode="WordWrap" YAlign="Center" XAlign="Start" FontSize="15">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Para continuar acepte los " 
+                                      TextColor="Gray" />
+                                <Span Text=" Términos y Condiciones " 
+                                      TextColor="Black" FontAttributes="Bold"/>
+                                <Span Text="y el " 
+                                      TextColor="Gray" />
+                                <Span Text="Aviso de Privacidad." 
+                                      TextColor="Black" FontAttributes="Bold"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </StackLayout>
+
+                <StackLayout Spacing="30" BackgroundColor="Transparent" Orientation="Horizontal" HorizontalOptions="Center">
+                    <Button Text="Cancelar" TextColor="Gray" HorizontalOptions="Center" VerticalOptions="Center" HeightRequest="50" BackgroundColor="Transparent" Clicked="Cancelar_OnClicked" />
+                    <Button Text="Aceptar" TextColor="#00adc1" HorizontalOptions="Center" VerticalOptions="Center" HeightRequest="50" BackgroundColor="Transparent" Clicked="Aceptar_OnClicked" />
+                </StackLayout>
+
+            </StackLayout>
+
+        </Frame>
+    </StackLayout>
+</pages:PopupPage>

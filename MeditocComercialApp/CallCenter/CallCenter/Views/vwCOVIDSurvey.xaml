@@ -1,0 +1,269 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CallCenter.Views.vwCOVIDSurvey"
+             xmlns:local="clr-namespace:CallCenter.Renderers">
+
+        <ContentPage.Resources>
+            <ResourceDictionary>
+            <local:SurveyTemplateSelector x:Key="SurveyTemplateSelector"/>
+        </ResourceDictionary>
+        </ContentPage.Resources>
+
+
+       <AbsoluteLayout
+        Margin="{Binding statusBarHeigth}"
+        HorizontalOptions="FillAndExpand"
+        VerticalOptions="FillAndExpand">
+
+        <Grid AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All"
+            BackgroundColor="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="49" />
+                <RowDefinition Height="*" />
+
+            </Grid.RowDefinitions>
+
+            <StackLayout
+                Grid.Row="0"
+                BackgroundColor="White"
+                HorizontalOptions="FillAndExpand">
+                
+                <StackLayout
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="FillAndExpand"
+                    Orientation="Horizontal">
+                   
+
+                    <StackLayout HorizontalOptions="FillAndExpand"
+                          VerticalOptions="FillAndExpand">
+                        <ImageButton x:Name="tabMenu" Source="back.png"
+                                     BackgroundColor="White"
+                                     Margin="10,30,0,0"
+                                     HeightRequest="24"
+                                     WidthRequest="24"
+                                     Aspect="AspectFill"
+                                     Clicked="tabMenu_Clicked"
+                                     HorizontalOptions="Start"
+                                     VerticalOptions="Start" />
+                    </StackLayout>
+
+
+                </StackLayout>
+
+            </StackLayout>
+
+            <RelativeLayout
+                Grid.Row="1"
+                BackgroundColor="White"
+                HorizontalOptions="FillAndExpand">
+
+
+                <Image
+                    Margin="0,35,0,0"
+                    Aspect="Fill"
+                    BackgroundColor="#00597d"
+                    HorizontalOptions="FillAndExpand"
+                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                           ElementName=SearchControlsGrid,
+                                                                           Property=Height,
+                                                                           Factor=1,
+                                                                           Constant=0}"
+                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                          ElementName=SearchControlsGrid,
+                                                                          Property=Width,
+                                                                          Factor=1,
+                                                                          Constant=0}"
+                    VerticalOptions="FillAndExpand" />
+
+                <Grid
+                    BackgroundColor="Transparent"
+                    ColumnSpacing="0"
+                    HorizontalOptions="FillAndExpand"
+                    RowSpacing="0"
+                    VerticalOptions="FillAndExpand">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="180" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="90" />
+                    </Grid.RowDefinitions>
+
+                    <Grid
+                        Grid.Row="0"
+                        BackgroundColor="Transparent"
+                        ColumnSpacing="0"
+                        HorizontalOptions="FillAndExpand"
+                        RowSpacing="0"
+                        VerticalOptions="FillAndExpand">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackLayout Grid.Row="0" BackgroundColor="Red">
+                            <!--<Image IsVisible="true" HeightRequest="58"  Source="Logomain.png"></Image>-->
+                        </StackLayout>
+
+                        <StackLayout
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            BackgroundColor="Transparent"
+                            HeightRequest="20"
+                            HorizontalOptions="FillAndExpand" />
+
+                        <Image
+                            x:Name="sImage1"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="0,0,20,0"
+                            Aspect="AspectFit"
+                            BackgroundColor="Transparent"
+                            IsVisible="true"
+                            Source="hombre.png" />
+                        <Image
+                            x:Name="sImage2"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="0,0,20,0"
+                            Aspect="AspectFit"
+                            IsVisible="false"
+                            Source="mujer.png" />
+
+
+                        <StackLayout
+                            Margin="0,54,0,0"
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="Start">
+                            <Image 
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   BackgroundColor="Transparent"
+                                   Source="logomenu.png" />
+                        </StackLayout>
+                    </Grid>
+
+                    <Grid Grid.Row="1"
+                          BackgroundColor="Transparent"
+                          ColumnSpacing="0"
+                          HorizontalOptions="FillAndExpand"
+                          RowSpacing="0"
+                          VerticalOptions="FillAndExpand">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <!--<ColumnDefinition Width="*" />-->
+                        </Grid.ColumnDefinitions>
+
+                        <Frame Grid.Row="0"
+                               MinimumHeightRequest="60"
+                               BackgroundColor="White"
+                               CornerRadius="30"
+                               Margin="8,0,8,0"
+                               Padding="0">
+                            <Label Padding="8"
+                                   FontSize="14"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"
+                                   Text="Marque las casillas de los síntomas que presenta"/>
+                        </Frame>
+
+                        <StackLayout Grid.Row="1" Padding="8">
+                             <ListView x:Name="questionsListView"
+                                       BackgroundColor="Transparent"
+                                       SeparatorVisibility="None"
+                                       HasUnevenRows="True"
+                                       RefreshControlColor="Black"
+                                       SelectionMode="None"
+                                       IsPullToRefreshEnabled="True"
+                                       RefreshCommand="{Binding ReloadDataCommand}"
+                                       IsRefreshing="{Binding IsRefreshing}"
+                                       ItemsSource="{Binding DataSource}"
+                                       ItemSelected="OnItemSelected"
+                                       ItemTemplate="{StaticResource SurveyTemplateSelector}"
+                                       Footer="{Binding .}"
+                                       ItemTapped="OnItemTapped">
+                                 <ListView.FooterTemplate>
+                                     <DataTemplate>
+                                         <StackLayout HorizontalOptions="Center"
+                                                      VerticalOptions="Center">
+                                             <Button BackgroundColor="#F26542"
+                                                     IsVisible="{Binding IsLoadedData}"
+                                                     TextColor="White"
+                                                     HeightRequest="44"
+                                                     WidthRequest="100"
+                                                     CornerRadius="10"
+                                                     Text="Enviar"
+                                                     Command="{Binding SubmitCommand}"/>
+                                             <Label Text="No se pudieron cargar los datos, deslice hacia abajo para recargar"
+                                                    IsVisible="{Binding IsEmptyData}"
+                                                    HorizontalOptions="CenterAndExpand"
+                                                    VerticalOptions="CenterAndExpand"
+                                                    HeightRequest="60"
+                                                    TextColor="White"/>
+                                         </StackLayout>
+                                     </DataTemplate>
+                                 </ListView.FooterTemplate>
+                            </ListView>
+
+                        </StackLayout>
+
+                    </Grid>
+
+                    <StackLayout
+                        Grid.Row="2"
+                        Padding="16"
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="CenterAndExpand">
+                        <Image HorizontalOptions="End"
+                               HeightRequest="30"
+                               BackgroundColor="Transparent"
+                               Source="Powered.png" />
+                    </StackLayout>
+
+                </Grid>
+
+            </RelativeLayout>
+
+
+        </Grid>
+
+        <StackLayout
+            x:Name="stkActivity"
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All"
+            IsVisible="False"
+            Opacity="0.7">
+            <Frame
+                Padding="20"
+                BackgroundColor="Gray"
+                CornerRadius="10"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="CenterAndExpand">
+                <StackLayout>
+                    <Label Font="Bold,20" TextColor="White">Conectando con un médico...</Label>
+                    <ActivityIndicator
+                        x:Name="iaIndicator"
+                        IsRunning="False"
+                        Color="White" />
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+
+    </AbsoluteLayout>
+    
+
+</ContentPage>

@@ -1,0 +1,418 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:forms9patch="clr-namespace:Forms9Patch;assembly=Forms9Patch"
+    xmlns:local="clr-namespace:CallCenter.Renderers"
+    x:Class="CallCenter.Views.MedicDirectory.MedicSpecialityView">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <OnPlatform x:Key="NavBarSize" x:TypeArguments="GridLength" iOS="88" Android="58" />
+            <OnPlatform x:Key="TitleSize" x:TypeArguments="x:Double" iOS="16" Android="22" />
+            <local:ConverterBase64ImageSource x:Key="Base64ToImageConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <AbsoluteLayout
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="FillAndExpand">
+
+
+        <Grid AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All"
+            BackgroundColor="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="{StaticResource NavBarSize}" />
+                <RowDefinition Height="*" />
+
+            </Grid.RowDefinitions>
+
+            <StackLayout
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="FillAndExpand"
+                    Orientation="Horizontal">
+                <StackLayout.Padding>
+                    <OnPlatform x:TypeArguments="Thickness" iOS="0, 28, 0, 0" />
+                </StackLayout.Padding>
+
+                <Grid HorizontalOptions="FillAndExpand"
+                          VerticalOptions="FillAndExpand" >
+
+                    <Image 
+                            Margin="60,10,10,0"
+                            BackgroundColor="Transparent"
+                            HorizontalOptions="End"
+                            Source="upsideleft.png"
+                            Aspect="AspectFit"
+                            VerticalOptions="Fill">
+                        <Image.HeightRequest>
+                            <OnPlatform x:TypeArguments="x:Double">
+                                <On Platform="iOS">36</On>
+                                <On Platform="Android">32</On>
+                            </OnPlatform>
+                        </Image.HeightRequest>
+                    </Image>
+                </Grid>
+
+            </StackLayout>
+            <RelativeLayout
+                Grid.Row="1"
+                BackgroundColor="Transparent"
+                HorizontalOptions="FillAndExpand"
+                x:Name="relativePrincipal">
+
+                <forms9patch:Label
+                                   x:Name="txtNombreEspecialidad"
+                                   BackgroundColor="Transparent"
+                    VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                                   Text="{Binding sNombreEspecialidad}"
+                                   TextColor="#115C8A"
+                                   FontSize="Large"
+                                   FontFamily="CallCenter.Resources.Fonts.CircularStd-Medium.ttf">
+                </forms9patch:Label>
+
+                <Image
+                    Margin="0,40,0,0"
+                    Aspect="Fill"
+                    Source="Fondoinicio3.png"
+                    HorizontalOptions="FillAndExpand"
+                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                           ElementName=SearchControlsGrid,
+                                                                           Property=Height,
+                                                                           Factor=1,
+                                                                           Constant=0}"
+                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                          ElementName=SearchControlsGrid,
+                                                                          Property=Width,
+                                                                          Factor=1,
+                                                                          Constant=0}"
+                    VerticalOptions="FillAndExpand" />
+
+                <Grid Margin="0,45,0,0"
+                    ColumnSpacing="0"
+                    HorizontalOptions="FillAndExpand"
+                    RowSpacing="0"
+                    VerticalOptions="FillAndExpand"
+                      BackgroundColor="Transparent">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="85" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <Label 
+                            Margin="10,0,0,0"
+                            Grid.Column="0"
+                            Text="Buscar: "
+                            VerticalTextAlignment="Center"
+                            HorizontalTextAlignment="Center"
+                            TextColor="White"
+                            />
+
+                        <Grid 
+                            Margin="0,20"
+                            Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40" />
+                            </Grid.RowDefinitions>
+
+                            <local:EntrySearchBar
+                        x:Name="txtBuscarEspecialidad"
+                        FontFamily="{StaticResource LightFont}"
+                        HorizontalTextAlignment="Center"
+                        Keyboard="Text"
+                        VerticalOptions="Center" />
+                        </Grid>
+
+
+                        <Button
+                            Margin="0,0,0,0"
+                            BackgroundColor="Transparent"
+                            WidthRequest="40"
+                            HeightRequest="40"
+                            x:Name="iconSearch"
+                            Grid.Column="2"
+                            FontFamily="{StaticResource FontAwesome5Solid}"
+                            TextColor="White"
+                            Clicked="searchDoctorEspecialidad">
+                        </Button>
+
+                    </Grid>
+
+
+                    <Grid
+                        Grid.Row="1"
+                        BackgroundColor="Transparent"
+                        ColumnSpacing="0"
+                        HorizontalOptions="FillAndExpand"
+                        RowSpacing="0"
+                        VerticalOptions="FillAndExpand">
+
+                        <ListView 
+                        x:Name="lstDoctoresView"
+                        ItemsSource="{Binding lstDoctoresEspecialidad}"
+                        HasUnevenRows="true"
+                            SelectionMode="None"
+                            SeparatorVisibility="None"
+                            BackgroundColor="Transparent"
+                            >
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+
+                                        <StackLayout Padding="10">
+                                            <Frame CornerRadius="10"
+                                                       Padding="0" Margin="0"
+                                                       IsClippedToBounds="True"
+                                                       BackgroundColor="White"
+                                                       HasShadow="False">
+                                                <RelativeLayout x:Name="CardGrid"
+                                                                     BackgroundColor="Transparent"
+                                                                     HorizontalOptions="FillAndExpand"
+                                                                     VerticalOptions="FillAndExpand" >
+
+                                                    <Grid Padding="0"
+                                                              RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0,Constant=0}"
+                                                              RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1,Constant=0}"
+                                                              BackgroundColor="Transparent"
+                                                              HorizontalOptions="FillAndExpand"
+                                                              VerticalOptions="FillAndExpand"
+                                                              Margin="2">
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="260" />
+                                                            <RowDefinition Height="1"/>
+                                                        </Grid.RowDefinitions>
+
+
+                                                        <Grid Margin="10,0,0,0">
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="120"/>
+                                                                <RowDefinition Height="*"/>
+                                                                <RowDefinition Height="*"/>
+                                                                <RowDefinition Height="*"/>
+                                                                <RowDefinition Height="*"/>
+                                                                <RowDefinition Height="*"/>
+                                                                <RowDefinition Height="*"/>
+                                                                <RowDefinition Height="*"/>
+                                                                <RowDefinition Height="*"/>
+
+                                                            </Grid.RowDefinitions>
+                                                            <!--Inicia datos del doctor-->
+                                                            <Grid
+                                                                Grid.Row="0">
+
+                                                                <Grid>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="100"/>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <Image 
+                                                                        Grid.Column="0"
+                                                                        Aspect="Fill"
+                                                                       Source="{Binding sFoto, Converter={StaticResource Base64ToImageConverter}}"
+                                                                        VerticalOptions="Center"
+                                                                        HorizontalOptions="Center"
+                                                                        />
+
+                                                                    <Grid 
+                                                                        Grid.Column="1">
+                                                                        <Grid.RowDefinitions>
+                                                                            <RowDefinition Height="20"/>
+                                                                            <RowDefinition Height="1"/>
+                                                                            <RowDefinition Height="*"/>
+                                                                        </Grid.RowDefinitions>
+
+                                                                        <Grid
+                                                                            Grid.Row="0">
+
+                                                                            <Grid.RowDefinitions>
+                                                                                <RowDefinition Height="19"/>
+                                                                                <RowDefinition Height="1"/>
+                                                                            </Grid.RowDefinitions>
+
+                                                                            <Label 
+                                                                            Grid.Row="0"
+                                                                            Text="{Binding sNombre}"
+                                                                            TextColor="#12B6CB"
+                                                                            FontAttributes="Bold"
+                                                                            />
+
+                                                                            <BoxView 
+                                                                                Grid.Row="1"
+                                                                                HorizontalOptions="FillAndExpand" 
+                                                                                WidthRequest="1" 
+                                                                                Color="#12B6CB"/>
+                                                                        </Grid>
+
+                                                                        <StackLayout
+                                                                            Grid.Row="2"
+                                                                            HorizontalOptions="StartAndExpand"
+                                                                            Spacing="0">
+                                                                            <Label
+                                                                            FontSize="9"
+                                                                                FontAttributes="Bold"
+                                                                                Text="Télefono"/>
+                                                                            <Frame
+                                                                                BackgroundColor="Transparent"
+                                                                                Padding="1">
+                                                                                <StackLayout Orientation="Horizontal">
+                                                                                    <Label
+                                                                                FontSize="10"
+                                                                                Text="{Binding sTelefono}"/>
+
+                                                                                    <Label
+                                                                                        Text="{Binding sIconCellPhone}"
+                                                                                        FontFamily="{StaticResource FontAwesome5Solid}"
+                                                                                        TextColor="#12B6CB"
+                                                                                        FontAttributes="Bold"
+                                                                                        FontSize="10">
+                                                                                        <Label.GestureRecognizers>
+                                                                                            <TapGestureRecognizer Tapped="openPhone" CommandParameter="{Binding sTelefono}"/>
+                                                                                        </Label.GestureRecognizers>
+                                                                                    </Label>
+
+                                                                                </StackLayout>
+                                                                            </Frame>
+                                                                            <Label
+                                                                                Margin="0,5,0,0"
+                                                                            Text="WhatsApp"
+                                                                            FontSize="9"
+                                                                            FontAttributes="Bold"/>
+                                                                            <Frame BackgroundColor="Transparent"
+                                                                                Padding="1">
+                                                                                <StackLayout Orientation="Horizontal">
+                                                                                    <Label
+                                                                                FontSize="10"
+                                                                                Text="{Binding sWhatsApp}"/>
+
+                                                                                    <Label
+                                                                        Text="{Binding sIconWhatsApp}"
+                                                                                        TextColor="#12B6CB"
+                                                                        FontFamily="{StaticResource FontAwesome5Brands}"
+                                                                        FontAttributes="Bold"
+                                                                        FontSize="10">
+                                                                                        <Label.GestureRecognizers>
+                                                                                            <TapGestureRecognizer Tapped="openWhatsApp" CommandParameter="{Binding sWhatsApp}"/>
+                                                                                        </Label.GestureRecognizers>
+                                                                                    </Label>
+                                                                                </StackLayout>
+                                                                            </Frame>
+                                                                        </StackLayout>
+
+                                                                        <StackLayout
+                                                                            Grid.Row="2"
+                                                                            HorizontalOptions="EndAndExpand"
+                                                                            Margin="0,0,35,0"
+                                                                            Spacing="0">
+                                                                            <Label
+                                                                                FontSize="10"
+                                                                                FontAttributes="Bold"
+                                                                                Text="Céd. Prof"/>
+                                                                            <Label
+                                                                                HorizontalOptions="Start"
+                                                                                FontSize="10"
+                                                                                Text="{Binding sCedulaProfecional}"/>
+                                                                        </StackLayout>
+                                                                    </Grid>
+                                                                </Grid>
+                                                            </Grid>
+                                                            <!--Finaliza datos del doctor-->
+                                                            <Label
+                                                                            Grid.Row="1"
+                                                                            Text="Correo"
+                                                                        FontSize="10"
+                                                                        FontAttributes="Bold"
+                                                                />
+                                                            <Label
+                                                                            Grid.Row="2"
+                                                                        VerticalTextAlignment="Start"
+                                                                            Text="{Binding sCorreo}"
+                                                                            FontSize="10"/>
+
+                                                            <Label
+                                                                        Grid.Row="3"
+                                                                        Text="Dirección"                                                                        
+                                                                        FontAttributes="Bold"
+                                                                        FontSize="10"
+                                                                        />
+                                                            <!--Inicia Dirección-->
+                                                            <Grid
+                                                                        Grid.Row="4" AnchorY="25">
+
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="250"/>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                </Grid.ColumnDefinitions>
+
+                                                                <Label
+                                                                        FontSize="10"
+                                                                            Grid.Column="0"
+                                                                        VerticalTextAlignment="Start"
+                                                                            Text="{Binding sDireccionConsultorio}" />
+
+                                                                <Label
+                                                                    Grid.Column="1"
+                                                                    HorizontalTextAlignment="End"
+                                                                        Text="{Binding sIconMaps}"
+                                                                        FontFamily="{StaticResource FontAwesome5Solid}"
+                                                                    TextColor="#12B6CB"
+                                                                        FontAttributes="Bold"
+                                                                        FontSize="10"
+                                                                    Margin="0,0,10,0">
+                                                                    <Label.GestureRecognizers>
+                                                                        <TapGestureRecognizer Tapped="openLocation"  CommandParameter="{Binding sMaps}"/>
+                                                                    </Label.GestureRecognizers>
+                                                                </Label>
+
+                                                            </Grid>
+                                                            <!--Finaliza dirección-->
+
+                                                            <Label
+                                                                        FontSize="10"
+                                                                            Grid.Row="5"
+                                                                        FontAttributes="Bold"
+                                                                            Text="Consultorio" />
+                                                            <Label
+                                                                        FontSize="10"
+                                                                        VerticalTextAlignment="Start"
+                                                                            Grid.Row="6"
+                                                                            Text="{Binding sNombreConsultorio}" />
+                                                            <Label
+                                                                        FontSize="10"
+                                                                            Grid.Row="7"
+                                                                        FontAttributes="Bold"
+                                                                            Text="URL" />
+                                                            <Label
+                                                                        FontSize="10"
+                                                                        Grid.Row="8"
+                                                                        TextColor="#12B6CB"
+                                                                        VerticalTextAlignment="Start"
+                                                                        TextDecorations="Underline"
+                                                                        Text="{Binding sURL}"
+                                                                >
+                                                                <Label.GestureRecognizers>
+                                                                    <TapGestureRecognizer Tapped="openLocation"  CommandParameter="{Binding sURL}"/>
+                                                                </Label.GestureRecognizers>
+                                                            </Label>
+                                                        </Grid>
+                                                    </Grid>
+                                                </RelativeLayout>
+                                            </Frame>
+                                        </StackLayout>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </Grid>
+            </RelativeLayout>
+        </Grid>
+
+    </AbsoluteLayout>
+</ContentPage>

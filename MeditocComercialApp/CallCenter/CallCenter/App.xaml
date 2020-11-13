@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CallCenter.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <!--Global Styles-->
+            <Color x:Key="NavigationPrimary"></Color>
+            <Style TargetType="NavigationPage">
+                <Setter Property="BarBackgroundColor" Value="{StaticResource NavigationPrimary}" />
+                <Setter Property="BarTextColor" Value="Transparent" />
+            </Style>
+            <!--Roboto Bold-->
+            <OnPlatform x:TypeArguments="x:String" x:Key="BoldFont">
+                <On Platform="Android" Value="Roboto-Bold.ttf#Roboto Bold" />
+                <On Platform="iOS" Value="Roboto-Bold" />
+            </OnPlatform>
+            <!--Roboto Normal-->
+            <OnPlatform x:TypeArguments="x:String" x:Key="NormalFont">
+                <On Platform="Android" Value="Roboto-Regular.ttf#Roboto Regular" />
+                <On Platform="iOS" Value="Roboto-Regular" />
+            </OnPlatform>
+            <!--Roboto Light-->
+            <OnPlatform x:TypeArguments="x:String" x:Key="LightFont">
+                <On Platform="Android" Value="Roboto-Light.ttf#Roboto Light" />
+                <On Platform="iOS" Value="Roboto-Light" />
+            </OnPlatform>
+            <!--font awesome 5 solid-->
+            <OnPlatform x:TypeArguments="x:String" x:Key="FontAwesome5Solid">
+                <On Platform="Android" Value="fa-solid-900.ttf#Font Awesome 5 Free Solid" />
+                <On Platform="iOS" Value="FontAwesome5Free-Solid" /> 
+            </OnPlatform>
+            <!--font awesome 5 regular-->
+            <OnPlatform x:TypeArguments="x:String" x:Key="FontAwesome5Regular">
+                <On Platform="Android" Value="fa-regular-400.ttf#Font Awesome 5 Free Regular" /> 
+                <On Platform="iOS" Value="Font Awesome 5 Free Regular" /> 
+            </OnPlatform>
+            <!--font awesome 5 brands-->
+            <OnPlatform x:TypeArguments="x:String" x:Key="FontAwesome5Brands">
+                <On Platform="Android" Value="fa-brands-400.ttf#Font Awesome 5 Brands Regular" />
+                <On Platform="iOS" Value="FontAwesome5Brands-Regular" />
+            </OnPlatform>
+            <!--circular std black-->
+            <OnPlatform x:TypeArguments="x:String" x:Key="CircularStdBlack">
+                <On Platform="Android" Value="CircularStd-Black.ttf#CircularStd-Black"/>
+                <On Platform="iOS" Value="CircularStd-Black"/>
+            </OnPlatform>
+            <!--circular std bold-->
+            <OnPlatform x:TypeArguments="x:String" x:Key="CircularStdBold">
+                <On Platform="Android" Value="CircularStd-Bold.ttf#CircularStd-Bold"/>
+                <On Platform="iOS" Value="CircularStd-Bold"/>
+            </OnPlatform>
+            <!--circular std book-->
+            <OnPlatform x:TypeArguments="x:String" x:Key="CircularStdBook">
+                <On Platform="Android" Value="CircularStd-Book.ttf#CircularStd-Book"/>
+                <On Platform="iOS" Value="CircularStd-Book"/>
+            </OnPlatform>
+            <!--circular std medium-->
+            <OnPlatform x:TypeArguments="x:String" x:Key="CircularStdMedium">
+                <On Platform="Android" Value="CircularStd-Medium.ttf#CircularStd-Medium"/>
+                <On Platform="iOS" Value="CircularStd-Medium"/>
+            </OnPlatform>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

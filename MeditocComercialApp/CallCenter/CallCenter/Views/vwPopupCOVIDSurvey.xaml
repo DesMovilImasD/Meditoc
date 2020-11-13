@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CallCenter.Views.vwPopupCOVIDSurvey"
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             xmlns:local="clr-namespace:CallCenter.Renderers"
+             CloseWhenBackgroundIsClicked="False">
+        <StackLayout Margin="12"
+                 Padding="8"
+                 Spacing="24"
+                 BackgroundColor="White"
+                 HorizontalOptions="FillAndExpand"
+                 VerticalOptions="Center">
+        
+        <!--description-->
+        <StackLayout x:Name="remarkLabel" Padding="24,24,24,0">
+                  
+            <Label x:Name="gotoLabel"
+                   FontSize="15"
+                   TextColor="#595959"
+                   LineBreakMode="WordWrap"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center"> 
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding Title1}" TextColor="#595959"/>
+                        <Span Text="{Binding Subtitle1}" TextColor="#595959"/>
+                        <Span Text="{Binding Subtitle2}" TextColor="#F26542">
+                            <Span.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>                                
+                            </Span.GestureRecognizers>
+                        </Span>
+                        <Span Text="{Binding Subtitle3}" TextColor="#595959"/>
+                        <Span Text="{Binding Subtitle4}" TextColor="#595959"/>
+                        <Span Text="{Binding Subtitle5}" TextColor="#595959"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+        </StackLayout>
+  
+        <!--buttons-->
+        <StackLayout x:Name="buttonsLayout"
+                     BackgroundColor="Transparent"
+                     Orientation="Horizontal"
+                     Margin="24,0,24,0"
+                     VerticalOptions="CenterAndExpand"
+                     HorizontalOptions="CenterAndExpand">
+
+
+            <Button Text="ACEPTAR"
+                    BackgroundColor="Transparent"
+                    TextColor="#00adc1"
+                    HorizontalOptions="EndAndExpand"
+                    VerticalOptions="FillAndExpand"
+                    Clicked="Cancel_Tapped"
+                    HeightRequest="50"/>
+
+        </StackLayout>
+
+    </StackLayout>
+</pages:PopupPage>

@@ -1,0 +1,1175 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FM.IceLink.Android</name>
+    </assembly>
+    <members>
+        <member name="T:FM.IceLink.Android.AudioRecordSource">
+            <summary>
+            An Android AudioRecord-based source. 
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.AudioRecordSource.AddDeviceToVoiceCommunicationBlackList(System.String)">
+            <summary>
+            Add device to voiceCommunicationBlackList.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.AudioRecordSource.RemoveDeviceFromVoiceCommunicationBlackList(System.String)">
+            <summary>
+            Remove device from voiceCommunicationBlackList.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.AudioRecordSource.GetVoiceCommunicationBlackList">
+            <summary>
+            Get voiceCommunicationBlackList.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.AudioRecordSource.AudioSource">
+            <summary>
+            Gets or sets the desired audio source (MediaRecorder.AudioSource).
+            Defaults to MediaRecorder.AudioSource.MIC due to compatibility
+            issues on some devices.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.AudioRecordSource.UseAcousticEchoCanceler">
+            <summary>
+            Gets or sets whether or not the Android AcousticEchoCanceler should be used.
+            Defaults to false.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.AudioRecordSource.UseAutomaticGainControl">
+            <summary>
+            Gets or sets whether or not the Android AutomaticGainControl should be used.
+            Defaults to true.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.AudioRecordSource.UseNoiseSuppressor">
+            <summary>
+            Gets or sets whether or not the Android NoiseSuppressor should be used.
+            Defaults to true.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.AudioRecordSource.getBufferDelay(FM.IceLink.AudioConfig)">
+            <summary>
+            Gets the length of the audio buffer in milliseconds.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.AudioRecordSource.GetInputs">
+            <summary>
+            Gets the inputs.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.AudioRecordSource.Label">
+            <summary>
+            Gets a label that identifies this class.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.AudioRecordSource.#ctor(Android.Content.Context,FM.IceLink.AudioConfig)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.AudioRecordSource" /> class.
+            </summary>
+            <param name="config">The configuration.</param>
+            <param name="context">The Android context.</param>
+        </member>
+        <member name="T:FM.IceLink.Android.AudioTrackSink">
+            <summary>
+            An Android AudioTrack-based sink.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.AudioTrackSink.AudioStreamType">
+            <summary>
+            Gets or Sets the desired audio stream type (AudioManager.STREAM_*).
+            Defaults to AudioManager.STREAM_MUSIC.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.AudioTrackSink.Label">
+            <summary>
+            Gets a label that identifies this class.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.AudioTrackSink.getBufferDelay(FM.IceLink.AudioConfig)">
+            <summary>
+            Gets the length of the audio buffer in milliseconds.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.AudioTrackSink.#ctor(FM.IceLink.AudioConfig)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.AudioTrackSink" /> class.
+            </summary>
+            <param name="config">The configuration.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.AudioTrackSink.#ctor(FM.IceLink.IAudioOutput)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.AudioTrackSink" /> class.
+            </summary>
+            <param name="input">The input.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.AudioTrackSink.#ctor(FM.IceLink.IAudioOutput[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.AudioTrackSink" /> class.
+            </summary>
+            <param name="inputs">The inputs.</param>
+        </member>
+        <member name="T:FM.IceLink.Android.CameraPreview">
+            <summary>
+            An Android camera preview.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.CameraPreview.Context">
+            <summary>
+            Gets the context.
+            </summary>
+            <value>
+            The context.
+            </value>
+        </member>
+        <member name="P:FM.IceLink.Android.CameraPreview.ViewScale">
+            <summary>
+            Gets or sets the view scale.
+            </summary>
+            <value>
+            The view scale.
+            </value>
+        </member>
+        <member name="P:FM.IceLink.Android.CameraPreview.CameraView">
+            <summary>
+            Gets the camera view.
+            </summary>
+            <value>
+            The camera view.
+            </value>
+        </member>
+        <member name="P:FM.IceLink.Android.CameraPreview.View">
+            <summary>
+            Gets the view.
+            </summary>
+            <value>
+            The view.
+            </value>
+        </member>
+        <member name="M:FM.IceLink.Android.CameraPreview.#ctor(Android.Content.Context,FM.IceLink.LayoutScale)">
+            <summary>
+            Initializes a new instance of the CameraPreview class.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="scale">The scale.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.CameraPreview.SetCamera(Android.Hardware.Camera)">
+            <summary>
+            Sets the camera.
+            </summary>
+            <param name="camera">The camera.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.CameraPreview.OnSurfaceTextureAvailable(System.Object,Android.Views.TextureView.SurfaceTextureAvailableEventArgs)">
+            <summary>
+            Raised when surface texture available.
+            </summary>
+            <param name="sender">The sender.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.CameraPreview.OnSurfaceTextureDestroyed(System.Object,Android.Views.TextureView.SurfaceTextureDestroyedEventArgs)">
+            <summary>
+            Raised when surface texture destroyed.
+            </summary>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:Android.Views.TextureView.SurfaceTextureDestroyedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.CameraPreview.OnLayoutChange(System.Object,Android.Views.View.LayoutChangeEventArgs)">
+            <summary>
+            Raised when layout change.
+            </summary>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:Android.Views.View.LayoutChangeEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.CameraPreview.UpdateSurfaceSize">
+            <summary>
+            Updates the size of the surface.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.CameraPreview.SetCameraRotation(System.Int32)">
+            <summary>
+            Sets the camera rotation.
+            </summary>
+            <param name="cameraRotation">The camera rotation.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.CameraPreview.StartPreview(Android.Graphics.SurfaceTexture)">
+            <summary>
+            Starts the preview.
+            </summary>
+            <param name="surface">The surface.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.CameraPreview.StopPreview">
+            <summary>
+            Stops the preview.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.CameraPreview.Dispose">
+            <summary>
+            Releases unmanaged and - optionally - managed resources.
+            </summary>
+        </member>
+        <member name="T:FM.IceLink.Android.CameraSource">
+            <summary>
+            An Android video capture provider.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.CameraSource.Camera">
+            <summary>
+            Gets the underlying Android camera instance.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.CameraSource.Preview">
+            <summary>
+            Gets the Android camera preview.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.CameraSource.GetInputs">
+            <summary>
+            Gets the inputs.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.CameraSource.Label">
+            <summary>
+            Gets a label that identifies this class.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.CameraSource.#ctor(FM.IceLink.Android.CameraPreview,FM.IceLink.VideoConfig)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.CameraSource" /> class.
+            </summary>
+            <param name="context">The Android context.</param>
+            <param name="preview">The Android camera preview.</param>
+            <param name="targetConfig">The video config.</param>
+        </member>
+        <member name="T:FM.IceLink.Android.ImageUtility">
+            <summary>
+            Utility class for common bitmap operations.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.ImageUtility.BitmapToBuffer(Android.Graphics.Bitmap)">
+            <summary>
+            Converts an Android Bitmap to a <see cref="T:FM.IceLink.VideoBuffer"/>.
+            </summary>
+            <param name="bitmap">The image to convert.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FM.IceLink.Android.ImageUtility.BufferToBitmap(FM.IceLink.VideoBuffer)">
+            <summary>
+            Converts a <see cref="T:FM.IceLink.VideoBuffer"/> to an Android Bitmap.
+            </summary>
+            <param name="videoBuffer">The video buffer to convert.</param>
+            <returns></returns>
+        </member>
+        <member name="T:FM.IceLink.Android.ImageViewSink">
+            <summary>
+            An ImageView-based video sink.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.ImageViewSink.View">
+            <summary>
+            Gets the view.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.ImageViewSink.ViewScale">
+            <summary>
+            Gets or Sets the view scale.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.ImageViewSink.ViewMirror">
+            <summary>
+            Gets or Sets a value indicating whether the view is mirrored.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.ImageViewSink.Label">
+            <summary>
+            Gets a label that identifies this class.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.ImageViewSink.#ctor(Android.Content.Context)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.ImageViewSink"/> class.
+            </summary>
+            <param name="context">The Android context.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.ImageViewSink.#ctor(Android.Content.Context,FM.IceLink.IVideoOutput)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.ImageViewSink"/> class.
+            </summary>
+            <param name="context">The Android context.</param>
+            <param name="input">The input.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.ImageViewSink.#ctor(Android.Content.Context,FM.IceLink.IVideoOutput[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.ImageViewSink" /> class.
+            </summary>
+            <param name="context">The Android context.</param>
+            <param name="inputs">The inputs.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.ImageViewSink.#ctor(Android.Widget.ImageView)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.ImageViewSink"/> class.
+            </summary>
+            <param name="view">The view.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.ImageViewSink.#ctor(Android.Widget.ImageView,FM.IceLink.IVideoOutput)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.ImageViewSink" /> class.
+            </summary>
+            <param name="view">The view.</param>
+            <param name="input">The input.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.ImageViewSink.#ctor(Android.Widget.ImageView,FM.IceLink.IVideoOutput[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.ImageViewSink" /> class.
+            </summary>
+            <param name="view">The view.</param>
+            <param name="inputs">The inputs.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.ImageViewSink.DoProcessFrame(FM.IceLink.VideoFrame,FM.IceLink.VideoBuffer)">
+            <summary>
+            Processes a frame.
+            </summary>
+            <param name="frame">The frame.</param>
+            <param name="inputBuffer">The input buffer.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.ImageViewSink.RenderBuffer(FM.IceLink.VideoBuffer)">
+            <summary>
+            Renders a video buffer.
+            </summary>
+            <param name="buffer">The buffer.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.ImageViewSink.RenderBitmap(Android.Graphics.Bitmap)">
+            <summary>
+            Renders a bitmap.
+            </summary>
+            <param name="bitmap">The bitmap.</param>
+        </member>
+        <member name="T:FM.IceLink.Android.LayoutManager">
+            <summary>
+            A layout manager for Android.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.LayoutManager.Container">
+            <summary>
+            Gets the layout container.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.LayoutManager.Mode">
+            <summary>
+            Gets or sets the mode used by the layout engine.
+            Defaults to <see cref="F:FM.IceLink.LayoutMode.FloatLocal"/>.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.LayoutManager.#ctor(Android.Views.ViewGroup)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.LayoutManager"/> class.
+            </summary>
+            <param name="container">The layout container.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.LayoutManager.#ctor(Android.Views.ViewGroup,FM.IceLink.LayoutPreset)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.LayoutManager"/> class.
+            </summary>
+            <param name="container">The layout container.</param>
+            <param name="preset">The layout preset.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.LayoutManager.AddView(Android.Views.View)">
+            <summary>
+            Adds a view to the container.
+            </summary>
+            <param name="view">The view to add.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.LayoutManager.RemoveView(Android.Views.View)">
+            <summary>
+            Removes a view from the container.
+            </summary>
+            <param name="view">The view to remove.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.LayoutManager.DispatchToMainThread(FM.IceLink.Action2{System.Object,System.Object},System.Object,System.Object)">
+            <summary>
+            Dispatches an action to the main thread.
+            </summary>
+            <param name="action">The action to invoke.</param>
+            <param name="arg1">The first argument.</param>
+            <param name="arg2">The second argument.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.LayoutManager.Layout">
+            <summary>
+            Positions the local and remote views within the layout.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.LayoutManager.InitializeOnGlobalLayout">
+            <summary>
+            Attempts to initialize the layout using the global
+            layout listener until successful.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.LayoutManager.InitializeLayout">
+            <summary>
+            Initializes the layout.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:FM.IceLink.Android.LogProvider">
+            <summary>
+            Android log provider.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.LogProvider.#ctor">
+            <summary>
+            Initializes a new instance of the LogProvider class.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.LogProvider.#ctor(FM.IceLink.LogLevel)">
+            <summary>
+            Initializes a new instance of the LogProvider class.
+            </summary>
+            <param name="level">The level.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.LogProvider.DoLog(FM.IceLink.LogEvent)">
+            <summary>
+            Logs a message at the specified log level.
+            </summary>
+            <param name="logEvent">The log event details.</param>
+        </member>
+        <member name="T:FM.IceLink.Android.MediaCodecColorFormats">
+            <summary>
+            Defines common MIME types and helper methods.
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.Android.MediaCodecColorFormats.I420">
+            <summary>
+            i420 aka MediaCodecCapabilities.Formatyuv420planar.
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.Android.MediaCodecColorFormats.Nv21">
+            <summary>
+            NV21 aka MediaCodecCapabilities.Formatyuv420semiplanar.
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.Android.MediaCodecColorFormats.Rgb">
+            <summary>
+            RGB aka MediaCodecCapabilities.Format24bitrgb888.
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.Android.MediaCodecColorFormats.Bgr">
+            <summary>
+            BGR aka MediaCodecCapabilities.Format24bitbgr888.
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.Android.MediaCodecColorFormats.Argb">
+            <summary>
+            ARGB aka MediaCodecCapabilities.Format32bitargb8888.
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.Android.MediaCodecColorFormats.Bgra">
+            <summary>
+            BGRA aka MediaCodecCapabilities.Format32bitbgra8888.
+            </summary>
+        </member>
+        <member name="T:FM.IceLink.Android.MediaCodecDecoder">
+            <summary>
+            A MediaCodec decoder.
+            </summary>
+            <seealso cref="T:FM.IceLink.VideoDecoder" />
+        </member>
+        <member name="P:FM.IceLink.Android.MediaCodecDecoder.NeedsKeyFrame">
+            <summary>
+            Gets or sets a boolean indicating if decoder needs a key frame.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.MediaCodecDecoder.Label">
+            <summary>
+            Gets a label that identifies this class.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecDecoder.#ctor(Android.Media.MediaCodecInfo,FM.IceLink.VideoFormat,FM.IceLink.VideoFormat)">
+            <summary>
+            Initializes a new instance of the MediaCodecDecoder class.
+            </summary>
+            <param name="decoderInfo">The decoder information.</param>
+            <param name="inputFormat">The input format.</param>
+            <param name="outputFormat">The output format.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecDecoder.#ctor(Android.Media.MediaCodecInfo,FM.IceLink.IVideoOutput,FM.IceLink.VideoFormat)">
+            <summary>
+            Initializes a new instance of the MediaCodecDecoder class.
+            </summary>
+            <param name="decoderInfo">The decoder information.</param>
+            <param name="input">The input.</param>
+            <param name="outputFormat">The output format.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecDecoder.DoDestroy">
+            <summary>
+            Destroys this instance.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecDecoder.DoProcessFrame(FM.IceLink.VideoFrame,FM.IceLink.VideoBuffer)">
+            <summary>
+            Processes a frame.
+            </summary>
+            <param name="frame">The frame.</param>
+            <param name="buffer">The buffer.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecDecoder.IsKeyFrame(FM.IceLink.DataBuffer)">
+            <summary>
+            Determines whether a data buffer represents a keyframe.
+            </summary>
+            <param name="dataBuffer">The data buffer.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecDecoder.Decode(FM.IceLink.VideoBuffer)">
+            <summary>
+            Decodes the specified input buffer.
+            </summary>
+            <param name="inputBuffer">The input buffer.</param>
+        </member>
+        <member name="T:FM.IceLink.Android.MediaCodecEncoder">
+            <summary>
+            A MediaCodec Encoder.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.MediaCodecEncoder.ForceKeyFrame">
+            <summary>
+            Gets or sets a value indicating whether a keyframe should be forced.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecEncoder.#ctor(Android.Media.MediaCodecInfo,FM.IceLink.VideoFormat,FM.IceLink.VideoFormat)">
+            <summary>
+            Initializes a new instance of the MediaCodecEncoder class.
+            </summary>
+            <param name="encoderInfo">The encoder information.</param>
+            <param name="inputFormat">The input format.</param>
+            <param name="outputFormat">The output format.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecEncoder.#ctor(Android.Media.MediaCodecInfo,FM.IceLink.IVideoOutput,FM.IceLink.VideoFormat)">
+            <summary>
+            Initializes a new instance of the MediaCodecEncoder class.
+            </summary>
+            <param name="encoderInfo">The encoder information.</param>
+            <param name="input">The input.</param>
+            <param name="outputFormat">The output format.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecEncoder.DoDestroy">
+            <summary>
+            Destroys this instance.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecEncoder.DoProcessFrame(FM.IceLink.VideoFrame,FM.IceLink.VideoBuffer)">
+            <summary>
+            Processes a frame.
+            </summary>
+            <param name="frame">The frame.</param>
+            <param name="inputBuffer">The input buffer.</param>
+        </member>
+        <member name="P:FM.IceLink.Android.MediaCodecEncoder.Label">
+            <summary>
+            Gets a label that identifies this class.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecEncoder.Encode(FM.IceLink.VideoBuffer,FM.IceLink.VideoFormat)">
+            <summary>
+            Encodes the specified input buffer.
+            </summary>
+            <param name="inputBuffer">The input buffer.</param>
+            <param name="outputFormat">The output format.</param>
+        </member>
+        <member name="T:FM.IceLink.Android.MediaCodecMimeTypes">
+            <summary>
+            Defines common MIME types.
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.Android.MediaCodecMimeTypes.BaseTypeVideo">
+            <summary>
+            The video base type.
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.Android.MediaCodecMimeTypes.BaseTypeAudio">
+            <summary>
+            The audio base type.
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.Android.MediaCodecMimeTypes.H264">
+            <summary>
+            The H264 MIME Type.
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.Android.MediaCodecMimeTypes.Vp8">
+            <summary>
+            The VP8 MIME Type.
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.Android.MediaCodecMimeTypes.Vp9">
+            <summary>
+            The VP9 MIME Type.
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.Android.MediaCodecMimeTypes.Pcm">
+            <summary>
+            The PCM MIME Type.
+            </summary>
+        </member>
+        <member name="F:FM.IceLink.Android.MediaCodecMimeTypes.Opus">
+            <summary>
+            The opus MIME Type.
+            </summary>
+        </member>
+        <member name="T:FM.IceLink.Android.MediaCodecUtility">
+            <summary>
+            The MediaCodec utility.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecUtility.LogAvailableCodecs">
+            <summary>
+            Logs the available codecs.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecUtility.GetEncoderInfos(System.String)">
+            <summary>
+            Gets the encoder info.
+            </summary>
+            <param name="mimeType">Type of the MIME.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecUtility.GetEncoderInfos(System.String,System.Int32)">
+            <summary>
+            Gets the encoder info.
+            </summary>
+            <param name="mimeType">Type of the MIME.</param>
+            <param name="colorFormat">The color format.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecUtility.GetEncoderInfos(System.String,System.Int32,System.Boolean)">
+            <summary>
+            Gets the encoder info.
+            </summary>
+            <param name="mimeType">Type of the MIME.</param>
+            <param name="colorFormat">The color format.</param>
+            <param name="hardwareAcceleratedOnly">if set to <c>true</c> [hardware accelerated only].</param>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecUtility.GetDecoderInfos(System.String)">
+            <summary>
+            Gets the decoder info.
+            </summary>
+            <param name="mimeType">Type of the MIME.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecUtility.GetDecoderInfos(System.String,System.Int32)">
+            <summary>
+            Gets the decoder info.
+            </summary>
+            <param name="mimeType">Type of the MIME.</param>
+            <param name="colorFormat">The color format.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecUtility.GetDecoderInfos(System.String,System.Int32,System.Boolean)">
+            <summary>
+            Gets the decoder info.
+            </summary>
+            <param name="mimeType">Type of the MIME.</param>
+            <param name="colorFormat">The color format.</param>
+            <param name="hardwareAcceleratedOnly">if set to <c>true</c> [hardware accelerated only].</param>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecUtility.HasMimeType(Android.Media.MediaCodecInfo,System.String)">
+            <summary>
+            Determines whether the specified codec has the specified MIME type.
+            </summary>
+            <param name="codecInfo">The codec information.</param>
+            <param name="mimeType">Type of the MIME.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecUtility.IsHardwareAccelerated(Android.Media.MediaCodecInfo)">
+            <summary>
+            Determines whether the specified codec is hardware accelerated.
+            </summary>
+            <param name="codecInfo">The codec information.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecUtility.HasColorFormat(Android.Media.MediaCodecInfo,System.String,Android.Media.MediaCodecCapabilities)">
+            <summary>
+            Determines whether the specified codec and MIME type supports the specified color format.
+            </summary>
+            <param name="codecInfo">The codec information.</param>
+            <param name="mimeType">Type of the MIME.</param>
+            <param name="colorFormat">The color format.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecUtility.GetTopLevelType(System.String)">
+             Returns the top-level type of {@code mimeType}.
+            
+             @param mimeType The mimeType whose top-level type is required.
+             @return The top-level type.
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecUtility.IsAudio(System.String)">
+            <summary>
+            Determines whether the specified MIME type is audio.
+            </summary>
+            <param name="mimeType">Type of the MIME.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecUtility.IsVideo(System.String)">
+            <summary>
+            Determines whether the specified MIME type is video.
+            </summary>
+            <param name="mimeType">Type of the MIME.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecUtility.GetFormatName(System.String)">
+            <summary>
+            Gets the name of the format.
+            </summary>
+            <param name="mimeType">Type of the MIME.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecUtility.GetMimeType(FM.IceLink.AudioFormat)">
+            <summary>
+            Gets the type of the MIME.
+            </summary>
+            <param name="audioFormat">The audio format.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecUtility.GetMimeType(FM.IceLink.VideoFormat)">
+            <summary>
+            Gets the type of the MIME.
+            </summary>
+            <param name="videoFormat">The video format.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaCodecUtility.GetColorFormat(FM.IceLink.VideoFormat)">
+            <summary>
+            Gets the color format.
+            </summary>
+            <param name="format">The format.</param>
+        </member>
+        <member name="T:FM.IceLink.Android.MediaProjectionSource">
+            <summary>
+            An Android MediaProjection-based video source.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.MediaProjectionSource.Label">
+            <summary>
+            Gets a label that identifies this class.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaProjectionSource.#ctor(Android.Media.Projection.MediaProjection,Android.Content.Context,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.MediaProjectionSource" /> class.
+            </summary>
+            <param name="projection">The media projection.</param>
+            <param name="context">The Android context.</param>
+            <param name="frameRate">The frame rate.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaProjectionSource.DoStart">
+            <summary>
+            Starts this instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FM.IceLink.Android.MediaProjectionSource.DoStop">
+            <summary>
+            Stops this instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:FM.IceLink.Android.OpenGLSink">
+            <summary>
+            An android OpenGL Sink.
+            </summary>
+            <seealso cref="!:FM.IceLink.ViewSink&lt;IceLink.Xamarin.Widget.FrameLayout&gt;" />
+        </member>
+        <member name="P:FM.IceLink.Android.OpenGLSink.View">
+            <summary>
+            Gets the view.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.OpenGLSink.ViewScale">
+            <summary>
+            Gets or Sets the view scale.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.OpenGLSink.ViewMirror">
+            <summary>
+            Gets or Sets a value indicating whether the view is mirrored.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.OpenGLSink.Label">
+            <summary>
+            Gets a label that identifies this class.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.OpenGLSink.#ctor(Android.Content.Context)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.OpenGLSink"/> class.
+            </summary>
+            <param name="context">The Android context.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.OpenGLSink.#ctor(Android.Content.Context,FM.IceLink.IVideoOutput)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.OpenGLSink"/> class.
+            </summary>
+            <param name="context">The Android context.</param>
+            <param name="input">The input.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.OpenGLSink.#ctor(Android.Content.Context,FM.IceLink.IVideoOutput[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.OpenGLSink" /> class.
+            </summary>
+            <param name="context">The Android context.</param>
+            <param name="inputs">The inputs.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.OpenGLSink.#ctor(Android.Content.Context,FM.IceLink.LayoutScale)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.OpenGLSink"/> class.
+            </summary>
+            <param name="context">The Android context.</param>
+            <param name="viewScale">The view scale.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.OpenGLSink.#ctor(Android.Content.Context,FM.IceLink.LayoutScale,FM.IceLink.IVideoOutput)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.OpenGLSink"/> class.
+            </summary>
+            <param name="context">The Android context.</param>
+            <param name="viewScale">The view scale.</param>
+            <param name="input">The input.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.OpenGLSink.#ctor(Android.Content.Context,FM.IceLink.LayoutScale,FM.IceLink.IVideoOutput[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.OpenGLSink" /> class.
+            </summary>
+            <param name="context">The Android context.</param>
+            <param name="viewScale">The view scale.</param>
+            <param name="inputs">The inputs.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.OpenGLSink.#ctor(FM.IceLink.Android.OpenGLView)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.OpenGLSink"/> class.
+            </summary>
+            <param name="view">The view.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.OpenGLSink.#ctor(FM.IceLink.Android.OpenGLView,FM.IceLink.IVideoOutput)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.OpenGLSink" /> class.
+            </summary>
+            <param name="view">The view.</param>
+            <param name="input">The input.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.OpenGLSink.#ctor(FM.IceLink.Android.OpenGLView,FM.IceLink.IVideoOutput[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.OpenGLSink" /> class.
+            </summary>
+            <param name="view">The view.</param>
+            <param name="inputs">The inputs.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.OpenGLSink.DoProcessFrame(FM.IceLink.VideoFrame,FM.IceLink.VideoBuffer)">
+            <summary>
+            Processes a frame.
+            </summary>
+            <param name="frame">The frame.</param>
+            <param name="inputBuffer">The input buffer.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.OpenGLSink.RenderBuffer(FM.IceLink.VideoBuffer)">
+            <summary>
+            Renders a video buffer.
+            </summary>
+            <param name="buffer">The buffer.</param>
+        </member>
+        <member name="T:FM.IceLink.Android.OpenGLState">
+            <summary>
+            An OpenGL state.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.OpenGLState.yBuffer">
+            <summary>
+            Gets or sets the Y buffer.
+            </summary>
+            <value>
+            The y buffer.
+            </value>
+        </member>
+        <member name="P:FM.IceLink.Android.OpenGLState.uBuffer">
+            <summary>
+            Gets or sets the U buffer.
+            </summary>
+            <value>
+            The u buffer.
+            </value>
+        </member>
+        <member name="P:FM.IceLink.Android.OpenGLState.vBuffer">
+            <summary>
+            Gets or sets the V buffer.
+            </summary>
+            <value>
+            The v buffer.
+            </value>
+        </member>
+        <member name="P:FM.IceLink.Android.OpenGLState.YStride">
+            <summary>
+            Gets the Y stride.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.OpenGLState.UStride">
+            <summary>
+            Gets the U stride.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.OpenGLState.VStride">
+            <summary>
+            Gets the V stride.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.OpenGLState.Width">
+            <summary>
+            Gets the width.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.OpenGLState.Height">
+            <summary>
+            Gets the height.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.OpenGLState.#ctor(FM.IceLink.VideoBuffer)">
+            <summary>
+            Initializes a new instance of the OpenGLState class.
+            </summary>
+            <param name="buffer">The buffer.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.OpenGLState.Free">
+            <summary>
+            Free databuffers of the OpenGLState class.
+            </summary>
+        </member>
+        <member name="T:FM.IceLink.Android.OpenGLView">
+            <summary>
+            An OpenGL view.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.OpenGLView.Scale">
+            <summary>
+            Gets the scale.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.OpenGLView.#ctor(Android.Content.Context)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.OpenGLView" /> class.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="scale">The scaling algorithm to use.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.OpenGLView.#ctor(Android.Content.Context,FM.IceLink.LayoutScale)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.OpenGLView" /> class.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="scale">The scaling algorithm to use.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.OpenGLView.OnSurfaceChanged(Javax.Microedition.Khronos.Opengles.IGL10,System.Int32,System.Int32)">
+            <summary>
+            Implementation of onSurfaceChanged. Do not call directly.
+            </summary>
+            <param name="gl">The GL context.</param>
+            <param name="width">The width.</param>
+            <param name="height">The height.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.OpenGLView.OnSurfaceCreated(Javax.Microedition.Khronos.Opengles.IGL10,Javax.Microedition.Khronos.Egl.EGLConfig)">
+            <summary>
+            Implementation of onSurfaceCreated. Do not call directly.
+            </summary>
+            <param name="gl">The GL context.</param>
+            <param name="config">The configuration.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.OpenGLView.OnDrawFrame(Javax.Microedition.Khronos.Opengles.IGL10)">
+            <summary>
+            Implementation of onDrawFrame. Do not call directly.
+            </summary>
+            <param name="gl">The GL context.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.OpenGLView.Render(FM.IceLink.VideoBuffer)">
+            <summary>
+            Renders the specified buffer.
+            </summary>
+            <param name="buffer">The buffer.</param>
+        </member>
+        <member name="T:FM.IceLink.Android.TextViewLogProvider">
+            <summary>
+            An Android TextView-based log provider.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.TextViewLogProvider.#ctor(Android.App.Activity,Android.Widget.TextView)">
+            <summary>
+            Initializes a new instance of the TextViewLogProvider class.
+            </summary>
+            <param name="activity">The activity.</param>
+            <param name="textView">The text view.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.TextViewLogProvider.#ctor(Android.App.Activity,Android.Widget.TextView,FM.IceLink.LogLevel)">
+            <summary>
+            Initializes a new instance of the TextViewLogProvider class.
+            </summary>
+            <param name="activity">The activity.</param>
+            <param name="textView">The text view.</param>
+            <param name="level">The level.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.TextViewLogProvider.WriteLine(System.String)">
+            <summary>
+            Writes a line of text to the log.
+            </summary>
+            <param name="text">The text to write to the log.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.TextViewLogProvider.DoLog(FM.IceLink.LogEvent)">
+            <summary>
+            Logs a message at the specified log level.
+            </summary>
+            <param name="logEvent">The log event details.</param>
+        </member>
+        <member name="T:FM.IceLink.Android.UnmarshaledCamera.IUnmarshaledPreviewCallback">
+            <summary>
+            IUnmarshaledPreviewCallback is a "copy" of Camera.IPreviewCallback,
+            using JniObjectReference instead of byte[]
+            </summary>
+        </member>
+        <member name="T:FM.IceLink.Android.UnmarshaledCamera.UnmarshaledPreviewCallback">
+            <summary>
+            "Normal" implementation of IUnmarshaledPreviewCallback
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.UnmarshaledCamera.UnmarshaledPreviewCallback.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.UnmarshaledCamera.UnmarshaledPreviewCallback" /> class.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.UnmarshaledCamera.UnmarshaledPreviewCallback.OnPreviewFrame(Java.Interop.JniObjectReference,Android.Hardware.Camera)">
+            <summary>
+            Called when preview frame arrives.
+            </summary>
+            <param name="data">The JniObjectReference.</param>
+            <param name="camera">The Android.Hardware.Camera.</param>
+        </member>
+        <member name="T:FM.IceLink.Android.UnmarshaledCamera.IUnmarshaledPreviewCallbackInvoker">
+            <summary>
+            Invoker type delegate used to handle PreviewCallbacks.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.UnmarshaledCamera.IUnmarshaledPreviewCallbackInvoker.JniPeerMembers">
+            <summary>
+            Gets the JniPeerMemberss.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.UnmarshaledCamera.IUnmarshaledPreviewCallbackInvoker.ThresholdClass">
+            <summary>
+            This API supports the Mono for Android infrastructure and is not intended to be used directly from your code.
+            </summary>
+            <value>
+            A <see cref="T:System.IntPtr" /> which contains the <c>java.lang.Class</c> JNI value corresponding to this type.
+            </value>
+            <remarks>
+            This property is used to control which <c>jclass</c> is provided to methods like <see cref="M:Android.Runtime.JNIEnv.CallNonVirtualVoidMethod" />.
+            </remarks>
+        </member>
+        <member name="P:FM.IceLink.Android.UnmarshaledCamera.IUnmarshaledPreviewCallbackInvoker.ThresholdType">
+            <summary>
+            This API supports the Mono for Android infrastructure and is not intended to be used directly from your code.
+            </summary>
+            <value>
+            A <see cref="T:System.Type" /> which provides the declaring type.
+            </value>
+            <remarks>
+            This property is used to control virtual vs. non virtual method dispatch against the underlying JNI object. When this property is equal to the declaring type, then virtual method invocation against the JNI object is performed; otherwise, we assume that the method was overridden by a derived type, and perform non-virtual method invocation.
+            </remarks>
+        </member>
+        <member name="M:FM.IceLink.Android.UnmarshaledCamera.IUnmarshaledPreviewCallbackInvoker.GetObject(System.IntPtr,Android.Runtime.JniHandleOwnership)">
+            <summary>
+            Gets the object.
+            </summary>
+            <param name="handle">The handle.</param>
+            <param name="transfer">The transfer.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FM.IceLink.Android.UnmarshaledCamera.IUnmarshaledPreviewCallbackInvoker.Validate(System.IntPtr)">
+            <summary>
+            Validates the specified handle.
+            </summary>
+            <param name="handle">The handle.</param>
+            <returns></returns>
+            <exception cref="T:System.InvalidCastException"></exception>
+        </member>
+        <member name="M:FM.IceLink.Android.UnmarshaledCamera.IUnmarshaledPreviewCallbackInvoker.Dispose(System.Boolean)">
+            <summary>
+            Disposes.
+            </summary>
+            <param name="disposing">If disposing.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.UnmarshaledCamera.IUnmarshaledPreviewCallbackInvoker.#ctor(System.IntPtr,Android.Runtime.JniHandleOwnership)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.UnmarshaledCamera.IUnmarshaledPreviewCallbackInvoker"/> class.
+            </summary>
+            <param name="handle">The handle.</param>
+            <param name="transfer">The transfer.</param>
+        </member>
+        <member name="T:FM.IceLink.Android.UnmarshaledCamera.CameraExtensions">
+            <summary>
+            Extensions for Android.Hardware.Camera to override AddCallbackBuffer and to set an
+            unmarshaled PreviewCallbackWithBuffer that can pass IntPtrs through the use of JniObjectReference
+            with some inspiration from https://github.com/xamarin/java.interop/tree/master/tests/invocation-overhead
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.UnmarshaledCamera.CameraExtensions.AddCallbackBuffer(Android.Hardware.Camera,Java.Interop.JniObjectReference)">
+            <summary>
+            Adds the callback buffer.
+            </summary>
+            <param name="self">The self.</param>
+            <param name="data">The data.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.UnmarshaledCamera.CameraExtensions.SetUnmarshaledPreviewCallback(Android.Hardware.Camera,FM.IceLink.Android.UnmarshaledCamera.IUnmarshaledPreviewCallback)">
+            <summary>
+            Sets the unmarshaled preview callback.
+            </summary>
+            <param name="self">The self.</param>
+            <param name="cb">The cb.</param>
+        </member>
+        <member name="T:FM.IceLink.Android.Utility">
+            <summary>
+            An Android utility.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.Utility.IsSDKVersionSupported(Android.OS.BuildVersionCodes)">
+            <summary>
+            Determines whether [is SDK version supported] [the specified version].
+            </summary>
+            <param name="version">The version.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.Utility.DispatchToMainThread(FM.IceLink.Action0)">
+            <summary>
+            Dispatches an action to the main thread.
+            </summary>
+            <param name="action">The action.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.Utility.DispatchToMainThread(FM.IceLink.Action0,System.Boolean)">
+            <summary>
+            Dispatches an action to the main thread.
+            </summary>
+            <param name="action">The action.</param>
+            <param name="forceSync">Whether or not to force the action to run synchronously.</param>
+        </member>
+        <member name="T:FM.IceLink.Android.ViewSource">
+            <summary>
+            An Android View-based video source.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.ViewSource.View">
+            <summary>
+            Gets or Sets the view to capture.
+            </summary>
+        </member>
+        <member name="P:FM.IceLink.Android.ViewSource.Label">
+            <summary>
+            Gets a label that identifies this class.
+            </summary>
+        </member>
+        <member name="M:FM.IceLink.Android.ViewSource.#ctor(Android.Views.View,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FM.IceLink.Android.ViewSource"/> class.
+            </summary>
+            <param name="view">The view to capture.</param>
+            <param name="frameRate">The frame rate.</param>
+        </member>
+        <member name="M:FM.IceLink.Android.ViewSource.DoStart">
+            <summary>
+            Starts this instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FM.IceLink.Android.ViewSource.DoStop">
+            <summary>
+            Stops this instance.
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

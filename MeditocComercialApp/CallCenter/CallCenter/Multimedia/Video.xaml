@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+             xmlns:local="clr-namespace:CallCenter.Renderers"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+          
+    x:Class="CallCenter.Multimedia.Video">
+    
+    <AbsoluteLayout x:Name="Container" BackgroundColor="Transparent">
+     
+        <!--<ImageButton Source="rechazar.png" HeightRequest="32" WidthRequest="32" BackgroundColor="Transparent" Clicked="ImageButton_Clicked" AbsoluteLayout.LayoutBounds=".5,.95,.5,.1" AbsoluteLayout.LayoutFlags="All"></ImageButton>-->
+        
+    </AbsoluteLayout>
+</ContentPage>

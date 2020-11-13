@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage
+    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup" xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CallCenter.Renderers.PopupLoad">
+    <StackLayout x:Name="stkActivity" IsVisible="true"  AbsoluteLayout.LayoutBounds= "0,0,5,5"  AbsoluteLayout.LayoutFlags="All">
+        <Frame CornerRadius="10"
+                  HorizontalOptions="CenterAndExpand" BackgroundColor = "Transparent"  VerticalOptions="CenterAndExpand"
+        
+              Padding="20">
+            <StackLayout>
+                <Label TextColor="White" Font="Bold,20" Text="{Binding Message}" />
+                <ActivityIndicator x:Name="iaIndicator" Color="White" IsRunning="true" IsEnabled="True"></ActivityIndicator>
+            </StackLayout>
+
+        </Frame>
+    </StackLayout>
+</pages:PopupPage>

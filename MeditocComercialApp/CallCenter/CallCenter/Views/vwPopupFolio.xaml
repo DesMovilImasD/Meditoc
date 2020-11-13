@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<pages:PopupPage
+    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+    xmlns:local="clr-namespace:CallCenter.Renderers"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="CallCenter.Views.vwPopupFolio"
+    CloseWhenBackgroundIsClicked="False">
+    <StackLayout Margin="12"
+                 Padding="8"
+                 Spacing="24"
+                 BackgroundColor="White"
+                 HorizontalOptions="FillAndExpand"
+                 VerticalOptions="Center">
+        <!--imagen-->
+        <StackLayout Padding="12,14,12,0">
+            <Image HeightRequest="50"
+                   BackgroundColor="Red"
+                   Aspect="AspectFit"
+                   HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="CenterAndExpand"
+                   Source="covid.png"/>
+        </StackLayout>
+        <!--folio input-->
+        <StackLayout Padding="24,0,24,0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <local:FolioEntry x:Name="FolioField"
+                   FontSize="16"
+                   HeightRequest="44"
+                   Placeholder="Ingrese su folio"
+                   PlaceholderColor="White"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center"
+                   TextColor="White"/>
+        </StackLayout>
+
+        <!--description-->
+        <StackLayout x:Name="remarkLabel" Padding="24,0,24,0">
+            <Label x:Name="questionLabel"
+                   FontSize="15"
+                   BackgroundColor="Transparent"
+                   LineBreakMode="WordWrap"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center"
+                   TextColor="#595959"
+                   Text="¿No cuenta con un folio?"/>
+
+            <Label x:Name="remakLabel"
+                   FontSize="15"
+                   TextColor="#595959"
+                   BackgroundColor="Transparent"
+                   LineBreakMode="WordWrap"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center"
+                   Text="Conteste una breve encuesta para conocer su riesgo de contagio e identifique la presencia del virus."/>
+                  
+            <Label x:Name="gotoLabel"
+                   FontSize="15"
+                   TextColor="#595959"
+                   LineBreakMode="WordWrap"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center"> 
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Ingrese" TextColor="#595959"/>
+                        <Span Text=" AQUÍ " TextColor="#F26542">
+                            <Span.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ClickToForm}"
+                                                      CommandParameter="https://cov-id.net/info"/>                                
+                            </Span.GestureRecognizers>
+                        </Span>
+                        <Span Text="para generarlo." TextColor="#595959"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </StackLayout>
+  
+        <!--buttons-->
+        <StackLayout x:Name="buttonsLayout" BackgroundColor="Transparent"
+                     Orientation="Horizontal"
+                     Margin="24,0,24,0"
+                     VerticalOptions="FillAndExpand"
+                     HorizontalOptions="FillAndExpand">
+
+            <Button Text="CANCELAR"
+                    BackgroundColor="Transparent"
+                    TextColor="#00adc1"
+                    HorizontalOptions="StartAndExpand"
+                    VerticalOptions="FillAndExpand"
+                    HeightRequest="50"
+                    Clicked="Cancel_Tapped"/>
+
+            <Button Text="ACEPTAR"
+                    BackgroundColor="Transparent"
+                    TextColor="#00adc1"
+                    HorizontalOptions="EndAndExpand"
+                    VerticalOptions="FillAndExpand"
+                    HeightRequest="50"
+                    Clicked="Submit_Tapped"/>
+
+        </StackLayout>
+
+        <!--loading-->
+        <StackLayout x:Name="loadingLayout"
+                     Margin="24, 0, 24, 0"
+                     VerticalOptions="Center"
+                     HorizontalOptions="Center">
+            <ActivityIndicator IsRunning="True" Color="#00adc1"/>
+        </StackLayout>
+    </StackLayout>
+</pages:PopupPage>
