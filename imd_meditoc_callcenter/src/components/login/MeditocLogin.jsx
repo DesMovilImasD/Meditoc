@@ -318,7 +318,7 @@ const Login = (props) => {
                                     </Grid>
                                     <Grid item xs={12}>
                                         <MeditocInputWhite
-                                            name="txtRecuperacion"
+                                            name="txtCorreoRecuperacion"
                                             variant="outlined"
                                             fullWidth
                                             autoComplete="off"

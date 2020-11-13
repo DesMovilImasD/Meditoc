@@ -49,8 +49,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                     return response;
                 }
 
-                //using (TransactionScope scope = new TransactionScope())
-                //{
                 if (entCreateColaborador.iIdTipoDoctor == (int)EnumTipoDoctor.MedicoCallCenter || entCreateColaborador.iIdTipoDoctor == (int)EnumTipoDoctor.MedicoAdministrativo)
                 {
                     EntUsuario entUsuario = new EntUsuario
@@ -73,6 +71,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                         bAcceso = entCreateColaborador.bAcceso
                     };
 
+                    //Doctores callcenter o administrativos, sólo guardar usuario y colaborador
                     IMDResponse<EntUsuario> respuestaGuardarUsuarioCGU = busUsuario.BSaveUsuario(entUsuario, true);
                     if (respuestaGuardarUsuarioCGU.Code != 0)
                     {
@@ -116,6 +115,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                         }
                     }
 
+                    //Generar usuario titular y administrativo
                     EntUsuario entUsuarioTitular = new EntUsuario
                     {
                         bActivo = entCreateColaborador.bActivo,
@@ -163,7 +163,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                         return response;
                     }
 
-
+                    //Validar que los datos y disponibilidad de nombre de usuario de ambas cuentas antes de guardar
                     if (entCreateColaborador.bActivo && !entCreateColaborador.bBaja)
                     {
                         IMDResponse<bool> resValidacionTitular = busUsuario.BValidaDatos(entUsuarioTitular);
@@ -179,7 +179,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                         }
                     }
 
-
+                    //Verificar si hay que enviar las credenciales por correo de ambas cuentas
                     bool activacionUsuario = false;
                     if (entCreateColaborador.bAcceso)
                     {
@@ -200,6 +200,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                         }
                     }
 
+                    //Guardar para obtener el id de usuario de ambas cuentas en el CGU
                     IMDResponse<EntUsuario> respuestaGuardarUsuarioCGU = busUsuario.BSaveUsuario(entUsuarioTitular);
                     if (respuestaGuardarUsuarioCGU.Code != 0)
                     {
@@ -217,6 +218,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                         return respuestaGuardarUsuarioCGU.GetResponse<bool>();
                     }
 
+                    //Guardar la cueta de colaborador
                     IMDResponse<bool> respuestaGuardarColaborador = datColaborador.DSaveColaborador(entCreateColaborador);
                     if (respuestaGuardarColaborador.Code != 0)
                     {
@@ -238,8 +240,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                     response.Message = "No se ha especificado el tipo de médico colaborador.";
                     return response;
                 }
-                //    scope.Complete();
-                //}
 
                 response.Code = 0;
                 response.Message = "El colaborador ha sido guardado correctamente.";
@@ -375,6 +375,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                         return response;
                     }
 
+                    //Guardar/actualizar la foto del colaborador
                     IMDResponse<bool> respuestaSaveFoto = datColaborador.DSaveColaboradorFoto(piIdColaborador, piIdColaborador, foto);
                     if (respuestaSaveFoto.Code != 0)
                     {
@@ -581,6 +582,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
 
             try
             {
+                //Configurar el paginador de la consulta
                 int piLimitInit = (piPage * piPageSize - piPageSize);
                 int piLimitEnd = piPage * piPageSize - 1;
 
@@ -619,6 +621,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                             sURL = dr.ConvertTo<string>("sURL"),
                         };
 
+                        //Reemplazar valores nulos/vacíos por la leyenda Sin información
                         string sinInformacion = ConfigurationManager.AppSettings["sLeyendaSinInformacion"];
                         entColaborador.sCedulaProfecional = string.IsNullOrEmpty(entColaborador.sCedulaProfecional) ? sinInformacion : entColaborador.sCedulaProfecional;
                         entColaborador.sCorreo = string.IsNullOrEmpty(entColaborador.sCorreo) ? sinInformacion : entColaborador.sCorreo;
@@ -650,6 +653,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                     }
                 }
 
+                //Calcular el total de páginas existentes
                 int iCount = 0;
                 if (resGetDirectorio.Result.Rows.Count > 0)
                 {
@@ -672,6 +676,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
             return response;
         }
 
+        /// <summary>
+        /// Consulta si existe una sala de colaborador disponible
+        /// </summary>
+        /// <param name="bAgendada"></param>
+        /// <param name="iIdUsuario"></param>
+        /// <param name="dtFechaConsulta"></param>
+        /// <returns></returns>
         public IMDResponse<EntColaborador> BObtenerSala(bool? bAgendada = null, int? iIdUsuario = null, DateTime? dtFechaConsulta = null)
         {
             IMDResponse<EntColaborador> response = new IMDResponse<EntColaborador>();
@@ -683,7 +694,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
             try
             {
                 IMDResponse<DataTable> dtColaborador = datColaborador.DObtenerSala(bAgendada, iIdUsuario, dtFechaConsulta);
-
                 if (dtColaborador.Code != 0)
                 {
                     return dtColaborador.GetResponse<EntColaborador>();
@@ -702,6 +712,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                     };
 
                 }
+
+                //Verificar si se ha encontrado una sala disponible
                 string medicosOcupados = "Todos los médicos se encuentran ocupados en este momento.";
                 if (oColaborador.iNumSala == null)
                 {
@@ -724,6 +736,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
             return response;
         }
 
+        /// <summary>
+        /// Obtener el status actual del colaborador
+        /// </summary>
+        /// <param name="piIdColaborador"></param>
+        /// <returns></returns>
         public IMDResponse<EntColaboradorStatus> BGetColaboradorStatus(int piIdColaborador)
         {
             IMDResponse<EntColaboradorStatus> response = new IMDResponse<EntColaboradorStatus>();

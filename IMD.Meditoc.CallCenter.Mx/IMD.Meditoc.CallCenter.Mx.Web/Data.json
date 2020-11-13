@@ -1,54 +1,78 @@
 {
-  "connectionString": "Datasource=172.16.0.76;Database=meditoc_db;Uid=root;Pwd=ImasD2018#",
-  "connectionStringProd": "Server=localhost; Database=meditoc_db; User id=root; Password=ImasD2020#;",
-  "Key": "MeditocComercial",
-  "Vector": "Meditoc1",
-  "cifrado": "61Cb4qdXrbIPL8az9svQS9NpHT6a0CjLrB3waEkXKz6zqKiBv+K6dlRiIKlTACBBl9ESxHsDpvAo138vwBQwTbWioAY4D1QXqA+m1lPwTW0=",
-  "cifradoProd": "nf/NJYtfBPeIHkV7txYwZ/XhIhUBEV65pwn/FR2wIuTR/FEaPl5FjkjkG/y0UyKM2Pcc7QWBGGJI4zZ7RzIfVGf3DJzXM9QYZYhptYeHNeM=",
-  "SemillaPassword": "M3diT0cPassword1",
-  "VectorPassword": "Evector1",
-  "Headers": {
-    "AppKey": {
-      "String": "MeditocAppKeyAuthenticacion2020WebOK",
-      "Key": "M3dit0cAppKeyV4l",
-      "Vector": "MeditocK",
-      "Result": "qSVBJIQpOqtp0UfwzwX1EUdrIZWiM0TjSuZvYJc8JOWNdiwRuiIAyhiQNjoEGWPa"
+  "conexionesBD": {
+    "llaves": {
+      "key": "MeditocComercial",
+      "vector": "Meditoc1"
     },
-    "AppToken": {
-      "String": "IMD.Meditoc.CallCenterServices.MX.AppTokenAuthenticacion2020WebOK",
-      "Key": "M3dit0cAppToken8",
-      "Vector": "MeditocT",
-      "Result": "Xx3ePv63cUTg77QPATmztJ/VXHuXkjCBBECfy54028VGoN5SZ2tUNrc42dYQZPXvfpbk3YT5PTwLDXxc4yeUNRoeb4QoX6UywCDFIH5U2+Q="
+    "qa76": {
+      "cnx": "Datasource=172.16.0.76;Database=meditoc_db;Uid=root;Pwd=ImasD2018#",
+      "cnxEncrpt": "61Cb4qdXrbIPL8az9svQS9NpHT6a0CjLrB3waEkXKz6zqKiBv+K6dlRiIKlTACBBl9ESxHsDpvAo138vwBQwTbWioAY4D1QXqA+m1lPwTW0="
+    },
+    "prod": {
+      "cnx": "Server=localhost; Database=meditoc_db; User id=root; Password=ImasD2020#;",
+      "cnxEncrpt": "nf/NJYtfBPeIHkV7txYwZ/XhIhUBEV65pwn/FR2wIuTR/FEaPl5FjkjkG/y0UyKM2Pcc7QWBGGJI4zZ7RzIfVGf3DJzXM9QYZYhptYeHNeM="
     }
   },
-  "HeadersV2": {
-    "AppKey": {
-      "String": "MeditocAppKeyAuthenti0WebOK",
-      "Key": "M3dit0cAppKeyV4l",
-      "Vector": "MeditocK",
-      "Result": "qSVBJIQpOqtp0UfwzwX1ER6fNYR8YiPU/bw5CdEqYqk="
-    },
-    "AppToken": {
-      "String": "IMD.Meditoc.CallCenterSTthenticacion2020WebOK",
-      "Key": "M3dit0cAppToken8",
-      "Vector": "MeditocT",
-      "Result": "Xx3ePv63cUTg77QPATmztJ3J8cdO1riA7g+lVRzOzhfnl9FnaVT1O2YIv8YCTVRZ"
+  "passwords": {
+    "llaves": {
+      "key": "M3diT0cPassword1",
+      "vector": "Evector1"
     }
   },
-  "FilePlantillaCargaFolioVentaCalle": {
-    "Key": "nhca7JFS73ygs6A3",
-    "Vector": "bc7DKb3M",
-    "localCris": {
-      "ruta": "C:\\IMD\\Repos\\Meditoc\\IMD.Meditoc.CallCenter.Mx\\IMD.Meditoc.CallCenter.Mx.Web\\Files\\Cargar_folios_plantilla.xlsx",
-      "encr": "+jenmOXbi1YqsXEMIvgp9dYR8L9Uf6+VYW7W8wzBZA8prkzjBNKL83C9kq8mcRMgd9wgTpe9B3mC2mcTI+qClkR0fRSHjySvTGKZ7+V3bBBr5sR9pPLFsCsmj22F57qjzCYoLclvY8CyLlqkzQ2mk3oMmot+I4t73gkrPWxFWdg="
+  "headersAPI": {
+    "appkey": {
+      "llaves": {
+        "key": "M3dit0cAppKeyV4l",
+        "vector": "MeditocK"
+      },
+      "name": "AppKey",
+      "value": "qSVBJIQpOqtp0UfwzwX1ER6fNYR8YiPU/bw5CdEqYqk="
     },
-    "172.16.0.76": {
-      "ruta": "C:\\SrvWeb\\Callcenter20\\MeditocWS\\Files\\Cargar_folios_plantilla.xlsx",
-      "encr": "+jenmOXbi1YqsXEMIvgp9dYR8L9Uf6+VYW7W8wzBZA8prkzjBNKL83C9kq8mcRMgd9wgTpe9B3mC2mcTI+qClkR0fRSHjySvTGKZ7+V3bBBr5sR9pPLFsCsmj22F57qjzCYoLclvY8CyLlqkzQ2mk3oMmot+I4t73gkrPWxFWdg="
+    "apptoken": {
+      "llaves": {
+        "key": "M3dit0cAppToken8",
+        "vector": "MeditocT"
+      },
+      "name": "AppToken",
+      "value": "Xx3ePv63cUTg77QPATmztJ3J8cdO1riA7g+lVRzOzhfnl9FnaVT1O2YIv8YCTVRZ"
+    }
+  },
+  "archivoCargaFolios": {
+    "llaves": {
+      "key": "nhca7JFS73ygs6A3",
+      "vector": "bc7DKb3M"
     },
-    "PROD": {
+    "prod": {
       "ruta": "C:\\SvrWeb\\WEB\\MeditocWS\\Files\\Cargar_folios_plantilla.xlsx",
       "encr": "dix9V6csEn2syfUkUQnaRrRu1snD652+jh4jnMZzjz0ob2zX7L3dymWlUTTPGRiYbFbiTWQc+c8tU0i/Y5h9CQ=="
     }
+  },
+  "cuentaConekta": {
+    "user": "santiago.munoz@meditoc.com",
+    "pass": "Meditoc1@"
+  },
+  "cuentaGoogle": {
+    "user": "meditocandhs@gmail.com",
+    "pass": "Meditoc01"
+  },
+  "cuentaApple": {
+    "user": "meditocandhs@gmail.com",
+    "pass": "M3d1t0c2020"
+  },
+  "cuentaIceLink": {
+    "user": "santiagoms12@gmail.com",
+    "pas": "Meditocicelink1"
+  },
+  "cuentaCorreo": {
+    "user": "contacto@meditoc.com",
+    "pass": "Meditoc&hs0",
+    "server": "mail.meditoc.com",
+    "port": 587,
+    "ssl": true
+  },
+  "serverPublicacion": {
+    "equipo": "201.46.92.51:5951",
+    "user": "Administrator",
+    "pass": "jFXdG$wd"
   }
 }

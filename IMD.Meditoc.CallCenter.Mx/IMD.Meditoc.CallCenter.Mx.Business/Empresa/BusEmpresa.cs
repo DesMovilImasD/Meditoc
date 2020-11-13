@@ -109,6 +109,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Empresa
                     return response;
                 }
 
+                //Verificar si el correo no ha sido registrado en otra empresa
                 IMDResponse<List<EntEmpresa>> lstEmpresas = BGetEmpresas(null);
 
                 if (lstEmpresas.Result.Count > 0)

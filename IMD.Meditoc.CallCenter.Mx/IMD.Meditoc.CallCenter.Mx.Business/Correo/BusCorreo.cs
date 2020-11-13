@@ -172,6 +172,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Correo
             return texto;
         }
 
+        /// <summary>
+        /// Guardar el correo de una orden comprada
+        /// </summary>
+        /// <param name="psOrderId"></param>
+        /// <param name="psBody"></param>
+        /// <param name="psTo"></param>
+        /// <param name="psSubject"></param>
+        /// <returns></returns>
         public IMDResponse<bool> BSaveCorreo(string psOrderId, string psBody, string psTo, string psSubject)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();
@@ -207,6 +215,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Correo
             return response;
         }
 
+        /// <summary>
+        /// Reenviar el correo de una orden de compra
+        /// </summary>
+        /// <param name="psOrderId"></param>
+        /// <returns></returns>
         public IMDResponse<bool> BReenviarCorreo(string psOrderId)
         {
             IMDResponse<bool> response = new IMDResponse<bool>();

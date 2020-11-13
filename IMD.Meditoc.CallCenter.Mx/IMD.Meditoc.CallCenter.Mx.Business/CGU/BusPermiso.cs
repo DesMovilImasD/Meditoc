@@ -75,12 +75,13 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             }
             return response;
         }
-
+        
         /// <summary>
         /// Obtener los permisos del sistema o de un perfil proporcionado
         /// </summary>
         /// <param name="iIdPerfil"></param>
         /// <returns></returns>
+        //NO SE USA
         public IMDResponse<List<EntPermisoSistema>> BObtenerPermisoxPerfil(int? iIdPerfil)
         {
             IMDResponse<List<EntPermisoSistema>> response = new IMDResponse<List<EntPermisoSistema>>();
@@ -104,6 +105,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                 List<EntSubModuloPermiso> lstPermisoSubModulo = new List<EntSubModuloPermiso>();
                 List<EntBotonPermiso> lstPermisoBotones = new List<EntBotonPermiso>();
 
+                //Leer los módulos, submódulos y botones que se tienen permitidos al perfil
                 foreach (DataRow item in drBotones)
                 {
                     IMDDataRow dr = new IMDDataRow(item);
@@ -140,6 +142,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     lstPermisoSistema.Add(permiso);
                 }
 
+                //Armar obtejo lista de los permisos
                 lstPermisoBotones = lstPermisoBotones.GroupBy(x => new
                 {
                     x.iIdModulo,
@@ -187,6 +190,11 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
             return response;
         }
 
+        /// <summary>
+        /// Obtener objeto de los permisos para mostrar/ocultar los elementos del sistema
+        /// </summary>
+        /// <param name="piIdPerfil"></param>
+        /// <returns></returns>
         public IMDResponse<object> BGetUsuarioPermisos(int piIdPerfil)
         {
             IMDResponse<object> response = new IMDResponse<Object>();
@@ -196,6 +204,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
 
             try
             {
+                //Consultar los permisos del perfil, el perfil de superadministrador trae todos los elementos
                 int? perfil = piIdPerfil == (int)EnumPerfilPrincipal.Superadministrador ? (int?)null : piIdPerfil;
                 IMDResponse<List<EntPermisoSistema>> resGetPermisos = this.BObtenerPermisoxPerfil(perfil);
                 if (resGetPermisos.Code != 0)
@@ -208,9 +217,9 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CGU
                     response.Message = "El perfil del usuario aún no cuenta con permisos.";
                 }
 
-                List<EntPermisoSistema> pr = resGetPermisos.Result;
                 JObject objModulos = new JObject();
 
+                //Armar JSON con los permisos consultados
                 foreach (EntPermisoSistema modulo in resGetPermisos.Result)
                 {
                     JObject objSubmodulos = new JObject();

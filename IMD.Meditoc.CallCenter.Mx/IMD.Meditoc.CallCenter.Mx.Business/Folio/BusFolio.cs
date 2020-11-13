@@ -82,7 +82,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     entCreateOrder.line_items[i].unit_price = (int)(oProducto.fCosto * 100);
                 }
 
-                //Se manda a llamar la creaciión de orden de conekta
+                //Se manda a llamar la creación de orden de conekta
                 BusOrder busOrder = new BusOrder();
                 IMDResponse<EntOrder> resOrder = busOrder.BCreateOrder(entCreateOrder);
                 if (resOrder.Code != 0)
@@ -90,11 +90,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     return response = resOrder.GetResponse<EntDetalleCompra>();
                 }
 
-                //string f = JsonConvert.SerializeObject(entOrder.Result);
-                //IMDResponse<EntRequestOrder> requesOrder = new IMDResponse<EntRequestOrder>();
-                //requesOrder.Result = JsonConvert.DeserializeObject<EntRequestOrder>(f);
-
-
+                //Guardar orden y generar folios
                 IMDResponse<EntDetalleCompra> resGuardarCompra = this.BGuardarCompraUnica(resOrder.Result, entCreateOrder.iIdOrigen);
                 if (resGuardarCompra.Code != 0)
                 {
@@ -131,8 +127,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 entOrder.customer_info.phone = entOrder.customer_info?.phone?.Replace(" ", "").Replace(ConfigurationManager.AppSettings["CONEKTA_PHONE_ACCESS"], "");
 
                 EntFolio entFolio = new EntFolio();
-                //using (TransactionScope scope = new TransactionScope())
-                //{
 
                 //Se asigna empresa al folio
                 BusEmpresa busEmpresa = new BusEmpresa();
@@ -143,6 +137,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                     return respuestaObtenerEmpresas.GetResponse<EntDetalleCompra>();
                 }
 
+                //Verificar si hay una empresa generada con el correo del cliente, si no hay, crearla
                 if (respuestaObtenerEmpresas.Result.Count > 0)
                 {
                     EntEmpresa empresaRegistrada = respuestaObtenerEmpresas.Result.FirstOrDefault();
@@ -196,8 +191,6 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                         }
                     }
                 }
-                //    scope.Complete();
-                //}
 
                 oDetalleCompra.nTotal = oDetalleCompra.lstArticulos
                     .Sum(x => x.nCantidad * x.nPrecio);
@@ -2521,7 +2514,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
                 if (resDesencriptarRuta.Code != 0)
                 {
                     response.Code = -7645726983648;
-                    response.Message = "La plantilla para la carga de folios de venta calle no se encuentra especificada.";
+                    response.Message = "La plantilla para la carga de folios no se encuentra especificada.";
                     return response;
                 }
 
@@ -2601,240 +2594,5 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Folio
             return response;
         }
 
-        //public IMDResponse<List<EntFolioVerificarCarga>> BVerificarFoliosVentaCalle(Stream foliosExcel)
-        //{
-        //    IMDResponse<List<EntFolioVerificarCarga>> response = new IMDResponse<List<EntFolioVerificarCarga>>();
-
-        //    string metodo = nameof(this.BVerificarFoliosVentaCalle);
-        //    logger.Info(IMDSerialize.Serialize(67823458608535, $"Inicia {metodo}(Stream foliosExcel)"));
-
-        //    try
-        //    {
-        //        List<EntFolioVerificarCarga> lstEntFolioVerificarCarga = new List<EntFolioVerificarCarga>();
-
-        //        using (ExcelPackage excelPackage = new ExcelPackage(foliosExcel))
-        //        {
-        //            if (excelPackage == null)
-        //            {
-        //                response.Code = -87687673456;
-        //                response.Message = "No ha sido posible leer el archivo cargado";
-        //                return response;
-        //            }
-
-        //            ExcelWorksheets excelPaginas = excelPackage.Workbook.Worksheets;
-
-        //            if (excelPaginas.Count != 5)
-        //            {
-        //                response.Code = -87687673456;
-        //                response.Message = "Se ha cargado un archivo que no coincide con la plantilla de carga de folios";
-        //                return response;
-        //            }
-
-
-        //            for (int i = 0; i < excelPaginas.Count; i++)
-        //            {
-        //                List<EntFolioUser> lstFolioVC = new List<EntFolioUser>();
-        //                ExcelWorksheet excelPagina = excelPaginas[i];
-
-        //                object[,] values = (object[,])excelPagina.Cells.Value;
-
-        //                int rows = values.GetLength(0);
-        //                int columns = values.GetLength(1);
-
-        //                for (int j = 0; j < rows; j++)
-        //                {
-        //                    for (int k = 0; k < columns; k++)
-        //                    {
-        //                        if (values[j, k] != null)
-        //                        {
-        //                            string folio = values[j, k]?.ToString();
-        //                            if (folio.StartsWith("VC"))
-        //                            {
-        //                                string password = values[j, ++k].ToString();
-
-        //                                EntFolioUser entFolioUser = new EntFolioUser
-        //                                {
-        //                                    sFolio = folio,
-        //                                    sPassword = password
-        //                                };
-        //                                lstFolioVC.Add(entFolioUser);
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //                EntFolioVerificarCarga entFolioVerificarCarga = new EntFolioVerificarCarga()
-        //                {
-        //                    lstFolios = lstFolioVC,
-        //                    totalFolios = lstFolioVC.Count
-        //                };
-        //                switch (i)
-        //                {
-        //                    case 0:
-        //                        entFolioVerificarCarga.entProducto.sNombre = "Membresía 1 Mes de Venta Calle";
-        //                        break;
-        //                    case 1:
-        //                        entFolioVerificarCarga.entProducto.sNombre = "Membresía 3 Meses de Venta Calle";
-        //                        break;
-        //                    case 2:
-        //                        entFolioVerificarCarga.entProducto.sNombre = "Membresía 6 Meses de Venta Calle";
-        //                        break;
-        //                    case 3:
-        //                        entFolioVerificarCarga.entProducto.sNombre = "Membresía 9 Meses de Venta Calle";
-        //                        break;
-        //                    case 4:
-        //                        entFolioVerificarCarga.entProducto.sNombre = "Membresía 12 Meses de Venta Calle";
-        //                        break;
-        //                    default:
-        //                        break;
-        //                }
-        //                lstEntFolioVerificarCarga.Add(entFolioVerificarCarga);
-        //            }
-        //        }
-
-        //        response.Code = 0;
-        //        response.Message = "Folios verificados";
-        //        response.Result = lstEntFolioVerificarCarga;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        response.Code = 67823458609312;
-        //        response.Message = "Ocurrió un error inesperado al validar los folios solicitados.";
-
-        //        logger.Error(IMDSerialize.Serialize(67823458609312, $"Error en {metodo}(Stream foliosExcel): {ex.Message}", ex, response));
-        //    }
-        //    return response;
-        //}
-
-        //public IMDResponse<bool> BGenerarFoliosVentaCalle(int piIdUsuarioMod, string sFolioEmpresa, Stream foliosExcel)
-        //{
-        //    IMDResponse<bool> response = new IMDResponse<bool>();
-
-        //    string metodo = nameof(this.BGenerarFoliosVentaCalle);
-        //    logger.Info(IMDSerialize.Serialize(67823458602319, $"Inicia {metodo}(int piIdUsuarioMod, string sFolioEmpresa, Stream foliosExcel)", piIdUsuarioMod, sFolioEmpresa));
-
-        //    try
-        //    {
-        //        if (string.IsNullOrEmpty(sFolioEmpresa))
-        //        {
-        //            response.Code = -87687673456;
-        //            response.Message = "No se ingresó el folio de la empresa par asignar los folios";
-        //            return response;
-        //        }
-
-        //        IMDResponse<List<EntEmpresa>> resGetEmpresas = busEmpresa.BGetEmpresas(psFolioEmpresa: sFolioEmpresa);
-        //        if (resGetEmpresas.Code != 0)
-        //        {
-        //            return resGetEmpresas.GetResponse<bool>();
-        //        }
-
-        //        if (resGetEmpresas.Result.Count != 1)
-        //        {
-        //            response.Code = -87687673456;
-        //            response.Message = "No se encontró la empresa seleccionada";
-        //            return response;
-        //        }
-
-        //        EntEmpresa entEmpresa = resGetEmpresas.Result.First();
-        //        using (ExcelPackage excelPackage = new ExcelPackage(foliosExcel))
-        //        {
-        //            if (excelPackage == null)
-        //            {
-        //                response.Code = -87687673456;
-        //                response.Message = "No ha sido posible leer el archivo cargado";
-        //                return response;
-        //            }
-
-        //            ExcelWorksheets excelPaginas = excelPackage.Workbook.Worksheets;
-
-        //            if (excelPaginas.Count != 5)
-        //            {
-        //                response.Code = -87687673456;
-        //                response.Message = "Se ha cargado un archivo que no coincide con la plantilla de carga de folios";
-        //                return response;
-        //            }
-
-        //            for (int i = 0; i < excelPaginas.Count; i++)
-        //            {
-        //                int fiIdProducto = 0;
-        //                switch (i)
-        //                {
-        //                    case 0:
-        //                        fiIdProducto = (int)EnumProductos.MembresiaVentaCalle1Mes;
-        //                        break;
-        //                    case 1:
-        //                        fiIdProducto = (int)EnumProductos.MembresiaVentaCalle3Meses;
-        //                        break;
-        //                    case 2:
-        //                        fiIdProducto = (int)EnumProductos.MembresiaVentaCalle6Meses;
-        //                        break;
-        //                    case 3:
-        //                        fiIdProducto = (int)EnumProductos.MembresiaVentaCalle9Meses;
-        //                        break;
-        //                    case 4:
-        //                        fiIdProducto = (int)EnumProductos.MembresiaVentaCalle12Meses;
-        //                        break;
-        //                    default:
-        //                        break;
-        //                }
-        //                ExcelWorksheet excelPagina = excelPaginas[i];
-
-        //                object[,] values = (object[,])excelPagina.Cells.Value;
-
-        //                int rows = values.GetLength(0);
-        //                int columns = values.GetLength(1);
-
-        //                for (int j = 0; j < rows; j++)
-        //                {
-        //                    for (int k = 0; k < columns; k++)
-        //                    {
-        //                        if (values[j, k] != null)
-        //                        {
-        //                            string folio = values[j, k].ToString();
-        //                            if (folio.StartsWith("VC"))
-        //                            {
-        //                                string password = values[j, ++k]?.ToString();
-        //                                if (string.IsNullOrWhiteSpace(password))
-        //                                {
-        //                                    response.Code = -767652873456;
-        //                                    response.Message = $"El folio {folio} no cuenta con contraseña. El proceso se ha detenido.";
-        //                                    return response;
-        //                                }
-
-        //                                EntFolioVentaCalle entFolioVentaCalle = new EntFolioVentaCalle
-        //                                {
-        //                                    iIdEmpresa = entEmpresa.iIdEmpresa,
-        //                                    iIdOrigen = (int)EnumOrigen.BaseDeDatos,
-        //                                    iIdProducto = fiIdProducto,
-        //                                    iIdUsuarioMod = piIdUsuarioMod,
-        //                                    sFolio = folio,
-        //                                    sPassword = password
-        //                                };
-
-        //                                IMDResponse<bool> resSaveFolio = this.BSaveFolioVC(entFolioVentaCalle);
-        //                                if (resSaveFolio.Code != 0)
-        //                                {
-        //                                    resSaveFolio.Message = $"El folio {entFolioVentaCalle.sFolio} con contraseña {entFolioVentaCalle.sPassword} no se pudo guardar. Verifique los datos. El proceso de guardado se ha detenido";
-        //                                    return resSaveFolio;
-        //                                }
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-
-        //        response.Code = 0;
-        //        response.Message = "Los folios se han guardado correctamente";
-        //        response.Result = true;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        response.Code = 67823458603096;
-        //        response.Message = "Ocurrió un error inesperado al guardar los folios de venta calle solicitados.";
-
-        //        logger.Error(IMDSerialize.Serialize(67823458603096, $"Error en {metodo}(int piIdUsuarioMod, string sFolioEmpresa, Stream foliosExcel): {ex.Message}", piIdUsuarioMod, sFolioEmpresa, ex, response));
-        //    }
-        //    return response;
-        //}
     }
 }

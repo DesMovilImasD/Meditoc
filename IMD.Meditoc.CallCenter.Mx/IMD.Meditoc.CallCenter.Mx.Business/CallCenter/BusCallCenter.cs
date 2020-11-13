@@ -59,6 +59,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                     return response;
                 }
 
+                //Actualizar status
                 IMDResponse<bool> resSvaOnline = datCallCenter.DCallCenterOnline(entOnlineMod.iIdColaborador, entOnlineMod.bOnline, entOnlineMod.bOcupado, entOnlineMod.iIdUsuarioMod);
                 if (resSvaOnline.Code != 0)
                 {
@@ -98,6 +99,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
             {
                 EntCallCenter entCallCenter = new EntCallCenter();
 
+                //Obtener info de colaborador
                 IMDResponse<List<EntColaborador>> resGetColaborador = busColaborador.BGetColaborador(piIdColaborador: iIdColaborador);
                 if (resGetColaborador.Code != 0)
                 {
@@ -112,6 +114,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
 
                 entCallCenter.entColaborador = resGetColaborador.Result.First();
 
+                //Obtener info del folio
                 IMDResponse<List<EntFolioReporte>> resGetFolio = busFolio.BGetFolios(psFolio: sFolio, pbActivo: null, pbBaja: null);
                 if (resGetFolio.Code != 0)
                 {
@@ -136,6 +139,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                     }
                 }
 
+                //Obtener información del paciente
                 IMDResponse<List<EntPaciente>> resGetPaciente = busPaciente.BGetPacientes(piIdFolio: entCallCenter.entFolio.iIdFolio);
                 if (resGetPaciente.Code != 0)
                 {
@@ -151,6 +155,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
 
                 entCallCenter.entPaciente = resGetPaciente.Result.First();
 
+                //Validar tipo de colaborador
                 if (entCallCenter.entColaborador.iIdTipoDoctor == (int)EnumTipoDoctor.MedicoCallCenter || entCallCenter.entColaborador.iIdTipoDoctor == (int)EnumTipoDoctor.MedicoAdministrativo)
                 {
                     if (entCallCenter.entFolio.iIdOrigen == (int)EnumOrigen.Particular)
@@ -166,6 +171,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                         response.Message = "El folio ha expirado o ha sido dado de baja.";
                         return response;
                     }
+
+                    //Para doctores callcenter, generar la consulta y retornar datos
                     EntConsulta entConsulta = new EntConsulta
                     {
                         iIdColaborador = entCallCenter.entColaborador.iIdColaborador,
@@ -182,6 +189,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
 
                     entCallCenter.entConsulta = resSaveConsulta.Result;
 
+                    //Consultar historial clínico generado por otros colaboradores callcenter
                     List<int> doctoresCallCenter = new List<int> { (int)EnumTipoDoctor.MedicoCallCenter, (int)EnumTipoDoctor.MedicoAdministrativo };
 
                     IMDResponse<List<EntHistorialClinico>> resGetHistorial = busConsulta.BGetHistorialMedico(piIdFolio: entCallCenter.entFolio.iIdFolio, psIdTipoDoctor: string.Join(",", doctoresCallCenter));
@@ -194,6 +202,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                 }
                 else if (entCallCenter.entColaborador.iIdTipoDoctor == (int)EnumTipoDoctor.MedicoEspecialista)
                 {
+                    //Para doctores especialistas, buscar consultas programadas en la agenda
                     IMDResponse<List<EntDetalleConsulta>> resVerificarConsulta = busConsulta.BGetConsultaMomento(entCallCenter.entPaciente.iIdPaciente, entCallCenter.entColaborador.iIdColaborador);
                     if (resVerificarConsulta.Code != 0)
                     {
@@ -207,6 +216,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                         return response;
                     }
 
+                    //Validar que la consulta programada esté en el horario programada y con status válido
                     List<EntDetalleConsulta> HayConsultaProgramadaOReprograma = resVerificarConsulta.Result.Where(x => x.iIdEstatusConsulta != (int)EnumEstatusConsulta.Finalizado && x.iIdEstatusConsulta != (int)EnumEstatusConsulta.Cancelado).ToList();
                     if (HayConsultaProgramadaOReprograma.Count > 0)
                     {
@@ -241,7 +251,8 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                         }
                     }
 
-                    IMDResponse<List<EntHistorialClinico>> resGetHistorial = busConsulta.BGetHistorialMedico(piIdFolio: entCallCenter.entFolio.iIdFolio, piIdColaborador: entCallCenter.entColaborador.iIdColaborador) ;
+                    //Obtener historial clínico sólo de las consultas con el colaborador especialista actual
+                    IMDResponse<List<EntHistorialClinico>> resGetHistorial = busConsulta.BGetHistorialMedico(piIdFolio: entCallCenter.entFolio.iIdFolio, piIdColaborador: entCallCenter.entColaborador.iIdColaborador);
                     if (resGetHistorial.Code != 0)
                     {
                         return resGetHistorial.GetResponse<EntCallCenter>();
@@ -256,7 +267,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                     return response;
                 }
 
-                
+
 
                 response.Code = 0;
                 response.Result = entCallCenter;
@@ -303,6 +314,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                     iIdEstatusConsulta = (int)EnumEstatusConsulta.EnConsulta
                 };
 
+                //Actualizar fecha de inicio de consulta
                 IMDResponse<EntConsulta> resSaveConsulta = busConsulta.BSaveConsulta(entConsulta, iIdUsuarioMod);
                 if (resSaveConsulta.Code != 0)
                 {
@@ -346,7 +358,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                     return response;
                 }
 
-
+                //Obtener el detalle de la consulta actual
                 IMDResponse<List<EntDetalleConsulta>> resGetConsulta = busConsulta.BGetDetalleConsulta(piIdConsulta: iIdConsulta);
                 if (resGetConsulta.Code != 0)
                 {
@@ -367,6 +379,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                     iIdEstatusConsulta = (int)EnumEstatusConsulta.Finalizado
                 };
 
+                //Actualizar fecha de fin de consulta
                 IMDResponse<EntConsulta> resSaveConsulta = busConsulta.BSaveConsulta(entConsulta, iIdUsuarioMod);
                 if (resSaveConsulta.Code != 0)
                 {
@@ -391,6 +404,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                 {
                     if (consulta.iIdTipoProducto == (int)EnumTipoProducto.Servicio)
                     {
+                        //Dar de baja a los folios de servicio que hayan sido atendido por colaborador callcenter
                         IMDResponse<bool> resDesactivarFolios = busFolio.BEliminarFoliosEmpresa(entFolio);
                         if (resDesactivarFolios.Code != 0)
                         {
@@ -402,6 +416,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.CallCenter
                 {
                     if (consulta.iIdOrigen == (int)EnumOrigen.Particular)
                     {
+                        //Dar de baja a los folios cuando sean generados por un especialista y tengan el origen Particular
                         IMDResponse<bool> resDesactivarFolios = busFolio.BEliminarFoliosEmpresa(entFolio);
                         if (resDesactivarFolios.Code != 0)
                         {

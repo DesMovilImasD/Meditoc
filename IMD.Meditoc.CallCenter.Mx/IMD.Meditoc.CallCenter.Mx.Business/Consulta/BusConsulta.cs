@@ -48,6 +48,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
                     return response;
                 }
 
+                //Guardar o actualizar la consulta generada
                 IMDResponse<DataTable> resSaveConsulta = datConsulta.DSaveConsulta(
                     entConsulta.iIdConsulta,
                     piIdUsuarioMod,
@@ -86,7 +87,16 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
             return response;
         }
 
-        //Obtiene el historial clinico del paciente
+        /// <summary>
+        /// Obtiene el historial clínico del paciente
+        /// </summary>
+        /// <param name="piIdHistorialClinico"></param>
+        /// <param name="piIdConsulta"></param>
+        /// <param name="piIdPaciente"></param>
+        /// <param name="piIdColaborador"></param>
+        /// <param name="piIdFolio"></param>
+        /// <param name="psIdTipoDoctor"></param>
+        /// <returns></returns>
         public IMDResponse<List<EntHistorialClinico>> BGetHistorialMedico(int? piIdHistorialClinico = null, int? piIdConsulta = null, int? piIdPaciente = null, int? piIdColaborador = null, int? piIdFolio = null, string psIdTipoDoctor = null)
         {
             IMDResponse<List<EntHistorialClinico>> response = new IMDResponse<List<EntHistorialClinico>>();
@@ -129,6 +139,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
                     entHistorialClinico.sFechaConsultaInicio = entHistorialClinico.dtFechaConsultaInicio?.ToString("ddd dd/MM/yyyy hh:mm tt");
                     entHistorialClinico.sFechaConsultaFin = entHistorialClinico.dtFechaConsultaFin?.ToString("ddd dd/MM/yyyy hh:mm tt");
 
+                    //Calcular la duración de la consulta
                     TimeSpan? dff = entHistorialClinico.dtFechaConsultaFin - entHistorialClinico.dtFechaConsultaInicio;
 
                     entHistorialClinico.sDuracionConsulta = dff?.ToString(@"hh\:mm\:ss");
@@ -153,14 +164,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
         /// <summary>
         /// Obtiene la lista de detalles de la consulta solicitada
         /// </summary>
-        /// <param name="piIdConsulta"></param>
-        /// <param name="piIdPaciente"></param>
-        /// <param name="piIdColaborador"></param>
-        /// <param name="piIdEstatusConsulta"></param>
-        /// <param name="pdtFechaProgramadaInicio"></param>
-        /// <param name="pdtFechaProgramadaFin"></param>
-        /// <param name="pdtFechaConsultaInicio"></param>
-        /// <param name="pdtFechaConsultaFin"></param>
+        /// <param name="piIdConsulta">Filtro por consulta</param>
+        /// <param name="piIdPaciente">Filtro por paciente</param>
+        /// <param name="piIdColaborador">Filtro por colaborador</param>
+        /// <param name="piIdEstatusConsulta">Filtro por estatus de consulta</param>
+        /// <param name="pdtFechaProgramadaInicio">Filtro</param>
+        /// <param name="pdtFechaProgramadaFin">Filtro</param>
+        /// <param name="pdtFechaConsultaInicio">Filtro</param>
+        /// <param name="pdtFechaConsultaFin">Filtro</param>
         /// <returns></returns>
         public IMDResponse<List<EntDetalleConsulta>> BGetDetalleConsulta(int? piIdConsulta = null, int? piIdPaciente = null, int? piIdColaborador = null, int? piIdEstatusConsulta = null, DateTime? pdtFechaProgramadaInicio = null, DateTime? pdtFechaProgramadaFin = null, DateTime? pdtFechaConsultaInicio = null, DateTime? pdtFechaConsultaFin = null)
         {
@@ -174,6 +185,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
                 pdtFechaProgramadaInicio = pdtFechaProgramadaInicio?.Date;
                 pdtFechaProgramadaFin = pdtFechaProgramadaFin?.AddDays(1).Date;
 
+                //Consultar datos de la base
                 IMDResponse<DataTable> resGetConsulta = datConsulta.DGetDetalleConsulta(piIdConsulta, piIdPaciente, piIdColaborador, piIdEstatusConsulta, pdtFechaProgramadaInicio, pdtFechaProgramadaFin, pdtFechaConsultaInicio, pdtFechaConsultaFin);
                 if (resGetConsulta.Code != 0)
                 {
@@ -359,6 +371,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
                     return response;
                 }
 
+                //Obtene detalle de la consulta
                 IMDResponse<List<EntDetalleConsulta>> resGetDetalleConsulta = this.BGetDetalleConsulta(consulta.consulta.iIdConsulta);
                 if (resGetDetalleConsulta.Code != 0)
                 {
@@ -376,12 +389,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
 
                 consulta.consulta.iIdEstatusConsulta = (int)EnumEstatusConsulta.Cancelado;
 
+                //Cancelar la consulta del paciente
                 IMDResponse<bool> resDelConsulta = datConsulta.DCancelarConsulta(consulta.consulta.iIdConsulta, consulta.iIdUsuarioMod, (int)consulta.consulta.iIdEstatusConsulta);
                 if (resDelConsulta.Code != 0)
                 {
                     return resDelConsulta;
                 }
 
+                //Cancelar el folio del paciente si éste fue generado con origen Particular
                 if (detalleConsulta.iIdOrigen == (int)EnumOrigen.Particular)
                 {
                     EntFolioFV entFolio = new EntFolioFV
@@ -439,6 +454,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Consulta
                     return response;
                 }
 
+                //Guardar el historila clínico de la consulta actual
                 IMDResponse<bool> resSaveHistorial = datConsulta.DSaveHistorialMedico(
                     entHistorialClinico.iIdConsulta,
                     entHistorialClinico.iIdUsuarioMod,

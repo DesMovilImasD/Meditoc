@@ -20,6 +20,10 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Catalogos
             datEspecialidad = new DatCatalogo();
         }
 
+        /// <summary>
+        /// Obtiene los catálogos del sistema
+        /// </summary>
+        /// <returns></returns>
         public IMDResponse<EntCatalogos> BGetCatalogos()
         {
             IMDResponse<EntCatalogos> response = new IMDResponse<EntCatalogos>();
@@ -40,6 +44,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Catalogos
                     response.Message = "El sistema no cuenta con catálogos registrados.";
                 }
 
+                //Armar entidad para guardar los catálogos del sistema
                 EntCatalogos entCatalogos = new EntCatalogos
                 {
                     catCuponCategoria = this.BReadCat(resGetCat.Result, 0),
@@ -70,6 +75,12 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Catalogos
             return response;
         }
 
+        /// <summary>
+        /// Retorna una lista de id y descripcion de un catálogo del sistema
+        /// </summary>
+        /// <param name="ds"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public List<EntCatalogo> BReadCat(DataSet ds, int index)
         {
             List<EntCatalogo> values = new List<EntCatalogo>();
@@ -80,6 +91,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Catalogos
                 {
                     IMDDataRow dr = new IMDDataRow(item);
 
+                    //Leer datos
                     EntCatalogo entCatalogo = new EntCatalogo
                     {
                         fiId = dr.ConvertTo<int>("fiId"),
@@ -90,7 +102,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Catalogos
             }
             catch (Exception)
             {
-
+                //Mantener lista vacía
             }
             return values;
         }
@@ -126,6 +138,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Catalogos
                     }
                 }
 
+                //Guardar/actualizar la especialidad solicitada
                 IMDResponse<bool> respuestaSaveEspecialidad = datEspecialidad.DSaveEspecialidad(entEspecialidad.iIdEspecialidad, entEspecialidad.sNombre, entEspecialidad.iIdUsuarioMod, entEspecialidad.bActivo, entEspecialidad.bBaja);
                 if (respuestaSaveEspecialidad.Code != 0)
                 {
@@ -160,6 +173,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Catalogos
 
             try
             {
+                //Consultar especialidades
                 IMDResponse<DataTable> respuestaGetEspecialidades = datEspecialidad.DGetEspecialidad(piIdEspecialidad);
                 if (respuestaGetEspecialidades.Code != 0)
                 {
