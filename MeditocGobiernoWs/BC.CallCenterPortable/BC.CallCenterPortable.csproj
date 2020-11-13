@@ -34,7 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -48,11 +47,9 @@
   <ItemGroup>
     <Compile Include="Models\CuestionarioModel.cs" />
     <Compile Include="Models\GeometriaModel.cs" />
-    <Compile Include="Models\IceLinkServer.cs" />
     <Compile Include="Models\PreguntasModel.cs" />
     <Compile Include="Models\RenewPass.cs" />
     <Compile Include="Models\DrModel.cs" />
-    <Compile Include="Models\SerializeModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\ChatVideoModel.cs" />
     <Compile Include="Models\ChatModel.cs" />

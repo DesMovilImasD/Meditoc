@@ -1,7 +1,4 @@
 ﻿using BC.CallCenter.Models.BE;
-using BC.CallCenter.NuevaImplementacion.Business;
-using BC.CallCenter.NuevaImplementacion.Data;
-using BC.CallCenter.NuevaImplementacion.DTO;
 using BC.CallCenterPortable.Models;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using System;
@@ -13,10 +10,6 @@ namespace BC.CallCenter.Clases
     public class clsPacientes
     {
         public clsPacientesBE oclsPacientesBE;
-        public LlamadaData llamadaData;
-        public LlamadaDTO llamadaDTO;
-        public AccesoBusiness accesoBusiness;
-        public BitacoraBusiness bitacoraBusiness;
 
         Database db = clsBDPersonalizada.CreateDatabase("cnxCallCenter");
 
@@ -238,38 +231,28 @@ namespace BC.CallCenter.Clases
             return bResult;
         }
 
-        public bool m_Marca_DR(int piIdUsuario, bool pbEstado, string sFolio, string sNumeroCliente)
+        public bool m_Marca_DR(int piIdUsuario, bool pbEstado, string sFolio)
         {
             bool bResult = false;
-            llamadaData = new LlamadaData();
-            accesoBusiness = new AccesoBusiness();
-            bitacoraBusiness = new BitacoraBusiness();
 
             try
             {
                 oclsPacientesBE = new clsPacientesBE();
-                //oclsBitacora.m_Save("ID: " + piIdUsuario, piIdUsuario.ToString(), "0", "Inicia solicitud ocupar DR.");
+                oclsBitacora.m_Save("ID: " + piIdUsuario, piIdUsuario.ToString(), "0", "Inicia solicitud ocupar DR.");
                 oclsPacientesBE.iIdCGUDR = piIdUsuario;
                 oclsPacientesBE.bOcupado = pbEstado;
                 oclsPacientesBE.sFolio = sFolio;
                 oclsPacientesBE.m_OcuparDR(db);
                 bResult = true;
-
-                llamadaDTO = new LlamadaDTO
-                {
-                    iIdAcceso = accesoBusiness.UserExist(sNumeroCliente),
-                    iIdDoctor = piIdUsuario,
-                    dtFechaCreacion = DateTime.Now
-                };
-
-                llamadaDTO.iIdLlamada = llamadaData.save(llamadaDTO);
-                bitacoraBusiness.save(llamadaDTO.iIdAcceso, 0, llamadaDTO.iIdLlamada, clsEnums.sDescripcionEnum(clsEnums.enumEstatusBitacora.LLAMADA),"Se ocupa al doctor: "+ llamadaDTO.iIdDoctor); //Se guarda el registro en la bitacora
-
-                //oclsBitacora.m_Save("ID: " + piIdUsuario, piIdUsuario.ToString(), "0", "Se ocupo al DR.", false, "0", "0", sNumeroCliente);
+                oclsBitacora.m_Save("ID: " + piIdUsuario, piIdUsuario.ToString(), "0", "Se ocupo al DR.");
             }
             catch (Exception ex)
             {
-                bitacoraBusiness.save(llamadaDTO.iIdAcceso, 0, llamadaDTO.iIdLlamada, clsEnums.sDescripcionEnum(clsEnums.enumEstatusBitacora.ERROR), ex.Message); //Se guarda el registro en la bitacora
+                oclsBitacora.m_Save("ID: " + piIdUsuario, piIdUsuario.ToString(), "0", "Error al ocupar DR: " + ex.Message, true);
+            }
+            finally
+            {
+                oclsBitacora.m_Save("ID: " + piIdUsuario, piIdUsuario.ToString(), "0", "Finaliza solicitud ocupar DR.");
             }
 
             return bResult;
@@ -382,7 +365,7 @@ namespace BC.CallCenter.Clases
                 if (objResponseModel.bRespuesta)
                 {
                     objResponseModel.sFolio = poChatModel.sFolio;
-                    if (!m_Marca_DR(Convert.ToInt32(objResponseModel.sMensaje), true, poChatModel.sFolio, poChatModel.sUIDCliente))
+                    if (!m_Marca_DR(Convert.ToInt32(objResponseModel.sMensaje), true, poChatModel.sFolio))
                     {
                         objResponseModel = new ResponseModel();
                         throw new ArgumentException(ConfigurationManager.AppSettings["sMensajeFolio"]);

@@ -43,19 +43,5 @@ namespace BC.CallCenter.Clases
             [Description("ACCESO A BOTON")]
             DOE = 2
         };
-
-        public enum enumEstatusBitacora
-        {
-            [Description("LOGIN")]
-            LOGIN,
-            [Description("ENCUESTA")]
-            ENCUESTA,
-            [Description("LLAMADA")]
-            LLAMADA,
-            [Description("TRAZADO")]
-            TRAZADO,
-            [Description("ERROR")]
-            ERROR
-        };
     }
 }

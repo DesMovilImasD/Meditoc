@@ -84,7 +84,7 @@ namespace BC.CallCenterPortable.Models
         public string sTerminosYCondiciones { get; set; } = ConfigurationManager.AppSettings["sTerminosYCondiciones"];
         public string sAvisoDePrivacidad { get; set; } = ConfigurationManager.AppSettings["sAvisoDePrivacidad"];
         public string sLigaCovID { get; set; } = ConfigurationManager.AppSettings["sLigaCovID"];
-        public List<IceLinkServer> rutasIceServer { get; set; }
+
 
     }
 }

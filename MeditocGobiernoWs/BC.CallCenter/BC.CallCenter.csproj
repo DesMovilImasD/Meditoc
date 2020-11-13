@@ -38,10 +38,6 @@
     <Reference Include="DevOne.Security.Cryptography.BCrypt">
       <HintPath>DLL\DevOne.Security.Cryptography.BCrypt.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>DLL\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>DLL\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
@@ -124,19 +120,6 @@
     <Compile Include="Models\Repositorios\clsTblcatladaRepositorio.cs" />
     <Compile Include="Models\Repositorios\clsTblcodigopostalRepositorio.cs" />
     <Compile Include="Models\Repositorios\clsTblpreguntasRepositorio.cs" />
-    <Compile Include="NuevaImplementacion\Business\AccesoBusiness.cs" />
-    <Compile Include="NuevaImplementacion\Business\BitacoraBusiness.cs" />
-    <Compile Include="NuevaImplementacion\Business\EncuestaBusiness.cs" />
-    <Compile Include="NuevaImplementacion\Business\TrazadoBusiness.cs" />
-    <Compile Include="NuevaImplementacion\Data\AccesoData.cs" />
-    <Compile Include="NuevaImplementacion\Data\BitacoraData.cs" />
-    <Compile Include="NuevaImplementacion\Data\EncuestaData.cs" />
-    <Compile Include="NuevaImplementacion\Data\LlamadaData.cs" />
-    <Compile Include="NuevaImplementacion\DTO\AccesoDTO.cs" />
-    <Compile Include="NuevaImplementacion\DTO\BitacoraDTO.cs" />
-    <Compile Include="NuevaImplementacion\DTO\EncuestaDTO.cs" />
-    <Compile Include="NuevaImplementacion\DTO\LlamadaDTO.cs" />
-    <Compile Include="NuevaImplementacion\DTO\TrazadoDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -146,7 +129,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ClientesService.svc" />
-    <Content Include="DLL\log4net.dll" />
     <Content Include="DLL\Microsoft.Practices.EnterpriseLibrary.Common.dll" />
     <Content Include="DLL\Microsoft.Practices.EnterpriseLibrary.Data.dll" />
     <Content Include="DLL\Microsoft.Practices.ObjectBuilder.dll" />
@@ -158,6 +140,7 @@
       <Name>BC.CallCenterPortable</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

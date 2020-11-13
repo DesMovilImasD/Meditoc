@@ -5,7 +5,6 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
-using BC.CallCenter.NuevaImplementacion.DTO;
 using BC.CallCenterPortable.Models;
 
 namespace BC.CallCenter
@@ -127,12 +126,6 @@ ResponseFormat = WebMessageFormat.Json)]
 RequestFormat = WebMessageFormat.Json,
 ResponseFormat = WebMessageFormat.Json)]
         ResponseModel ValidarFormulario(CuestionarioModel oCuestionario);
-
-        [OperationContract]
-        [WebInvoke(Method = "POST",
-RequestFormat = WebMessageFormat.Json,
-ResponseFormat = WebMessageFormat.Json)]
-        ResponseModel SaveTrazado(List<TrazadoDTO> lstTrazado);
 
     }
 }
