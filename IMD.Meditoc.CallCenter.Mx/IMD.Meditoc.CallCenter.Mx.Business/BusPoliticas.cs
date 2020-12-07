@@ -36,6 +36,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Business
                 entPoliticas.sCorreoSoporte = ConfigurationManager.AppSettings["sCorreoSoporte"];
                 entPoliticas.sDireccionEmpresa = ConfigurationManager.AppSettings["sDireccionEmpresa"];
                 entPoliticas.sTelefonoEmpresa = ConfigurationManager.AppSettings["sTelefonoEmpresa"];
+                entPoliticas.sCompanyPhone = ConfigurationManager.AppSettings["sCompanyPhone"];
                 entPoliticas.nMaximoDescuento = Convert.ToDouble(ConfigurationManager.AppSettings["nMaximoDescuento"]);
                 entPoliticas.nIVA = Convert.ToDouble(ConfigurationManager.AppSettings["nIVA"]);
                 entPoliticas.sLlaveDominio = ConfigurationManager.AppSettings["sLlaveDominio"];

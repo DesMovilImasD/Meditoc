@@ -693,6 +693,10 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
 
             try
             {
+                //Verificar si se ha encontrado una sala disponible
+                string medicosOcupados = "Todos los médicos se encuentran ocupados en este momento.";
+                string sCompanyPhone = ConfigurationManager.AppSettings["sCompanyPhone"];
+
                 IMDResponse<DataTable> dtColaborador = datColaborador.DObtenerSala(bAgendada, iIdUsuario, dtFechaConsulta);
                 if (dtColaborador.Code != 0)
                 {
@@ -707,18 +711,51 @@ namespace IMD.Meditoc.CallCenter.Mx.Business.Colaborador
                     oColaborador = new EntColaborador
                     {
                         iIdColaborador = rows.ConvertTo<int>("iIdColaborador"),
-                        iNumSala = rows.ConvertTo<int?>("iNumSala")
-
+                        iIdUsuarioCGU = rows.ConvertTo<int>("iIdUsuarioCGU"),
+                        iIdTipoDoctor = rows.ConvertTo<int>("iIdTipoDoctor"),
+                        iNumSala = rows.ConvertTo<int?>("iNumSala"),
+                        sTelefonoDoctor = rows.ConvertTo<string>("sTelefono")
                     };
+
+                    IMDResponse<List<EntUsuario>> resUSER = busUsuario.BObtenerUsuario(oColaborador.iIdUsuarioCGU);
+                    if (resUSER.Code != 0)
+                    {
+                        return resUSER.GetResponse<EntColaborador>();
+                    }
+
+                    if (resUSER.Result.Count < 1)
+                    {
+                        response.Code = 500000;
+                        response.Message = medicosOcupados;
+                        response.Result = new EntColaborador
+                        {
+                            sTelefonoDoctor = sCompanyPhone
+                        };
+                        return response;
+                    }
+
+                    if (resUSER.Result.First().bAcceso != true)
+                    {
+                        oColaborador.sTelefonoDoctor = "";
+                    }
+
+                    if (oColaborador.iIdTipoDoctor != (int)EnumTipoDoctor.MedicoEspecialista)
+                    {
+                        oColaborador.sTelefonoDoctor = ConfigurationManager.AppSettings["sCompanyPhone"];
+                    }
+
+                    oColaborador.sTelefonoDoctor = oColaborador.sTelefonoDoctor?.Replace(" ", "").Replace("+52", "");
 
                 }
 
-                //Verificar si se ha encontrado una sala disponible
-                string medicosOcupados = "Todos los médicos se encuentran ocupados en este momento.";
                 if (oColaborador.iNumSala == null)
                 {
-                    response.Code = -7262876723423;
+                    response.Code = 500000;
                     response.Message = medicosOcupados;
+                    response.Result = new EntColaborador
+                    {
+                        sTelefonoDoctor = sCompanyPhone
+                    };
                     return response;
                 }
 

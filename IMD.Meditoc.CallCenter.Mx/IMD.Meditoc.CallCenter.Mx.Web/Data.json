@@ -8,6 +8,10 @@
       "cnx": "Datasource=172.16.0.76;Database=meditoc_db;Uid=root;Pwd=ImasD2018#",
       "cnxEncrpt": "61Cb4qdXrbIPL8az9svQS9NpHT6a0CjLrB3waEkXKz6zqKiBv+K6dlRiIKlTACBBl9ESxHsDpvAo138vwBQwTbWioAY4D1QXqA+m1lPwTW0="
     },
+    "qa146": {
+      "cnx": "Server=10.1.1.146; Database=meditoc_db; Uid=MysqlUsrDev; Pwd=MA0Lajhe7zMP4UsiPqPh;",
+      "cnxEncrpt": "Fb1q/bTt7/LYi0HeH+r/I7eee1S8hqN/t5Ly1M56rWUOt+xyMyW5x9PTSc2JeplKz52S+P7sEwKhcpredbMeuJ2GJDW+gBkm1emZ7vy9N6sGOS0vs/42BzGq6jkKIS2+"
+    },
     "prod": {
       "cnx": "Server=localhost; Database=meditoc_db; User id=root; Password=ImasD2020#;",
       "cnxEncrpt": "nf/NJYtfBPeIHkV7txYwZ/XhIhUBEV65pwn/FR2wIuTR/FEaPl5FjkjkG/y0UyKM2Pcc7QWBGGJI4zZ7RzIfVGf3DJzXM9QYZYhptYeHNeM="

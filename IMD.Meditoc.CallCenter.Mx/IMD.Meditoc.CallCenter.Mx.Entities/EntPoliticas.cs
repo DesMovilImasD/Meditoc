@@ -11,6 +11,7 @@ namespace IMD.Meditoc.CallCenter.Mx.Entities
         public string sDireccionEmpresa { get; set; }
         public string sTelefonoEmpresa { get; set; }
         public double nMaximoDescuento { get; set; }
+        public string sCompanyPhone { get; set; }
         public double nIVA { get; set; }
         public string sLlaveIcelink { get; set; }
         public string sLlaveDominio { get; set; }

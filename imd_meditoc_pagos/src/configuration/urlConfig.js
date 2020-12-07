@@ -3,10 +3,10 @@
 //const urlBase = '/servicios'
 
 //locutorios
-//const urlBase = "/MeditocStore";
+const urlBase = "/MeditocStore";
 
 //Prod
-const urlBase = "/store";
+//const urlBase = "/store";
 
 const urlProducts = "/meditoc_products";
 const urlPayments = "/meditoc_payments";
@@ -15,4 +15,4 @@ const urlDirectory = "/meditoc_directory";
 export { urlProducts, urlPayments, urlDirectory, urlBase };
 
 //IMPORTANTE!!!
-//CAMBIAR "homepage" DE package.json PARA EL ENTORNO DE PUBLICACIÓN
+//CAMBIAR "homepage" DE package.json y el web.config de la carpeta public PARA EL ENTORNO DE PUBLICACIÓN

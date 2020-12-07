@@ -9,7 +9,10 @@
 //Locu
 //const serverMain = "https://148.240.238.150/MeditocWS/";
 
+//145
+const serverMain = "https://201.46.92.145/MeditocWS/";
+
 //Prod
-const serverMain = "https://productos.meditoc.com/MeditocWS/";
+//const serverMain = "https://productos.meditoc.com/MeditocWS/";
 
 export { serverMain };

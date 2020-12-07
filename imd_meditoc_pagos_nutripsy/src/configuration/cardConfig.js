@@ -1,4 +1,4 @@
-const cardEnviromentProd = true;
+const cardEnviromentProd = false;
 
 const lstCardTest = [
     "4242424242424242",

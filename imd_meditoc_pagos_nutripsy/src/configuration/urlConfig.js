@@ -12,4 +12,4 @@ const urlDirectory = "/meditoc_directory";
 export { urlProducts, urlPayments, urlDirectory, urlBase };
 
 //IMPORTANTE!!!
-//CAMBIAR "homepage" DE package.json PARA EL ENTORNO DE PUBLICACIÓN
+//CAMBIAR "homepage" DE package.json y el web.config de la carpeta public PARA EL ENTORNO DE PUBLICACIÓN

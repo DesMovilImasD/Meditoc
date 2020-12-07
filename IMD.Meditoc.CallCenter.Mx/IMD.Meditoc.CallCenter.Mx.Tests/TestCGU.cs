@@ -103,5 +103,14 @@ namespace IMD.Meditoc.CallCenter.Mx.Tests
 
             var json = JsonConvert.SerializeObject(res, Formatting.Indented);
         }
+
+        [TestMethod]
+        public void VerPassword()
+        {
+            BusUsuario busUsuario = new BusUsuario();
+            var res = busUsuario.BDeCodePassWord("vcSg9n/QM0VECGsonikmJw==");
+
+            var json = JsonConvert.SerializeObject(res, Formatting.Indented);
+        }
     }
 }
